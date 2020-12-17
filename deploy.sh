@@ -7,10 +7,7 @@ stage=${1:-dev}
 services=(
   'database'
   'uploads'
-  'uploads-scan'
   'app-api'
-  'elasticsearch-auth'
-  'elasticsearch'
   'stream-functions'
   'ui-auth'
   'ui'
