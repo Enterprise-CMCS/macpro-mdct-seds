@@ -1,0 +1,19 @@
+{
+ "TableName": "form_questions",
+ "KeySchema": [
+  {
+   "AttributeName": "question_id", 
+   "KeyType": "HASH"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "question_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "form_id",
+   "AttributeType": "N"
+  }
+ ]
+}

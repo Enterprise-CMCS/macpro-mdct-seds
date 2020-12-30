@@ -1,0 +1,51 @@
+{
+ "TableName": "form_answers",
+ "KeySchema": [
+  {
+   "AttributeName": "answer_id", 
+   "KeyType": "HASH"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "answer_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "state_form_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "question_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "age_range_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "answer_entry",
+   "AttributeType": "S"
+  },
+  {
+   "AttributeName": "answer_notes",
+   "AttributeType": "S"
+  },
+  {
+   "AttributeName": "last_modified_date",
+   "AttributeType": "S"
+  },
+  {
+   "AttributeName": "last_modified_by",
+   "AttributeType": "S"
+  },
+  {
+   "AttributeName": "created_date",
+   "AttributeType": "S"
+  },
+  {
+   "AttributeName": "created_by",
+   "AttributeType": "S"
+  }
+ ]
+}

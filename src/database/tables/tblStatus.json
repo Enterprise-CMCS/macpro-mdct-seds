@@ -1,0 +1,23 @@
+{
+ "TableName": "status",
+ "KeySchema": [
+  {
+   "AttributeName": "status_id", 
+   "KeyType": "HASH"
+  },
+  {
+   "AttributeName": "status", 
+   "KeyType": "RANGE"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "status_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "status",
+   "AttributeType": "S"
+  }
+ ]
+}
