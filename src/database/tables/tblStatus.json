@@ -19,5 +19,9 @@
    "AttributeName": "status",
    "AttributeType": "S"
   }
- ]
+ ],
+ "ProvisionedThroughput" : {
+  "ReadCapacityUnits" : 10,
+  "WriteCapacityUnits" : 10
+ }
 }

@@ -19,5 +19,9 @@
    "AttributeName": "age_range",
    "AttributeType": "S"
   }
- ]
+ ],
+ "ProvisionedThroughput" : {
+  "ReadCapacityUnits" : 100,
+  "WriteCapacityUnits" : 100
+ }
 }
