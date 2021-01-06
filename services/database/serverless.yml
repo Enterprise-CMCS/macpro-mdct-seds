@@ -25,44 +25,140 @@ provider:
 
 resources:
   Resources:
-    AmendmentsTable:
+    AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.tableName}
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
+        TableName: ${self:custom.stage}-age-ranges
         AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-          - AttributeName: amendmentId
+          - AttributeName: age_range_id
+            AttributeType: N
+          - AttributeName: age_range
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: age_range_id
             KeyType: HASH
-          - AttributeName: amendmentId
+          - AttributeName: age_range
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    AmendmentsAtomicCounterTable:
+    FormAnswersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.tableName}-atomic-counter
+        TableName: ${self:custom.stage}-form-answers
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: answer_id
+            AttributeType: N
+          - AttributeName: answer_entry
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: answer_id
             KeyType: HASH
+          - AttributeName: answer_entry
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    FormQuestionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-form-questions
+        AttributeDefinitions:
+          - AttributeName: question_id
+            AttributeType: N
+          - AttributeName: question
+            AttributeType: S
+        KeySchema:
+          - AttributeName: question_id
+            KeyType: HASH
+          - AttributeName: question
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    FormsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-forms
+        AttributeDefinitions:
+          - AttributeName: form_id
+            AttributeType: N
+          - AttributeName: form
+            AttributeType: S
+        KeySchema:
+          - AttributeName: form_id
+            KeyType: HASH
+          - AttributeName: form
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    StateFormsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-state-forms
+        AttributeDefinitions:
+          - AttributeName: state_form_id
+            AttributeType: N
+          - AttributeName: state_form
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state_form_id
+            KeyType: HASH
+          - AttributeName: state_form
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    StatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-states
+        AttributeDefinitions:
+          - AttributeName: state_id
+            AttributeType: N
+          - AttributeName: state_name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state_id
+            KeyType: HASH
+          - AttributeName: state_name
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    StatusTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-status
+        AttributeDefinitions:
+          - AttributeName: status_id
+            AttributeType: N
+          - AttributeName: status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: status_id
+            KeyType: HASH
+          - AttributeName: status
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
-    AmendmentsTableName:
-      Value: !Ref AmendmentsTable
-    AmendmentsTableArn:
-      Value: !GetAtt AmendmentsTable.Arn
-    AmendmentsTableStreamArn:
-      Value: !GetAtt AmendmentsTable.StreamArn
-    AmendmentsAtomicCounterTableName:
-      Value: !Ref AmendmentsAtomicCounterTable
-    AmendmentsAtomicCounterTableArn:
-      Value: !GetAtt AmendmentsAtomicCounterTable.Arn
+    AgeRangesTableName:
+      Value: !Ref AgeRangesTable
+    AgeRangesTableArn:
+      Value: !GetAtt AgeRangesTable.Arn
+    FormAnswersTableName:
+      Value: !Ref FormAnswersTable
+    FormAnswersTableArn:
+      Value: !GetAtt FormAnswersTable.Arn
+    FormQuestionsTableName:
+      Value: !Ref FormQuestionsTable
+    FormQuestionsTableArn:
+      Value: !GetAtt FormQuestionsTable.Arn
+    FormsTableName:
+      Value: !Ref FormsTable
+    FormsTableArn:
+      Value: !GetAtt FormsTable.Arn
+    StateFormsTableName:
+      Value: !Ref StateFormsTable
+    StateFormsTableArn:
+      Value: !GetAtt StateFormsTable.Arn
+    StatesTableName:
+      Value: !Ref StatesTable
+    StatesTableArn:
+      Value: !GetAtt StatesTable.Arn
+    StatusTableName:
+      Value: !Ref StatusTable
+    StatusTableArn:
+      Value: !GetAtt StatusTable.Arn
+
     Region:
       Value: !Sub ${AWS::Region}

@@ -1,0 +1,27 @@
+{
+ "TableName": "age_ranges",
+ "KeySchema": [
+  {
+   "AttributeName": "age_range", 
+   "KeyType": "HASH"
+  },
+  {
+   "AttributeName": "age_range",
+   "KeyType": "RANGE"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "age_range_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "age_range",
+   "AttributeType": "S"
+  }
+ ],
+ "ProvisionedThroughput" : {
+  "ReadCapacityUnits" : 100,
+  "WriteCapacityUnits" : 100
+ }
+}

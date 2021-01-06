@@ -1,0 +1,27 @@
+{
+ "TableName": "form_answers",
+ "KeySchema": [
+  {
+   "AttributeName": "answer_id", 
+   "KeyType": "HASH"
+  },
+  {
+   "AttributeName": "answer_entry",
+   "KeyType": "RANGE"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "answer_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "answer_entry",
+   "AttributeType": "S"
+  }
+ ],
+ "ProvisionedThroughput" : {
+  "ReadCapacityUnits" : 100,
+  "WriteCapacityUnits" : 100
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "TableName": "state_forms",
+ "KeySchema": [
+  {
+   "AttributeName": "state_form_id", 
+   "KeyType": "HASH"
+  },
+  {
+   "AttributeName": "state_form", 
+   "KeyType": "RANGE"
+  }
+ ],
+ "AttributeDefinitions": [
+  {
+   "AttributeName": "state_form_id",
+   "AttributeType": "N"
+  },
+  {
+   "AttributeName": "state_form",
+   "AttributeType": "S"
+  }
+ ],
+ "ProvisionedThroughput" : {
+  "ReadCapacityUnits" : 100,
+  "WriteCapacityUnits" : 100
+ }
+}
