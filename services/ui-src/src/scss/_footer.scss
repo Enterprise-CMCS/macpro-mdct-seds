@@ -2,68 +2,57 @@
   FOOTER
 **********************/
 .footer {
-  background: $color-gray-lightest;
-  font-size: 0.85rem;
-  color: $color-gray;
-  margin-top: 2.2rem;
-  text-align: center;
+  background: $brand-tertiary;
+  padding: 1.2rem 0;
 
-  @media only screen and (min-width: 768px) {
-    text-align: left;
+  .logo {
+    margin-bottom: 1.2rem;
+    img {
+      max-height: 50px;
+    }
   }
 
-  .adverts {
-    padding: ($padding * 6) $padding;
-  }
-
-  .cms-logo {
-    display: inline-block;
-    width: 70px;
-  }
-
-  .cms-copy {
-    display: inline-block;
-    padding-left: ($padding * 2);
-    text-align: left;
-    vertical-align: top;
-    width: calc(100% - 86px);
-  }
-
-  .chip-info div {
-    display: inline-block;
-    max-width: calc(50% - 16px);
-    margin: $margin;
-    vertical-align: middle;
-  }
-
-  .chip-info div img {
-    max-height: 70px;
-    max-width: 92%;
+  .tagline {
+    color: $brand-primary;
+    font-family: "Merriweather","Georgia","Cambria","Times New Roman","Times",serif;
   }
 
   .info {
-    background-color: $brand-tertiary;
-    color: $white;
-    padding: ($padding * 2) $padding;
+    font-size: .75rem;
+    text-align: right;
 
-    a,
-    a:visited {
-      border-bottom: 1px dotted $white;
-      color: $white;
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:active {
-      color: darken($lily-white, 20);
+    .title {
+      float: right;
+      max-width: 274px;
     }
 
     .address {
-      margin-top: $margin;
+      float: right;
+      font-weight: $font-weight-light;
+      clear: both;
+    }
+  }
 
-      @media only screen and (min-width: 768px) {
-        margin-top: 0;
-        text-align: right;
+  .footer-nav {
+    float: right;
+    padding-bottom: 1.2rem;
+    .usa-footer__nav {
+      font-size: .85rem;
+      padding-right: 0;
+      text-align: right;
+
+      li {
+        border-left: 1px solid $black;
+
+        &:first-of-type {
+          border-left: none;
+        }
+
+        a {
+          font-weight: $font-weight-normal;
+          padding: 0;
+          text-decoration: underline;
+        }
       }
     }
   }

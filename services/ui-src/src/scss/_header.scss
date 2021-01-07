@@ -3,157 +3,69 @@
 **********************/
 
 .header {
-  background: $brand-tertiary;
-  color: $white;
-
-  @media only screen and (max-width: 767px) {
-    text-align: center;
-  }
-
-  &:after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-
-  a,
-  a:visited {
-    color: $white;
-    text-decoration: none;
-
-    &:hover,
-    &:active {
-      color: darken($lily-white, 20);
-    }
-  }
-
-  .site-title {
-    font-weight: $font-weight-bold;
-    text-transform: uppercase;
-    font-size: 1rem;
-
-    @media only screen and (max-width: 767px) {
-      font-size: 1.6rem;
-    }
-  }
-
-  .save-status {
+  .gov-info {
+    background: $color-gray-lightest;
+    color: $color-gray-dark;
     font-size: 0.85rem;
-    font-style: italic;
-    padding-top: 0.1rem;
-    text-align: center;
-    width: auto;
+    padding: .1rem 0 .3rem;
 
-    @media only screen and (min-width: 768px) {
-      border-right: 2px solid $white;
-      float: right;
-      text-align: right;
+    img {
+      margin-top: 0;
+      max-height: 18px;
+      padding-top: 0;
+    }
+
+    .flag, .flag-copy {
+      display: inline-block;
+    }
+
+    .flag {
+
+    }
+    .flag-copy {
+      padding-left: .2rem;
     }
   }
 
-  .nav-user {
-    text-align: center;
-    float: right;
-    padding: 0 1.2rem;
-    margin: 0 auto;
-    width: auto;
+  .navigation {
+    background: $brand-secondary;
 
-    &.open ul:after {
-      transform: rotate(0deg);
+    a {
+
+      &:link, &:visited {
+        color: $white;
+      }
+
+      &:hover {
+        background: none;
+        color: darken($white, 20)
+      }
+
+      &:active {
+        background: none;
+      }
+
     }
-
     ul {
-      list-style-type: none;
-      margin: 0;
-
-      &.user-email-button {
-        font-weight: $font-weight-bold;
-        margin: 0;
-        padding: 0;
-        padding-right: ($padding * 3);
-        position: relative;
-        text-align: center;
-
-        @media only screen and (min-width: 768px) {
-          text-align: right;
-        }
-
-        a {
-          &:after {
-            content: "\f106";
-            font-family: "FontAwesome";
-            height: 5px;
-            pointer-events: all;
-            position: absolute;
-            right: $margin;
-            top: ($margin * 2);
-            transform: rotate(180deg);
-            width: 10px;
-          }
-        }
-      }
+      background: $brand-secondary;
+      color: $white;
     }
 
-    .menu-block {
-      display: none;
-      position: relative;
-      transition: all 2s;
-
-      &.open {
-        background: $brand-tertiary;
-        display: block;
-        padding: ($padding * 2);
-        position: absolute;
-        right: 0;
-        transition: all 2s;
-      }
-
-      .manage-account {
-        padding: $padding 0 $padding ($padding * 4);
-        position: relative;
-
-        a {
-          &:before {
-            content: "\f044";
-            font-family: "FontAwesome";
-            position: absolute;
-            top: ($margin * 1.5);
-            left: 0;
-          }
-        }
-      }
-      .helpdesk {
-        padding: $padding 0 $padding ($padding * 4);
-        position: relative;
-
-        a {
-          &:before {
-            content: "\f05a";
-            font-family: "FontAwesome";
-            position: absolute;
-            top: ($margin * 1.5);
-            left: 0;
-          }
-        }
-      }
-
-      .logout {
-        padding-left: ($padding * 4);
-        position: relative;
-
-        button {
-          text-decoration: none;
-          font-weight: normal;
-          svg {
-            position: absolute;
-            top: ($margin * 1.5);
-            left: 0;
-          }
-        }
-      }
+    .collapse {
+      display: block;
     }
   }
-  .header-row {
-    position: relative;
+
+  .nav .open>a {
+    background: $brand-secondary;
+  }
+
+  .page-title {
+    background: $brand-primary;
+    padding: .6rem 0;
+
+    h1 {
+      color: $white;
+    }
   }
 }
