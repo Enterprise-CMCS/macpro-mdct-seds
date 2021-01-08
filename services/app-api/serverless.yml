@@ -165,13 +165,13 @@ resources:
                   - dynamodb:UpdateItem
                   - dynamodb:DeleteItem
                 Resource:
-                  - ${self:custom.AgeRangesTableName}
-                  - ${self:custom.FormAnswersTableName}
-                  - ${self:custom.FormQuestionsTableName}
-                  - ${self:custom.FormsTableName}
-                  - ${self:custom.StateFormsTableName}
-                  - ${self:custom.StatesTableName}
-                  - ${self:custom.StatusTableName}
+                  - ${self:custom.AgeRangesTableArn}
+                  - ${self:custom.FormAnswersTableArn}
+                  - ${self:custom.FormQuestionsTableArn}
+                  - ${self:custom.FormsTableArn}
+                  - ${self:custom.StateFormsTableArn}
+                  - ${self:custom.StatesTableArn}
+                  - ${self:custom.StatusTableArn}
               - Effect: 'Allow'
                 Action:
                   - logs:CreateLogStream
