@@ -140,6 +140,8 @@ resources:
       Value: !Ref FormAnswersTable
     FormAnswersTableArn:
       Value: !GetAtt FormAnswersTable.Arn
+    FormAnswersTableStreamArn:
+      Value: !GetAtt FormAnswersTable.StreamArn
     FormQuestionsTableName:
       Value: !Ref FormQuestionsTable
     FormQuestionsTableArn:
