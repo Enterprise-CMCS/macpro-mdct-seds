@@ -10,6 +10,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  // TODO: Fill with data from Redux when available
   let pageTitle = "CHIP Statistical Enrollment Data Reports";
   let isAuthenticated = true;
   let email = "test@example.com";
