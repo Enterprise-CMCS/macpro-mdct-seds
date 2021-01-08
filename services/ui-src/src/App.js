@@ -48,7 +48,9 @@ function App() {
         <Header />
 
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-          <Routes />
+          <div className="main">
+            <Routes />
+          </div>
         </AppContext.Provider>
         <Footer />
       </div>
