@@ -2,6 +2,22 @@
   Buttons
 **********************/
 
+.usa-button {
+  background: $lochmara;
+  width: 140px;
+
+  &.hollow {
+    background-color: $white;
+    border: 1px solid $cornflower;
+    color: $cornflower;
+
+    &:hover {
+      border: 1px solid $lochmara;
+      color: $lochmara;
+    }
+  }
+}
+
 .status {
   border-radius: 500px;
   font-weight: $font-weight-normal;
