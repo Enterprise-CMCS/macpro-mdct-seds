@@ -90,6 +90,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-state-forms
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: state_form_id
             AttributeType: N
@@ -140,8 +142,6 @@ resources:
       Value: !Ref FormAnswersTable
     FormAnswersTableArn:
       Value: !GetAtt FormAnswersTable.Arn
-    FormAnswersTableStreamArn:
-      Value: !GetAtt FormAnswersTable.StreamArn
     FormQuestionsTableName:
       Value: !Ref FormQuestionsTable
     FormQuestionsTableArn:
@@ -154,6 +154,8 @@ resources:
       Value: !Ref StateFormsTable
     StateFormsTableArn:
       Value: !GetAtt StateFormsTable.Arn
+    StateFormsTableStreamArn:
+      Value: !GetAtt StateFormsTable.StreamArn
     StatesTableName:
       Value: !Ref StatesTable
     StatesTableArn:
