@@ -1,13 +1,24 @@
 import React from "react";
-import { Grid, GridContainer, GovBanner } from "@trussworks/react-uswds";
+import {
+  Grid,
+  GridContainer,
+  GovBanner,
+  NavList,
+} from "@trussworks/react-uswds";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   let pageTitle = "CHIP Statistical Enrollment Data Reports";
   let isAuthenticated = true;
   let email = "test@example.com";
   const handleLogout = () => {};
+
+  let testItems = [
+    <Link href={"/"}>Home</Link>,
+    <Link href={"/contact"}>Contact</Link>,
+  ];
 
   return (
     <div className="header" data-test="component-header">
@@ -30,7 +41,10 @@ const Header = () => {
       <div className="navigation">
         <GridContainer className="container">
           <Grid row>
-            <Grid col={12}>
+            <Grid col={9}>
+              <NavList items={testItems} type="primary" />
+            </Grid>
+            <Grid col={3}>
               <Navbar.Collapse>
                 <Nav pullRight>
                   {isAuthenticated ? (

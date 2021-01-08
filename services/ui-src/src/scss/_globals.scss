@@ -25,3 +25,15 @@ img {
 .print-only {
   display: none;
 }
+
+a,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: underline;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  text-decoration: underline;
+}
+

@@ -68,4 +68,13 @@
       color: $white;
     }
   }
+
+
+  .usa-nav__primary > .usa-nav__primary-item > a,
+  .usa-nav__primary > .usa-nav__primary-item > a:visited {
+    text-decoration: underline;
+    &:hover {
+      color: darken($brand-primary, 20);
+    }
+  }
 }
