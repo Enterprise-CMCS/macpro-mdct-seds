@@ -19,20 +19,20 @@ custom:
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
   infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
-  AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
-  AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
-  FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
-  FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
-  FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
-  FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
-  FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
-  FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
-  StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
-  StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
-  StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
-  StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
-  StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
-  StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
+  AgeRangesTableName: ${cf:database-${self:custom.stage}.AgeRangesTableName}
+  AgeRangesTableArn: ${cf:database-${self:custom.stage}.AgeRangesTableArn}
+  FormAnswersTableName: ${cf:database-${self:custom.stage}.FormAnswersTableName}
+  FormAnswersTableArn: ${cf:database-${self:custom.stage}.FormAnswersTableArn}
+  FormQuestionsTableName: ${cf:database-${self:custom.stage}.FormQuestionsTableName}
+  FormQuestionsTableArn: ${cf:database-${self:custom.stage}.FormQuestionsTableArn}
+  FormsTableName: ${cf:database-${self:custom.stage}.FormsTableName}
+  FormsTableArn: ${cf:database-${self:custom.stage}.FormsTableArn}
+  StateFormsTableName: ${cf:database-${self:custom.stage}.StateFormsTableName}
+  StateFormsTableArn: ${cf:database-${self:custom.stage}.StateFormsTableArn}
+  StatesTableName: ${cf:database-${self:custom.stage}.StatesTableName}
+  StatesTableArn: ${cf:database-${self:custom.stage}.StatesTableArn}
+  StatusTableName: ${cf:database-${self:custom.stage}.StatusTableName}
+  StatusTableArn: ${cf:database-${self:custom.stage}.StatusTableArn}
   warmupEnabled:
     production: true
     development: false
@@ -62,9 +62,14 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
-  environment:
-    tableName: ${self:custom.tableName}
-    atomicCounterTableName: ${self:custom.atomicCounterTableName}
+  environment: # Service wide environment variables
+    tbl_age_ranges: ${self:custom.AgeRangesTableName}
+    tbl_form_answers: ${self:custom.FormAnswersTableName}
+    tbl_form_questions: ${self:custom.FormQuestionsTableName}
+    tbl_forms: ${self:custom.FormsTableName}
+    tbl_state_forms: ${self:custom.StateFormsTableName}
+    tbl_states: ${self:custom.StatesTableName}
+    tbl_status: ${self:custom.StatusTableName}
 
 functions:
   create:
@@ -160,8 +165,13 @@ resources:
                   - dynamodb:UpdateItem
                   - dynamodb:DeleteItem
                 Resource:
-                  - ${self:custom.tableArn}
-                  - ${self:custom.atomicCounterTableArn}
+                  - ${self:custom.AgeRangesTableArn}
+                  - ${self:custom.FormAnswersTableArn}
+                  - ${self:custom.FormQuestionsTableArn}
+                  - ${self:custom.FormsTableArn}
+                  - ${self:custom.StateFormsTableArn}
+                  - ${self:custom.StatesTableArn}
+                  - ${self:custom.StatusTableArn}
               - Effect: 'Allow'
                 Action:
                   - logs:CreateLogStream
