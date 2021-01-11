@@ -5,7 +5,7 @@ const Services = {}; loadServices();
 module.exports = {
   // An array of folders (excluding subfolders) where your tests are located;
   // if this is not specified, the test source must be passed as the second argument to the test runner.
-  src_folders: [],
+  src_folders: ['tests'],
 
   // See https://nightwatchjs.org/guide/working-with-page-objects/
   page_objects_path: '',
@@ -17,7 +17,7 @@ module.exports = {
   custom_assertions_path: '',
 
   // See https://nightwatchjs.org/guide/#external-globals
-  globals_path : '',
+  globals_path : './globals.js',
 
   webdriver: {},
 
@@ -33,16 +33,21 @@ module.exports = {
       },
 
       desiredCapabilities: {
-        browserName : 'firefox'
+        browserName : 'chrome'
       },
 
       webdriver: {
         start_process: true,
-        server_path: (Services.geckodriver ? Services.geckodriver.path : '')
+        server_path: (Services.chromedriver ? Services.chromedriver.path : '')
+      },
+
+      selenium : {
+        start_process : true,
+        server_path : "./src/libs/selenium-server-standalone-3.141.59.jar",
       }
     },
 
-    
+
 
     firefox: {
       desiredCapabilities : {
@@ -74,7 +79,7 @@ module.exports = {
         browserName : 'chrome',
         chromeOptions : {
           // This tells Chromedriver to run using the legacy JSONWire protocol (not required in Chrome 78)
-          // w3c: false,
+          w3c: true,
           // More info on Chromedriver: https://sites.google.com/a/chromium.org/chromedriver/
           args: [
             //'--no-sandbox',
@@ -103,61 +108,61 @@ module.exports = {
     // - BROWSERSTACK_KEY                                                            |
     // .env files are supported                                                      |
     //////////////////////////////////////////////////////////////////////////////////
-    browserstack: {
-      selenium: {
-        host: 'hub-cloud.browserstack.com',
-        port: 443
-      },
-      // More info on configuring capabilities can be found on:
-      // https://www.browserstack.com/automate/capabilities?tag=selenium-4
-      desiredCapabilities: {
-        'bstack:options' : {
-          local: 'false',
-          userName: '${BROWSERSTACK_USER}',
-          accessKey: '${BROWSERSTACK_KEY}',
-        }
-      },
-
-      disable_error_log: true,
-      webdriver: {
-        keep_alive: true,
-        start_process: false
-      }
-    },
-
-    'browserstack.chrome': {
-      extends: 'browserstack',
-      desiredCapabilities: {
-        browserName: 'chrome',
-        chromeOptions : {
-          // This tells Chromedriver to run using the legacy JSONWire protocol
-          // More info on Chromedriver: https://sites.google.com/a/chromium.org/chromedriver/
-          w3c: false
-        }
-      }
-    },
-
-    'browserstack.firefox': {
-      extends: 'browserstack',
-      desiredCapabilities: {
-        browserName: 'firefox'
-      }
-    },
-
-    'browserstack.ie': {
-      extends: 'browserstack',
-      desiredCapabilities: {
-        browserName: 'IE',
-        browserVersion: '11.0',
-        'bstack:options' : {
-          os: 'Windows',
-          osVersion: '10',
-          local: 'false',
-          seleniumVersion: '3.5.2',
-          resolution: '1366x768'
-        }
-      }
-    },
+    // browserstack: {
+    //   selenium: {
+    //     host: 'hub-cloud.browserstack.com',
+    //     port: 443
+    //   },
+    //   // More info on configuring capabilities can be found on:
+    //   // https://www.browserstack.com/automate/capabilities?tag=selenium-4
+    //   desiredCapabilities: {
+    //     'bstack:options' : {
+    //       local: 'false',
+    //       userName: '${BROWSERSTACK_USER}',
+    //       accessKey: '${BROWSERSTACK_KEY}',
+    //     }
+    //   },
+    //
+    //   disable_error_log: true,
+    //   webdriver: {
+    //     keep_alive: true,
+    //     start_process: true
+    //   }
+    // },
+    //
+    // 'browserstack.chrome': {
+    //   extends: 'browserstack',
+    //   desiredCapabilities: {
+    //     browserName: 'chrome',
+    //     chromeOptions : {
+    //       // This tells Chromedriver to run using the legacy JSONWire protocol
+    //       // More info on Chromedriver: https://sites.google.com/a/chromium.org/chromedriver/
+    //       w3c: true
+    //     }
+    //   }
+    // },
+    //
+    // 'browserstack.firefox': {
+    //   extends: 'browserstack',
+    //   desiredCapabilities: {
+    //     browserName: 'firefox'
+    //   }
+    // },
+    //
+    // 'browserstack.ie': {
+    //   extends: 'browserstack',
+    //   desiredCapabilities: {
+    //     browserName: 'IE',
+    //     browserVersion: '11.0',
+    //     'bstack:options' : {
+    //       os: 'Windows',
+    //       osVersion: '10',
+    //       local: 'false',
+    //       seleniumVersion: '3.5.2',
+    //       resolution: '1366x768'
+    //     }
+    //   }
+    // },
 
     //////////////////////////////////////////////////////////////////////////////////
     // Configuration for when using the Selenium service, either locally or remote,  |
@@ -181,7 +186,7 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions : {
-          w3c: false
+          w3c: true
         }
       }
     },
