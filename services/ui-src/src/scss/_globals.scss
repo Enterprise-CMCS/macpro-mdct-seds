@@ -1,0 +1,39 @@
+/**********************
+  GLOBALS
+**********************/
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Open Sans", sans-serif;
+  margin: .8rem 0 .8rem 0;
+}
+
+h1 {
+  font-weight: $font-weight-normal;
+}
+
+h4 {
+  color: $brand-primary;
+}
+
+img {
+  max-width: 100%;
+}
+
+.print-only {
+  display: none;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: underline;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  text-decoration: underline;
+}
+

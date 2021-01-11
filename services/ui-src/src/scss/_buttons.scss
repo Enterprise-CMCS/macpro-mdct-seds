@@ -1,0 +1,67 @@
+/**********************
+  Buttons
+**********************/
+
+.usa-button {
+  background: $lochmara;
+  width: 140px;
+
+  &.hollow {
+    background-color: $white;
+    border: 1px solid $cornflower;
+    color: $cornflower;
+
+    &:hover {
+      border: 1px solid $lochmara;
+      color: $lochmara;
+    }
+  }
+}
+
+.status {
+  border-radius: 500px;
+  font-weight: $font-weight-normal;
+  line-height: 1.1rem;
+  width: 160px;
+
+
+  &.status-inprogress {
+    background-color: $lochmara;
+
+    &:hover {
+      background-color: darken($lochmara, 20%)
+    }
+  }
+
+  &.status-complete {
+    background-color: $sea-green;
+
+    &:hover {
+      background-color: darken($sea-green, 20%)
+    }
+  }
+
+  &.status-final {
+    background-color: $ocean-green;
+
+    &:hover {
+      background-color: darken($ocean-green, 20%)
+    }
+  }
+
+  &.status-notstarted {
+    background-color: $bombay;
+
+    &:hover {
+      background-color: darken($bombay, 20%)
+    }
+  }
+
+  &.status-provisional {
+    background-color: $pacific-blue;
+
+    &:hover {
+      background-color: darken($pacific-blue, 20%)
+    }
+  }
+}
