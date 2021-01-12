@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "@trussworks/react-uswds";
 
 const StatusButton = ({ type = "inprogress" }) => {
-  let classValue = "status-inprogress";
-  let buttonValue = "In Progress";
+  let classValue;
+  let buttonValue;
 
   switch (type) {
     case "complete":
@@ -21,6 +21,11 @@ const StatusButton = ({ type = "inprogress" }) => {
     case "provisional":
       classValue = "status-provisional";
       buttonValue = "Provisional Data Submitted";
+      break;
+    default:
+      classValue = "status-inprogress";
+      buttonValue = "In Progress";
+      break;
   }
 
   return (

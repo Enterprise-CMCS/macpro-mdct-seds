@@ -2,7 +2,6 @@ import React from "react";
 import StatusButton from "./StatusButton";
 import {
   Accordion,
-  AccordionItem,
   Alert,
   Button,
   Grid,
@@ -118,7 +117,11 @@ const Example = () => {
               </p>
               <p>
                 Source:{" "}
-                <a href="https://en.wikipedia.org/wiki/Mario" target="_blank">
+                <a
+                  href="https://en.wikipedia.org/wiki/Mario"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Wikipedia
                 </a>
               </p>
@@ -137,7 +140,11 @@ const Example = () => {
               </p>
               <p>
                 Source:{" "}
-                <a href="https://en.wikipedia.org/wiki/Luigi" target="_blank">
+                <a
+                  href="https://en.wikipedia.org/wiki/Luigi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Wikipedia
                 </a>
               </p>
@@ -159,6 +166,7 @@ const Example = () => {
                 <a
                   href="https://en.wikipedia.org/wiki/Princess_Peach"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Wikipedia
                 </a>
@@ -182,7 +190,11 @@ const Example = () => {
               </p>
               <p>
                 Source:{" "}
-                <a href="https://en.wikipedia.org/wiki/Yoshi" target="_blank">
+                <a
+                  href="https://en.wikipedia.org/wiki/Yoshi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Wikipedia
                 </a>
               </p>
@@ -206,6 +218,7 @@ const Example = () => {
                 <a
                   href="https://en.wikipedia.org/wiki/Toad_(Nintendo)"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Wikipedia
                 </a>
