@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@af513c7a016048ae468971c52ed77d9562c7c819
       - name: install dependencies
         working-directory: services/ui-src
-        run: yarn install
+        run: npm install
       - name: run eslint
         working-directory: frontend/react
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
