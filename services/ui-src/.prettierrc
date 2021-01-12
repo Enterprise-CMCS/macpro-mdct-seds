@@ -3,6 +3,5 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": false,
-  "arrowParens": "avoid",
-  "no-param-reassign": [2, {"props": true}]
+  "arrowParens": "avoid"
 }
