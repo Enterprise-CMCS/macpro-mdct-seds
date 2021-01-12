@@ -1,7 +1,5 @@
-import { LinkContainer } from "react-router-bootstrap";
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import "./App.scss";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
@@ -13,6 +11,7 @@ import Footer from "./components/layout/Footer";
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  /* eslint-disable no-unused-vars */
   const [email, setEmail] = useState(false);
   const history = useHistory();
 
@@ -34,7 +33,7 @@ function App() {
 
     setIsAuthenticating(false);
   }
-
+  /* eslint-disable no-unused-vars */
   async function handleLogout() {
     await Auth.signOut();
 
