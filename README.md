@@ -38,6 +38,12 @@ Building the app locally
 Running tests locally
 - todo
 
+### Running the nightwatch test suite
+1. Navigate to the front end
+  1. `cd services/ui-src`
+2. Launch the test runner in interactive watch mode.
+  1. Run `yarn run nightwatch src/{dir_name}/tests`
+
 ## Requirements
 
 Node - we enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
