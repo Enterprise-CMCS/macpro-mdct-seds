@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: check that modified files are prettier
-        run: npx prettier --dry
+        run: npx prettier --list-different
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
