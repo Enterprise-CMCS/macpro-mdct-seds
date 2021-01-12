@@ -7,7 +7,7 @@
     border-radius: 0;
     border: 1px solid $alto;
     border-right: none;
-    padding: .8rem 1.2rem .6rem;
+    padding: 0.8rem 1.2rem 0.6rem;
 
     &:last-of-type {
       border-right: 1px solid $alto;
@@ -23,7 +23,7 @@
     border-top: 5px solid $lochmara;
     color: $lochmara;
     font-weight: $font-weight-bold;
-    padding: .6rem 1.2rem;
+    padding: 0.6rem 1.2rem;
   }
 
   .react-tabs__tab-list {
