@@ -36,7 +36,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                   >
                     Centers for Medicare &amp; Medicaid Services
-                  </a>,
+                  </a>
                 ]}
               />
             </div>

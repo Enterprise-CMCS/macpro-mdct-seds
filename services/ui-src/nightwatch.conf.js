@@ -30,22 +30,22 @@ module.exports = {
       screenshots: {
         enabled: false,
         path: "screens",
-        on_failure: true,
+        on_failure: true
       },
 
       desiredCapabilities: {
-        browserName: "chrome",
+        browserName: "chrome"
       },
 
       webdriver: {
         start_process: true,
-        server_path: Services.chromedriver ? Services.chromedriver.path : "",
+        server_path: Services.chromedriver ? Services.chromedriver.path : ""
       },
 
       selenium: {
         start_process: true,
-        server_path: "./src/libs/selenium-server-standalone-3.141.59.jar",
-      },
+        server_path: "./src/libs/selenium-server-standalone-3.141.59.jar"
+      }
     },
 
     firefox: {
@@ -58,9 +58,9 @@ module.exports = {
             args: [
               // '-headless',
               // '-verbose'
-            ],
-          },
-        },
+            ]
+          }
+        }
       },
       webdriver: {
         start_process: true,
@@ -69,8 +69,8 @@ module.exports = {
         cli_args: [
           // very verbose geckodriver logs
           // '-vv'
-        ],
-      },
+        ]
+      }
     },
 
     chrome: {
@@ -85,8 +85,8 @@ module.exports = {
             //'--ignore-certificate-errors',
             //'--allow-insecure-localhost',
             //'--headless'
-          ],
-        },
+          ]
+        }
       },
 
       webdriver: {
@@ -95,8 +95,8 @@ module.exports = {
         server_path: Services.chromedriver ? Services.chromedriver.path : "",
         cli_args: [
           // --verbose
-        ],
-      },
+        ]
+      }
     },
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -181,9 +181,9 @@ module.exports = {
             : "",
           "webdriver.chrome.driver": Services.chromedriver
             ? Services.chromedriver.path
-            : "",
-        },
-      },
+            : ""
+        }
+      }
     },
 
     "selenium.chrome": {
@@ -191,9 +191,9 @@ module.exports = {
       desiredCapabilities: {
         browserName: "chrome",
         chromeOptions: {
-          w3c: true,
-        },
-      },
+          w3c: true
+        }
+      }
     },
 
     "selenium.firefox": {
@@ -204,11 +204,11 @@ module.exports = {
           args: [
             // '-headless',
             // '-verbose'
-          ],
-        },
-      },
-    },
-  },
+          ]
+        }
+      }
+    }
+  }
 };
 
 function loadServices() {

@@ -76,7 +76,7 @@ export default function Profile() {
       await saveProfile(user, {
         given_name: firstName,
         family_name: lastName,
-        phone_number: formatPhoneNumberForSubmission(phoneNumber),
+        phone_number: formatPhoneNumberForSubmission(phoneNumber)
       });
       history.push("/");
     } catch (e) {

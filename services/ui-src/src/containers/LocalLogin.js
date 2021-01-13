@@ -12,8 +12,8 @@ export default function Login() {
       attributes: {
         given_name: "Alice",
         family_name: "Foo",
-        email: "alice@example.com",
-      },
+        email: "alice@example.com"
+      }
     };
     loginLocalUser(alice);
     userHasAuthenticated(true);

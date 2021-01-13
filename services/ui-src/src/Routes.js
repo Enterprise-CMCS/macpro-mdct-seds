@@ -15,7 +15,7 @@ import {
   s3AmplifyUpload,
   s3LocalUploader,
   s3AmplifyGetURL,
-  s3LocalGetURL,
+  s3LocalGetURL
 } from "./libs/awsLib";
 import config from "./config";
 import Example from "./components/examples";
@@ -38,7 +38,7 @@ export default function Routes() {
       accessKeyId: "S3RVER", // This specific key is required when working offline
       secretAccessKey: "S3RVER",
       params: { Bucket: config.s3.BUCKET },
-      endpoint: new AWS.Endpoint(localEndpoint),
+      endpoint: new AWS.Endpoint(localEndpoint)
     });
     s3Upload = s3LocalUploader(s3Client);
     s3URLResolver = s3LocalGetURL(s3Client);
