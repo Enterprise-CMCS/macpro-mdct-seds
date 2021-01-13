@@ -11,7 +11,7 @@ export default function Home() {
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    async function onLoad() {
+                        async function onLoad() {
       if (!isAuthenticated) {
         return;
       }
