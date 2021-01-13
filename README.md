@@ -44,6 +44,12 @@ Running tests locally
 2. Launch the test runner in interactive watch mode.
   1. Run `yarn run nightwatch src/{dir_name}/tests`
 
+Run Eslint
+`yarn lint`
+
+Run Prettier
+`npx prettier --write .`
+
 ## Requirements
 
 Node - we enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
