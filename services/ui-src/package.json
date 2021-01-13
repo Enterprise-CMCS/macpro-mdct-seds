@@ -3,10 +3,19 @@
   "description": "",
   "version": "1.0.0",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@trussworks/react-uswds": "^1.10.0",
     "aws-amplify": "^3.0.23",
+    "browserify": "^17.0.0",
+    "geckodriver": "^1.21.1",
+    "nightwatch": "^1.5.1",
+    "node-sass": "4.14.1",
+    "prettier": "^2.2.1",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-dom": "^16.13.1",
@@ -15,16 +24,22 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.3",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "react-tabs": "^3.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "eslint:recommended",
+      "google"
+    ]
   },
   "browserslist": {
     "production": [
@@ -39,6 +54,9 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-s3-sync": "^1.14.4"
