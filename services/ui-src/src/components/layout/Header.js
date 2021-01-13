@@ -74,7 +74,7 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <h1>{pageTitle}</h1>
+              <h1 className="page-title">{pageTitle}</h1>
             </Grid>
           </Grid>
         </GridContainer>
