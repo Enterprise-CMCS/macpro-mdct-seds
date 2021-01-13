@@ -43,9 +43,13 @@ Running tests locally
 ### Running the nightwatch test suite
 
 1. Navigate to the front end
-1. `cd services/ui-src`
-1. Launch the test runner in interactive watch mode.
-1. Run `yarn run nightwatch src/{dir_name}/tests`
+   1. `cd services/ui-src`
+2. Launch the test for ui-src tests.
+   1. Run `yarn run nightwatch src/{dir_name}/tests`
+3. Run root tests
+   1. In terminal, run `export APPLICATION_ENDPOINT=http://localhost:3000`
+   2. Enter `cd {ROOT}/tests/nightwatch/`
+   3. Run `yarn run nightwatch`
 
 Run Eslint
 `yarn lint`
