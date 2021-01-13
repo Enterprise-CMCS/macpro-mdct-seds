@@ -72,7 +72,7 @@ export default function NewAmendment({ fileUpload }) {
         territory,
         urgent,
         comments,
-        attachment,
+        attachment
       });
       history.push("/");
     } catch (e) {

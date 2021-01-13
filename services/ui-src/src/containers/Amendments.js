@@ -46,7 +46,7 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
           transmittalNumber,
           urgent,
           comments,
-          attachment,
+          attachment
         } = amendment;
         if (attachment) {
           console.log(fileURLResolver);
@@ -118,7 +118,7 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
         transmittalNumber,
         urgent,
         comments,
-        attachment: attachment || amendment.attachment,
+        attachment: attachment || amendment.attachment
       });
       history.push("/");
     } catch (e) {
@@ -158,7 +158,7 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
       port: uri.port,
       path: `${uri.pathname}${uri.search}`,
       protocol: uri.protocol,
-      method: "GET",
+      method: "GET"
     };
     var req = http.request(options, function (res) {
       req.abort(); // The presigned S3 URL is only valid for GET requests, but we only want the headers.

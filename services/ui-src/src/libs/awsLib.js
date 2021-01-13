@@ -4,7 +4,7 @@ export async function s3AmplifyUpload(file) {
   const filename = `${Date.now()}-${file.name}`;
 
   const stored = await Storage.vault.put(filename, file, {
-    contentType: file.type,
+    contentType: file.type
   });
 
   return stored.key;
@@ -18,7 +18,7 @@ export function s3LocalUploader(s3Client) {
       s3Client.putObject(
         {
           Key: filename,
-          Body: file,
+          Body: file
         },
         (err, data) => {
           if (err) {

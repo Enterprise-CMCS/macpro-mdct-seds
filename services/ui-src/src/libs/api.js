@@ -10,7 +10,7 @@ function requestOptions() {
     // requestContext.identity.cognitoIdentityId. This lets us set a user locally without involving Cognito.
     const currentUser = getLocalUserInfo();
     const options = {
-      headers: { "cognito-identity-id": currentUser.username },
+      headers: { "cognito-identity-id": currentUser.username }
     };
     return options;
   } else {
