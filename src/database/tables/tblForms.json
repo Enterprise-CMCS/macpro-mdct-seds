@@ -1,27 +1,27 @@
 {
- "AttributeDefinitions": [
-  {
-   "AttributeName": "form_id",
-   "AttributeType": "N"
-  },
-  {
-   "AttributeName": "form",
-   "AttributeType": "S"
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "form_id",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "form",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "forms",
+  "KeySchema": [
+    {
+      "AttributeName": "form_id",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "form",
+      "KeyType": "RANGE"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 100,
+    "WriteCapacityUnits": 100
   }
- ],
- "TableName": "forms",
- "KeySchema": [
-  {
-   "AttributeName": "form_id", 
-   "KeyType": "HASH"
-  },
-  {
-   "AttributeName": "form", 
-   "KeyType": "RANGE"
-  }
- ],
- "ProvisionedThroughput" : {
-  "ReadCapacityUnits" : 100,
-  "WriteCapacityUnits" : 100
- }
 }
