@@ -19,7 +19,7 @@ custom:
     seed:
       domain:
         sources:
-          - table: ${self:custom.stage}-forms2
+          - table: ${self:custom.stage}-forms
             sources: [../../src/database/initial_data_load/forms.json]
 
 provider:
@@ -78,7 +78,7 @@ resources:
     FormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-forms
+        TableName: ${self:custom.stage}-forms2
         AttributeDefinitions:
           - AttributeName: form
             AttributeType: S
