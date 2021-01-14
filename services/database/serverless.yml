@@ -17,7 +17,7 @@ custom:
       migrate: true
       seed: true
     seed:
-      domain: 
+      domain:
         sources:
           - table: ${self:custom.stage}-forms
             sources: [../../src/database/initial_data_load/forms.json]
