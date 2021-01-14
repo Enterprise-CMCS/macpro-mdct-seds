@@ -8,7 +8,6 @@ plugins:
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  tableName: ${self:custom.stage}-amendments
   dynamodb:
     stages:
       - local
@@ -16,6 +15,12 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
+      seed: true
+    seed:
+      domain:
+        sources:
+          - table: ${self:custom.stage}-forms
+            sources: [../../src/database/initial_data_load/forms.json]
 
 provider:
   name: aws
@@ -75,15 +80,11 @@ resources:
       Properties:
         TableName: ${self:custom.stage}-forms
         AttributeDefinitions:
-          - AttributeName: form_id
-            AttributeType: N
           - AttributeName: form
             AttributeType: S
         KeySchema:
-          - AttributeName: form_id
-            KeyType: HASH
           - AttributeName: form
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StateFormsTable:
       Type: AWS::DynamoDB::Table
