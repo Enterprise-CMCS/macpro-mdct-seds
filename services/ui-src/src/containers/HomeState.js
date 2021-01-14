@@ -42,14 +42,14 @@ const HomeState = () => {
       </ul>
     );
 
-    // Determine if item is in current year
+    // If current year, set expanded to true
     let expanded = false;
-
     const date = new Date();
     if (years[year].year === date.getFullYear()) {
       expanded = true;
     }
 
+    // Build single item
     let item = {
       id: year,
       description: "Quarters for " + years[year].year,
