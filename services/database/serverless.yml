@@ -19,7 +19,7 @@ custom:
     seed:
       domain:
         sources:
-          - table: ${self:custom.stage}-forms
+          - table: ${self:custom.stage}-forms2
             sources: [../../src/database/initial_data_load/forms.json]
 
 provider:
