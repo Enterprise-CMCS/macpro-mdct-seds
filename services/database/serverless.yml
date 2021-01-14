@@ -78,7 +78,7 @@ resources:
     FormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-forms2
+        TableName: ${self:custom.stage}-forms
         AttributeDefinitions:
           - AttributeName: form
             AttributeType: S
