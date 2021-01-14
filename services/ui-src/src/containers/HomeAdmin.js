@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { Grid } from "@trussworks/react-uswds";
 
 const HomeAdmin = () => {
   return (

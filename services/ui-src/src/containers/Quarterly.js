@@ -50,6 +50,7 @@ const Quarterly = () => {
     <Grid row className="page-home-state">
       <Grid col={12}>
         <h1>{title}</h1>
+        {data}
       </Grid>
     </Grid>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../libs/contextLib";
-import { onError } from "../libs/errorLib";
 import "./Home.css";
 import { listAmendments } from "../libs/api";
 import HomeState from "./HomeState";
@@ -10,20 +9,13 @@ import Unauthorized from "./Unauthorized";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Home() {
-  const [amendments, setAmendments] = useState([]);
   const { isAuthenticated } = useAppContext();
+  /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function onLoad() {
       if (!isAuthenticated) {
         return;
-      }
-
-      try {
-        const amendments = await loadAmendments();
-        setAmendments(amendments);
-      } catch (e) {
-        onError(e);
       }
 
       setIsLoading(false);
