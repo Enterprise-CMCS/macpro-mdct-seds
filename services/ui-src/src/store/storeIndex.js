@@ -1,11 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools";
+import { composeWithDevTools } from "redux-devtools-extension";
 import formData from "./formData";
+import userData from "./userData";
 
 // Consolidate reducers
 export const reducer = combineReducers({
   formData,
+  userData,
 });
 
 // Consolidate middleware

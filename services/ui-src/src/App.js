@@ -10,6 +10,8 @@ import { onError } from "./libs/errorLib";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
+import initialLoad from "./store/actions/initial";
+
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -17,7 +19,8 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    onLoad();
+    onLoad(); // TEMPORARY LOCATION
+    initialLoad();
   }, []);
 
   async function onLoad() {
