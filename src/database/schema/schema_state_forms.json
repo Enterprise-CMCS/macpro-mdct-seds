@@ -1,0 +1,18 @@
+[
+  {
+    "state_form": "state_id-form-year-quarter",
+    "state_id": "states.state_id",
+    "form": "forms.form",
+    "program_code": "XX",
+    "year": "2021",
+    "quarter": "1, 2, 3 or 4",
+    "validation_percent": ".03",
+    "status": "Current Form Status",
+    "status_date": "Date/Time Form entered Status",
+    "not_applicable": "true or false; default to false",
+    "last_modified": "Date/Time form was last saved",
+    "last_modified_by": "User who saved the form last",
+    "created_date": "Date/Time item was added to DB",
+    "created_by": "User that added item to DB"
+  }
+]
