@@ -22,13 +22,14 @@
   border-radius: 500px;
   font-weight: $font-weight-normal;
   line-height: 1.1rem;
+  min-height: 58px;
   width: 160px;
 
   &.status-inprogress {
-    background-color: $lochmara;
+    background-color: $dixie;
 
     &:hover {
-      background-color: darken($lochmara, 20%);
+      background-color: darken($dixie, 20%);
     }
   }
 
@@ -41,10 +42,10 @@
   }
 
   &.status-final {
-    background-color: $ocean-green;
+    background-color: $bahama;
 
     &:hover {
-      background-color: darken($ocean-green, 20%);
+      background-color: darken($bahama, 20%);
     }
   }
 
@@ -57,10 +58,10 @@
   }
 
   &.status-provisional {
-    background-color: $pacific-blue;
+    background-color: $cerulean;
 
     &:hover {
-      background-color: darken($pacific-blue, 20%);
+      background-color: darken($cerulean, 20%);
     }
   }
 }
