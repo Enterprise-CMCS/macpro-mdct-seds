@@ -33,52 +33,40 @@ resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-age-ranges
+        TableName: ${self:custom.stage}-age-ranges1
         AttributeDefinitions:
-          - AttributeName: age_range_id
-            AttributeType: N
           - AttributeName: age_range
             AttributeType: S
         KeySchema:
-          - AttributeName: age_range_id
-            KeyType: HASH
           - AttributeName: age_range
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormAnswersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-answers
+        TableName: ${self:custom.stage}-form-answers1
         AttributeDefinitions:
-          - AttributeName: answer_id
-            AttributeType: N
           - AttributeName: answer_entry
             AttributeType: S
         KeySchema:
-          - AttributeName: answer_id
-            KeyType: HASH
           - AttributeName: answer_entry
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormQuestionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-questions
+        TableName: ${self:custom.stage}-form-questions1
         AttributeDefinitions:
-          - AttributeName: question_id
-            AttributeType: N
           - AttributeName: question
             AttributeType: S
         KeySchema:
-          - AttributeName: question_id
-            KeyType: HASH
           - AttributeName: question
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-forms
+        TableName: ${self:custom.stage}-forms1
         AttributeDefinitions:
           - AttributeName: form
             AttributeType: S
@@ -89,49 +77,37 @@ resources:
     StateFormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-state-forms
+        TableName: ${self:custom.stage}-state-forms1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: state_form_id
-            AttributeType: N
           - AttributeName: state_form
             AttributeType: S
         KeySchema:
-          - AttributeName: state_form_id
-            KeyType: HASH
           - AttributeName: state_form
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-states
+        TableName: ${self:custom.stage}-states1
         AttributeDefinitions:
           - AttributeName: state_id
-            AttributeType: N
-          - AttributeName: state_name
             AttributeType: S
         KeySchema:
           - AttributeName: state_id
             KeyType: HASH
-          - AttributeName: state_name
-            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StatusTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-status
+        TableName: ${self:custom.stage}-status1
         AttributeDefinitions:
-          - AttributeName: status_id
-            AttributeType: N
           - AttributeName: status
             AttributeType: S
         KeySchema:
-          - AttributeName: status_id
-            KeyType: HASH
           - AttributeName: status
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     AgeRangesTableName:
