@@ -33,7 +33,7 @@ resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-age-ranges
+        TableName: ${self:custom.stage}-age-ranges1
         AttributeDefinitions:
           - AttributeName: age_range
             AttributeType: S
@@ -44,7 +44,7 @@ resources:
     FormAnswersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-answers
+        TableName: ${self:custom.stage}-form-answers1
         AttributeDefinitions:
           - AttributeName: answer_entry
             AttributeType: S
@@ -55,7 +55,7 @@ resources:
     FormQuestionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-questions
+        TableName: ${self:custom.stage}-form-questions1
         AttributeDefinitions:
           - AttributeName: question
             AttributeType: S
@@ -66,7 +66,7 @@ resources:
     FormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-forms
+        TableName: ${self:custom.stage}-forms1
         AttributeDefinitions:
           - AttributeName: form
             AttributeType: S
@@ -77,7 +77,7 @@ resources:
     StateFormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-state-forms
+        TableName: ${self:custom.stage}-state-forms1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -101,7 +101,7 @@ resources:
     StatusTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-status
+        TableName: ${self:custom.stage}-status1
         AttributeDefinitions:
           - AttributeName: status
             AttributeType: S
