@@ -1,30 +1,152 @@
 [
   {
-    "question": "forms.form-year-question",
-    "form": "forms.form",
+    "question": "21E-2021-01",
+    "form": "21E",
     "year": "2021",
-    "type": "This is the type of question component to be utilized for this question.",
-    "label": "This is the question text.",
-    "hint": "Any hints to show to the user to assist with answering the question.",
+    "type": "synthesized_table",
+    "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
     "headers": [
-      {
-        "column1": "Column 1"
-      },
-      {
-        "column2": "Column 2"
-      }
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
     ],
     "category": [
-      {
-        "row1": "Category 1"
-      },
-      {
-        "row2": "Category 2"
-      }
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
     ],
-    "last_modified": "Date/Time form was last saved",
-    "last_modified_by": "User who saved the form last",
-    "created_date": "Date/Time item was added to DB",
-    "created_by": "User that added item to DB"
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "21E-2021-02",
+    "form": "21E",
+    "year": "2021",
+    "type": "synthesized_table",
+    "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+    "headers": [
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
+    ],
+    "category": [
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "21E-2021-03",
+    "form": "21E",
+    "year": "2021",
+    "type": "synthesized_table",
+    "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+    "headers": [
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
+    ],
+    "category": [
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "21E-2021-04",
+    "form": "21E",
+    "year": "2021",
+    "type": "synthesized_table",
+    "label": "What is the number of member-months of enrollment for &&&VARIABLE&&& in the quarter?",
+    "headers": [
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
+    ],
+    "category": [
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "21E-2021-05",
+    "form": "21E",
+    "year": "2021",
+    "type": "synthesized_table",
+    "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
+    "headers": [
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
+    ],
+    "category": [
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "21E-2021-06",
+    "form": "21E",
+    "year": "2021",
+    "type": "synthesized_table",
+    "label": "What is the number of children, pregnant women or waiver adults &&&VARIABLE&&& enrolled at the end of the quarter?",
+    "headers": [
+      { "A": "A: 0-133" },
+      { "B": "B: 134-200" },
+      { "C": "C: 201-250" },
+      { "D": "D: 254-300" },
+      { "E": "E: 301-317" },
+      { "F": "F: Total" }
+    ],
+    "category": [
+      { "row1": "A - Fee For Service" },
+      { "row2": "B - Managed Care Arrangements" },
+      { "row3": "C - Primary Care Case Management" },
+      { "row4": "Total" }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
   }
 ]

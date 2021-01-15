@@ -4,8 +4,9 @@
     "form": "forms.form",
     "year": "2021",
     "type": "This is the type of question component to be utilized for this question.",
-    "label": "This is the question text.",
-    "hint": "Any hints to show to the user to assist with answering the question.",
+    "label": "This is the question text. MDCT SEDS will utilize &&&VARIABLE&&& to signify text which should be replaces with content from a variable.",
+    "hint": "Any hints to show to the user to assist with answering the question. (Optional)",
+    "comment": "Comments directed at the developers. (Optional)",
     "headers": [
       {
         "column1": "Column 1"
