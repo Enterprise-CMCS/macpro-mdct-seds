@@ -21,6 +21,14 @@ custom:
         sources:
           - table: ${self:custom.stage}-forms
             sources: [../../src/database/initial_data_load/forms.json]
+          - table: ${self:custom.stage}-age-ranges
+            sources: [../../src/database/initial_data_load/age_ranges.json]
+          - table: ${self:custom.stage}-status
+            sources: [../../src/database/initial_data_load/status.json]
+          - table: ${self:custom.stage}-states
+            sources: [../../src/database/initial_data_load/states.json]
+          - table: ${self:custom.stage}-state-forms
+            sources: [../../src/database/initial_data_load/state_forms.json]
 
 provider:
   name: aws
