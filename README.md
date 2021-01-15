@@ -17,11 +17,13 @@ Please push your code to a new branch with a name that meets the Serverless Name
 After creating a branch, if you need to rename it because it does not follow the rules above, use `git branch -m <new-branch-name>` to rename your local branch then `git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
 
 This project uses a combination of gitflow and serverless naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
+
 - master > feature-my-feature-name
 - master > bugfix-my-bugfix-name
 - master > hotfix-my-hotfix-name
 
 On each PR, a linter and prettier check is run. These checks must pass for a PR to be merged. Prior to submitting your PR, you will need to run the linter and prettier against the work you have done.
+
 - Run Eslint using `yarn lint`
 - Run Prettier using `npx prettier --write .`
 
@@ -32,6 +34,7 @@ See master build for the MACPro Quickstart [here](https://github.com/CMSgov/macp
 This application is built and deployed via GitHub Actions.
 
 Want to deploy from your Mac?
+
 - Create an AWS account
 - Install/configure the AWS CLI
 - npm install -g severless
@@ -39,31 +42,32 @@ Want to deploy from your Mac?
 - sh deploy.sh
 
 Want to deploy from Windows using a VM?
+
 - Install Ubuntu WSL on Windows 10
 - In a new Ubuntu terminal, run the following commands:
- - Add new id_rsa.pub
- - ssh-keygen (Leave all defaults and hit enter until done)
+- Add new id_rsa.pub
+- ssh-keygen (Leave all defaults and hit enter until done)
 - Copy and add public key to git
- - sudo tail ~/.ssh/id_rsa.pub
- - In your GitHub profile, add the id_rsa to ssh keys
+- sudo tail ~/.ssh/id_rsa.pub
+- In your GitHub profile, add the id_rsa to ssh keys
 - Run `git clone git@github.com:CMSgov/cms-mdct-seds.git`
 - cd into the repository directory in your VM terminal and `git checkout master`
 - Install node
- - Run `sudo apt update`
- - Run `sudo apt upgrade`
- - Run `sudo apt install nodejs`
+- Run `sudo apt update`
+- Run `sudo apt upgrade`
+- Run `sudo apt install nodejs`
 - Install Yarn
- - Run `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
- - Run `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
- - Run `sudo apt-get update`
- - Run `sudo apt-get install yarn -y`
+- Run `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
+- Run `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
+- Run `sudo apt-get update`
+- Run `sudo apt-get install yarn -y`
 - Install NVM `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Add NVM to your current terminal session `source ~/.nvm/nvm.sh`
 - Change Node Version `nvm install 12.20.0`
 - Install Java
- - Run `sudo add-apt-repository ppa:openjdk-r/ppa`
- - Run `sudo apt-get update`
- - Run `sudo apt install openjdk-12-jdk`
+- Run `sudo add-apt-repository ppa:openjdk-r/ppa`
+- Run `sudo apt-get update`
+- Run `sudo apt install openjdk-12-jdk`
 - Instal AWS CLI (Optional) `sudo apt install awscli`
 
 ## Local Dev
@@ -77,7 +81,6 @@ Local dev is configured in typescript project in `./src`. The entrypoint is `./s
 Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local db and local s3 in a similar fashion.
 
 When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
-
 
 ### Running the nightwatch test suite
 
