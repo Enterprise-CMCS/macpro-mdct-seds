@@ -1,6 +1,6 @@
 // ACTION TYPES
 const USER_INFO = "USER_INFO";
-const STATE_INFO = "STATE_INFO";
+const UPDATE_STATE_INFO = "STATE_INFO";
 const UPDATE_ROLE = "UPDATE_ROLE";
 
 // ACTION CREATORS
@@ -12,9 +12,9 @@ export const getUserData = (userObject) => {
 };
 
 export const getStateData = (stateObject) => ({
-  type: STATE_INFO,
+  type: UPDATE_STATE_INFO,
   name: stateObject.name,
-  abbr: stateObject.abbr,
+  abbrev: stateObject.abbrev,
 });
 
 export const updateRole = (userObject) => ({
@@ -23,7 +23,7 @@ export const updateRole = (userObject) => ({
 });
 
 // THUNKS
-// Make call to aws-amplify
+// Make call to aws-amplify // WEB SOCKETS?
 export const loadUser = ({ userData }) => {
   return async (dispatch) => {
     // Call aws amplify endpoint. This is a placeholder
@@ -33,15 +33,17 @@ export const loadUser = ({ userData }) => {
   };
 };
 
+// If you're a state user, load all forms
+// If you're not a state user, wait until a state is selected to load forms
+
 // INITIAL STATE
 const initialState = {
-  name: "New York",
-  abbr: "NY",
-  currentUser: {
-    role: false,
-    state: { id: "", name: "" },
-    username: "",
-  },
+  userState: { name: "", abbrev: "" },
+  programType: "",
+  role: false,
+  id: "",
+  username: "",
+  email: "",
 };
 
 // USER REDUCER
@@ -52,19 +54,18 @@ export default (state = initialState, action) => {
         ...state,
         currentUser: action.userObject,
       };
-    case STATE_INFO:
+    case UPDATE_STATE_INFO:
       return {
         ...state,
-        name: action.name,
-        abbr: action.abbr,
+        userState: {
+          name: action.name,
+          abbrev: action.abbrev,
+        },
       };
     case UPDATE_ROLE:
       return {
         ...state,
-        currentUser: {
-          ...state.currentUser,
-          role: action.role,
-        },
+        role: action.role,
       };
     default:
       return state;

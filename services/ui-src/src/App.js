@@ -19,8 +19,8 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    onLoad(); // TEMPORARY LOCATION
-    initialLoad();
+    onLoad();
+    initialLoad(); // TEMPORARY LOCATION
   }, []);
 
   async function onLoad() {

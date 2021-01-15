@@ -1,4 +1,4 @@
-const initialForm = [
+const quarterForms = [
   {
     form_id: 1,
     form: {
@@ -6,6 +6,8 @@ const initialForm = [
       form_name: "Number of Children Served in Medicaid Program",
       form_text:
         "Form 21E collects data on children enrolled in separate child health programs, or separate CHIP.",
+      status: "complete",
+      last_updated: "1610721633",
     },
   },
   {
@@ -15,6 +17,8 @@ const initialForm = [
       form_name: "Number of Children Served in Medicaid Program",
       form_text:
         "Form 64.EC collects data on children enrolled in the Medicaid Program.",
+      status: "final",
+      last_updated: "1610721633",
     },
   },
   {
@@ -24,6 +28,8 @@ const initialForm = [
       form_name: "Number of Children Served in Medicaid Expansion Program",
       form_text:
         "Form 64.21E collects data on children enrolled in the Medicaid Expansion Program.",
+      status: "not started",
+      last_updated: "1610721633",
     },
   },
   {
@@ -33,6 +39,8 @@ const initialForm = [
       form_name: "Informational Number of Children Served in Medicaid Program",
       form_text:
         "Form 64.ECI collects data on unborn children enrolled in the Medicaid Program.",
+      status: "provisional",
+      last_updated: "1610721633",
     },
   },
   {
@@ -41,8 +49,10 @@ const initialForm = [
       form_number: "G/R/E",
       form_name: "Gender/Race/Ethnicity",
       form_text: "",
+      status: "complete",
+      last_updated: "1610721633",
     },
   },
 ];
 
-export default initialForm;
+export default quarterForms;
