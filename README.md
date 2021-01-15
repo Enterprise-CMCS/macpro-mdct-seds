@@ -31,17 +31,44 @@ See master build for the MACPro Quickstart [here](https://github.com/CMSgov/macp
 
 This application is built and deployed via GitHub Actions.
 
-Want to deploy from your Mac or WSL VM?
-
+Want to deploy from your Mac?
 - Create an AWS account
 - Install/configure the AWS CLI
 - npm install -g severless
 - brew install yarn
 - sh deploy.sh
 
+Want to deploy from Windows using a VM?
+- Install Ubuntu WSL on Windows 10
+- In a new Ubuntu terminal, run the following commands:
+ - Add new id_rsa.pub
+ - ssh-keygen (Leave all defaults and hit enter until done)
+- Copy and add public key to git
+ - sudo tail ~/.ssh/id_rsa.pub
+ - In your GitHub profile, add the id_rsa to ssh keys
+- Run `git clone git@github.com:CMSgov/cms-mdct-seds.git`
+- cd into the repository directory in your VM terminal and `git checkout master`
+- Install node
+ - Run `sudo apt update`
+ - Run `sudo apt upgrade`
+ - Run `sudo apt install nodejs`
+- Install Yarn
+ - Run `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
+ - Run `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
+ - Run `sudo apt-get update`
+ - Run `sudo apt-get install yarn -y`
+- Install NVM `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
+- Add NVM to your current terminal session `source ~/.nvm/nvm.sh`
+- Change Node Version `nvm install 12.20.0`
+- Install Java
+ - Run `sudo add-apt-repository ppa:openjdk-r/ppa`
+ - Run `sudo apt-get update`
+ - Run `sudo apt install openjdk-12-jdk`
+- Instal AWS CLI (Optional) `sudo apt install awscli`
+
 ## Local Dev
 
-Run all the services locally with the command `./dev local`
+From the repository directory, run all the services locally with the command `./dev local`
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
