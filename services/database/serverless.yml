@@ -90,7 +90,7 @@ resources:
     StatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-states
+        TableName: ${self:custom.stage}-states1
         AttributeDefinitions:
           - AttributeName: state_id
             AttributeType: S
