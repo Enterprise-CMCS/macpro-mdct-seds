@@ -1,10 +1,43 @@
-# macpro-quickstart-serverless ![Build](https://github.com/CMSgov/macpro-quickstart-serverless/workflows/Build/badge.svg?branch=master)[![latest release](https://img.shields.io/github/release/cmsgov/macpro-quickstart-serverless.svg)](https://github.com/cmsgov/macpro-quickstart-serverless/releases/latest)
+# MACPro Data Collection Tool: CHIP Statistical Enrollment Data System
 
-A serverless form submission application built and deployed to AWS with the Serverless Application Framework.
+Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framwork. Is it based on:
+
+macpro-quickstart-serverless ![Build](https://github.com/CMSgov/macpro-quickstart-serverless/workflows/Build/badge.svg?branch=master)[![latest release](https://img.shields.io/github/release/cmsgov/macpro-quickstart-serverless.svg)](https://github.com/cmsgov/macpro-quickstart-serverless/releases/latest)
 
 ## Architecture
 
 ![Architecture Diagram](./.images/architecture.png?raw=true)
+
+## Git Policies, Activities and Notes
+
+Serverless Name Requirements: A service name should only contain alphanumeric characters (case sensitive) and hyphens. The should start with an alphanumeric character and shouldn't exceed 128 characters.
+
+Please push your code to a new branch with a name that meets the Serverless Name Requirements above. Any other variations and the Github Actions will fail.
+
+After creating a branch, if you need to rename it because it does not follow the rules above, use `git branch -m <new-branch-name>` to rename your local branch then `git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
+
+This project uses a combination of gitflow and serverless naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
+- master > feature-my-feature-name
+- master > bugfix-my-bugfix-name
+- master > hotfix-my-hotfix-name
+
+On each PR, a linter and prettier check is run. These checks must pass for a PR to be merged. Prior to submitting your PR, you will need to run the linter and prettier against the work you have done.
+- Run Eslint using `yarn lint`
+- Run Prettier using `npx prettier --write .`
+
+## Usage
+
+See master build for the MACPro Quickstart [here](https://github.com/CMSgov/macpro-quickstart-serverless/actions?query=branch%3Amaster)
+
+This application is built and deployed via GitHub Actions.
+
+Want to deploy from your Mac or WSL VM?
+
+- Create an AWS account
+- Install/configure the AWS CLI
+- npm install -g severless
+- brew install yarn
+- sh deploy.sh
 
 ## Local Dev
 
@@ -18,27 +51,6 @@ Local dev is built around the Serverless plugin [`serverless-offline`](https://g
 
 When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
-## Usage
-
-See master build [here](https://github.com/CMSgov/macpro-quickstart-serverless/actions?query=branch%3Amaster)
-
-This application is built and deployed via GitHub Actions.
-
-Want to deploy from your Mac?
-
-- Create an AWS account
-- Install/configure the AWS CLI
-- npm install -g severless
-- brew install yarn
-- sh deploy.sh
-
-Building the app locally
-
-- todo
-
-Running tests locally
-
-- todo
 
 ### Running the nightwatch test suite
 
@@ -50,12 +62,6 @@ Running tests locally
    1. In terminal, run `export APPLICATION_ENDPOINT=http://localhost:3000`
    2. Enter `cd {ROOT}/tests/nightwatch/`
    3. Run `yarn run nightwatch`
-
-Run Eslint
-`yarn lint`
-
-Run Prettier
-`npx prettier --write .`
 
 ## Requirements
 
