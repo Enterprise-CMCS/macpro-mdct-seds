@@ -3,11 +3,11 @@ import {
   Grid,
   GridContainer,
   GovBanner,
+  Link,
   NavList
 } from "@trussworks/react-uswds";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   // TODO: Fill with data from Redux when available
@@ -31,10 +31,12 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <img
-                src="/img/logo-cms.png"
-                alt="Centers for Medicare and Medicaid Services"
-              />
+              <Link href="/">
+                <img
+                  src="/img/logo-cms.png"
+                  alt="Centers for Medicare and Medicaid Services"
+                />
+              </Link>
             </Grid>
           </Grid>
         </GridContainer>
