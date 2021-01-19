@@ -3,7 +3,7 @@ import {
   Grid,
   GridContainer,
   GovBanner,
-  NavList,
+  NavList
 } from "@trussworks/react-uswds";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -18,7 +18,7 @@ const Header = () => {
 
   let testItems = [
     <Link href={"/"}>Home</Link>,
-    <Link href={"/contact"}>Contact</Link>,
+    <Link href={"/contact"}>Contact</Link>
   ];
 
   return (
@@ -74,7 +74,7 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <h1>{pageTitle}</h1>
+              <h1 className="page-title">{pageTitle}</h1>
             </Grid>
           </Grid>
         </GridContainer>

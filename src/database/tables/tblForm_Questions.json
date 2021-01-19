@@ -1,27 +1,27 @@
 {
- "TableName": "form_questions",
- "KeySchema": [
-  {
-   "AttributeName": "question_id", 
-   "KeyType": "HASH"
-  },
-  {
-   "AttributeName": "question",
-   "KeyType": "RANGE"
+  "TableName": "form_questions",
+  "KeySchema": [
+    {
+      "AttributeName": "question_id",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "question",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "question_id",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "question",
+      "AttributeType": "S"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 100,
+    "WriteCapacityUnits": 100
   }
- ],
- "AttributeDefinitions": [
-  {
-   "AttributeName": "question_id",
-   "AttributeType": "N"
-  },
-  {
-   "AttributeName": "question",
-   "AttributeType": "S"
-  }
- ],
- "ProvisionedThroughput" : {
-  "ReadCapacityUnits" : 100,
-  "WriteCapacityUnits" : 100
- }
 }

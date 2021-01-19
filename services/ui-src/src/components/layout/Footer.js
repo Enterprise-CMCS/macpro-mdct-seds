@@ -33,9 +33,10 @@ const Footer = () => {
                     className="usa-footer__primary-link"
                     href="https://www.cms.gov/"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Centers for Medicare &amp; Medicaid Services
-                  </a>,
+                  </a>
                 ]}
               />
             </div>
