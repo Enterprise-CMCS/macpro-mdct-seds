@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
@@ -111,12 +111,12 @@ const Quarterly = () => {
       cell: function setStatus(e) {
         return (
           <div className="status-wrapper">
-            <button
+            <Button
               type="button"
               className={`usa-button status status-${e.status_code}`}
             >
               {e.status}
-            </button>
+            </Button>
           </div>
         );
       }
