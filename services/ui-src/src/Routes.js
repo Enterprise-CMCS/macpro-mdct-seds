@@ -19,6 +19,7 @@ import {
 } from "./libs/awsLib";
 import config from "./config";
 import Example from "./components/examples";
+import Quarterly from "./containers/Quarterly";
 
 export default function Routes() {
   // This might not be quite the right place for it, but I'm doing
@@ -61,6 +62,9 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/profile">
         <Profile />
       </AuthenticatedRoute>
+      <UnauthenticatedRoute exact path="/forms/:state/:year/:quarter">
+        <Quarterly />
+      </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/amendments/new">
         <NewAmendment fileUpload={s3Upload} />
       </AuthenticatedRoute>

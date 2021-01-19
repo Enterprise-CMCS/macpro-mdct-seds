@@ -18,14 +18,22 @@
   }
 }
 
+.status-wrapper {
+  button {
+    cursor: default;
+  }
+}
+
 .status {
   border-radius: 500px;
+  font-size: 0.9rem;
   font-weight: $font-weight-normal;
   line-height: 1.1rem;
+  margin: 0.6rem 0;
   min-height: 58px;
   width: 160px;
 
-  &.status-inprogress {
+  &.status-in_progress {
     background-color: $dixie;
 
     &:hover {
@@ -49,7 +57,7 @@
     }
   }
 
-  &.status-notstarted {
+  &.status-not_started {
     background-color: $bombay;
 
     &:hover {
