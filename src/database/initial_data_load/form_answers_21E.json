@@ -1,8 +1,8 @@
 [
   {
-    "answer_entry": "AL-21E-2021-01-U1-01",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-01",
+    "answer_entry": "AL-2021-1-21E-U1-01",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-01",
     "age_range": "Under 0",
     "rows": [
       {
@@ -44,9 +44,9 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-21E-2021-01-U1-02",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-02",
+    "answer_entry": "AL-2021-1-21E-U1-02",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-02",
     "age_range": "Under 0",
     "rows": [
       {
@@ -88,9 +88,9 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-21E-2021-01-U1-03",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-03",
+    "answer_entry": "AL-2021-1-21E-U1-03",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-03",
     "age_range": "Under 0",
     "rows": [
       {
@@ -132,9 +132,9 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-21E-2021-01-U1-04",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-04",
+    "answer_entry": "AL-2021-1-21E-U1-04",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-04",
     "age_range": "Under 0",
     "rows": [
       {
@@ -176,9 +176,9 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-21E-2021-01-U1-05",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-05",
+    "answer_entry": "AL-2021-1-21E-U1-05",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-05",
     "age_range": "Under 0",
     "rows": [
       {
@@ -355,9 +355,9 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-21E-2021-01-U1-06",
-    "state_form": "AL-21E-2021-01",
-    "question": "21E-2021-06",
+    "answer_entry": "AL-2021-1-21E-U1-06",
+    "state_form": "AL-2021-1-21E",
+    "question": "2021-21E-06",
     "age_range": "Under 0",
     "rows": [
       {
