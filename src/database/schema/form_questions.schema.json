@@ -1,0 +1,722 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "array",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": [],
+  "additionalItems": true,
+  "items": {
+    "$id": "#/items",
+    "anyOf": [
+      {
+        "$id": "#/items/anyOf/0",
+        "type": "object",
+        "title": "Basic Table Question",
+        "description": "A question that requires answers in a basic table format. This may include totals at the row or column level.",
+        "default": {},
+        "examples": [
+          {
+            "question": "21E-2021-01",
+            "form": "21E",
+            "year": "2021",
+            "type": "datagridwithtotals",
+            "row_total": true,
+            "column_total": true,
+            "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+            "rows": [
+              {
+                "col1": "",
+                "col2": "A: 0-133",
+                "col3": "B: 134-200",
+                "col4": "C: 201-250",
+                "col5": "D: 254-300",
+                "col6": "E: 301-317"
+              },
+              {
+                "col1": "A. Fee-for-Service",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null,
+                "col6": null
+              },
+              {
+                "col1": "B. Managed Care Arrangements",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null,
+                "col6": null
+              },
+              {
+                "col1": "C. Primary Care Case Management",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null,
+                "col6": null
+              }
+            ],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+          }
+        ],
+        "required": [
+          "question",
+          "form",
+          "year",
+          "type",
+          "row_total",
+          "column_total",
+          "label",
+          "rows",
+          "last_modified",
+          "last_modified_by",
+          "created_date",
+          "created_by"
+        ],
+        "properties": {
+          "question": {
+            "$id": "#/items/anyOf/0/properties/question",
+            "type": "string",
+            "title": "form-year-question",
+            "description": "The question id should be in the format of FormNumber-YYYY-QuestionNumber. The QuestionNumber should always be 2 digits.",
+            "default": "",
+            "examples": ["21E-2021-01"]
+          },
+          "form": {
+            "$id": "#/items/anyOf/0/properties/form",
+            "type": "string",
+            "title": "forms.form",
+            "description": "The short form name from forms.forms.",
+            "default": "",
+            "examples": ["21E"]
+          },
+          "year": {
+            "$id": "#/items/anyOf/0/properties/year",
+            "type": "integer",
+            "title": "YYYY",
+            "description": "The 4 digit year that the form/question applies to.",
+            "default": "",
+            "examples": ["2021"]
+          },
+          "type": {
+            "$id": "#/items/anyOf/0/properties/type",
+            "type": "string",
+            "title": "Question Type",
+            "description": "This is the type of question component that the question will utilize for frontend formatting.",
+            "default": "",
+            "examples": [
+              "datagridwithtotals",
+              "datagrid",
+              "checkbox",
+              "checkbox_flag",
+              "daterange",
+              "email",
+              "file_upload",
+              "integer",
+              "mailing_address",
+              "money",
+              "objectives",
+              "percentage",
+              "phone_number",
+              "radio",
+              "ranges",
+              "text",
+              "text_medium",
+              "text_multiline",
+              "text_small"
+            ]
+          },
+          "row_total": {
+            "$id": "#/items/anyOf/0/properties/row_total",
+            "type": "boolean",
+            "title": "The row_total schema",
+            "description": "Should the table being generated include a column at the end to show the total by row? Set to true for yes and false for no.",
+            "default": false,
+            "examples": [true]
+          },
+          "column_total": {
+            "$id": "#/items/anyOf/0/properties/column_total",
+            "type": "boolean",
+            "title": "The column_total schema",
+            "description": "Should the table being generated include a row at the bottom to show the total by column? Set to true for yes and false for no.",
+            "default": false,
+            "examples": [true]
+          },
+          "label": {
+            "$id": "#/items/anyOf/0/properties/label",
+            "type": "string",
+            "title": "Question",
+            "description": "This is the text of the question to display to the user.",
+            "default": "",
+            "examples": [
+              "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?"
+            ]
+          },
+          "rows": {
+            "$id": "#/items/anyOf/0/properties/rows",
+            "type": "array",
+            "title": "The rows schema",
+            "description": "For a table, responses are expected in an array by row based on the number of columns in the table. 1 array = 1 row of data for the table.",
+            "default": [],
+            "examples": [
+              [
+                {
+                  "col1": "",
+                  "col2": "A: 0-133",
+                  "col3": "B: 134-200",
+                  "col4": "C: 201-250",
+                  "col5": "D: 254-300",
+                  "col6": "E: 301-317"
+                },
+                {
+                  "col1": "A. Fee-for-Service",
+                  "col2": null,
+                  "col3": null,
+                  "col4": null,
+                  "col5": null,
+                  "col6": null
+                }
+              ]
+            ],
+            "additionalItems": true,
+            "items": {
+              "$id": "#/items/anyOf/0/properties/rows/items",
+              "anyOf": [
+                {
+                  "$id": "#/items/anyOf/0/properties/rows/items/anyOf/0",
+                  "type": "object",
+                  "title": "Row Format",
+                  "description": "A Row will contain 1 item for each column to display in the table.",
+                  "default": {},
+                  "examples": [
+                    {
+                      "col1": "",
+                      "col2": "A: 0-133",
+                      "col3": "B: 134-200",
+                      "col4": "C: 201-250",
+                      "col5": "D: 254-300",
+                      "col6": "E: 301-317"
+                    }
+                  ],
+                  "required": ["col1"],
+                  "properties": {
+                    "col1": {
+                      "$id": "#/items/anyOf/0/properties/rows/items/anyOf/0/properties/col1",
+                      "type": "string",
+                      "title": "The col1 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": [""]
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            }
+          },
+          "last_modified": {
+            "$id": "#/items/anyOf/0/properties/last_modified",
+            "type": "string",
+            "title": "The last_modified schema",
+            "description": "The date/time the record was last modified",
+            "default": ""
+          },
+          "last_modified_by": {
+            "$id": "#/items/anyOf/0/properties/last_modified_by",
+            "type": "string",
+            "title": "The last_modified_by schema",
+            "description": "Who made the last modification to the record",
+            "default": ""
+          },
+          "created_date": {
+            "$id": "#/items/anyOf/0/properties/created_date",
+            "type": "string",
+            "title": "The created_date schema",
+            "description": "The date/time the record was created",
+            "default": ""
+          },
+          "created_by": {
+            "$id": "#/items/anyOf/0/properties/created_by",
+            "type": "string",
+            "title": "The created_by schema",
+            "description": "Who created the record",
+            "default": ""
+          }
+        },
+        "additionalProperties": true
+      },
+      {
+        "$id": "#/items/anyOf/1",
+        "type": "object",
+        "title": "Table with Calculations",
+        "description": "This is a table that uses data from other tables to perform calculations automatically.",
+        "default": {},
+        "examples": [
+          {
+            "question": "21E-2021-05",
+            "form": "21E",
+            "year": "2021",
+            "type": "datagridwithtotals",
+            "row_total": true,
+            "column_total": true,
+            "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
+            "readonly": true,
+            "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+            "rows": [
+              {
+                "col1": "",
+                "col2": "A: 0-133",
+                "col3": "B: 134-200",
+                "col4": "C: 201-250",
+                "col5": "D: 254-300",
+                "col6": "E: 301-317"
+              },
+              {
+                "col1": "A. Fee-for-Service",
+                "col2": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[1].col2",
+                      "$..*[?(@.id=='21E-2021-01')].rows[1].col2"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col3": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[1].col3",
+                      "$..*[?(@.id=='21E-2021-01')].rows[1].col3"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col4": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[1].col4",
+                      "$..*[?(@.id=='21E-2021-01')].rows[1].col4"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col5": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[1].col5",
+                      "$..*[?(@.id=='21E-2021-01')].rows[1].col5"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col6": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[1].col6",
+                      "$..*[?(@.id=='21E-2021-01')].rows[1].col6"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ]
+              },
+              {
+                "col1": "B. Managed Care Arrangements",
+                "col2": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[2].col2",
+                      "$..*[?(@.id=='21E-2021-01')].rows[2].col2"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col3": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[2].col3",
+                      "$..*[?(@.id=='21E-2021-01')].rows[2].col3"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col4": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[2].col4",
+                      "$..*[?(@.id=='21E-2021-01')].rows[2].col4"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col5": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[2].col5",
+                      "$..*[?(@.id=='21E-2021-01')].rows[2].col5"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col6": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[2].col6",
+                      "$..*[?(@.id=='21E-2021-01')].rows[2].col6"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ]
+              },
+              {
+                "col1": "C. Primary Care Case Management",
+                "col2": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[3].col2",
+                      "$..*[?(@.id=='21E-2021-01')].rows[3].col2"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col3": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[3].col3",
+                      "$..*[?(@.id=='21E-2021-01')].rows[3].col3"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col4": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[3].col4",
+                      "$..*[?(@.id=='21E-2021-01')].rows[3].col4"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col5": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[3].col5",
+                      "$..*[?(@.id=='21E-2021-01')].rows[3].col5"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ],
+                "col6": [
+                  {
+                    "targets": [
+                      "$..*[?(@.id=='21E-2021-04')].rows[3].col6",
+                      "$..*[?(@.id=='21E-2021-01')].rows[3].col6"
+                    ],
+                    "actions": ["formula"],
+                    "formula": "<0> / <1>"
+                  }
+                ]
+              }
+            ],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+          }
+        ],
+        "required": [
+          "question",
+          "form",
+          "year",
+          "type",
+          "row_total",
+          "column_total",
+          "label",
+          "readonly",
+          "comment",
+          "rows",
+          "last_modified",
+          "last_modified_by",
+          "created_date",
+          "created_by"
+        ],
+        "properties": {
+          "question": {
+            "$id": "#/items/anyOf/1/properties/question",
+            "type": "string",
+            "title": "The question schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["21E-2021-05"]
+          },
+          "form": {
+            "$id": "#/items/anyOf/1/properties/form",
+            "type": "string",
+            "title": "The form schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["21E"]
+          },
+          "year": {
+            "$id": "#/items/anyOf/1/properties/year",
+            "type": "string",
+            "title": "The year schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["2021"]
+          },
+          "type": {
+            "$id": "#/items/anyOf/1/properties/type",
+            "type": "string",
+            "title": "The type schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["datagridwithtotals"]
+          },
+          "row_total": {
+            "$id": "#/items/anyOf/1/properties/row_total",
+            "type": "boolean",
+            "title": "The row_total schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [true]
+          },
+          "column_total": {
+            "$id": "#/items/anyOf/1/properties/column_total",
+            "type": "boolean",
+            "title": "The column_total schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [true]
+          },
+          "label": {
+            "$id": "#/items/anyOf/1/properties/label",
+            "type": "string",
+            "title": "The label schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+              "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?"
+            ]
+          },
+          "readonly": {
+            "$id": "#/items/anyOf/1/properties/readonly",
+            "type": "boolean",
+            "title": "The readonly schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [true]
+          },
+          "comment": {
+            "$id": "#/items/anyOf/1/properties/comment",
+            "type": "string",
+            "title": "The comment schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+              "Divide the entries in Question 4 by the entries in Question 1."
+            ]
+          },
+          "rows": {
+            "$id": "#/items/anyOf/1/properties/rows",
+            "type": "array",
+            "title": "The rows schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+              [
+                {
+                  "col1": "",
+                  "col2": "A: 0-133",
+                  "col3": "B: 134-200",
+                  "col4": "C: 201-250",
+                  "col5": "D: 254-300",
+                  "col6": "E: 301-317"
+                },
+                {
+                  "col1": "A. Fee-for-Service",
+                  "col2": [
+                    {
+                      "targets": [
+                        "$..*[?(@.id=='21E-2021-04')].rows[1].col2",
+                        "$..*[?(@.id=='21E-2021-01')].rows[1].col2"
+                      ],
+                      "actions": ["formula"],
+                      "formula": "<0> / <1>"
+                    }
+                  ],
+                  "col3": [
+                    {
+                      "targets": [
+                        "$..*[?(@.id=='21E-2021-04')].rows[1].col3",
+                        "$..*[?(@.id=='21E-2021-01')].rows[1].col3"
+                      ],
+                      "actions": ["formula"],
+                      "formula": "<0> / <1>"
+                    }
+                  ],
+                  "col4": [
+                    {
+                      "targets": [
+                        "$..*[?(@.id=='21E-2021-04')].rows[1].col4",
+                        "$..*[?(@.id=='21E-2021-01')].rows[1].col4"
+                      ],
+                      "actions": ["formula"],
+                      "formula": "<0> / <1>"
+                    }
+                  ],
+                  "col5": [
+                    {
+                      "targets": [
+                        "$..*[?(@.id=='21E-2021-04')].rows[1].col5",
+                        "$..*[?(@.id=='21E-2021-01')].rows[1].col5"
+                      ],
+                      "actions": ["formula"],
+                      "formula": "<0> / <1>"
+                    }
+                  ],
+                  "col6": [
+                    {
+                      "targets": [
+                        "$..*[?(@.id=='21E-2021-04')].rows[1].col6",
+                        "$..*[?(@.id=='21E-2021-01')].rows[1].col6"
+                      ],
+                      "actions": ["formula"],
+                      "formula": "<0> / <1>"
+                    }
+                  ]
+                }
+              ]
+            ],
+            "additionalItems": true,
+            "items": {
+              "$id": "#/items/anyOf/1/properties/rows/items",
+              "anyOf": [
+                {
+                  "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0",
+                  "type": "object",
+                  "title": "The first anyOf schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": {},
+                  "examples": [
+                    {
+                      "col1": "",
+                      "col2": "A: 0-133",
+                      "col3": "B: 134-200",
+                      "col4": "C: 201-250",
+                      "col5": "D: 254-300",
+                      "col6": "E: 301-317"
+                    }
+                  ],
+                  "required": ["col1", "col2", "col3", "col4", "col5", "col6"],
+                  "properties": {
+                    "col1": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col1",
+                      "type": "string",
+                      "title": "The col1 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": [""]
+                    },
+                    "col2": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col2",
+                      "type": "string",
+                      "title": "The col2 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": ["A: 0-133"]
+                    },
+                    "col3": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col3",
+                      "type": "string",
+                      "title": "The col3 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": ["B: 134-200"]
+                    },
+                    "col4": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col4",
+                      "type": "string",
+                      "title": "The col4 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": ["C: 201-250"]
+                    },
+                    "col5": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col5",
+                      "type": "string",
+                      "title": "The col5 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": ["D: 254-300"]
+                    },
+                    "col6": {
+                      "$id": "#/items/anyOf/1/properties/rows/items/anyOf/0/properties/col6",
+                      "type": "string",
+                      "title": "The col6 schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": ["E: 301-317"]
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            }
+          },
+          "last_modified": {
+            "$id": "#/items/anyOf/1/properties/last_modified",
+            "type": "string",
+            "title": "The last_modified schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["01/15/2021"]
+          },
+          "last_modified_by": {
+            "$id": "#/items/anyOf/1/properties/last_modified_by",
+            "type": "string",
+            "title": "The last_modified_by schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["seed"]
+          },
+          "created_date": {
+            "$id": "#/items/anyOf/1/properties/created_date",
+            "type": "string",
+            "title": "The created_date schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["01/15/2021"]
+          },
+          "created_by": {
+            "$id": "#/items/anyOf/1/properties/created_by",
+            "type": "string",
+            "title": "The created_by schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": ["seed"]
+          }
+        },
+        "additionalProperties": true
+      }
+    ]
+  }
+}
