@@ -6,10 +6,10 @@ export const UPDATE_STATUS = "UPDATE_STATUS";
 export const UPDATE_TIMESTAMP = "UPDATE_TIMESTAMP";
 
 // ACTION CREATORS
-export const getFormData = (formArray = []) => {
+export const getFormStatusData = (formArray = []) => {
   return {
     type: LOAD_FORMS,
-    formArray,
+    formArray
   };
 };
 export const updateStatus = (statusObj, form_id) => {
@@ -19,30 +19,30 @@ export const updateStatus = (statusObj, form_id) => {
 
   return {
     type: UPDATE_STATUS,
-    status: statusObj.status,
+    status: statusObj.status
   };
 };
-export const updateTimeStamp = (timeStampObj) => {
+export const updateTimeStamp = timeStampObj => {
   return {
     type: UPDATE_TIMESTAMP,
-    timeStamp: timeStampObj.time,
+    timeStamp: timeStampObj.time
   };
 };
 
 // THUNKS
 // Make call to aws-amplify // WEB SOCKETS?
-export const loadForm = ({ userData }) => {
-  return async (dispatch) => {
+export const loadFormStatus = ({ userData }) => {
+  return async dispatch => {
     // Call aws amplify endpoint. This is a placeholder
-    const { data } = quarterForms;
+    const data = quarterForms;
 
-    dispatch(getFormData(data));
+    dispatch(getFormStatusData(data));
   };
 };
 
 // INITIAL STATE
 const initialState = {
-  forms: [...quarterForms],
+  forms: [...quarterForms]
 };
 
 // REDUCER
@@ -51,23 +51,21 @@ export default (state = initialState, action) => {
     case LOAD_FORMS:
       return {
         ...state,
-        forms: action.formArray,
+        forms: action.formArray
       };
     case UPDATE_STATUS:
       // function here
       return {
         ...state,
-        forms: [action.forms],
+        forms: [action.forms]
       };
     case UPDATE_TIMESTAMP:
       return {
         ...state,
-        forms: action.formArray,
+        forms: action.formArray
       };
 
     default:
       return state;
   }
 };
-
-const findForm;
