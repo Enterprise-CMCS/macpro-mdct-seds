@@ -3,7 +3,13 @@
 **********************/
 
 .main {
-  margin: 2.2rem 0;
+  margin: 1.2rem 0;
+}
+
+.breadcrumbs {
+  color: $color-gray-light;
+  font-size: 0.85rem;
+  margin-bottom: 2.2rem;
 }
 
 .quarterly-report-list {
