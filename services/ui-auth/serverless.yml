@@ -89,7 +89,7 @@ resources:
       Properties:
         Domain:
           Fn::Join:
-            - ''
+            - ""
             - - ${self:custom.stage}-login-
               - Ref: CognitoUserPoolClient
         UserPoolId:
@@ -177,7 +177,7 @@ resources:
     UserPoolClientDomain:
       Value:
         Fn::Join:
-          - ''
+          - ""
           - - Ref: UserPoolDomain
             - .auth.
             - Ref: AWS::Region
