@@ -1,6 +1,6 @@
 [
   {
-    "state_form": "AL-21E-2021-1",
+    "state_form": "AL-2021-1-21E",
     "state_id": "AL",
     "form": "21E",
     "program_code": "AL",
@@ -16,7 +16,7 @@
     "created_by": "seed"
   },
   {
-    "state_form": "MD-21E-2021-1",
+    "state_form": "MD-2021-1-21E",
     "state_id": "MD",
     "form": "21E",
     "program_code": "MD",
@@ -32,7 +32,7 @@
     "created_by": "seed"
   },
   {
-    "state_form": "PA-21E-2021-1",
+    "state_form": "PA-2021-1-21E",
     "state_id": "PA",
     "form": "21E",
     "program_code": "PA",

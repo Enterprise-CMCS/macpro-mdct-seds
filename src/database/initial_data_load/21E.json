@@ -1,6 +1,6 @@
 [
   {
-    "question": "21E-2021-01",
+    "question": "2021-21E-01",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
@@ -47,7 +47,7 @@
     "created_by": "seed"
   },
   {
-    "question": "21E-2021-02",
+    "question": "2021-21E-02",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
@@ -94,7 +94,7 @@
     "created_by": "seed"
   },
   {
-    "question": "21E-2021-03",
+    "question": "2021-21E-03",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
@@ -141,7 +141,7 @@
     "created_by": "seed"
   },
   {
-    "question": "21E-2021-04",
+    "question": "2021-21E-04",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
@@ -188,7 +188,7 @@
     "created_by": "seed"
   },
   {
-    "question": "21E-2021-05",
+    "question": "2021-21E-05",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
@@ -211,8 +211,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[1].col2",
-              "$..*[?(@.id=='21E-2021-01')].rows[1].col2"
+              "$..*[?(@.question=='21E-2021-04')].rows[1].col2",
+              "$..*[?(@.question=='21E-2021-01')].rows[1].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -221,8 +221,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[1].col3",
-              "$..*[?(@.id=='21E-2021-01')].rows[1].col3"
+              "$..*[?(@.question=='21E-2021-04')].rows[1].col3",
+              "$..*[?(@.question=='21E-2021-01')].rows[1].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -231,8 +231,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[1].col4",
-              "$..*[?(@.id=='21E-2021-01')].rows[1].col4"
+              "$..*[?(@.question=='21E-2021-04')].rows[1].col4",
+              "$..*[?(@.question=='21E-2021-01')].rows[1].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -241,8 +241,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[1].col5",
-              "$..*[?(@.id=='21E-2021-01')].rows[1].col5"
+              "$..*[?(@.question=='21E-2021-04')].rows[1].col5",
+              "$..*[?(@.question=='21E-2021-01')].rows[1].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -251,8 +251,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[1].col6",
-              "$..*[?(@.id=='21E-2021-01')].rows[1].col6"
+              "$..*[?(@.question=='21E-2021-04')].rows[1].col6",
+              "$..*[?(@.question=='21E-2021-01')].rows[1].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -264,8 +264,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[2].col2",
-              "$..*[?(@.id=='21E-2021-01')].rows[2].col2"
+              "$..*[?(@.question=='21E-2021-04')].rows[2].col2",
+              "$..*[?(@.question=='21E-2021-01')].rows[2].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -274,8 +274,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[2].col3",
-              "$..*[?(@.id=='21E-2021-01')].rows[2].col3"
+              "$..*[?(@.question=='21E-2021-04')].rows[2].col3",
+              "$..*[?(@.question=='21E-2021-01')].rows[2].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -284,8 +284,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[2].col4",
-              "$..*[?(@.id=='21E-2021-01')].rows[2].col4"
+              "$..*[?(@.question=='21E-2021-04')].rows[2].col4",
+              "$..*[?(@.question=='21E-2021-01')].rows[2].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -294,8 +294,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[2].col5",
-              "$..*[?(@.id=='21E-2021-01')].rows[2].col5"
+              "$..*[?(@.question=='21E-2021-04')].rows[2].col5",
+              "$..*[?(@.question=='21E-2021-01')].rows[2].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -304,8 +304,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[2].col6",
-              "$..*[?(@.id=='21E-2021-01')].rows[2].col6"
+              "$..*[?(@.question=='21E-2021-04')].rows[2].col6",
+              "$..*[?(@.question=='21E-2021-01')].rows[2].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -317,8 +317,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[3].col2",
-              "$..*[?(@.id=='21E-2021-01')].rows[3].col2"
+              "$..*[?(@.question=='21E-2021-04')].rows[3].col2",
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -327,8 +327,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[3].col3",
-              "$..*[?(@.id=='21E-2021-01')].rows[3].col3"
+              "$..*[?(@.question=='21E-2021-04')].rows[3].col3",
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -337,8 +337,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[3].col4",
-              "$..*[?(@.id=='21E-2021-01')].rows[3].col4"
+              "$..*[?(@.question=='21E-2021-04')].rows[3].col4",
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -347,8 +347,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.id=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -357,8 +357,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.id=='21E-2021-04')].rows[3].col6",
-              "$..*[?(@.id=='21E-2021-01')].rows[3].col6"
+              "$..*[?(@.question=='21E-2021-04')].rows[3].col6",
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -372,7 +372,7 @@
     "created_by": "seed"
   },
   {
-    "question": "21E-2021-06",
+    "question": "2021-21E-06",
     "form": "21E",
     "year": "2021",
     "type": "datagridwithtotals",
