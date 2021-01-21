@@ -158,7 +158,7 @@ resources:
     FormsTableArn:
       Value: !GetAtt FormsTable.Arn
     FormsTableStreamArn:
-      Value: !GetAtt FormTables.StreamArn
+      Value: !GetAtt FormsTable.StreamArn
     StateFormsTableName:
       Value: !Ref StateFormsTable
     StateFormsTableArn:
