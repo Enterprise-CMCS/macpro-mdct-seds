@@ -11,7 +11,6 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@trussworks/react-uswds": "^1.10.0",
-    "@types/redux-logger": "^3.0.8",
     "aws-amplify": "^3.0.23",
     "browserify": "^17.0.0",
     "geckodriver": "^1.21.1",
@@ -62,10 +61,10 @@
     ]
   },
   "devDependencies": {
-    "redux-devtools": "^3.7.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "redux-devtools": "^3.7.0",
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-s3-sync": "^1.14.4"

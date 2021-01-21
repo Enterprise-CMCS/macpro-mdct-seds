@@ -5,7 +5,7 @@ import * as states from "../toDelete/states.json";
 import * as status from "../toDelete/status.json";
 
 // ACTION TYPES
-export const LOAD_FORMS = "LOAD_FORMS";
+export const LOAD_FORM_TYPES = "LOAD_FORM_TYPES";
 export const LOAD_AGE_RANGES = "LOAD_AGE_RANGES";
 export const LOAD_STATES = "LOAD_STATES";
 export const LOAD_STATUS_TYPES = "LOAD_STATUS_TYPES";
@@ -13,7 +13,7 @@ export const LOAD_STATUS_TYPES = "LOAD_STATUS_TYPES";
 // ACTION CREATORS
 export const gotFormTypes = (formArray = []) => {
   return {
-    type: LOAD_FORMS,
+    type: LOAD_FORM_TYPES,
     formArray
   };
 };
@@ -68,7 +68,7 @@ export const getStatusTypes = () => {
 
 // INITIAL STATE
 const initialState = {
-  forms: [...forms.default],
+  formTypes: [...forms.default],
   age_ranges: [...age_ranges.default],
   states: [...states.default],
   status: [...status.default]
@@ -77,10 +77,10 @@ const initialState = {
 // REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_FORMS:
+    case LOAD_FORM_TYPES:
       return {
         ...state,
-        forms: action.formArray
+        formTypes: action.formArray
       };
     case LOAD_AGE_RANGES:
       return {

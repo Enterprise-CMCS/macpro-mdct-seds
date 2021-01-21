@@ -1,15 +1,10 @@
-// Here is where we should invoke functions that
-
-import getUser from "./reducers/userData";
-// import loadQuarterStatuses from "./reducers/quarterStatuses";
-// import loadFormStatus from "./reducers/singleForm";
+// Here is where we should invoke functions that return data necessary for initial page load
 
 export const initialLoad = (userToken = "placeholder") => async dispatch => {
-  // make some initial API call, invoke Thunks with returned data
+  // make some initial API calls
 
   await Promise.all([
-    // dispatch(loadFormStatus("placeholder")),
-    dispatch(getUser("placeholder"))
+    /// ... dispatch thunks necessary for initial load
   ]);
 };
 
