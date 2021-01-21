@@ -62,7 +62,6 @@ resources:
       Type: AWS::Cognito::UserPoolClient
       Properties:
         ClientName: ${self:custom.stage}-user-pool-client
-        UserPoolId: !Ref CognitoUserPool
         AllowedOAuthFlows:
           - implicit
         AllowedOAuthFlowsUserPoolClient: true
