@@ -6,7 +6,6 @@ import { onError } from "../libs/errorLib";
 import config from "../config";
 import "./NewAmendment.css";
 import { createAmendment } from "../libs/api";
-import { currentUserInfo } from "../libs/user";
 import { Auth } from "aws-amplify";
 import Select from "react-select";
 import Switch from "react-ios-switch";
