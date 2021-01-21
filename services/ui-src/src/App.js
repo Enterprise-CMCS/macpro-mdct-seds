@@ -8,7 +8,7 @@ import { onError } from "./libs/errorLib";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
-import initialLoad from "./store/actions/initial";
+import initialLoad from "./store/initial";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
