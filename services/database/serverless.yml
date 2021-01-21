@@ -47,6 +47,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-age-ranges
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: age_range
             AttributeType: S
@@ -58,6 +60,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-form-answers
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: answer_entry
             AttributeType: S
@@ -69,6 +73,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-form-questions
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: question
             AttributeType: S
@@ -80,6 +86,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-forms
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: form
             AttributeType: S
@@ -104,6 +112,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-states
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: state_id
             AttributeType: S
@@ -115,6 +125,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-status
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
           - AttributeName: status
             AttributeType: S
@@ -127,18 +139,26 @@ resources:
       Value: !Ref AgeRangesTable
     AgeRangesTableArn:
       Value: !GetAtt AgeRangesTable.Arn
+    AgeRangesTableStreamArn:
+      Value: !GetAtt AgeRangesTable.StreamArn
     FormAnswersTableName:
       Value: !Ref FormAnswersTable
     FormAnswersTableArn:
       Value: !GetAtt FormAnswersTable.Arn
+    FormAnswersTableStreamArn:
+      Value: !GetAtt FormAnswersTable.StreamArn
     FormQuestionsTableName:
       Value: !Ref FormQuestionsTable
     FormQuestionsTableArn:
       Value: !GetAtt FormQuestionsTable.Arn
+    FormQuestionsTableStreamArn:
+      Value: !GetAtt FormQuestionsTable.StreamArn
     FormsTableName:
       Value: !Ref FormsTable
     FormsTableArn:
       Value: !GetAtt FormsTable.Arn
+    FormsTableStreamArn:
+      Value: !GetAtt FormsTable.StreamArn
     StateFormsTableName:
       Value: !Ref StateFormsTable
     StateFormsTableArn:
@@ -149,10 +169,14 @@ resources:
       Value: !Ref StatesTable
     StatesTableArn:
       Value: !GetAtt StatesTable.Arn
+    StateTableStreaArn:
+      Value: !GetAtt StatesTable.StreamArn
     StatusTableName:
       Value: !Ref StatusTable
     StatusTableArn:
       Value: !GetAtt StatusTable.Arn
+    StatusTableStreamArn:
+      Value: !GetAtt StatusTable.StreamArn
 
     Region:
       Value: !Sub ${AWS::Region}
