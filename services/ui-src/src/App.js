@@ -21,10 +21,9 @@ function App() {
 
   async function onLoad() {
     try {
-      await Auth.currentSession();
+      const userInfo = await Auth.currentSession();
       userHasAuthenticated(true);
-      const userInfo = await Auth.currentUserInfo();
-      setEmail(userInfo.attributes.email);
+      setEmail(userInfo.idToken.payload.email);
     } catch (e) {
       if (e !== "No current user") {
         onError(e);
