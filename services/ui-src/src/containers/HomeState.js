@@ -29,7 +29,7 @@ const HomeState = () => {
   for (const year in years) {
     // Build node with link to each quarters reports
     let quarters = (
-      <ul>
+      <ul className="quarterly-items">
         {years[year].quarters.map(element => {
           return (
             <li>
@@ -63,12 +63,13 @@ const HomeState = () => {
   return (
     <Grid row className="page-home-state">
       <Grid col={12}>
-        <h2>Enrollment Data</h2>
         <p>
-          Welcome to SEDS. Please select a Federal fiscal year and quarter to
-          view available reports.
+          Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
+          to view available reports.
         </p>
-        <Accordion bordered={true} items={accordionItems} />
+        <div className="quarterly-report-list">
+          <Accordion bordered={true} items={accordionItems} />
+        </div>
       </Grid>
     </Grid>
   );
