@@ -33,7 +33,10 @@ custom:
             sources: [../../src/database/initial_data_load/21E.json]
           - table: ${self:custom.stage}-form-answers
             sources:
-              [../../src/database/initial_data_load/form_answers_21E.json]
+              [
+                ../../src/database/initial_data_load/form_answers_21E.json,
+                ../../src/database/initial_data_load/form_answers_21E_MD.json
+              ]
 
 provider:
   name: aws
