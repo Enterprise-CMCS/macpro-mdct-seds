@@ -36,7 +36,7 @@ custom:
               [
                 ../../src/database/initial_data_load/form_answers_21E_AL.json,
                 ../../src/database/initial_data_load/form_answers_21E_MD.json,
-                ../../src/database/initial_data_load/form_answers_21E_PA.json
+                ../../src/database/initial_data_load/form_answers_21E_PA.json,
               ]
 
 provider:
