@@ -417,5 +417,155 @@
     "last_modified_by": "seed",
     "created_date": "01/15/2021",
     "created_by": "seed"
+  },
+  {
+    "question": "2021-21E-07",
+    "form": "21E",
+    "year": "2021",
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "context_data": {
+      "show_if_quarter_in": "4"
+    },
+    "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "% of FPL 0-133",
+        "col3": "% of FPL 134-200",
+        "col4": "% of FPL 201-250",
+        "col5": "% of FPL 251-300",
+        "col6": "% of FPL 301-317"
+      },
+      {
+        "col1": "A. Fee-for-Service",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "B. Managed Care Arrangements",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "C. Primary Care Case Management",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "2021-21E-08",
+    "form": "21E",
+    "year": "2021",
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "context_data": {
+      "show_if_quarter_in": "4"
+    },
+    "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "% of FPL 0-133",
+        "col3": "% of FPL 134-200",
+        "col4": "% of FPL 201-250",
+        "col5": "% of FPL 251-300",
+        "col6": "% of FPL 301-317"
+      },
+      {
+        "col1": "A. Fee-for-Service",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "B. Managed Care Arrangements",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "C. Primary Care Case Management",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "2021-21E-09",
+    "form": "21E",
+    "year": "2021",
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "context_data": {
+      "show_if_quarter_in": "4"
+    },
+    "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "% of FPL 0-133",
+        "col3": "% of FPL 134-200",
+        "col4": "% of FPL 201-250",
+        "col5": "% of FPL 251-300",
+        "col6": "% of FPL 301-317"
+      },
+      {
+        "col1": "A. Fee-for-Service",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "B. Managed Care Arrangements",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "C. Primary Care Case Management",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "01/15/2021",
+    "last_modified_by": "seed",
+    "created_date": "01/15/2021",
+    "created_by": "seed"
   }
 ]
