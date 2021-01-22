@@ -29,6 +29,17 @@ const TabContainer = () => {
               <Tab>Summary</Tab>
               <Tab>Certification</Tab>
             </TabList>
+
+            {
+              fakeTabData.map((tab, idx) => {
+                return <TabPanel key={idx}>{tab.age_description}</TabPanel>;
+              })
+              // The actual questions will go inside of the tab panels, find a way to componenetize that
+              // What will the contents of the Summary and Certification tabs be?
+            }
+
+            <TabPanel>Summary </TabPanel>
+            <TabPanel>Certification</TabPanel>
           </Tabs>
         </Grid>
       </Grid>
