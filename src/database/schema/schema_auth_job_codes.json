@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Status",
-  "description": "State Status",
+  "title": "Auth Job Codes",
+  "description": "LDAP job codes and available roles",
   "type": "array",
   "items": {
     "type": "object",

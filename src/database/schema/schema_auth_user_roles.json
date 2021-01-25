@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Status",
-  "description": "State Status",
+  "title": "Auth User Roles",
+  "description": "Auth user roles",
   "type": "array",
   "items": {
     "type": "object",

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema 21E",
+  "description": "Form 21E status",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "description": "Status name for state"
+      },
+      "status_description": {
+        "type": "string",
+        "description": "Description of what it means for a form to be in this status"
+      }
+    },
+    "required": [ "status", "status_description" ]
+  }
+}
+
