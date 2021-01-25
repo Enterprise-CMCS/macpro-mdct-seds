@@ -54,7 +54,7 @@ resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-age-ranges
+        TableName: ${self:custom.stage}-age-ranges1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -67,7 +67,7 @@ resources:
     FormAnswersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-answers
+        TableName: ${self:custom.stage}-form-answers1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -80,7 +80,7 @@ resources:
     FormQuestionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-form-questions
+        TableName: ${self:custom.stage}-form-questions1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -93,7 +93,7 @@ resources:
     FormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-forms
+        TableName: ${self:custom.stage}-forms1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -106,7 +106,7 @@ resources:
     StateFormsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-state-forms
+        TableName: ${self:custom.stage}-state-forms1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -119,7 +119,7 @@ resources:
     StatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-states
+        TableName: ${self:custom.stage}-states1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -132,7 +132,7 @@ resources:
     StatusTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-status
+        TableName: ${self:custom.stage}-status1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
