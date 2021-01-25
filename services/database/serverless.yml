@@ -33,7 +33,15 @@ custom:
             sources: [../../src/database/initial_data_load/21E.json]
           - table: ${self:custom.stage}-form-answers
             sources:
-              [../../src/database/initial_data_load/form_answers_21E.json]
+              [
+                ../../src/database/initial_data_load/form_answers_21E_AL.json,
+                ../../src/database/initial_data_load/form_answers_21E_MD.json,
+                ../../src/database/initial_data_load/form_answers_21E_PA.json,
+              ]
+          - table: ${self:custom.stage}-auth-user
+            sources: [../../src/database/initial_data_load/auth_user.json]
+          - table: ${self:custom.stage}-auth-user-roles
+            sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
 provider:
   name: aws
@@ -134,6 +142,58 @@ resources:
           - AttributeName: status
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    AuthUserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-auth-user
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: user-id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user-id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    AuthUserRolesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-auth-user-roles
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    AuthJobCodesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-auth-user-job-codes
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: job-code
+            AttributeType: S
+        KeySchema:
+          - AttributeName: job-code
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    AuthUserStatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-auth-user-states
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: user-id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user-id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     AgeRangesTableName:
       Value: !Ref AgeRangesTable
@@ -177,6 +237,30 @@ resources:
       Value: !GetAtt StatusTable.Arn
     StatusTableStreamArn:
       Value: !GetAtt StatusTable.StreamArn
+    AuthUserTableName:
+      Value: !Ref AuthUserTable
+    AuthUserTableArn:
+      Value: !GetAtt AuthUserTable.Arn
+    AuthUserTableStreamArn:
+      Value: !GetAtt AuthUserTable.StreamArn
+    AuthUserRolesTableName:
+      Value: !Ref AuthUserRolesTable
+    AuthUserRolesTableArn:
+      Value: !GetAtt AuthUserRolesTable.Arn
+    AuthUserRolesTableStreamArn:
+      Value: !GetAtt AuthUserRolesTable.StreamArn
+    AuthJobCodesTableName:
+      Value: !Ref AuthJobCodesTable
+    AuthJobCodesTableArn:
+      Value: !GetAtt AuthJobCodesTable.Arn
+    AuthJobCodesTableStreamArn:
+      Value: !GetAtt AuthJobCodesTable.StreamArn
+    AuthUserStatesTableName:
+      Value: !Ref AuthJobCodesTable
+    AuthUserStatesTableArn:
+      Value: !GetAtt AuthJobCodesTable.Arn
+    AuthUserStatesTableStreamArn:
+      Value: !GetAtt AuthJobCodesTable.StreamArn
 
     Region:
       Value: !Sub ${AWS::Region}

@@ -1,0 +1,91 @@
+{
+  "TableName": "auth_user",
+  "KeySchema": [
+    {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "password",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "is_superuser",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "username",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "first_name",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "last_name",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "email",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "is_active",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "data_joined",
+      "KeyType": "RANGE"
+    },
+    {
+      "AttributeName": "last_login",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "id",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "password",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "is_superuser",
+      "AttributeType": "BOOL"
+    },
+    {
+      "AttributeName": "username",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "first_name",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "last_name",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "email",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "is_active",
+      "AttributeType": "BOOL"
+    },
+    {
+      "AttributeName": "data_joined",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "last_login",
+      "AttributeType": "S"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 100,
+    "WriteCapacityUnits": 100
+  }
+}

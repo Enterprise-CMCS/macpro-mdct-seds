@@ -1,0 +1,74 @@
+[
+  {
+    "user-id": "0",
+    "password": "",
+    "is_superuser": true,
+    "username": "WAQF",
+    "first_name": "Alexis",
+    "last_name": "Woodbury",
+    "email": "awoodbury@collabralink.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  },
+  {
+    "user-id": "1",
+    "password": "",
+    "is_superuser": true,
+    "username": "A1LX",
+    "first_name": "Andrew",
+    "last_name": "Adcock",
+    "email": "aadcock@collabralink.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  },
+  {
+    "user-id": "2",
+    "password": "",
+    "is_superuser": true,
+    "username": "G24F",
+    "first_name": "Jenna",
+    "last_name": "Gillis",
+    "email": "jgillis@collabralink.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  },
+  {
+    "user-id": "3",
+    "password": "",
+    "is_superuser": true,
+    "username": "G812",
+    "first_name": "Tim",
+    "last_name": "Griesemer",
+    "email": "tgriesemer@collabralink.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  },
+  {
+    "user-id": "4",
+    "password": "",
+    "is_superuser": true,
+    "username": "DKZ2",
+    "first_name": "Tony",
+    "last_name": "Davydets",
+    "email": "tdavydets@collabralink.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  },
+  {
+    "user-id": "5",
+    "password": "",
+    "is_superuser": true,
+    "username": "MDCT_Test",
+    "first_name": "MDCT",
+    "last_name": "Test",
+    "email": "mdcttest@example.com",
+    "is_active": true,
+    "date_joined": "01/22/2021",
+    "last_login": "01/22/2021"
+  }
+]

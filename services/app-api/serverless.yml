@@ -32,6 +32,14 @@ custom:
   StatesTableArn: ${cf:database-${self:custom.stage}.StatesTableArn}
   StatusTableName: ${cf:database-${self:custom.stage}.StatusTableName}
   StatusTableArn: ${cf:database-${self:custom.stage}.StatusTableArn}
+  AuthUserTableName: ${cf:database-${self:custom.stage}.AuthUserTableName}
+  AuthUserTableArn: ${cf:database-${self:custom.stage}.AuthUserTableArn}
+  AuthUserRolesTableName: ${cf:database-${self:custom.stage}.AuthUserRolesTableName}
+  AuthUserRolesTableArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+  AuthJobCodesTableName: ${cf:database-${self:custom.stage}.AuthJobCodesTableName}
+  AuthJobCodesTableArn: ${cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+  AuthUserStatesTableName: ${cf:database-${self:custom.stage}.AuthUserStatesTableName}
+  AuthUserStatesTableArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableArn}
   warmupEnabled:
     production: true
     development: false
