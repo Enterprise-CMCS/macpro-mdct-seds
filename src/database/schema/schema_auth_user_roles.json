@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Status",
+  "description": "State Status",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "user-id": {
+        "type": "string",
+        "description": "User ID; typically 4 chars"
+      },
+      "role": {
+        "type": "string",
+        "description": "Role assigned to user"
+      }
+    },
+    "required": [ "user-id", "role" ]
+  }
+}
+
