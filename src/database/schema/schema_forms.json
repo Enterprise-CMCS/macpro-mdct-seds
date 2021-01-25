@@ -23,6 +23,6 @@
         "description": "A narrative that describes what data is collected by the form."
       }
     },
-    "required": [ "form_id", "form", "form_name", "form_text" ]
+    "required": ["form_id", "form", "form_name", "form_text"]
   }
 }

@@ -15,6 +15,6 @@
         "description": "Description of age range"
       }
     },
-    "required": [ "age_range", "age_description" ]
+    "required": ["age_range", "age_description"]
   }
 }

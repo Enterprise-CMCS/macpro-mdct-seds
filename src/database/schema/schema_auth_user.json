@@ -47,7 +47,14 @@
         "description": "Datetime of users last login"
       }
     },
-    "required": [ "user-id", "password", "is_superuser", "username", "email", "is_active", "date_joined" ]
+    "required": [
+      "user-id",
+      "password",
+      "is_superuser",
+      "username",
+      "email",
+      "is_active",
+      "date_joined"
+    ]
   }
 }
-

@@ -15,7 +15,6 @@
         "description": "Description of what it means for a form to be in this status"
       }
     },
-    "required": [ "status", "status_description" ]
+    "required": ["status", "status_description"]
   }
 }
-

@@ -63,8 +63,21 @@
         "description": "User that added item to DB"
       }
     },
-    "required": [ "state_form", "state_id", "form", "program_code", "year", "quarter", "validation_percent", "status",
-    "status_date", "not_applicable", "last_modified", "last_modified_by", "created_date", "created_by"]
+    "required": [
+      "state_form",
+      "state_id",
+      "form",
+      "program_code",
+      "year",
+      "quarter",
+      "validation_percent",
+      "status",
+      "status_date",
+      "not_applicable",
+      "last_modified",
+      "last_modified_by",
+      "created_date",
+      "created_by"
+    ]
   }
 }
-

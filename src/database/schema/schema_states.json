@@ -15,6 +15,6 @@
         "description": "State name"
       }
     },
-    "required": [ "state_id", "state_name" ]
+    "required": ["state_id", "state_name"]
   }
 }

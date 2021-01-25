@@ -18,7 +18,6 @@
         }
       }
     },
-    "required": [ "job_code", "role" ]
+    "required": ["job_code", "role"]
   }
 }
-
