@@ -94,7 +94,9 @@ When run locally, auth bypasses Cognito. The frontend mimics login in local stor
    3. Run `yarn run nightwatch`
 
 ### Running Schema Validation
+
 Validate json files against schema to ensure accuracy before each commit.
+
 - Schema Location: `{ROOT}/src/database/schema/`
 - Initial Data Location: `{ROOT}/src/database/initial_data_load`
 
