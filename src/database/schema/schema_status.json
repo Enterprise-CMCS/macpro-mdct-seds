@@ -1,6 +1,21 @@
-[
-  {
-    "status": "Status",
-    "status_description": "Description of what it means for a form to be in this status"
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Status",
+  "description": "State Status",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "description": "Status name for state"
+      },
+      "status_description": {
+        "type": "string",
+        "description": "Description of what it means for a form to be in this status"
+      }
+    },
+    "required": [ "status", "status_description" ]
   }
-]
+}
+
