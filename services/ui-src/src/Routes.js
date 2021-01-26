@@ -11,6 +11,9 @@ import Amendments from "./containers/Amendments";
 import Profile from "./containers/Profile";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import Users from "./components/users/Users";
+import UserEdit from "./components/users/UserEdit";
+
 import {
   s3AmplifyUpload,
   s3LocalUploader,
@@ -58,6 +61,12 @@ export default function Routes() {
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/example">
         <Example />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/users">
+        <Users />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/users/:id">
+        <UserEdit />
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
         <Profile />

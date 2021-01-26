@@ -1,3 +1,27 @@
 /**********************
   FORM
 **********************/
+
+.searchable {
+  .searchable-input {
+    background-color: red;
+
+    .searchable-input-control {
+      input {
+        background-color: $white;
+        border: 1px solid $color-gray-light;
+        color: $black;
+      }
+    }
+  }
+}
+
+.edit-user {
+  label {
+    display: block;
+  }
+  .dropdown,
+  .textfield {
+    margin-bottom: 1.2rem;
+  }
+}
