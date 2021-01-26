@@ -19,6 +19,7 @@ const UserEdit = ({ stateList }) => {
 
   // Set up local state
   const [user, setUser] = useState();
+  /* eslint-disable no-unused-vars */
   const [states, setStates] = useState();
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();

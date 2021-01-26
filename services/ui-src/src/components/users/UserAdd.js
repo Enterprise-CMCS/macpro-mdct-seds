@@ -17,11 +17,11 @@ import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 const AddUser = ({ currentUser, stateList }) => {
   const addUser = async (stateId, userId, role) => {
-    if (stateId !== undefined && userId != "") {
-      const xhrURL = [
-        window.env.API_POSTGRES_URL,
-        `/api/v1/adduser/${userId}/${statesToSend}/${role}`
-      ].join("");
+    if (stateId !== undefined && userId !== "") {
+      // const xhrURL = [
+      //   window.env.API_POSTGRES_URL,
+      //   `/api/v1/adduser/${userId}/${statesToSend}/${role}`
+      // ].join("");
       // eslint-disable-next-line
       // await axios.get(xhrURL).then(function (result2) {
       //   window.alert(result2.data.toString());
@@ -40,6 +40,7 @@ const AddUser = ({ currentUser, stateList }) => {
 
   const [userId, setUserId] = useState();
   const [stateId, setStateId] = useState();
+  /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState();
   const [role, setRole] = useState(null);
   const [error, setError] = useState(false);
@@ -111,7 +112,7 @@ const AddUser = ({ currentUser, stateList }) => {
                   />
                 </div>
                 <div>
-                  {role == "state" ? (
+                  {role === "state" ? (
                     <>
                       State:
                       <br />
@@ -157,15 +158,15 @@ const AddUser = ({ currentUser, stateList }) => {
       </div>
     </>
   );
-  const unauthorized = (
-    <GridContainer className="container">
-      <Grid row>
-        <Grid col={12}>
-          <p>You do not have access to this functionality.</p>
-        </Grid>
-      </Grid>
-    </GridContainer>
-  );
+  // const unauthorized = (
+  //   <GridContainer className="container">
+  //     <Grid row>
+  //       <Grid col={12}>
+  //         <p>You do not have access to this functionality.</p>
+  //       </Grid>
+  //     </Grid>
+  //   </GridContainer>
+  // );
 
   const userRole = currentUser.role;
   // return userRole === "admin_user" ? authorized : unauthorized;
