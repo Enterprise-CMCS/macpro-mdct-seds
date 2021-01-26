@@ -3,16 +3,7 @@ import React from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
-import {
-  Accordion,
-  Alert,
-  Button,
-  Grid,
-  GridContainer
-} from "@trussworks/react-uswds";
-
 const TabContainer = () => {
-  let tabName;
   return (
     <Tabs>
       <TabList>

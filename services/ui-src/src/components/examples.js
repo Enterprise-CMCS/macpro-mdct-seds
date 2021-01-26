@@ -17,7 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // Tabs
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import TabContainer from "./layout/TabContainer";
 
