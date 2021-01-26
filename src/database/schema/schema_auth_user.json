@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Auth User",
+  "description": "User information",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "user-id": {
+        "type": "number",
+        "description": "Users numerical ID"
+      },
+      "password": {
+        "type": "string",
+        "description": "User password"
+      },
+      "is_superuser": {
+        "type": "boolean",
+        "description": "Is user a superuser"
+      },
+      "username": {
+        "type": "string",
+        "description": "Username; typically 4 chars"
+      },
+      "first_name": {
+        "type": "string",
+        "description": "First Name"
+      },
+      "last_name": {
+        "type": "string",
+        "description": "Last Name"
+      },
+      "email": {
+        "type": "string",
+        "description": "Email"
+      },
+      "is_active": {
+        "type": "boolean",
+        "description": "Is user allowed to access site"
+      },
+      "date_joined": {
+        "type": "string",
+        "description": "Datetime of when user joined"
+      },
+      "last_login": {
+        "type": "string",
+        "description": "Datetime of users last login"
+      }
+    },
+    "required": [
+      "user-id",
+      "password",
+      "is_superuser",
+      "username",
+      "email",
+      "is_active",
+      "date_joined"
+    ]
+  }
+}

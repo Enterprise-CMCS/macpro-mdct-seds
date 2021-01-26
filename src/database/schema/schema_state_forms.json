@@ -1,18 +1,83 @@
-[
-  {
-    "state_form": "state_id-form-year-quarter",
-    "state_id": "states.state_id",
-    "form": "forms.form",
-    "program_code": "XX",
-    "year": "2021",
-    "quarter": "1, 2, 3 or 4",
-    "validation_percent": ".03",
-    "status": "Current Form Status",
-    "status_date": "Date/Time Form entered Status",
-    "not_applicable": "true or false; default to false",
-    "last_modified": "Date/Time form was last saved",
-    "last_modified_by": "User who saved the form last",
-    "created_date": "Date/Time item was added to DB",
-    "created_by": "User that added item to DB"
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "State forms",
+  "description": "States info",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "state_form": {
+        "type": "string",
+        "description": "State id as form year and quarter"
+      },
+      "state_id": {
+        "type": "string",
+        "description": "State abbreviation"
+      },
+      "form": {
+        "type": "string",
+        "description": "Form ID"
+      },
+      "program_code": {
+        "type": "string",
+        "description": "Program code"
+      },
+      "year": {
+        "type": "number",
+        "description": "Year of form"
+      },
+      "quarter": {
+        "type": "number",
+        "description": "Quarter (1,2,3, or 4)"
+      },
+      "validation_percent": {
+        "type": "number",
+        "description": "Percentage complete (.03)"
+      },
+      "status": {
+        "type": "string",
+        "description": "Form status"
+      },
+      "status_date": {
+        "type": "string",
+        "description": "Date of last status change"
+      },
+      "not_applicable": {
+        "type": "boolean",
+        "description": "true or false; default to false"
+      },
+      "last_modified": {
+        "type": "string",
+        "description": "Last form modification date"
+      },
+      "last_modified_by": {
+        "type": "string",
+        "description": "The user who last edited form"
+      },
+      "created_date": {
+        "type": "string",
+        "description": "Date/Time item was added to DB"
+      },
+      "created_by": {
+        "type": "string",
+        "description": "User that added item to DB"
+      }
+    },
+    "required": [
+      "state_form",
+      "state_id",
+      "form",
+      "program_code",
+      "year",
+      "quarter",
+      "validation_percent",
+      "status",
+      "status_date",
+      "not_applicable",
+      "last_modified",
+      "last_modified_by",
+      "created_date",
+      "created_by"
+    ]
   }
-]
+}
