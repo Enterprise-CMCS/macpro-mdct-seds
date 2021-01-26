@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema 21E",
+  "description": "Form 21E status",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string",
+        "description": "Questions FULL id (example: 2021-21E-01)"
+      },
+      "form": {
+        "type": "string",
+        "description": "Form ID (example: 21E)"
+      },
+      "year": {
+        "type": "number",
+        "description": "Form year (example: 2021)"
+      },
+      "type": {
+        "type": "string",
+        "description": "Question type (example: datagridwithtotals)"
+      },
+      "row_total": {
+        "type": "boolean",
+        "description": "Should row totals be calculated"
+      },
+      "column_total": {
+        "type": "boolean",
+        "description": "Should columns totals be calculated"
+      },
+      "label": {
+        "type": "string",
+        "description": "Question label"
+      },
+      "rows": {
+        "type": "array",
+        "description": "Question rows",
+        "items": {
+          "type": "object"
+        }
+      },
+      "last_modified": {
+        "type": "string",
+        "description": "Date of last form modification"
+      },
+      "last_modified_by": {
+        "type": "string",
+        "description": "Last user to update form"
+      },
+      "created_date": {
+        "type": "string",
+        "description": "Date form was instantiated"
+      },
+      "created_by": {
+        "type": "string",
+        "description": "User who instantiated the form"
+      }
+    },
+    "required": [
+      "question",
+      "form",
+      "year",
+      "type",
+      "row_total",
+      "column_total",
+      "label",
+      "rows",
+      "last_modified",
+      "last_modified_by",
+      "created_date",
+      "created_by"
+    ]
+  }
+}
