@@ -27,7 +27,8 @@ const TabContainer = () => {
         // The questions for each tab will go inside of the tab Panels
         return (
           <TabPanel key={idx}>
-            <b>{tab.age_description}:</b> {<p>{loremIpsum}</p>}
+            <b>{tab.age_description}:</b>{" "}
+            {<p>{loremIpsum} This is where the questions will go! </p>}
           </TabPanel>
         );
       })}
@@ -41,10 +42,6 @@ const TabContainer = () => {
     </Tabs>
   );
 };
-// The actual questions will go inside of the tab panels, find a way to componenetize that
-
-// Add to exAMPLES.JS
-// ask Jenna about IDs
 
 const fakeTabData = [
   {
