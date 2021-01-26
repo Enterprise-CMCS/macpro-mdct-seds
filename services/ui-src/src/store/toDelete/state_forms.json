@@ -1,6 +1,6 @@
 [
   {
-    "state_form": "AL-2021-1-21E",
+    "state_form": "AL-21E-2021-1",
     "state_id": "AL",
     "form": "21E",
     "program_code": "AL",
@@ -10,19 +10,13 @@
     "status": "Not Started",
     "status_date": "01-15-2021",
     "not_applicable": "false",
-    "state_comments": [
-      {
-        "type": "text_multiline",
-        "entry": null
-      }
-    ],
     "last_modified": "01-15-2021",
     "last_modified_by": "seed",
     "created_date": "01-15-2021",
     "created_by": "seed"
   },
   {
-    "state_form": "MD-2021-1-21E",
+    "state_form": "MD-21E-2021-1",
     "state_id": "MD",
     "form": "21E",
     "program_code": "MD",
@@ -32,19 +26,13 @@
     "status": "Not Started",
     "status_date": "01-15-2021",
     "not_applicable": "false",
-    "state_comments": [
-      {
-        "type": "text_multiline",
-        "entry": null
-      }
-    ],
     "last_modified": "01-15-2021",
     "last_modified_by": "seed",
     "created_date": "01-15-2021",
     "created_by": "seed"
   },
   {
-    "state_form": "PA-2021-1-21E",
+    "state_form": "PA-21E-2021-1",
     "state_id": "PA",
     "form": "21E",
     "program_code": "PA",
@@ -54,12 +42,6 @@
     "status": "Not Started",
     "status_date": "01-15-2021",
     "not_applicable": "false",
-    "state_comments": [
-      {
-        "type": "text_multiline",
-        "entry": null
-      }
-    ],
     "last_modified": "01-15-2021",
     "last_modified_by": "seed",
     "created_date": "01-15-2021",
