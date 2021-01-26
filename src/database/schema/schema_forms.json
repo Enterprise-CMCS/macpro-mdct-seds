@@ -1,8 +1,28 @@
-[
-  {
-    "form_id": "Number",
-    "form": "Form Number",
-    "form_name": "Form Title",
-    "form_text": "A narrative that describes what data is collected by the form."
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Status",
+  "description": "State Status",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "form_id": {
+        "type": "string",
+        "description": "Form ID"
+      },
+      "form": {
+        "type": "string",
+        "description": "Form Number"
+      },
+      "form_name": {
+        "type": "string",
+        "description": "Form Name"
+      },
+      "form_text": {
+        "type": "string",
+        "description": "A narrative that describes what data is collected by the form."
+      }
+    },
+    "required": ["form_id", "form", "form_name", "form_text"]
   }
-]
+}

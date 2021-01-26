@@ -93,6 +93,18 @@ When run locally, auth bypasses Cognito. The frontend mimics login in local stor
    2. Enter `cd {ROOT}/tests/nightwatch/`
    3. Run `yarn run nightwatch`
 
+### Running Schema Validation
+
+Validate json files against schema to ensure accuracy before each commit.
+
+- Schema Location: `{ROOT}/src/database/schema/`
+- Initial Data Location: `{ROOT}/src/database/initial_data_load`
+
+1. Install AJV globally in your environment
+   1. `npm install -g ajv-cli`
+2. Run validate command
+   1. `ajv -s /path/to/schema.json -d /path/to/json.json`
+
 ## Requirements
 
 Node - we enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
