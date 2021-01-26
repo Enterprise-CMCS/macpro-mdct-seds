@@ -252,7 +252,7 @@ const UserEdit = ({ stateList }) => {
                   ) : null}
                   {role !== "state" && role !== null ? (
                     <>
-                      <label className="ds-c-label">State Multi</label>
+                      <label className="ds-c-label">State</label>
                       <MultiSelect
                         options={stateList}
                         // value={states}

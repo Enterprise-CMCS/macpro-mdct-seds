@@ -4,7 +4,6 @@
 
 .searchable {
   .searchable-input {
-    background-color: red;
 
     .searchable-input-control {
       input {
@@ -14,11 +13,39 @@
       }
     }
   }
+
+  .searchable-list {
+    background: $white;
+
+    .searchable-list-item {
+      color: $black;
+
+      &:hover {
+        background: $color-gray-light;
+        color: $white;
+      }
+    }
+    .searchable-list-item__active {
+      color: $color-gray-light;
+    }
+  }
+}
+
+.dropdown-container {
+  .dropdown-content {
+    z-index: 999;
+  }
+}
+
+.searchable,
+.multi-select {
+  max-width: 320px;
 }
 
 .edit-user {
   label {
     display: block;
+    font-weight: $font-weight-normal;
   }
   .dropdown,
   .textfield {
