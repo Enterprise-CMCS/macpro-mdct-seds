@@ -14,32 +14,37 @@ import {
 const TabContainer = () => {
   let tabName;
   return (
-    <GridContainer className="tab-container">
-      <Grid row>
-        <Grid col={12}>
-          <Tabs>
-            <TabList>
-              {fakeTabData.map((tab, idx) => {
-                return <Tab key={idx}>{tab.age_range}</Tab>;
-              })}
-              <Tab>Summary</Tab>
-              <Tab>Certification</Tab>
-            </TabList>
+    <Tabs>
+      <TabList>
+        {fakeTabData.map((tab, idx) => {
+          return <Tab key={idx}>{tab.age_range}</Tab>;
+        })}
+        <Tab>Summary</Tab>
+        <Tab>Certification</Tab>
+      </TabList>
 
-            {fakeTabData.map((tab, idx) => {
-              // The questions for each tab will go inside of the tab Panels
-              return <TabPanel key={idx}>{tab.age_description}</TabPanel>;
-            })}
+      {fakeTabData.map((tab, idx) => {
+        // The questions for each tab will go inside of the tab Panels
+        return (
+          <TabPanel key={idx}>
+            <b>{tab.age_description}:</b> {<p>{loremIpsum}</p>}
+          </TabPanel>
+        );
+      })}
 
-            <TabPanel>Summary </TabPanel>
-            <TabPanel>Certification</TabPanel>
-          </Tabs>
-        </Grid>
-      </Grid>
-    </GridContainer>
+      <TabPanel>
+        <b>Summary:</b> {<p>{loremIpsum}</p>}
+      </TabPanel>
+      <TabPanel>
+        <b>Certification:</b> {<p>{loremIpsum}</p>}
+      </TabPanel>
+    </Tabs>
   );
 };
 // The actual questions will go inside of the tab panels, find a way to componenetize that
+
+// Add to exAMPLES.JS
+// ask Jenna about IDs
 
 const fakeTabData = [
   {
@@ -63,5 +68,8 @@ const fakeTabData = [
     age_description: "Age 13 years through age 18 years"
   }
 ];
+
+const loremIpsum =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 export default TabContainer;
