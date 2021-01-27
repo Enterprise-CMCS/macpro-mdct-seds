@@ -2,6 +2,11 @@
   Buttons
 **********************/
 
+.btn-secondary {
+  background-color: $brand-quinary;
+  color: $white;
+}
+
 .usa-button {
   background: $lochmara;
   width: 140px;
