@@ -13,8 +13,12 @@
       "age_description": {
         "type": "string",
         "description": "Description of age range"
+      },
+      "range_id": {
+        "type": "string",
+        "description": "Unique ID for each age range"
       }
     },
-    "required": ["age_range", "age_description"]
+    "required": ["age_range", "age_description", "range_id"]
   }
 }
