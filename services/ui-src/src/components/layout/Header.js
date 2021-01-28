@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   GridContainer,
@@ -8,13 +8,22 @@ import {
 } from "@trussworks/react-uswds";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ isAuthenticated }) => {
+  const history = useHistory();
+  const [temp, setTemp] = useState();
+
   // TODO: Fill with data from Redux when available
-  let pageTitle = "CHIP Statistical Enrollment Data Reports";
-  let isAuthenticated = true;
   let email = "test@example.com";
-  const handleLogout = () => {};
+  // let isAuthenticated = true;
+  console.log("zzzIsAuthenticated", isAuthenticated);
+  async function handleLogout() {
+    await Auth.signOut();
+    setTemp(!temp);
+    history.push("/login");
+  }
 
   let testItems = [
     <Link href={"/"}>Home</Link>,
@@ -23,6 +32,7 @@ const Header = () => {
 
   return (
     <div className="header" data-test="component-header">
+      {console.log("zzzIsAuthenticated", isAuthenticated)}
       <div className="gov-info">
         <GovBanner />
       </div>
@@ -76,7 +86,9 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <h1 className="page-title">{pageTitle}</h1>
+              <h1 className="page-title">
+                CHIP Statistical Enrollment Data Reports
+              </h1>
             </Grid>
           </Grid>
         </GridContainer>

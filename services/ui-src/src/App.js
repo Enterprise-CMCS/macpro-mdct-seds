@@ -43,7 +43,8 @@ function App() {
   return (
     !isAuthenticating && (
       <div className="App">
-        <Header />
+        <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+        <button onClick={handleLogout}>Logout</button>
 
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">

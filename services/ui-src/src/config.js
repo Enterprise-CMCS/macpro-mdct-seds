@@ -2,7 +2,8 @@ export default {
   MAX_ATTACHMENT_SIZE: 5000000,
   s3: {
     REGION: window._env_.S3_ATTACHMENTS_BUCKET_REGION,
-    BUCKET: window._env_.S3_ATTACHMENTS_BUCKET_NAME
+    BUCKET: window._env_.S3_ATTACHMENTS_BUCKET_NAME,
+    LOCAL_ENDPOINT: window._env_.S3_LOCAL_ENDPOINT
   },
   apiGateway: {
     REGION: window._env_.API_REGION,
@@ -16,5 +17,6 @@ export default {
     IDENTITY_POOL_ID: window._env_.COGNITO_IDENTITY_POOL_ID,
     REDIRECT_SIGNIN: window._env_.COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT
-  }
+  },
+  LOCAL_LOGIN: window._env_.LOCAL_LOGIN
 };

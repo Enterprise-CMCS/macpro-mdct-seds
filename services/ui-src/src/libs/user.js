@@ -23,6 +23,5 @@ export function getLocalUserInfo() {
 
 export async function loginLocalUser(userInfo) {
   const store = window.localStorage;
-
   store.setItem(userKey, JSON.stringify(userInfo));
 }
