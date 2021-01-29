@@ -56,7 +56,6 @@ const Header = () => {
 
   return (
     <div className="header" data-test="component-header">
-      {console.log("zzzIsAuthenticated", isAuthenticated)}
       <div className="gov-info">
         <GovBanner />
       </div>

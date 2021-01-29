@@ -26,12 +26,8 @@ function App() {
       const userInfo = getLocalUserInfo();
 
       const location = window.location.pathname;
-      console.log("location", location);
       if (userInfo === null) {
         history.push("/login");
-        if (location !== "/login") {
-          history.go(0);
-        }
       } else {
         setEmail(userInfo.attributes.email);
         userHasAuthenticated(true);

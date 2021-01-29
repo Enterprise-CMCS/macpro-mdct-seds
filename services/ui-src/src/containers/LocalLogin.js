@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import { loginLocalUser } from "../libs/user";
+import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
@@ -27,8 +28,14 @@ export default function Login() {
 
   return (
     <div className="Login">
-      <p>Login locally here:</p>
-      <Button onClick={loginUser}>Login as Alice</Button>
+      <GridContainer className="container page-login">
+        <Grid row>
+          <Grid col={12}>
+            <p>Login locally here:</p>
+            <Button onClick={loginUser}>Login as Alice</Button>
+          </Grid>
+        </Grid>
+      </GridContainer>
     </div>
   );
 }
