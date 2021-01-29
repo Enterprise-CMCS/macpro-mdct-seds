@@ -1,20 +1,28 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import "./NotFound.css";
 
 import { disableForm } from "../store/reducers/singleForm";
 import { Button } from "@trussworks/react-uswds";
+import { truncateSync } from "fs";
 
 const NotFound = ({ form, toggle }) => {
-  // const dispatch = useDispatch();
-  const newStatus = form.not_applicable ? false : true;
-  const statusButtonText = form.not_applicable ? "Not Applicable" : "Active";
+  let newStatus;
+  let statusButtonText;
 
-  let A = 0;
+  if (form.not_applicable === true) {
+    newStatus = false;
+    statusButtonText = "Not Applicable";
+  } else {
+    newStatus = true;
+    statusButtonText = "Active";
+  }
 
   return (
     <div className="NotFound">
-      <Button onClick={() => toggle(newStatus)}>{statusButtonText}</Button>
+      <Button type="buton" onClick={() => toggle(newStatus)}>
+        {statusButtonText}
+      </Button>
       <h3>Sorry, page not found!</h3>
     </div>
   );
@@ -29,6 +37,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotFound);
-
-// IS DISPATCH WRONG??
-// ACCESSING PROPS INCORRECTLY??
