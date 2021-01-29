@@ -1,22 +1,32 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import "./NotFound.css";
 
 import { disableForm } from "../store/reducers/singleForm";
 import { Button } from "@trussworks/react-uswds";
 
 const NotFound = ({ form }) => {
-  const toggleStatus = form.status === "active" ? "N/A" : "active";
+  const dispatch = useDispatch();
+  const toggleStatus = form.not_applicable ? false : true;
+  const statusButtonText = form.not_applicable ? "Not Applicable" : "Active";
   return (
     <div className="NotFound">
-      <Button onClick={disableForm(toggleStatus)}>{form.status}</Button>
+      <Button onClick={dispatch(disableForm(toggleStatus))}>
+        {statusButtonText}
+      </Button>
       <h3>Sorry, page not found!</h3>
     </div>
   );
 };
 
-const mapState = state => ({
+// LOOK AT DISPATCH, WRONG NAME???
+
+// const mapDispatchToProps = {
+//   toggleStaus: disableForm
+// };
+
+const mapStateToProps = state => ({
   form: state.currentForm
 });
 
-export default connect(mapState)(NotFound);
+export default connect(mapStateToProps)(NotFound);
