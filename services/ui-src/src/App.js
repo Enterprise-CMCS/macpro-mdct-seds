@@ -7,6 +7,8 @@ import { Auth } from "aws-amplify";
 import { onError } from "./libs/errorLib";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import config from "./config";
+import { getLocalUserInfo } from "./libs/user";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -17,35 +19,42 @@ function App() {
 
   useEffect(() => {
     onLoad();
-  }, []);
+  });
 
   async function onLoad() {
-    try {
-      const userInfo = await Auth.currentSession();
-      userHasAuthenticated(true);
-      setEmail(userInfo.idToken.payload.email);
-    } catch (e) {
-      if (e !== "No current user") {
-        onError(e);
+    if (config.LOCAL_LOGIN === "true") {
+      const userInfo = getLocalUserInfo();
+
+      const location = window.location.pathname;
+      console.log("location", location);
+      if (userInfo === null) {
+        history.push("/login");
+        if (location !== "/login") {
+          history.go(0);
+        }
+      } else {
+        setEmail(userInfo.attributes.email);
+        userHasAuthenticated(true);
+      }
+    } else {
+      try {
+        const userInfo = await Auth.currentSession();
+        setEmail(userInfo.idToken.payload.email);
+        userHasAuthenticated(true);
+      } catch (e) {
+        if (e !== "No current user") {
+          onError(e);
+        }
       }
     }
 
     setIsAuthenticating(false);
   }
-  /* eslint-disable no-unused-vars */
-  async function handleLogout() {
-    await Auth.signOut();
 
-    userHasAuthenticated(false);
-
-    history.push("/login");
-  }
   return (
     !isAuthenticating && (
       <div className="App">
-        <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-        <button onClick={handleLogout}>Logout</button>
-
+        <Header />
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">
             <Routes />

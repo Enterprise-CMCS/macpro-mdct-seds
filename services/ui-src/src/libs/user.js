@@ -12,9 +12,7 @@ export async function currentUserInfo() {
 }
 
 export function getLocalUserInfo() {
-  const info = JSON.parse(window.localStorage.getItem(userKey));
-
-  return info;
+  return JSON.parse(window.localStorage.getItem(userKey));
 }
 
 export async function loginLocalUser(userInfo) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   GridContainer,
@@ -10,18 +10,42 @@ import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
+import { currentUserInfo } from "../../libs/user";
+import { onError } from "../../libs/errorLib";
+import config from "../../config";
 
-const Header = ({ isAuthenticated }) => {
+const Header = () => {
   const history = useHistory();
-  const [temp, setTemp] = useState();
+  const [email, setEmail] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // TODO: Fill with data from Redux when available
-  let email = "test@example.com";
-  // let isAuthenticated = true;
-  console.log("zzzIsAuthenticated", isAuthenticated);
+  useEffect(() => {
+    function loadProfile() {
+      return currentUserInfo();
+    }
+
+    async function onLoad() {
+      try {
+        const userInfo = await loadProfile();
+        setEmail(userInfo.attributes.email);
+        setIsAuthenticated(true);
+      } catch (e) {
+        onError(e);
+      }
+    }
+
+    onLoad();
+  }, []);
+
   async function handleLogout() {
-    await Auth.signOut();
-    setTemp(!temp);
+    if (config.LOCAL_LOGIN === "true") {
+      window.localStorage.removeItem("userKey");
+      history.push("/login");
+      history.go(0);
+    } else {
+      await Auth.signOut();
+    }
+
     history.push("/login");
   }
 
