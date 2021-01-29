@@ -5,28 +5,30 @@ import "./NotFound.css";
 import { disableForm } from "../store/reducers/singleForm";
 import { Button } from "@trussworks/react-uswds";
 
-const NotFound = ({ form }) => {
-  const dispatch = useDispatch();
-  const toggleStatus = form.not_applicable ? false : true;
+const NotFound = ({ form, toggle }) => {
+  // const dispatch = useDispatch();
+  const newStatus = form.not_applicable ? false : true;
   const statusButtonText = form.not_applicable ? "Not Applicable" : "Active";
+
+  let A = 0;
+
   return (
     <div className="NotFound">
-      <Button onClick={dispatch(disableForm(toggleStatus))}>
-        {statusButtonText}
-      </Button>
+      <Button onClick={() => toggle(newStatus)}>{statusButtonText}</Button>
       <h3>Sorry, page not found!</h3>
     </div>
   );
 };
 
-// LOOK AT DISPATCH, WRONG NAME???
-
-// const mapDispatchToProps = {
-//   toggleStaus: disableForm
-// };
+const mapDispatchToProps = dispatch => ({
+  toggle: status => dispatch(disableForm(status))
+});
 
 const mapStateToProps = state => ({
   form: state.currentForm
 });
 
-export default connect(mapStateToProps)(NotFound);
+export default connect(mapStateToProps, mapDispatchToProps)(NotFound);
+
+// IS DISPATCH WRONG??
+// ACCESSING PROPS INCORRECTLY??

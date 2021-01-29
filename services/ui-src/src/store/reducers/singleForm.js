@@ -15,7 +15,7 @@ export const gotFormData = (formObject = {}) => {
 export const updatedStatus = activeBoolean => {
   return {
     type: UPDATE_FORM_STATUS,
-    activeBoolean
+    activeStatus: activeBoolean
   };
 };
 
@@ -25,18 +25,15 @@ export const getFormData = ({ formID }) => {
   return async dispatch => {
     // Call aws amplify endpoint. This is a placeholder
     // const { data } = results;
-    // will also have to fetch status of form, this is currently not included
 
     dispatch(gotFormData(data));
   };
 };
-// export const disableForm = activeBoolean => {
-//   return dispatch => {
-//     dispatch(updatedStatus(true));
-//   };
-// };
-export const disableForm = activeBoolean => async dispatch => {
-  dispatch(updatedStatus(true));
+
+export const disableForm = activeBoolean => {
+  return dispatch => {
+    dispatch(updatedStatus(activeBoolean));
+  };
 };
 
 // INITIAL STATE
@@ -55,7 +52,7 @@ export default (state = initialState, action) => {
     case UPDATE_FORM_STATUS:
       return {
         ...state,
-        not_applicable: action.activeBoolean
+        not_applicable: action.activeStatus
       };
     default:
       return state;
