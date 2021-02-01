@@ -11,7 +11,7 @@ custom:
   dynamodb:
     stages:
       - local
-      - dev
+      - master
     start:
       port: 8000
       inMemory: true
