@@ -25,7 +25,6 @@ function App() {
     if (config.LOCAL_LOGIN === "true") {
       const userInfo = getLocalUserInfo();
 
-      const location = window.location.pathname;
       if (userInfo === null) {
         history.push("/login");
       } else {

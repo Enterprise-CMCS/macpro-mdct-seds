@@ -27,8 +27,12 @@ const Header = () => {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        setEmail(userInfo.attributes.email);
-        setIsAuthenticated(true);
+        if (userInfo === null) {
+          setIsAuthenticated(false);
+        } else {
+          setEmail(userInfo.attributes.email);
+          setIsAuthenticated(true);
+        }
       } catch (e) {
         onError(e);
       }
