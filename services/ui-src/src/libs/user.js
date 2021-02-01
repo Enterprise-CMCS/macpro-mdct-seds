@@ -4,9 +4,7 @@ import config from "../config";
 const userKey = "userKey";
 
 export async function currentUserInfo() {
-  const localLogin = config.LOCAL_LOGIN === "true";
-
-  if (localLogin) {
+  if (config.LOCAL_LOGIN === "true") {
     return getLocalUserInfo();
   } else {
     return Auth.currentUserInfo();
@@ -14,15 +12,9 @@ export async function currentUserInfo() {
 }
 
 export function getLocalUserInfo() {
-  const store = window.localStorage;
-
-  const info = JSON.parse(store.getItem(userKey));
-
-  return info;
+  return JSON.parse(window.localStorage.getItem(userKey));
 }
 
 export async function loginLocalUser(userInfo) {
-  const store = window.localStorage;
-
-  store.setItem(userKey, JSON.stringify(userInfo));
+  window.localStorage.setItem(userKey, JSON.stringify(userInfo));
 }

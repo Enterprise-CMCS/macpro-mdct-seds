@@ -9,8 +9,8 @@ services=(
   'uploads'
   'app-api'
   'stream-functions'
-  'ui-auth'
   'ui'
+  'ui-auth'
   'ui-src'
 )
 
