@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   GridContainer,
@@ -8,13 +8,50 @@ import {
 } from "@trussworks/react-uswds";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
+import { currentUserInfo } from "../../libs/user";
+import { onError } from "../../libs/errorLib";
+import config from "../../config";
 
 const Header = () => {
-  // TODO: Fill with data from Redux when available
-  let pageTitle = "CHIP Statistical Enrollment Data Reports";
-  let isAuthenticated = true;
-  let email = "test@example.com";
-  const handleLogout = () => {};
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    function loadProfile() {
+      return currentUserInfo();
+    }
+
+    async function onLoad() {
+      try {
+        const userInfo = await loadProfile();
+        if (userInfo === null) {
+          setIsAuthenticated(false);
+        } else {
+          setEmail(userInfo.attributes.email);
+          setIsAuthenticated(true);
+        }
+      } catch (e) {
+        onError(e);
+      }
+    }
+
+    onLoad();
+  }, []);
+
+  async function handleLogout() {
+    if (config.LOCAL_LOGIN === "true") {
+      window.localStorage.removeItem("userKey");
+      history.push("/login");
+      history.go(0);
+    } else {
+      await Auth.signOut();
+    }
+
+    history.push("/login");
+  }
 
   let testItems = [
     <Link href={"/"}>Home</Link>,
@@ -76,7 +113,9 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <h1 className="page-title">{pageTitle}</h1>
+              <h1 className="page-title">
+                CHIP Statistical Enrollment Data Reports
+              </h1>
             </Grid>
           </Grid>
         </GridContainer>
