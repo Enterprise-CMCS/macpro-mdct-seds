@@ -5,15 +5,17 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./Profile.css";
 import { Auth } from "aws-amplify";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { currentUserInfo } from "../libs/user";
+import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Profile() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [role, setRole] = useState("");
+  const [states, setStates] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const capitalize = s => {
     if (typeof s !== "string") return "";
@@ -22,18 +24,17 @@ export default function Profile() {
 
   useEffect(() => {
     function loadProfile() {
-      return Auth.currentUserInfo();
+      return currentUserInfo();
     }
 
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
         setEmail(userInfo.attributes.email);
-        setFirstName(capitalize(userInfo.attributes.given_name));
-        setLastName(capitalize(userInfo.attributes.family_name));
-        setPhoneNumber(
-          formatPhoneNumberForForm(userInfo.attributes.phone_number)
-        );
+        setFirstName(capitalize(userInfo.attributes.first_name));
+        setLastName(capitalize(userInfo.attributes.last_name));
+        setRole(capitalize(userInfo.attributes.role));
+        setStates(formatStates(userInfo.attributes.states));
       } catch (e) {
         onError(e);
       }
@@ -42,16 +43,9 @@ export default function Profile() {
     onLoad();
   }, []);
 
-  function validatePhoneNumber(phone) {
-    if (phone === "1" || phone === "") return true;
-    return phone.length === 11;
-  }
   function validateForm() {
     return (
-      email.length > 0 &&
-      firstName.length > 0 &&
-      lastName.length &&
-      validatePhoneNumber(phoneNumber)
+      email.length > 0 && firstName.length > 0 && lastName.length && role.length
     );
   }
 
@@ -59,24 +53,32 @@ export default function Profile() {
     return Auth.updateUserAttributes(user, userAttributes);
   }
 
-  function formatPhoneNumberForForm(phone) {
-    if (phone == null) return "";
-    return phone.replace("+", "");
+  function formatStates(states) {
+    let statesRefined = "";
+
+    // Sort alphabetically
+    states.sort();
+
+    // Create string from array, add in commas
+    states.forEach((value, i) => {
+      if (i === 0) {
+        statesRefined += value;
+      } else {
+        statesRefined += ", " + value;
+      }
+    });
+
+    return statesRefined;
   }
 
-  function formatPhoneNumberForSubmission(phone) {
-    if (phone === "1" || phone === "" || phone == null) return "";
-    return "+" + phone.replace("+", "");
-  }
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
     let user = await Auth.currentAuthenticatedUser();
     try {
       await saveProfile(user, {
-        given_name: firstName,
-        family_name: lastName,
-        phone_number: formatPhoneNumberForSubmission(phoneNumber)
+        first_name: firstName,
+        last_name: lastName
       });
       history.push("/");
     } catch (e) {
@@ -87,47 +89,56 @@ export default function Profile() {
 
   return (
     <div className="Profile">
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl value={email} disabled={true} />
-        </FormGroup>
-        <FormGroup controlId="firstName">
-          <ControlLabel>First Name</ControlLabel>
-          <FormControl
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="lastName">
-          <ControlLabel>Last Name</ControlLabel>
-          <FormControl
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="phoneNumber">
-          <ControlLabel>Phone</ControlLabel>
-          <PhoneInput
-            value={phoneNumber}
-            country="us"
-            countryCodeEditable={false}
-            disableDropdown={true}
-            enableAreaCodes={false}
-            onChange={e => setPhoneNumber(e || "")}
-          />
-        </FormGroup>
-        <LoaderButton
-          block
-          type="submit"
-          bsSize="large"
-          bsStyle="primary"
-          isLoading={isLoading}
-          disabled={!validateForm()}
-        >
-          Save
-        </LoaderButton>
-      </form>
+      <GridContainer className="container">
+        <Grid row>
+          <Grid col={12}>
+            <form onSubmit={handleSubmit}>
+              <FormGroup controlId="email">
+                <ControlLabel>Email</ControlLabel>
+                <FormControl value={email} disabled={true} />
+              </FormGroup>
+              <FormGroup controlId="firstName">
+                <ControlLabel>First Name</ControlLabel>
+                <FormControl
+                  value={firstName}
+                  onChange={e => setFirstName(e.target.value)}
+                  disabled={true}
+                />
+              </FormGroup>
+              <FormGroup controlId="lastName">
+                <ControlLabel>Last Name</ControlLabel>
+                <FormControl
+                  value={lastName}
+                  onChange={e => setLastName(e.target.value)}
+                  disabled={true}
+                />
+              </FormGroup>
+              <FormGroup controlId="role">
+                <ControlLabel>Role</ControlLabel>
+                <FormControl
+                  value={role}
+                  onChange={e => setRole(e.target.value)}
+                  disabled={true}
+                />
+              </FormGroup>
+              <FormGroup controlId="states">
+                <ControlLabel>States</ControlLabel>
+                <FormControl value={states} disabled={true} />
+              </FormGroup>
+              <LoaderButton
+                block
+                type="submit"
+                bsSize="large"
+                bsStyle="primary"
+                isLoading={isLoading}
+                disabled={!validateForm()}
+              >
+                Save
+              </LoaderButton>
+            </form>
+          </Grid>
+        </Grid>
+      </GridContainer>
     </div>
   );
 }
