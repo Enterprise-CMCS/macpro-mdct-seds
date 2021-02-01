@@ -6,7 +6,7 @@ import { onError } from "../libs/errorLib";
 import config from "../config";
 import "./NewAmendment.css";
 import { createAmendment } from "../libs/api";
-import { currentUserInfo } from "../libs/user";
+import { Auth } from "aws-amplify";
 import Select from "react-select";
 import Switch from "react-ios-switch";
 import { territoryList } from "../libs/territoryLib";
@@ -27,11 +27,8 @@ export default function NewAmendment({ fileUpload }) {
   };
 
   async function populateUserInfo() {
-    var userInfo = await currentUserInfo();
-    setEmail(userInfo.attributes.email);
-    setFirstName(capitalize(userInfo.attributes.given_name));
-    setLastName(capitalize(userInfo.attributes.family_name));
-    return userInfo.attributes.email;
+    const userInfo = await Auth.currentSession();
+    setEmail(userInfo.idToken.payload.email);
   }
 
   populateUserInfo();
@@ -96,16 +93,16 @@ export default function NewAmendment({ fileUpload }) {
           <ControlLabel>First Name</ControlLabel>
           <FormControl
             value={firstName}
-            disabled={true}
-            onChange={e => setFirstName(e.target.value)}
+            disabled={false}
+            onChange={e => setFirstName(capitalize(e.target.value))}
           />
         </FormGroup>
         <FormGroup controlId="lastName">
           <ControlLabel>Last Name</ControlLabel>
           <FormControl
             value={lastName}
-            disabled={true}
-            onChange={e => setLastName(e.target.value)}
+            disabled={false}
+            onChange={e => setLastName(capitalize(e.target.value))}
           />
         </FormGroup>
         <FormGroup controlId="territory">
