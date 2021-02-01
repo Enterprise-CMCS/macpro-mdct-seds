@@ -18,28 +18,28 @@ custom:
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
   infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
-  AgeRangesTableName: ${cf:database-${self:custom.stage}.AgeRangesTableName}
-  AgeRangesTableArn: ${cf:database-${self:custom.stage}.AgeRangesTableArn}
-  FormAnswersTableName: ${cf:database-${self:custom.stage}.FormAnswersTableName}
-  FormAnswersTableArn: ${cf:database-${self:custom.stage}.FormAnswersTableArn}
-  FormQuestionsTableName: ${cf:database-${self:custom.stage}.FormQuestionsTableName}
-  FormQuestionsTableArn: ${cf:database-${self:custom.stage}.FormQuestionsTableArn}
-  FormsTableName: ${cf:database-${self:custom.stage}.FormsTableName}
-  FormsTableArn: ${cf:database-${self:custom.stage}.FormsTableArn}
-  StateFormsTableName: ${cf:database-${self:custom.stage}.StateFormsTableName}
-  StateFormsTableArn: ${cf:database-${self:custom.stage}.StateFormsTableArn}
-  StatesTableName: ${cf:database-${self:custom.stage}.StatesTableName}
-  StatesTableArn: ${cf:database-${self:custom.stage}.StatesTableArn}
-  StatusTableName: ${cf:database-${self:custom.stage}.StatusTableName}
-  StatusTableArn: ${cf:database-${self:custom.stage}.StatusTableArn}
-  AuthUserTableName: ${cf:database-${self:custom.stage}.AuthUserTableName}
-  AuthUserTableArn: ${cf:database-${self:custom.stage}.AuthUserTableArn}
-  AuthUserRolesTableName: ${cf:database-${self:custom.stage}.AuthUserRolesTableName}
-  AuthUserRolesTableArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableArn}
-  AuthJobCodesTableName: ${cf:database-${self:custom.stage}.AuthJobCodesTableName}
-  AuthJobCodesTableArn: ${cf:database-${self:custom.stage}.AuthJobCodesTableArn}
-  AuthUserStatesTableName: ${cf:database-${self:custom.stage}.AuthUserStatesTableName}
-  AuthUserStatesTableArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+  AgeRangesTableName: ${env:AGERANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
+  AgeRangesTableArn: ${env:AGERANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
+  FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
+  FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
+  FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
+  FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
+  FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
+  FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
+  StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
+  StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
+  StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
+  StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
+  StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
+  StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
+  AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
+  AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
+  AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
+  AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+  AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
+  AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+  AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
+  AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
   warmupEnabled:
     production: true
     development: false
