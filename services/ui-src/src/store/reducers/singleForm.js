@@ -1,5 +1,5 @@
 // Temporary import, using 21E as an example of a form
-import * as dummydata from "../toDelete/sample21query.json";
+import * as dummydata from "../toDelete/sample21Equery.json";
 const data = dummydata.default[0];
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
