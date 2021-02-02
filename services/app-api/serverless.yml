@@ -124,8 +124,17 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
-  getUsers:
+  getUser:
     handler: handlers/users/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getUsers:
+    handler: handlers/users/list.main
     role: LambdaApiRole
     events:
       - http:
@@ -138,7 +147,16 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: users
+          path: users/add
+          method: post
+          cors: true
+          authorizer: aws_iam
+  deleteUser:
+    handler: handlers/users/delete.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/delete
           method: post
           cors: true
           authorizer: aws_iam

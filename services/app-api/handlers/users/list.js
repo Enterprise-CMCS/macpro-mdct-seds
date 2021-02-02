@@ -7,21 +7,15 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
-
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
-    Key: {
-      userId: event.pathParameters.id,
-    },
   };
 
-  const result = await dynamoDb.get(params);
+  const result = await dynamoDb.scan(params);
 
-  if (!result.Item) {
-    throw new Error("Users not found.");
+  if (!result.Items) {
+    throw new Error("No Users not found.");
   }
-  console.log("Sending back result:", JSON.stringify(result, null, 2));
 
-  // Return the retrieved item
-  return result.Item;
+  return result.Items;
 });

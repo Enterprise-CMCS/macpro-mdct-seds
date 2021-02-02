@@ -24,6 +24,7 @@ export default {
   query: (params) => client.query(params).promise(),
   update: (params) => client.update(params).promise(),
   delete: (params) => client.delete(params).promise(),
+  scan: (params) => client.scan(params).promise(),
   increment: (params) =>
     atomicCounter.increment(params, { tableName: atomicTableName }),
 };
