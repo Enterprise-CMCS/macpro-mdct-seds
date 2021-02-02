@@ -58,10 +58,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             AttributeType: S
         KeySchema:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormAnswersTable:
