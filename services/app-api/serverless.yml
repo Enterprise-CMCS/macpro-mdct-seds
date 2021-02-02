@@ -124,6 +124,24 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  getUsers:
+    handler: handlers/users/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+          authorizer: aws_iam
+  createUser:
+    handler: handlers/users/create.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users
+          method: post
+          cors: true
+          authorizer: aws_iam
 
 resources:
   Conditions:

@@ -149,10 +149,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
@@ -162,10 +162,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthJobCodesTable:
@@ -188,10 +188,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
