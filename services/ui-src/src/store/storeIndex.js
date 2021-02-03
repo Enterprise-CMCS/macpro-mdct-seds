@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
+import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import quarterStatuses from "./reducers/quarterStatuses";
 import userData from "./reducers/userData";
@@ -15,7 +15,7 @@ export const reducers = combineReducers({
 });
 
 // Consolidate middleware
-let middlewareArray = [thunkMiddleware];
+let middlewareArray = [thunk];
 // log redux only in dev environment
 if (process.env.NODE_ENV === "development") {
   // eslint-disable-next-line global-require
