@@ -22,9 +22,9 @@ export default function Login() {
 
   function signInWithOkta() {
     const authConfig = Auth.configure();
-    const { domain, redirectSignIn, responseType } = authConfig.oauth;
+    const { domain, responseType } = authConfig.oauth;
     const clientId = authConfig.userPoolWebClientId;
-    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
+    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${window.location.pathname}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
   }
 
