@@ -6,6 +6,7 @@ import { TextField } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
+import { getUser } from "../../libs/api";
 
 /**
  * View/edit a single user with options
@@ -20,11 +21,29 @@ const UserEdit = ({ stateList }) => {
   // Set up local state
   const [user, setUser] = useState();
   /* eslint-disable no-unused-vars */
-  const [states, setStates] = useState();
+  const [states, setStates] = useState(stateList);
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();
   /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState("null");
+
+  // Get User data
+  const loadUserData = async () => {
+    const getUserData = { userId: id };
+
+    const data = await getUser(getUserData);
+
+    setUser(data);
+
+    setRole(data.role);
+    setStates(stateList);
+
+    return data;
+  };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   // Save selections for local use and API use
   const setStatesFromArray = (option, simple = false) => {
@@ -52,38 +71,6 @@ const UserEdit = ({ stateList }) => {
     setStatesToSend(states);
   };
 
-  // Get User data
-  const loadUserData = async () => {
-    // let { data } = await axios.get(`/api/v1/user/${id}`);
-    // setUser(data[0]);
-    // setStates(userStatesRefined(data[0].state_codes));
-    // setStatesFromArray(data[0].state_codes, true);
-    // setRole(data[0].user_role);
-    const data = [
-      {
-        user_id: 0,
-        password: "",
-        is_superuser: true,
-        username: "WAQF",
-        first_name: "Alexis",
-        last_name: "Woodbury",
-        email: "awoodbury@collabralink.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["AZ"],
-        role: "admin"
-      }
-    ];
-    setUser(data[0]);
-    setRole(data[0].role);
-  };
-
-  // When stateList is rendered, call for User data
-  useEffect(() => {
-    loadUserData();
-  }, [stateList]);
-
   const roles = [
     { value: "admin", label: "Admin User" },
     { value: "business", label: "Business User" },
@@ -100,7 +87,8 @@ const UserEdit = ({ stateList }) => {
     let tempUser = { ...user };
     let response;
 
-    if (field === "state_codes") {
+    if (field === "states") {
+      console.log("zzzStates", states);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
         response = userStatesSimplified(e);
@@ -116,14 +104,14 @@ const UserEdit = ({ stateList }) => {
 
       // Write to local state
       setStates(e);
-    } else if (field === "user_role") {
+    } else if (field === "role") {
       // Save to local state
       setRole(e.value);
       setStatesToSend("null");
       setStates("");
       // Update user
       response = e.value;
-    } else if (field === "is_active") {
+    } else if (field === "isActive") {
       response = e.value;
       if (e.value) {
         setIsActive("True");
@@ -198,24 +186,27 @@ const UserEdit = ({ stateList }) => {
                     label="Username"
                     onChange={e => updateLocalUser(e, "username")}
                     disabled={true}
+                    name="username"
                   />
                 </div>
                 <div className="textfield">
                   <TextField
-                    value={user.first_name}
+                    value={user.firstName}
                     type="text"
                     label="First Name"
-                    onChange={e => updateLocalUser(e, "first_name")}
+                    onChange={e => updateLocalUser(e, "firstName")}
                     disabled={true}
+                    name="firstName"
                   />
                 </div>
                 <div className="textfield">
                   <TextField
-                    value={user.last_name}
+                    value={user.lastName}
                     type="text"
                     label="Last Name"
-                    onChange={e => updateLocalUser(e, "last_name")}
+                    onChange={e => updateLocalUser(e, "lastName")}
                     disabled={true}
+                    name="lastName"
                   />
                 </div>
                 <div className="textfield">
@@ -225,6 +216,7 @@ const UserEdit = ({ stateList }) => {
                     label="Email"
                     onChange={e => updateLocalUser(e, "email")}
                     disabled={true}
+                    name="email"
                   />
                 </div>
                 <div className="dropdown">
@@ -233,8 +225,8 @@ const UserEdit = ({ stateList }) => {
                     <Searchable
                       options={roles}
                       placeholder="Select a Role"
-                      onSelect={e => updateLocalUser(e, "user_role")}
-                      value={role ? role : user.user_role}
+                      onSelect={e => updateLocalUser(e, "role")}
+                      value={role ? role : user.role}
                     />
                   </>
                 </div>
@@ -247,7 +239,7 @@ const UserEdit = ({ stateList }) => {
                         options={stateList}
                         multiple={true}
                         placeholder="Select a State"
-                        onSelect={e => updateLocalUser(e, "state_codes")}
+                        onSelect={e => updateLocalUser(e, "states")}
                       />
                     </>
                   ) : null}
@@ -257,7 +249,7 @@ const UserEdit = ({ stateList }) => {
                       <MultiSelect
                         options={stateList}
                         // value={states}
-                        onChange={e => updateLocalUser(e, "state_codes")}
+                        onChange={e => updateLocalUser(e, "states")}
                         labelledBy={"Select States"}
                         multiple={false}
                       />
@@ -271,15 +263,15 @@ const UserEdit = ({ stateList }) => {
                       options={statuses}
                       multiple={false}
                       placeholder="Select a State"
-                      onSelect={e => updateLocalUser(e, "is_active")}
-                      value={isActive ? isActive : getStatus(user.is_active)}
+                      onSelect={e => updateLocalUser(e, "isActive")}
+                      value={isActive ? isActive : getStatus(user.isActive)}
                     />
                   </>
                 </div>
                 <br />
                 <Button
                   type="button"
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   onClick={() => updateUser(user)}
                 >
                   Update User
@@ -296,17 +288,13 @@ const UserEdit = ({ stateList }) => {
 };
 
 UserEdit.propTypes = {
-  stateList: PropTypes.object.isRequired
+  stateList: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-  // stateList: state.allStatesData.map(element => {
-  //   return { label: element.name, value: element.code };
-  // })
-  stateList: [
-    { label: "Alabama", value: "AL" },
-    { label: "Maryland", value: "MD" }
-  ]
+  stateList: state.global.states.map(element => {
+    return { label: element.state_name, value: element.state_id };
+  })
 });
 
 export default connect(mapStateToProps)(UserEdit);

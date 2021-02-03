@@ -130,7 +130,7 @@ functions:
     events:
       - http:
           path: users/{id}
-          method: get
+          method: post
           cors: true
           authorizer: aws_iam
   getUsers:
@@ -166,6 +166,15 @@ functions:
     events:
       - http:
           path: users/activation/{username}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  updateUser:
+    handler: handlers/users/update.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/update/{userId}
           method: put
           cors: true
           authorizer: aws_iam

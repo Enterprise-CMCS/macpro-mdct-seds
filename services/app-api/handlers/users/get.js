@@ -8,10 +8,12 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  const data = JSON.parse(event.body);
+
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
     Key: {
-      userId: event.pathParameters.id,
+      userId: data.userId,
     },
   };
 
@@ -20,7 +22,6 @@ export const main = handler(async (event, context) => {
   if (!result.Item) {
     throw new Error("Users not found.");
   }
-  console.log("Sending back result:", JSON.stringify(result, null, 2));
 
   // Return the retrieved item
   return result.Item;

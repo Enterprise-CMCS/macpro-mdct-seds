@@ -55,3 +55,9 @@ export function activationUsers(data) {
   opts.body = data;
   return API.put("amendments", `/users/activation/${data.username}`, opts);
 }
+
+export function getUser(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.post("amendments", `/users/${data.userId}`, opts);
+}

@@ -5,7 +5,6 @@ import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { listUsers, activationUsers } from "../../libs/api";
-import moment from "moment";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 /**
  * Display all users with options
@@ -21,7 +20,7 @@ const Users = () => {
   const loadUserData = async () => {
     const data = await listUsers();
     setUsers(data);
-    return listUsers();
+    return data;
   };
 
   useEffect(() => {
