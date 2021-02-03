@@ -24,7 +24,7 @@ export default function Login() {
     const authConfig = Auth.configure();
     const { domain, responseType } = authConfig.oauth;
     const clientId = authConfig.userPoolWebClientId;
-    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${window.location.hostname}&response_type=${responseType}&client_id=${clientId}`;
+    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=https://${window.location.hostname}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
   }
 
