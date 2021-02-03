@@ -4,7 +4,6 @@ import "./NotFound.css";
 
 import { disableForm } from "../store/reducers/singleForm";
 import { Button } from "@trussworks/react-uswds";
-import StatusButton from "../components/StatusButton";
 
 const NotFound = ({ form, toggle }) => {
   let newStatus;
