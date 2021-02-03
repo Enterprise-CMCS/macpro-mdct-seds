@@ -160,6 +160,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  activationUser:
+    handler: handlers/users/activation.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/activation/{username}
+          method: put
+          cors: true
+          authorizer: aws_iam
 
 resources:
   Conditions:

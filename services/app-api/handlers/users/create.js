@@ -38,6 +38,7 @@ export const main = handler(async (event, context) => {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
+      role: data.role,
       isActive: "true",
       dateJoined: Date.now(),
     },

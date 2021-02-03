@@ -47,5 +47,11 @@ export function deleteAmendment(id) {
 
 export function listUsers() {
   const opts = requestOptions();
-  return API.del("users", `/users`, opts);
+  return API.get("amendments", `/users`, opts);
+}
+
+export function activationUsers(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.put("amendments", `/users/activation/${data.username}`, opts);
 }
