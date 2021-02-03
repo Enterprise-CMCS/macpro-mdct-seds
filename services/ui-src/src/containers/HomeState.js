@@ -32,7 +32,7 @@ const HomeState = () => {
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
           return (
-            <li>
+            <li key={`${state}-${year}-${element}`}>
               <Link href={`/forms/${state}/${years[year].year}/${element}`}>
                 Quarter {element}
               </Link>

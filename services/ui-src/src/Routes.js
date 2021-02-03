@@ -64,24 +64,24 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/signup">
         <Signup />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/example">
+      <AuthenticatedRoute exact path="/example">
         <Example />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users">
         <Users />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users/:id">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users/:id">
         <UserEdit />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users/add/user">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users/add/user">
         <UserAdd />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
         <Profile />
       </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/forms/:state/:year/:quarter">
+      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/amendments/new">
         <NewAmendment fileUpload={s3Upload} />
       </AuthenticatedRoute>

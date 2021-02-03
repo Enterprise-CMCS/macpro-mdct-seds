@@ -91,6 +91,7 @@ const Example = () => {
           <StatusButton type="provisional" />
           <StatusButton type="final" />
           <StatusButton type="notstarted" />
+          <StatusButton type="notapplicable" />
         </Grid>
       </Grid>
       <Grid row>

@@ -22,6 +22,11 @@ const StatusButton = ({ type = "inprogress" }) => {
       classValue = "status-provisional";
       buttonValue = "Provisional Data Submitted";
       break;
+    case "notapplicable":
+      classValue = "status-notapplicable";
+      buttonValue = "Not Applicable";
+
+      break;
     default:
       classValue = "status-inprogress";
       buttonValue = "In Progress";
