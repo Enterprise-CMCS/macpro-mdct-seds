@@ -128,7 +128,7 @@ const GridWithTotals = props => {
 
             if (columnIndex === 2) {
               formattedCell = (
-                <>
+                <React.Fragment>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     <TextInput
@@ -140,7 +140,7 @@ const GridWithTotals = props => {
                       defaultValue={column}
                     />
                   </td>
-                </>
+                </React.Fragment>
               );
             } else {
               formattedCell = (
