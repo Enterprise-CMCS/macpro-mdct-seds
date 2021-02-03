@@ -77,4 +77,12 @@
       background-color: darken($cerulean, 20%);
     }
   }
+
+  &.status-notapplicable {
+    background-color: $bombay;
+
+    &:hover {
+      background-color: darken($bombay, 20%);
+    }
+  }
 }
