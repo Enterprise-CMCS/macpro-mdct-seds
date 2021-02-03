@@ -20,8 +20,9 @@ import {
   s3AmplifyGetURL,
   s3LocalGetURL
 } from "./libs/awsLib";
-import config from "./config";
-import Example from "./components/examples";
+import config         from "./config";
+import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
+import Example        from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 
@@ -54,6 +55,9 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
+      <UnauthenticatedRoute exact path="/totals">
+        <GridWithTotals />
+      </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/login">
         {localLogin ? <LocalLogin /> : <Login />}
       </UnauthenticatedRoute>
