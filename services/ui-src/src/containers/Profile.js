@@ -36,6 +36,7 @@ export default function Profile() {
         setRole(capitalize(userInfo.attributes.role));
         setStates(formatStates(userInfo.attributes.states));
       } catch (e) {
+        console.log("zzzError OnLoad at Profile.js", e);
         onError(e);
       }
     }
@@ -82,6 +83,7 @@ export default function Profile() {
       });
       history.push("/");
     } catch (e) {
+      console.log("zzzError handleSubmit Profile.js");
       onError(e);
       setIsLoading(false);
     }
