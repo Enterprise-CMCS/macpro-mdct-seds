@@ -36,6 +36,7 @@ export default function Login() {
     try {
       signInWithOkta();
     } catch (e) {
+      console.log("zzzsignInWithOkta Login.js");
       onError(e);
       setIsLoadingOkta(false);
     }

@@ -35,6 +35,7 @@ const Header = () => {
           setIsAuthenticated(true);
         }
       } catch (e) {
+        console.log("zzzonLoad in Header.js", e);
         onError(e);
       }
     }

@@ -36,6 +36,7 @@ export default function Profile() {
         setRole(capitalize(userInfo.attributes.role));
         setStates(formatStates(userInfo.attributes.states));
       } catch (e) {
+        console.log("zzzOnLoad at Profile.js", e);
         onError(e);
       }
     }
