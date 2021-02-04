@@ -34,11 +34,13 @@ function App() {
     } else {
       try {
         const userInfo = await Auth.currentSession();
-        console.log("zzzUserInfo from Auth.currentSession", userInfo);
+        console.log("zzzAuth in app.js", Auth);
         setEmail(userInfo.idToken.payload.email);
+        console.log("zzzUserInfo from Auth.currentSession", userInfo);
         userHasAuthenticated(true);
       } catch (e) {
         if (e !== "No current user") {
+          console.log("zzzError in app.js", e);
           onError(e);
         }
       }
