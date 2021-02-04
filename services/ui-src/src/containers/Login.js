@@ -36,7 +36,7 @@ export default function Login() {
     try {
       signInWithOkta();
     } catch (e) {
-      console.log("zzzsignInWithOkta Login.js");
+      console.log("zzzError signInWithOkta Login.js");
       onError(e);
       setIsLoadingOkta(false);
     }
@@ -51,6 +51,7 @@ export default function Login() {
       await Auth.signIn(fields.email, fields.password);
       userHasAuthenticated(true);
     } catch (e) {
+      console.log("zzzError handleSubmit", e);
       onError(e);
       setIsLoading(false);
     }
