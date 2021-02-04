@@ -15,7 +15,7 @@ const GridWithTotals = props => {
 
   useEffect(() => {
     updateTotals();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -43,24 +43,27 @@ const GridWithTotals = props => {
         row.map((column, columnIndex) => {
           let currentValue = 0;
 
-          columnIndex = columnIndex - 1;
+          const gridColumnIndex = columnIndex - 1;
 
           if (isNaN(column) === false) {
             currentValue = parseFloat(column);
           }
 
           if (
-            gridColumnTotalsCopy[columnIndex] === undefined ||
-            gridColumnTotalsCopy[columnIndex] === null ||
-            gridColumnTotalsCopy[columnIndex] === ""
+            gridColumnTotalsCopy[gridColumnIndex] === undefined ||
+            gridColumnTotalsCopy[gridColumnIndex] === null ||
+            gridColumnTotalsCopy[gridColumnIndex] === ""
           ) {
-            gridColumnTotalsCopy[columnIndex] = 0;
+            gridColumnTotalsCopy[gridColumnIndex] = 0;
           }
 
-          gridColumnTotalsCopy[columnIndex] += currentValue;
+          gridColumnTotalsCopy[gridColumnIndex] += currentValue;
           totalOfTotals += currentValue;
+
+          return true;
         });
       }
+      return true;
     });
 
     updateGridColumnTotals(gridColumnTotalsCopy);
@@ -82,9 +85,13 @@ const GridWithTotals = props => {
           }
 
           rowTotal += currentValue;
+
+          return true;
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
       }
+
+      return true;
     });
 
     updateGridRowTotals(gridRowTotalsCopy);
@@ -92,26 +99,21 @@ const GridWithTotals = props => {
 
   let headerColArray = [];
   let headerCellArray = [];
-  let colCounter = 1;
-  let rowCounter = 1;
 
   for (const column in props.gridData[0]) {
     headerColArray.push(props.gridData[0][column]);
-
-    colCounter++;
   }
 
   for (const row in props.gridData) {
     for (const column in props.gridData[row]) {
       headerCellArray.push(props.gridData[row][column]);
-      rowCounter++;
       break;
     }
   }
 
-  const headerCols = headerColArray.map(header => (
-    <th scope="col">{header}</th>
-  ));
+  const headerCols = headerColArray.map(header => {
+    return <th scope="col">{header}</th>;
+  });
 
   headerCols.push(
     <th scope="col" className="total-header-cell">
@@ -161,6 +163,8 @@ const GridWithTotals = props => {
         </tr>
       );
     }
+
+    return true;
   });
 
   const totalsRow = Array.from(Array(headerCols.length - 1), (e, i) => {
