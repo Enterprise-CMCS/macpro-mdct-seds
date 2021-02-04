@@ -34,6 +34,7 @@ function App() {
     } else {
       try {
         const userInfo = await Auth.currentSession();
+        console.log("zzzUserInfo from Auth.currentSession", userInfo);
         setEmail(userInfo.idToken.payload.email);
         userHasAuthenticated(true);
       } catch (e) {
