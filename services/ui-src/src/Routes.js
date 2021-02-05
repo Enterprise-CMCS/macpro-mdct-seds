@@ -13,7 +13,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
 import UserEdit from "./components/users/UserEdit";
-
 import {
   s3AmplifyUpload,
   s3LocalUploader,
@@ -21,6 +20,7 @@ import {
   s3LocalGetURL
 } from "./libs/awsLib";
 import config from "./config";
+import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
@@ -54,6 +54,9 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
+      <UnauthenticatedRoute exact path="/totals">
+        <GridWithTotals />
+      </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/login">
         {localLogin ? <LocalLogin /> : <Login />}
       </UnauthenticatedRoute>
