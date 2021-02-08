@@ -163,10 +163,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: user-id
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: user-id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthJobCodesTable:

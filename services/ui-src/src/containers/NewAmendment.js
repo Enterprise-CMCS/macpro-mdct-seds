@@ -73,6 +73,7 @@ export default function NewAmendment({ fileUpload }) {
       });
       history.push("/");
     } catch (e) {
+      console.log("zzzError createAmendment NewAmendment.js");
       onError(e);
       setIsLoading(false);
     }
