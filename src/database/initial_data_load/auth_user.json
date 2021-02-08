@@ -1,6 +1,6 @@
 [
   {
-    "user-id": "0",
+    "userId": "0",
     "password": "",
     "isSuperUser": true,
     "username": "WAQF",
@@ -14,7 +14,7 @@
     "lastLogin": "01/29/2021"
   },
   {
-    "user-id": "1",
+    "userId": "1",
     "password": "",
     "isSuperUser": true,
     "username": "A1LX",
@@ -28,7 +28,7 @@
     "lastLogin": "01/28/2021"
   },
   {
-    "user-id": "2",
+    "userId": "2",
     "password": "",
     "isSuperUser": true,
     "username": "G24F",
@@ -42,7 +42,7 @@
     "lastLogin": "01/27/2021"
   },
   {
-    "user-id": "3",
+    "userId": "3",
     "password": "",
     "isSuperUser": true,
     "username": "G812",
@@ -56,7 +56,7 @@
     "lastLogin": "01/26/2021"
   },
   {
-    "user-id": "4",
+    "userId": "4",
     "password": "",
     "isSuperUser": true,
     "username": "DKZ2",
@@ -70,7 +70,7 @@
     "lastLogin": "01/25/2021"
   },
   {
-    "user-id": "5",
+    "userId": "5",
     "password": "",
     "isSuperUser": true,
     "username": "MDCT_Test",
