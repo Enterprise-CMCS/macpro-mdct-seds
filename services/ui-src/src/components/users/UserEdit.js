@@ -20,10 +20,11 @@ const UserEdit = ({ stateList }) => {
 
   // Set up local state
   const [user, setUser] = useState();
-  /* eslint-disable no-unused-vars */
-  const [states, setStates] = useState(stateList);
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();
+
+  const [states, setStates] = useState(stateList);
+  const [selectedStates, setSelectedStates] = useState();
   /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState("null");
 
@@ -37,6 +38,27 @@ const UserEdit = ({ stateList }) => {
 
     setRole(data.role);
     setStates(stateList);
+
+    // Sort states alphabetically
+    const theStates = data.states.sort();
+
+    // Set states to array of objects
+    if (data.role !== "state") {
+      setSelectedStates(
+        theStates.map(e => {
+          let stateName;
+          // Get full state name from redux
+          for (const state in stateList) {
+            if (stateList[state].value === e) {
+              stateName = stateList[state].label;
+            }
+          }
+          return { label: stateName, value: e };
+        })
+      );
+    } else {
+      setSelectedStates(stateList[2]);
+    }
 
     return data;
   };
@@ -88,7 +110,7 @@ const UserEdit = ({ stateList }) => {
     let response;
 
     if (field === "states") {
-      console.log("zzzStates", states);
+      setSelectedStates(e);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
         response = userStatesSimplified(e);
@@ -108,6 +130,7 @@ const UserEdit = ({ stateList }) => {
       // Save to local state
       setRole(e.value);
       setStatesToSend("null");
+      setSelectedStates();
       setStates("");
       // Update user
       response = e.value;
@@ -240,6 +263,7 @@ const UserEdit = ({ stateList }) => {
                         multiple={true}
                         placeholder="Select a State"
                         onSelect={e => updateLocalUser(e, "states")}
+                        value={selectedStates}
                       />
                     </>
                   ) : null}
@@ -248,7 +272,7 @@ const UserEdit = ({ stateList }) => {
                       <label className="ds-c-label">State</label>
                       <MultiSelect
                         options={stateList}
-                        // value={states}
+                        value={selectedStates ? selectedStates : []}
                         onChange={e => updateLocalUser(e, "states")}
                         labelledBy={"Select States"}
                         multiple={false}
@@ -262,7 +286,7 @@ const UserEdit = ({ stateList }) => {
                     <Searchable
                       options={statuses}
                       multiple={false}
-                      placeholder="Select a State"
+                      placeholder="Select a Status"
                       onSelect={e => updateLocalUser(e, "isActive")}
                       value={isActive ? isActive : getStatus(user.isActive)}
                     />

@@ -36,8 +36,8 @@
     "lastName": "Gillis",
     "email": "jgillis@collabralink.com",
     "isActive": true,
-    "role": "admin",
-    "states": ["PA", "WV", "AL"],
+    "role": "state",
+    "states": ["PA"],
     "dateJoined": "01/22/2021",
     "lastLogin": "01/27/2021"
   },
