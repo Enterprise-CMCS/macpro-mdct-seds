@@ -68,6 +68,7 @@ resources:
         AllowedOAuthScopes:
           - email
           - openid
+          - profile
         CallbackURLs:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/
