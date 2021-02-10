@@ -36,8 +36,8 @@ export default function Profile() {
 
         // Load user data from API
         setEmail(payload.email);
-        setFirstName(capitalize(payload.first_name));
-        setLastName(capitalize(payload.last_name));
+        setFirstName(capitalize(payload.given_name));
+        setLastName(capitalize(payload.family_name));
         setRole(capitalize(payload.role));
         setStates(formatStates(payload.states));
       } catch (e) {

@@ -53,7 +53,11 @@ const Header = () => {
       history.push("/login");
       history.go(0);
     } else {
-      await Auth.signOut();
+      try {
+        await Auth.signOut();
+      } catch (error) {
+        console.log("error signing out: ", error);
+      }
     }
 
     history.push("/login");
