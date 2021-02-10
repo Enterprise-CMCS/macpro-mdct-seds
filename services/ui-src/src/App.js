@@ -4,7 +4,6 @@ import "./App.scss";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
-import { onError } from "./libs/errorLib";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
@@ -32,9 +31,12 @@ function App() {
       try {
         await Auth.currentAuthenticatedUser();
         userHasAuthenticated(true);
-      } catch (e) {
-        if (e !== "No current user") {
-          onError(e);
+      } catch (error) {
+        if (error !== "not authenticated") {
+          console.log(
+            "There was an error while loading the user information.",
+            error
+          );
         }
       }
     }
