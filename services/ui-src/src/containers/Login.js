@@ -70,7 +70,7 @@ export default function Login() {
       >
         <form onSubmit={handleSubmitOkta}>
           <LoaderButton type="submit" bsSize="large" isLoading={isLoadingOkta}>
-            Login with Okta
+            Login with EUA ID
           </LoaderButton>
         </form>
       </div>
