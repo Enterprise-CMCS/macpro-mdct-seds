@@ -11,7 +11,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { currentUserInfo } from "../../libs/user";
-import { onError } from "../../libs/errorLib";
 import config from "../../config";
 
 const Header = () => {
@@ -36,8 +35,13 @@ const Header = () => {
           setEmail(payload.email);
           setIsAuthenticated(true);
         }
-      } catch (e) {
-        onError(e);
+      } catch (error) {
+        if (error !== "The user is not authenticated") {
+          console.log(
+            "There was an error while loading the user information.",
+            error
+          );
+        }
       }
     }
 
