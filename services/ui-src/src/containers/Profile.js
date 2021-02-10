@@ -30,6 +30,7 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
+        console.log("zzzuserInfo from Profile.js", userInfo);
         // Get payload
         const payload = userInfo.signInUserSession.idToken.payload;
 
