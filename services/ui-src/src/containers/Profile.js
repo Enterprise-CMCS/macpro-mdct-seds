@@ -30,13 +30,16 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        setEmail(userInfo.attributes.email);
-        setFirstName(capitalize(userInfo.attributes.first_name));
-        setLastName(capitalize(userInfo.attributes.last_name));
-        setRole(capitalize(userInfo.attributes.role));
-        setStates(formatStates(userInfo.attributes.states));
+        // Get payload
+        const payload = userInfo.signInUserSession.idToken.payload;
+
+        // Load user data from API
+        setEmail(payload.email);
+        setFirstName(capitalize(payload.first_name));
+        setLastName(capitalize(payload.last_name));
+        setRole(capitalize(payload.role));
+        setStates(formatStates(payload.states));
       } catch (e) {
-        console.log("zzzError OnLoad at Profile.js", e);
         onError(e);
       }
     }
