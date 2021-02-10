@@ -27,19 +27,16 @@ const Header = () => {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzUserInfo from header", userInfo);
 
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
           // Get payload
           const payload = userInfo.signInUserSession.idToken.payload;
-          console.log("zzzPayload", payload);
           setEmail(payload.email);
           setIsAuthenticated(true);
         }
       } catch (e) {
-        console.log("zzzonLoad in Header.js", e);
         onError(e);
       }
     }
@@ -53,7 +50,11 @@ const Header = () => {
       history.push("/login");
       history.go(0);
     } else {
-      await Auth.signOut();
+      try {
+        await Auth.signOut();
+      } catch (error) {
+        console.log("error signing out: ", error);
+      }
     }
 
     history.push("/login");
