@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import CertificationTab from "../CertificationTab";
+import SummaryTab from "../SummaryTab";
 
 const TabContainer = ({ tabs }) => {
   return (
@@ -25,10 +27,10 @@ const TabContainer = ({ tabs }) => {
       })}
 
       <TabPanel>
-        <b>Summary:</b> {<p>{loremIpsum}</p>}
+        <SummaryTab />
       </TabPanel>
       <TabPanel>
-        <b>Certification:</b> {<p>{loremIpsum}</p>}
+        <CertificationTab />
       </TabPanel>
     </Tabs>
   );
