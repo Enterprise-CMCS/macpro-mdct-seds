@@ -11,7 +11,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { currentUserInfo } from "../../libs/user";
-// import { onError } from "../../libs/errorLib";
+import { onError } from "../../libs/errorLib";
 import config from "../../config";
 
 const Header = () => {
@@ -28,15 +28,17 @@ const Header = () => {
       try {
         const userInfo = await loadProfile();
         console.log("zzzUserInfo from header", userInfo);
+        // Get payload
+        const payload = userInfo.signInUserSession.payload;
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
-          setEmail(userInfo.attributes.email);
+          setEmail(payload.email);
           setIsAuthenticated(true);
         }
       } catch (e) {
         console.log("zzzonLoad in Header.js", e);
-        // onError(e);
+        onError(e);
       }
     }
 

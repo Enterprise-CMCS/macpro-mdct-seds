@@ -13,8 +13,6 @@ import { getLocalUserInfo } from "./libs/user";
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-  /* eslint-disable no-unused-vars */
-  const [email, setEmail] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -28,22 +26,14 @@ function App() {
       if (userInfo === null) {
         history.push("/login");
       } else {
-        setEmail(userInfo.attributes.email);
         userHasAuthenticated(true);
       }
     } else {
       try {
-        const userInfo = await Auth.currentAuthenticatedUser();
-        console.log("zzzAuth in app.js", Auth);
-        setEmail(userInfo.idToken.payload.email);
-        console.log("zzzUserInfo from Auth.currentSession", userInfo);
+        await Auth.currentAuthenticatedUser();
         userHasAuthenticated(true);
       } catch (e) {
         if (e !== "No current user") {
-          console.log(
-            "zzzError in app.js can't get currentAuthenticatedUser",
-            e
-          );
           onError(e);
         }
       }
