@@ -28,11 +28,13 @@ const Header = () => {
       try {
         const userInfo = await loadProfile();
         console.log("zzzUserInfo from header", userInfo);
-        // Get payload
-        const payload = userInfo.signInUserSession.payload;
+
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
+          // Get payload
+          const payload = userInfo.signInUserSession.idToken.payload;
+          console.log("zzzPayload", payload);
           setEmail(payload.email);
           setIsAuthenticated(true);
         }
