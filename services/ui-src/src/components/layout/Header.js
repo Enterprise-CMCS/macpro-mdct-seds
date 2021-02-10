@@ -27,19 +27,16 @@ const Header = () => {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzUserInfo from header", userInfo);
 
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
           // Get payload
           const payload = userInfo.signInUserSession.idToken.payload;
-          console.log("zzzPayload", payload);
           setEmail(payload.email);
           setIsAuthenticated(true);
         }
       } catch (e) {
-        console.log("zzzonLoad in Header.js", e);
         onError(e);
       }
     }

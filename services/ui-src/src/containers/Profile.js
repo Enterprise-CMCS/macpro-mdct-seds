@@ -30,7 +30,6 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzuserInfo from Profile.js", userInfo);
         // Get payload
         const payload = userInfo.signInUserSession.idToken.payload;
 
@@ -87,7 +86,6 @@ export default function Profile() {
       });
       history.push("/");
     } catch (e) {
-      console.log("zzzError handleSubmit Profile.js");
       onError(e);
       setIsLoading(false);
     }
