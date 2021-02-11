@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
-import { Button } from "@trussworks/react-uswds";
-import { certifyAndSubmit } from "../store/actions/certify";
+import { Button, Alert, GridContainer, Grid } from "@trussworks/react-uswds";
+import {
+  certifyAndSubmitFinal,
+  certifyAndSubmitProvisional
+} from "../store/actions/certify";
 
 const CertificationTab = ({
   status,
   notApplicable,
   lastModified,
   lastModifiedBy,
-  isCertified,
-  certifyAndSubmit
+  isFinal,
+  isProvisional,
+  certifyAndSubmitFinal,
+  certifyAndSubmitProvisional
 }) => {
+  const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
+    isFinal === true ? true : isProvisional
+  );
+  const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
+
+  const submitProvisional = () => {
+    certifyAndSubmitProvisional();
+    setprovisionalButtonStatus(true);
+  };
+  const submitFinal = () => {
+    certifyAndSubmitFinal();
+    setprovisionalButtonStatus(true);
+    setfinalButtonStatus(true);
+  };
+
   return (
     <>
       <h3> Certify and Submit</h3>
-      {isCertified ? (
+      {isFinal ? (
         <>
           <b> Thank you for submitting your SEDs data!</b>
           <p>
@@ -35,18 +55,49 @@ const CertificationTab = ({
             in compliance with Title XXI of the Social Security Act (Section
             2109(a) and Section 2108(e)).
           </p>
-          <Button onClick={() => certifyAndSubmit()} type="button">
-            Certify and Submit
-          </Button>
         </>
       )}
 
-      <div>
-        <b>What to expect next:</b>
-        <p>
-          You‘ll hear from CMS if they have any questions about your report.
-        </p>
-      </div>
+      <GridContainer>
+        <Grid row>
+          <Grid col={"fill"}>
+            <Button
+              onClick={() => submitProvisional()}
+              type="button"
+              disabled={provisionalButtonStatus}
+            >
+              {"Certify & Submit Provisional Data"}
+            </Button>
+            <Button
+              onClick={() => submitFinal()}
+              type="button"
+              disabled={finalButtonStatus}
+            >
+              {"Certify & Submit Final Data"}
+            </Button>
+          </Grid>
+        </Grid>
+      </GridContainer>
+
+      {isFinal ? (
+        <div>
+          <Alert
+            type="success"
+            heading="Thank you for submitting your SEDs data!"
+          >
+            <b> What to expect next:</b> You will hear from CMS if they have any
+            questions about your report.
+          </Alert>
+        </div>
+      ) : null}
+
+      {isProvisional ? (
+        <div>
+          <Alert type="info" heading="You have submitted provisional SEDs data">
+            <b> What to do next:</b> Submit final data
+          </Alert>
+        </div>
+      ) : null}
     </>
   );
 };
@@ -56,10 +107,12 @@ const mapState = state => ({
   notApplicable: state.currentForm.not_applicable,
   lastModified: state.currentForm.last_modified,
   lastModifiedBy: state.currentForm.last_modified_by,
-  isCertified: state.currentForm.status === "final"
+  isFinal: state.currentForm.status === "final",
+  isProvisional: state.currentForm.status === "provisional"
 });
 
 const mapDispatch = {
-  certifyAndSubmit
+  certifyAndSubmitFinal,
+  certifyAndSubmitProvisional
 };
 export default connect(mapState, mapDispatch)(CertificationTab);

@@ -1,22 +1,42 @@
-export const CERTIFY_AND_SUBMIT = "CERTIFY_AND_SUBMIT";
+export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
+export const CERTIFY_AND_SUBMIT_PROVISIONAL = "CERTIFY_AND_SUBMIT_PROVISIONAL";
 export const CERTIFY_AND_SUBMIT_FAILURE = "CERTIFY_AND_SUBMIT_FAILURE";
 
-export const setCertify = username => {
+export const setFinalCertify = username => {
   return {
-    type: CERTIFY_AND_SUBMIT,
+    type: CERTIFY_AND_SUBMIT_FINAL,
+    username
+  };
+};
+export const setProvisionalCertify = username => {
+  return {
+    type: CERTIFY_AND_SUBMIT_PROVISIONAL,
     username
   };
 };
 
-export const certifyAndSubmit = () => async (dispatch, getState) => {
+export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
   const state = getState();
   const user = state.userData.username;
 
   try {
-    // First: Update store
-    dispatch(setCertify(user));
+    dispatch(setFinalCertify(user));
 
-    // Second: Trigger save functionality and save store
+    // Here we should trigger save functionality and save store to DB
+    // CALL AWS Amplify, update form status, lastChanged, username and year
+  } catch (error) {
+    // If updating the status in DB fails, state will remain unchanged
+    dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
+  }
+};
+
+export const certifyAndSubmitProvisional = () => async (dispatch, getState) => {
+  const state = getState();
+  const user = state.userData.username;
+
+  try {
+    dispatch(setProvisionalCertify(user));
+    // Here we should trigger save functionality and save store to DB
     // CALL AWS Amplify, update form status, lastChanged, username and year
   } catch (error) {
     // If updating the status in DB fails, state will remain unchanged
