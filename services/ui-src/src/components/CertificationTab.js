@@ -6,6 +6,7 @@ import {
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional
 } from "../store/actions/certify";
+import PropTypes from "prop-types";
 
 const CertificationTab = ({
   status,
@@ -100,6 +101,17 @@ const CertificationTab = ({
       ) : null}
     </>
   );
+};
+
+CertificationTab.propTypes = {
+  certifyAndSubmitFinal: PropTypes.func.isRequired,
+  certifyAndSubmitProvisional: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
+  notApplicable: PropTypes.bool.isRequired,
+  lastModified: PropTypes.string.isRequired,
+  lastModifiedBy: PropTypes.string,
+  isFinal: PropTypes.string.isRequired,
+  isProvisional: PropTypes.string.isRequired
 };
 
 const mapState = state => ({

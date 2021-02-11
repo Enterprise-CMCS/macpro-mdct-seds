@@ -4,6 +4,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab";
 import SummaryTab from "../SummaryTab";
+import PropTypes from "prop-types";
 
 const TabContainer = ({ tabs }) => {
   return (
@@ -34,6 +35,10 @@ const TabContainer = ({ tabs }) => {
       </TabPanel>
     </Tabs>
   );
+};
+
+TabContainer.propTypes = {
+  tabs: PropTypes.array.isRequired
 };
 
 const mapState = state => ({
