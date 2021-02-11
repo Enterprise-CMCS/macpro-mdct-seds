@@ -94,9 +94,10 @@ const CertificationTab = ({
 
       {isProvisional ? (
         <div>
-          <Alert type="info" heading="You have submitted provisional SEDs data">
-            <b> What to do next:</b> Submit final data
-          </Alert>
+          <Alert
+            type="info"
+            heading="You have submitted provisional SEDs data"
+          />
         </div>
       ) : null}
     </>
