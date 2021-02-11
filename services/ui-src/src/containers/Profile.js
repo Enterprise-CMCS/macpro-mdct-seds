@@ -30,14 +30,13 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzuserInfo from Profile.js", userInfo);
         // Get payload
         const payload = userInfo.signInUserSession.idToken.payload;
 
         // Load user data from API
         setEmail(payload.email);
-        setFirstName(capitalize(payload.first_name));
-        setLastName(capitalize(payload.last_name));
+        setFirstName(capitalize(payload.given_name));
+        setLastName(capitalize(payload.family_name));
         setRole(capitalize(payload.role));
         setStates(formatStates(payload.states));
       } catch (e) {
@@ -87,7 +86,6 @@ export default function Profile() {
       });
       history.push("/");
     } catch (e) {
-      console.log("zzzError handleSubmit Profile.js");
       onError(e);
       setIsLoading(false);
     }

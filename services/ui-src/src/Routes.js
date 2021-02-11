@@ -51,9 +51,9 @@ export default function Routes() {
 
   return (
     <Switch>
-      <Route exact path="/">
+      <AuthenticatedRoute exact path="/">
         <Home />
-      </Route>
+      </AuthenticatedRoute>
       <UnauthenticatedRoute exact path="/totals">
         <GridWithTotals />
       </UnauthenticatedRoute>

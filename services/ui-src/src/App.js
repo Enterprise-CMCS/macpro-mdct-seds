@@ -32,7 +32,7 @@ function App() {
         await Auth.currentAuthenticatedUser();
         userHasAuthenticated(true);
       } catch (error) {
-        if (error !== "not authenticated") {
+        if (error !== "The user is not authenticated") {
           console.log(
             "There was an error while loading the user information.",
             error
