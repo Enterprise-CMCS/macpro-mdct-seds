@@ -35,6 +35,27 @@ const CertificationTab = ({
 
   return (
     <>
+      {isFinal ? (
+        <div>
+          <Alert
+            type="success"
+            heading="Thank you for submitting your SEDs data!"
+          >
+            <b> What to expect next:</b> You will hear from CMS if they have any
+            questions about your report.
+          </Alert>
+        </div>
+      ) : null}
+
+      {isProvisional ? (
+        <div>
+          <Alert
+            type="info"
+            heading="You have submitted provisional SEDs data"
+          />
+        </div>
+      ) : null}
+
       <h3> Certify and Submit</h3>
       {isFinal ? (
         <>
@@ -61,7 +82,7 @@ const CertificationTab = ({
 
       <GridContainer>
         <Grid row>
-          <Grid col={"fill"}>
+          <Grid col={6} className="certify-btn provisional">
             <Button
               onClick={() => submitProvisional()}
               type="button"
@@ -69,6 +90,8 @@ const CertificationTab = ({
             >
               {"Certify & Submit Provisional Data"}
             </Button>
+          </Grid>
+          <Grid col={6} className="certify-btn final">
             <Button
               onClick={() => submitFinal()}
               type="button"
@@ -79,27 +102,6 @@ const CertificationTab = ({
           </Grid>
         </Grid>
       </GridContainer>
-
-      {isFinal ? (
-        <div>
-          <Alert
-            type="success"
-            heading="Thank you for submitting your SEDs data!"
-          >
-            <b> What to expect next:</b> You will hear from CMS if they have any
-            questions about your report.
-          </Alert>
-        </div>
-      ) : null}
-
-      {isProvisional ? (
-        <div>
-          <Alert
-            type="info"
-            heading="You have submitted provisional SEDs data"
-          />
-        </div>
-      ) : null}
     </>
   );
 };
