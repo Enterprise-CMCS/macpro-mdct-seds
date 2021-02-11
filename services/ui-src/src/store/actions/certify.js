@@ -1,7 +1,9 @@
+// ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
 export const CERTIFY_AND_SUBMIT_PROVISIONAL = "CERTIFY_AND_SUBMIT_PROVISIONAL";
 export const CERTIFY_AND_SUBMIT_FAILURE = "CERTIFY_AND_SUBMIT_FAILURE";
 
+// ACTION CREATORS
 export const setFinalCertify = username => {
   return {
     type: CERTIFY_AND_SUBMIT_FINAL,
@@ -15,6 +17,7 @@ export const setProvisionalCertify = username => {
   };
 };
 
+// THUNK FUNCTIONS
 export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
   const state = getState();
   const user = state.userData.username;
