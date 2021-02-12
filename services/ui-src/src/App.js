@@ -8,8 +8,9 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
 import { getLocalUserInfo } from "./libs/user";
+import { connect } from "react-redux";
 
-function App() {
+function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const history = useHistory();
@@ -29,7 +30,13 @@ function App() {
       }
     } else {
       try {
-        await Auth.currentAuthenticatedUser();
+        const data = await Auth.currentAuthenticatedUser();
+        console.log("zzzData from app.js", data);
+
+        if (data.signInUserSession) {
+          const payload = data.signInUserSession.idToken.payload;
+          getOrAddUser(payload);
+        }
         userHasAuthenticated(true);
       } catch (error) {
         if (error !== "The user is not authenticated") {
@@ -42,6 +49,14 @@ function App() {
     }
 
     setIsAuthenticating(false);
+  }
+
+  async function getOrAddUser(payload) {
+    if (payload.username) {
+      // Check if user exists
+      // If user doesn't exists, add to database
+      // Add user to Redux
+    }
   }
 
   return (
@@ -59,4 +74,8 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  userData: state.userData
+});
+
+export default connect(mapStateToProps)(App);
