@@ -26,13 +26,16 @@ const Header = () => {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
-          // Get payload
-          const payload = userInfo.signInUserSession.idToken.payload;
-          setEmail(payload.email);
+          if (userInfo.signInUserSession) {
+            // Get payload
+            const payload = userInfo.signInUserSession.idToken.payload;
+            setEmail(payload.email);
+          } else {
+            setEmail(userInfo.attributes.email);
+          }
           setIsAuthenticated(true);
         }
       } catch (error) {

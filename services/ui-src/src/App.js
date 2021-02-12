@@ -29,7 +29,8 @@ function App() {
       }
     } else {
       try {
-        await Auth.currentAuthenticatedUser();
+        const data = await Auth.currentAuthenticatedUser();
+        console.log("zzzData from app.js", data);
         userHasAuthenticated(true);
       } catch (error) {
         if (error !== "The user is not authenticated") {
