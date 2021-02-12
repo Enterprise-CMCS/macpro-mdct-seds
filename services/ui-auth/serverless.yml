@@ -58,6 +58,14 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
+          - Name: ismemberof
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: ismemberofarray
+            AttributeDataType: String
+            Mutable: true
+            Required: false
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -103,6 +111,8 @@ resources:
           email: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
           family_name: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
           given_name: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+          ismemberof: isMemberOf
+          ismemberofarray: isMemberOfArray
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
