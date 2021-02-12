@@ -39,7 +39,7 @@ const CertificationTab = ({
         <div>
           <Alert
             type="success"
-            heading="Thank you for submitting your SEDs data!"
+            heading="Thank you for submitting your SEDS data!"
           >
             <b> What to expect next:</b> You will hear from CMS if they have any
             questions about your report.
@@ -51,7 +51,7 @@ const CertificationTab = ({
         <div>
           <Alert
             type="info"
-            heading="You have submitted provisional SEDs data"
+            heading="You have submitted provisional SEDS data"
           />
         </div>
       ) : null}
@@ -59,7 +59,7 @@ const CertificationTab = ({
       <h3> Certify and Submit</h3>
       {isFinal ? (
         <>
-          <b> Thank you for submitting your SEDs data!</b>
+          <b> Thank you for submitting your SEDS data!</b>
           <p>
             Submitted on {lastModified} by {lastModifiedBy}
           </p>
@@ -69,8 +69,8 @@ const CertificationTab = ({
           <b>Ready to certify?</b>
           <p>
             Double check that everything in your SEDS report is accurate. You
-            won’t be able to make any edits after submitting, unless you send a
-            request to CMS to uncertify your report.
+            will have to uncertify your report to make any edits to your final
+            data after submitting.
           </p>
           <p>
             Once you have reviewed your report, certify that it’s accurate and
@@ -113,8 +113,8 @@ CertificationTab.propTypes = {
   notApplicable: PropTypes.bool.isRequired,
   lastModified: PropTypes.string.isRequired,
   lastModifiedBy: PropTypes.string,
-  isFinal: PropTypes.string.isRequired,
-  isProvisional: PropTypes.string.isRequired
+  isFinal: PropTypes.bool.isRequired,
+  isProvisional: PropTypes.bool.isRequired
 };
 
 const mapState = state => ({
