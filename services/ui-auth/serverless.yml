@@ -62,7 +62,7 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
-          - Name: ismemberofarray
+          - Name: ismemberofArray
             AttributeDataType: String
             Mutable: true
             Required: false
@@ -111,8 +111,8 @@ resources:
           email: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
           family_name: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
           given_name: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
-          ismemberof: isMemberOf
-          ismemberofarray: isMemberOfArray
+          ismemberof: ismemberof
+          ismemberofArray: ismemberofArray
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
