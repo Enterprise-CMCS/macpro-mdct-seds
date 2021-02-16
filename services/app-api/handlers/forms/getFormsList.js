@@ -9,8 +9,6 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  const payload = JSON.parse(event.body);
-
   const params = {
     TableName: "local-state-forms",
     Select: "ALL_ATTRIBUTES",
