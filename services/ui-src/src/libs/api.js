@@ -45,7 +45,11 @@ export function deleteAmendment(id) {
   return API.del("amendments", `/amendments/${id}`, opts);
 }
 
-export function getStateForms(stateId,specifiedYear,quarter) {
+export function getStateForms(stateId, specifiedYear, quarter) {
   const opts = requestOptions();
-  return API.get("amendments", `/forms/${stateId}/${specifiedYear}/${quarter}`, opts);
+  return API.get(
+    "amendments",
+    `/forms/${stateId}/${specifiedYear}/${quarter}`,
+    opts
+  );
 }
