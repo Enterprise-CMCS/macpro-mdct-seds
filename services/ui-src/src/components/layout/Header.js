@@ -59,7 +59,7 @@ const Header = () => {
     } else {
       try {
         await Auth.signOut();
-        window.location.href = config.cognito.REDIRECT_SIGNOUT;
+        window.location.href = config.cognito.REDIRECT_SIGNOUT + "/logout";
       } catch (error) {
         console.log("error signing out: ", error);
       }
