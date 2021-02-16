@@ -1,9 +1,13 @@
-// Temporary import, using 21E as an example of a form
+import {
+  CERTIFY_AND_SUBMIT_FINAL,
+  CERTIFY_AND_SUBMIT_PROVISIONAL
+} from "../actions/certify";
 import * as dummydata from "../toDelete/sample21Equery.json";
 const data = dummydata.default[0];
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
+export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 
 // ACTION CREATORS
 export const gotFormData = (formObject = {}) => {
@@ -53,6 +57,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         not_applicable: action.activeStatus
+      };
+    case CERTIFY_AND_SUBMIT_FINAL:
+      return {
+        ...state,
+        status: "final",
+        last_modified_by: action.username,
+        last_modified: new Date().toString()
+      };
+    case CERTIFY_AND_SUBMIT_PROVISIONAL:
+      return {
+        ...state,
+        status: "provisional",
+        last_modified_by: action.username,
+        last_modified: new Date().toString()
+      };
+    case UNCERTIFY_FORM:
+      return {
+        ...state,
+        status: "in_progress"
       };
     default:
       return state;
