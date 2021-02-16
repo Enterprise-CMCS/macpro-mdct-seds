@@ -8,7 +8,6 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
 import { getLocalUserInfo } from "./libs/user";
-import { connect } from "react-redux";
 
 function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
