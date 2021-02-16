@@ -19,11 +19,14 @@ export const main = handler(async (event, context) => {
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
     UpdateExpression:
-      "SET role = :role, states = :states, isActive = :isActive",
+      "SET #r = :role, states = :states, isActive = :isActive",
     ExpressionAttributeValues: {
       ":role": data.role,
       ":states": data.states,
       ":isActive": data.isActive,
+    },
+    ExpressionAttributeNames: {
+      "#r": "role"
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you

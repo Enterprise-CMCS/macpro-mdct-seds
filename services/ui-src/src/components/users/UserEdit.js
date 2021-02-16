@@ -6,7 +6,9 @@ import { TextField } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
-import { getUser } from "../../libs/api";
+import { getUser, updateUser } from "../../libs/api"
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
 
 /**
  * View/edit a single user with options
@@ -24,18 +26,16 @@ const UserEdit = ({ stateList }) => {
   const [isActive, setIsActive] = useState();
 
   const [states, setStates] = useState(stateList);
-  const [selectedStates, setSelectedStates] = useState();
+  const [selectedStates, setSelectedStates] = useState([]);
   /* eslint-disable no-unused-vars */
-  const [statesToSend, setStatesToSend] = useState("null");
+  const [statesToSend, setStatesToSend] = useState([]);
 
   // Get User data
   const loadUserData = async () => {
+    // Retrive user data from datastore
     const getUserData = { userId: id };
-
     const data = await getUser(getUserData);
-
     setUser(data);
-
     setRole(data.role);
     setStates(stateList);
 
@@ -57,15 +57,25 @@ const UserEdit = ({ stateList }) => {
         })
       );
     } else {
-      setSelectedStates(stateList[2]);
+      for ( let x in data) {
+        for (const state in stateList) {
+          let index = data[x]
+          if(stateList[state].value === index[0]) {
+            setSelectedStates({ 
+              label: stateList[state].label, 
+              value: stateList[state].value 
+            })
+          }
+        }
+      }
     }
-
     return data;
   };
 
   useEffect(() => {
     loadUserData();
-  }, []);
+  },[]);
+
 
   // Save selections for local use and API use
   const setStatesFromArray = (option, simple = false) => {
@@ -101,7 +111,7 @@ const UserEdit = ({ stateList }) => {
 
   const statuses = [
     { value: true, label: "Active" },
-    { value: false, label: "Deactivated" }
+    { value: false, label: "Inactive" }
   ];
 
   // Update user object
@@ -113,15 +123,20 @@ const UserEdit = ({ stateList }) => {
       setSelectedStates(e);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
-        response = userStatesSimplified(e);
+        let payload = [];
+        e.forEach(i => {
+          payload.push(i.value);
+        });
+        payload.sort();
+        response = payload;
         // Format for URI use
         setStatesFromArray(e);
       } else {
         if (!e.value) {
           e.value = "null";
         }
-        setStatesToSend(e.value);
-        response = e.value;
+        setStatesToSend([...statesToSend, e.value]);
+        response = [e.value];
       }
 
       // Write to local state
@@ -148,32 +163,6 @@ const UserEdit = ({ stateList }) => {
     setUser(tempUser);
   };
 
-  // Convert to comma separated string
-  const userStatesSimplified = states => {
-    let response = [];
-    states.forEach(state => {
-      response.push(state.value);
-    });
-    response.sort();
-    return response.join(",");
-  };
-
-  // Convert to object based on stateList entries
-  /* eslint-disable no-unused-vars */
-  const userStatesRefined = states => {
-    let refined = [];
-    if (stateList && states) {
-      states.forEach(e => {
-        stateList.forEach(state => {
-          if (e === state.value) {
-            refined.push(state);
-          }
-        });
-      });
-    }
-    return refined.sort();
-  };
-
   const getStatus = status => {
     if (status) {
       return true;
@@ -181,23 +170,16 @@ const UserEdit = ({ stateList }) => {
     return false;
   };
 
-  const updateUser = async user => {
-    // const xhrURL = [
-    //   window.env.API_POSTGRES_URL,
-    //   `/api/v1/user/update/${user.id}/${statesToSend}/${user.user_role}/${user.is_active}`
-    // ].join("");
-    // eslint-disable-next-line
-    // await axios.get(xhrURL).then(result2 => {
-    //   window.alert(result2.data.message);
-    //   window.location.reload(false);
-    // });
-  };
+  const updateUserStore = async (data)  => {
+    await updateUser(data).then(() => {
+      alert(`User with username: "${data.username}" has been updated`);
+    })
+  }
 
   return (
     <div className="edit-user ds-l-col--6">
       <GridContainer className="container">
-        <Grid row>
-          <Grid col={12}>
+          <Grid col={4}>
             <a href="/users">&laquo; Back to User List</a>
             <h1>Edit User</h1>
             {user ? (
@@ -257,13 +239,12 @@ const UserEdit = ({ stateList }) => {
                   {role === "state" ? (
                     <>
                       <label className="ds-c-label">State</label>
-                      <br />
-                      <Searchable
+                      <Dropdown 
                         options={stateList}
-                        multiple={true}
-                        placeholder="Select a State"
-                        onSelect={e => updateLocalUser(e, "states")}
-                        value={selectedStates}
+                        onChange={e => updateLocalUser(e, "states")}
+                        value={selectedStates ? selectedStates : []} 
+                        placeholder="Select an state"
+                        autosize={false} 
                       />
                     </>
                   ) : null}
@@ -292,11 +273,29 @@ const UserEdit = ({ stateList }) => {
                     />
                   </>
                 </div>
+                  <div className="textfield">
+                    <TextField
+                      value={user.dateJoined}
+                      type="text"
+                      label="Registration Date"
+                      disabled={true}
+                      name="registration date"
+                    />
+                  </div>
+                  <div className="textfield">
+                    <TextField
+                      value={user.lastLogin}
+                      type="text"
+                      label="Last Login"
+                      disabled={true}
+                      name="last login"
+                    />
+                  </div>
                 <br />
                 <Button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => updateUser(user)}
+                  onClick={async () => {await updateUserStore(user)}}
                 >
                   Update User
                 </Button>
@@ -305,7 +304,6 @@ const UserEdit = ({ stateList }) => {
               `Cannot find user with id ${id}`
             )}
           </Grid>
-        </Grid>
       </GridContainer>
     </div>
   );

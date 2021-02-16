@@ -61,3 +61,9 @@ export function getUser(data) {
   opts.body = data;
   return API.post("amendments", `/users/${data.userId}`, opts);
 }
+
+export function updateUser(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.post("amendments", `/users/update/${data.userId}`, opts);
+}

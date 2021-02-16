@@ -82,6 +82,32 @@ Local dev is built around the Serverless plugin [`serverless-offline`](https://g
 
 When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
+### Adding New Endpoints
+1. In `{ROOT}/services/appi-api/serverless.yml`, add new entry to `functions` describing the new endpoint.
+Hint: Make sure your http method is set correctly
+example:
+```
+functions:
+    getUsers:
+        handler: handlers/users/list.main
+        role: LambdaApiRole
+        events:
+        - http:
+            path: users
+            method: get
+            cors: true
+            authorizer: aws_iam
+```
+2. Create handler in `{ROOT}/services/app-api/handlers`
+    1. Note: For Table name use process.env vars located in `{ROOT}/.env`
+3. Add wrapper function in `{ROOT}/services/ui-src/src/lib/api.js`
+example:
+```
+export function listUsers() {
+  const opts = requestOptions();
+  return API.get("amendments", `/users`, opts);
+}
+
 ### Running the nightwatch test suite
 
 1. Navigate to the front end

@@ -175,7 +175,7 @@ functions:
     events:
       - http:
           path: users/update/{userId}
-          method: put
+          method: post
           cors: true
           authorizer: aws_iam
 

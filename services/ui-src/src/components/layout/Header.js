@@ -27,7 +27,6 @@ const Header = () => {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzUserInfo from header", userInfo);
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
@@ -35,7 +34,6 @@ const Header = () => {
           setIsAuthenticated(true);
         }
       } catch (e) {
-        console.log("zzzonLoad in Header.js", e);
         onError(e);
       }
     }
