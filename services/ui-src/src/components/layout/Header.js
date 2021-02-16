@@ -59,12 +59,11 @@ const Header = () => {
     } else {
       try {
         await Auth.signOut();
+        window.location.href = config.cognito.REDIRECT_SIGNOUT;
       } catch (error) {
         console.log("error signing out: ", error);
       }
     }
-
-    history.push("/login");
   }
 
   let testItems = [

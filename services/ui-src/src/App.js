@@ -55,7 +55,6 @@ function App({ userData }) {
     if (payload.username) {
       // Check if user exists
       // If user doesn't exists, add to database
-      // Add user to Redux
     }
   }
 
@@ -74,8 +73,4 @@ function App({ userData }) {
   );
 }
 
-const mapStateToProps = state => ({
-  userData: state.userData
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
