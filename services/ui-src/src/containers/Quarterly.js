@@ -23,7 +23,7 @@ const Quarterly = () => {
       setStateFormsList(data);
     }
     fetchData();
-  }, []);
+  }, [state, year, quarter]);
   // Translate form name from redux into url value
   const getFormSegment = formName => {
     let urlSegment;
