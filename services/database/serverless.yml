@@ -55,7 +55,7 @@ resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-age-ranges1
+        TableName: ${self:custom.stage}-age-ranges
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -146,7 +146,7 @@ resources:
     AuthUserTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user1
+        TableName: ${self:custom.stage}-auth-user
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -159,7 +159,7 @@ resources:
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user-roles1
+        TableName: ${self:custom.stage}-auth-user-roles
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -185,7 +185,7 @@ resources:
     AuthUserStatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user-states1
+        TableName: ${self:custom.stage}-auth-user-states
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
