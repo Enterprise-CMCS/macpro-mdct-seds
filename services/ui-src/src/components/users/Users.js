@@ -4,8 +4,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
-// import { useDispatch } from "react-redux";
-import moment from "moment";
+import { listUsers, activationUsers } from "../../libs/api";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 /**
  * Display all users with options
@@ -19,104 +18,9 @@ const Users = () => {
   const [users, setUsers] = useState();
 
   const loadUserData = async () => {
-    // dispatch({ type: "CONTENT_FETCHING_STARTED" });
-    //
-    // try {
-    //   let { data } = await axios.post(`/api/v1/userprofiles`);
-    //   setUsers(data);
-    // } catch (e) {
-    //   console.log("Error pulling users data: ", e);
-    // }
-    // dispatch({ type: "CONTENT_FETCHING_FINISHED" });
-
-    const data = [
-      {
-        user_id: 0,
-        password: "",
-        is_superuser: true,
-        username: "WAQF",
-        first_name: "Alexis",
-        last_name: "Woodbury",
-        email: "awoodbury@collabralink.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["AZ"],
-        role: "admin"
-      },
-      {
-        user_id: 1,
-        password: "",
-        is_superuser: true,
-        username: "A1LX",
-        first_name: "Andrew",
-        last_name: "Adcock",
-        email: "aadcock@collabralink.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["DC", "MD"],
-        role: "state"
-      },
-      {
-        user_id: 2,
-        password: "",
-        is_superuser: true,
-        username: "G24F",
-        first_name: "Jenna",
-        last_name: "Gillis",
-        email: "jgillis@collabralink.com",
-        is_active: false,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["DC", "MD", "FL"],
-        role: "admin"
-      },
-      {
-        user_id: 3,
-        password: "",
-        is_superuser: true,
-        username: "G812",
-        first_name: "Tim",
-        last_name: "Griesemer",
-        email: "tgriesemer@collabralink.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["DC", "MD"],
-        role: "admin"
-      },
-      {
-        user_id: 4,
-        password: "",
-        is_superuser: true,
-        username: "DKZ2",
-        first_name: "Tony",
-        last_name: "Davydets",
-        email: "tdavydets@collabralink.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["DC", "MD"],
-        role: "admin"
-      },
-      {
-        user_id: 5,
-        password: "",
-        is_superuser: true,
-        username: "MDCT_Test",
-        first_name: "MDCT",
-        last_name: "Test",
-        email: "mdcttest@example.com",
-        is_active: true,
-        date_joined: "01/22/2021",
-        last_login: "01/22/2021",
-        states: ["DC", "MD"],
-        role: "admin"
-      }
-    ];
-
+    const data = await listUsers();
     setUsers(data);
+    return data;
   };
 
   useEffect(() => {
@@ -128,23 +32,25 @@ const Users = () => {
 
   const deactivateUser = async e => {
     const confirm = window.confirm(
-      `Are you sure you want to deactivate user ${e}`
+      `Are you sure you want to deactivate user ${e.username}`
     );
     if (confirm) {
-      // axios.post(`/api/v1/user/deactivate/${e}`).then(async () => {
-      //   await loadUserData();
-      // });
+      const deactivateData = { isActive: false, userId: e.userId };
+      await activationUsers(deactivateData).then(async () => {
+        await loadUserData();
+      });
     }
   };
 
   const activateUser = async e => {
     const confirm = window.confirm(
-      `Are you sure you want to activate user ${e}`
+      `Are you sure you want to activate user ${e.username}`
     );
     if (confirm) {
-      // axios.post(`/api/v1/user/activate/${e}`).then(async () => {
-      //   await loadUserData();
-      // });
+      const activateData = { isActive: true, userId: e.userId };
+      await activationUsers(activateData).then(async () => {
+        await loadUserData();
+      });
     }
   };
 
@@ -160,19 +66,19 @@ const Users = () => {
         cell: function editUser(e) {
           return (
             <span>
-              <a href={`/users/${e.user_id}`}>{e.username}</a>
+              <a href={`/users/${e.userId}`}>{e.username}</a>
             </span>
           );
         }
       },
       {
         name: "First Name",
-        selector: "first_name",
+        selector: "firstName",
         sortable: true
       },
       {
         name: "Last Name",
-        selector: "last_name",
+        selector: "lastName",
         sortable: true
       },
       {
@@ -201,35 +107,13 @@ const Users = () => {
       },
       {
         name: "Joined",
-        selector: "date_joined",
-        sortable: true,
-        cell: function modifyDateJoined(d) {
-          if (d.date_joined) {
-            return <span>{moment(d.date_joined).format("MM/DD/YYYY")}</span>;
-          } else {
-            return "";
-          }
-        }
+        selector: "dateJoined",
+        sortable: true
       },
       {
         name: "Last Active",
-        selector: "last_login",
-        sortable: true,
-        cell: function modifyLastLogin(l) {
-          if (l.last_login) {
-            return <span>{moment(l.last_login).format("MM/DD/YYYY")}</span>;
-          } else {
-            return "";
-          }
-        }
-      },
-      {
-        name: "Created",
-        selector: "date_joined",
-        sortable: true,
-        cell: function modifyDateJoined(l) {
-          return <span>{moment(l.date_joined).format("MM/DD/YYYY")}</span>;
-        }
+        selector: "lastLogin",
+        sortable: true
       },
       {
         name: "States",
@@ -241,22 +125,22 @@ const Users = () => {
       },
       {
         name: "Status",
-        selector: "is_active",
+        selector: "isActive",
         sortable: true,
         cell: function modifyIsActive(s) {
           return (
             <span>
-              {s.is_active ? (
+              {s.isActive ? (
                 <button
                   className="btn btn-primary"
-                  onClick={() => deactivateUser(s.username)}
+                  onClick={() => deactivateUser(s)}
                 >
                   Deactivate
                 </button>
               ) : (
                 <button
                   className="btn btn-secondary"
-                  onClick={() => activateUser(s.username)}
+                  onClick={() => activateUser(s)}
                 >
                   Activate
                 </button>

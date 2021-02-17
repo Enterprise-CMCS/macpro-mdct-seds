@@ -4,48 +4,63 @@ import "./App.scss";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
-import { onError } from "./libs/errorLib";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import config from "./config";
+import { getLocalUserInfo } from "./libs/user";
 
-function App() {
+function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-  /* eslint-disable no-unused-vars */
-  const [email, setEmail] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
     onLoad();
-  }, []);
+  });
 
   async function onLoad() {
-    try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
-      const userInfo = await Auth.currentUserInfo();
-      setEmail(userInfo.attributes.email);
-    } catch (e) {
-      if (e !== "No current user") {
-        onError(e);
+    if (config.LOCAL_LOGIN === "true") {
+      const userInfo = getLocalUserInfo();
+
+      if (userInfo === null) {
+        history.push("/login");
+      } else {
+        userHasAuthenticated(true);
+      }
+    } else {
+      try {
+        const data = await Auth.currentAuthenticatedUser();
+        console.log("zzzData from app.js", data);
+
+        if (data.signInUserSession) {
+          const payload = data.signInUserSession.idToken.payload;
+          getOrAddUser(payload);
+        }
+        userHasAuthenticated(true);
+      } catch (error) {
+        if (error !== "The user is not authenticated") {
+          console.log(
+            "There was an error while loading the user information.",
+            error
+          );
+        }
       }
     }
 
     setIsAuthenticating(false);
   }
-  /* eslint-disable no-unused-vars */
-  async function handleLogout() {
-    await Auth.signOut();
 
-    userHasAuthenticated(false);
-
-    history.push("/login");
+  async function getOrAddUser(payload) {
+    if (payload.username) {
+      // Check if user exists
+      // If user doesn't exists, add to database
+    }
   }
+
   return (
     !isAuthenticating && (
       <div className="App">
         <Header />
-
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">
             <Routes />

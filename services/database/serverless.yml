@@ -11,6 +11,7 @@ custom:
   dynamodb:
     stages:
       - local
+      - master
     start:
       port: 8000
       inMemory: true
@@ -54,14 +55,14 @@ resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-age-ranges
+        TableName: ${self:custom.stage}-age-ranges1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             AttributeType: S
         KeySchema:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormAnswersTable:
@@ -145,27 +146,27 @@ resources:
     AuthUserTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user
+        TableName: ${self:custom.stage}-auth-user1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user-roles
+        TableName: ${self:custom.stage}-auth-user-roles1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthJobCodesTable:
@@ -184,14 +185,14 @@ resources:
     AuthUserStatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.stage}-auth-user-states
+        TableName: ${self:custom.stage}-auth-user-states1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
