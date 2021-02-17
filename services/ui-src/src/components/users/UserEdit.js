@@ -74,6 +74,7 @@ const UserEdit = ({ stateList }) => {
 
   useEffect(() => {
     loadUserData();
+    // eslint-disable-next-line
   }, []);
 
   // Save selections for local use and API use
