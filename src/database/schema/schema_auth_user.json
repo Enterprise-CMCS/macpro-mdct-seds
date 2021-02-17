@@ -6,7 +6,7 @@
   "items": {
     "type": "object",
     "properties": {
-      "user-id": {
+      "userId": {
         "type": "number",
         "description": "Users numerical ID"
       },
@@ -48,7 +48,7 @@
       }
     },
     "required": [
-      "user-id",
+      "userId",
       "password",
       "is_superuser",
       "username",

@@ -124,6 +124,60 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  getUser:
+    handler: handlers/users/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/{id}
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getUsers:
+    handler: handlers/users/list.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+          authorizer: aws_iam
+  createUser:
+    handler: handlers/users/create.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/add
+          method: post
+          cors: true
+          authorizer: aws_iam
+  deleteUser:
+    handler: handlers/users/delete.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/delete
+          method: post
+          cors: true
+          authorizer: aws_iam
+  activationUser:
+    handler: handlers/users/activation.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/activation/{username}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  updateUser:
+    handler: handlers/users/update.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/update/{userId}
+          method: post
+          cors: true
+          authorizer: aws_iam
 
   getStateFormList:
     handler: handlers/forms/getFormsList.main
