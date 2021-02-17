@@ -5,7 +5,7 @@ import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { listUsers, activationUsers } from "../../libs/api";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { Grid } from "@trussworks/react-uswds";
 /**
  * Display all users with options
  *
@@ -160,12 +160,10 @@ const Users = () => {
 
   return (
     <div className="user-profiles">
-      <GridContainer className="container">
-        <Grid row>
-          <Grid col={12}>
+      <Grid className="container">
             <h1>Users</h1>
             <Card>
-              {tableData ? (
+            {tableData ? (
                 <DataTableExtensions {...tableData}>
                   <DataTable
                     title="Users"
@@ -178,9 +176,7 @@ const Users = () => {
                 </DataTableExtensions>
               ) : null}
             </Card>
-          </Grid>
-        </Grid>
-      </GridContainer>
+      </Grid>
     </div>
   );
 };
