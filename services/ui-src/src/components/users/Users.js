@@ -161,21 +161,21 @@ const Users = () => {
   return (
     <div className="user-profiles">
       <Grid className="container">
-            <h1>Users</h1>
-            <Card>
-            {tableData ? (
-                <DataTableExtensions {...tableData}>
-                  <DataTable
-                    title="Users"
-                    defaultSortField="username"
-                    sortIcon={<SortIcon />}
-                    highlightOnHover
-                    selectableRows={false}
-                    responsive={true}
-                  />
-                </DataTableExtensions>
-              ) : null}
-            </Card>
+        <h1>Users</h1>
+        <Card>
+          {tableData ? (
+            <DataTableExtensions {...tableData}>
+              <DataTable
+                title="Users"
+                defaultSortField="username"
+                sortIcon={<SortIcon />}
+                highlightOnHover
+                selectableRows={false}
+                responsive={true}
+              />
+            </DataTableExtensions>
+          ) : null}
+        </Card>
       </Grid>
     </div>
   );
