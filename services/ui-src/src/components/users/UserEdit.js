@@ -25,7 +25,7 @@ const UserEdit = ({ stateList }) => {
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();
 
-  const [states, setStates] = useState(stateList);
+  const [setStates] = useState(stateList);
   const [selectedStates, setSelectedStates] = useState([]);
   /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState([]);
