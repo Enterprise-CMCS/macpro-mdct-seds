@@ -125,6 +125,16 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  getStateFormList:
+    handler: handlers/forms/getFormsList.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: forms/{stateId}/{specifiedYear}/{quarter}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
 resources:
   Conditions:
     CreatePermissionsBoundary:
