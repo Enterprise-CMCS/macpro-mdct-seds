@@ -62,7 +62,6 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
         setComments(comments);
         setAmendment(amendment);
       } catch (e) {
-        console.log("zzzError onLoad Amendments.js");
         onError(e);
       }
     }
@@ -123,7 +122,6 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
       });
       history.push("/");
     } catch (e) {
-      console.log("zzzError saveamendment amendments.js");
       onError(e);
       setIsLoading(false);
     }
@@ -146,7 +144,6 @@ export default function Amendments({ fileUpload, fileURLResolver }) {
       await deleteAmendment(id);
       history.push("/");
     } catch (e) {
-      console.log("zzzError deleteAmendment Amendments.js");
       onError(e);
       setIsDeleting(false);
     }

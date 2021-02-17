@@ -58,7 +58,6 @@ export default function Signup() {
       setIsLoading(false);
       setNewUser(newUser);
     } catch (e) {
-      console.log("zzzError handleSubmit Signup.js");
       onError(e);
       setIsLoading(false);
     }
@@ -76,7 +75,6 @@ export default function Signup() {
       userHasAuthenticated(true);
       history.push("/");
     } catch (e) {
-      console.log("zzzError handleConfirmationSubmit Signup.js");
       onError(e);
       setIsLoading(false);
     }

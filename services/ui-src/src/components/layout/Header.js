@@ -11,7 +11,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { currentUserInfo } from "../../libs/user";
-import { onError } from "../../libs/errorLib";
 import config from "../../config";
 
 const Header = () => {
@@ -30,27 +29,42 @@ const Header = () => {
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
-          setEmail(userInfo.attributes.email);
+          if (userInfo.signInUserSession) {
+            // Get payload
+            const payload = userInfo.signInUserSession.idToken.payload;
+            setEmail(payload.email);
+          } else {
+            setEmail(userInfo.attributes.email);
+          }
           setIsAuthenticated(true);
         }
-      } catch (e) {
-        onError(e);
+      } catch (error) {
+        if (error !== "The user is not authenticated") {
+          console.log(
+            "There was an error while loading the user information.",
+            error
+          );
+        }
       }
     }
 
     onLoad();
   }, []);
 
-  async function handleLogout() {
+  function handleLogout() {
     if (config.LOCAL_LOGIN === "true") {
       window.localStorage.removeItem("userKey");
       history.push("/login");
       history.go(0);
     } else {
-      await Auth.signOut();
+      try {
+        const authConfig = Auth.configure();
+        Auth.signOut();
+        window.location.href = authConfig.oauth.redirectSignOut;
+      } catch (error) {
+        console.log("error signing out: ", error);
+      }
     }
-
-    history.push("/login");
   }
 
   let testItems = [
