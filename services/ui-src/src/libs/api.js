@@ -67,3 +67,12 @@ export function updateUser(data) {
   opts.body = data;
   return API.post("amendments", `/users/update/${data.userId}`, opts);
 }
+
+export function getStateForms(stateId, specifiedYear, quarter) {
+  const opts = requestOptions();
+  return API.get(
+    "amendments",
+    `/forms/${stateId}/${specifiedYear}/${quarter}`,
+    opts
+  );
+}

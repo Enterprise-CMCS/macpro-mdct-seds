@@ -83,9 +83,11 @@ Local dev is built around the Serverless plugin [`serverless-offline`](https://g
 When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
 ### Adding New Endpoints
+
 1. In `{ROOT}/services/appi-api/serverless.yml`, add new entry to `functions` describing the new endpoint.
-Hint: Make sure your http method is set correctly
-example:
+   Hint: Make sure your http method is set correctly
+   example:
+
 ```
 functions:
     getUsers:
@@ -98,10 +100,12 @@ functions:
             cors: true
             authorizer: aws_iam
 ```
+
 2. Create handler in `{ROOT}/services/app-api/handlers`
-    1. Note: For Table name use process.env vars located in `{ROOT}/.env`
+   1. Note: For Table name use process.env vars located in `{ROOT}/.env`
 3. Add wrapper function in `{ROOT}/services/ui-src/src/lib/api.js`
-example:
+   example:
+
 ```
 export function listUsers() {
   const opts = requestOptions();
@@ -144,19 +148,25 @@ AWS Account: You'll need an AWS account with appropriate IAM permissions (admin 
 If you are on a Mac, you should be able to install all the dependencies like so:
 
 ```
+
 # install nvm
+
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 
 # select the version specified in .nvmrc
+
 nvm install
 nvm use
 
 # install yarn
+
 brew install yarn
 
 # run dev
+
 ./dev local
-```
+
+````
 
 ## Dependencies
 
@@ -192,7 +202,7 @@ in the public domain within the United States.
 
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
-```
+````
 
 ### Contributors
 

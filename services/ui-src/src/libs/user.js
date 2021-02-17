@@ -7,7 +7,8 @@ export async function currentUserInfo() {
   if (config.LOCAL_LOGIN === "true") {
     return getLocalUserInfo();
   } else {
-    return Auth.currentUserInfo();
+    // return Auth.currentUserInfo();
+    return Auth.currentAuthenticatedUser();
   }
 }
 
