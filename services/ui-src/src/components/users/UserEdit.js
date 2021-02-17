@@ -25,11 +25,9 @@ const UserEdit = ({ stateList }) => {
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();
 
-  const [setStates] = useState(stateList);
   const [selectedStates, setSelectedStates] = useState([]);
   /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState([]);
-
   // Get User data
   const loadUserData = async () => {
     // Retrive user data from datastore
@@ -37,7 +35,6 @@ const UserEdit = ({ stateList }) => {
     const data = await getUser(getUserData);
     setUser(data);
     setRole(data.role);
-    setStates(stateList);
 
     // Sort states alphabetically
     const theStates = data.states.sort();
@@ -140,13 +137,11 @@ const UserEdit = ({ stateList }) => {
       }
 
       // Write to local state
-      setStates(e);
     } else if (field === "role") {
       // Save to local state
       setRole(e.value);
       setStatesToSend("null");
       setSelectedStates();
-      setStates("");
       // Update user
       response = e.value;
     } else if (field === "isActive") {
