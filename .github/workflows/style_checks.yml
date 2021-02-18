@@ -20,12 +20,12 @@ jobs:
       - name: install dependencies
         working-directory: services/ui-src
         run: yarn install
-       - name: install dependencies 2
-       working-directory: services/app-api
-       run: yarn install
+      - name: install dependencies 2
+        working-directory: services/app-api
+        run: yarn install
       - name: run eslint
         working-directory: services/ui-src
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
-       - name: run eslint on api
+      - name: run eslint on api
         working-directory: services/app-api
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
