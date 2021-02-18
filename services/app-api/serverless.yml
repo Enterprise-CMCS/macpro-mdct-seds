@@ -130,7 +130,7 @@ functions:
     events:
       - http:
           path: users/{id}
-          method: post
+          method: get
           cors: true
           authorizer: aws_iam
   getUsers:

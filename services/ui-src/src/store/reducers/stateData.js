@@ -1,5 +1,5 @@
 // ACTION TYPES
-const STATE_INFO = "STATE_INFO";
+// const STATE_INFO = "STATE_INFO";
 const STATE_FORM_LIST = "STATE_FORM_LIST";
 
 // ACTION CREATORS
@@ -40,18 +40,18 @@ const initialState = {
 // STATE REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
-    case USER_INFO:
-      return {
-        ...action.userObject
-      };
-    case UPDATE_STATE_INFO:
-      return {
-        ...state,
-        userState: {
-          name: action.name,
-          abbrev: action.abbrev
-        }
-      };
+    // case USER_INFO:
+    //   return {
+    //     ...action.userObject
+    //   };
+    // case UPDATE_STATE_INFO:
+    //   return {
+    //     ...state,
+    //     userState: {
+    //       name: action.name,
+    //       abbrev: action.abbrev
+    //     }
+    //   };
     default:
       return state;
   }

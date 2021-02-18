@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
 import "./Profile.css";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { currentUserInfo } from "../libs/user";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { getUser } from "../libs/api";
 
 export default function Profile() {
   const history = useHistory();
@@ -16,6 +16,7 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [role, setRole] = useState("");
   const [states, setStates] = useState("");
+  /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(false);
   const capitalize = s => {
     if (typeof s !== "string") return "";
@@ -30,15 +31,24 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
+        let payload;
         // Get payload
-        const payload = userInfo.signInUserSession.idToken.payload;
+        if ("localLogin" in userInfo) {
+          payload = userInfo;
+        } else {
+          payload = await getUser(
+            userInfo.signInUserSession.idToken.payload.id
+          );
+        }
 
         // Load user data from API
-        setEmail(payload.email);
-        setFirstName(capitalize(payload.given_name));
-        setLastName(capitalize(payload.family_name));
-        setRole(capitalize(payload.role));
-        setStates(formatStates(payload.states));
+        if (payload) {
+          setEmail(payload.email);
+          setFirstName(capitalize(payload.firstName));
+          setLastName(capitalize(payload.lastName));
+          setRole(capitalize(payload.role));
+          setStates(formatStates(payload.states));
+        }
       } catch (e) {
         onError(e);
       }
@@ -46,12 +56,6 @@ export default function Profile() {
 
     onLoad();
   }, []);
-
-  function validateForm() {
-    return (
-      email.length > 0 && firstName.length > 0 && lastName.length && role.length
-    );
-  }
 
   function saveProfile(user, userAttributes) {
     return Auth.updateUserAttributes(user, userAttributes);
@@ -129,16 +133,6 @@ export default function Profile() {
                 <ControlLabel>States</ControlLabel>
                 <FormControl value={states} disabled={true} />
               </FormGroup>
-              <LoaderButton
-                block
-                type="submit"
-                bsSize="large"
-                bsStyle="primary"
-                isLoading={isLoading}
-                disabled={!validateForm()}
-              >
-                Save
-              </LoaderButton>
             </form>
           </Grid>
         </Grid>

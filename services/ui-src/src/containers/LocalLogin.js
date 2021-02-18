@@ -11,15 +11,20 @@ export default function Login() {
 
   function loginUser() {
     const alice = {
-      username: "alice",
-      attributes: {
-        first_name: "Alice",
-        last_name: "Foo",
-        email: "alice@example.com",
-        role: "admin",
-        states: ["DC", "MD", "AZ"]
-      }
+      firstName: "Alice",
+      lastName: "Cooper",
+      lastLogin: "01/28/2021",
+      role: "admin",
+      dateJoined: "01/22/2021",
+      isSuperUser: true,
+      isActive: true,
+      userId: "1",
+      email: "alicecooper@collabralink.com",
+      username: "AAAA",
+      states: ["AL, MD, PA"],
+      localLogin: true
     };
+
     loginLocalUser(alice);
     userHasAuthenticated(true);
     history.push("/");
