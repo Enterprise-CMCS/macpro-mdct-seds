@@ -124,6 +124,24 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  getForm:
+    handler: handlers/forms/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: get-single-form/{state}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  # getForms:
+  #   handler: handlers/forms/list.main
+  #   role: LambdaApiRole
+  #   events:
+  #     - http:
+  #         path: get-forms/{state}
+  #         method: get
+  #         cors: true
+  #         authorizer: aws_iam
 
 resources:
   Conditions:
