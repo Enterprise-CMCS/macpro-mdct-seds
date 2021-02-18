@@ -59,7 +59,7 @@ export function activationUsers(data) {
 export function getUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/${data.userId}`, opts);
+  return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
 export function updateUser(data) {
