@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
 import "./Profile.css";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
@@ -17,6 +16,7 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [role, setRole] = useState("");
   const [states, setStates] = useState("");
+  /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(false);
   const capitalize = s => {
     if (typeof s !== "string") return "";
@@ -56,12 +56,6 @@ export default function Profile() {
 
     onLoad();
   }, []);
-
-  function validateForm() {
-    return (
-      email.length > 0 && firstName.length > 0 && lastName.length && role.length
-    );
-  }
 
   function saveProfile(user, userAttributes) {
     return Auth.updateUserAttributes(user, userAttributes);
