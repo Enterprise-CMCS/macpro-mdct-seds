@@ -8,6 +8,7 @@ import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { currentUserInfo } from "../libs/user";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { getUser } from "../libs/api";
 
 export default function Profile() {
   const history = useHistory();
@@ -30,15 +31,24 @@ export default function Profile() {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
+        let payload;
         // Get payload
-        const payload = userInfo.signInUserSession.idToken.payload;
+        if ("localLogin" in userInfo) {
+          payload = userInfo;
+        } else {
+          payload = await getUser(
+            userInfo.signInUserSession.idToken.payload.id
+          );
+        }
 
         // Load user data from API
-        setEmail(payload.email);
-        setFirstName(capitalize(payload.given_name));
-        setLastName(capitalize(payload.family_name));
-        setRole(capitalize(payload.role));
-        setStates(formatStates(payload.states));
+        if (payload) {
+          setEmail(payload.email);
+          setFirstName(capitalize(payload.firstName));
+          setLastName(capitalize(payload.lastName));
+          setRole(capitalize(payload.role));
+          setStates(formatStates(payload.states));
+        }
       } catch (e) {
         onError(e);
       }
@@ -129,16 +139,6 @@ export default function Profile() {
                 <ControlLabel>States</ControlLabel>
                 <FormControl value={states} disabled={true} />
               </FormGroup>
-              <LoaderButton
-                block
-                type="submit"
-                bsSize="large"
-                bsStyle="primary"
-                isLoading={isLoading}
-                disabled={!validateForm()}
-              >
-                Save
-              </LoaderButton>
             </form>
           </Grid>
         </Grid>

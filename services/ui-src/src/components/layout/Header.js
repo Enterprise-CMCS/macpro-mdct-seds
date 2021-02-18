@@ -25,7 +25,9 @@ const Header = () => {
 
     async function onLoad() {
       try {
+        // Get user info
         const userInfo = await loadProfile();
+
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
@@ -34,7 +36,7 @@ const Header = () => {
             const payload = userInfo.signInUserSession.idToken.payload;
             setEmail(payload.email);
           } else {
-            setEmail(userInfo.attributes.email);
+            setEmail(userInfo.email);
           }
           setIsAuthenticated(true);
         }
