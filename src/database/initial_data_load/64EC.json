@@ -1,0 +1,145 @@
+{
+    "form": "64EC",
+    "year": "2021",
+    "questions": 
+    [
+        {
+            "question": "1. What is the unduplicated number of children in the quarter? [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        },
+        {
+            "question": "2. What is the unduplicated number of new enrollees in the quarter? [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        },
+        {
+            "question": "3. What is the unduplicated number of disenrollees in the quarter? [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        },
+        {
+            "question": "4. What is the number of member-months of enrollment in the quarter? [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        },
+        {
+            "question": "5. What is the average number of months of enrollment?  [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        },
+        {
+            "question": "6. What is the number of children, pregnant women or waiver adults enrolled at the end of the quarter? [insert appropriate age range here]: ",
+            "rows": [
+                {
+                "col1": "",
+                "col2": "Ages 0-1",
+                "col3": "Ages 1-5",
+                "col4": "Ages 6-12",
+                "col5": "Ages 13-16"
+                },
+                {
+                "col1": "A. Total for all ages (0-16) ",
+                "col2": null,
+                "col3": null,
+                "col4": null,
+                "col5": null
+                }],
+            "last_modified": "01/15/2021",
+            "last_modified_by": "seed",
+            "created_date": "01/15/2021",
+            "created_by": "seed"
+    
+        }
+    ]
+}
