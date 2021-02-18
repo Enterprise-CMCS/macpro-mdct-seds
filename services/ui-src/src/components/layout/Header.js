@@ -25,7 +25,9 @@ const Header = () => {
 
     async function onLoad() {
       try {
+        // Get user info
         const userInfo = await loadProfile();
+
         if (userInfo === null) {
           setIsAuthenticated(false);
         } else {
@@ -34,7 +36,7 @@ const Header = () => {
             const payload = userInfo.signInUserSession.idToken.payload;
             setEmail(payload.email);
           } else {
-            setEmail(userInfo.attributes.email);
+            setEmail(userInfo.email);
           }
           setIsAuthenticated(true);
         }
@@ -51,15 +53,16 @@ const Header = () => {
     onLoad();
   }, []);
 
-  async function handleLogout() {
+  function handleLogout() {
     if (config.LOCAL_LOGIN === "true") {
       window.localStorage.removeItem("userKey");
       history.push("/login");
       history.go(0);
     } else {
       try {
-        await Auth.signOut();
-        window.location.href = config.cognito.REDIRECT_SIGNOUT + "/logout";
+        const authConfig = Auth.configure();
+        Auth.signOut();
+        window.location.href = authConfig.oauth.redirectSignOut;
       } catch (error) {
         console.log("error signing out: ", error);
       }

@@ -6,7 +6,7 @@
   "items": {
     "type": "object",
     "properties": {
-      "user-id": {
+      "userId": {
         "type": "string",
         "description": "User ID; typically 4 chars"
       },
@@ -15,6 +15,6 @@
         "description": "Role assigned to user"
       }
     },
-    "required": ["user-id", "role"]
+    "required": ["userId", "role"]
   }
 }

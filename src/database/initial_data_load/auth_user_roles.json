@@ -1,22 +1,22 @@
 [
   {
-    "user-id": "WAQF",
+    "userId": "WAQF",
     "role": "admin"
   },
   {
-    "user-id": "A1LX",
+    "userId": "A1LX",
     "role": "admin"
   },
   {
-    "user-id": "G24F",
+    "userId": "G24F",
     "role": "admin"
   },
   {
-    "user-id": "G812",
+    "userId": "G812",
     "role": "admin"
   },
   {
-    "user-id": "DKZ2",
+    "userId": "DKZ2",
     "role": "admin"
   }
 ]

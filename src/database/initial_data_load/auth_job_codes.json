@@ -1,10 +1,10 @@
 [
   {
-    "job_code": "CHIP_D_ADMIN_GROUP",
+    "jobCode": "CHIP_D_ADMIN_GROUP",
     "role": ["admin", "business", "state"]
   },
   {
-    "job_code": "CHIP_D_USER_GROUP",
+    "jobCode": "CHIP_D_USER_GROUP",
     "role": ["business", "state"]
   }
 ]

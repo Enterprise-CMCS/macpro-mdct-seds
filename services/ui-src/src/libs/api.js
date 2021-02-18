@@ -44,3 +44,35 @@ export function deleteAmendment(id) {
   const opts = requestOptions();
   return API.del("amendments", `/amendments/${id}`, opts);
 }
+
+export function listUsers() {
+  const opts = requestOptions();
+  return API.get("amendments", `/users`, opts);
+}
+
+export function activationUsers(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.put("amendments", `/users/activation/${data.username}`, opts);
+}
+
+export function getUser(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.get("amendments", `/users/${data.userId}`, opts);
+}
+
+export function updateUser(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.post("amendments", `/users/update/${data.userId}`, opts);
+}
+
+export function getStateForms(stateId, specifiedYear, quarter) {
+  const opts = requestOptions();
+  return API.get(
+    "amendments",
+    `/forms/${stateId}/${specifiedYear}/${quarter}`,
+    opts
+  );
+}
