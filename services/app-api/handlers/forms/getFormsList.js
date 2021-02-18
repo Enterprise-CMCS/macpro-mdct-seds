@@ -20,7 +20,7 @@ export const main = handler(async (event, context) => {
       ":specifiedYear": parseInt(event.pathParameters["specifiedYear"]),
       ":quarter": parseInt(event.pathParameters["quarter"]),
     },
-    FilterExpression:
+      FilterExpression:
       "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
   };
   const result = await dynamoDb.scan(params);
