@@ -12,14 +12,14 @@ const Quarterly = () => {
   const state = url[2];
   const year = url[3];
   const quarter = url[4];
-  const [stateFormsList, setStateFormsList] = useState();
+    const [stateFormsList, setStateFormsList] = useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getStateForms(state, year, quarter);
+                const data = await getStateForms(state, year, quarter);
       setStateFormsList(data);
     }
     fetchData();
