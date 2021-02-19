@@ -14,9 +14,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
       "eslint:recommended",
-      "google"
     ]
   },
   "devDependencies": {
