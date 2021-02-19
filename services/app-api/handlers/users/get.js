@@ -36,17 +36,19 @@ export const getUserByUsername = handler(async (event, context) => {
 
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
-    Key: {
-      userId: data.username,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":username": data.username,
     },
+    FilterExpression: "username = :username",
   };
 
-  const result = await dynamoDb.get(params);
+  const result = await dynamoDb.scan(params);
 
-  if (!result.Item) {
-    return false;
+  if (result.Count === 0) {
+    return "No user found";
   }
 
   // Return the retrieved item
-  return result.Item;
+  return result;
 });
