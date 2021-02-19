@@ -10,7 +10,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: "local-state-forms",
+    TableName: process.env.STATE_FORMS_TABLE_NAME,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
       ":quarter": parseInt(event.pathParameters["quarter"]),
     },
     FilterExpression:
-      "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
+        "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
   };
   const result = await dynamoDb.scan(params);
   if (!result) {
