@@ -37,7 +37,7 @@ const UserEdit = ({ stateList }) => {
     setRole(data.role);
 
     // Sort states alphabetically
-    const theStates = data.states.sort();
+    const theStates = data.states.split("-").sort();
 
     // Set states to array of objects
     if (data.role !== "state") {
@@ -54,15 +54,16 @@ const UserEdit = ({ stateList }) => {
         })
       );
     } else {
-      for (let x in data) {
-        for (const state in stateList) {
-          let index = data[x];
-          if (stateList[state].value === index[0]) {
-            setSelectedStates({
-              label: stateList[state].label,
-              value: stateList[state].value
-            });
-          }
+      // Get user state, if multiple take only the first
+      const userState = data.states.split("-")[0];
+
+      // Loop through U.S. states to find a match and set to local state (storage)
+      for (const state in stateList) {
+        if (stateList[state].value === userState) {
+          setSelectedStates({
+            label: stateList[state].label,
+            value: stateList[state].value
+          });
         }
       }
     }
