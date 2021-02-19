@@ -120,7 +120,9 @@ const Users = () => {
         selector: "state_codes",
         sortable: true,
         cell: function modifyStateCodes(s) {
-          return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
+          return s.states ? (
+            <span>{s.states.split("-").join(", ")}</span>
+          ) : null;
         }
       },
       {
@@ -162,6 +164,7 @@ const Users = () => {
     <div className="user-profiles">
       <Grid className="container">
         <h1>Users</h1>
+        <a href="/users/add">Add new user</a>
         <Card>
           {tableData ? (
             <DataTableExtensions {...tableData}>
