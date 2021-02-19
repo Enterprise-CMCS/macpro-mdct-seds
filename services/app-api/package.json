@@ -14,7 +14,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "eslint:recommended",
+      "eslint:recommended"
     ]
   },
   "devDependencies": {
