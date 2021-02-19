@@ -24,8 +24,8 @@ jobs:
         working-directory: services/app-api
         run: yarn install
       - name: run eslint
-        working-directory: services/ui-src
+        working-directory: .
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
       - name: run eslint2
-        working-directory: services/app-api
+        working-directory: .
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
