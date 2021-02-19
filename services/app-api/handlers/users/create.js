@@ -1,6 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-import { getUser } from "./get";
+import { getUserByUsername } from "./get";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -13,8 +13,18 @@ export const main = handler(async (event, context) => {
 
   console.log(JSON.stringify(event, null, 2));
 
-  const currentUser = getUser(data.username);
-  console.log("zzzCurrentUser", currentUser);
+  // Stringify body contents to match api type
+  const body = JSON.stringify({
+    username: data.username,
+  });
+
+  const currentUser = await getUserByUsername({
+    body: body,
+  });
+
+  if (currentUser.body !== "false") {
+    return "User Exists";
+  }
 
   // Query to get next available userId
   const paramsForId = {
@@ -53,5 +63,5 @@ export const main = handler(async (event, context) => {
 
   await dynamoDb.put(params);
 
-  return params.Item;
+  return `User ${data.username} Added!`;
 });

@@ -32,7 +32,7 @@ export const getUserByUsername = handler(async (event, context) => {
     return null;
   }
 
-  const data = JSON.parse(event.body);
+  let data = JSON.parse(event.body);
 
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
@@ -46,7 +46,7 @@ export const getUserByUsername = handler(async (event, context) => {
   const result = await dynamoDb.scan(params);
 
   if (result.Count === 0) {
-    return "No user found";
+    return false;
   }
 
   // Return the retrieved item

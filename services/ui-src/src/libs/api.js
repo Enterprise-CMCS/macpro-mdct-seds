@@ -65,7 +65,7 @@ export function getUser(data) {
 export function getUserByUsername(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.get("amendments", `/users/get/${data.username}`, opts);
+  return API.post("amendments", `/users/get/`, opts);
 }
 
 export function updateUser(data) {

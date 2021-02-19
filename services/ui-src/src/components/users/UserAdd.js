@@ -29,7 +29,7 @@ const AddUser = ({ currentUser, stateList }) => {
     };
 
     const response = await createUser(data);
-    window.alert(response.data);
+    window.alert(response);
     window.location.reload(false);
   }
 
