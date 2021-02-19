@@ -34,9 +34,9 @@ const Quarterly = () => {
       cell: function generateFormLink(e) {
         return (
           <a
-            href={`/forms/${state}/${year}/${quarter}/${
-              e.form.replace("-","_").toLowerCase()
-            }`}
+            href={`/forms/${state}/${year}/${quarter}/${e.form
+              .replace("-", "_")
+              .toLowerCase()}`}
           >
             {e.form}
           </a>
@@ -76,7 +76,7 @@ const Quarterly = () => {
       name: "Print",
       sortable: false,
       cell: function getPrintLink(row) {
-        const formId = row.form.replace("-","_").toLowerCase();
+        const formId = row.form.replace("-", "_").toLowerCase();
         return (
           <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
             <FontAwesomeIcon icon={faFilePdf} />
