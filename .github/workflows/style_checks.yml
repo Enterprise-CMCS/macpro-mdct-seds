@@ -27,5 +27,5 @@ jobs:
         working-directory: services/ui-src
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
       - name: run eslint2
-          working-directory: services/app-api
-          run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
+        working-directory: services/app-api
+        run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
