@@ -24,30 +24,6 @@ const Quarterly = () => {
     }
     fetchData();
   }, [state, year, quarter]);
-  // Translate form name from redux into url value
-  const getFormSegment = formName => {
-    let urlSegment;
-    switch (formName) {
-      case "64-ec":
-        urlSegment = "64ec";
-        break;
-      case "64-eci":
-        urlSegment = "64eci";
-        break;
-      case "64-21e":
-        urlSegment = "64-21e";
-        break;
-      case "64-21ei":
-        urlSegment = "64-21ei";
-        break;
-      case "21E": // may need to update all of the case statements
-        urlSegment = "21e";
-        break;
-      default:
-        urlSegment = false;
-    }
-    return urlSegment;
-  };
 
   // Build Columns for data table
   const columns = [
@@ -58,9 +34,9 @@ const Quarterly = () => {
       cell: function generateFormLink(e) {
         return (
           <a
-            href={`/forms/${state}/${year}/${quarter}/${getFormSegment(
-              e.form
-            )}`}
+            href={`/forms/${state}/${year}/${quarter}/${
+              e.form.replace("-","_").toLowerCase()
+            }`}
           >
             {e.form}
           </a>
@@ -100,8 +76,7 @@ const Quarterly = () => {
       name: "Print",
       sortable: false,
       cell: function getPrintLink(row) {
-        // console.log(row);
-        const formId = getFormSegment(row.form);
+        const formId = row.form.replace("-","_").toLowerCase();
         return (
           <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
             <FontAwesomeIcon icon={faFilePdf} />
