@@ -23,8 +23,10 @@ export const main = handler(async (event, context) => {
       "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
   };
   const result = await dynamoDb.scan(params);
-  if (result.Count === 0 ) {
-    throw new Error("No state form list found for this state, year, and quarter");
+  if (result.Count === 0) {
+    throw new Error(
+      "No state form list found for this state, year, and quarter"
+    );
   }
   // Return the matching list of items in response body
   return result.Items;
