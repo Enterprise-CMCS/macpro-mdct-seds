@@ -18,14 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install dependencies
-        working-directory: services/ui-src
-        run: yarn install
-      - name: install dependencies
-        working-directory: services/app-api
-        run: yarn install
-      - name: run eslint
         working-directory: .
-        run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
+        run: yarn install
       - name: run eslint2
         working-directory: .
         run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
