@@ -20,6 +20,7 @@ const Quarterly = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await getStateForms(state, year, quarter);
+      console.log(data)
       setStateFormsList(data);
     }
     fetchData();
