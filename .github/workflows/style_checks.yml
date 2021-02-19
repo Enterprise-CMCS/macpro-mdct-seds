@@ -10,16 +10,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: check that modified files are prettier
-        run: npx prettier $(git diff --diff-filter=ACMR --name-only --relative origin/master -- | xargs) -c -u .
+        run: npx prettier .
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
     container: node:14
     steps:
       - uses: actions/checkout@v2
-      - name: install dependencies
+      - name: install dependencies ui-src
         working-directory: services/ui-src
         run: yarn install
-      - name: run eslint
+      - name: run eslint ui-src
         working-directory: services/ui-src
+        run: npx eslint .
+      - name: install dependencies app-api
+        working-directory: services/app-api
+        run: yarn install
+      - name: run eslint app-api
+        working-directory: services/app-api
         run: npx eslint .
