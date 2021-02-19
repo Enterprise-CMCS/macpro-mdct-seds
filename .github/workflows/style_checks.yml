@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: check that modified files are prettier
-        run: npx prettier $(git diff --diff-filter=ACMR --name-only --relative origin/master -- | xargs) -c -u
+        run: npx prettier $(git diff --diff-filter=ACMR --name-only --relative origin/master -- | xargs) -c -u .
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
