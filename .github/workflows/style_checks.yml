@@ -17,9 +17,9 @@ jobs:
     container: node:14
     steps:
       - uses: actions/checkout@v2
-      - name: install dependencies2
-        working-directory: ./
+      - name: install dependencies
+        working-directory: services/ui-src
         run: yarn install
-      - name: run eslint2
-        working-directory: ./
-        run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
+      - name: run eslint
+        working-directory: services/ui-src
+        run: npx eslint .
