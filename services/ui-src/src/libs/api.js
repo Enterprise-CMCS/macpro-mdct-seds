@@ -62,10 +62,22 @@ export function getUser(data) {
   return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
+export function getUserByUsername(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.get("amendments", `/users/get/${data.username}`, opts);
+}
+
 export function updateUser(data) {
   const opts = requestOptions();
   opts.body = data;
   return API.post("amendments", `/users/update/${data.userId}`, opts);
+}
+
+export function createUser(data) {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.post("amendments", `/users/add`, opts);
 }
 
 export function getStateForms(stateId, specifiedYear, quarter) {

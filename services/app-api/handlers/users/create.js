@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { getUser } from "./get";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -8,39 +9,45 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log("zzzEvent", event);
   const data = JSON.parse(event.body);
-  // const data = event.body;
-  // return data;
+
   console.log(JSON.stringify(event, null, 2));
 
-  //Query to get next available userId
+  const currentUser = getUser(data.username);
+  console.log("zzzCurrentUser", currentUser);
+
+  // Query to get next available userId
   const paramsForId = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
+  let newUserId = 0;
   // Check for result Items
   if (Array.isArray(allResults.Items)) {
     // Sort Alphabetically by userId
     allResults.Items.sort((a, b) =>
       parseInt(a.userId) > parseInt(b.userId) ? -1 : 1
     );
+
+    if (allResults.Items[0]) {
+      newUserId = parseInt(allResults.Items[0].userId) + 1;
+    }
   }
-  const newUserId = parseInt(allResults.Items[0].userId) + 1;
 
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
     Item: {
-      userId: newUserId.toString(),
-      isSuperUser: "true",
-      username: data.username,
+      dateJoined: Date.now(),
+      email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
-      role: data.role,
       isActive: "true",
-      dateJoined: Date.now(),
+      isSuperUser: "true",
+      role: data.role,
+      states: data.states,
+      userId: newUserId.toString(),
+      username: data.username,
     },
   };
 

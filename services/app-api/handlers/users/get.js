@@ -18,7 +18,33 @@ export const main = handler(async (event, context) => {
   const result = await dynamoDb.get(params);
 
   if (!result.Item) {
-    throw new Error("Users not found.");
+    return false;
+  }
+
+  // Return the retrieved item
+  return result.Item;
+});
+
+export const getUserByUsername = handler(async (event, context) => {
+  // If this invokation is a prewarm, do nothing and return.
+  if (event.source == "serverless-plugin-warmup") {
+    console.log("Warmed up!");
+    return null;
+  }
+
+  const data = JSON.parse(event.body);
+
+  const params = {
+    TableName: process.env.AUTH_USER_TABLE_NAME,
+    Key: {
+      userId: data.username,
+    },
+  };
+
+  const result = await dynamoDb.get(params);
+
+  if (!result.Item) {
+    return false;
   }
 
   // Return the retrieved item

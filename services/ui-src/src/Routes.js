@@ -69,11 +69,11 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/users">
         <Users />
       </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users/add">
+        <UserAdd />
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/users/:id">
         <UserEdit />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/users/add/user">
-        <UserAdd />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
         <Profile />

@@ -7,7 +7,8 @@ import { Auth } from "aws-amplify";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
-import { getLocalUserInfo } from "./libs/user";
+import { currentUserInfo } from "./libs/user";
+import { getUser, createUser } from "./libs/api";
 
 function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -20,11 +21,12 @@ function App({ userData }) {
 
   async function onLoad() {
     if (config.LOCAL_LOGIN === "true") {
-      const userInfo = getLocalUserInfo();
+      const payload = await currentUserInfo();
 
-      if (userInfo === null) {
+      if (payload === null) {
         history.push("/login");
       } else {
+        await getOrAddUser(payload);
         userHasAuthenticated(true);
       }
     } else {
@@ -51,9 +53,20 @@ function App({ userData }) {
   }
 
   async function getOrAddUser(payload) {
-    if (payload.username) {
+    // console.log("getOrAddUser");
+    if (payload.userId) {
+      // console.log("payload.userId");
       // Check if user exists
+      const getUserData = { userId: payload.userId };
+      // console.log("zzzGetUserData", getUserData);
+      const data = await getUser(getUserData);
+
+      // console.log("zzzData", data);
       // If user doesn't exists, add to database
+      if (!data) {
+        console.log("No data");
+        await createUser(payload);
+      }
     }
   }
 
