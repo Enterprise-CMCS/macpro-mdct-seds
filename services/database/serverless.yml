@@ -42,6 +42,9 @@ custom:
                 ../../src/database/initial_data_load/form_answers_21E_AL.json,
                 ../../src/database/initial_data_load/form_answers_21E_MD.json,
                 ../../src/database/initial_data_load/form_answers_21E_PA.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_AL.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_MD.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_PA.json,
               ]
           - table: ${self:custom.stage}-auth-user
             sources: [../../src/database/initial_data_load/auth_user.json]
