@@ -9,7 +9,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: "local-state-forms",
+    TableName: process.env.STATE_FORMS_TABLE_NAME,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
@@ -23,8 +23,10 @@ export const main = handler(async (event, context) => {
       "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
   };
   const result = await dynamoDb.scan(params);
-  if (!result) {
-    throw new Error("No state form list found");
+  if (result.Count === 0) {
+    throw new Error(
+      "No state form list found for this state, year, and quarter"
+    );
   }
   // Return the matching list of items in response body
   return result.Items;
