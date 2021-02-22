@@ -8,9 +8,12 @@
   ],
   "parserOptions": {
     // Only ESLint 6.2.0 and later support ES2020.
-    "ecmaVersion": 2020,
+    "ecmaVersion":11,
     "sourceType": "module",
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "node/prefer-global/buffer": [
