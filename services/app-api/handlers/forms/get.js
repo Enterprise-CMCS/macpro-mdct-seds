@@ -7,19 +7,50 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+  // Deconstruct variables from URL string
+  const { state, specifiedYear, quarter, form } = event.pathParameters;
 
-  const data = JSON.parse(event.body);
+  const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
 
-  const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+  const answerParams = {
+    // TableName: process.env.FORM_ANSWERS_TABLE_NAME,
+    TableName: "local-form-answers",
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":answerFormID": answerFormID,
+    },
+    FilterExpression: "state_form = :answerFormID",
   };
 
-  const result = await dynamoDb.get(params);
+  const questionParams = {
+    // TableName: process.env.FORM_QUESTIONS_TABLE_NAME,
+    TableName: "local-form-questions",
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ExpressionAttributeValues: {
+      ":specifiedYear": parseInt(specifiedYear),
+      ":form": form,
+    },
+    FilterExpression: "form = :form and #theYear = :specifiedYear",
+  };
 
-  if (!result.Item) {
-    throw new Error("Single form not found.");
+  const [answersResult, questionResult] = await Promise.all([
+    dynamoDb.scan(answerParams),
+    dynamoDb.scan(questionParams),
+  ]);
+
+  if (answersResult.Count === 0) {
+    throw new Error("Answers for Single form not found.");
+  }
+  if (questionResult.Count === 0) {
+    throw new Error("Questions for Single form not found.");
   }
 
-  // Return the retrieved item
-  return result.Item;
+  return {
+    answers: answersResult.Items,
+    questions: questionResult.Items,
+    answerEnv: process.env.FORM_ANSWERS_TABLE_NAME || "A",
+    questionEnv: process.env.FORM_QUESTIONS_TABLE_NAME || "Q",
+  };
 });

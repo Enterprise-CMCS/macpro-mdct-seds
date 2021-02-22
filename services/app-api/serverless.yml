@@ -124,26 +124,6 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
-<<<<<<< HEAD
-  getForm:
-    handler: handlers/forms/get.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: get-single-form/{state}
-          method: get
-          cors: true
-          authorizer: aws_iam
-  # getForms:
-  #   handler: handlers/forms/list.main
-  #   role: LambdaApiRole
-  #   events:
-  #     - http:
-  #         path: get-forms/{state}
-  #         method: get
-  #         cors: true
-  #         authorizer: aws_iam
-=======
   getUser:
     handler: handlers/users/get.main
     role: LambdaApiRole
@@ -198,7 +178,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-
+  getForm:
+    handler: handlers/forms/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: single-form/{state}/{specifiedYear}/{quarter}/{form}
+          method: get
+          cors: true
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
@@ -208,7 +196,6 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
->>>>>>> cc2f33f9087f3a72df1caa6d7658a296ceceb4b8
 
 resources:
   Conditions:
