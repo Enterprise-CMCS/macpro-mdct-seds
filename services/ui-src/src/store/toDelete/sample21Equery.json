@@ -1,32 +1,32 @@
 [
   {
-    "state_form": "AL-2021-1-21E",
-    "state_id": "AL",
+    "stateForm": "AL-2021-1-21E",
+    "stateId": "AL",
     "form": "21E",
-    "program_code": "AL",
+    "programCode": "AL",
     "year": 2021,
     "quarter": 1,
-    "validation_percent": 0.03,
+    "validationPercent": 0.03,
     "status": "Not Started",
-    "status_date": "01-15-2021",
-    "not_applicable": false,
+    "statusDate": "01-15-2021",
+    "notApplicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
         "entry": null
       }
     ],
-    "last_modified": "01-15-2021",
-    "last_modified_by": "seed",
+    "lastModified": "01-15-2021",
+    "lastModifiedBy": "seed",
     "questions": [
       {
-        "answer_entry": "AL-2021-1-21E-U1-01",
+        "answerAntry": "AL-2021-1-21E-U1-01",
         "question": "2021-21E-01",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -67,7 +67,7 @@
         "created_by": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-02",
+        "answerAntry": "AL-2021-1-21E-U1-02",
         "state_form": "AL-2021-1-21E",
         "question": "2021-21E-02",
         "type": "datagridwithtotals",

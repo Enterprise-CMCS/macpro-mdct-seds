@@ -1,4 +1,5 @@
 import { API } from "aws-amplify";
+import { useParams } from "react-router-dom";
 import config from "../config";
 import { getLocalUserInfo } from "./user";
 
@@ -75,4 +76,12 @@ export function getStateForms(stateId, specifiedYear, quarter) {
     `/forms/${stateId}/${specifiedYear}/${quarter}`,
     opts
   );
+}
+
+/**
+ * @param {string} stateForm
+ * example: "PA-2021-1-21E"
+ */
+export function updateStateForms(stateForm) {
+  return API.post("amendments", `/forms/{stateForm}`)
 }
