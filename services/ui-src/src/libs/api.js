@@ -1,5 +1,4 @@
 import { API } from "aws-amplify";
-import { useParams } from "react-router-dom";
 import config from "../config";
 import { getLocalUserInfo } from "./user";
 
