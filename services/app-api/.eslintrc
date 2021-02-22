@@ -19,6 +19,9 @@
     "es6": true
   },
   "rules": {
-    "semi": "error"
+    "semi": "error",
+    "node/no-extraneous-import": ["error", {
+      "allowModules": ["express"]
+    }]
   }
 }
