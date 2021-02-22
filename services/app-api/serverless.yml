@@ -187,15 +187,6 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  updateStateForm:
-    handler: handlers/forms/updateStateFrom.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: forms/update/{stateForm}
-          method: post
-          cors: true
-          authorizer: aws_iam        
 
 resources:
   Conditions:

@@ -77,11 +77,3 @@ export function getStateForms(stateId, specifiedYear, quarter) {
     opts
   );
 }
-
-/**
- * @param {string} stateForm
- * example: "PA-2021-1-21E"
- */
-export function updateStateForms(stateForm) {
-  return API.post("amendments", `/forms/{stateForm}`)
-}
