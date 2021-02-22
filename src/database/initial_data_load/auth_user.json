@@ -72,7 +72,7 @@
   {
     "userId": "5",
     "password": "",
-    "isSuperUser": true,
+    "isSuperUser": false,
     "username": "MDCT_Test",
     "firstName": "MDCT",
     "lastName": "Test",
@@ -114,7 +114,7 @@
   {
     "userId": "8",
     "password": "",
-    "isSuperUser": true,
+    "isSuperUser": false,
     "username": "W96E",
     "firstName": "Tara",
     "lastName": "Williams",
@@ -128,7 +128,7 @@
   {
     "userId": "9",
     "password": "",
-    "isSuperUser": true,
+    "isSuperUser": false,
     "username": "CNAA",
     "firstName": "Stephanie",
     "lastName": "Coppel",
