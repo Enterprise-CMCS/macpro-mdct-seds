@@ -10,8 +10,8 @@
     "isActive": true,
     "role": "admin",
     "states": "MD-VA",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/29/2021"
+    "dateJoined": "2021-02-22T15:20:59.081Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   },
   {
     "userId": "1",
@@ -24,8 +24,8 @@
     "isActive": true,
     "role": "admin",
     "states": "MD",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/28/2021"
+    "dateJoined": "2021-02-22T15:28:50.919Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   },
   {
     "userId": "2",
@@ -38,8 +38,8 @@
     "isActive": true,
     "role": "state",
     "states": "PA",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/27/2021"
+    "dateJoined": "2021-02-22T15:28:50.919Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   },
   {
     "userId": "3",
@@ -52,8 +52,8 @@
     "isActive": true,
     "role": "admin",
     "states": "CT",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/26/2021"
+    "dateJoined": "2021-02-22T15:28:50.919Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   },
   {
     "userId": "4",
@@ -66,8 +66,8 @@
     "isActive": true,
     "role": "admin",
     "states": "SD-AK-AL",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/25/2021"
+    "dateJoined": "2021-02-22T15:28:50.919Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   },
   {
     "userId": "5",
@@ -80,7 +80,7 @@
     "isActive": true,
     "role": "admin",
     "states": "CT",
-    "dateJoined": "01/22/2021",
-    "lastLogin": "01/24/2021"
+    "dateJoined": "2021-02-22T15:28:50.919Z",
+    "lastLogin": "2021-02-22T15:28:50.919Z"
   }
 ]

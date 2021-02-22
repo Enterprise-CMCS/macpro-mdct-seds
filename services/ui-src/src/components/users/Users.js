@@ -108,12 +108,22 @@ const Users = () => {
       {
         name: "Joined",
         selector: "dateJoined",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.dateJoined
+            ? new Date(s.dateJoined).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "Last Active",
         selector: "lastLogin",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.lastLogin
+            ? new Date(s.lastLogin).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "States",

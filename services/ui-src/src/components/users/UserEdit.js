@@ -271,7 +271,7 @@ const UserEdit = ({ stateList }) => {
               </div>
               <div className="textfield">
                 <TextField
-                  value={user.dateJoined}
+                  value={new Date(user.dateJoined).toLocaleDateString("en-US")}
                   type="text"
                   label="Registration Date"
                   disabled={true}
@@ -280,7 +280,7 @@ const UserEdit = ({ stateList }) => {
               </div>
               <div className="textfield">
                 <TextField
-                  value={user.lastLogin}
+                  value={new Date(user.lastLogin).toLocaleDateString("en-US")}
                   type="text"
                   label="Last Login"
                   disabled={true}

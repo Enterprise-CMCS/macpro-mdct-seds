@@ -48,7 +48,7 @@ export const main = handler(async (event, context) => {
   const params = {
     TableName: process.env.AUTH_USER_TABLE_NAME,
     Item: {
-      dateJoined: new Date(),
+      dateJoined: new Date().toISOString(),
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
