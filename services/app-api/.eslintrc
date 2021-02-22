@@ -3,12 +3,13 @@
     "eslint:recommended",
     "plugin:node/recommended"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
-    // Only ESLint 6.2.0 and later support ES2020.
-    "parser": "babel-eslint",
     "sourceType": "module",
     "ecmaVersion": 6,
     "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
       "experimentalObjectRestSpread": true
     }
   },
@@ -18,6 +19,6 @@
     "es6": true
   },
   "rules": {
-    "strict": 0
+    "semi": "error"
   }
 }

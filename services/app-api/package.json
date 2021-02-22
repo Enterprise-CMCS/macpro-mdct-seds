@@ -16,7 +16,11 @@
     "extends": [
       "eslint:recommended",
       "plugin:node/recommended"
-    ]
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    }
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
