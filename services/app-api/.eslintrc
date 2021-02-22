@@ -14,7 +14,9 @@
     "allowImportExportEverywhere": true
   },
   "env": {
-    "node": true
+    "node": true,
+    "browser": true,
+    "es6": true
   },
   "rules": {
     "strict": 0
