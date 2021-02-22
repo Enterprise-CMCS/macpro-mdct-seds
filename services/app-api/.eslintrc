@@ -3,14 +3,11 @@
     "eslint:recommended",
     "plugin:node/recommended"
   ],
-  "plugins": [
-    "prettier"
-  ],
   "parserOptions": {
     // Only ESLint 6.2.0 and later support ES2020.
     "parser": "babel-eslint",
     "sourceType": "module",
-    "ecmaVersion": 7,
+    "ecmaVersion": 12,
     "allowImportExportEverywhere": true
   },
   "env": {
