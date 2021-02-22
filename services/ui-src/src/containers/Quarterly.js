@@ -5,7 +5,6 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
-import Card from "@material-ui/core/Card";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -70,16 +69,9 @@ const Quarterly = () => {
     },
     {
       name: "Name",
-      selector: "form_name",
+      selector: "form", // Not sure what this should be displaying
       sortable: true,
-      wrap: true,
-      cell: function setFormName(e) {
-        return (
-          <p
-          style={{fontWeight: " "}}
-          >{e.form_name}</p>
-        )
-      }
+      wrap: true
     },
     {
       name: "Status",
@@ -87,10 +79,8 @@ const Quarterly = () => {
       sortable: true,
       cell: function setStatus(e) {
         return (
-          <div className="status-wrapper" >
+          <div className="status-wrapper">
             <Button
-              style={{margin: "15px 0 15px -55px", 
-              outline: "none", cursor: "pointer"}}
               type="button"
               className={`usa-button status status-${e.status_code}`}
             >
@@ -110,6 +100,7 @@ const Quarterly = () => {
       name: "Print",
       sortable: false,
       cell: function getPrintLink(row) {
+        // console.log(row);
         const formId = getFormSegment(row.form);
         return (
           <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
@@ -124,31 +115,23 @@ const Quarterly = () => {
   const customStyles = {
     headRow: {
       style: {
-        textTransform: "uppercase",
-        fontWeight: "600",
+        textTransform: "uppercase"
       }
     },
     headCells: {
       style: {
-        "&:last-of-type": { // Print
-          fontWeight: "600",
+        "&:last-of-type": {
           maxWidth: "120px"
         },
-        "&:first-of-type": { // Form
-          fontWeight: "600",
+        "&:first-of-type": {
           maxWidth: "120px"
         },
-        "&:nth-of-type(2n)": { // FormName
-          fontWeight: "600",
-          maxWidth: "400px",
-        },
-        "&:nth-of-type(3n)": { // Status
-          fontWeight: "600",
+        "&:nth-of-type(3n)": {
           maxWidth: "180px"
         },
-        "&:nth-of-type(4n)": { //Last Updated
-          fontWeight: "600",
+        "&:nth-of-type(4n)": {
           maxWidth: "140px",
+          minWidth: "140px"
         }
       }
     },
@@ -161,9 +144,6 @@ const Quarterly = () => {
         "&:first-of-type": {
           maxWidth: "120px"
         },
-        "&:nth-of-type(2n)": {
-          maxWidth: "400px",
-        },
         "&:nth-of-type(3n)": {
           maxWidth: "180px",
           pointerType: "default"
@@ -175,40 +155,32 @@ const Quarterly = () => {
       }
     }
   };
-  console.log(stateFormsList)
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> &gt; {`Q${quarter} ${year}`}
+            <a href="/">Enrollment Data Home</a> > {`Q${quarter} ${year}`}
           </div>
         </Grid>
       </Grid>
       <Grid row>
         <Grid col={12}>
           <h2>{title}</h2>
+          <p>
+            Start, complete, and print this quarter's CHIP Enrollment Data
+            Reports.
+          </p>
           <div className="quarterly-report-listing">
-            <Card>
-              {stateFormsList ? (
-                <DataTable
-                sortIcon={<SortIcon />}
-                highlightOnHover
-                title={
-                  <p
-                  style={{fontSize: "14px", fontWeight: "600"}}
-                  >
-                  Start, complete, and print this quarter's CHIP Enrollment Data
-                  Reports.
-                  </p>}
-                selectableRows={false}
-                responsive={true}
-                columns={columns}
-                data={stateFormsList}
-                customStyles={customStyles}
-              />
-              ) : null}
-            </Card>
+            <DataTable
+              sortIcon={<SortIcon />}
+              highlightOnHover
+              selectableRows={false}
+              responsive={true}
+              columns={columns}
+              data={stateFormsList}
+              customStyles={customStyles}
+            />
           </div>
         </Grid>
       </Grid>

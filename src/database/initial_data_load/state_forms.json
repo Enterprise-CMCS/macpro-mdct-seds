@@ -1,6 +1,5 @@
 [
   {
-    "form_name": "Number of CHIP Children Served, SCHIP",
     "state_form": "AL-2021-1-21E",
     "state_id": "AL",
     "form": "21E",
@@ -23,7 +22,6 @@
     "created_by": "seed"
   },
   {
-    "form_name": "Number of CHIP Children Served, SCHIP",
     "state_form": "MD-2021-1-21E",
     "state_id": "MD",
     "form": "21E",
@@ -46,7 +44,6 @@
     "created_by": "seed"
   },
   {
-    "form_name": "Number of CHIP Children Served, SCHIP",
     "state_form": "PA-2021-1-21E",
     "state_id": "PA",
     "form": "21E",

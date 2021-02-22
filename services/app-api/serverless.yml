@@ -178,6 +178,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
