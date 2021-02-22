@@ -11,19 +11,12 @@
     "parser": "babel-eslint",
     "sourceType": "module",
     "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    }
+    "allowImportExportEverywhere": true
   },
   "env": {
     "node": true
   },
   "rules": {
-    "strict": 0,
-    "node/prefer-global/url-search-params": [
-      "error",
-      "always"
-    ]
+    "strict": 0
   }
 }
