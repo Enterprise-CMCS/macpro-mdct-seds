@@ -8,7 +8,9 @@
     "parser": "babel-eslint",
     "sourceType": "module",
     "ecmaVersion": 6,
-    "allowImportExportEverywhere": true
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "env": {
     "node": true,
