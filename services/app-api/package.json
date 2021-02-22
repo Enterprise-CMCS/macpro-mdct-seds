@@ -40,6 +40,5 @@
     "dynamodb-atomic-counter": "^0.1.1",
     "eslint-plugin-node": "^11.1.0",
     "uuid": "^7.0.3"
-  },
-  "type":"module"
+  }
 }
