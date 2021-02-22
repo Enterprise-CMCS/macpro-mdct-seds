@@ -41,12 +41,5 @@
     "eslint-plugin-node": "^11.1.0",
     "uuid": "^7.0.3"
   },
-  "node/no-unsupported-features/es-syntax": [
-    "error",
-    {
-      "version": ">=8.0.0",
-      "ignores": []
-    }
-  ]
-
+  "type":"module"
 }
