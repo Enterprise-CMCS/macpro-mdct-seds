@@ -33,7 +33,7 @@ export const main = handler(async (event, context) => {
     FilterExpression: "form = :form and #theYear = :specifiedYear",
   };
 
-  const [answersResult, questionResult] = await Promise.all([
+  const [answersResult, questionsResult] = await Promise.all([
     dynamoDb.scan(answerParams),
     dynamoDb.scan(questionParams),
   ]);
@@ -41,12 +41,12 @@ export const main = handler(async (event, context) => {
   if (answersResult.Count === 0) {
     throw new Error("Answers for Single form not found.");
   }
-  if (questionResult.Count === 0) {
+  if (questionsResult.Count === 0) {
     throw new Error("Questions for Single form not found.");
   }
 
   return {
     answers: answersResult.Items,
-    questions: questionResult.Items,
+    questions: questionsResult.Items,
   };
 });
