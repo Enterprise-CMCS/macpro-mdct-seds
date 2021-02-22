@@ -15,6 +15,9 @@
       "jsx": true
     }
   },
+  "env": {
+    "node": true
+  },
   "rules": {
     "node/prefer-global/buffer": [
       "error",
