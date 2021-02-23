@@ -32,7 +32,7 @@ export const main = handler(async (event, context) => {
 
   // Query to get next available userId
   const paramsForId = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
@@ -50,7 +50,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
     Item: {
       dateJoined: new Date().toISOString(),
       email: data.email,

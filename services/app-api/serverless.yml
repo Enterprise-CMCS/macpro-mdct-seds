@@ -209,7 +209,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-
+  getForm:
+    handler: handlers/forms/get.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: single-form/{state}/{specifiedYear}/{quarter}/{form}
+          method: get
+          cors: true
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
