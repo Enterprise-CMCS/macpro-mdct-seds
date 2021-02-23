@@ -14,14 +14,14 @@ export default function Login() {
       firstName: "Alice",
       lastName: "Cooper",
       lastLogin: "01/28/2021",
-      role: "admin",
+      role: "state",
       dateJoined: "01/22/2021",
       isSuperUser: true,
       isActive: true,
       userId: "1",
       email: "alicecooper@collabralink.com",
       username: "AAAA",
-      states: ["AL, MD, PA"],
+      states: "AL-MD-PA",
       localLogin: true
     };
 

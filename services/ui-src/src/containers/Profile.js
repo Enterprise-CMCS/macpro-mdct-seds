@@ -65,10 +65,10 @@ export default function Profile() {
     let statesRefined = "";
 
     // Sort alphabetically
-    states.sort();
+    const statesArray = states.split("-").sort();
 
     // Create string from array, add in commas
-    states.forEach((value, i) => {
+    statesArray.forEach((value, i) => {
       if (i === 0) {
         statesRefined += value;
       } else {

@@ -8,7 +8,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
 import { currentUserInfo } from "./libs/user";
-import { getUser, createUser } from "./libs/api";
+import { getUserByUsername, createUser } from "./libs/api";
 
 function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -53,18 +53,12 @@ function App({ userData }) {
   }
 
   async function getOrAddUser(payload) {
-    // console.log("getOrAddUser");
-    if (payload.userId) {
-      // console.log("payload.userId");
+    if (payload.username) {
       // Check if user exists
-      const getUserData = { userId: payload.userId };
-      // console.log("zzzGetUserData", getUserData);
-      const data = await getUser(getUserData);
+      const data = await getUserByUsername({ username: payload.username });
 
-      // console.log("zzzData", data);
-      // If user doesn't exists, add to database
+      // If user doesn't exists, create user
       if (!data) {
-        console.log("No data");
         await createUser(payload);
       }
     }

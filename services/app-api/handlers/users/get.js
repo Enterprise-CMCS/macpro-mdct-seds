@@ -9,7 +9,8 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Key: {
       userId: event.pathParameters["id"],
     },
@@ -35,7 +36,8 @@ export const getUserByUsername = handler(async (event, context) => {
   let data = JSON.parse(event.body);
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":username": data.username,

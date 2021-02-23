@@ -8,7 +8,8 @@ export const main = handler(async (event, context) => {
     return null;
   }
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
   };
 
   const result = await dynamoDb.scan(params);
