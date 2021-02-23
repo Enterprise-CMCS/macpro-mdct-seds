@@ -35,7 +35,11 @@ function App({ userData }) {
         console.log("zzzData from app.js", data);
 
         if (data.signInUserSession) {
-          const payload = data.signInUserSession.idToken.payload;
+          let payload = data.signInUserSession.idToken.payload;
+
+          // Adjust role if coming from Okta
+          payload.role = determineRole(payload.role);
+
           getOrAddUser(payload);
         }
         userHasAuthenticated(true);
@@ -51,6 +55,19 @@ function App({ userData }) {
 
     setIsAuthenticating(false);
   }
+
+  const determineRole = role => {
+    const roleArray = ["admin", "business", "state"];
+    if (roleArray.includes(role)) {
+      return role;
+    }
+
+    if (role.includes("CHIP_Group_Dev_Admin")) {
+      return "admin";
+    } else if (role.includes("CHIP_Group_Dev_Users")) {
+      return "state";
+    }
+  };
 
   async function getOrAddUser(payload) {
     if (payload.username) {
