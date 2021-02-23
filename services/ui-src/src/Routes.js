@@ -53,7 +53,6 @@ export default function Routes() {
 
   return (
     <Switch>
-      {console.log("zzzRoleRoutes", role)}
       <AuthenticatedRoute exact path="/">
         <Home role={role} />
       </AuthenticatedRoute>

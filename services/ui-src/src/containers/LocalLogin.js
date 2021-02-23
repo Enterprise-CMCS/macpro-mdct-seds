@@ -14,7 +14,7 @@ export default function Login() {
       firstName: "Alice",
       lastName: "Cooper",
       lastLogin: "01/28/2021",
-      role: "business",
+      role: "admin",
       dateJoined: "01/22/2021",
       isSuperUser: "true",
       isActive: "true",
