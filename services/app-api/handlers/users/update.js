@@ -9,7 +9,7 @@ export const main = handler(async (event) => {
   }
   const data = JSON.parse(event.body);
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
     // 'Key' defines the partition key and sort key of the item to be updated
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'amendmentId': path parameter

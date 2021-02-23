@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:node/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
@@ -22,8 +19,11 @@
   "rules": {
     "semi": "error",
     "no-console": "off",
-    "node/no-extraneous-import": ["error", {
-      "allowModules": ["express"]
-    }]
+    "node/no-extraneous-import": [
+      "error",
+      {
+        "allowModules": ["express"]
+      }
+    ]
   }
 }

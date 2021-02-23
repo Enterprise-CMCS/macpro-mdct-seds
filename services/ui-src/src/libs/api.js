@@ -59,7 +59,7 @@ export function activationUsers(data) {
 export function getUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/${data.userId}`, opts);
+  return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
 export function updateUser(data) {
@@ -73,6 +73,15 @@ export function getStateForms(stateId, specifiedYear, quarter) {
   return API.get(
     "amendments",
     `/forms/${stateId}/${specifiedYear}/${quarter}`,
+    opts
+  );
+}
+
+export function getSingleForm(state, specifiedYear, quarter, form) {
+  const opts = requestOptions();
+  return API.get(
+    "amendments",
+    `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
     opts
   );
 }

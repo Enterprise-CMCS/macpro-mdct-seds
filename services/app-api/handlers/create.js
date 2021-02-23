@@ -13,13 +13,15 @@ export const main = handler(async (event) => {
 
   const nextValue = await dynamoDb
     .increment(data.territory)
-    .done(function (value) {console.log(value);})
+    .done(function (value) {
+      console.log(value);
+    })
     .fail(function (error) {
       console.log(error);
     });
 
   const params = {
-    TableName: process.env.tableName,
+    TableName: process.env.AuthUserTableName,
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       amendmentId: uuid.v1(),
