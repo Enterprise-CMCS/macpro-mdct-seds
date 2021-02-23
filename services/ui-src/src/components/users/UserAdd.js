@@ -90,6 +90,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     onBlur={e => setUserId(e.target.value)}
                     className="ds-c-field--small"
                     name="eua-id"
+                    required={true}
                   ></TextField>
                 </div>
                 <div className="role">
@@ -99,6 +100,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     options={roles}
                     placeholder="Select a Role"
                     onSelect={setRoleOnSelect}
+                    required={true}
                   />
                 </div>
                 <div>
@@ -110,6 +112,7 @@ const AddUser = ({ currentUser, stateList }) => {
                         options={stateList}
                         multiple={true}
                         placeholder="Select a State"
+                        required
                         onSelect={option => {
                           // Set for searchable use
                           setStateId(option);
@@ -126,6 +129,7 @@ const AddUser = ({ currentUser, stateList }) => {
                       <MultiSelect
                         options={stateList}
                         value={stateId ? stateId : []}
+                        required
                         onChange={setStatesFromSelect}
                         labelledBy={"Select States"}
                         multiple={false}
@@ -155,13 +159,9 @@ AddUser.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  // stateList: state.allStatesData.map(element => {
-  //   return { label: element.name, value: element.code };
-  // })
-  stateList: [
-    { label: "Alabama", value: "AL" },
-    { label: "Maryland", value: "MD" }
-  ]
+  stateList: state.global.states.map(element => {
+    return { label: element.state_name, value: element.state_id };
+  })
 });
 
 export default connect(mapStateToProps)(AddUser);

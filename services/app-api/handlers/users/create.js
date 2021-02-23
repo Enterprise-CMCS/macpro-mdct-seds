@@ -22,8 +22,12 @@ export const main = handler(async (event, context) => {
     body: body,
   });
 
+  if (!data.username) {
+    return `Please enter a username`;
+  }
+
   if (currentUser.body !== "false") {
-    return "User Exists";
+    return `User ${data.username} already exists`;
   }
 
   // Query to get next available userId
