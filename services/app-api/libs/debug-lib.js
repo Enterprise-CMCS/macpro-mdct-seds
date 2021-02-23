@@ -24,7 +24,7 @@ export function init(event) {
   });
 }
 
-export function flush(e) {
-  logs.forEach(({ date, string }) => console.debug(date, string));
-  console.error(e);
-}
+// export function flush(e) {
+//   logs.forEach(({ date, string }) => console.debug(date, string));
+//   console.error(e);
+// }
