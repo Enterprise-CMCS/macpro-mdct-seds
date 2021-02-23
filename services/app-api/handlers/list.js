@@ -8,7 +8,7 @@ export const main = handler(async (event, context) => {
     return null;
   }
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName: process.env.tableName,
     // 'KeyConditionExpression' defines the condition for the query
     // - 'userId = :userId': only return items with matching 'userId'
     //   partition key

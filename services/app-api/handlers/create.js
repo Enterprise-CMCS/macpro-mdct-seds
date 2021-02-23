@@ -19,7 +19,7 @@ export const main = handler(async (event, context) => {
     });
 
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName: process.env.tableName,
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       amendmentId: uuid.v1(),
