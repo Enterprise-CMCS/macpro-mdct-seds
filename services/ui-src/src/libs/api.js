@@ -76,3 +76,12 @@ export function getStateForms(stateId, specifiedYear, quarter) {
     opts
   );
 }
+
+export function getSingleForm(state, specifiedYear, quarter, form) {
+  const opts = requestOptions();
+  return API.get(
+    "amendments",
+    `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
+    opts
+  );
+}
