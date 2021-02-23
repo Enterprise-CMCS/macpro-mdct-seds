@@ -26,7 +26,7 @@ export default function Routes() {
   const localLogin = config.LOCAL_LOGIN === "true";
 
   const history = useHistory();
-  const [hasAdminRights, setHasAdminRights] = useState(false);
+  const [role, setRole] = useState();
 
   useEffect(() => {
     onLoad();
@@ -42,20 +42,20 @@ export default function Routes() {
     if (payload === null) {
       history.push("/login");
     } else {
-      if (payload.isActive !== true) {
+      if (payload.isActive !== "true" && payload.isActive !== true) {
         history.push("/unauthorized");
       }
-
-      if (payload.isActive && payload.role === "admin") {
-        setHasAdminRights(true);
-      }
+    }
+    if (payload && payload.isActive) {
+      setRole(payload.role);
     }
   }
 
   return (
     <Switch>
+      {console.log("zzzRoleRoutes", role)}
       <AuthenticatedRoute exact path="/">
-        <Home />
+        <Home role={role} />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
@@ -72,12 +72,17 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/example">
         <Example />
       </AuthenticatedRoute>
-      {hasAdminRights ? (
+      <AuthenticatedRoute exact path="/profile">
+        <Profile />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
+        <Quarterly />
+      </AuthenticatedRoute>
+      {role === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />
           </AuthenticatedRoute>
-
           <AuthenticatedRoute exact path="/users/add">
             <UserAdd />
           </AuthenticatedRoute>
@@ -86,12 +91,6 @@ export default function Routes() {
           </AuthenticatedRoute>
         </>
       ) : null}
-      <AuthenticatedRoute exact path="/profile">
-        <Profile />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
-        <Quarterly />
-      </AuthenticatedRoute>
       <Route>
         <NotFound />
       </Route>

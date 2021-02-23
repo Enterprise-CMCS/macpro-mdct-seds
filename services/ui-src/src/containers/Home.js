@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../libs/contextLib";
 import "./Home.css";
-import { listAmendments } from "../libs/api";
 import HomeState from "./HomeState";
 import HomeBus from "./HomeBus";
 import HomeAdmin from "./HomeAdmin";
 import Unauthorized from "./Unauthorized";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 
-export default function Home() {
+export default function Home({ role }) {
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
@@ -24,21 +23,16 @@ export default function Home() {
     onLoad();
   }, [isAuthenticated]);
 
-  function loadAmendments() {
-    return listAmendments();
-  }
-
   function renderLander() {
-    let role = "state_user";
     let content = null;
     switch (role) {
-      case "state_user":
+      case "state":
         content = <HomeState />;
         break;
-      case "bus_user":
+      case "business":
         content = <HomeBus />;
         break;
-      case "admin_user":
+      case "admin":
         content = <HomeAdmin />;
         break;
       default:
