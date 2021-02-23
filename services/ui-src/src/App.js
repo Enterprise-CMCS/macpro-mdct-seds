@@ -13,6 +13,8 @@ import { getUserByUsername, createUser } from "./libs/api";
 function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [role, setRole] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -20,29 +22,25 @@ function App({ userData }) {
   });
 
   async function onLoad() {
+    // Get payload
+    let payload;
     if (config.LOCAL_LOGIN === "true") {
-      const payload = await currentUserInfo();
+      payload = await currentUserInfo();
 
       if (payload === null) {
         history.push("/login");
-      } else {
-        await getOrAddUser(payload);
-        userHasAuthenticated(true);
       }
     } else {
       try {
         const data = await Auth.currentAuthenticatedUser();
-        console.log("zzzData from app.js", data);
+
+        if (!data) {
+          history.push("/login");
+        }
 
         if (data.signInUserSession) {
-          let payload = data.signInUserSession.idToken.payload;
-
-          // Adjust role if coming from Okta
-          payload.role = determineRole(payload.role);
-
-          getOrAddUser(payload);
+          payload = data.signInUserSession.idToken.payload;
         }
-        userHasAuthenticated(true);
       } catch (error) {
         if (error !== "The user is not authenticated") {
           console.log(
@@ -53,6 +51,19 @@ function App({ userData }) {
       }
     }
 
+    if (payload) {
+      // Clean and set role
+      const cleanRole = determineRole(payload.role);
+      setRole(cleanRole);
+      payload.role = cleanRole;
+
+      await getOrAddUser(payload);
+      userHasAuthenticated(true);
+
+      if (payload.isActive === true || payload.isActive === "true") {
+        setIsAuthorized(true);
+      }
+    }
     setIsAuthenticating(false);
   }
 
@@ -62,10 +73,12 @@ function App({ userData }) {
       return role;
     }
 
-    if (role.includes("CHIP_Group_Dev_Admin")) {
+    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
       return "admin";
-    } else if (role.includes("CHIP_Group_Dev_Users")) {
+    } else if (role.includes("CHIP_D_USER_GROUP")) {
       return "state";
+    } else {
+      return null;
     }
   };
 
@@ -84,10 +97,12 @@ function App({ userData }) {
   return (
     !isAuthenticating && (
       <div className="App">
+        <h1>Role: {role}</h1>
+        <h1>isAuthorized: {isAuthorized ? "true" : "false"}</h1>
         <Header />
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">
-            <Routes />
+            <Routes role={role} isAuthorized={isAuthorized} />
           </div>
         </AppContext.Provider>
         <Footer />
