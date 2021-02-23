@@ -75,11 +75,7 @@ const Quarterly = () => {
       sortable: true,
       wrap: true,
       cell: function setFormName(e) {
-        return (
-          <p
-          style={{fontWeight: " "}}
-          >{e.form_name}</p>
-        )
+        return <p style={{ fontWeight: " " }}>{e.form_name}</p>;
       }
     },
     {
@@ -88,10 +84,13 @@ const Quarterly = () => {
       sortable: true,
       cell: function setStatus(e) {
         return (
-          <div className="status-wrapper" >
+          <div className="status-wrapper">
             <Button
-              style={{margin: "15px 0 15px -55px", 
-              outline: "none", cursor: "pointer"}}
+              style={{
+                margin: "15px 0 15px -55px",
+                outline: "none",
+                cursor: "pointer"
+              }}
               type="button"
               className={`usa-button status status-${e.status_code}`}
             >
@@ -126,30 +125,35 @@ const Quarterly = () => {
     headRow: {
       style: {
         textTransform: "uppercase",
-        fontWeight: "600",
+        fontWeight: "600"
       }
     },
     headCells: {
       style: {
-        "&:last-of-type": { // Print
+        "&:last-of-type": {
+          // Print
           fontWeight: "600",
           maxWidth: "120px"
         },
-        "&:first-of-type": { // Form
+        "&:first-of-type": {
+          // Form
           fontWeight: "600",
           maxWidth: "120px"
         },
-        "&:nth-of-type(2n)": { // FormName
+        "&:nth-of-type(2n)": {
+          // FormName
           fontWeight: "600",
-          maxWidth: "400px",
+          maxWidth: "400px"
         },
-        "&:nth-of-type(3n)": { // Status
+        "&:nth-of-type(3n)": {
+          // Status
           fontWeight: "600",
           maxWidth: "180px"
         },
-        "&:nth-of-type(4n)": { //Last Updated
+        "&:nth-of-type(4n)": {
+          //Last Updated
           fontWeight: "600",
-          maxWidth: "140px",
+          maxWidth: "140px"
         }
       }
     },
@@ -163,7 +167,7 @@ const Quarterly = () => {
           maxWidth: "120px"
         },
         "&:nth-of-type(2n)": {
-          maxWidth: "400px",
+          maxWidth: "400px"
         },
         "&:nth-of-type(3n)": {
           maxWidth: "180px",
@@ -176,7 +180,7 @@ const Quarterly = () => {
       }
     }
   };
-  console.log(stateFormsList)
+  console.log(stateFormsList);
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
@@ -193,21 +197,20 @@ const Quarterly = () => {
             <Card>
               {stateFormsList ? (
                 <DataTable
-                sortIcon={<SortIcon />}
-                highlightOnHover
-                title={
-                  <p
-                  style={{fontSize: "14px", fontWeight: "600"}}
-                  >
-                  Start, complete, and print this quarter's CHIP Enrollment Data
-                  Reports.
-                  </p>}
-                selectableRows={false}
-                responsive={true}
-                columns={columns}
-                data={stateFormsList}
-                customStyles={customStyles}
-              />
+                  sortIcon={<SortIcon />}
+                  highlightOnHover
+                  title={
+                    <p style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Start, complete, and print this quarter's CHIP Enrollment
+                      Data Reports.
+                    </p>
+                  }
+                  selectableRows={false}
+                  responsive={true}
+                  columns={columns}
+                  data={stateFormsList}
+                  customStyles={customStyles}
+                />
               ) : null}
             </Card>
           </div>
