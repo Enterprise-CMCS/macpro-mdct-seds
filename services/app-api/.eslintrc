@@ -21,6 +21,7 @@
   },
   "rules": {
     "semi": "error",
+    "no-console": "off",
     "node/no-extraneous-import": ["error", {
       "allowModules": ["express"]
     }]
