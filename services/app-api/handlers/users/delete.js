@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
     Key: {
       userId: data.id,
     },

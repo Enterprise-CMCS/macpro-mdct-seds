@@ -9,7 +9,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
     Key: {
       userId: event.pathParameters["id"],
     },
