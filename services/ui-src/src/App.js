@@ -10,7 +10,7 @@ import config from "./config";
 import { currentUserInfo } from "./libs/user";
 import { getUserByUsername, createUser } from "./libs/api";
 
-function App({ userData }) {
+function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -19,22 +19,26 @@ function App({ userData }) {
 
   useEffect(() => {
     async function onLoad() {
-      // Get payload
+      // Get user data either locally or through cognito
       let payload;
       if (config.LOCAL_LOGIN === "true") {
         payload = await currentUserInfo();
 
+        // If no data, send user to login
         if (payload === null) {
           history.push("/login");
         }
       } else {
         try {
+          // Pull user data from cognito
           const data = await Auth.currentAuthenticatedUser();
 
+          // If no data, send user to login
           if (!data) {
             history.push("/login");
           }
 
+          // If user is logged in, get payload
           if (data.signInUserSession) {
             payload = data.signInUserSession.idToken.payload;
           }
@@ -49,14 +53,17 @@ function App({ userData }) {
       }
 
       if (payload) {
-        // Clean and set role
+        // Clean and set role from long string (example in localLogin.js)
         const cleanRole = determineRole(payload.role);
         payload.role = cleanRole;
 
+        // Either get or create and get user
         const user = await getOrAddUser(payload);
         setUser(user);
         userHasAuthenticated(true);
 
+        // If user is Active set
+        // this also triggers a reload on useEffect
         if (payload.isActive === true || payload.isActive === "true") {
           setIsAuthorized(true);
         }
@@ -65,7 +72,7 @@ function App({ userData }) {
     }
 
     onLoad();
-  }, [history, user]);
+  }, [history, isAuthorized]);
 
   const determineRole = role => {
     const roleArray = ["admin", "business", "state"];
@@ -99,7 +106,7 @@ function App({ userData }) {
   return (
     !isAuthenticating && (
       <div className="App">
-        <Header />
+        <Header user={user} />
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">
             <Routes user={user} isAuthorized={isAuthorized} />
