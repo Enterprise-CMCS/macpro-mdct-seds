@@ -17,7 +17,7 @@ import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 import Unauthorized from "./containers/Unauthorized";
 
-export default function Routes({ role, isAuthorized }) {
+export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
 
   if (!isAuthorized) {
@@ -35,7 +35,7 @@ export default function Routes({ role, isAuthorized }) {
   return (
     <Switch>
       <AuthenticatedRoute exact path="/">
-        <Home role={role} />
+        <Home user={user} />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
@@ -53,12 +53,12 @@ export default function Routes({ role, isAuthorized }) {
         <Example />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
-        <Profile />
+        <Profile user={user} />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      {role === "admin" ? (
+      {user.role === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />

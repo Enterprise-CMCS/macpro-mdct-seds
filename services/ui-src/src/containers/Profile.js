@@ -1,61 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.css";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
-import { currentUserInfo } from "../libs/user";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { getUser } from "../libs/api";
 
-export default function Profile() {
+export default function Profile({ user }) {
   const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [role, setRole] = useState("");
-  const [states, setStates] = useState("");
+  /* eslint-disable no-unused-vars */
+  const [email, setEmail] = useState(user.email);
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [role, setRole] = useState(user.role);
+  const [states, setStates] = useState(formatStates(user.states));
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(false);
+
   const capitalize = s => {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
-
-  useEffect(() => {
-    function loadProfile() {
-      return currentUserInfo();
-    }
-
-    async function onLoad() {
-      try {
-        const userInfo = await loadProfile();
-        let payload;
-        // Get payload
-        if ("localLogin" in userInfo) {
-          payload = userInfo;
-        } else {
-          payload = await getUser(
-            userInfo.signInUserSession.idToken.payload.id
-          );
-        }
-
-        // Load user data from API
-        if (payload) {
-          setEmail(payload.email);
-          setFirstName(capitalize(payload.firstName));
-          setLastName(capitalize(payload.lastName));
-          setRole(capitalize(payload.role));
-          setStates(formatStates(payload.states));
-        }
-      } catch (e) {
-        onError(e);
-      }
-    }
-
-    onLoad();
-  }, []);
 
   function saveProfile(user, userAttributes) {
     return Auth.updateUserAttributes(user, userAttributes);
@@ -124,7 +90,7 @@ export default function Profile() {
               <FormGroup controlId="role">
                 <ControlLabel>Role</ControlLabel>
                 <FormControl
-                  value={role}
+                  value={capitalize(role)}
                   onChange={e => setRole(e.target.value)}
                   disabled={true}
                 />

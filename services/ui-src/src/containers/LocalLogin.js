@@ -16,7 +16,7 @@ export default function Login() {
       lastLogin: "01/28/2021",
       // role: "admin",
       role:
-        "cn=CARTS_Group_Dev,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CARTS_Group_Dev_Admin,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CHIP_D_USER_GROUP,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=IDM_OKTA_TEST,ou=Groups,dc=cms,dc=hhs,dc=gov",
+        "cn=CARTS_Group_Dev,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CARTS_Group_Dev_Admin,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CHIP_D_USER_GROUP_ADMIN,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=IDM_OKTA_TEST,ou=Groups,dc=cms,dc=hhs,dc=gov",
       dateJoined: "01/22/2021",
       isSuperUser: "true",
       isActive: "true",

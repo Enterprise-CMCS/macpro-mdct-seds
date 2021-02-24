@@ -14,58 +14,58 @@ function App({ userData }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [role, setRole] = useState();
+  const [user, setUser] = useState();
   const history = useHistory();
 
   useEffect(() => {
-    onLoad();
-  });
+    async function onLoad() {
+      // Get payload
+      let payload;
+      if (config.LOCAL_LOGIN === "true") {
+        payload = await currentUserInfo();
 
-  async function onLoad() {
-    // Get payload
-    let payload;
-    if (config.LOCAL_LOGIN === "true") {
-      payload = await currentUserInfo();
-
-      if (payload === null) {
-        history.push("/login");
-      }
-    } else {
-      try {
-        const data = await Auth.currentAuthenticatedUser();
-
-        if (!data) {
+        if (payload === null) {
           history.push("/login");
         }
+      } else {
+        try {
+          const data = await Auth.currentAuthenticatedUser();
 
-        if (data.signInUserSession) {
-          payload = data.signInUserSession.idToken.payload;
-        }
-      } catch (error) {
-        if (error !== "The user is not authenticated") {
-          console.log(
-            "There was an error while loading the user information.",
-            error
-          );
+          if (!data) {
+            history.push("/login");
+          }
+
+          if (data.signInUserSession) {
+            payload = data.signInUserSession.idToken.payload;
+          }
+        } catch (error) {
+          if (error !== "The user is not authenticated") {
+            console.log(
+              "There was an error while loading the user information.",
+              error
+            );
+          }
         }
       }
-    }
 
-    if (payload) {
-      // Clean and set role
-      const cleanRole = determineRole(payload.role);
-      setRole(cleanRole);
-      payload.role = cleanRole;
+      if (payload) {
+        // Clean and set role
+        const cleanRole = determineRole(payload.role);
+        payload.role = cleanRole;
 
-      await getOrAddUser(payload);
-      userHasAuthenticated(true);
+        const user = await getOrAddUser(payload);
+        setUser(user);
+        userHasAuthenticated(true);
 
-      if (payload.isActive === true || payload.isActive === "true") {
-        setIsAuthorized(true);
+        if (payload.isActive === true || payload.isActive === "true") {
+          setIsAuthorized(true);
+        }
       }
+      setIsAuthenticating(false);
     }
-    setIsAuthenticating(false);
-  }
+
+    onLoad();
+  }, [history, user]);
 
   const determineRole = role => {
     const roleArray = ["admin", "business", "state"];
@@ -89,7 +89,9 @@ function App({ userData }) {
 
       // If user doesn't exists, create user
       if (!data) {
-        await createUser(payload);
+        return await createUser(payload);
+      } else {
+        return data.Items[0];
       }
     }
   }
@@ -97,12 +99,10 @@ function App({ userData }) {
   return (
     !isAuthenticating && (
       <div className="App">
-        <h1>Role: {role}</h1>
-        <h1>isAuthorized: {isAuthorized ? "true" : "false"}</h1>
         <Header />
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <div className="main">
-            <Routes role={role} isAuthorized={isAuthorized} />
+            <Routes user={user} isAuthorized={isAuthorized} />
           </div>
         </AppContext.Provider>
         <Footer />

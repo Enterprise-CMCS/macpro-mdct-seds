@@ -7,7 +7,7 @@ import HomeAdmin from "./HomeAdmin";
 import Unauthorized from "./Unauthorized";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 
-export default function Home({ role }) {
+export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +25,7 @@ export default function Home({ role }) {
 
   function renderLander() {
     let content = null;
-    switch (role) {
+    switch (user.role) {
       case "state":
         content = <HomeState />;
         break;
