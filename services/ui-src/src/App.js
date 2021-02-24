@@ -65,6 +65,12 @@ function App() {
 
         // Either get or create and get user
         const user = await getUpdateOrAddUser(payload);
+
+        // If no states, send used to unauthorized
+        if (user.states === null || user.states === "") {
+          history.push("/unauthorized");
+        }
+
         setUser(user);
         userHasAuthenticated(true);
 

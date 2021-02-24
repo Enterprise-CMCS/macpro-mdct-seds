@@ -20,7 +20,7 @@ export const main = handler(async (event, context) => {
       "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin",
     ExpressionAttributeValues: {
       ":role": data.role,
-      ":states": data.states,
+      ":states": data.states ?? "",
       ":isActive": data.isActive,
       ":lastLogin": data.lastLogin,
     },
