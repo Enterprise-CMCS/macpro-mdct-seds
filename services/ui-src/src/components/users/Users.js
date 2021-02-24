@@ -66,7 +66,7 @@ const Users = () => {
         cell: function editUser(e) {
           return (
             <span>
-              <a href={`/users/${e.userId}`}>{e.username}</a>
+              <a href={`/users/${e.userId}/edit`}>{e.username}</a>
             </span>
           );
         }

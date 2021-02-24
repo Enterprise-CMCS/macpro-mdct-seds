@@ -88,7 +88,7 @@ const AddUser = ({ currentUser, stateList }) => {
                   <TextField
                     label="EUA Id:"
                     onBlur={e => setUserId(e.target.value)}
-                    className="ds-c-field--small"
+                    className=""
                     name="eua-id"
                     required={true}
                   ></TextField>
@@ -140,7 +140,7 @@ const AddUser = ({ currentUser, stateList }) => {
                 <br />
                 <Button
                   type="button"
-                  className="ds-c-button ds-c-button--primary"
+                  className="btn btn-primary"
                   onClick={() => createThisUser()}
                 >
                   Add User

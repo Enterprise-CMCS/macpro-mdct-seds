@@ -66,7 +66,7 @@ export default function Routes({ user, isAuthorized }) {
           <AuthenticatedRoute exact path="/users/add">
             <UserAdd />
           </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/users/:id">
+          <AuthenticatedRoute exact path="/users/:id/edit">
             <UserEdit />
           </AuthenticatedRoute>
         </>

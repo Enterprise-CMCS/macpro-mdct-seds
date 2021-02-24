@@ -8,7 +8,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import config from "./config";
 import { currentUserInfo } from "./libs/user";
-import { getUserByUsername, createUser } from "./libs/api";
+import { getUserByUsername, createUser, updateUser } from "./libs/api";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -58,7 +58,7 @@ function App() {
         payload.role = cleanRole;
 
         // Either get or create and get user
-        const user = await getOrAddUser(payload);
+        const user = await getUpdateOrAddUser(payload);
         setUser(user);
         userHasAuthenticated(true);
 
@@ -89,16 +89,19 @@ function App() {
     }
   };
 
-  async function getOrAddUser(payload) {
+  async function getUpdateOrAddUser(payload) {
     if (payload.username) {
       // Check if user exists
       const data = await getUserByUsername({ username: payload.username });
 
       // If user doesn't exists, create user
       if (!data) {
+        payload.lastLogin = new Date().toISOString();
         return await createUser(payload);
       } else {
-        return data.Items[0];
+        data.Items[0].lastLogin = new Date().toISOString();
+        const user = await updateUser(data.Items[0]);
+        return user.Attributes;
       }
     }
   }
