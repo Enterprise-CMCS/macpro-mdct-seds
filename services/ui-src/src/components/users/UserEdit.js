@@ -80,7 +80,6 @@ const UserEdit = ({ stateList }) => {
 
   // Save selections for local use and API use
   const setStatesFromArray = option => {
-    console.log("zzzOPtion", option);
     // Save for API use
     let states = "";
     if (option) {
@@ -112,7 +111,6 @@ const UserEdit = ({ stateList }) => {
       setSelectedStates(e);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
-        console.log("zzzE", e);
         let payload = "";
 
         let count = 0;

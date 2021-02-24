@@ -36,7 +36,6 @@ const AddUser = ({ currentUser, stateList }) => {
   // Save selections for local use and API use
   const setStatesFromSelect = option => {
     // Save for multiselect use
-    console.log("zzzOption", option);
     setStateId(option);
 
     // Save for API use

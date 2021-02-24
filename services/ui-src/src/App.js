@@ -23,7 +23,13 @@ function App() {
       let payload;
       if (config.LOCAL_LOGIN === "true") {
         payload = await currentUserInfo();
-
+        // Always update user to payload when local
+        if (payload) {
+          console.log("payload found");
+          const user = await getUpdateOrAddUser(payload);
+          setUser(user);
+          userHasAuthenticated(true);
+        }
         // If no data, send user to login
         if (payload === null) {
           history.push("/login");
@@ -93,14 +99,13 @@ function App() {
     if (payload.username) {
       // Check if user exists
       const data = await getUserByUsername({ username: payload.username });
-
       // If user doesn't exists, create user
       if (!data) {
         payload.lastLogin = new Date().toISOString();
         return await createUser(payload);
       } else {
-        data.Items[0].lastLogin = new Date().toISOString();
-        const user = await updateUser(data.Items[0]);
+        payload.lastLogin = new Date().toISOString();
+        const user = await updateUser(payload);
         return user.Attributes;
       }
     }

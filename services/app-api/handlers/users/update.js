@@ -10,7 +10,6 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
 
-  console.log("zzzData", data);
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -33,6 +32,5 @@ export const main = handler(async (event, context) => {
   };
 
   const result = await dynamoDb.update(params);
-  console.log("zzzIN UPDATE", result);
   return result;
 });
