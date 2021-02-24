@@ -16,7 +16,7 @@ export const main = handler(async (event, context) => {
 
   //Query to get next available userId
   const paramsForId = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
@@ -30,7 +30,7 @@ export const main = handler(async (event, context) => {
   const newUserId = parseInt(allResults.Items[0].userId) + 1;
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE_NAME,
+    TableName: process.env.AuthUserTableName,
     Item: {
       userId: newUserId.toString(),
       isSuperUser: "true",

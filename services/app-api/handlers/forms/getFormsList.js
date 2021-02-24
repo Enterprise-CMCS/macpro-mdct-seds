@@ -9,7 +9,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+    TableName: process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
