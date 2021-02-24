@@ -273,6 +273,7 @@ resources:
                     - ${self:custom.StateFormsTableArn}
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
+                    - ${self:custom.AuthUserTableArn}
                 - Effect: "Allow"
                   Action:
                     - logs:CreateLogStream
