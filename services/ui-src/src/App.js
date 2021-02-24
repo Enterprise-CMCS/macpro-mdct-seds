@@ -25,7 +25,6 @@ function App() {
         payload = await currentUserInfo();
         // Always update user to payload when local
         if (payload) {
-          console.log("payload found");
           const user = await getUpdateOrAddUser(payload);
           setUser(user);
           userHasAuthenticated(true);
