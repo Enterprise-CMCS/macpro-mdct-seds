@@ -1,0 +1,306 @@
+[
+  {
+    "question": "2021-GRE-01",
+    "form_id": "5",
+    "form": "GRE",
+    "year": 2021,
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "label": "What is the number of enrollees by gender?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "21E Enrolled",
+        "col3": "64.21E Enrolled",
+        "col4": "Total CHIP Enrolled",
+        "col5": "64.EC Enrolled",
+        "col6": "21PW Enrolled"
+      },
+      {
+        "col1": "1. Female",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "2. Male",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "3. Unspecified Gender",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "02/23/2021",
+    "last_modified_by": "seed",
+    "created_date": "02/23/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "2021-GRE-02",
+    "form_id": "5",
+    "form": "GRE",
+    "year": 2021,
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "label": "What is the number of enrollees by race?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "21E Enrolled",
+        "col3": "64.21E Enrolled",
+        "col4": "Total CHIP Enrolled",
+        "col5": "64.EC Enrolled",
+        "col6": "21PW Enrolled"
+      },
+      {
+        "col1": "1. White",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "2. Black or African American",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "3. American Indian or Alaska Native",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "4. Asian Indian",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "5. Chinese",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "6. Filipino",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "7. Japanese",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "8. Korean",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "9. Vietnamese",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "10. Other Asian",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "11. Asian Unknown",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "12. Native Hawaiian",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "13. Guamanian or Chamorro",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "14. Samoan",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "15. Other Pacific Islander",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "16. Native Hawaiian or Other Pacific Islander Unknown",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "17. Some other race",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "18. Two or more races (regardless of ethnicity)",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "19. Unspecified Race",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "02/23/2021",
+    "last_modified_by": "seed",
+    "created_date": "02/23/2021",
+    "created_by": "seed"
+  },
+  {
+    "question": "2021-GRE-03",
+    "form_id": "5",
+    "form": "GRE",
+    "year": 2021,
+    "type": "datagridwithtotals",
+    "row_total": true,
+    "column_total": true,
+    "label": "What is the number of enrollees by ethnicity?",
+    "rows": [
+      {
+        "col1": "",
+        "col2": "21E Enrolled",
+        "col3": "64.21E Enrolled",
+        "col4": "Total CHIP Enrolled",
+        "col5": "64.EC Enrolled",
+        "col6": "21PW Enrolled"
+      },
+      {
+        "col1": "1. Not of Hispanic, Latino/a, or Spanish origin",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "2. Mexican, Mexican American, Chicano/a",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "3. Puerto Rican",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "4. Cuban",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "5. Another Hispanic, Latino, or Spanish Origin",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "6. Hispanic or Latino Unknown",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      },
+      {
+        "col1": "7. Unspecified Ethnicity",
+        "col2": null,
+        "col3": null,
+        "col4": null,
+        "col5": null,
+        "col6": null
+      }
+    ],
+    "last_modified": "02/23/2021",
+    "last_modified_by": "seed",
+    "created_date": "02/23/2021",
+    "created_by": "seed"
+  }
+]
