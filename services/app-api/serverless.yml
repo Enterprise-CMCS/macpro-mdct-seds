@@ -274,7 +274,7 @@ resources:
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
-                    - ${self:custom.AuthUserRolesTableArn}                    
+                    - ${self:custom.AuthUserRolesTableArn}
                     - ${self:custom.AuthJobCodesTableArn}
                     - ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
