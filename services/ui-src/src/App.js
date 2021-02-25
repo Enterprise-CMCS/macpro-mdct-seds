@@ -59,8 +59,9 @@ function App() {
 
       if (payload) {
         console.log("zzzPayload", payload);
-        // Clean and set role from long string (example in localLogin.js)
+        // Convert from Okta/Cognito into easier to use pieces
         payload.role = determineRole(payload["custom:ismemberof"]);
+        payload.username = payload.identities[0].userId;
 
         // Either get or create and get user
         const user = await getUpdateOrAddUser(payload);
@@ -104,11 +105,14 @@ function App() {
     // Set ismemberof to role for easier comprehension
     payload.role = payload["custom:ismemberof"];
 
-    if (payload.username) {
+    if (payload.identities) {
       // Check if user exists
-      const data = await getUserByUsername({ username: payload.username });
+      const data = await getUserByUsername({
+        username: payload.identities[0].userId
+      });
+
       // If user doesn't exists, create user
-      if (!data) {
+      if (data.Count === 0) {
         payload.lastLogin = new Date().toISOString();
         return await createUser(payload);
       } else {
