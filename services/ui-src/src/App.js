@@ -66,7 +66,7 @@ function App() {
         const user = await getUpdateOrAddUser(payload);
 
         // If no states, send used to unauthorized
-        if (user.states === null || user.states === "") {
+        if (!user.states || user.states === "") {
           history.push("/unauthorized");
         }
 
