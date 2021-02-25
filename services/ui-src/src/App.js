@@ -110,8 +110,9 @@ function App() {
       const data = await getUserByUsername({
         username: payload.identities[0].userId
       });
+
       // If user doesn't exists, create user
-      if (!data) {
+      if (data.Count === 0) {
         payload.lastLogin = new Date().toISOString();
         return await createUser(payload);
       } else {
