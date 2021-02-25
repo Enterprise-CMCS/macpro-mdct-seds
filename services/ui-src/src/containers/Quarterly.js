@@ -193,7 +193,8 @@ const Quarterly = () => {
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> &gt; {`${state} Q${quarter} ${year}`}
+            <a href="/">Enrollment Data Home</a> &gt;{" "}
+            {`${state} Q${quarter} ${year}`}
           </div>
         </Grid>
       </Grid>
