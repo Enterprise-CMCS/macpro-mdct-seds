@@ -1,32 +1,32 @@
 [
   {
-    "state_form": "AL-2021-1-21E",
-    "state_id": "AL",
+    "stateForm": "AL-2021-1-21E",
+    "stateId": "AL",
     "form": "21E",
-    "program_code": "AL",
+    "programCode": "AL",
     "year": 2021,
     "quarter": 1,
-    "validation_percent": 0.03,
+    "validationPercent": 0.03,
     "status": "Not Started",
-    "status_date": "01-15-2021",
-    "not_applicable": false,
-    "state_comments": [
+    "statusDate": "01-15-2021",
+    "notApplicable": false,
+    "stateComments": [
       {
         "type": "text_multiline",
         "entry": null
       }
     ],
-    "last_modified": "01-15-2021",
-    "last_modified_by": "seed",
+    "lastModified": "01-15-2021",
+    "lastModifiedBy": "seed",
     "questions": [
       {
-        "answer_entry": "AL-2021-1-21E-U1-01",
+        "answerEntry": "AL-2021-1-21E-U1-01",
         "question": "2021-21E-01",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -61,20 +61,20 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModifiedBy": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-02",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-02",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-02",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -109,20 +109,20 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModified_by": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-03",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-03",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-03",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -157,20 +157,20 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModified_by": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-04",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-04",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-04",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the number of member-months of enrollment for &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -205,21 +205,21 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModifiedBy": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-05",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-05",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-05",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
         "readonly": true,
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -389,20 +389,20 @@
             ]
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModifiedBy": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-06",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-06",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-06",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
+        "rowTotal": true,
+        "columnTotal": true,
         "label": "What is the number of children, pregnant women or waiver adults &&&VARIABLE&&& enrolled at the end of the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -437,23 +437,23 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModified_by": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-07",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-07",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-07",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
-        "context_data": {
+        "rowTotal": true,
+        "columnTotal": true,
+        "contextData": {
           "show_if_quarter_in": "4"
         },
         "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -488,23 +488,23 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModified_by": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-08",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-08",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-08",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
-        "context_data": {
+        "rowTotal": true,
+        "columnTotal": true,
+        "contextData": {
           "show_if_quarter_in": "4"
         },
         "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -539,23 +539,23 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModifiedBy": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       },
       {
-        "answer_entry": "AL-2021-1-21E-U1-09",
-        "state_form": "AL-2021-1-21E",
+        "answerEntry": "AL-2021-1-21E-U1-09",
+        "stateForm": "AL-2021-1-21E",
         "question": "2021-21E-09",
         "type": "datagridwithtotals",
-        "row_total": true,
-        "column_total": true,
-        "context_data": {
+        "rowTotal": true,
+        "columnTotal": true,
+        "contextData": {
           "show_if_quarter_in": "4"
         },
         "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -590,10 +590,10 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
-        "last_modified_by": "seed",
-        "created_date": "01/15/2021",
-        "created_by": "seed"
+        "lastModified": "01/15/2021",
+        "lastModifiedBy": "seed",
+        "createdDate": "01/15/2021",
+        "createdBy": "seed"
       }
     ]
   }
