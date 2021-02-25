@@ -75,7 +75,11 @@ const Quarterly = () => {
       sortable: true,
       wrap: true,
       cell: function setFormName(e) {
-        return <p style={{ fontWeight: " " }}>{e.form_name}</p>;
+        return (
+          <p
+          style={{ wordWrap: "break-word", maxWidth: "200px"}}
+          >{e.form_name}</p>
+        )
       }
     },
     {
