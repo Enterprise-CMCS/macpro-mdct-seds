@@ -5,7 +5,11 @@ import { connect } from "react-redux";
 
 const HomeState = ({userData}) => {
   // TODO: Pull state from redux
+<<<<<<< HEAD
   const state = userData.abbrev || "AK";
+=======
+  const state = "AL";
+>>>>>>> 01079caba0536b59764d632e78f6f363d9604034
 
   // TODO: Pull years and quarters from redux
   const years = [

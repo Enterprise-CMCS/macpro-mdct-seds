@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getStateForms } from "../../src/libs/api.js";
+import Card from "@material-ui/core/Card";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -11,27 +13,39 @@ const Quarterly = () => {
   const state = url[2];
   const year = url[3];
   const quarter = url[4];
+  const [stateFormsList, setStateFormsList] = useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getStateForms(state, year, quarter);
+      console.log(data);
+      setStateFormsList(data);
+    }
+    fetchData();
+  }, [state, year, quarter]);
   // Translate form name from redux into url value
   const getFormSegment = formName => {
     let urlSegment;
     switch (formName) {
-      case "Form 64-EC":
+      case "GRE":
+        urlSegment = "gre";
+        break;
+      case "64.EC":
         urlSegment = "64ec";
         break;
-      case "Form 64-ECI":
+      case "64.ECI":
         urlSegment = "64eci";
         break;
-      case "Form 64-21E":
+      case "64.21E":
         urlSegment = "64-21e";
         break;
-      case "Form 64-21EI":
+      case "64.21EI":
         urlSegment = "64-21ei";
         break;
-      case "Form 21E":
+      case "21E": // may need to update all of the case statements
         urlSegment = "21e";
         break;
       default:
@@ -39,46 +53,6 @@ const Quarterly = () => {
     }
     return urlSegment;
   };
-
-  // TODO: Pull data from API endpoint
-  const data = [
-    {
-      form: "Form 64-EC",
-      name: "Number of Children Served in Medicaid Program",
-      status: "Complete",
-      status_code: "complete",
-      last_updated: "10/12/2020"
-    },
-    {
-      form: "Form 64-ECI",
-      name: "Informational Number of Children Served in Medicaid Program",
-      status: "Provisional Data Submitted",
-      status_code: "provisional",
-      last_updated: "11/14/2020"
-    },
-    {
-      form: "Form 64-21E",
-      name: "Informational Number of Children Served in Medicaid Program",
-      status: "Final Data Submitted",
-      status_code: "final",
-      last_updated: "08/15/2020"
-    },
-    {
-      form: "Form 64-21EI",
-      name:
-        "Informational Number of Children Served in Medicaid Expansion Program",
-      status: "Not Started",
-      status_code: "not_started",
-      last_updated: ""
-    },
-    {
-      form: "Form 21E",
-      name: "Number of Children Served in Medicaid Program",
-      status: "In Progress",
-      status_code: "in_progress",
-      last_updated: "09/28/2020"
-    }
-  ];
 
   // Build Columns for data table
   const columns = [
@@ -100,9 +74,16 @@ const Quarterly = () => {
     },
     {
       name: "Name",
-      selector: "name",
+      selector: "form_name",
       sortable: true,
-      wrap: true
+      wrap: true,
+      cell: function setFormName(e) {
+        return (
+          <p style={{ wordWrap: "break-word", maxWidth: "200px" }}>
+            {e.form_name}
+          </p>
+        );
+      }
     },
     {
       name: "Status",
@@ -112,6 +93,11 @@ const Quarterly = () => {
         return (
           <div className="status-wrapper">
             <Button
+              style={{
+                margin: "15px 0 15px -55px",
+                outline: "none",
+                cursor: "pointer"
+              }}
               type="button"
               className={`usa-button status status-${e.status_code}`}
             >
@@ -124,14 +110,13 @@ const Quarterly = () => {
 
     {
       name: "Last Updated",
-      selector: "last_updated",
+      selector: "last_modified",
       sortable: true
     },
     {
       name: "Print",
       sortable: false,
       cell: function getPrintLink(row) {
-        console.log(row);
         const formId = getFormSegment(row.form);
         return (
           <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
@@ -146,23 +131,36 @@ const Quarterly = () => {
   const customStyles = {
     headRow: {
       style: {
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        fontWeight: "600"
       }
     },
     headCells: {
       style: {
         "&:last-of-type": {
+          // Print
+          fontWeight: "600",
           maxWidth: "120px"
         },
         "&:first-of-type": {
+          // Form
+          fontWeight: "600",
           maxWidth: "120px"
         },
+        "&:nth-of-type(2n)": {
+          // FormName
+          fontWeight: "600",
+          maxWidth: "400px"
+        },
         "&:nth-of-type(3n)": {
+          // Status
+          fontWeight: "600",
           maxWidth: "180px"
         },
         "&:nth-of-type(4n)": {
-          maxWidth: "140px",
-          minWidth: "140px"
+          //Last Updated
+          fontWeight: "600",
+          maxWidth: "140px"
         }
       }
     },
@@ -175,6 +173,9 @@ const Quarterly = () => {
         "&:first-of-type": {
           maxWidth: "120px"
         },
+        "&:nth-of-type(2n)": {
+          maxWidth: "400px"
+        },
         "&:nth-of-type(3n)": {
           maxWidth: "180px",
           pointerType: "default"
@@ -186,33 +187,40 @@ const Quarterly = () => {
       }
     }
   };
-
+  console.log(stateFormsList);
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> > {`Q${quarter} ${year}`}
+            <a href="/">Enrollment Data Home</a> &gt;{" "}
+            {`${state} Q${quarter} ${year}`}
           </div>
         </Grid>
       </Grid>
       <Grid row>
         <Grid col={12}>
           <h2>{title}</h2>
-          <p>
-            Start, complete, and print this quarter's CHIP Enrollment Data
-            Reports.
-          </p>
           <div className="quarterly-report-listing">
-            <DataTable
-              sortIcon={<SortIcon />}
-              highlightOnHover
-              selectableRows={false}
-              responsive={true}
-              columns={columns}
-              data={data}
-              customStyles={customStyles}
-            />
+            <Card>
+              {stateFormsList ? (
+                <DataTable
+                  sortIcon={<SortIcon />}
+                  highlightOnHover
+                  title={
+                    <p style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Start, complete, and print this quarter's CHIP Enrollment
+                      Data Reports.
+                    </p>
+                  }
+                  selectableRows={false}
+                  responsive={true}
+                  columns={columns}
+                  data={stateFormsList}
+                  customStyles={customStyles}
+                />
+              ) : null}
+            </Card>
           </div>
         </Grid>
       </Grid>
