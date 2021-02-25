@@ -1,9 +1,11 @@
 import React from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
+import { connect } from "react-redux";
 
-const HomeState = () => {
+
+const HomeState = ({userData}) => {
   // TODO: Pull state from redux
-  const state = "AK";
+  const state = userData.abbrev || "AK";
 
   // TODO: Pull years and quarters from redux
   const years = [
@@ -75,4 +77,7 @@ const HomeState = () => {
   );
 };
 
-export default HomeState;
+const mapState = state => ({
+  userData: state.userData.userState
+});
+export default connect(mapstate)(HomeState);
