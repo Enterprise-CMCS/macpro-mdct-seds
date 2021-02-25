@@ -30,16 +30,19 @@ const Quarterly = () => {
   const getFormSegment = formName => {
     let urlSegment;
     switch (formName) {
-      case "64-ec":
+      case "GRE":
+        urlSegment = "gre";
+        break;
+      case "64.EC":
         urlSegment = "64ec";
         break;
-      case "64-eci":
+      case "64.ECI":
         urlSegment = "64eci";
         break;
-      case "64-21e":
+      case "64.21E":
         urlSegment = "64-21e";
         break;
-      case "64-21ei":
+      case "64.21EI":
         urlSegment = "64-21ei";
         break;
       case "21E": // may need to update all of the case statements
@@ -190,7 +193,7 @@ const Quarterly = () => {
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> &gt; {`Q${quarter} ${year}`}
+            <a href="/">Enrollment Data Home</a> &gt; {`${state} Q${quarter} ${year}`}
           </div>
         </Grid>
       </Grid>
