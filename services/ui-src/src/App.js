@@ -58,6 +58,7 @@ function App() {
       }
 
       if (payload) {
+        console.log("zzzPayload", payload);
         // Clean and set role from long string (example in localLogin.js)
         payload.role = determineRole(payload.ismemberof);
 
