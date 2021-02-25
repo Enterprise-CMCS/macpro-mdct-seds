@@ -13,7 +13,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
 import UserEdit from "./components/users/UserEdit";
-
 import {
   s3AmplifyUpload,
   s3LocalUploader,
@@ -21,6 +20,7 @@ import {
   s3LocalGetURL
 } from "./libs/awsLib";
 import config from "./config";
+import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
@@ -51,33 +51,36 @@ export default function Routes() {
 
   return (
     <Switch>
-      <Route exact path="/">
+      <AuthenticatedRoute exact path="/">
         <Home />
-      </Route>
+      </AuthenticatedRoute>
+      <UnauthenticatedRoute exact path="/totals">
+        <GridWithTotals />
+      </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/login">
         {localLogin ? <LocalLogin /> : <Login />}
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/signup">
         <Signup />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/example">
+      <AuthenticatedRoute exact path="/example">
         <Example />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users">
         <Users />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users/:id">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users/:id">
         <UserEdit />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users/add/user">
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users/add/user">
         <UserAdd />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
         <Profile />
       </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/forms/:state/:year/:quarter">
+      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/amendments/new">
         <NewAmendment fileUpload={s3Upload} />
       </AuthenticatedRoute>

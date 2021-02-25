@@ -11,6 +11,7 @@ custom:
   dynamodb:
     stages:
       - local
+      - master
     start:
       port: 8000
       inMemory: true
@@ -30,13 +31,24 @@ custom:
           - table: ${self:custom.stage}-state-forms
             sources: [../../src/database/initial_data_load/state_forms.json]
           - table: ${self:custom.stage}-form-questions
-            sources: [../../src/database/initial_data_load/21E.json]
+            sources:
+              [
+                ../../src/database/initial_data_load/21E.json,
+                ../../src/database/initial_data_load/64_21E.json,
+                ../../src/database/initial_data_load/GenderRaceEthnicity.json,
+              ]
           - table: ${self:custom.stage}-form-answers
             sources:
               [
                 ../../src/database/initial_data_load/form_answers_21E_AL.json,
                 ../../src/database/initial_data_load/form_answers_21E_MD.json,
                 ../../src/database/initial_data_load/form_answers_21E_PA.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_AL.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_MD.json,
+                ../../src/database/initial_data_load/form_answers_64_21E_PA.json,
+                ../../src/database/initial_data_load/form_answers_GRE_AL.json,
+                ../../src/database/initial_data_load/form_answers_GRE_MD.json,
+                ../../src/database/initial_data_load/form_answers_GRE_PA.json,
               ]
           - table: ${self:custom.stage}-auth-user
             sources: [../../src/database/initial_data_load/auth_user.json]
@@ -58,10 +70,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             AttributeType: S
         KeySchema:
-          - AttributeName: age_range
+          - AttributeName: ageRange
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormAnswersTable:
@@ -149,10 +161,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
@@ -162,10 +174,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthJobCodesTable:
@@ -188,10 +200,10 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: user-id
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: user-id
+          - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:

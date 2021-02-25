@@ -20,6 +20,8 @@ import {
 import "react-tabs/style/react-tabs.css";
 import TabContainer from "./layout/TabContainer";
 
+import GridWithTotals from "./GridWithTotals/GridWithTotals";
+
 const Example = () => {
   let accordionItems = [
     {
@@ -43,6 +45,42 @@ const Example = () => {
         "Here is the content for settings 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt pulvinar orci ut sagittis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer congue magna eget eleifend sagittis. Fusce consequat facilisis semper. Mauris luctus justo non diam finibus scelerisque sit amet eu ipsum. Aliquam faucibus, orci eu malesuada cursus, tortor neque feugiat risus, nec suscipit urna velit sit amet risus. Nullam ut neque et enim euismod malesuada a condimentum magna. Sed mattis dapibus lectus, a egestas lectus ullamcorper eget. Nulla at neque vestibulum, bibendum arcu eget, rutrum tortor. In hac habitasse platea dictumst. Quisque pulvinar iaculis pulvinar. Donec blandit nunc at ultrices commodo. Aenean non molestie neque."
     }
   ];
+
+  const gridDataItems = [
+    {
+      col1: "",
+      col2: "% of FPL 0-133",
+      col3: "% of FPL 134-200",
+      col4: "% of FPL 201-250",
+      col5: "% of FPL 251-300",
+      col6: "% of FPL 301-317"
+    },
+    {
+      col1: "A. Fee-for-Service",
+      col2: 1,
+      col3: 2,
+      col4: 3,
+      col5: 4,
+      col6: 5
+    },
+    {
+      col1: "B. Managed Care Arrangements",
+      col2: 21,
+      col3: 22,
+      col4: 23,
+      col5: 24,
+      col6: 25
+    },
+    {
+      col1: "C. Primary Care Case Management",
+      col2: 26,
+      col3: 27,
+      col4: 28,
+      col5: 29,
+      col6: 30
+    }
+  ];
+
   return (
     <GridContainer className="status-buttons container">
       <Grid row>
@@ -53,6 +91,7 @@ const Example = () => {
           <StatusButton type="provisional" />
           <StatusButton type="final" />
           <StatusButton type="notstarted" />
+          <StatusButton type="notapplicable" />
         </Grid>
       </Grid>
       <Grid row>
@@ -99,6 +138,9 @@ const Example = () => {
             <Accordion bordered={true} items={accordionItems} />
           </Grid>
         </Grid>
+      </Grid>
+      <Grid row={true}>
+        <GridWithTotals gridData={gridDataItems} />
       </Grid>
     </GridContainer>
   );

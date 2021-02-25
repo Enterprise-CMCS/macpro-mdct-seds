@@ -3,7 +3,7 @@ import { Accordion, Grid, Link } from "@trussworks/react-uswds";
 
 const HomeState = () => {
   // TODO: Pull state from redux
-  const state = "AK";
+  const state = "AL";
 
   // TODO: Pull years and quarters from redux
   const years = [
@@ -32,7 +32,7 @@ const HomeState = () => {
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
           return (
-            <li>
+            <li key={`${state}-${year}-${element}`}>
               <Link href={`/forms/${state}/${years[year].year}/${element}`}>
                 Quarter {element}
               </Link>
