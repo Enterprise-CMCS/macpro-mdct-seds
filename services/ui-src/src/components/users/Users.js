@@ -66,7 +66,7 @@ const Users = () => {
         cell: function editUser(e) {
           return (
             <span>
-              <a href={`/users/${e.userId}`}>{e.username}</a>
+              <a href={`/users/${e.userId}/edit`}>{e.username}</a>
             </span>
           );
         }
@@ -108,19 +108,31 @@ const Users = () => {
       {
         name: "Joined",
         selector: "dateJoined",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.dateJoined
+            ? new Date(s.dateJoined).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "Last Active",
         selector: "lastLogin",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.lastLogin
+            ? new Date(s.lastLogin).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "States",
         selector: "state_codes",
         sortable: true,
         cell: function modifyStateCodes(s) {
-          return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
+          return s.states ? (
+            <span>{s.states.split("-").sort().join(", ")}</span>
+          ) : null;
         }
       },
       {
@@ -162,6 +174,7 @@ const Users = () => {
     <div className="user-profiles">
       <Grid className="container">
         <h1>Users</h1>
+        <a href="/users/add">Add new user</a>
         <Card>
           {tableData ? (
             <DataTableExtensions {...tableData}>
