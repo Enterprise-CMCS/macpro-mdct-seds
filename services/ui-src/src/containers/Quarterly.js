@@ -76,10 +76,10 @@ const Quarterly = () => {
       wrap: true,
       cell: function setFormName(e) {
         return (
-          <p
-          style={{ wordWrap: "break-word", maxWidth: "200px"}}
-          >{e.form_name}</p>
-        )
+          <p style={{ wordWrap: "break-word", maxWidth: "200px" }}>
+            {e.form_name}
+          </p>
+        );
       }
     },
     {
