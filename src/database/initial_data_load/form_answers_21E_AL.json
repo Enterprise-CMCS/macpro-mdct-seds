@@ -4,6 +4,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-01",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -48,6 +49,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-02",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -92,6 +94,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-03",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -136,6 +139,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-04",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -180,6 +184,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-05",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -359,6 +364,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-06",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -403,6 +409,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-07",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -447,6 +454,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-08",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -491,6 +499,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-09",
     "age_range": "Under Age 0",
+    "rangeId": "0000",
     "rows": [
       {
         "col1": "",
@@ -535,6 +544,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-01",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -579,6 +589,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-02",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -623,6 +634,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-03",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -667,6 +679,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-04",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -711,6 +724,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-05",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -890,6 +904,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-06",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -934,6 +949,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-07",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -978,6 +994,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-08",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -1022,6 +1039,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-09",
     "age_range": "Ages 0 - 1",
+    "rangeId": "0001",
     "rows": [
       {
         "col1": "",
@@ -1066,6 +1084,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-01",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1110,6 +1129,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-02",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1154,6 +1174,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-03",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1198,6 +1219,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-04",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1242,6 +1264,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-05",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1421,6 +1444,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-06",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1465,6 +1489,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-07",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1509,6 +1534,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-08",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1553,6 +1579,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-09",
     "age_range": "Ages 1 - 5",
+    "rangeId": "0105",
     "rows": [
       {
         "col1": "",
@@ -1597,6 +1624,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-01",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1641,6 +1669,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-02",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1685,6 +1714,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-03",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1729,6 +1759,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-04",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1773,6 +1804,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-05",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1952,6 +1984,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-06",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -1996,6 +2029,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-07",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -2040,6 +2074,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-08",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -2084,6 +2119,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-09",
     "age_range": "Ages 6 - 12",
+    "rangeId": "0612",
     "rows": [
       {
         "col1": "",
@@ -2128,6 +2164,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-01",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2172,6 +2209,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-02",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2216,6 +2254,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-03",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2260,6 +2299,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-04",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2304,6 +2344,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-05",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2483,6 +2524,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-06",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2527,6 +2569,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-07",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2571,6 +2614,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-08",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
@@ -2615,6 +2659,7 @@
     "state_form": "AL-2021-1-21E",
     "question": "2021-21E-09",
     "age_range": "Ages 13 - 18",
+    "rangeId": "1318",
     "rows": [
       {
         "col1": "",
