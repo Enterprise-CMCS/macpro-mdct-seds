@@ -60,8 +60,7 @@ function App() {
       if (payload) {
         console.log("zzzPayload", payload);
         // Clean and set role from long string (example in localLogin.js)
-        const cleanRole = determineRole(payload.role);
-        payload.role = cleanRole;
+        payload.role = determineRole(payload.ismemberof);
 
         // Either get or create and get user
         const user = await getUpdateOrAddUser(payload);
@@ -102,6 +101,9 @@ function App() {
   };
 
   async function getUpdateOrAddUser(payload) {
+    // Set ismemberof to role for easier comprehension
+    payload.role = payload.ismemberof;
+
     if (payload.username) {
       // Check if user exists
       const data = await getUserByUsername({ username: payload.username });
