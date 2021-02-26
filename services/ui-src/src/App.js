@@ -104,8 +104,10 @@ function App() {
   async function getUpdateOrAddUser(payload) {
     // Set ismemberof to role for easier comprehension
     payload.role = payload["custom:ismemberof"];
+    payload.username = payload.identities[0].userId;
 
     if (payload.identities) {
+      console.log("zzzPayload.identities", payload.identities);
       // Check if user exists
       const data = await getUserByUsername({
         username: payload.identities[0].userId
@@ -113,8 +115,11 @@ function App() {
 
       // If user doesn't exists, create user
       if (data.Count === 0) {
+        console.log("zzzData.Count === 0; payload", payload);
         payload.lastLogin = new Date().toISOString();
-        return await createUser(payload);
+        const createuser = await createUser(payload);
+        console.log("zzzCreateUser", createUser);
+        return createuser;
       } else {
         payload.lastLogin = new Date().toISOString();
         const user = await updateUser(payload);
