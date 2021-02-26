@@ -117,7 +117,9 @@ function App() {
       if (data.Count === 0) {
         console.log("zzzData.Count === 0; payload", payload);
         payload.lastLogin = new Date().toISOString();
-        return await createUser(payload);
+        const createuser = await createUser(payload);
+        console.log("zzzCreateUser", createUser);
+        return createuser;
       } else {
         payload.lastLogin = new Date().toISOString();
         const user = await updateUser(payload);
