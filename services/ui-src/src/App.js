@@ -122,6 +122,7 @@ function App() {
         return createuser;
       } else {
         payload.lastLogin = new Date().toISOString();
+        payload.isActive = data.isActive ?? "true";
         const user = await updateUser(payload);
         return user.Attributes;
       }
