@@ -13,6 +13,11 @@ export const main = handler(async (event, context) => {
 
   console.log(JSON.stringify(event, null, 2));
 
+  if (!data.username) {
+    return `Please enter a username`;
+  }
+
+  console.log("zzzData", data);
   // Stringify body contents to match api type
   const body = JSON.stringify({
     username: data.username,
@@ -21,10 +26,6 @@ export const main = handler(async (event, context) => {
   const currentUser = await getUserByUsername({
     body: body,
   });
-
-  if (!data.username) {
-    return `Please enter a username`;
-  }
 
   if (currentUser.body !== "false") {
     return `User ${data.username} already exists`;
