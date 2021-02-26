@@ -5,8 +5,9 @@ import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab";
 import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
+import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs }) => {
+const TabContainer = ({ tabs, questions }) => {
   return (
     <Tabs>
       <TabList>
@@ -21,8 +22,11 @@ const TabContainer = ({ tabs }) => {
         // The questions for each tab will go inside of the tab Panels
         return (
           <TabPanel key={idx}>
-            <b>{tab.age_description}:</b>{" "}
-            {<p>{loremIpsum} This is where the questions will go! </p>}
+            <b>{tab.age_description}:</b>
+
+            {questions.map(question => {
+              return <QuestionComponent singleQuestion={question} />;
+            })}
           </TabPanel>
         );
       })}
@@ -42,7 +46,8 @@ TabContainer.propTypes = {
 };
 
 const mapState = state => ({
-  tabs: state.global.age_ranges
+  tabs: state.global.age_ranges,
+  questions: state.currentForm.questions
 });
 
 const loremIpsum =

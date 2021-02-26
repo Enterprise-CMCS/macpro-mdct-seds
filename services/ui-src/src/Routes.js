@@ -24,6 +24,7 @@ import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
+import FormPage from "./components/FormPage";
 
 export default function Routes() {
   // This might not be quite the right place for it, but I'm doing
@@ -65,6 +66,9 @@ export default function Routes() {
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/example">
         <Example />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/formpagetemp">
+        <FormPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/users">
         <Users />
