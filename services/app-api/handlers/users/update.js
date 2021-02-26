@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
     ExpressionAttributeValues: {
       ":role": data.role,
       ":states": data.states ?? "",
-      ":isActive": data.isActive,
+      ":isActive": data.isActive ?? "inactive",
       ":lastLogin": data.lastLogin,
     },
     ExpressionAttributeNames: {
