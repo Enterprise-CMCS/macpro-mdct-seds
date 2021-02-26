@@ -122,9 +122,11 @@ function App() {
         console.log("zzzCreateUser", createUser);
         return createuser;
       } else {
-        payload.lastLogin = new Date().toISOString();
-        payload.isActive = data.isActive ?? "true";
-        const user = await updateUser(payload);
+        data.lastLogin = new Date().toISOString();
+        data.isActive = data.isActive ?? "true";
+        data.role = determineRole(payload.role);
+        data.username = payload.identities[0].userId;
+        const user = await updateUser(data);
         return user.Attributes;
       }
     }
