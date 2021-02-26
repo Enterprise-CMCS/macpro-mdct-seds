@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { getUserByUsername } from "./get";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -8,43 +9,67 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log("zzzEvent", event);
   const data = JSON.parse(event.body);
-  // const data = event.body;
-  // return data;
+
   console.log(JSON.stringify(event, null, 2));
 
-  //Query to get next available userId
+  if (!data.username) {
+    return `Please enter a username`;
+  }
+
+  console.log("zzzData", data);
+  // Stringify body contents to match api type
+  const body = JSON.stringify({
+    username: data.username,
+  });
+
+  const currentUser = await getUserByUsername({
+    body: body,
+  });
+
+  if (currentUser.body !== "false") {
+    return `User ${data.username} already exists`;
+  }
+
+  // Query to get next available userId
   const paramsForId = {
-    TableName: process.env.AuthUserTableName,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
+  let newUserId = 0;
   // Check for result Items
   if (Array.isArray(allResults.Items)) {
     // Sort Alphabetically by userId
     allResults.Items.sort((a, b) =>
       parseInt(a.userId) > parseInt(b.userId) ? -1 : 1
     );
+
+    if (allResults.Items[0]) {
+      newUserId = parseInt(allResults.Items[0].userId) + 1;
+    }
   }
-  const newUserId = parseInt(allResults.Items[0].userId) + 1;
 
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Item: {
-      userId: newUserId.toString(),
-      isSuperUser: "true",
-      username: data.username,
+      dateJoined: new Date().toISOString(),
+      email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
-      role: data.role,
       isActive: "true",
-      dateJoined: Date.now(),
+      isSuperUser: "true",
+      role: data.role,
+      states: data.states ?? "",
+      userId: newUserId.toString(),
+      username: data.username,
+      lastLogin: data.lastLogin ? data.lastLogin : "",
     },
   };
 
   await dynamoDb.put(params);
 
-  return params.Item;
+  return `User ${data.username} Added!`;
 });

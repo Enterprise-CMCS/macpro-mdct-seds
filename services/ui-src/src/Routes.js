@@ -1,59 +1,48 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import AWS from "aws-sdk";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import LocalLogin from "./containers/LocalLogin";
 import NotFound from "./containers/NotFound";
 import Signup from "./containers/Signup";
-import NewAmendment from "./containers/NewAmendment";
-import Amendments from "./containers/Amendments";
 import Profile from "./containers/Profile";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
 import UserEdit from "./components/users/UserEdit";
-import {
-  s3AmplifyUpload,
-  s3LocalUploader,
-  s3AmplifyGetURL,
-  s3LocalGetURL
-} from "./libs/awsLib";
 import config from "./config";
 import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 import FormPage from "./components/FormPage";
+import Unauthorized from "./containers/Unauthorized";
 
-export default function Routes() {
-  // This might not be quite the right place for it, but I'm doing
-  // dependency injection here, on the component level.
-  // Local Login
+export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
 
-  // Local s3
-  const localEndpoint = config.s3.LOCAL_ENDPOINT;
-  let s3Upload = s3AmplifyUpload;
-  let s3URLResolver = s3AmplifyGetURL;
-  if (localLogin && localEndpoint !== "") {
-    // Amplify doesn't allow you to configure the AWS Endpoint, so for local dev we need our own S3Client configured.
-    let s3Client = new AWS.S3({
-      s3ForcePathStyle: true,
-      apiVersion: "2006-03-01",
-      accessKeyId: "S3RVER", // This specific key is required when working offline
-      secretAccessKey: "S3RVER",
-      params: { Bucket: config.s3.BUCKET },
-      endpoint: new AWS.Endpoint(localEndpoint)
-    });
-    s3Upload = s3LocalUploader(s3Client);
-    s3URLResolver = s3LocalGetURL(s3Client);
+  if (!isAuthorized) {
+    return (
+      <Switch>
+        <AuthenticatedRoute exact path="/">
+          <Unauthorized />
+        </AuthenticatedRoute>
+        <UnauthenticatedRoute exact path="/login">
+          {localLogin ? <LocalLogin /> : <Login />}
+        </UnauthenticatedRoute>
+      </Switch>
+    );
   }
-
   return (
     <Switch>
       <AuthenticatedRoute exact path="/">
-        <Home />
+        <Home user={user} />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/unauthorized">
+        <Unauthorized />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/formpagetemp">
+        <FormPage />
       </AuthenticatedRoute>
       <UnauthenticatedRoute exact path="/totals">
         <GridWithTotals />
@@ -67,30 +56,25 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/example">
         <Example />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/formpagetemp">
-        <FormPage />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/users">
-        <Users />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/users/:id">
-        <UserEdit />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/users/add/user">
-        <UserAdd />
-      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
-        <Profile />
+        <Profile user={user} />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/amendments/new">
-        <NewAmendment fileUpload={s3Upload} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/amendments/:id">
-        <Amendments fileUpload={s3Upload} fileURLResolver={s3URLResolver} />
-      </AuthenticatedRoute>
+      {user.role === "admin" ? (
+        <>
+          <AuthenticatedRoute exact path="/users">
+            <Users />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/users/add">
+            <UserAdd />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/users/:id/edit">
+            <UserEdit />
+          </AuthenticatedRoute>
+        </>
+      ) : null}
       <Route>
         <NotFound />
       </Route>

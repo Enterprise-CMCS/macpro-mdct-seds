@@ -97,10 +97,10 @@ const Header = () => {
       <div className="navigation">
         <GridContainer className="container">
           <Grid row>
-            <Grid col={9}>
+            <Grid col={7}>
               <NavList items={testItems} type="primary" />
             </Grid>
-            <Grid col={3}>
+            <Grid col={5}>
               <Navbar.Collapse>
                 <Nav pullRight>
                   {isAuthenticated ? (
