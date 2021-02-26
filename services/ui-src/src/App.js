@@ -18,6 +18,36 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
+    async function getUpdateOrAddUser(payload) {
+      // Set ismemberof to role for easier comprehension
+      payload.role = payload["custom:ismemberof"];
+      payload.username = payload.identities[0].userId;
+
+      if (payload.identities) {
+        console.log("zzzPayload.identities", payload.identities);
+        // Check if user exists
+        const data = await getUserByUsername({
+          username: payload.identities[0].userId
+        });
+
+        // If user doesn't exists, create user
+        console.log("data", data);
+        if (data.Count === 0 || data === false) {
+          payload.lastLogin = new Date().toISOString();
+          payload.isActive = "true";
+          const createuser = await createUser(payload);
+          return createuser;
+        } else {
+          let newData = data.Items[0];
+          newData.lastLogin = new Date().toISOString();
+          newData.isActive = data.isActive ?? "true";
+          newData.role = determineRole(payload.role);
+          const user = await updateUser(newData);
+          return user.Attributes;
+        }
+      }
+    }
+
     async function onLoad() {
       // Get user data either locally or through cognito
       let payload;
@@ -100,37 +130,6 @@ function App() {
       return null;
     }
   };
-
-  async function getUpdateOrAddUser(payload) {
-    // Set ismemberof to role for easier comprehension
-    payload.role = payload["custom:ismemberof"];
-    payload.username = payload.identities[0].userId;
-
-    if (payload.identities) {
-      console.log("zzzPayload.identities", payload.identities);
-      // Check if user exists
-      const data = await getUserByUsername({
-        username: payload.identities[0].userId
-      });
-
-      // If user doesn't exists, create user
-      if (data.Count === 0) {
-        console.log("zzzData.Count === 0; payload", payload);
-        payload.lastLogin = new Date().toISOString();
-        payload.isActive = "true";
-        const createuser = await createUser(payload);
-        console.log("zzzCreateUser", createUser);
-        return createuser;
-      } else {
-        data.lastLogin = new Date().toISOString();
-        data.isActive = data.isActive ?? "true";
-        data.role = determineRole(payload.role);
-        data.username = payload.identities[0].userId;
-        const user = await updateUser(data);
-        return user.Attributes;
-      }
-    }
-  }
 
   return (
     !isAuthenticating && (
