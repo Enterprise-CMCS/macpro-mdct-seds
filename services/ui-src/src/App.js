@@ -32,7 +32,7 @@ function App() {
         });
 
         // If user doesn't exists, create user
-        console.log("data", data);
+        console.log("zzzData", data);
         if (data.Count === 0 || data === false) {
           payload.lastLogin = new Date().toISOString();
           payload.isActive = "true";
