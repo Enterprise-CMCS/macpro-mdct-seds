@@ -18,12 +18,12 @@ const Users = () => {
   const [users, setUsers] = useState();
 
   const loadUserData = async () => {
-    const data = await listUsers();
-    setUsers(data);
-    return data;
+    setUsers(await listUsers());
+    console.log("user data set");
   };
 
   useEffect(() => {
+    console.log("in use effect");
     async function fetchData() {
       await loadUserData();
     }
