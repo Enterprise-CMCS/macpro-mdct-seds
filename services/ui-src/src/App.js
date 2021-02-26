@@ -107,6 +107,7 @@ function App() {
     payload.username = payload.identities[0].userId;
 
     if (payload.identities) {
+      console.log("zzzPayload.identities", payload.identities);
       // Check if user exists
       const data = await getUserByUsername({
         username: payload.identities[0].userId
