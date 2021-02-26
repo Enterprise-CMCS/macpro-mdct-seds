@@ -18,6 +18,7 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
+    console.log("zzzConfig.apiGateway.URL", config.apiGateway.URL);
     async function getUpdateOrAddUser(payload) {
       // Set ismemberof to role for easier comprehension
       payload.role = payload["custom:ismemberof"];

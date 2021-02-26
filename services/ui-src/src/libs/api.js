@@ -47,6 +47,9 @@ export function deleteAmendment(id) {
 
 export function listUsers() {
   const opts = requestOptions();
+  console.log("opts from listUsers() in api.js");
+  console.log(opts);
+
   return API.get("amendments", `/users`, opts);
 }
 
