@@ -417,12 +417,6 @@ resources:
           GenerateSecret: false
           SupportedIdentityProviders:
             - COGNITO
-      serviceUserPoolDomain:
-        Type: AWS::Cognito::UserPoolDomain
-        Properties:
-          UserPoolId:
-            Ref: serviceUserPool
-          Domain: service-user-pool-domain-${opt:stage, self:provider.stage}-${self:provider.environment.DOMAIN_SUFFIX}
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi
