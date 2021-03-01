@@ -2,6 +2,9 @@ service: ui
 
 frameworkVersion: "2"
 
+plugins:
+  - serverless-stack-termination-protection
+
 provider:
   name: aws
   runtime: nodejs12.x
