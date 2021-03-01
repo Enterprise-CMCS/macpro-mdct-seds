@@ -1,8 +1,9 @@
 import { API } from "aws-amplify";
 import config from "../config";
+import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
-function requestOptions() {
+const requestOptions = async () => {
   const localLogin = config.LOCAL_LOGIN === "true";
 
   if (localLogin) {
@@ -14,9 +15,17 @@ function requestOptions() {
     };
     return options;
   } else {
-    return {};
+    console.log("zzzMade it into else in api.js");
+    const user = await Auth.currentAuthenticatedUser();
+    console.log("zzzUser", user);
+    const token = user.signInUserSession.idToken.jwtToken;
+    console.log("zzzToken", token);
+
+    return {
+      Authorization: token
+    };
   }
-}
+};
 
 export function listAmendments() {
   const opts = requestOptions();
