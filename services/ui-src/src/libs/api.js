@@ -21,9 +21,13 @@ const requestOptions = async () => {
     const token = user.signInUserSession.idToken.jwtToken;
     console.log("zzzToken", token);
 
-    return {
-      Authorization: token
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     };
+
+    return options;
   }
 };
 
