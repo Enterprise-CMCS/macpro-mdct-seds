@@ -82,15 +82,19 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/formpagetemp">
-        <FormPage />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/amendments/new">
-        <NewAmendment fileUpload={s3Upload} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/amendments/:id">
-        <Amendments fileUpload={s3Upload} fileURLResolver={s3URLResolver} />
-      </AuthenticatedRoute>
+      {user.role === "admin" ? (
+        <>
+          <AuthenticatedRoute exact path="/users">
+            <Users />
+          </AuthenticatedRoute>
+          <UnauthenticatedRoute exact path="/users/add">
+            <UserAdd />
+          </UnauthenticatedRoute>
+          <AuthenticatedRoute exact path="/users/:id/edit">
+            <UserEdit />
+          </AuthenticatedRoute>
+        </>
+      ) : null}
       <Route>
         <NotFound />
       </Route>
