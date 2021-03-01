@@ -101,7 +101,7 @@ provider:
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
   http:
     authorizers:
-      serviceAuthorizer:
+      aws_iam:
         identitySource: $request.header.Authorization
         issuerUrl:
           Fn::Join:
@@ -384,6 +384,45 @@ resources:
       Properties:
         ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${ApiGatewayRestApi}/stages/${self:custom.stage}
         WebACLArn: !GetAtt ApiGwWebAcl.Arn
+    Http:
+      DependsOn: serviceUserPool
+      serviceUserPool:
+        Type: AWS::Cognito::UserPool
+        Properties:
+          UserPoolName: service-user-pool-${opt:stage, self:provider.stage}
+          UsernameAttributes:
+            - email
+          AutoVerifiedAttributes:
+            - email
+      serviceUserPoolClient:
+        Type: AWS::Cognito::UserPoolClient
+        Properties:
+          ClientName: service-user-pool-client-${opt:stage, self:provider.stage}
+          AllowedOAuthFlows:
+            - implicit
+          AllowedOAuthFlowsUserPoolClient: true
+          AllowedOAuthScopes:
+            - phone
+            - email
+            - openid
+            - profile
+            - aws.cognito.signin.user.admin
+          UserPoolId:
+            Ref: serviceUserPool
+          CallbackURLs:
+            - https://localhost:3000
+          ExplicitAuthFlows:
+            - ALLOW_USER_SRP_AUTH
+            - ALLOW_REFRESH_TOKEN_AUTH
+          GenerateSecret: false
+          SupportedIdentityProviders:
+            - COGNITO
+      serviceUserPoolDomain:
+        Type: AWS::Cognito::UserPoolDomain
+        Properties:
+          UserPoolId:
+            Ref: serviceUserPool
+          Domain: service-user-pool-domain-${opt:stage, self:provider.stage}-${self:provider.environment.DOMAIN_SUFFIX}
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi
