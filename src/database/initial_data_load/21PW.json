@@ -1,13 +1,13 @@
 [
   {
     "question": "2021-21PW-01",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "Unduplicated # Ever Enrolled",
+    "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
     "rows": [
       {
         "col1": "",
@@ -49,13 +49,13 @@
   },
   {
     "question": "2021-21PW-02",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "Unduplicated # New Enrollees",
+    "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
         "col1": "",
@@ -97,13 +97,13 @@
   },
   {
     "question": "2021-21PW-03",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "Unduplicated # Disenrollees",
+    "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
         "col1": "",
@@ -145,13 +145,13 @@
   },
   {
     "question": "2021-21PW-04",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "# Member Months Enrollment",
+    "label": "What is the number of member-months of enrollment for &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
         "col1": "",
@@ -193,13 +193,13 @@
   },
   {
     "question": "2021-21PW-05",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "Average # Months (Line 4/1)",
+    "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
     "rows": [
@@ -378,13 +378,13 @@
   },
   {
     "question": "2021-21PW-06",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
     "row_total": true,
     "column_total": true,
-    "label": "# of Pregnant Women Enrolled at Last Day of Quarter",
+    "label": "What is the number of children, pregnant women or waiver adults &&&VARIABLE&&& enrolled at the end of the quarter?",
     "rows": [
       {
         "col1": "",
@@ -426,7 +426,7 @@
   },
   {
     "question": "2021-21PW-07",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
@@ -435,7 +435,7 @@
     "context_data": {
       "show_if_quarter_in": "4"
     },
-    "label": "Unduplicated # Ever Enrolled Year",
+    "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
     "rows": [
       {
         "col1": "",
@@ -477,7 +477,7 @@
   },
   {
     "question": "2021-21PW-08",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
@@ -486,7 +486,7 @@
     "context_data": {
       "show_if_quarter_in": "4"
     },
-    "label": "Unduplicated # New Enrollees Year",
+    "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
     "rows": [
       {
         "col1": "",
@@ -528,7 +528,7 @@
   },
   {
     "question": "2021-21PW-09",
-    "form_id": "1",
+    "form_id": "6",
     "form": "21PW",
     "year": 2021,
     "type": "datagridwithtotals",
@@ -537,7 +537,7 @@
     "context_data": {
       "show_if_quarter_in": "4"
     },
-    "label": "Unduplicated # Disenrollees Year",
+    "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
     "rows": [
       {
         "col1": "",
