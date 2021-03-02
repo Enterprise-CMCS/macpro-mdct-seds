@@ -13,17 +13,11 @@ const HomeState = ({ userData }) => {
   let month = date.getMonth() + 1;
   // create array years with subarrays year and quarters
   // const years = [...year, ...quarters];
-  let years;
-  const year = [];
-  const quarters = [];
-
+  const years = [];
   // for loops to populate subarrays
   function dateMachine(fiscalYear, month) {
-    let year = fiscalYear;
-    let jsonData = [];
-    console.log("fiscalYear", fiscalYear);
+    
     for (let i = fiscalYear; i >= 2018; i--) {
-      console.log("fiscalYear");
       let currentYear;
       let currentQuarters;
 
@@ -39,22 +33,21 @@ const HomeState = ({ userData }) => {
         } else {
           currentQuarters = [1, 2, 3, 4];
         }
-
-        jsonData.push({
+        years.push({
           year: currentYear,
           quarters: currentQuarters
         });
       } else {
-        jsonData.push({
+        years.push({
           year: i,
           quarters: [1, 2, 3, 4]
         });
       }
     }
-    return jsonData;
+    return years;
   }
 
-  const test = dateMachine(2021, 6);
+  const test = dateMachine(fiscalYear, month);
   console.log("dateMachine output", test);
 
   let accordionItems = [];
@@ -64,8 +57,8 @@ const HomeState = ({ userData }) => {
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
           return (
-            <li key={`${state}-${year}-${element}`}>
-              <Link href={`/forms/${state}/${year}/${element}`}>
+            <li key={`${state}-${years[year].year}-${element}`}>
+              <Link href={`/forms/${state}/${years[year].year}./${element}`}>
                 Quarter {element}
               </Link>
             </li>
@@ -75,14 +68,14 @@ const HomeState = ({ userData }) => {
     );
     // If current year, set expanded to true
     let expanded = false;
-    if (year === date.getFullYear()) {
+    if (years[year].year === date.getFullYear()) {
       expanded = true;
     }
     // Build single item
     let item = {
-      id: year,
-      description: "Quarters for " + year,
-      title: year,
+      id: years[year].year,
+      description: "Quarters for " + years[year].year,
+      title: years[year].year,
       content: quarters,
       expanded: expanded
     };
