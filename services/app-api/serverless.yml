@@ -389,7 +389,7 @@ resources:
       serviceUserPool:
         Type: AWS::Cognito::UserPool
         Properties:
-          UserPoolName: service-user-pool-${opt:stage, self:provider.stage}
+          UserPoolName: ${self:custom.stage}-user-pool
           UsernameAttributes:
             - email
           AutoVerifiedAttributes:
@@ -397,7 +397,7 @@ resources:
       serviceUserPoolClient:
         Type: AWS::Cognito::UserPoolClient
         Properties:
-          ClientName: service-user-pool-client-${opt:stage, self:provider.stage}
+          ClientName: ${self:custom.stage}-user-pool-client
           AllowedOAuthFlows:
             - implicit
           AllowedOAuthFlowsUserPoolClient: true
