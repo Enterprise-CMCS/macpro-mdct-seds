@@ -396,7 +396,6 @@ resources:
         ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${ApiGatewayRestApi}/stages/${self:custom.stage}
         WebACLArn: !GetAtt ApiGwWebAcl.Arn
     Http:
-      DependsOn: serviceUserPool
       serviceUserPool:
         Type: AWS::Cognito::UserPool
         Properties:
