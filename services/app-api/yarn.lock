@@ -7525,6 +7525,13 @@ serialize-javascript@^5.0.1:
   dependencies:
     randombytes "^2.1.0"
 
+serverless-associate-waf@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/serverless-associate-waf/-/serverless-associate-waf-1.2.1.tgz#30efcfe94038a34fba6a00a954df43e176b8ccc9"
+  integrity sha512-84FIjRsNJ4im+Q1rmlwc+7ofyZXB6D0AZr9tfbBCfh25/qwv/8Q9h78/aDrR7LZT5XAZzrM6qAbwHFyUD5wd+A==
+  dependencies:
+    chalk "^2.4.2"
+
 serverless-bundle@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/serverless-bundle/-/serverless-bundle-3.1.0.tgz#2d0e6acae400956ea87d57b5a10ea7cf50cca432"
@@ -7626,6 +7633,11 @@ serverless-plugin-warmup@^4.9.0:
   integrity sha512-o6u0Wovyjm1tJNsa38oHOKEjmjBdhie8sCIlCCUAtHZza7L7y9WgtHTFqK6QGTl7O6sbw98vB8z4pNsSQGH6YA==
   dependencies:
     fs-extra "^9.0.0"
+
+serverless-stack-termination-protection@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz#e0430108cfc8f4d72a63138ef5781c6fe9707868"
+  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
 
 serverless-webpack@^5.3.1:
   version "5.3.5"

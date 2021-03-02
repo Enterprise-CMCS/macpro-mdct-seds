@@ -109,7 +109,10 @@ functions:
           path: amendments
           method: post
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   get:
     handler: handlers/get.main
     role: LambdaApiRole
@@ -118,7 +121,10 @@ functions:
           path: amendments/{id}
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   list:
     handler: handlers/list.main
     role: LambdaApiRole
@@ -127,7 +133,10 @@ functions:
           path: amendments
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   update:
     handler: handlers/update.main
     role: LambdaApiRole
@@ -136,7 +145,10 @@ functions:
           path: amendments/{id}
           method: put
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   delete:
     handler: handlers/delete.main
     role: LambdaApiRole
@@ -145,7 +157,10 @@ functions:
           path: amendments/{id}
           method: delete
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   getUser:
     handler: handlers/users/get.main
     role: LambdaApiRole
@@ -154,7 +169,10 @@ functions:
           path: users/{id}
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   getUsers:
     handler: handlers/users/list.main
     role: LambdaApiRole
@@ -163,7 +181,10 @@ functions:
           path: users
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   createUser:
     handler: handlers/users/create.main
     role: LambdaApiRole
@@ -172,7 +193,10 @@ functions:
           path: users/add
           method: post
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   deleteUser:
     handler: handlers/users/delete.main
     role: LambdaApiRole
@@ -181,7 +205,10 @@ functions:
           path: users/delete
           method: post
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   activationUser:
     handler: handlers/users/activation.main
     role: LambdaApiRole
@@ -190,7 +217,10 @@ functions:
           path: users/activation/{username}
           method: put
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   updateUser:
     handler: handlers/users/update.main
     role: LambdaApiRole
@@ -199,7 +229,10 @@ functions:
           path: users/update/{userId}
           method: post
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   getForm:
     handler: handlers/forms/get.main
     role: LambdaApiRole
@@ -208,7 +241,10 @@ functions:
           path: single-form/{state}/{specifiedYear}/{quarter}/{form}
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
@@ -217,7 +253,10 @@ functions:
           path: forms/{stateId}/{specifiedYear}/{quarter}
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
 
 resources:
   Conditions:
@@ -227,6 +266,32 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
+    CognitoUserPool:
+      Type: "AWS::Cognito::UserPool"
+      Properties:
+        MfaConfiguration: OFF
+        UserPoolName: ${self:custom.stage}-user-pool
+        UsernameAttributes:
+          - email
+    CognitoUserPoolClient:
+      Type: "AWS::Cognito::UserPoolClient"
+      Properties:
+        ClientName: ${self:custom.stage}-user-pool-client
+        GenerateSecret: False
+        UserPoolId:
+          Ref: CognitoUserPool
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::GetAtt: [ CognitoUserPool, Arn ]
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
       Type: "AWS::IAM::Role"
       Properties:
@@ -370,3 +435,10 @@ resources:
       Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
     Region:
       Value: !Sub ${AWS::Region}
+    CognitoUserPoolArn:
+      Value:
+        Fn::GetAtt:
+          - CognitoUserPool
+          - Arn
+      Export:
+        Name: CognitoUserPoolArn-${self:custom.stage}
