@@ -273,6 +273,8 @@ resources:
         UserPoolName: ${self:custom.stage}-user-pool
         UsernameAttributes:
           - email
+          - openid
+          - profile
     CognitoUserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
