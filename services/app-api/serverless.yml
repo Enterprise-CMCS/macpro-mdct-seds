@@ -285,7 +285,7 @@ resources:
         - ApiGatewayRestApi
       Type: AWS::ApiGateway::Authorizer
       Properties:
-        Name: cognito-authorizer
+        Name: ${self:custom.stage}-cognito-authorizer
         IdentitySource: method.request.header.Authorization
         RestApiId:
           Ref: ApiGatewayRestApi
