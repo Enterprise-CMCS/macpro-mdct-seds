@@ -85,7 +85,7 @@ export function getUserByUsername(data) {
   const opts = requestOptions();
   opts.body = data;
   console.log("zzzGetUesrByUserName opts", opts);
-  return API.post("amendments", `/users/get/`, opts);
+  return API.post("amendments", `/users/get`, opts);
 }
 
 export function updateUser(data) {
