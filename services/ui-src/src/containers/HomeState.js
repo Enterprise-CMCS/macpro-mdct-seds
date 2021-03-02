@@ -16,7 +16,6 @@ const HomeState = ({ userData }) => {
   const years = [];
   // for loops to populate subarrays
   function dateMachine(fiscalYear, month) {
-    
     for (let i = fiscalYear; i >= 2018; i--) {
       let currentYear;
       let currentQuarters;
