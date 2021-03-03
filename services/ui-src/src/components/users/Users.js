@@ -4,7 +4,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
-import { listUsers, activateDeactivateUser } from "../../libs/api";
+import { listUsers, activationUsers } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
 /**
  * Display all users with options
@@ -36,7 +36,7 @@ const Users = () => {
     );
     if (confirm) {
       const deactivateData = { isActive: false, userId: e.userId };
-      await activateDeactivateUser(deactivateData).then(async () => {
+      await activationUsers(deactivateData).then(async () => {
         await loadUserData();
       });
     }
@@ -48,7 +48,7 @@ const Users = () => {
     );
     if (confirm) {
       const activateData = { isActive: true, userId: e.userId };
-      await activateDeactivateUser(activateData).then(async () => {
+      await activationUsers(activateData).then(async () => {
         await loadUserData();
       });
     }

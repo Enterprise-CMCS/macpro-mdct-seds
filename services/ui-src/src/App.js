@@ -36,7 +36,8 @@ function App() {
         if (data.Count === 0 || data === false) {
           payload.lastLogin = new Date().toISOString();
           payload.isActive = "true";
-          return await createUser(payload);
+          const createuser = await createUser(payload);
+          return createuser;
         } else {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
