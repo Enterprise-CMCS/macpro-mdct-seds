@@ -106,7 +106,7 @@ functions:
    2. Conventions:
       1. Each file in the handler directory should contain a single function called 'main'
       2. The handlers are organized by API, each with their own folder. Within those folders should be separate files for each HTTP verb.
-         For instance: There might be `users` folder in handlers, (`app-api/handlers/users`). Within that `users`folder would be individual files each corresponding with an HTTP verb so that the inside of `users` might look like `get.js` `create.js` `update.js` `delete.js`, etc.
+         For instance: There might be `users` folder in handlers, (`app-api/handlers/users`). Within that `users`folder would be individual files each corresponding with an HTTP verb so that the inside of `users` might look like `getUserById.js` `createUser.js` `updateUser.js` `deleteUser.js`, etc.
          The intention of this structure is that each of the verbs within a folder corresponds to the same data set in the database.
 3. Add wrapper function in `{ROOT}/services/ui-src/src/lib/api.js`
    example:
