@@ -6,7 +6,7 @@ Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT
 
 ## Architecture
 
-![Architecture Diagram](./.images/architecture.png?raw=true)
+![Architecture Diagram](./.images/architecture.svg?raw=true)
 
 ## Git Policies, Activities and Notes
 
