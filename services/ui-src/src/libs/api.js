@@ -66,10 +66,10 @@ export function listUsers() {
   return API.get("amendments", `/users`, opts);
 }
 
-export function activationUsers(data) {
+export function activateDeactivateUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.put("amendments", `/users/activation/${data.username}`, opts);
+  return API.post("amendments", `/users/activation/${data.username}`, opts);
 }
 
 export function getUser(data) {
