@@ -4,7 +4,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
-import { listUsers, activationUsers } from "../../libs/api";
+import { listUsers, activateDeactivateUser } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
 /**
  * Display all users with options
@@ -18,12 +18,12 @@ const Users = () => {
   const [users, setUsers] = useState();
 
   const loadUserData = async () => {
-    const data = await listUsers();
-    setUsers(data);
-    return data;
+    setUsers(await listUsers());
+    console.log("user data set");
   };
 
   useEffect(() => {
+    console.log("in use effect");
     async function fetchData() {
       await loadUserData();
     }
@@ -36,7 +36,7 @@ const Users = () => {
     );
     if (confirm) {
       const deactivateData = { isActive: false, userId: e.userId };
-      await activationUsers(deactivateData).then(async () => {
+      await activateDeactivateUser(deactivateData).then(async () => {
         await loadUserData();
       });
     }
@@ -48,7 +48,7 @@ const Users = () => {
     );
     if (confirm) {
       const activateData = { isActive: true, userId: e.userId };
-      await activationUsers(activateData).then(async () => {
+      await activateDeactivateUser(activateData).then(async () => {
         await loadUserData();
       });
     }
@@ -66,7 +66,7 @@ const Users = () => {
         cell: function editUser(e) {
           return (
             <span>
-              <a href={`/users/${e.userId}`}>{e.username}</a>
+              <a href={`/users/${e.userId}/edit`}>{e.username}</a>
             </span>
           );
         }
@@ -108,19 +108,31 @@ const Users = () => {
       {
         name: "Joined",
         selector: "dateJoined",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.dateJoined
+            ? new Date(s.dateJoined).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "Last Active",
         selector: "lastLogin",
-        sortable: true
+        sortable: true,
+        cell: function convertDate(s) {
+          return s.lastLogin
+            ? new Date(s.lastLogin).toLocaleDateString("en-US")
+            : null;
+        }
       },
       {
         name: "States",
         selector: "state_codes",
         sortable: true,
         cell: function modifyStateCodes(s) {
-          return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
+          return s.states ? (
+            <span>{s.states.split("-").sort().join(", ")}</span>
+          ) : null;
         }
       },
       {
@@ -162,6 +174,7 @@ const Users = () => {
     <div className="user-profiles">
       <Grid className="container">
         <h1>Users</h1>
+        <a href="/users/add">Add new user</a>
         <Card>
           {tableData ? (
             <DataTableExtensions {...tableData}>

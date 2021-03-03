@@ -1,36 +1,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-// import axios from "../../authenticatedAxios";
 import Searchable from "react-searchable-dropdown";
 import { TextField, Button } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-
-/**
- * Add a new record to carts_api_rolefromusername & carts_api_statesfromusername so that the user
- * can become a state, business, or admin.
- *
- * @param {object} currentUser
- * @param {Array} stateList
- */
+import { createUser } from "../../libs/api";
 
 const AddUser = ({ currentUser, stateList }) => {
-  const addUser = async (stateId, userId, role) => {
-    if (stateId !== undefined && userId !== "") {
-      // const xhrURL = [
-      //   window.env.API_POSTGRES_URL,
-      //   `/api/v1/adduser/${userId}/${statesToSend}/${role}`
-      // ].join("");
-      // eslint-disable-next-line
-      // await axios.get(xhrURL).then(function (result2) {
-      //   window.alert(result2.data.toString());
-      //   window.location.reload(false);
-      // });
-    } else {
-      setError(true);
-    }
-  };
+  const [userId, setUserId] = useState();
+  const [stateId, setStateId] = useState([]);
+  /* eslint-disable no-unused-vars */
+  const [statesToSend, setStatesToSend] = useState();
+  const [role, setRole] = useState(null);
+  const [error, setError] = useState(false);
 
   const roles = [
     { value: "admin", label: "Admin User" },
@@ -38,12 +21,17 @@ const AddUser = ({ currentUser, stateList }) => {
     { value: "state", label: "State User" }
   ];
 
-  const [userId, setUserId] = useState();
-  const [stateId, setStateId] = useState();
-  /* eslint-disable no-unused-vars */
-  const [statesToSend, setStatesToSend] = useState();
-  const [role, setRole] = useState(null);
-  const [error, setError] = useState(false);
+  async function createThisUser() {
+    const data = {
+      username: userId,
+      role: role,
+      states: statesToSend
+    };
+
+    const response = await createUser(data);
+    window.alert(response);
+    window.location.reload(false);
+  }
 
   // Save selections for local use and API use
   const setStatesFromSelect = option => {
@@ -74,7 +62,7 @@ const AddUser = ({ currentUser, stateList }) => {
     setStateId(null);
   };
 
-  const authorized = (
+  return (
     <>
       <div className="user-add">
         <GridContainer className="container">
@@ -99,7 +87,9 @@ const AddUser = ({ currentUser, stateList }) => {
                   <TextField
                     label="EUA Id:"
                     onBlur={e => setUserId(e.target.value)}
-                    className="ds-c-field--small"
+                    className=""
+                    name="eua-id"
+                    required={true}
                   ></TextField>
                 </div>
                 <div className="role">
@@ -109,6 +99,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     options={roles}
                     placeholder="Select a Role"
                     onSelect={setRoleOnSelect}
+                    required={true}
                   />
                 </div>
                 <div>
@@ -120,6 +111,7 @@ const AddUser = ({ currentUser, stateList }) => {
                         options={stateList}
                         multiple={true}
                         placeholder="Select a State"
+                        required
                         onSelect={option => {
                           // Set for searchable use
                           setStateId(option);
@@ -135,7 +127,8 @@ const AddUser = ({ currentUser, stateList }) => {
                       <br />
                       <MultiSelect
                         options={stateList}
-                        value={stateId}
+                        value={stateId ? stateId : []}
+                        required
                         onChange={setStatesFromSelect}
                         labelledBy={"Select States"}
                         multiple={false}
@@ -146,8 +139,8 @@ const AddUser = ({ currentUser, stateList }) => {
                 <br />
                 <Button
                   type="button"
-                  class="ds-c-button ds-c-button--primary"
-                  onClick={() => addUser(stateId, userId, role)}
+                  className="btn btn-primary"
+                  onClick={() => createThisUser()}
                 >
                   Add User
                 </Button>
@@ -158,49 +151,16 @@ const AddUser = ({ currentUser, stateList }) => {
       </div>
     </>
   );
-  // const unauthorized = (
-  //   <GridContainer className="container">
-  //     <Grid row>
-  //       <Grid col={12}>
-  //         <p>You do not have access to this functionality.</p>
-  //       </Grid>
-  //     </Grid>
-  //   </GridContainer>
-  // );
-
-  const userRole = currentUser.role;
-  // return userRole === "admin_user" ? authorized : unauthorized;
-  return userRole === "admin_user" ? authorized : authorized;
 };
 
 AddUser.propTypes = {
-  currentUser: PropTypes.object.isRequired,
-  stateList: PropTypes.object.isRequired
+  stateList: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-  // currentUser: state.stateUser.currentUser,
-  currentUser: {
-    user_id: 1,
-    password: "",
-    is_superuser: true,
-    username: "A1LX",
-    first_name: "Andrew",
-    last_name: "Adcock",
-    email: "aadcock@collabralink.com",
-    is_active: true,
-    date_joined: "01/22/2021",
-    last_login: "01/22/2021",
-    states: ["DC", "MD"],
-    role: "state"
-  },
-  // stateList: state.allStatesData.map(element => {
-  //   return { label: element.name, value: element.code };
-  // })
-  stateList: [
-    { label: "Alabama", value: "AL" },
-    { label: "Maryland", value: "MD" }
-  ]
+  stateList: state.global.states.map(element => {
+    return { label: element.state_name, value: element.state_id };
+  })
 });
 
 export default connect(mapStateToProps)(AddUser);

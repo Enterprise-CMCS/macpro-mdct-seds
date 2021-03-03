@@ -36,8 +36,11 @@ const UserEdit = ({ stateList }) => {
     setUser(data);
     setRole(data.role);
 
-    // Sort states alphabetically
-    const theStates = data.states.sort();
+    // Sort states alphabetically and place in array
+    let theStates = [];
+    if (data.states) {
+      theStates = data.states.split("-").sort();
+    }
 
     // Set states to array of objects
     if (data.role !== "state") {
@@ -54,15 +57,16 @@ const UserEdit = ({ stateList }) => {
         })
       );
     } else {
-      for (let x in data) {
-        for (const state in stateList) {
-          let index = data[x];
-          if (stateList[state].value === index[0]) {
-            setSelectedStates({
-              label: stateList[state].label,
-              value: stateList[state].value
-            });
-          }
+      // Get user state, if multiple take only the first
+      const userState = data.states.split("-")[0];
+
+      // Loop through U.S. states to find a match and set to local state (storage)
+      for (const state in stateList) {
+        if (stateList[state].value === userState) {
+          setSelectedStates({
+            label: stateList[state].label,
+            value: stateList[state].value
+          });
         }
       }
     }
@@ -75,24 +79,11 @@ const UserEdit = ({ stateList }) => {
   }, []);
 
   // Save selections for local use and API use
-  const setStatesFromArray = (option, simple = false) => {
+  const setStatesFromArray = option => {
     // Save for API use
     let states = "";
     if (option) {
-      if (simple) {
-        states = option.join("-");
-      } else {
-        let first_iteration = true;
-        // Create hyphen separated string of state abbreviations
-        option.forEach(item => {
-          if (first_iteration) {
-            states += item.value;
-            first_iteration = false;
-          } else {
-            states += "-" + item.value;
-          }
-        });
-      }
+      states = option.join("-");
     }
     if (!states) {
       states = "null";
@@ -120,11 +111,17 @@ const UserEdit = ({ stateList }) => {
       setSelectedStates(e);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
-        let payload = [];
+        let payload = "";
+
+        let count = 0;
         e.forEach(i => {
-          payload.push(i.value);
+          if (count === 0) {
+            payload += i.value;
+          } else {
+            payload += "-" + i.value;
+          }
+          count++;
         });
-        payload.sort();
         response = payload;
         // Format for URI use
         setStatesFromArray(e);
@@ -132,8 +129,8 @@ const UserEdit = ({ stateList }) => {
         if (!e.value) {
           e.value = "null";
         }
-        setStatesToSend([...statesToSend, e.value]);
-        response = [e.value];
+        setStatesToSend(e.value);
+        response = e.value;
       }
 
       // Write to local state
@@ -168,13 +165,14 @@ const UserEdit = ({ stateList }) => {
   const updateUserStore = async data => {
     await updateUser(data).then(() => {
       alert(`User with username: "${data.username}" has been updated`);
+      window.location.reload(false);
     });
   };
 
   return (
     <div className="edit-user ds-l-col--6">
       <GridContainer className="container">
-        <Grid col={4}>
+        <Grid col={6}>
           <a href="/users">&laquo; Back to User List</a>
           <h1>Edit User</h1>
           {user ? (
@@ -237,9 +235,10 @@ const UserEdit = ({ stateList }) => {
                     <Dropdown
                       options={stateList}
                       onChange={e => updateLocalUser(e, "states")}
-                      value={selectedStates ? selectedStates : []}
-                      placeholder="Select an state"
+                      value={selectedStates ? selectedStates : ""}
+                      placeholder="Select a state"
                       autosize={false}
+                      className="state-select-list"
                     />
                   </>
                 ) : null}
@@ -270,7 +269,7 @@ const UserEdit = ({ stateList }) => {
               </div>
               <div className="textfield">
                 <TextField
-                  value={user.dateJoined}
+                  value={new Date(user.dateJoined).toLocaleDateString("en-US")}
                   type="text"
                   label="Registration Date"
                   disabled={true}
@@ -279,7 +278,11 @@ const UserEdit = ({ stateList }) => {
               </div>
               <div className="textfield">
                 <TextField
-                  value={user.lastLogin}
+                  value={
+                    user.lastLogin
+                      ? new Date(user.lastLogin).toLocaleDateString("en-US")
+                      : "No login yet"
+                  }
                   type="text"
                   label="Last Login"
                   disabled={true}
