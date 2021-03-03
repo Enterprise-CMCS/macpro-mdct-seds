@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: "12.x"
       - name: check prettier
-        run: npx prettier . -c -u
+        run: npx prettier --write .
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
