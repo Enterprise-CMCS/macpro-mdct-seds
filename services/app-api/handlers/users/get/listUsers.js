@@ -1,5 +1,5 @@
-import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib";
+import dynamoDb from "../../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -7,21 +7,16 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
-
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
-    Key: {
-      userId: event.pathParameters["id"],
-    },
   };
 
-  const result = await dynamoDb.get(params);
+  const result = await dynamoDb.scan(params);
 
-  if (!result.Item) {
-    return false;
+  if (!result.Items) {
+    throw new Error("No Users not found.");
   }
 
-  // Return the retrieved item
-  return result.Item;
+  return result.Items;
 });

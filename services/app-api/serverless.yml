@@ -101,68 +101,8 @@ provider:
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
 
 functions:
-  create:
-    handler: handlers/create.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments
-          method: post
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-  get:
-    handler: handlers/get.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments/{id}
-          method: get
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-  list:
-    handler: handlers/list.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments
-          method: get
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-  update:
-    handler: handlers/update.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments/{id}
-          method: put
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-  delete:
-    handler: handlers/delete.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments/{id}
-          method: delete
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
   getUserById:
-    handler: handlers/users/getUserById.main
+    handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
     events:
       - http:
@@ -174,7 +114,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   getUsers:
-    handler: handlers/users/listUsers.main
+    handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
     events:
       - http:
@@ -186,7 +126,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   getUserByUsername:
-    handler: handlers/users/getUserByUsername.main
+    handler: handlers/users/post/getUserByUsername.main
     role: LambdaApiRole
     events:
       - http:
@@ -198,7 +138,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   createUser:
-    handler: handlers/users/createUser.main
+    handler: handlers/users/post/createUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -210,7 +150,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   deleteUser:
-    handler: handlers/users/deleteUser.main
+    handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -222,7 +162,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   activateDeactivateUser:
-    handler: handlers/users/activateDeactivateUser.main
+    handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -234,7 +174,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   updateUser:
-    handler: handlers/users/updateUser.main
+    handler: handlers/users/post/updateUser.main
     role: LambdaApiRole
     events:
       - http:

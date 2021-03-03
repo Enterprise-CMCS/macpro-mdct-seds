@@ -1,5 +1,5 @@
-import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib";
+import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as getUserByUsername } from "./getUserByUsername";
 
 export const main = handler(async (event, context) => {
