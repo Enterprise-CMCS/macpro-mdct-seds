@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: "12.x"
       - name: check prettier
-        run: npx prettier --write .
+        run: npx prettier $(git diff --diff-filter=ACMR --name-only --relative origin/master -- | xargs) -c -u .
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
