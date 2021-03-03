@@ -161,8 +161,8 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-  getUser:
-    handler: handlers/users/get.main
+  getUserById:
+    handler: handlers/users/getUserById.main
     role: LambdaApiRole
     events:
       - http:
@@ -174,7 +174,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   getUsers:
-    handler: handlers/users/list.main
+    handler: handlers/users/listUsers.main
     role: LambdaApiRole
     events:
       - http:
@@ -186,7 +186,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   getUserByUsername:
-    handler: handlers/users/get.getUserByUsername
+    handler: handlers/users/getUserByUsername.main
     role: LambdaApiRole
     events:
       - http:
@@ -198,7 +198,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   createUser:
-    handler: handlers/users/create.main
+    handler: handlers/users/createUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -210,7 +210,7 @@ functions:
             authorizerId:
               Ref: ApiGatewayAuthorizer
   deleteUser:
-    handler: handlers/users/delete.main
+    handler: handlers/users/deleteUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -221,20 +221,20 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-  activationUser:
-    handler: handlers/users/activation.main
+  activateDeactivateUser:
+    handler: handlers/users/activateDeactivateUser.main
     role: LambdaApiRole
     events:
       - http:
           path: users/activation/{username}
-          method: put
+          method: post
           cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
   updateUser:
-    handler: handlers/users/update.main
+    handler: handlers/users/updateUser.main
     role: LambdaApiRole
     events:
       - http:

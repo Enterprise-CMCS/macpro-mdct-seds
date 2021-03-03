@@ -8,31 +8,6 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
-    Key: {
-      userId: event.pathParameters["id"],
-    },
-  };
-
-  const result = await dynamoDb.get(params);
-
-  if (!result.Item) {
-    return false;
-  }
-
-  // Return the retrieved item
-  return result.Item;
-});
-
-export const getUserByUsername = handler(async (event, context) => {
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   let data = JSON.parse(event.body);
 
   const params = {
