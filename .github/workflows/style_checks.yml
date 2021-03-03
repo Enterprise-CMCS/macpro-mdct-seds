@@ -23,4 +23,4 @@ jobs:
         run: yarn install
       - name: run eslint
         working-directory: services/ui-src
-        run: npx eslint $(git diff --diff-filter=ACMR --name-only --relative origin/master -- . | grep .js$ | xargs)
+        run: npx eslint .
