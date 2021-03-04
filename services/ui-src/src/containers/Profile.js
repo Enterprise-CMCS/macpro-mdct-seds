@@ -23,8 +23,37 @@ export default function Profile({ user }) {
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
+  useEffect(() => {
+    function loadProfile() {
+      return currentUserInfo();
+    }
+
+    async function onLoad() {
+      try {
+        const userInfo = await loadProfile();
+        setEmail(userInfo.email);
+        setFirstName(capitalize(userInfo.first_name));
+        setLastName(capitalize(userInfo.last_name));
+        setRole(capitalize(userInfo.role));
+        setStates(formatStates(userInfo.states));
+      } catch (e) {
+        onError(e);
+      }
+    }
+
+    onLoad();
+  }, []);
+
+  function validateForm() {
+    return (
+      email.length > 0 && firstName.length > 0 && lastName.length && role.length
+    );
+  }
+
   function saveProfile(user, userAttributes) {
+    console.log("profile.js");
     return Auth.updateUserAttributes(user, userAttributes);
+    console.log("profile.js");
   }
 
   function formatStates(states) {
@@ -48,7 +77,9 @@ export default function Profile({ user }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
+    console.log("profile.js  2");
     let user = await Auth.currentAuthenticatedUser();
+    console.log("profile.js  2");
     try {
       await saveProfile(user, {
         first_name: firstName,
