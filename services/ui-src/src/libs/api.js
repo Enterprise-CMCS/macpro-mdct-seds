@@ -1,10 +1,11 @@
 import { API } from "aws-amplify";
-import config from "../config";
+// import config from "../config";
 import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
 const requestOptions = async () => {
-  const localLogin = config.LOCAL_LOGIN === "true";
+  // const localLogin = config.LOCAL_LOGIN === "true";
+  const localLogin = true;
 
   if (localLogin) {
     // serverless offline passes the value of the cognito-identity-id into our lambdas as
