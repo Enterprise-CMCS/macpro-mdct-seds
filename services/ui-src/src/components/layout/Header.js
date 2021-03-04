@@ -15,7 +15,7 @@ import config from "../../config";
 
 const Header = () => {
   const history = useHistory();
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Header = () => {
         } else {
           if (userInfo.signInUserSession) {
             // Get payload
-            const payload = userInfo.signInUserSession.idToken.payload;
+            //const payload = userInfo.signInUserSession.idToken.payload;
             //setEmail(payload.email);
           } else {
             //setEmail(userInfo.email);

@@ -54,7 +54,6 @@ export default function Profile({ user }) {
   function saveProfile(user, userAttributes) {
     console.log("profile.js");
     return Auth.updateUserAttributes(user, userAttributes);
-    console.log("profile.js");
   }
 
   function formatStates(states) {
