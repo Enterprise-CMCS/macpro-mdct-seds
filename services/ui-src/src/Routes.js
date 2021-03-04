@@ -10,7 +10,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
 import UserEdit from "./components/users/UserEdit";
-import config from "./config";
+// import config from "./config";
 import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
@@ -18,8 +18,9 @@ import UserAdd from "./components/users/UserAdd";
 import Unauthorized from "./containers/Unauthorized";
 
 export default function Routes({ user, isAuthorized }) {
-  const localLogin = config.LOCAL_LOGIN === "true";
-
+  // Temporarily set localLogin to true for all environments
+  // const localLogin = config.LOCAL_LOGIN === "true";
+  const localLogin = true;
   if (!isAuthorized) {
     return (
       <Switch>
