@@ -1,5 +1,5 @@
 import { Auth } from "aws-amplify";
-import config from "../config";
+// import config from "../config";
 
 const userKey = "userKey";
 

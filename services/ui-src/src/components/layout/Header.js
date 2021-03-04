@@ -11,7 +11,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { currentUserInfo } from "../../libs/user";
-import config from "../../config";
+// import config from "../../config";
 
 const Header = () => {
   const history = useHistory();
