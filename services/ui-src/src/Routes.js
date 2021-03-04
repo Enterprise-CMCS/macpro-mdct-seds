@@ -20,7 +20,7 @@ import Unauthorized from "./containers/Unauthorized";
 export default function Routes({ user, isAuthorized }) {
   // Temporarily set localLogin to true for all environments
   // const localLogin = config.LOCAL_LOGIN === "true";
-  const localLogin = false;
+  const localLogin = true;
   if (!isAuthorized) {
     return (
       <Switch>
