@@ -56,7 +56,7 @@ const Header = () => {
   function handleLogout() {
     // Temporary change for local login
     // if (config.LOCAL_LOGIN === "true") {
-    if(true)
+    if (true) {
       window.localStorage.removeItem("userKey");
       history.push("/login");
       history.go(0);
