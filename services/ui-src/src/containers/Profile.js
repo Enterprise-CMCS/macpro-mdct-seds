@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
@@ -6,6 +6,7 @@ import "./Profile.css";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { currentUserInfo } from "../libs/user";
 
 export default function Profile({ user }) {
   const history = useHistory();
