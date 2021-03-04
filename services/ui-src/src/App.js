@@ -51,7 +51,9 @@ function App() {
     async function onLoad() {
       // Get user data either locally or through cognito
       let payload;
-      if (config.LOCAL_LOGIN === "true") {
+      // Temporary change for local login
+      // if (config.LOCAL_LOGIN === "true") {
+      if (true) {
         payload = await currentUserInfo();
         // Always update user to payload when local
         if (payload) {

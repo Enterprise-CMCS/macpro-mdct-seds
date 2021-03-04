@@ -4,7 +4,9 @@ import config from "../config";
 const userKey = "userKey";
 
 export async function currentUserInfo() {
-  if (config.LOCAL_LOGIN === "true") {
+  // Temporary change for local login
+  // if (config.LOCAL_LOGIN === "true") {
+  if(true)
     return getLocalUserInfo();
   } else {
     // return Auth.currentUserInfo();
