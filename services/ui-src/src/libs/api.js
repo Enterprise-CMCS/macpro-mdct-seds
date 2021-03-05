@@ -15,8 +15,8 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    const user = await Auth.currentAuthenticatedUser();
-    const token = user.signInUserSession.idToken.jwtToken;
+    // const user = await Auth.currentAuthenticatedUser();
+    // const token = user.signInUserSession.idToken.jwtToken;
 
     const options = {
       headers: {
