@@ -117,3 +117,8 @@ export function getSingleForm(state, specifiedYear, quarter, form) {
     opts
   );
 }
+
+export function getFormTypes() {
+  const opts = requestOptions();
+  return API.get("amendments", `/form-types`, opts);
+}

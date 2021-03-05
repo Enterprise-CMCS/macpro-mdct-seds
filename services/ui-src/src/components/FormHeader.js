@@ -18,7 +18,7 @@ const FormHeader = ({ quarter, form, year, state, history }) => {
       </Grid>
 
       <p>FORM {form}</p>
-      <hr class="solid" />
+      <hr className="solid" />
       <h2>Number of CHIP Children Served, Separate Child Health Program</h2>
 
       <Grid row className="program-code-bar">
