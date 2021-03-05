@@ -22,10 +22,18 @@ const TabContainer = ({ tabs, questions }) => {
         // The questions for each tab will go inside of the tab Panels
         return (
           <TabPanel key={idx}>
-            <b>{tab.age_description}:</b>
+            <div className="age-range-description">
+              <h3>{tab.age_description}:</h3>
+            </div>
 
-            {questions.map(question => {
-              return <QuestionComponent singleQuestion={question} />;
+            {questions.map((question, idx) => {
+              return (
+                <QuestionComponent
+                  rangeID={tab.range_id}
+                  singleQuestion={question}
+                  questionNumberByIndex={idx}
+                />
+              );
             })}
           </TabPanel>
         );
@@ -49,8 +57,5 @@ const mapState = state => ({
   tabs: state.global.age_ranges,
   questions: state.currentForm.questions
 });
-
-const loremIpsum =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 export default connect(mapState)(TabContainer);
