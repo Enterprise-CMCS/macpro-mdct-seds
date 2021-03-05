@@ -1,9 +1,8 @@
 import GridWithTotals from "../components/GridWithTotals/GridWithTotals";
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React from "react";
 
 const QuestionComponent = ({ singleQuestion, rangeID }) => {
-  const { label, context_data, form, type, question, rows } = singleQuestion;
+  const { label, question, rows } = singleQuestion;
 
   const questionNumber = Number.parseInt(question.split("-").slice(-1));
 
@@ -16,7 +15,7 @@ const QuestionComponent = ({ singleQuestion, rangeID }) => {
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
-      {questionNumber != 5 ? (
+      {questionNumber !== 5 ? (
         <GridWithTotals gridData={rows} />
       ) : (
         <p>

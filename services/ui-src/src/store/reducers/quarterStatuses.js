@@ -1,7 +1,3 @@
-// Temporary import, using state_forms.json static data
-// This is mimicking a query for All states, 1 form, 1 quarter
-import * as data from "../toDelete/state_forms.json";
-
 // ENDPOINTS
 import { getStateForms } from "../../../src/libs/api.js";
 

@@ -12,11 +12,9 @@ const FormHeader = ({ quarter, form, year, state, history }) => {
           {"   "}
         </Link>
         <Link to={`/forms/${state}/${year}/${quarter}`}>
-          {" "}
-          Q{quarter} {year} {">"}
-          {"   "}
+          {`Q${quarter} ${year}`}
         </Link>
-        <Link> Form {form} </Link>
+        <Link> {`Form ${form}`} </Link>
       </Grid>
 
       <p>FORM {form}</p>

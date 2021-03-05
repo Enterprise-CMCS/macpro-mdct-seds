@@ -5,8 +5,6 @@ import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../actions/certify";
-import * as dummydata from "../toDelete/sample21Equery.json";
-const data = dummydata.default[0];
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
