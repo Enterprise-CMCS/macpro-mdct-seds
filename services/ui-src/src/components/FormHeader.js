@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { withRouter, Link } from "react-router-dom";
-// import { fetchFormTypes } from "../store/reducers/global";
 import { getFormTypes } from "../../src/libs/api";
 
-const FormHeader = ({ quarter, form, year, state, formTypes }) => {
+const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
 
   useEffect(() => {
@@ -54,8 +53,10 @@ const FormHeader = ({ quarter, form, year, state, formTypes }) => {
 };
 
 // FormHeader.propTypes = {
-//   formTypes: PropTypes.object.isRequired,
-//   getFormTypes: PropTypes.func.isRequired
+//   quarter: PropTypes.object.isRequired,
+//   form: PropTypes.func.isRequired,
+//   year: PropTypes.func.isRequired,
+//   state: PropTypes.func.isRequired
 // };
 
 export default withRouter(FormHeader);
