@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { userFromCognitoAuthProvider } from "../../../cognitoAuth/authProvider"
+import { userFromCognitoAuthProvider } from "../../../cognitoAuth/authProvider";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -10,8 +10,9 @@ export const main = handler(async (event, context) => {
   }
   // Cognito authentication provider looks like:
   // cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
-  const authProvider = event.requestContext.identity.cognitoAuthenticationProvider;
-  console.log(authProvider)
+  const authProvider =
+    event.requestContext.identity.cognitoAuthenticationProvider;
+  console.log(authProvider);
   userFromCognitoAuthProvider(authProvider);
 
   let data = JSON.parse(event.body);
