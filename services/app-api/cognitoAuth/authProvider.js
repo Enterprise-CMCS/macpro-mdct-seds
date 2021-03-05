@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from "aws-sdk";
-import { Result, ok, err } from "neverthrow";
+import { ok, err } from "neverthrow";
 
 export function parseAuthProvider(authProvider) {
   // Result<{ userId: string; poolId: string }, Error>
