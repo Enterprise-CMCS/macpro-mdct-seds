@@ -184,11 +184,7 @@ const GridWithTotals = props => {
 
   return (
     <div className="grid-with-totals">
-      <Table
-        bordered={true}
-        caption="This is an example of a table with totals"
-        fullWidth={true}
-      >
+      <Table bordered={true}>
         <thead>
           <tr>{headerCols}</tr>
         </thead>
