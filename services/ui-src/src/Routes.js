@@ -53,7 +53,7 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/example">
         <Example />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/form-temp">
+      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter/:formName">
         <FormPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">

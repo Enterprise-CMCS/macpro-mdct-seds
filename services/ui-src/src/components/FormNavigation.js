@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@trussworks/react-uswds";
-import { useHistory, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
