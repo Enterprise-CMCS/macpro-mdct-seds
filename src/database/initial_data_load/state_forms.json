@@ -286,31 +286,30 @@
     "last_modified_by": "seed",
     "created_date": "01-15-2021",
     "created_by": "seed"
-  },
-  {
-    "state_form": "PA-2021-1-21PW",
-    "state_id": "PA",
-    "form_id": "6",
-    "form": "21PW",
-    "form_name": "Number of Pregnant Women Served",
-    "program_code": "PA",
-    "year": 2021,
-    "quarter": 1,
-    "validation_percent": 0.03,
-    "status": "Not Started",
-    "status_date": "03-02-2021",
-    "not_applicable": false,
-    "state_comments": [
-      {
-        "type": "text_multiline",
-        "entry": null
-      }
-    ],
-    "last_modified": "03-02-2021",
-    "last_modified_by": "seed",
-    "created_date": "03-02-2021",
-    "created_by": "seed"
-  },
+  },{
+  "state_form": "PA-2021-1-21PW",
+  "state_id": "PA",
+  "form_id": "6",
+  "form": "21PW",
+  "form_name": "Number of Pregnant Women Served",
+  "program_code": "PA",
+  "year": 2021,
+  "quarter": 1,
+  "validation_percent": 0.03,
+  "status": "Not Started",
+  "status_date": "03-02-2021",
+  "not_applicable": false,
+  "state_comments": [
+    {
+      "type": "text_multiline",
+      "entry": null
+    }
+  ],
+  "last_modified": "03-02-2021",
+  "last_modified_by": "seed",
+  "created_date": "03-02-2021",
+  "created_by": "seed"
+},
   {
     "state_form": "MD-2021-1-21PW",
     "state_id": "MD",
