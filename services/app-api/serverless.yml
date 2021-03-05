@@ -209,6 +209,18 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
+  getFormTypes:
+    handler: handlers/forms/get/getFormTypes.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-types
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
 
 resources:
   Conditions:
@@ -243,7 +255,7 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::GetAtt: [ CognitoUserPool, Arn ]
+          - Fn::GetAtt: [CognitoUserPool, Arn]
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
       Type: "AWS::IAM::Role"
       Properties:

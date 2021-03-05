@@ -4,6 +4,8 @@ import * as age_ranges from "../toDelete/age_ranges.json";
 import * as states from "../toDelete/states.json";
 import * as status from "../toDelete/status.json";
 
+import { getFormTypes } from "../../../src/libs/api.js";
+
 // ACTION TYPES
 export const LOAD_FORM_TYPES = "LOAD_FORM_TYPES";
 export const LOAD_AGE_RANGES = "LOAD_AGE_RANGES";
@@ -37,13 +39,18 @@ export const gotStatusTypes = (statusArray = []) => {
 };
 
 // THUNKS
-export const getFormTypes = () => {
+export const fetchFormTypes = () => {
   return async dispatch => {
-    // Call aws amplify endpoint. This is a placeholder
-    // const data = fetchedData
-    // dispatch(gotFormTypes(data));
+    try {
+      const data = await getFormTypes();
+      dispatch(gotFormTypes(data));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
   };
 };
+
 export const getAgeRanges = () => {
   return async dispatch => {
     // Call aws amplify endpoint. This is a placeholder
@@ -68,7 +75,7 @@ export const getStatusTypes = () => {
 
 // INITIAL STATE
 const initialState = {
-  formTypes: [...forms.default],
+  formTypes: [],
   age_ranges: [...age_ranges.default],
   states: [...states.default],
   status: [...status.default]

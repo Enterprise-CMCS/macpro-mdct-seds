@@ -19,5 +19,3 @@ const FormNavigation = ({ state, year, quarter, history }) => {
 };
 
 export default withRouter(FormNavigation);
-
-// Should navigating back to the quarter page trigger a save??

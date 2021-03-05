@@ -1,29 +1,31 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getStateForms } from "../../src/libs/api.js";
 import Card from "@material-ui/core/Card";
-import PropTypes from "prop-types";
-import { getQuarterStatuses } from "../store/reducers/quarterStatuses";
 
-const Quarterly = ({ quarterStatuses, getStateForms }) => {
+const Quarterly = () => {
   // Determine values based on URI
   let url = window.location.pathname.split("/");
   const state = url[2];
   const year = url[3];
   const quarter = url[4];
+  const [stateFormsList, setStateFormsList] = useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
-  // Fetch quarter statuses and set them in redux store
   useEffect(() => {
-    getStateForms(state, year, quarter);
-  }, []);
-
+    async function fetchData() {
+      const data = await getStateForms(state, year, quarter);
+      console.log(data);
+      setStateFormsList(data);
+    }
+    fetchData();
+  }, [state, year, quarter]);
   // Translate form name from redux into url value
   const getFormSegment = formName => {
     let urlSegment;
@@ -185,7 +187,7 @@ const Quarterly = ({ quarterStatuses, getStateForms }) => {
       }
     }
   };
-
+  console.log(stateFormsList);
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
@@ -201,7 +203,7 @@ const Quarterly = ({ quarterStatuses, getStateForms }) => {
           <h2>{title}</h2>
           <div className="quarterly-report-listing">
             <Card>
-              {quarterStatuses ? (
+              {stateFormsList ? (
                 <DataTable
                   sortIcon={<SortIcon />}
                   highlightOnHover
@@ -214,7 +216,7 @@ const Quarterly = ({ quarterStatuses, getStateForms }) => {
                   selectableRows={false}
                   responsive={true}
                   columns={columns}
-                  data={quarterStatuses}
+                  data={stateFormsList}
                   customStyles={customStyles}
                 />
               ) : null}
@@ -226,17 +228,4 @@ const Quarterly = ({ quarterStatuses, getStateForms }) => {
   );
 };
 
-Quarterly.propTypes = {
-  quarterStatuses: PropTypes.array.isRequired,
-  getStateForms: PropTypes.func.isRequired
-};
-
-const mapState = state => ({
-  quarterStatuses: state.quarterStatuses.quarterForms
-});
-
-const mapDispatch = {
-  getStateForms: getQuarterStatuses ?? {}
-};
-
-export default connect(mapState, mapDispatch)(Quarterly);
+export default Quarterly;
