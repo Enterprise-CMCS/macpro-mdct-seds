@@ -26,12 +26,11 @@ const TabContainer = ({ tabs, questions }) => {
               <h3>{tab.age_description}:</h3>
             </div>
 
-            {questions.map((question, idx) => {
+            {questions.map(question => {
               return (
                 <QuestionComponent
                   rangeID={tab.range_id}
                   singleQuestion={question}
-                  questionNumberByIndex={idx}
                 />
               );
             })}
@@ -50,7 +49,8 @@ const TabContainer = ({ tabs, questions }) => {
 };
 
 TabContainer.propTypes = {
-  tabs: PropTypes.array.isRequired
+  tabs: PropTypes.array.isRequired,
+  questions: PropTypes.array.isRequired
 };
 
 const mapState = state => ({

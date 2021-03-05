@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  form: state.currentForm
+  form: state.currentForm.statusData
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotFound);

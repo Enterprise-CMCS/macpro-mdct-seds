@@ -74,7 +74,8 @@ const FormPage = ({ getForm, disabled }) => {
 
 const mapState = state => ({
   disabled:
-    state.currentForm.notApplicable || state.currentForm.status === "final",
+    state.currentForm.statusData.not_applicable ||
+    state.currentForm.statusData.status === "final",
   questions: state.currentForm.questions,
   answers: state.currentForm.answers
 });
@@ -88,26 +89,23 @@ export default connect(mapState, mapDispatch)(withRouter(FormPage));
 // consider where "isActive" property should be read to disable the entire page
 // how will question answers be connected?? how are we keeping track of answer entry??
 
-// All classnames get SASS or they get deleted
-// Add question & answer endpoints to redux
-// MUST BE DISABLED WITH SPECIFIC STATUS
-
 // big 3 for tonight:
-// connect 3 apis to redux
-// make form disable-able
+// XXX connect 3 apis to redux
 // question IDs to answers
 // router/URL??? take from quarterly
 
 // NOT TONGIHT:
 // Where is the "does not apply" meant to be put? it would be nice to remove it from the not found page
 // Add "disabled" boolean property to TextInput fields in GridWithTotals
+// undo redux connection to quarterly component (there is no parent child relationship, whoops)
+// put files in appropriate folders
+// General cleanup, remove console logs and unnecessary comments
+// All classnames get SASS or they get deleted
+// answers in redux need to be sorted by tabs (age range)
 
 // QUESTIONS:
 // In forms list API-- why do we have "status" AND "not_applicable" when "Not Required" is a type of status? which should we keep?
 // I need clarity on the statuses because the values in the table are not the same as the ones in the JSON
-
-// CONNECTING TO REDUX:
-// make a function that calls the single form api
-// put data call into current form
-// connect to component
-// FIX EXERY INSTANCE of currentForm. (anything)
+// error in forms endpoint-- two forms have form_id of 3 ,64.EC should be id 2
+// CONFIRM: for a given state/year/quarter will there ever be duplicate forms?
+// There should be a little ticket for populating redux with age ranges (especcially because that is now a mutable element)

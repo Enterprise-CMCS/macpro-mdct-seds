@@ -1,5 +1,6 @@
 // ENDPOINTS
-import { getSingleForm } from "../../../src/libs/api.js";
+import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
+import { sortQuestionsByNumber } from "../helperFunctions";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -27,11 +28,33 @@ export const updatedStatus = activeBoolean => {
 };
 
 // THUNKS
-export const getFormData = (state, year, quarter, form) => {
+export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
     try {
-      const data = await getSingleForm(state, year, quarter, form);
-      dispatch(gotFormData(data));
+      // Get questions and answers from dynamo
+      const { questions, answers } = await getSingleForm(
+        state,
+        year,
+        quarter,
+        formName
+      );
+      // Sort questions by question number
+      let sortedQuestions = [...questions].sort(sortQuestionsByNumber);
+
+      // Get status data for quarter from dynamo
+      const stateFormsByQuarter = await getStateForms(state, year, quarter);
+      // Filter status data for single form
+      const singleFormStatusData = stateFormsByQuarter.find(
+        ({ form }) => form === formName
+      );
+
+      const allFormData = {
+        answers: answers,
+        questions: sortedQuestions,
+        statusData: singleFormStatusData
+      };
+
+      dispatch(gotFormData(allFormData));
     } catch (error) {
       console.log("Error:", error);
       console.dir(error);
@@ -48,7 +71,8 @@ export const disableForm = activeBoolean => {
 // INITIAL STATE
 const initialState = {
   questions: [],
-  answers: []
+  answers: [],
+  statusData: {}
 };
 
 // REDUCER
@@ -58,7 +82,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         questions: action.formObject.questions,
-        answers: action.formObject.answers
+        answers: action.formObject.answers,
+        statusData: action.formObject.statusData
       };
     case UPDATE_FORM_STATUS:
       return {

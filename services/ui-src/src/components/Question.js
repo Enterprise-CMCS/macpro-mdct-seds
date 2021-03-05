@@ -2,36 +2,35 @@ import GridWithTotals from "../components/GridWithTotals/GridWithTotals";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-// ONE QUESTION
-const QuestionComponent = ({
-  singleQuestion,
-  rangeID,
-  questionNumberByIndex
-}) => {
-  const { label, rows, context_data, form, type } = singleQuestion;
+const QuestionComponent = ({ singleQuestion, rangeID }) => {
+  const { label, context_data, form, type, question, rows } = singleQuestion;
 
-  const questionNumber = questionNumberByIndex + 1;
+  const questionNumber = Number.parseInt(question.split("-").slice(-1));
 
+  // Turn the age range into a grammatically correct variable
   const ageVariable = questionVariables[rangeID];
   const labelWithAgeVariable = label.replace("&&&VARIABLE&&&", ageVariable);
+
   return (
     <>
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
-      <GridWithTotals gridData={rows} />
+      {questionNumber != 5 ? (
+        <GridWithTotals gridData={rows} />
+      ) : (
+        <p>
+          Question five requires special logic. There is a separate ticket for
+          it{" "}
+        </p>
+      )}
     </>
   );
 };
 
 export default QuestionComponent;
 
-// ADD ternary to question, send to grid with totals IF type is "datagridwithtotals"
-
-// NOTE: If the range_ids change, they will need to change here as well
-// APPARENTLY question number is meant to be derived from the last 2 digits of form_answers.question
-// this will have to be done after question & answer have been combined in redux
-
+// NOTE: If the range_id's change, they will need to change here as well
 const questionVariables = {
   "0000": "Under Age 0",
   "0001": "between the ages of 0 and 1",
