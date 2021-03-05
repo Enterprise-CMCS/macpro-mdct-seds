@@ -75,6 +75,10 @@ function App() {
 
           // If user is logged in, get payload
           if (data.signInUserSession) {
+
+            console.log(`DATA: ${data}`)
+            console.log(`DATA: ${data}`)
+            
             payload = data.signInUserSession.idToken.payload;
           }
         } catch (error) {
@@ -117,18 +121,19 @@ function App() {
   }, [history, isAuthorized]);
 
   const determineRole = role => {
-    const roleArray = ["admin", "business", "state"];
-    if (roleArray.includes(role)) {
-      return role;
-    }
+    console.log(`Role: ${role}`)
+    // const roleArray = ["admin", "business", "state"];
+    // if (roleArray.includes(role)) {
+    //   return role;
+    // }
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
-    } else {
-      return null;
-    }
+    // if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+    //   return "admin";
+    // } else if (role.includes("CHIP_D_USER_GROUP")) {
+    //   return "state";
+    // } else {
+    //   return null;
+    // }
   };
 
   return (
