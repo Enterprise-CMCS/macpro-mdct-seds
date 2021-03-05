@@ -59,3 +59,5 @@ const mapState = state => ({
 });
 
 export default connect(mapState)(TabContainer);
+
+// will i ahve to put backup ternary [] for questions??

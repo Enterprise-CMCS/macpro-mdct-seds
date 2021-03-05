@@ -3,30 +3,42 @@ import { connect } from "react-redux";
 import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../components/layout/TabContainer";
 import FormNavigation from "./FormNavigation";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { getFormData } from "../store/reducers/singleForm";
 
-const FormPage = ({ programCode, stateID, quarter }) => {
+const FormPage = ({ getForm, disabled }) => {
+  // Determine values based on URI
+  // const url = location.pathname.split("/");
+  let url = ["", "forms", "AL", "2021", "01", "21E"];
+  const [, , state, year, quarter, formName] = url;
+
+  // strip leading zeros
+  const quarterInt = Number.parseInt(quarter).toString();
+
+  // Fetch quarter statuses and set them in redux store
+  useEffect(() => {
+    getForm(state, year, quarter, formName);
+  }, []);
+
   return (
     <>
       <GridContainer>
         <h4>
-          Enrollment Data Home {">"} Q4 2020 {">"} Form 21E
+          Enrollment Data Home {">"} Q{quarterInt} {year} {">"} Form {formName}
         </h4>
-        <p>FORM 21E</p>
+        <p>FORM {formName}</p>
         <hr class="solid" />
         <h2>Number of CHIP Children Served, Separate Child Health Program</h2>
 
         <Grid row className="program-code-bar">
-          <Grid col={4}>
-            <b>Program Code:</b> <br />
-            {` ${programCode}`}
-          </Grid>
-          <Grid col={4}>
+          <Grid col={6}>
             <b>State: </b> <br />
-            {` ${stateID}`}
+            {` ${state}`}
           </Grid>
-          <Grid col={4}>
+          <Grid col={6}>
             <b>Quarter: </b> <br />
-            {` ${quarter}`}
+            {` ${quarterInt}/${year}`}
           </Grid>
         </Grid>
       </GridContainer>
@@ -40,14 +52,13 @@ const FormPage = ({ programCode, stateID, quarter }) => {
       <GridContainer className="form-footer">
         <Grid row>
           <Grid col={6}>
-            <FormNavigation quarterData={"Q4 2020"} />
+            <FormNavigation state={state} year={year} quarter={quarterInt} />
           </Grid>
           <Grid col={6}>
             <Grid row>
               <div className="form-actions">
                 <p> Last saved: {new Date().toDateString()} </p>
                 <Button className="hollow">Save</Button>
-                <Button>Submit</Button>
               </div>
             </Grid>
           </Grid>
@@ -62,40 +73,41 @@ const FormPage = ({ programCode, stateID, quarter }) => {
 // };
 
 const mapState = state => ({
-  programCode: state.currentForm.program_code,
-  stateID: state.currentForm.stateId,
-  quarter: state.currentForm.quarter
+  disabled:
+    state.currentForm.notApplicable || state.currentForm.status === "final",
+  questions: state.currentForm.questions,
+  answers: state.currentForm.answers
 });
 
-export default connect(mapState)(FormPage);
+const mapDispatch = {
+  getForm: getFormData ?? {}
+};
 
-// TODO:
-// X copy base of page from examples.js
-// consider what the URL should be
-// inspect redux, is most of what is needed present
-// connect to redux
-// set up prop types
-// add subheader bar with links to the top of the page with quarter & home
-// X add form name to subheader bar
-// make div for tab container to go in
-// X add tab container
-// X add button bar at the bottom (back, save, submit)
-// X just outside of the tab container area should be the heading "Number of CHIP Children Served, Separate Child Health Program"
-// X just outside of the tab container area should be the form description
-// X just outside of the tab container area should be program code, state and quarter
-// make a question component that houses the table component- WITH question text
+export default connect(mapState, mapDispatch)(withRouter(FormPage));
+
 // consider where "isActive" property should be read to disable the entire page
-// center form footer
 // how will question answers be connected?? how are we keeping track of answer entry??
-// question numbers
+
 // All classnames get SASS or they get deleted
 // Add question & answer endpoints to redux
+// MUST BE DISABLED WITH SPECIFIC STATUS
 
-// REDUX: does the App provider need to change locations to supply this page with all that it needs?
+// big 3 for tonight:
+// connect 3 apis to redux
+// make form disable-able
+// question IDs to answers
+// router/URL??? take from quarterly
 
-// LIST OF MISSING/DUMMY DATA:
-// These things are currently being populated with dummy data but will need to be implemented eventually
-
-// ASKS:
+// NOT TONGIHT:
 // Where is the "does not apply" meant to be put? it would be nice to remove it from the not found page
-// Is there a ticket for implementing the summary tab functionality?
+// Add "disabled" boolean property to TextInput fields in GridWithTotals
+
+// QUESTIONS:
+// In forms list API-- why do we have "status" AND "not_applicable" when "Not Required" is a type of status? which should we keep?
+// I need clarity on the statuses because the values in the table are not the same as the ones in the JSON
+
+// CONNECTING TO REDUX:
+// make a function that calls the single form api
+// put data call into current form
+// connect to component
+// FIX EXERY INSTANCE of currentForm. (anything)

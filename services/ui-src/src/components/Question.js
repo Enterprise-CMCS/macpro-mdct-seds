@@ -26,13 +26,6 @@ const QuestionComponent = ({
 
 export default QuestionComponent;
 
-// the question component just needs to repeat all of the
-// questions present in currentForm.questions
-// questioncomponent does not care about age range
-
-// grid with totals is looking for question.rows, the array of ROWS
-// so gridwittotals will need just a SINGLE question
-
 // ADD ternary to question, send to grid with totals IF type is "datagridwithtotals"
 
 // NOTE: If the range_ids change, they will need to change here as well
