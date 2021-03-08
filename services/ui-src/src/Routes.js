@@ -20,60 +20,61 @@ import Unauthorized from "./containers/Unauthorized";
 export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
 
-  if (!isAuthorized) {
     return (
       <Switch>
-        <AuthenticatedRoute exact path="/">
-          <Unauthorized />
-        </AuthenticatedRoute>
-        <UnauthenticatedRoute exact path="/login">
-          {localLogin ? <LocalLogin /> : <Login />}
-        </UnauthenticatedRoute>
-      </Switch>
-    );
-  }
-  return (
-    <Switch>
-      <AuthenticatedRoute exact path="/">
-        <Home user={user} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/unauthorized">
-        <Unauthorized />
-      </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/totals">
-        <GridWithTotals />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/login">
-        {localLogin ? <LocalLogin /> : <Login />}
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/signup">
-        <Signup />
-      </UnauthenticatedRoute>
-      <AuthenticatedRoute exact path="/example">
-        <Example />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/profile">
-        <Profile user={user} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
-        <Quarterly />
-      </AuthenticatedRoute>
-      {/* {user.role === "admin" ? (
-        <> */}
-          <UnauthenticatedRoute exact path="/users">
+        <Router exact path="/">
+          <Users />
+        </Router>
+        {/* <UnauthenticatedRoute exact path="/users">
             <Users />
           </UnauthenticatedRoute>
-          <AuthenticatedRoute exact path="/users/add">
-            <UserAdd />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/users/:id/edit">
-            <UserEdit />
-          </AuthenticatedRoute>
-        {/* </>
-      ) : null} */}
-      <Route>
-        <NotFound />
-      </Route>
-    </Switch>
-  );
+        <UnauthenticatedRoute exact path="/login">
+          {localLogin ? <LocalLogin /> : <Login />}
+        </UnauthenticatedRoute> */}
+      </Switch>
+    );
+  // return (
+  //   <Switch>
+  //     <AuthenticatedRoute exact path="/">
+  //       <Home user={user} />
+  //     </AuthenticatedRoute>
+  //     <AuthenticatedRoute exact path="/unauthorized">
+  //       <Unauthorized />
+  //     </AuthenticatedRoute>
+  //     <UnauthenticatedRoute exact path="/totals">
+  //       <GridWithTotals />
+  //     </UnauthenticatedRoute>
+  //     <UnauthenticatedRoute exact path="/login">
+  //       {localLogin ? <LocalLogin /> : <Login />}
+  //     </UnauthenticatedRoute>
+  //     <UnauthenticatedRoute exact path="/signup">
+  //       <Signup />
+  //     </UnauthenticatedRoute>
+  //     <AuthenticatedRoute exact path="/example">
+  //       <Example />
+  //     </AuthenticatedRoute>
+  //     <AuthenticatedRoute exact path="/profile">
+  //       <Profile user={user} />
+  //     </AuthenticatedRoute>
+  //     <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
+  //       <Quarterly />
+  //     </AuthenticatedRoute>
+  //     {/* {user.role === "admin" ? (
+  //       <> */}
+  //         <UnauthenticatedRoute exact path="/users">
+  //           <Users />
+  //         </UnauthenticatedRoute>
+  //         <AuthenticatedRoute exact path="/users/add">
+  //           <UserAdd />
+  //         </AuthenticatedRoute>
+  //         <AuthenticatedRoute exact path="/users/:id/edit">
+  //           <UserEdit />
+  //         </AuthenticatedRoute>
+  //       {/* </>
+  //     ) : null} */}
+  //     <Route>
+  //       <NotFound />
+  //     </Route>
+  //   </Switch>
+  // );
 }
