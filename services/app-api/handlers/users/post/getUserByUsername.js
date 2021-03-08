@@ -15,6 +15,7 @@ export const main = handler(async (event, context) => {
   console.log(authProvider);
   userFromCognitoAuthProvider(authProvider);
 
+
   let data = JSON.parse(event.body);
   const params = {
     TableName:
