@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { withRouter, Link } from "react-router-dom";
@@ -26,9 +25,9 @@ const FormHeader = ({ quarter, form, year, state }) => {
           {"   "}
         </Link>
         <Link to={`/forms/${state}/${year}/${quarter}`}>
-          {`Q${quarter} ${year}`}
+          {` Q${quarter} ${year} > `}
         </Link>
-        <Link> {`Form ${form}`} </Link>
+        <Link> {` Form ${form}`} </Link>
       </Grid>
 
       <Grid row className="form-description-bar">

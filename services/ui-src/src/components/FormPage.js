@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
+import { Grid, GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../components/layout/TabContainer";
-import FormNavigation from "./FormNavigation";
 import { withRouter, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../store/reducers/singleForm";
 import FormHeader from "./FormHeader";
+import FormFooter from "./FormFooter";
 
 const FormPage = ({ getForm, disabled, statusData }) => {
   const { last_modified } = statusData;
+
+  // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
 
-  // format URL parameters
+  // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
   const formattedStateName = state.toUpperCase();
   const quarterInt = Number.parseInt(quarter).toString();
   const formattedFormName = formName.toUpperCase();
@@ -40,23 +42,12 @@ const FormPage = ({ getForm, disabled, statusData }) => {
       </GridContainer>
 
       <GridContainer className="form-footer">
-        <Grid row>
-          <Grid col={6}>
-            <FormNavigation
-              state={formattedStateName}
-              year={year}
-              quarter={quarterInt}
-            />
-          </Grid>
-          <Grid col={6}>
-            <Grid row>
-              <div className="form-actions">
-                <p> Last saved: {last_modified} </p>
-                <Button className="hollow">Save</Button>
-              </div>
-            </Grid>
-          </Grid>
-        </Grid>
+        <FormFooter
+          state={formattedStateName}
+          year={year}
+          quarter={quarterInt}
+          lastModified={last_modified}
+        />
       </GridContainer>
     </>
   );
