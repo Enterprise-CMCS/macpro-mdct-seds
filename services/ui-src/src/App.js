@@ -8,7 +8,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 // import config from "./config";
 // import { currentUserInfo } from "./libs/user";
-// import { getUserByUsername, createUser, updateUser } from "./libs/api";
+import { getUserByUsername, createUser, updateUser, getUser } from "./libs/api";
 
 function App() {
   // const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -17,7 +17,12 @@ function App() {
   // const [user, setUser] = useState();
   // const history = useHistory();
 
-  useEffect(() => {
+  const allUsers = listUsers();
+  console.log(allUsers)
+
+
+
+  // useEffect(() => {
     // async function getUpdateOrAddUser(payload) {
     //   // Set ismemberof to role for easier comprehension
     //   payload.role = payload["custom:ismemberof"];
@@ -46,7 +51,7 @@ function App() {
     //   }
     // }
     // onLoad();
-  }, []);
+  // }, []);
 
   // const determineRole = role => {
   //   const roleArray = ["admin", "business", "state"];
@@ -65,9 +70,8 @@ function App() {
 
   return (
       <div className="App">
-        <Header />
           <div className="main">
-            <Routes />
+            {allUsers}
           </div>
         <Footer />
       </div>
