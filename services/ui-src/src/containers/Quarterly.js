@@ -5,7 +5,6 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
-import Card from "@material-ui/core/Card";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -27,6 +26,32 @@ const Quarterly = () => {
     fetchData();
   }, [state, year, quarter]);
 
+  const getFormSegment = formName => {
+    let urlSegment;
+    switch (formName) {
+      case "GRE":
+        urlSegment = "gre";
+        break;
+      case "64.EC":
+        urlSegment = "64ec";
+        break;
+      case "64.ECI":
+        urlSegment = "64eci";
+        break;
+      case "64.21E":
+        urlSegment = "64-21e";
+        break;
+      case "64.21EI":
+        urlSegment = "64-21ei";
+        break;
+      case "21E": // may need to update all of the case statements
+        urlSegment = "21e";
+        break;
+      default:
+        urlSegment = false;
+    }
+    return urlSegment;
+  };
   // Build Columns for data table
   const columns = [
     {
