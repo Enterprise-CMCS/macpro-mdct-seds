@@ -2,7 +2,7 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as getUserByUsername } from "./getUserByUsername";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
