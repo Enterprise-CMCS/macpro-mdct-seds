@@ -31,6 +31,9 @@ function App() {
           username: payload.identities[0].userId
         });
 
+        console.log("User by Id");
+        console.log(data)
+
         // If user doesn't exists, create user
         console.log("zzzData", data);
         if (data.Count === 0 || data === false) {
@@ -113,23 +116,23 @@ function App() {
       setIsAuthenticating(false);
     }
 
-    onLoad();
+    // onLoad();
   }, [history, isAuthorized]);
 
-  const determineRole = role => {
-    const roleArray = ["admin", "business", "state"];
-    if (roleArray.includes(role)) {
-      return role;
-    }
+  // const determineRole = role => {
+  //   const roleArray = ["admin", "business", "state"];
+  //   if (roleArray.includes(role)) {
+  //     return role;
+  //   }
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
-    } else {
-      return null;
-    }
-  };
+  //   if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+  //     return "admin";
+  //   } else if (role.includes("CHIP_D_USER_GROUP")) {
+  //     return "state";
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   return (
     !isAuthenticating && (
