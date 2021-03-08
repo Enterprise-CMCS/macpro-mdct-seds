@@ -39,7 +39,7 @@ function App() {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
           newData.isActive = data.isActive ?? "true";
-          newData.role = determineRole(payload.role);
+          // newData.role = determineRole(payload.role);
           const user = await updateUser(newData);
           return user.Attributes;
         }
@@ -87,7 +87,7 @@ function App() {
 
       if (payload) {
         // Convert from Okta/Cognito into easier to use pieces
-        payload.role = determineRole(payload["custom:ismemberof"]);
+        // payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;
 
         // Either get or create and get user
