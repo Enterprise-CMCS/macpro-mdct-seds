@@ -24,7 +24,7 @@ export default function Routes({ user, isAuthorized }) {
       <Switch>
         <Route exact path="/">
           <Users />
-        </Route>s
+        </Route>
         {/* <UnauthenticatedRoute exact path="/users">
             <Users />
           </UnauthenticatedRoute>
