@@ -75,10 +75,8 @@ function App() {
 
           // If user is logged in, get payload
           if (data.signInUserSession) {
+            console.log(`DATA:·${data}`);
 
-            console.log(`DATA: ${data}`)
-            console.log(`DATA: ${data}`)
-            
             payload = data.signInUserSession.idToken.payload;
           }
         } catch (error) {
@@ -121,7 +119,7 @@ function App() {
   }, [history, isAuthorized]);
 
   const determineRole = role => {
-    console.log(`Role: ${role}`)
+    console.log(`Role: ${role}`);
     // const roleArray = ["admin", "business", "state"];
     // if (roleArray.includes(role)) {
     //   return role;

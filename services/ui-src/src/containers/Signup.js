@@ -79,8 +79,6 @@ export default function Signup() {
 
       await Auth.signIn(fields.email, fields.password);
       console.log("signup3");
-
-
       userHasAuthenticated(true);
       history.push("/");
     } catch (e) {
