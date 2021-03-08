@@ -21,7 +21,9 @@ export default function Login() {
   }
 
   function signInWithOkta() {
+    console.log("login.js 1");
     const authConfig = Auth.configure();
+    console.log("login.js 1");
     const { domain, redirectSignIn, responseType } = authConfig.oauth;
     const clientId = authConfig.userPoolWebClientId;
     const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
@@ -47,7 +49,9 @@ export default function Login() {
     setIsLoading(true);
 
     try {
+      console.log("login.js 2");
       await Auth.signIn(fields.email, fields.password);
+      console.log("login.js 2");
       userHasAuthenticated(true);
     } catch (e) {
       onError(e);

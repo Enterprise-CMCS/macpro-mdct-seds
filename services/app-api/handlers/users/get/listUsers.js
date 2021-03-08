@@ -1,5 +1,5 @@
-import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib";
+import dynamoDb from "../../../libs/dynamodb-lib";
 
 export const main = handler(async (event) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -8,7 +8,8 @@ export const main = handler(async (event) => {
     return null;
   }
   const params = {
-    TableName: process.env.AuthUserTableName,
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
   };
 
   const result = await dynamoDb.scan(params);

@@ -4,10 +4,20 @@ frameworkVersion: "2"
 
 plugins:
   - serverless-dynamodb-local
-
+  - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
+      - master
+      - val
+      - production
+      - develop
+      - main
+      - impl
+      - val
+      - prod
   dynamodb:
     stages:
       - local
@@ -35,6 +45,8 @@ custom:
               [
                 ../../src/database/initial_data_load/21E.json,
                 ../../src/database/initial_data_load/64_21E.json,
+                ../../src/database/initial_data_load/GenderRaceEthnicity.json,
+                ../../src/database/initial_data_load/21PW.json,
               ]
           - table: ${self:custom.stage}-form-answers
             sources:
@@ -42,9 +54,18 @@ custom:
                 ../../src/database/initial_data_load/form_answers_21E_AL.json,
                 ../../src/database/initial_data_load/form_answers_21E_MD.json,
                 ../../src/database/initial_data_load/form_answers_21E_PA.json,
+                ../../src/database/initial_data_load/form_answers_64EC_AL.json,
+                ../../src/database/initial_data_load/form_answers_64EC_MD.json,
+                ../../src/database/initial_data_load/form_answers_64EC_PA.json,
                 ../../src/database/initial_data_load/form_answers_64_21E_AL.json,
                 ../../src/database/initial_data_load/form_answers_64_21E_MD.json,
                 ../../src/database/initial_data_load/form_answers_64_21E_PA.json,
+                ../../src/database/initial_data_load/form_answers_GRE_AL.json,
+                ../../src/database/initial_data_load/form_answers_GRE_MD.json,
+                ../../src/database/initial_data_load/form_answers_GRE_PA.json,
+                ../../src/database/initial_data_load/form_answers_21PW_PA.json,
+                ../../src/database/initial_data_load/form_answers_21PW_MD.json,
+                ../../src/database/initial_data_load/form_answers_21PW_AL.json,
               ]
           - table: ${self:custom.stage}-auth-user
             sources: [../../src/database/initial_data_load/auth_user.json]

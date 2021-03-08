@@ -5,6 +5,7 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
+import Card from "@material-ui/core/Card";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -46,9 +47,16 @@ const Quarterly = () => {
     },
     {
       name: "Name",
-      selector: "form", // Not sure what this should be displaying
+      selector: "form_name",
       sortable: true,
-      wrap: true
+      wrap: true,
+      cell: function setFormName(e) {
+        return (
+          <p style={{ wordWrap: "break-word", maxWidth: "200px" }}>
+            {e.form_name}
+          </p>
+        );
+      }
     },
     {
       name: "Status",
@@ -58,6 +66,11 @@ const Quarterly = () => {
         return (
           <div className="status-wrapper">
             <Button
+              style={{
+                margin: "15px 0 15px -55px",
+                outline: "none",
+                cursor: "pointer"
+              }}
               type="button"
               className={`usa-button status status-${e.status_code}`}
             >
@@ -77,7 +90,7 @@ const Quarterly = () => {
       name: "Print",
       sortable: false,
       cell: function getPrintLink(row) {
-        const formId = row.form.replace("-", "_").toLowerCase();
+        const formId = getFormSegment(row.form);
         return (
           <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
             <FontAwesomeIcon icon={faFilePdf} />
@@ -91,23 +104,36 @@ const Quarterly = () => {
   const customStyles = {
     headRow: {
       style: {
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        fontWeight: "600"
       }
     },
     headCells: {
       style: {
         "&:last-of-type": {
+          // Print
+          fontWeight: "600",
           maxWidth: "120px"
         },
         "&:first-of-type": {
+          // Form
+          fontWeight: "600",
           maxWidth: "120px"
         },
+        "&:nth-of-type(2n)": {
+          // FormName
+          fontWeight: "600",
+          maxWidth: "400px"
+        },
         "&:nth-of-type(3n)": {
+          // Status
+          fontWeight: "600",
           maxWidth: "180px"
         },
         "&:nth-of-type(4n)": {
-          maxWidth: "140px",
-          minWidth: "140px"
+          //Last Updated
+          fontWeight: "600",
+          maxWidth: "140px"
         }
       }
     },
