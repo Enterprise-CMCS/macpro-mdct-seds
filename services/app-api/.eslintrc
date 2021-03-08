@@ -1,0 +1,29 @@
+{
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true,
+      "allowImportExportEverywhere": true
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    "semi": "error",
+    "no-console": "off",
+    "node/no-extraneous-import": [
+      "error",
+      {
+        "allowModules": ["express"]
+      }
+    ]
+  }
+}

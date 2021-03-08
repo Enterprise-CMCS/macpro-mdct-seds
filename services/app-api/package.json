@@ -12,7 +12,23 @@
     "type": "git",
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:node/recommended"
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "serverless-bundle": "^3.0.0",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-offline": "^6.8.0",
@@ -24,6 +40,8 @@
   "dependencies": {
     "aws-sdk": "^2.788.0",
     "dynamodb-atomic-counter": "^0.1.1",
+    "eslint-plugin-node": "^11.1.0",
     "uuid": "^7.0.3"
-  }
+  },
+  "type": "module"
 }
