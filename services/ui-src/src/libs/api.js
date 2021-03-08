@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import config from "../config";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
 const requestOptions = async () => {
@@ -15,15 +15,12 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    console.log("zzzMade it into else in api.js");
-    const user = await Auth.currentAuthenticatedUser();
-    console.log("zzzUser", user);
-    const token = user.signInUserSession.idToken.jwtToken;
-    console.log("zzzToken", token);
+    // const user = await Auth.currentAuthenticatedUser();
+    // const token = user.signInUserSession.idToken.jwtToken;
 
     const options = {
       headers: {
-        Authorization: `Bearer ${token}`
+        // Authorization: `Bearer ${token}`
       }
     };
 
