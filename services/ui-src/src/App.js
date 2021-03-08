@@ -65,9 +65,9 @@ function App() {
 
   return (
       <div className="App">
-        <Header user={user} />
+        <Header />
           <div className="main">
-            <Routes user={user} />
+            <Routes />
           </div>
         <Footer />
       </div>
