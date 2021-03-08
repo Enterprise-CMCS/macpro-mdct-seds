@@ -18,21 +18,16 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("zzzConfig.apiGateway.URL", config.apiGateway.URL);
     async function getUpdateOrAddUser(payload) {
       // Set ismemberof to role for easier comprehension
       payload.role = payload["custom:ismemberof"];
       payload.username = payload.identities[0].userId;
 
       if (payload.identities) {
-        console.log("zzzPayload.identities", payload.identities);
         // Check if user exists
         const data = await getUserByUsername({
           username: payload.identities[0].userId
         });
-
-        console.log("User by Id");
-        console.log(data)
 
         // If user doesn't exists, create user
         console.log("zzzData", data);
@@ -91,7 +86,6 @@ function App() {
       }
 
       if (payload) {
-        console.log("zzzPayload", payload);
         // Convert from Okta/Cognito into easier to use pieces
         payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;

@@ -58,19 +58,19 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      {user.role === "admin" ? (
-        <>
-          <AuthenticatedRoute exact path="/users">
+      {/* {user.role === "admin" ? (
+        <> */}
+          <UnauthenticatedRoute exact path="/users">
             <Users />
-          </AuthenticatedRoute>
+          </UnauthenticatedRoute>
           <AuthenticatedRoute exact path="/users/add">
             <UserAdd />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/users/:id/edit">
             <UserEdit />
           </AuthenticatedRoute>
-        </>
-      ) : null}
+        {/* </>
+      ) : null} */}
       <Route>
         <NotFound />
       </Route>
