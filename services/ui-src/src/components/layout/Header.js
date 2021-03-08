@@ -16,7 +16,7 @@ import config from "../../config";
 const Header = () => {
   const history = useHistory();
   // const [email, setEmail] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     function loadProfile() {
@@ -29,7 +29,7 @@ const Header = () => {
         const userInfo = await loadProfile();
 
         if (userInfo === null) {
-          setIsAuthenticated(false);
+          // setIsAuthenticated(false);
         } else {
           if (userInfo.signInUserSession) {
             // Get payload
@@ -38,7 +38,7 @@ const Header = () => {
           } else {
             //setEmail(userInfo.email);
           }
-          setIsAuthenticated(true);
+          // setIsAuthenticated(true);
         }
       } catch (error) {
         if (error !== "The user is not authenticated") {

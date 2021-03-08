@@ -1,14 +1,14 @@
-import React, {useEffect } from "react";
+// import React, {useEffect } from "react";
 // import { useHistory } from "react-router-dom";
 import "./App.scss";
-import Routes from "./Routes";
+// import Routes from "./Routes";
 // import { AppContext } from "./libs/contextLib";
 // import { Auth } from "aws-amplify";
-import Header from "./components/layout/Header";
+// import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 // import config from "./config";
 // import { currentUserInfo } from "./libs/user";
-import { getUserByUsername, createUser, updateUser, getUser } from "./libs/api";
+import { listUsers } from "./libs/api";
 
 function App() {
   // const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -18,7 +18,7 @@ function App() {
   // const history = useHistory();
 
   const allUsers = listUsers();
-  console.log(allUsers)
+  console.log('yeet', allUsers)
 
 
 
