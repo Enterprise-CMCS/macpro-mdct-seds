@@ -1,30 +1,30 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./containers/Home";
-import Login from "./containers/Login";
-import LocalLogin from "./containers/LocalLogin";
-import NotFound from "./containers/NotFound";
-import Signup from "./containers/Signup";
-import Profile from "./containers/Profile";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+// import Home from "./containers/Home";
+// import Login from "./containers/Login";
+// import LocalLogin from "./containers/LocalLogin";
+// import NotFound from "./containers/NotFound";
+// import Signup from "./containers/Signup";
+// import Profile from "./containers/Profile";
+// import AuthenticatedRoute from "./components/AuthenticatedRoute";
+// import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
-import UserEdit from "./components/users/UserEdit";
+// import UserEdit from "./components/users/UserEdit";
 import config from "./config";
-import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
-import Example from "./components/examples";
-import Quarterly from "./containers/Quarterly";
-import UserAdd from "./components/users/UserAdd";
-import Unauthorized from "./containers/Unauthorized";
+// import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
+// import Example from "./components/examples";
+// import Quarterly from "./containers/Quarterly";
+// import UserAdd from "./components/users/UserAdd";
+// import Unauthorized from "./containers/Unauthorized";
 
 export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
 
     return (
       <Switch>
-        <Router exact path="/">
+        <Route exact path="/">
           <Users />
-        </Router>
+        </Route>s
         {/* <UnauthenticatedRoute exact path="/users">
             <Users />
           </UnauthenticatedRoute>
