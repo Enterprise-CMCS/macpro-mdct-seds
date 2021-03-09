@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 import "./App.scss";
 import Routes from "./Routes";
+import config from "./config";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { onError } from "./libs/errorLib";
@@ -33,10 +34,17 @@ function App() {
   }
 
   async function handleLogout() {
-    await Auth.signOut();
-    userHasAuthenticated(false);
+    if (config.LOCAL_LOGIN === "true") {
+      window.localStorage.removeItem("userKey");
+      history.push("/login");
+      history.go(0);
+    } else {
+      await Auth.signOut();
+    }
     history.push("/login");
   }
+  
+
   return (
     !isAuthenticating && (
       <div className="App container">

@@ -66,7 +66,7 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/users">
         <Users />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/users/:id">
+      <UnauthenticatedRoute exact path="/users/:id/edit">
         <UserEdit />
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/users/add/user">
