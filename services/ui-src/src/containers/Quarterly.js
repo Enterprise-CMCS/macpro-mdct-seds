@@ -5,6 +5,7 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
+import Card from "@material-ui/core/Card";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -25,7 +26,7 @@ const Quarterly = () => {
     }
     fetchData();
   }, [state, year, quarter]);
-
+  // Translate form name from redux into url value
   const getFormSegment = formName => {
     let urlSegment;
     switch (formName) {
@@ -52,6 +53,7 @@ const Quarterly = () => {
     }
     return urlSegment;
   };
+
   // Build Columns for data table
   const columns = [
     {
@@ -61,9 +63,9 @@ const Quarterly = () => {
       cell: function generateFormLink(e) {
         return (
           <a
-            href={`/forms/${state}/${year}/${quarter}/${e.form
-              .replace("-", "_")
-              .toLowerCase()}`}
+            href={`/forms/${state}/${year}/${quarter}/${getFormSegment(
+              e.form
+            )}`}
           >
             {e.form}
           </a>
@@ -171,6 +173,9 @@ const Quarterly = () => {
         "&:first-of-type": {
           maxWidth: "120px"
         },
+        "&:nth-of-type(2n)": {
+          maxWidth: "400px"
+        },
         "&:nth-of-type(3n)": {
           maxWidth: "180px",
           pointerType: "default"
@@ -182,32 +187,40 @@ const Quarterly = () => {
       }
     }
   };
+  console.log(stateFormsList);
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> > {`Q${quarter} ${year}`}
+            <a href="/">Enrollment Data Home</a> &gt;{" "}
+            {`${state} Q${quarter} ${year}`}
           </div>
         </Grid>
       </Grid>
       <Grid row>
         <Grid col={12}>
           <h2>{title}</h2>
-          <p>
-            Start, complete, and print this quarter's CHIP Enrollment Data
-            Reports.
-          </p>
           <div className="quarterly-report-listing">
-            <DataTable
-              sortIcon={<SortIcon />}
-              highlightOnHover
-              selectableRows={false}
-              responsive={true}
-              columns={columns}
-              data={stateFormsList}
-              customStyles={customStyles}
-            />
+            <Card>
+              {stateFormsList ? (
+                <DataTable
+                  sortIcon={<SortIcon />}
+                  highlightOnHover
+                  title={
+                    <p style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Start, complete, and print this quarter's CHIP Enrollment
+                      Data Reports.
+                    </p>
+                  }
+                  selectableRows={false}
+                  responsive={true}
+                  columns={columns}
+                  data={stateFormsList}
+                  customStyles={customStyles}
+                />
+              ) : null}
+            </Card>
           </div>
         </Grid>
       </Grid>
