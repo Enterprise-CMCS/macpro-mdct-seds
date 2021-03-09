@@ -15,7 +15,7 @@ import config from "../../config";
 
 const Header = () => {
   const history = useHistory();
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const Header = () => {
         } else {
           if (userInfo.signInUserSession) {
             // Get payload
-            const payload = userInfo.signInUserSession.idToken.payload;
-            setEmail(payload.email);
+            //const payload = userInfo.signInUserSession.idToken.payload;
+            //setEmail(payload.email);
           } else {
-            setEmail(userInfo.email);
+            //setEmail(userInfo.email);
           }
           setIsAuthenticated(true);
         }
@@ -105,7 +105,7 @@ const Header = () => {
                 <Nav pullRight>
                   {isAuthenticated ? (
                     <>
-                      <NavDropdown id="User" title={email}>
+                      <NavDropdown id="User" title="My Profile">
                         <LinkContainer to="/profile">
                           <NavItem>User Profile</NavItem>
                         </LinkContainer>
