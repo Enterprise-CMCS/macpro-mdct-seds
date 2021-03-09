@@ -1,9 +1,8 @@
 import React from "react";
-import { Route } from "react-router-dom";
-// import { useAppContext } from "../libs/contextLib";
+import { Route, Redirect } from "react-router-dom";
+import { useAppContext } from "../libs/contextLib";
 
 function querystring(name, url = window.location.href) {
-  /* eslint-disable no-param-reassign */
   name = name.replace(/[[]]/g, "\\$&");
 
   const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
@@ -15,10 +14,19 @@ function querystring(name, url = window.location.href) {
   if (!results[2]) {
     return "";
   }
-
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 export default function UnauthenticatedRoute({ children, ...rest }) {
-  return <Route {...rest}>{children}</Route>;
+  const { isAuthenticated } = useAppContext();
+  const redirect = querystring("redirect");
+  return (
+    <Route {...rest}>
+      {!isAuthenticated ? (
+        children
+      ) : (
+        <Redirect to={redirect === "" || redirect === null ? "/" : redirect} />
+      )}
+    </Route>
+  );
 }

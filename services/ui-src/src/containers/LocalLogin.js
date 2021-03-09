@@ -28,7 +28,9 @@ export default function Login() {
     };
 
     loginLocalUser(alice);
+    console.log(userHasAuthenticated)
     userHasAuthenticated(true);
+    console.log(userHasAuthenticated)
     history.push("/");
     history.go(0);
   }

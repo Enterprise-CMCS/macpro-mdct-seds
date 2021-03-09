@@ -1,81 +1,81 @@
-import React from "react";
-// import { useHistory } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 import "./App.scss";
-// import Routes from "./Routes";
-// import { AppContext } from "./libs/contextLib";
-// import { Auth } from "aws-amplify";
-// import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-// import config from "./config";
-// import { currentUserInfo } from "./libs/user";
-import { listUsers } from "./libs/api";
+import Routes from "./Routes";
+import { AppContext } from "./libs/contextLib";
+import { Auth } from "aws-amplify";
+import { onError } from "./libs/errorLib";
 
 function App() {
-  // const [isAuthenticating, setIsAuthenticating] = useState(true);
-  // const [isAuthenticated, userHasAuthenticated] = useState(false);
-  // const [isAuthorized, setIsAuthorized] = useState(false);
-  // const [user, setUser] = useState();
-  // const history = useHistory();
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [email, setEmail] = useState(false);
+  const history = useHistory();
 
-  const allUsers = listUsers();
-  console.log('yeet', allUsers)
+  useEffect(() => {
+    onLoad();
+  }, []);
 
+  async function onLoad() {
+    try {
+      await Auth.currentSession();
+      userHasAuthenticated(true);
+      const userInfo = await Auth.currentUserInfo();
+      setEmail(userInfo.attributes.email);
+    } catch (e) {
+      if (e !== "No current user") {
+        onError(e);
+      }
+    }
+    setIsAuthenticating(false);
+  }
 
-
-  // useEffect(() => {
-    // async function getUpdateOrAddUser(payload) {
-    //   // Set ismemberof to role for easier comprehension
-    //   payload.role = payload["custom:ismemberof"];
-    //   payload.username = payload.identities[0].userId;
-
-    //   if (payload.identities) {
-    //     // Check if user exists
-    //     const data = await getUserByUsername({
-    //       username: payload.identities[0].userId
-    //     });
-
-    //     // If user doesn't exists, create user
-    //     console.log("zzzData", data);
-    //     if (data.Count === 0 || data === false) {
-    //       payload.lastLogin = new Date().toISOString();
-    //       payload.isActive = "true";
-    //       return await createUser(payload);
-    //     } else {
-    //       let newData = data.Items[0];
-    //       newData.lastLogin = new Date().toISOString();
-    //       newData.isActive = data.isActive ?? "true";
-    //       // newData.role = determineRole(payload.role);
-    //       const user = await updateUser(newData);
-    //       return user.Attributes;
-    //     }
-    //   }
-    // }
-    // onLoad();
-  // }, []);
-
-  // const determineRole = role => {
-  //   const roleArray = ["admin", "business", "state"];
-  //   if (roleArray.includes(role)) {
-  //     return role;
-  //   }
-
-  //   if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-  //     return "admin";
-  //   } else if (role.includes("CHIP_D_USER_GROUP")) {
-  //     return "state";
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
+  async function handleLogout() {
+    await Auth.signOut();
+    userHasAuthenticated(false);
+    history.push("/login");
+  }
   return (
-      <div className="App">
-          <div className="main">
-            {allUsers}
-          </div>
-        <Footer />
+    !isAuthenticating && (
+      <div className="App container">
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">SEDS Home</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              {isAuthenticated ? (
+                <>
+                  <NavDropdown id="User" title={email}>
+                    <LinkContainer to="/profile">
+                      <NavItem>User Profile</NavItem>
+                    </LinkContainer>
+                    <NavItem onClick={handleLogout}>Logout</NavItem>
+                  </NavDropdown>
+                </>
+              ) : (
+                <>
+                  <LinkContainer to="/signup">
+                    <NavItem>Signup</NavItem>
+                  </LinkContainer>
+                  <LinkContainer to="/login">
+                    <NavItem>Login</NavItem>
+                  </LinkContainer>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+          <Routes />
+        </AppContext.Provider>
       </div>
-    
+    )
   );
 }
 

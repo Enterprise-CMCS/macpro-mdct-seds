@@ -24,21 +24,23 @@ export default function Home({ user }) {
   }, [isAuthenticated]);
 
   function renderLander() {
-    let content = null;
-    switch (user.role) {
-      case "state":
-        content = <HomeState />;
-        break;
-      case "business":
-        content = <HomeBus />;
-        break;
-      case "admin":
-        content = <HomeAdmin />;
-        break;
-      default:
-        content = <Unauthorized />;
-        break;
-    }
+    let content = <HomeState />;
+
+    // let content = null;
+    // switch (user.role) {
+    //   case "state":
+    //     content = <HomeState />;
+    //     break;
+    //   case "business":
+    //     content = <HomeBus />;
+    //     break;
+    //   case "admin":
+    //     content = <HomeAdmin />;
+    //     break;
+    //   default:
+    //     content = <Unauthorized />;
+    //     break;
+    // }
     return (
       <GridContainer className="container page-home">
         <Grid row>

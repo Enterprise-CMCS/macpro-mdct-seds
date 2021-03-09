@@ -1,9 +1,8 @@
 import { API } from "aws-amplify";
 import config from "../config";
-// import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
-const requestOptions = async () => {
+function requestOptions() {
   const localLogin = config.LOCAL_LOGIN === "true";
 
   if (localLogin) {
@@ -11,22 +10,13 @@ const requestOptions = async () => {
     // requestContext.identity.cognitoIdentityId. This lets us set a user locally without involving Cognito.
     const currentUser = getLocalUserInfo();
     const options = {
-      headers: { "cognito-identity-id": currentUser.username }
+      headers: { "cognito-identity-id": currentUser.username },
     };
     return options;
   } else {
-    // const user = await Auth.currentAuthenticatedUser();
-    // const token = user.signInUserSession.idToken.jwtToken;
-
-    const options = {
-      headers: {
-        // Authorization: `Bearer ${token}`
-      }
-    };
-
-    return options;
+    return {};
   }
-};
+}
 
 export function listAmendments() {
   const opts = requestOptions();
