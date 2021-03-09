@@ -60,9 +60,6 @@ FormPage.propTypes = {
 };
 
 const mapState = state => ({
-  disabled:
-    state.currentForm.statusData.not_applicable ||
-    state.currentForm.statusData.status === "final",
   statusData: state.currentForm.statusData
 });
 

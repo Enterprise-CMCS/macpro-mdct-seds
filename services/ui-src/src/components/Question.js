@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import GridWithTotals from "../components/GridWithTotals/GridWithTotals";
 import { sortQuestionColumns } from "../utilityFunctions/sortingFunctions";
@@ -46,11 +45,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
 //   getForm: PropTypes.func.isRequired
 // };
 
-const mapState = state => ({
-  answers: state.currentForm.answers
-});
-
-export default connect(mapState)(QuestionComponent);
+export default QuestionComponent;
 
 // NOTE: If the range_id's change, they will need to change here as well
 const questionVariables = {
