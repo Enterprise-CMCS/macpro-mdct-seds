@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import GridWithTotals from "../components/GridWithTotals/GridWithTotals";
 import { sortQuestionColumns } from "../utilityFunctions/sortingFunctions";
 
-const QuestionComponent = ({ questionData, rangeID, answerData }) => {
+const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // Get the question ID and label from the question
   const { label, question } = questionData;
   // Get the rows from the answers table
@@ -25,7 +25,11 @@ const QuestionComponent = ({ questionData, rangeID, answerData }) => {
         {questionNumber}. {labelWithAgeVariable}
       </b>
       {questionNumber !== 5 ? (
-        <GridWithTotals questionID={answer_entry} gridData={sortedRows} />
+        <GridWithTotals
+          questionID={answer_entry}
+          gridData={sortedRows}
+          disabled={disabled}
+        />
       ) : (
         <p>
           Question five requires special logic. There is a separate ticket for

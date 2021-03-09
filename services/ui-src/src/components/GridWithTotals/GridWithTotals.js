@@ -139,6 +139,7 @@ const GridWithTotals = props => {
                         updateGrid(rowIndex, columnIndex, event)
                       }
                       defaultValue={column}
+                      disabled={props.disabled}
                     />
                   </td>
                 </React.Fragment>
@@ -151,6 +152,7 @@ const GridWithTotals = props => {
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
                     defaultValue={column}
+                    disabled={props.disabled}
                   />
                 </td>
               );

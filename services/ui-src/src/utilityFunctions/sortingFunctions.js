@@ -5,4 +5,3 @@ const sortQuestionColumns = columns => {
 };
 
 export { sortQuestionColumns };
-ß;

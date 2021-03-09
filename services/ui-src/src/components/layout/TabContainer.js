@@ -7,7 +7,7 @@ import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs, questions, answers }) => {
+const TabContainer = ({ tabs, questions, answers, disabled }) => {
   return (
     <Tabs>
       <TabList>
@@ -43,6 +43,7 @@ const TabContainer = ({ tabs, questions, answers }) => {
                   rangeID={tab.range_id}
                   questionData={singleQuestion}
                   answerData={questionAnswer}
+                  disabled={disabled}
                 />
               );
             })}
@@ -66,6 +67,9 @@ TabContainer.propTypes = {
 };
 
 const mapState = state => ({
+  disabled:
+    state.currentForm.statusData.not_applicable ||
+    state.currentForm.statusData.status === "final",
   tabs: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers

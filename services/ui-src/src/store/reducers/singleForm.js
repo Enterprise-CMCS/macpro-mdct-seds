@@ -25,25 +25,6 @@ export const updatedStatus = activeBoolean => {
   };
 };
 
-// ranges 6 of them:
-// 01 = age 0-1
-// 05
-// 18
-// 12
-//
-
-// questions
-// NO QUARTER
-// NO AGE RANGE
-// NO STATE
-//(9) :year :form features--questionNumber
-
-// answer
-// answer_entry = state, year, quarter, form, ageRange, question,
-//(45) :year :form :questionNumber :ageRange :state :quarter
-
-// answerObject:
-
 // THUNKS
 export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
