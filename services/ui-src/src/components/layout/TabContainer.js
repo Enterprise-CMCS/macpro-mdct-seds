@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -7,7 +7,7 @@ import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs, questions }) => {
+const TabContainer = ({ tabs, questions, answers }) => {
   return (
     <Tabs>
       <TabList>
@@ -19,18 +19,30 @@ const TabContainer = ({ tabs, questions }) => {
       </TabList>
 
       {tabs.map((tab, idx) => {
-        // The questions for each tab will go inside of the tab Panels
+        // Extract the range ID and filter the array of form answers by tab
+        const ageRangeID = tab.range_id;
+        const tabAnswers = answers.filter(
+          element => element.rangeId === ageRangeID
+        );
+
         return (
           <TabPanel key={idx}>
             <div className="age-range-description">
               <h3>{tab.age_description}:</h3>
             </div>
 
-            {questions.map(question => {
+            {questions.map(singleQuestion => {
+              // Extract the ID from each question and find its corresponding answer object
+              const questionID = singleQuestion.question;
+              const questionAnswer = tabAnswers.find(
+                element => element.question === questionID
+              );
+
               return (
                 <QuestionComponent
                   rangeID={tab.range_id}
-                  singleQuestion={question}
+                  questionData={singleQuestion}
+                  answerData={questionAnswer}
                 />
               );
             })}
@@ -55,9 +67,15 @@ TabContainer.propTypes = {
 
 const mapState = state => ({
   tabs: state.global.age_ranges,
-  questions: state.currentForm.questions
+  questions: state.currentForm.questions,
+  answers: state.currentForm.answers
 });
 
 export default connect(mapState)(TabContainer);
 
 // will i ahve to put backup ternary [] for questions??
+
+// TODO ALEXIS:
+// REMOVE REDUX
+// needs all questions
+// needs age ranges
