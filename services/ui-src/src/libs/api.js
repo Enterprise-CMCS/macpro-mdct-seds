@@ -15,19 +15,8 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    console.log("zzzMade it into else in api.js");
-    const user = await Auth.currentAuthenticatedUser();
-    console.log("zzzUser", user);
-    const token = user.signInUserSession.idToken.jwtToken;
-    console.log("zzzToken", token);
-
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    };
-
-    return options;
+    // return options;
+    return {};
   }
 };
 
@@ -73,18 +62,18 @@ export function activateDeactivateUser(data) {
 }
 
 export function getUser(data) {
-  console.log("zzzInside getUser of api.js");
+  // console.log("zzzInside getUser of api.js");
   const opts = requestOptions();
   opts.body = data;
-  console.log("zzzOpts from getUser of api.js", opts);
+  // console.log("zzzOpts from getUser of api.js", opts);
   return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
 export function getUserByUsername(data) {
-  console.log("zzzGetUesrByUserName");
+  // console.log("zzzGetUesrByUserName");
   const opts = requestOptions();
   opts.body = data;
-  console.log("zzzGetUesrByUserName opts", opts);
+  // console.log("zzzGetUesrByUserName opts", opts);
   return API.post("amendments", `/users/get`, opts);
 }
 
