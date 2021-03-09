@@ -16,7 +16,8 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   const labelWithAgeVariable = label.replace("&&&VARIABLE&&&", ageVariable);
 
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
-  const sortedRows = rows.map(rowObject => sortQuestionColumns(rowObject));
+  // const sortedRows = rows.map(rowObject => sortQuestionColumns(rowObject));
+  const sortedRows = sortQuestionColumns(rows);
 
   return (
     <>
@@ -39,11 +40,12 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   );
 };
 
-// QuestionComponent.propTypes = {
-//   disabled: PropTypes.bool.isRequired,
-//   statusData: PropTypes.object.isRequired,
-//   getForm: PropTypes.func.isRequired
-// };
+QuestionComponent.propTypes = {
+  questionData: PropTypes.object.isRequired,
+  rangeID: PropTypes.string.isRequired,
+  answerData: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired
+};
 
 export default QuestionComponent;
 

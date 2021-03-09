@@ -52,6 +52,68 @@
   }
 }
 
-.state-select-list > div {
-  min-height: 32px;
+// .state-select-list > div {
+//   min-height: 32px;
+// }
+
+// .certify-btn {
+//   margin-top: 1.2rem;
+//   padding: 0.6rem;
+
+//   &.provisional {
+//     text-align: right;
+//   }
+
+//   button {
+//     border-radius: 5%;
+//     font-size: 1.2rem;
+//     line-height: 1.4rem;
+//     min-height: 100px;
+//     min-width: 180px;
+//     padding: 0.8rem;
+//   }
+// }
+
+.form-header {
+  margin: 2rem;
+  padding-left: 1rem;
+
+  .upper-form-nav {
+    margin-bottom: 1.2rem;
+
+    .upper-form-links {
+      text-decoration: none;
+      margin-right: 0.2rem;
+    }
+  }
+
+  .form-description-bar {
+    h5 {
+      margin-bottom: 0.25rem;
+    }
+
+    .form-name {
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+    .form-description {
+      margin-top: 1.5rem;
+    }
+
+    hr {
+      margin-top: 0;
+      margin-bottom: 0;
+      border: 0;
+      clear: both;
+      display: block;
+      width: 100%;
+      background-color: black;
+      height: 1px;
+    }
+  }
+
+  .program-code-bar {
+    margin-top: 1.2rem;
+    width: 20rem;
+  }
 }

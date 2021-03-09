@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
-import { withRouter, Link } from "react-router-dom";
-import { getFormTypes } from "../../src/libs/api";
+import { Link } from "react-router-dom";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const FormFooter = ({ state, year, quarter, history, lastModified }) => {
+const FormFooter = ({ state, year, quarter, lastModified }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
     <GridContainer>
@@ -36,4 +34,11 @@ const FormFooter = ({ state, year, quarter, history, lastModified }) => {
   );
 };
 
-export default withRouter(FormFooter);
+FormFooter.propTypes = {
+  state: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired,
+  quarter: PropTypes.string.isRequired,
+  lastModified: PropTypes.string
+};
+
+export default FormFooter;

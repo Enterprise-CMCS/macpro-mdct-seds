@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -31,7 +31,7 @@ const TabContainer = ({ tabs, questions, answers, disabled }) => {
               <h3>{tab.age_description}:</h3>
             </div>
 
-            {questions.map(singleQuestion => {
+            {questions.map((singleQuestion, idx) => {
               // Extract the ID from each question and find its corresponding answer object
               const questionID = singleQuestion.question;
               const questionAnswer = tabAnswers.find(
@@ -40,6 +40,7 @@ const TabContainer = ({ tabs, questions, answers, disabled }) => {
 
               return (
                 <QuestionComponent
+                  key={idx}
                   rangeID={tab.range_id}
                   questionData={singleQuestion}
                   answerData={questionAnswer}
@@ -63,7 +64,9 @@ const TabContainer = ({ tabs, questions, answers, disabled }) => {
 
 TabContainer.propTypes = {
   tabs: PropTypes.array.isRequired,
-  questions: PropTypes.array.isRequired
+  questions: PropTypes.array.isRequired,
+  answers: PropTypes.array.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 const mapState = state => ({
@@ -76,10 +79,3 @@ const mapState = state => ({
 });
 
 export default connect(mapState)(TabContainer);
-
-// will i ahve to put backup ternary [] for questions??
-
-// TODO ALEXIS:
-// REMOVE REDUX
-// needs all questions
-// needs age ranges

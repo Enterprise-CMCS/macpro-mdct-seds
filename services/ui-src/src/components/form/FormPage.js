@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
-import TabContainer from "../components/layout/TabContainer";
-import { withRouter, useParams } from "react-router-dom";
+import { GridContainer } from "@trussworks/react-uswds";
+import TabContainer from "../../components/layout/TabContainer";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
-import { getFormData } from "../store/reducers/singleForm";
+import { getFormData } from "../../store/reducers/singleForm";
 import FormHeader from "./FormHeader";
 import FormFooter from "./FormFooter";
 
-const FormPage = ({ getForm, disabled, statusData }) => {
+const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
 
   // Extract state, year, quarter and formName from URL segments
@@ -54,7 +54,6 @@ const FormPage = ({ getForm, disabled, statusData }) => {
 };
 
 FormPage.propTypes = {
-  disabled: PropTypes.bool.isRequired,
   statusData: PropTypes.object.isRequired,
   getForm: PropTypes.func.isRequired
 };
@@ -67,14 +66,4 @@ const mapDispatch = {
   getForm: getFormData ?? {}
 };
 
-export default connect(mapState, mapDispatch)(withRouter(FormPage));
-
-// consider where "isActive" property should be read to disable the entire page
-// how will question answers be connected?? how are we keeping track of answer entry??
-
-// big 3 for tonight:
-// (B) question IDs to answers
-// answers in redux need to be sorted by tabs (age range)
-
-//TODO ALEXIS:
-// REMOVE REDUX
+export default connect(mapState, mapDispatch)(FormPage);

@@ -1,5 +1,4 @@
 // Temporary import, using forms.json static data
-import * as forms from "../toDelete/forms.json";
 import * as age_ranges from "../toDelete/age_ranges.json";
 import * as states from "../toDelete/states.json";
 import * as status from "../toDelete/status.json";
