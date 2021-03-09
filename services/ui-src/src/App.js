@@ -18,21 +18,18 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("zzzConfig.apiGateway.URL", config.apiGateway.URL);
     async function getUpdateOrAddUser(payload) {
       // Set ismemberof to role for easier comprehension
       payload.role = payload["custom:ismemberof"];
       payload.username = payload.identities[0].userId;
 
       if (payload.identities) {
-        console.log("zzzPayload.identities", payload.identities);
         // Check if user exists
         const data = await getUserByUsername({
           username: payload.identities[0].userId
         });
 
         // If user doesn't exists, create user
-        console.log("zzzData", data);
         if (data.Count === 0 || data === false) {
           payload.lastLogin = new Date().toISOString();
           payload.isActive = "true";
@@ -88,7 +85,6 @@ function App() {
       }
 
       if (payload) {
-        console.log("zzzPayload", payload);
         // Convert from Okta/Cognito into easier to use pieces
         payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;
@@ -97,18 +93,18 @@ function App() {
         const user = await getUpdateOrAddUser(payload);
 
         // If no states, send used to unauthorized
-        // if (!user.states || user.states === "") {
-        //   history.push("/unauthorized");
-        // }
+        if (!user.states || user.states === "") {
+          history.push("/unauthorized");
+        }
 
         setUser(user);
         userHasAuthenticated(true);
 
         // If user is Active set
         // this also triggers a reload on useEffect
-        // if (payload.isActive === true || payload.isActive === "true") {
-        //   setIsAuthorized(true);
-        // }
+        if (payload.isActive === true || payload.isActive === "true") {
+          setIsAuthorized(true);
+        }
         setIsAuthorized(true);
       }
       setIsAuthenticating(false);
@@ -117,23 +113,19 @@ function App() {
     onLoad();
   }, [history, isAuthorized]);
 
-  // const determineRole = role => {
-  //   const roleArray = ["admin", "business", "state"];
-  //   if (roleArray.includes(role)) {
-  //     return role;
-  //   }
-  //
-  //   if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-  //     return "admin";
-  //   } else if (role.includes("CHIP_D_USER_GROUP")) {
-  //     return "state";
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   const determineRole = role => {
-    return "admin";
+    const roleArray = ["admin", "business", "state"];
+    if (roleArray.includes(role)) {
+      return role;
+    }
+
+    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+      return "admin";
+    } else if (role.includes("CHIP_D_USER_GROUP")) {
+      return "state";
+    } else {
+      return null;
+    }
   };
 
   return (
