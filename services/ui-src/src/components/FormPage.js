@@ -35,7 +35,7 @@ const FormPage = ({ getForm, disabled, statusData }) => {
 
       <GridContainer>
         <div className="tab-container">
-          <TabContainer />
+          <TabContainer quarter={quarter} />
         </div>
       </GridContainer>
 

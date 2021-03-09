@@ -7,7 +7,7 @@ import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs, questions }) => {
+const TabContainer = ({ tabs, questions, quarter }) => {
   return (
     <Tabs>
       <TabList>
@@ -27,12 +27,28 @@ const TabContainer = ({ tabs, questions }) => {
             </div>
 
             {questions.map(question => {
-              return (
-                <QuestionComponent
-                  rangeID={tab.range_id}
-                  singleQuestion={question}
-                />
-              );
+              let returnComponent = "";
+              let activeContextData = false;
+              let tempContextData = {};
+              console.log("Q.CD",question.context_data)
+              if (question.context_data) {
+                tempContextData = question.context_data.show_if_quarter_in;
+                activeContextData = true;
+              }
+              console.log("tempCD", tempContextData)
+              console.log("quarter",quarter)
+              if (
+                  (activeContextData === false) ||
+                (activeContextData && tempContextData === quarter)
+              ) {
+                returnComponent = (
+                  <QuestionComponent
+                    rangeID={tab.range_id}
+                    singleQuestion={question}
+                  />
+                );
+              }
+              return returnComponent;
             })}
           </TabPanel>
         );
