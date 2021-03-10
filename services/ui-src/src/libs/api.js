@@ -14,7 +14,6 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    // return options;
     return {};
   }
 };
@@ -48,9 +47,6 @@ export function deleteAmendment(id) {
 
 export function listUsers() {
   const opts = requestOptions();
-  console.log("opts from listUsers() in api.js");
-  console.log(opts);
-
   return API.get("amendments", `/users`, opts);
 }
 
@@ -60,11 +56,8 @@ export function activateDeactivateUser(data) {
   return API.post("amendments", `/users/activation/${data.username}`, opts);
 }
 
-export function getUser(data) {
-  // console.log("zzzInside getUser of api.js");
+export function getUserById(data) {
   const opts = requestOptions();
-  opts.body = data;
-  // console.log("zzzOpts from getUser of api.js", opts);
   return API.get("amendments", `/users/${data.userId}`, opts);
 }
 

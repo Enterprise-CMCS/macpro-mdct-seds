@@ -23,7 +23,7 @@ export default function Login() {
       userId: "1",
       email: "alicecooper@collabralink.com",
       identities: [{ userId: "AAAA" }],
-      states: "AL-MD-PA",
+      states: ["TX", "MD", "PA"],
       localLogin: true
     };
 
