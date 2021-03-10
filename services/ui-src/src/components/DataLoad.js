@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
 const DataLoad = () => {
   useEffect(() => {}, []);
