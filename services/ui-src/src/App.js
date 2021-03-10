@@ -38,7 +38,10 @@ function App() {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
           newData.isActive = data.isActive ?? "true";
-          newData.role = determineRole(payload.role);
+
+          if (!data.Items[0].role) {
+            newData.role = determineRole(payload.role);
+          }
           const user = await updateUser(newData);
           return user.Attributes;
         }
