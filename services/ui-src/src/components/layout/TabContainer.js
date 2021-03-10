@@ -35,7 +35,7 @@ const TabContainer = ({ tabs, questions, quarter }) => {
                 tempContextData = question.context_data.show_if_quarter_in;
                 activeContextData = true;
               }
-              //Conditional display only works with single quarters (so far) and
+              //Conditional display only works with single quarters and equals (so far)
               if (
                 activeContextData === false ||
                 (activeContextData && tempContextData === quarter)
