@@ -2,7 +2,7 @@
 
 Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framwork. Is it based on:
 
-[macpro-quickstart-serverless](https://github.com/CMSgov/macpro-quickstart-serverless) ![Build](https://github.com/CMSgov/macpro-quickstart-serverless/workflows/Build/badge.svg?branch=master)[![latest release](https://img.shields.io/github/release/cmsgov/macpro-quickstart-serverless.svg)](https://github.com/cmsgov/macpro-quickstart-serverless/releases/latest)
+[cms-mdct-seds](https://github.com/CMSgov/cms-mdct-seds) [![Maintainability](https://api.codeclimate.com/v1/badges/df4bb29388dee162e0e5/maintainability)](https://codeclimate.com/github/CMSgov/cms-mdct-seds/maintainability)
 
 ## Architecture
 
