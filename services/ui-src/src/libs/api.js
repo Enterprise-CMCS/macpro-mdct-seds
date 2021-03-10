@@ -64,7 +64,7 @@ export function getUser(data) {
   console.log("zzzInside getUser of api.js", data);
   const opts = requestOptions();
   opts.body = data;
-  return API.get("amendments", `/users/${data.userId}`, opts);
+  return API.get("amendments", `/users/0`, opts);
 }
 
 export function getUserByUsername(data) {
