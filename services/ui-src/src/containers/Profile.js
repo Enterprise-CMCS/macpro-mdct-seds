@@ -32,6 +32,7 @@ export default function Profile({ user }) {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
+        console.log("zzzUserInfo", userInfo);
         setEmail(userInfo.email);
         setFirstName(capitalize(userInfo.first_name));
         setLastName(capitalize(userInfo.last_name));
