@@ -97,18 +97,19 @@ function App() {
         const user = await getUpdateOrAddUser(payload);
 
         // If no states, send used to unauthorized
-        if (!user.states || user.states === "") {
-          history.push("/unauthorized");
-        }
+        // if (!user.states || user.states === "") {
+        //   history.push("/unauthorized");
+        // }
 
         setUser(user);
         userHasAuthenticated(true);
 
         // If user is Active set
         // this also triggers a reload on useEffect
-        if (payload.isActive === true || payload.isActive === "true") {
-          setIsAuthorized(true);
-        }
+        // if (payload.isActive === true || payload.isActive === "true") {
+        //   setIsAuthorized(true);
+        // }
+        setIsAuthorized(true);
       }
       setIsAuthenticating(false);
     }
@@ -116,19 +117,23 @@ function App() {
     onLoad();
   }, [history, isAuthorized]);
 
-  const determineRole = role => {
-    const roleArray = ["admin", "business", "state"];
-    if (roleArray.includes(role)) {
-      return role;
-    }
+  // const determineRole = role => {
+  //   const roleArray = ["admin", "business", "state"];
+  //   if (roleArray.includes(role)) {
+  //     return role;
+  //   }
+  //
+  //   if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+  //     return "admin";
+  //   } else if (role.includes("CHIP_D_USER_GROUP")) {
+  //     return "state";
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
-    } else {
-      return null;
-    }
+  const determineRole = role => {
+    return "admin";
   };
 
   return (
