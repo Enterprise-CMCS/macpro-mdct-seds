@@ -11,7 +11,7 @@ export default function Login() {
 
   function loginUser() {
     const alice = {
-      firstName: "Alicezzz",
+      firstName: "Alice",
       lastName: "Cooper",
       lastLogin: "01/28/2021",
       "custom:ismemberof": "admin",

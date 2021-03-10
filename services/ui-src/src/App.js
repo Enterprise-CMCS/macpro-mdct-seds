@@ -39,7 +39,7 @@ function App() {
         } else {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
-          newData.isActive = data.isActive ?? "true";
+          newData.isActive = data.Items[0].isActive ?? "true";
 
           // Don't overwrite role if already exists
           if (!data.Items[0].role) {
