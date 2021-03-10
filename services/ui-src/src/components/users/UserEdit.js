@@ -6,7 +6,7 @@ import { TextField } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
-import { getUser, updateUser } from "../../libs/api";
+import { getUserById, updateUser } from "../../libs/api";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
@@ -33,7 +33,7 @@ const UserEdit = ({ stateList }) => {
     // Retrive user data from datastore
     const getUserData = { userId: id };
 
-    const data = await getUser(getUserData);
+    const data = await getUserById(getUserData);
     console.log("zzzData", data);
     setUser(data);
     setRole(data.role);

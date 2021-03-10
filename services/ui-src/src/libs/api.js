@@ -48,9 +48,6 @@ export function deleteAmendment(id) {
 
 export function listUsers() {
   const opts = requestOptions();
-  console.log("opts from listUsers() in api.js");
-  console.log(opts);
-
   return API.get("amendments", `/users`, opts);
 }
 
@@ -60,11 +57,10 @@ export function activateDeactivateUser(data) {
   return API.post("amendments", `/users/activation/${data.username}`, opts);
 }
 
-export function getUser(data) {
+export function getUserById(data) {
   console.log("zzzInside getUser of api.js", data);
   const opts = requestOptions();
-  opts.body = data;
-  return API.get("amendments", `/users/0`, opts);
+  return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
 export function getUserByUsername(data) {
