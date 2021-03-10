@@ -64,7 +64,6 @@ custom:
                 ../../src/database/initial_data_load/form_answers_GRE_MD.json,
                 ../../src/database/initial_data_load/form_answers_GRE_PA.json,
                 ../../src/database/initial_data_load/form_answers_21PW_PA.json,
-                ../../src/database/initial_data_load/form_answers_21PW_PA_Q4.json,
                 ../../src/database/initial_data_load/form_answers_21PW_MD.json,
                 ../../src/database/initial_data_load/form_answers_21PW_AL.json,
               ]
