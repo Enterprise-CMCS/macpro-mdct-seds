@@ -37,7 +37,9 @@ export default function Profile({ user }) {
         setFirstName(capitalize(userInfo.first_name));
         setLastName(capitalize(userInfo.last_name));
         setRole(capitalize(userInfo.role));
-        setStates(formatStates(userInfo.states));
+        if (userInfo.states) {
+          setStates(formatStates(userInfo.states));
+        }
       } catch (e) {
         onError(e);
       }
@@ -63,6 +65,7 @@ export default function Profile({ user }) {
     // Sort alphabetically
     console.log("zzzStates", states);
     console.log("zzzStates typeof", typeof states);
+
     const statesArray = states.sort();
 
     // Create string from array, add in commas
