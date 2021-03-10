@@ -15,7 +15,6 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    // return options;
     return {};
   }
 };
@@ -62,7 +61,7 @@ export function activateDeactivateUser(data) {
 }
 
 export function getUser(data) {
-  console.log("zzzInside getUser of api.js");
+  console.log("zzzInside getUser of api.js", data);
   const opts = requestOptions();
   opts.body = data;
   return API.get("amendments", `/users/${data.userId}`, opts);
