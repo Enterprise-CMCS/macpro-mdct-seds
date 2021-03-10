@@ -132,9 +132,9 @@ const Users = () => {
         selector: "state_codes",
         sortable: true,
         cell: function modifyStateCodes(s) {
-          return s.states ? (
-            <span>{s.states.split("-").sort().join(", ")}</span>
-          ) : null;
+          console.log("zzzstates", typeof s.states);
+          console.log("zzzstates", s.states);
+          return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
         }
       },
       {

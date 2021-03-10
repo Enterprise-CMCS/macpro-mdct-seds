@@ -45,6 +45,7 @@ function App() {
           if (!data.Items[0].role) {
             newData.role = determineRole(payload.role);
           }
+
           const user = await updateUser(newData);
           return user.Attributes;
         }
@@ -111,7 +112,6 @@ function App() {
         if (payload.isActive === true || payload.isActive === "true") {
           setIsAuthorized(true);
         }
-        setIsAuthorized(true);
       }
       setIsAuthenticating(false);
     }

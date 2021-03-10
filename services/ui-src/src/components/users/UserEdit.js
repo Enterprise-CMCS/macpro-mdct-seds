@@ -39,8 +39,9 @@ const UserEdit = ({ stateList }) => {
 
     // Sort states alphabetically and place in array
     let theStates = [];
+    console.log("zzzData.states", data.states);
     if (data.states) {
-      theStates = data.states.split("-").sort();
+      theStates = data.states.sort();
     }
 
     // Set states to array of objects
@@ -59,7 +60,7 @@ const UserEdit = ({ stateList }) => {
       );
     } else {
       // Get user state, if multiple take only the first
-      const userState = data.states.split("-")[0];
+      const userState = data.states[0];
 
       // Loop through U.S. states to find a match and set to local state (storage)
       for (const state in stateList) {
@@ -112,25 +113,17 @@ const UserEdit = ({ stateList }) => {
       setSelectedStates(e);
       // If from multiselect, else single selection
       if (Array.isArray(e)) {
-        let payload = "";
-
-        let count = 0;
-        e.forEach(i => {
-          if (count === 0) {
-            payload += i.value;
-          } else {
-            payload += "-" + i.value;
-          }
-          count++;
-        });
-        response = payload;
-        // Format for URI use
-        setStatesFromArray(e);
+        // Simplify array
+        let newStates = [];
+        for (const state in e) {
+          newStates.push(e[state].value);
+        }
+        setStatesToSend(newStates);
       } else {
         if (!e.value) {
           e.value = "null";
         }
-        setStatesToSend(e.value);
+        setStatesToSend([e.value]);
         response = e.value;
       }
 
@@ -164,6 +157,8 @@ const UserEdit = ({ stateList }) => {
   };
 
   const updateUserStore = async data => {
+    // Set states from statesToSend (in proper format)
+    data.states = statesToSend;
     await updateUser(data).then(() => {
       alert(`User with username: "${data.username}" has been updated`);
       window.location.reload(false);

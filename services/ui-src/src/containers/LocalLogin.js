@@ -11,7 +11,7 @@ export default function Login() {
 
   function loginUser() {
     const alice = {
-      firstName: "Alice",
+      firstName: "Alicezzz",
       lastName: "Cooper",
       lastLogin: "01/28/2021",
       "custom:ismemberof": "admin",
@@ -23,7 +23,7 @@ export default function Login() {
       userId: "1",
       email: "alicecooper@collabralink.com",
       identities: [{ userId: "AAAA" }],
-      states: "AL-MD-PA",
+      states: ["TX", "MD", "PA"],
       localLogin: true
     };
 

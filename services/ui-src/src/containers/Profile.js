@@ -60,10 +60,10 @@ export default function Profile({ user }) {
     let statesRefined = "";
 
     // Sort alphabetically
-    let statesArray = [];
-    if (states) {
-      statesArray = states.split("-").sort();
-    }
+    console.log("zzzStates", states);
+    console.log("zzzStates typeof", typeof states);
+    const statesArray = states.sort();
+
     // Create string from array, add in commas
     statesArray.forEach((value, i) => {
       if (i === 0) {
