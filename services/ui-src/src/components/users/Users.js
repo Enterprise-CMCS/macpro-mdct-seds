@@ -18,7 +18,9 @@ const Users = () => {
   const [users, setUsers] = useState();
 
   const loadUserData = async () => {
+    console.log("21 start");
     setUsers(await listUsers());
+    console.log("meow");
     console.log("user data set");
   };
 
@@ -128,12 +130,13 @@ const Users = () => {
       {
         name: "States",
         selector: "state_codes",
-        sortable: true,
-        cell: function modifyStateCodes(s) {
-          return s.states ? (
-            <span>{s.states.split("-").sort().join(", ")}</span>
-          ) : null;
-        }
+        sortable: true
+        // ,
+        // cell: function modifyStateCodes(s) {
+        //   return s.states ? (
+        //     <span>{s.states.split("-").sort().join(", ")}</span>
+        //   ) : null;
+        // }
       },
       {
         name: "Status",
