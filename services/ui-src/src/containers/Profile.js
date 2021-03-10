@@ -32,7 +32,6 @@ export default function Profile({ user }) {
     async function onLoad() {
       try {
         const userInfo = await loadProfile();
-        console.log("zzzUserInfo", userInfo);
         setEmail(userInfo.email);
         setFirstName(capitalize(userInfo.first_name));
         setLastName(capitalize(userInfo.last_name));
@@ -55,7 +54,6 @@ export default function Profile({ user }) {
   }
 
   function saveProfile(user, userAttributes) {
-    console.log("profile.js");
     return Auth.updateUserAttributes(user, userAttributes);
   }
 
@@ -63,9 +61,6 @@ export default function Profile({ user }) {
     let statesRefined = "";
 
     // Sort alphabetically
-    console.log("zzzStates", states);
-    console.log("zzzStates typeof", typeof states);
-
     const statesArray = states.sort();
 
     // Create string from array, add in commas
@@ -83,9 +78,7 @@ export default function Profile({ user }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    console.log("profile.js  2");
     let user = await Auth.currentAuthenticatedUser();
-    console.log("profile.js  2");
     try {
       await saveProfile(user, {
         first_name: firstName,
