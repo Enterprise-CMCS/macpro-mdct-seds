@@ -22,7 +22,7 @@ const FormPage = ({ getForm, statusData }) => {
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     getForm(formattedStateName, year, quarterInt, formattedFormName);
-  }, []);
+  }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (
     <>

@@ -14,7 +14,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       setFormDescription(formDetails);
     }
     fetchData();
-  }, []);
+  }, [quarter, form, state, year]);
 
   return (
     <GridContainer>
