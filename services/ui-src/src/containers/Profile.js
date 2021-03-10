@@ -60,8 +60,10 @@ export default function Profile({ user }) {
     let statesRefined = "";
 
     // Sort alphabetically
-    const statesArray = states.split("-").sort();
-
+    let statesArray = [];
+    if (states) {
+      statesArray = states.split("-").sort();
+    }
     // Create string from array, add in commas
     statesArray.forEach((value, i) => {
       if (i === 0) {
