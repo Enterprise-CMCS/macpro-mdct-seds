@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { withRouter, Link } from "react-router-dom";
 import { getFormTypes } from "../../src/libs/api";
@@ -15,7 +13,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       setFormDescription(formDetails);
     }
     fetchData();
-  }, []);
+  }, [form]);
 
   return (
     <GridContainer>
