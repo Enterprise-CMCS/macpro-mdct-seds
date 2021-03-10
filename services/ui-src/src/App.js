@@ -39,6 +39,7 @@ function App() {
         } else {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
+          console.log("zzzData", data);
           newData.isActive = data.Items[0].isActive ?? "true";
 
           // Don't overwrite role if already exists
@@ -109,8 +110,8 @@ function App() {
 
         // If user is Active set
         // this also triggers a reload on useEffect
-        console.log("zzzpayload", payload);
-        if (payload.isActive === true || payload.isActive === "true") {
+        console.log("zzzpayload", user);
+        if (user.isActive === true || user.isActive === "true") {
           setIsAuthorized(true);
         }
       }
