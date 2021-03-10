@@ -18,14 +18,10 @@ const Users = () => {
   const [users, setUsers] = useState();
 
   const loadUserData = async () => {
-    console.log("21 start");
     setUsers(await listUsers());
-    console.log("meow");
-    console.log("user data set");
   };
 
   useEffect(() => {
-    console.log("in use effect");
     async function fetchData() {
       await loadUserData();
     }
@@ -132,8 +128,6 @@ const Users = () => {
         selector: "state_codes",
         sortable: true,
         cell: function modifyStateCodes(s) {
-          console.log("zzzstates", typeof s.states);
-          console.log("zzzstates", s.states);
           return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
         }
       },
