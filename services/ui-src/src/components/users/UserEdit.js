@@ -32,7 +32,9 @@ const UserEdit = ({ stateList }) => {
   const loadUserData = async () => {
     // Retrive user data from datastore
     const getUserData = { userId: id };
+
     const data = await getUser(getUserData);
+    console.log("zzzData", data)
     setUser(data);
     setRole(data.role);
 
