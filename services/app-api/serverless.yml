@@ -11,12 +11,22 @@ plugins:
   - serverless-plugin-warmup
   - serverless-plugin-scripts
   - serverless-offline
-
+  - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  serverlessTerminationProtection:
+    stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
+      - master
+      - val
+      - production
+      - develop
+      - main
+      - impl
+      - val
+      - prod
   infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
   AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
   AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
@@ -109,10 +119,7 @@ functions:
           path: users/{id}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getUsers:
     handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
@@ -121,10 +128,7 @@ functions:
           path: users
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getUserByUsername:
     handler: handlers/users/post/getUserByUsername.main
     role: LambdaApiRole
@@ -133,10 +137,7 @@ functions:
           path: users/get
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -145,10 +146,7 @@ functions:
           path: users/add
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
@@ -157,10 +155,7 @@ functions:
           path: users/delete
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   activateDeactivateUser:
     handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
@@ -169,10 +164,7 @@ functions:
           path: users/activation/{username}
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   updateUser:
     handler: handlers/users/post/updateUser.main
     role: LambdaApiRole
@@ -181,10 +173,7 @@ functions:
           path: users/update/{userId}
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getForm:
     handler: handlers/forms/get.main
     role: LambdaApiRole
@@ -193,10 +182,7 @@ functions:
           path: single-form/{state}/{specifiedYear}/{quarter}/{form}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
@@ -205,22 +191,7 @@ functions:
           path: forms/{stateId}/{specifiedYear}/{quarter}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
-  getFormTypes:
-    handler: handlers/forms/get/getFormTypes.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: form-types
-          method: get
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
 
 resources:
   Conditions:
@@ -230,32 +201,6 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
-    CognitoUserPool:
-      Type: "AWS::Cognito::UserPool"
-      Properties:
-        MfaConfiguration: OFF
-        UserPoolName: ${self:custom.stage}-user-pool
-        UsernameAttributes:
-          - email
-    CognitoUserPoolClient:
-      Type: "AWS::Cognito::UserPoolClient"
-      Properties:
-        ClientName: ${self:custom.stage}-user-pool-client
-        GenerateSecret: False
-        UserPoolId:
-          Ref: CognitoUserPool
-    ApiGatewayAuthorizer:
-      DependsOn:
-        - ApiGatewayRestApi
-      Type: AWS::ApiGateway::Authorizer
-      Properties:
-        Name: ${self:custom.stage}-cognito-authorizer
-        IdentitySource: method.request.header.Authorization
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        Type: COGNITO_USER_POOLS
-        ProviderARNs:
-          - Fn::GetAtt: [CognitoUserPool, Arn]
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
       Type: "AWS::IAM::Role"
       Properties:
@@ -399,10 +344,3 @@ resources:
       Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
     Region:
       Value: !Sub ${AWS::Region}
-    CognitoUserPoolArn:
-      Value:
-        Fn::GetAtt:
-          - CognitoUserPool
-          - Arn
-      Export:
-        Name: CognitoUserPoolArn-${self:custom.stage}

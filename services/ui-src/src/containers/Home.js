@@ -25,6 +25,8 @@ export default function Home({ user }) {
 
   function renderLander() {
     let content = null;
+    console.log(user);
+    console.log("asdfasdfasdf");
     switch (user.role) {
       case "state":
         content = <HomeState />;

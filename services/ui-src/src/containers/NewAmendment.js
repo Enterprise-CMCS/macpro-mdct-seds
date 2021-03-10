@@ -27,7 +27,9 @@ export default function NewAmendment({ fileUpload }) {
   };
 
   async function populateUserInfo() {
+    console.log("newam");
     const userInfo = await Auth.currentSession();
+    console.log("newam");
     setEmail(userInfo.idToken.payload.email);
   }
 
