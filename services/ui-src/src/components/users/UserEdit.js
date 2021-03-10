@@ -34,7 +34,6 @@ const UserEdit = ({ stateList }) => {
     const getUserData = { userId: id };
 
     const data = await getUserById(getUserData);
-    console.log("zzzData", data);
     setUser(data);
     setRole(data.role);
 

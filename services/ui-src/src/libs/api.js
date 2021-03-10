@@ -58,7 +58,6 @@ export function activateDeactivateUser(data) {
 }
 
 export function getUserById(data) {
-  console.log("zzzInside getUser of api.js", data);
   const opts = requestOptions();
   return API.get("amendments", `/users/${data.userId}`, opts);
 }
