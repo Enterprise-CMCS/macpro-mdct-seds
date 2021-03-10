@@ -109,6 +109,7 @@ function App() {
 
         // If user is Active set
         // this also triggers a reload on useEffect
+        console.log("zzzpayload", payload);
         if (payload.isActive === true || payload.isActive === "true") {
           setIsAuthorized(true);
         }
