@@ -32,6 +32,8 @@ function App() {
         // If user doesn't exists, create user
         if (data.Count === 0 || data === false) {
           payload.lastLogin = new Date().toISOString();
+          // Clean up role
+          payload.role = determineRole(payload.role);
           payload.isActive = "true";
           return await createUser(payload);
         } else {
@@ -39,6 +41,7 @@ function App() {
           newData.lastLogin = new Date().toISOString();
           newData.isActive = data.isActive ?? "true";
 
+          // Don't overwrite role if already exists
           if (!data.Items[0].role) {
             newData.role = determineRole(payload.role);
           }
