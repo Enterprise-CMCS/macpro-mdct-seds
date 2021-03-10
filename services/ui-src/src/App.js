@@ -41,7 +41,7 @@ function App() {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
           newData.isActive = data.isActive ?? "true";
-          newData.role = determineRole(payload.role);
+          // newData.role = determineRole(payload.role);
           const user = await updateUser(newData);
           return user.Attributes;
         }
@@ -94,7 +94,7 @@ function App() {
       if (payload) {
         console.log("zzzPayload", payload);
         // Convert from Okta/Cognito into easier to use pieces
-        payload.role = determineRole(payload["custom:ismemberof"]);
+        // payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;
 
         // Either get or create and get user
@@ -121,22 +121,6 @@ function App() {
     onLoad();
   }, [history, isAuthorized]);
 
-<<<<<<< HEAD
-  const determineRole = role => {
-    console.log(`Role: ${role}`)
-    // const roleArray = ["admin", "business", "state"];
-    // if (roleArray.includes(role)) {
-    //   return role;
-    // }
-
-    // if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-    //   return "admin";
-    // } else if (role.includes("CHIP_D_USER_GROUP")) {
-    //   return "state";
-    // } else {
-    //   return null;
-    // }
-=======
   // const determineRole = role => {
   //   const roleArray = ["admin", "business", "state"];
   //   if (roleArray.includes(role)) {
@@ -151,11 +135,6 @@ function App() {
   //     return null;
   //   }
   // };
-
-  const determineRole = role => {
-    return "admin";
->>>>>>> 1796fb5c3ef84296789100c8cec9dab26366f1a8
-  };
 
   return (
     !isAuthenticating && (
