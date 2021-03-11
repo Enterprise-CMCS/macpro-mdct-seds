@@ -38,21 +38,19 @@ const AddUser = ({ currentUser, stateList }) => {
     // Save for multiselect use
     setStateId(option);
 
-    // Save for API use
-    let states = "";
-
-    let first_iteration = true;
-    // Create hyphen separated string of state abbreviations
-    option.forEach(item => {
-      if (first_iteration) {
-        states += item.value;
-        first_iteration = false;
-      } else {
-        states += "-" + item.value;
+    let newStates = [];
+    if (Array.isArray(option)) {
+      // Simplify array for saving to DB
+      for (const state in option) {
+        newStates.push(option[state].value);
       }
-    });
+    } else {
+      if (option.value) {
+        newStates = [option.value];
+      }
+    }
 
-    setStatesToSend(states);
+    setStatesToSend(newStates);
   };
 
   const setRoleOnSelect = option => {
@@ -116,7 +114,7 @@ const AddUser = ({ currentUser, stateList }) => {
                           // Set for searchable use
                           setStateId(option);
                           // Set for sending to API
-                          setStatesToSend(option.value);
+                          setStatesToSend([option.value]);
                         }}
                       />
                     </>

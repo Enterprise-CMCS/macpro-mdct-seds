@@ -9,7 +9,7 @@
     "email": "awoodbury@collabralink.com",
     "isActive": true,
     "role": "admin",
-    "states": "MD-VA",
+    "states": ["MD", "VA"],
     "dateJoined": "2021-02-22T15:20:59.081Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   },
@@ -23,7 +23,7 @@
     "email": "aadcock@collabralink.com",
     "isActive": true,
     "role": "admin",
-    "states": "MD",
+    "states": ["MD"],
     "dateJoined": "2021-02-22T15:28:50.919Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   },
@@ -37,7 +37,7 @@
     "email": "jgillis@collabralink.com",
     "isActive": true,
     "role": "state",
-    "states": "PA",
+    "states": ["PA"],
     "dateJoined": "2021-02-22T15:28:50.919Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   },
@@ -51,7 +51,7 @@
     "email": "tgriesemer@collabralink.com",
     "isActive": true,
     "role": "admin",
-    "states": "CT",
+    "states": ["CT"],
     "dateJoined": "2021-02-22T15:28:50.919Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   },
@@ -65,7 +65,7 @@
     "email": "tdavydets@collabralink.com",
     "isActive": true,
     "role": "admin",
-    "states": "SD-AK-AL",
+    "states": ["SD", "AK", "AL"],
     "dateJoined": "2021-02-22T15:28:50.919Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   },
@@ -79,7 +79,7 @@
     "email": "mdcttest@example.com",
     "isActive": true,
     "role": "admin",
-    "states": "CT",
+    "states": ["CT"],
     "dateJoined": "2021-02-22T15:28:50.919Z",
     "lastLogin": "2021-02-22T15:28:50.919Z"
   }
