@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import GridWithTotals from "../components/GridWithTotals/GridWithTotals";
+import SynthesizedGrid from "../components/SynthesizedGrid/SynthesizedGrid";
 import { sortQuestionColumns } from "../utilityFunctions/sortingFunctions";
 
 const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
@@ -26,15 +27,17 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
       </b>
       {questionNumber !== 5 ? (
         <GridWithTotals
-          questionID={answer_entry}
+          questionData={questionData}
           gridData={sortedRows}
           disabled={disabled}
         />
       ) : (
-        <p>
-          Question five requires special logic. There is a separate ticket for
-          it{" "}
-        </p>
+          <SynthesizedGrid
+              questionData={questionData}
+              gridData={sortedRows}
+              answerData={answerData}
+              disabled={disabled}
+          />
       )}
     </>
   );
