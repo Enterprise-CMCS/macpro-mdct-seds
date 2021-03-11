@@ -29,8 +29,8 @@ export default function Routes({ user, isAuthorized }) {
           {localLogin ? <LocalLogin /> : <Login />}
         </UnauthenticatedRoute>
         <UnauthenticatedRoute exact path="/signup">
-        <Signup />
-      </UnauthenticatedRoute>
+          <Signup />
+        </UnauthenticatedRoute>
       </Switch>
     );
   }
