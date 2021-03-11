@@ -31,7 +31,7 @@ const Quarterly = () => {
     let urlSegment;
     switch (formName) {
       case "GRE":
-        urlSegment = "gre";
+        urlSegment = "GRE";
         break;
       case "64.EC":
         urlSegment = "64-EC";
