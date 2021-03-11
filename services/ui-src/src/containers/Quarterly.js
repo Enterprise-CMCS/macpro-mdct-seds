@@ -34,19 +34,19 @@ const Quarterly = () => {
         urlSegment = "gre";
         break;
       case "64.EC":
-        urlSegment = "64ec";
+        urlSegment = "64-EC";
         break;
       case "64.ECI":
-        urlSegment = "64eci";
+        urlSegment = "64-ECI";
         break;
       case "64.21E":
-        urlSegment = "64-21e";
+        urlSegment = "64-21E";
         break;
-      case "64.21EI":
-        urlSegment = "64-21ei";
+      case "21E":
+        urlSegment = "21E";
         break;
-      case "21E": // may need to update all of the case statements
-        urlSegment = "21e";
+      case "21PW":
+        urlSegment = "21PW";
         break;
       default:
         urlSegment = false;
