@@ -336,7 +336,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-21PW-04')].rows[3].col5",
-              "$..*[?(@.question=='21PW-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-21PW-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
