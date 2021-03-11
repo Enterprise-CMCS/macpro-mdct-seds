@@ -79,9 +79,6 @@ function App() {
 
           // If user is logged in, get payload
           if (data.signInUserSession) {
-            console.log(`DATA: ${data}`);
-            console.log(`DATA: ${data}`);
-
             payload = data.signInUserSession.idToken.payload;
           }
         } catch (error) {
@@ -96,12 +93,11 @@ function App() {
 
       if (payload) {
         // Convert from Okta/Cognito into easier to use pieces
-        // payload.role = determineRole(payload["custom:ismemberof"]);
+        payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;
 
         // Either get or create and get user
         const user = await getUpdateOrAddUser(payload);
-        console.log(user);
 
         // If no states, send used to unauthorized
         if (!user.states || user.states === "") {
