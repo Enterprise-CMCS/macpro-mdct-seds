@@ -26,6 +26,7 @@
     "@types/yargs": "^15.0.10",
     "chromedriver": "^88.0.0",
     "dotenv": "^8.2.0",
+    "eslint-loader": "^4.0.2",
     "nightwatch": "^1.5.1",
     "prettier": "2.2.1",
     "serverless": "^2.7.0",

@@ -119,10 +119,7 @@ functions:
           path: users/{id}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getUsers:
     handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
@@ -131,10 +128,7 @@ functions:
           path: users
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getUserByUsername:
     handler: handlers/users/post/getUserByUsername.main
     role: LambdaApiRole
@@ -143,10 +137,7 @@ functions:
           path: users/get
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -155,10 +146,7 @@ functions:
           path: users/add
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
@@ -167,10 +155,7 @@ functions:
           path: users/delete
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   activateDeactivateUser:
     handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
@@ -179,10 +164,7 @@ functions:
           path: users/activation/{username}
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   updateUser:
     handler: handlers/users/post/updateUser.main
     role: LambdaApiRole
@@ -191,10 +173,7 @@ functions:
           path: users/update/{userId}
           method: post
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getForm:
     handler: handlers/forms/get.main
     role: LambdaApiRole
@@ -203,10 +182,7 @@ functions:
           path: single-form/{state}/{specifiedYear}/{quarter}/{form}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/getFormsList.main
     role: LambdaApiRole
@@ -215,10 +191,7 @@ functions:
           path: forms/{stateId}/{specifiedYear}/{quarter}
           method: get
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+          authorizer: aws_iam
 
 resources:
   Conditions:
@@ -228,32 +201,6 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
-    CognitoUserPool:
-      Type: "AWS::Cognito::UserPool"
-      Properties:
-        MfaConfiguration: OFF
-        UserPoolName: ${self:custom.stage}-user-pool
-        UsernameAttributes:
-          - email
-    CognitoUserPoolClient:
-      Type: "AWS::Cognito::UserPoolClient"
-      Properties:
-        ClientName: ${self:custom.stage}-user-pool-client
-        GenerateSecret: False
-        UserPoolId:
-          Ref: CognitoUserPool
-    ApiGatewayAuthorizer:
-      DependsOn:
-        - ApiGatewayRestApi
-      Type: AWS::ApiGateway::Authorizer
-      Properties:
-        Name: ${self:custom.stage}-cognito-authorizer
-        IdentitySource: method.request.header.Authorization
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        Type: COGNITO_USER_POOLS
-        ProviderARNs:
-          - Fn::GetAtt: [ CognitoUserPool, Arn ]
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
       Type: "AWS::IAM::Role"
       Properties:
@@ -397,10 +344,3 @@ resources:
       Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
     Region:
       Value: !Sub ${AWS::Region}
-    CognitoUserPoolArn:
-      Value:
-        Fn::GetAtt:
-          - CognitoUserPool
-          - Arn
-      Export:
-        Name: CognitoUserPoolArn-${self:custom.stage}
