@@ -20,7 +20,6 @@ import FormPage from "./components/form/FormPage";
 
 export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
-
   if (!isAuthorized) {
     return (
       <Switch>

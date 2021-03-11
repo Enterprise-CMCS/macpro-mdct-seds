@@ -36,7 +36,9 @@ export default function Profile({ user }) {
         setFirstName(capitalize(userInfo.first_name));
         setLastName(capitalize(userInfo.last_name));
         setRole(capitalize(userInfo.role));
-        setStates(formatStates(userInfo.states));
+        if (userInfo.states) {
+          setStates(formatStates(userInfo.states));
+        }
       } catch (e) {
         onError(e);
       }
@@ -52,7 +54,6 @@ export default function Profile({ user }) {
   }
 
   function saveProfile(user, userAttributes) {
-    console.log("profile.js");
     return Auth.updateUserAttributes(user, userAttributes);
   }
 
@@ -60,7 +61,7 @@ export default function Profile({ user }) {
     let statesRefined = "";
 
     // Sort alphabetically
-    const statesArray = states.split("-").sort();
+    const statesArray = states.sort();
 
     // Create string from array, add in commas
     statesArray.forEach((value, i) => {
@@ -77,9 +78,7 @@ export default function Profile({ user }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    console.log("profile.js  2");
     let user = await Auth.currentAuthenticatedUser();
-    console.log("profile.js  2");
     try {
       await saveProfile(user, {
         first_name: firstName,

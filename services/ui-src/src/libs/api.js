@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import config from "../config";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
 const requestOptions = async () => {
@@ -15,19 +15,7 @@ const requestOptions = async () => {
     };
     return options;
   } else {
-    console.log("zzzMade it into else in api.js");
-    const user = await Auth.currentAuthenticatedUser();
-    console.log("zzzUser", user);
-    const token = user.signInUserSession.idToken.jwtToken;
-    console.log("zzzToken", token);
-
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    };
-
-    return options;
+    return {};
   }
 };
 
@@ -60,9 +48,6 @@ export function deleteAmendment(id) {
 
 export function listUsers() {
   const opts = requestOptions();
-  console.log("opts from listUsers() in api.js");
-  console.log(opts);
-
   return API.get("amendments", `/users`, opts);
 }
 
@@ -72,19 +57,16 @@ export function activateDeactivateUser(data) {
   return API.post("amendments", `/users/activation/${data.username}`, opts);
 }
 
-export function getUser(data) {
-  console.log("zzzInside getUser of api.js");
+export function getUserById(data) {
   const opts = requestOptions();
-  opts.body = data;
-  console.log("zzzOpts from getUser of api.js", opts);
   return API.get("amendments", `/users/${data.userId}`, opts);
 }
 
 export function getUserByUsername(data) {
-  console.log("zzzGetUesrByUserName");
+  // console.log("zzzGetUesrByUserName");
   const opts = requestOptions();
   opts.body = data;
-  console.log("zzzGetUesrByUserName opts", opts);
+  // console.log("zzzGetUesrByUserName opts", opts);
   return API.post("amendments", `/users/get`, opts);
 }
 
