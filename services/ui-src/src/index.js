@@ -16,6 +16,7 @@ Amplify.configure({
     userPoolId: config.cognito.USER_POOL_ID,
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID,
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
     oauth: {
       domain: config.cognito.APP_CLIENT_DOMAIN,
       redirectSignIn: config.cognito.REDIRECT_SIGNIN,
