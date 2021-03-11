@@ -102,7 +102,7 @@ function App() {
 
         // Either get or create and get user
         const user = await getUpdateOrAddUser(payload);
-        console.log(user)
+          console.log(user)
 
         // If no states, send used to unauthorized
         if (!user.states || user.states === "") {
@@ -129,7 +129,6 @@ function App() {
     if (roleArray.includes(role)) {
       return role;
     }
-    if(role) {
       if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
         return "admin";
       } else if (role.includes("CHIP_D_USER_GROUP")) {
@@ -137,7 +136,6 @@ function App() {
       } else {
         return null;
       }
-    } else return null;
   };
 
   return (
