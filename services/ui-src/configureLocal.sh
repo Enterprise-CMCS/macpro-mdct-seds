@@ -20,8 +20,8 @@ cognito_region=`sh ../output.sh ../ui-auth Region $stage`
 cognito_identity_pool_id=`sh ../output.sh ../ui-auth IdentityPoolId $stage`
 cognito_user_pool_id=`sh ../output.sh ../ui-auth UserPoolId $stage`
 cognito_client_id=`sh ../output.sh ../ui-auth UserPoolClientId $stage`
-cognito_user_pool_client_id=`sh ../output.sh ../ui-auth UserPoolClientId`
-cognito_user_pool_client_domain=`sh ../output.sh ../ui-auth UserPoolClientDomain`
+cognito_user_pool_client_id=`sh ../output.sh ../ui-auth UserPoolClientId $stage`
+cognito_user_pool_client_domain=`sh ../output.sh ../ui-auth UserPoolClientDomain $stage`
 s3_attachments_bucket_region=`sh ../output.sh ../uploads Region $stage`
 s3_attachements_bucket_name=`sh ../output.sh ../uploads AttachmentsBucketName $stage`
 
