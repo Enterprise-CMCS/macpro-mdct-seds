@@ -17,9 +17,10 @@ const FormPage = ({ getForm, statusData }) => {
   // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
   const formattedStateName = state.toUpperCase();
   const quarterInt = Number.parseInt(quarter).toString();
-  const formattedFormName = formName.toUpperCase();
+  const formattedFormName = formName.toUpperCase().replace("-", ".");
 
-  // Call the API and set questions, answers and status data in redux based on URL parameters
+
+    // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     getForm(formattedStateName, year, quarterInt, formattedFormName);
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);

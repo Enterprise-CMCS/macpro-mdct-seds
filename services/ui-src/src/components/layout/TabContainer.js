@@ -7,29 +7,46 @@ import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs, questions, answers, disabled, quarter }) => {
+const TabContainer = ({
+                          tabDetails,
+                          questions,
+                          answers,
+                          disabled,
+                          currentTabs,
+    quarter
+                      }) => {
   return (
     <Tabs>
       <TabList>
-        {tabs.map((tab, idx) => {
-          return <Tab key={idx}>{tab.age_range}</Tab>;
-        })}
-        <Tab>Summary</Tab>
-        <Tab>Certification</Tab>
+          {currentTabs.map((tab, idx) => {
+              const rangeDetails = tabDetails.find(
+                  element => tab === element.range_id
+              );
+
+              // Custom tab label from age range ID
+              const tabLabel = rangeDetails
+                  ? rangeDetails.age_range
+                  : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+              return <Tab key={idx}>{tabLabel}</Tab>;
+          })}
+          <Tab>Summary</Tab>
+          <Tab>Certification</Tab>
       </TabList>
 
-      {tabs.map((tab, idx) => {
-        // Extract the range ID and filter the array of form answers by tab
-        const ageRangeID = tab.range_id;
-        const tabAnswers = answers.filter(
-          element => element.rangeId === ageRangeID
-        );
+        {currentTabs.map((tab, idx) => {
+            // Filter out just the answer objects that belong in this tab
+            const tabAnswers = answers.filter(element => element.rangeId === tab);
 
+            const ageRangeDetails = tabDetails.find(
+                element => tab === element.range_id
+            );
         return (
           <TabPanel key={idx}>
-            <div className="age-range-description">
-              <h3>{tab.age_description}:</h3>
-            </div>
+              {ageRangeDetails ? (
+                  <div className="age-range-description">
+                      <h3>{ageRangeDetails.age_description}:</h3>
+                  </div>
+              ) : null}
 
             {questions.map((singleQuestion, idx) => {
               // Extract the ID from each question and find its corresponding answer object
@@ -57,7 +74,7 @@ const TabContainer = ({ tabs, questions, answers, disabled, quarter }) => {
                 returnComponent = (
                     <QuestionComponent
                         key={idx}
-                        rangeID={tab.range_id}
+                        rangeID={tab}
                         questionData={singleQuestion}
                         answerData={questionAnswer}
                         disabled={disabled}
@@ -81,7 +98,8 @@ const TabContainer = ({ tabs, questions, answers, disabled, quarter }) => {
 };
 
 TabContainer.propTypes = {
-  tabs: PropTypes.array.isRequired,
+  currentTabs: PropTypes.array.isRequired,
+  tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
   disabled: PropTypes.bool.isRequired
@@ -91,7 +109,8 @@ const mapState = state => ({
   disabled:
     state.currentForm.statusData.not_applicable ||
     state.currentForm.statusData.status === "final",
-  tabs: state.global.age_ranges,
+  currentTabs: state.currentForm.tabs,
+  tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers
 });
