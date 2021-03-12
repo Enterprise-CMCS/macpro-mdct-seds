@@ -190,7 +190,7 @@ const Quarterly = () => {
       }
     }
   };
-
+  console.log(stateFormsList);
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>

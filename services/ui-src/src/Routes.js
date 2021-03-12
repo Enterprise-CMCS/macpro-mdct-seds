@@ -16,7 +16,7 @@ import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 import Unauthorized from "./containers/Unauthorized";
-import FormPage from "./components/FormPage";
+import FormPage from "./components/form/FormPage";
 
 export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";

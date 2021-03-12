@@ -25,54 +25,37 @@ export const updatedStatus = activeBoolean => {
   };
 };
 
-// ranges 6 of them:
-// 01 = age 0-1
-// 05
-// 18
-// 12
-//
-
-// questions
-// NO QUARTER
-// NO AGE RANGE
-// NO STATE
-//(9) :year :form features--questionNumber
-
-// answer
-// answer_entry = state, year, quarter, form, ageRange, question,
-//(45) :year :form :questionNumber :ageRange :state :quarter
-
-// answerObject:
-
 // THUNKS
 export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
     try {
-      // Get questions and answers from dynamo
+      // Call single-form endpoint
       const { questions, answers } = await getSingleForm(
         state,
         year,
         quarter,
         formName
       );
+
+      // Call state forms endpoint for form status data
+      const stateFormsByQuarter = await getStateForms(state, year, quarter);
+
       // Sort questions by question number
       let sortedQuestions = [...questions].sort(sortQuestionsByNumber);
 
       // Sort answers
 
-      // Get status data for quarter from dynamo
-      const stateFormsByQuarter = await getStateForms(state, year, quarter);
       // Filter status data for single form
       const singleFormStatusData = stateFormsByQuarter.find(
         ({ form }) => form === formName
       );
-
+      // Final payload for redux
       const allFormData = {
         answers: answers,
         questions: sortedQuestions,
         statusData: singleFormStatusData
       };
-
+      // Dispatch action creator to set data in redux
       dispatch(gotFormData(allFormData));
     } catch (error) {
       console.log("Error:", error);

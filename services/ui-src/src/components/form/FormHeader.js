@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { withRouter, Link } from "react-router-dom";
-import { getFormTypes } from "../../src/libs/api";
+import { Link } from "react-router-dom";
+import { getFormTypes } from "../../../src/libs/api";
 
 const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
@@ -13,27 +14,33 @@ const FormHeader = ({ quarter, form, year, state }) => {
       setFormDescription(formDetails);
     }
     fetchData();
-  }, [form]);
+  }, [quarter, form, state, year]);
 
   return (
     <GridContainer>
       <Grid row className="upper-form-nav">
-        <Link to="/">
+        <Link className="upper-form-links" to="/">
           {" "}
           Enrollment Data Home {">"}
           {"   "}
         </Link>
-        <Link to={`/forms/${state}/${year}/${quarter}`}>
-          {`Q${quarter} ${year}`}
+        <Link
+          className="upper-form-links"
+          to={`/forms/${state}/${year}/${quarter}`}
+        >
+          {` Q${quarter} ${year} > `}
         </Link>
-        <Link> {`Form ${form}`} </Link>
+        <Link className="upper-form-links" to={window.location.pathname}>
+          {" "}
+          {` Form ${form}`}{" "}
+        </Link>
       </Grid>
 
       <Grid row className="form-description-bar">
-        <p>FORM {form}</p>
-        <hr className="solid" />
-        <h2>{formDescription.form_name}</h2>
-        <p> {formDescription.form_text}</p>
+        <h5>FORM {form}</h5>
+        <hr />
+        <h2 className="form-name">{formDescription.form_name}</h2>
+        <p className="form-description"> {formDescription.form_text}</p>
       </Grid>
 
       <Grid row className="program-code-bar">
@@ -50,11 +57,11 @@ const FormHeader = ({ quarter, form, year, state }) => {
   );
 };
 
-// FormHeader.propTypes = {
-//   quarter: PropTypes.object.isRequired,
-//   form: PropTypes.func.isRequired,
-//   year: PropTypes.func.isRequired,
-//   state: PropTypes.func.isRequired
-// };
+FormHeader.propTypes = {
+  quarter: PropTypes.string.isRequired,
+  form: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired
+};
 
-export default withRouter(FormHeader);
+export default FormHeader;
