@@ -8,24 +8,16 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  let data = JSON.parse(event.body);
-
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.FormsTableName,
     Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeValues: {
-      ":username": data.username,
-    },
-    FilterExpression: "username = :username",
   };
 
   const result = await dynamoDb.scan(params);
 
   if (result.Count === 0) {
-    return false;
+    throw new Error("Form type query failed");
   }
 
-  // Return the retrieved item
-  return result;
+  return result.Items;
 });

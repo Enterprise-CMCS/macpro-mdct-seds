@@ -18,30 +18,34 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("zzzConfig.apiGateway.URL", config.apiGateway.URL);
     async function getUpdateOrAddUser(payload) {
       // Set ismemberof to role for easier comprehension
       payload.role = payload["custom:ismemberof"];
       payload.username = payload.identities[0].userId;
 
       if (payload.identities) {
-        console.log("zzzPayload.identities", payload.identities);
         // Check if user exists
         const data = await getUserByUsername({
           username: payload.identities[0].userId
         });
 
         // If user doesn't exists, create user
-        console.log("zzzData", data);
         if (data.Count === 0 || data === false) {
           payload.lastLogin = new Date().toISOString();
+          // Clean up role
+          payload.role = determineRole(payload.role);
           payload.isActive = "true";
           return await createUser(payload);
         } else {
           let newData = data.Items[0];
           newData.lastLogin = new Date().toISOString();
-          newData.isActive = data.isActive ?? "true";
-          newData.role = determineRole(payload.role);
+          newData.isActive = data.Items[0].isActive ?? "true";
+
+          // Don't overwrite role if already exists
+          if (!data.Items[0].role) {
+            newData.role = determineRole(payload.role);
+          }
+
           const user = await updateUser(newData);
           return user.Attributes;
         }
@@ -88,7 +92,6 @@ function App() {
       }
 
       if (payload) {
-        console.log("zzzPayload", payload);
         // Convert from Okta/Cognito into easier to use pieces
         payload.role = determineRole(payload["custom:ismemberof"]);
         payload.username = payload.identities[0].userId;
@@ -106,7 +109,7 @@ function App() {
 
         // If user is Active set
         // this also triggers a reload on useEffect
-        if (payload.isActive === true || payload.isActive === "true") {
+        if (user.isActive === true || user.isActive === "true") {
           setIsAuthorized(true);
         }
       }
@@ -122,10 +125,12 @@ function App() {
       return role;
     }
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
+    if (role) {
+      if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+        return "admin";
+      } else if (role.includes("CHIP_D_USER_GROUP")) {
+        return "state";
+      }
     } else {
       return null;
     }
