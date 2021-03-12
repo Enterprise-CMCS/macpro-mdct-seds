@@ -8,53 +8,53 @@ import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
 const TabContainer = ({
-                          tabDetails,
-                          questions,
-                          answers,
-                          disabled,
-                          currentTabs,
-    quarter
-                      }) => {
+  tabDetails,
+  questions,
+  answers,
+  disabled,
+  currentTabs,
+  quarter
+}) => {
   return (
     <Tabs>
       <TabList>
-          {currentTabs.map((tab, idx) => {
-              const rangeDetails = tabDetails.find(
-                  element => tab === element.range_id
-              );
+        {currentTabs.map((tab, idx) => {
+          const rangeDetails = tabDetails.find(
+            element => tab === element.range_id
+          );
 
-              // Custom tab label from age range ID
-              const tabLabel = rangeDetails
-                  ? rangeDetails.age_range
-                  : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
-              return <Tab key={idx}>{tabLabel}</Tab>;
-          })}
-          <Tab>Summary</Tab>
-          <Tab>Certification</Tab>
+          // Custom tab label from age range ID
+          const tabLabel = rangeDetails
+            ? rangeDetails.age_range
+            : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+          return <Tab key={idx}>{tabLabel}</Tab>;
+        })}
+        <Tab>Summary</Tab>
+        <Tab>Certification</Tab>
       </TabList>
 
-        {currentTabs.map((tab, idx) => {
-            // Filter out just the answer objects that belong in this tab
-            const tabAnswers = answers.filter(element => element.rangeId === tab);
+      {currentTabs.map((tab, idx) => {
+        // Filter out just the answer objects that belong in this tab
+        const tabAnswers = answers.filter(element => element.rangeId === tab);
 
-            const ageRangeDetails = tabDetails.find(
-                element => tab === element.range_id
-            );
+        const ageRangeDetails = tabDetails.find(
+          element => tab === element.range_id
+        );
         return (
           <TabPanel key={idx}>
-              {ageRangeDetails ? (
-                  <div className="age-range-description">
-                      <h3>{ageRangeDetails.age_description}:</h3>
-                  </div>
-              ) : null}
+            {ageRangeDetails ? (
+              <div className="age-range-description">
+                <h3>{ageRangeDetails.age_description}:</h3>
+              </div>
+            ) : null}
 
             {questions.map((singleQuestion, idx) => {
               // Extract the ID from each question and find its corresponding answer object
               const questionID = singleQuestion.question;
-              console.log("questionID",questionID)
-              console.log("singleQuestion",singleQuestion)
+              console.log("questionID", questionID);
+              console.log("singleQuestion", singleQuestion);
               const questionAnswer = tabAnswers.find(
-                  element => element.question === questionID
+                element => element.question === questionID
               );
 
               let returnComponent = "";
@@ -62,23 +62,24 @@ const TabContainer = ({
               let tempContextData = {};
 
               if (singleQuestion.context_data) {
-                tempContextData = singleQuestion.context_data.show_if_quarter_in;
+                tempContextData =
+                  singleQuestion.context_data.show_if_quarter_in;
                 activeContextData = true;
               }
               //Conditional display only works with single quarters and equals (so far)
               if (
-                  activeContextData === false ||
-                  (activeContextData && tempContextData === quarter)
+                activeContextData === false ||
+                (activeContextData && tempContextData === quarter)
               ) {
-                  console.log("answerData", questionAnswer)
+                console.log("answerData", questionAnswer);
                 returnComponent = (
-                    <QuestionComponent
-                        key={idx}
-                        rangeID={tab}
-                        questionData={singleQuestion}
-                        answerData={questionAnswer}
-                        disabled={disabled}
-                    />
+                  <QuestionComponent
+                    key={idx}
+                    rangeID={tab}
+                    questionData={singleQuestion}
+                    answerData={questionAnswer}
+                    disabled={disabled}
+                  />
                 );
               }
               return returnComponent;

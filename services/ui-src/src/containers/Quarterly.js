@@ -28,11 +28,10 @@ const Quarterly = () => {
   }, [state, year, quarter]);
   // Translate form name from redux into url value
   const getFormSegment = formName => {
-    let urlSegment
-    if(formName !== ""){
-      urlSegment = formName.replace('.','-');
-    }
-    else{
+    let urlSegment;
+    if (formName !== "") {
+      urlSegment = formName.replace(".", "-");
+    } else {
       urlSegment = false;
     }
 

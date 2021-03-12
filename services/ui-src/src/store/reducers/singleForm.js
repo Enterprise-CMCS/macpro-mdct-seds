@@ -1,6 +1,6 @@
 // ENDPOINTS
 import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
-import { sortQuestionsByNumber,extractAgeRanges } from "../helperFunctions";
+import { sortQuestionsByNumber, extractAgeRanges } from "../helperFunctions";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -44,7 +44,7 @@ export const getFormData = (state, year, quarter, formName) => {
       const sortedQuestions = [...questions].sort(sortQuestionsByNumber);
 
       // Sort answers to get the available age ranges
-      const presentAgeRanges = extractAgeRanges(answers)
+      const presentAgeRanges = extractAgeRanges(answers);
 
       // Filter status data for single form
       const singleFormStatusData = stateFormsByQuarter.find(

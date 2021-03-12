@@ -19,8 +19,7 @@ const FormPage = ({ getForm, statusData }) => {
   const quarterInt = Number.parseInt(quarter).toString();
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
-
-    // Call the API and set questions, answers and status data in redux based on URL parameters
+  // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     getForm(formattedStateName, year, quarterInt, formattedFormName);
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
@@ -38,7 +37,7 @@ const FormPage = ({ getForm, statusData }) => {
 
       <GridContainer>
         <div className="tab-container">
-          <TabContainer quarter={quarter}/>
+          <TabContainer quarter={quarter} />
         </div>
       </GridContainer>
 
