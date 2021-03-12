@@ -10,6 +10,7 @@ import {
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
+export const UPDATE_ANSWER = "UPDATE_ANSWER";
 
 // ACTION CREATORS
 export const gotFormData = formObject => {
@@ -22,6 +23,13 @@ export const updatedStatus = activeBoolean => {
   return {
     type: UPDATE_FORM_STATUS,
     activeStatus: activeBoolean
+  };
+};
+
+export const gotAnswer = something => {
+  return {
+    type: UPDATE_ANSWER,
+    something
   };
 };
 
@@ -70,6 +78,13 @@ export const disableForm = activeBoolean => {
   };
 };
 
+export const setAnswer = something => {
+  return dispatch => {
+    dispatch(gotAnswer(something));
+  };
+};
+// should there be some kind of loading indicator so people dont navigate away while save is occuring
+
 // INITIAL STATE
 const initialState = {
   questions: [],
@@ -80,6 +95,11 @@ const initialState = {
 // REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_ANSWER:
+      return {
+        ...state,
+        answers: [...state.answers]
+      };
     case LOAD_SINGLE_FORM:
       return {
         ...state,
