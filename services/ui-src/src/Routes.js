@@ -16,6 +16,7 @@ import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 import Unauthorized from "./containers/Unauthorized";
+import FormPage from "./components/form/FormPage";
 
 export default function Routes({ user, isAuthorized }) {
   const localLogin = config.LOCAL_LOGIN === "true";
@@ -50,6 +51,9 @@ export default function Routes({ user, isAuthorized }) {
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/example">
         <Example />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter/:formName">
+        <FormPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
         <Profile user={user} />

@@ -5,8 +5,9 @@ import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab";
 import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
+import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs }) => {
+const TabContainer = ({ tabs, questions, answers, disabled }) => {
   return (
     <Tabs>
       <TabList>
@@ -18,11 +19,35 @@ const TabContainer = ({ tabs }) => {
       </TabList>
 
       {tabs.map((tab, idx) => {
-        // The questions for each tab will go inside of the tab Panels
+        // Extract the range ID and filter the array of form answers by tab
+        const ageRangeID = tab.range_id;
+        const tabAnswers = answers.filter(
+          element => element.rangeId === ageRangeID
+        );
+
         return (
           <TabPanel key={idx}>
-            <b>{tab.age_description}:</b>{" "}
-            {<p>{loremIpsum} This is where the questions will go! </p>}
+            <div className="age-range-description">
+              <h3>{tab.age_description}:</h3>
+            </div>
+
+            {questions.map((singleQuestion, idx) => {
+              // Extract the ID from each question and find its corresponding answer object
+              const questionID = singleQuestion.question;
+              const questionAnswer = tabAnswers.find(
+                element => element.question === questionID
+              );
+
+              return (
+                <QuestionComponent
+                  key={idx}
+                  rangeID={tab.range_id}
+                  questionData={singleQuestion}
+                  answerData={questionAnswer}
+                  disabled={disabled}
+                />
+              );
+            })}
           </TabPanel>
         );
       })}
@@ -38,14 +63,19 @@ const TabContainer = ({ tabs }) => {
 };
 
 TabContainer.propTypes = {
-  tabs: PropTypes.array.isRequired
+  tabs: PropTypes.array.isRequired,
+  questions: PropTypes.array.isRequired,
+  answers: PropTypes.array.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 const mapState = state => ({
-  tabs: state.global.age_ranges
+  disabled:
+    state.currentForm.statusData.not_applicable ||
+    state.currentForm.statusData.status === "final",
+  tabs: state.global.age_ranges,
+  questions: state.currentForm.questions,
+  answers: state.currentForm.answers
 });
-
-const loremIpsum =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 export default connect(mapState)(TabContainer);

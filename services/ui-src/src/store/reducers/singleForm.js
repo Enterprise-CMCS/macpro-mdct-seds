@@ -1,16 +1,18 @@
+// ENDPOINTS
+import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
+import { sortQuestionsByNumber } from "../helperFunctions";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../actions/certify";
-import * as dummydata from "../toDelete/sample21Equery.json";
-const data = dummydata.default[0];
+
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 
 // ACTION CREATORS
-export const gotFormData = (formObject = {}) => {
+export const gotFormData = formObject => {
   return {
     type: LOAD_SINGLE_FORM,
     formObject
@@ -24,13 +26,41 @@ export const updatedStatus = activeBoolean => {
 };
 
 // THUNKS
-// Make call to aws-amplify
-export const getFormData = ({ formID }) => {
+export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
-    // Call aws amplify endpoint. This is a placeholder
-    // const { data } = results;
+    try {
+      // Call single-form endpoint
+      const { questions, answers } = await getSingleForm(
+        state,
+        year,
+        quarter,
+        formName
+      );
 
-    dispatch(gotFormData(data));
+      // Call state forms endpoint for form status data
+      const stateFormsByQuarter = await getStateForms(state, year, quarter);
+
+      // Sort questions by question number
+      let sortedQuestions = [...questions].sort(sortQuestionsByNumber);
+
+      // Sort answers
+
+      // Filter status data for single form
+      const singleFormStatusData = stateFormsByQuarter.find(
+        ({ form }) => form === formName
+      );
+      // Final payload for redux
+      const allFormData = {
+        answers: answers,
+        questions: sortedQuestions,
+        statusData: singleFormStatusData
+      };
+      // Dispatch action creator to set data in redux
+      dispatch(gotFormData(allFormData));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
   };
 };
 
@@ -42,7 +72,9 @@ export const disableForm = activeBoolean => {
 
 // INITIAL STATE
 const initialState = {
-  ...data
+  questions: [],
+  answers: [],
+  statusData: {}
 };
 
 // REDUCER
@@ -51,7 +83,9 @@ export default (state = initialState, action) => {
     case LOAD_SINGLE_FORM:
       return {
         ...state,
-        ...action.formObject
+        questions: action.formObject.questions,
+        answers: action.formObject.answers,
+        statusData: action.formObject.statusData
       };
     case UPDATE_FORM_STATUS:
       return {
