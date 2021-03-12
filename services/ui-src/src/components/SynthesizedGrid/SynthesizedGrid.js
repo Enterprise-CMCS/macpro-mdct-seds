@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals"
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import jsonpath from "../util/jsonpath";
 
 const SynthesizedGrid = props => {
 
@@ -10,8 +11,6 @@ const SynthesizedGrid = props => {
     const {answerData,questionData, gridData, allAnswers} = props
     console.log("questionData",questionData)
     console.log("answerData",answerData)
-    //let yearForm = answerData.question.substring(0,answerData.question.length -3)
-    console.log("yearForm",yearForm)
 
     let tempGridData = []
     const tabAnswers = allAnswers.filter(
@@ -34,7 +33,7 @@ const SynthesizedGrid = props => {
           }
           //calculate values for each column by row
           else{
-            let tempCalculatedValue = calculateValue(key[1][0],tabAnswers,yearForm)
+            let tempCalculatedValue = calculateValue(key[1][0],tabAnswers)
             tempRowObject = Object.assign(tempRowObject, {[key[0]]:tempCalculatedValue})
           }
         })
@@ -57,21 +56,23 @@ const SynthesizedGrid = props => {
 
   const pullValue = (target,tabAnswers) => {
     const targetInfo = target.split("'")
-    console.log("target",target)
-    console.log("tabAnswers",tabAnswers)
-    //const returnValue = tabAnswers.filter(element => element.question === targetInfo[1]);
-
+    const rowIndex = targetInfo[2].split("rows[")[1].substring(0,1)
+    const colNumber = targetInfo[2].substring(targetInfo[2].length - 4)
+    const tempvalue = selectFragmentById(tabAnswers,target)
+    console.log("rowIndex",rowIndex)
+    console.log("colNumber",colNumber)
+    const questionAnswer1 = tabAnswers.filter(element => element.question === targetInfo[1]);
   }
 
-  return (
-    <GridWithTotals //NEED TO UPDATE, THIS IS GENERIC
-        questionData={questionData}
-        gridData={sortedRows}
-        disabled={disabled}
-    />
-  );
+  return ("tst");
 };
 
+export const selectFragmentById = (state, id) => {
+  const jpexpr = `$..*[?(@.id=='${id}')]`;
+  const fragment = jsonpath.query(state, id)[0];
+  console.log("fragment", fragment)
+  return fragment;
+};
 
 SynthesizedGrid.propTypes = {
   answerData: PropTypes.array.isRequired,

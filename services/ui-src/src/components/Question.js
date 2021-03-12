@@ -27,7 +27,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
       </b>
       {questionNumber !== 5 ? (
         <GridWithTotals
-          questionData={questionData}
+          questionID={answer_entry}
           gridData={sortedRows}
           disabled={disabled}
         />
