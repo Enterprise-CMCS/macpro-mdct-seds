@@ -29,28 +29,12 @@ const Quarterly = () => {
   // Translate form name from redux into url value
   const getFormSegment = formName => {
     let urlSegment;
-    switch (formName) {
-      case "GRE":
-        urlSegment = "GRE";
-        break;
-      case "64.EC":
-        urlSegment = "64-EC";
-        break;
-      case "64.ECI":
-        urlSegment = "64-ECI";
-        break;
-      case "64.21E":
-        urlSegment = "64-21E";
-        break;
-      case "21E":
-        urlSegment = "21E";
-        break;
-      case "21PW":
-        urlSegment = "21PW";
-        break;
-      default:
-        urlSegment = false;
+    if (formName !== "") {
+      urlSegment = formName.replace(".", "-");
+    } else {
+      urlSegment = false;
     }
+
     return urlSegment;
   };
 

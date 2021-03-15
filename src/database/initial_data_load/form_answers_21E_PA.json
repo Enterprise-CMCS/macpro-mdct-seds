@@ -336,7 +336,7 @@
           {
             "targets": [
               "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -876,7 +876,7 @@
           {
             "targets": [
               "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -1416,7 +1416,7 @@
           {
             "targets": [
               "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -1956,7 +1956,7 @@
           {
             "targets": [
               "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -2496,7 +2496,7 @@
           {
             "targets": [
               "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"

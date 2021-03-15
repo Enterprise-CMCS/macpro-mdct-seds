@@ -1,6 +1,5 @@
 import { API } from "aws-amplify";
 import config from "../config";
-// import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
 const requestOptions = async () => {

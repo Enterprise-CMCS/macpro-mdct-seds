@@ -336,7 +336,7 @@
           {
             "targets": [
               "$..*[?(@.question=='64.21E-2021-04')].rows[3].col5",
-              "$..*[?(@.iquestiond=='64.21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='64.21E-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
