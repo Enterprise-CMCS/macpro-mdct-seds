@@ -38,7 +38,7 @@ export const getUser = ({ userData }) => {
 
 // INITIAL STATE
 const initialState = {
-  userState: { name: "", abbrev: "" },
+  userState: { name: "", abbrev: "AL" },
   programType: "",
   role: false,
   id: "",

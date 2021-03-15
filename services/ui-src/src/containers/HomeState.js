@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 const HomeState = ({ userData }) => {
   // Pull state from redux
   const state = userData.abbrev;
+  console.log(state);
   // TODO: Pull years and quarters
   // define years and months
   const date = new Date();
