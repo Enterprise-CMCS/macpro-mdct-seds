@@ -5,24 +5,85 @@ import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab";
 import SummaryTab from "../SummaryTab";
 import PropTypes from "prop-types";
+import QuestionComponent from "../Question";
 
-const TabContainer = ({ tabs }) => {
+const TabContainer = ({
+  tabDetails,
+  questions,
+  answers,
+  disabled,
+  currentTabs,
+  quarter
+}) => {
   return (
     <Tabs>
       <TabList>
-        {tabs.map((tab, idx) => {
-          return <Tab key={idx}>{tab.age_range}</Tab>;
+        {currentTabs.map((tab, idx) => {
+          const rangeDetails = tabDetails.find(
+            element => tab === element.range_id
+          );
+
+          // Custom tab label from age range ID
+          const tabLabel = rangeDetails
+            ? rangeDetails.age_range
+            : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+          return <Tab key={idx}>{tabLabel}</Tab>;
         })}
         <Tab>Summary</Tab>
         <Tab>Certification</Tab>
       </TabList>
 
-      {tabs.map((tab, idx) => {
-        // The questions for each tab will go inside of the tab Panels
+      {currentTabs.map((tab, idx) => {
+        // Filter out just the answer objects that belong in this tab
+        const tabAnswers = answers.filter(element => element.rangeId === tab);
+
+        const ageRangeDetails = tabDetails.find(
+          element => tab === element.range_id
+        );
         return (
           <TabPanel key={idx}>
-            <b>{tab.age_description}:</b>{" "}
-            {<p>{loremIpsum} This is where the questions will go! </p>}
+            {ageRangeDetails ? (
+              <div className="age-range-description">
+                <h3>{ageRangeDetails.age_description}:</h3>
+              </div>
+            ) : null}
+
+            {questions.map((singleQuestion, idx) => {
+              // Extract the ID from each question and find its corresponding answer object
+              const questionID = singleQuestion.question;
+              console.log("questionID", questionID);
+              console.log("singleQuestion", singleQuestion);
+              const questionAnswer = tabAnswers.find(
+                element => element.question === questionID
+              );
+
+              let returnComponent = "";
+              let activeContextData = false;
+              let tempContextData = {};
+
+              if (singleQuestion.context_data) {
+                tempContextData =
+                  singleQuestion.context_data.show_if_quarter_in;
+                activeContextData = true;
+              }
+              //Conditional display only works with single quarters and equals (so far)
+              if (
+                activeContextData === false ||
+                (activeContextData && tempContextData === quarter)
+              ) {
+                console.log("answerData", questionAnswer);
+                returnComponent = (
+                  <QuestionComponent
+                    key={idx}
+                    rangeID={tab}
+                    questionData={singleQuestion}
+                    answerData={questionAnswer}
+                    disabled={disabled}
+                  />
+                );
+              }
+              return returnComponent;
+            })}
           </TabPanel>
         );
       })}
@@ -38,14 +99,21 @@ const TabContainer = ({ tabs }) => {
 };
 
 TabContainer.propTypes = {
-  tabs: PropTypes.array.isRequired
+  currentTabs: PropTypes.array.isRequired,
+  tabDetails: PropTypes.array.isRequired,
+  questions: PropTypes.array.isRequired,
+  answers: PropTypes.array.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 const mapState = state => ({
-  tabs: state.global.age_ranges
+  disabled:
+    state.currentForm.statusData.not_applicable ||
+    state.currentForm.statusData.status === "final",
+  currentTabs: state.currentForm.tabs,
+  tabDetails: state.global.age_ranges,
+  questions: state.currentForm.questions,
+  answers: state.currentForm.answers
 });
-
-const loremIpsum =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 export default connect(mapState)(TabContainer);

@@ -1,6 +1,6 @@
 [
   {
-    "answer_entry": "AL-2021-1-21PW-64-01",
+    "answer_entry": "AL-2021-1-21PW-1964-01",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-01",
     "age_range": "Age 19 years through age 64 years",
@@ -45,7 +45,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-02",
+    "answer_entry": "AL-2021-1-21PW-1964-02",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-02",
     "age_range": "Age 19 years through age 64 years",
@@ -90,7 +90,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-03",
+    "answer_entry": "AL-2021-1-21PW-1964-03",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-03",
     "age_range": "Age 19 years through age 64 years",
@@ -135,7 +135,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-04",
+    "answer_entry": "AL-2021-1-21PW-1964-04",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-04",
     "age_range": "Age 19 years through age 64 years",
@@ -180,7 +180,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-05",
+    "answer_entry": "AL-2021-1-21PW-1964-05",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-05",
     "age_range": "Age 19 years through age 64 years",
@@ -335,8 +335,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-21PW-04')].rows[3].col5",
-              "$..*[?(@.question=='2021-21PW-01')].rows[3].col5"
+              "$..*[?(@.question=='21PW-2021-04')].rows[3].col5",
+              "$..*[?(@.question=='21PW-2021-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -360,7 +360,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-06",
+    "answer_entry": "AL-2021-1-21PW-1964-06",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-06",
     "age_range": "Age 19 years through age 64 years",
@@ -405,7 +405,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-07",
+    "answer_entry": "AL-2021-1-21PW-1964-07",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-07",
     "age_range": "Age 19 years through age 64 years",
@@ -450,7 +450,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-08",
+    "answer_entry": "AL-2021-1-21PW-1964-08",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-08",
     "age_range": "Age 19 years through age 64 years",
@@ -495,7 +495,7 @@
     "created_by": "seed"
   },
   {
-    "answer_entry": "AL-2021-1-21PW-64-09",
+    "answer_entry": "AL-2021-1-21PW-1964-09",
     "state_form": "AL-2021-1-21PW",
     "question": "2021-21PW-09",
     "age_range": "Age 19 years through age 64 years",
@@ -539,5 +539,4 @@
     "created_date": "03/02/2021",
     "created_by": "seed"
   }
-
 ]
