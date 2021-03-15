@@ -2,24 +2,27 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals"
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import jsonpath from "../util/jsonpath";
+import jsonpath,{selectObjectInArrayByQuestionId} from "../../utilityFunctions/jsonPath";
+import { sortQuestionColumns } from "../../utilityFunctions/sortingFunctions";
+import QuestionComponent from "../Question";
+
 
 const SynthesizedGrid = props => {
-
-
+  const tempQuestionId = props.questionID;
+  let tempGridData = []
+  const tempDisabled = props.disabled
   useEffect(() => {
     const {answerData,questionData, gridData, allAnswers} = props
     console.log("questionData",questionData)
     console.log("answerData",answerData)
 
-    let tempGridData = []
     const tabAnswers = allAnswers.filter(
         element => element.rangeId === answerData.rangeId
     );
 
     answerData.rows.map((row,rowIndex) => {
       // add header row
-      if(rowIndex = 0)
+      if(rowIndex === 0)
       {
         tempGridData[rowIndex] = gridData[rowIndex]
       }
@@ -37,9 +40,9 @@ const SynthesizedGrid = props => {
             tempRowObject = Object.assign(tempRowObject, {[key[0]]:tempCalculatedValue})
           }
         })
-
+        tempGridData.push(tempRowObject)
       }
-
+      console.log("final tempgridedata",tempGridData)
     })
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -48,31 +51,43 @@ const SynthesizedGrid = props => {
       let tempCalculation = []
       let returnValue = {}
       Object.entries(incomingCalculation.targets).forEach((key) => {
-        tempCalculation[key[0]] = pullValue(key[1],tabAnswers)
-        console.log("calculation key",key)
+        tempCalculation[key[0]] = getValue(key[1],tabAnswers)
       })
+
+      return eval(incomingCalculation.formula.replace("<0>",tempCalculation[0]).replace("<1>",tempCalculation[1]))
     }
   }
 
-  const pullValue = (target,tabAnswers) => {
+  const getValue = (target,tabAnswers) => {
+    // example target "$..*[?(@.question=='2021-64.21E-04')].rows[2].col2",
     const targetInfo = target.split("'")
+    // rowIndex = '2' (out of .rows[2])
     const rowIndex = targetInfo[2].split("rows[")[1].substring(0,1)
-    const colNumber = targetInfo[2].substring(targetInfo[2].length - 4)
-    const tempvalue = selectFragmentById(tabAnswers,target)
-    console.log("rowIndex",rowIndex)
-    console.log("colNumber",colNumber)
-    const questionAnswer1 = tabAnswers.filter(element => element.question === targetInfo[1]);
+    // colName = 'col2' out of .rows[2].col2
+    const colName = targetInfo[2].substring(targetInfo[2].length - 4)
+
+    let tempTargetHolder = target.split("'")
+    const tempValue = selectObjectInArrayByQuestionId(tabAnswers,tempTargetHolder[1])
+    return tempValue[0].rows[rowIndex][colName]
+  }
+  console.log("tempquestionID", tempQuestionId)
+  console.log("tempGridData", tempGridData)
+  console.log("tempDisabled",tempDisabled)
+  const sortedRows = sortQuestionColumns(tempGridData);
+  let returnObject = [];
+  console.log("sorted Rows",sortedRows.length)
+  if (sortedRows.length >= 4){
+    returnObject = <GridWithTotals
+        questionID={tempQuestionId}
+        gridData={sortedRows}
+        disabled={tempDisabled}
+    />
   }
 
-  return ("tst");
+  return returnObject
 };
 
-export const selectFragmentById = (state, id) => {
-  const jpexpr = `$..*[?(@.id=='${id}')]`;
-  const fragment = jsonpath.query(state, id)[0];
-  console.log("fragment", fragment)
-  return fragment;
-};
+
 
 SynthesizedGrid.propTypes = {
   answerData: PropTypes.array.isRequired,

@@ -1,20 +1,14 @@
-/* What exactly is the point of this whole thing, you may be asking. A valid
-   question. It turns out that the performance of jsonpath is highly dependent
-   on how generic the search path is. The more generic, the worse the
-   performance. And not by just a little bit. In the case of CARTS data, a
-   query on just an ID (something like "?..(id=='2020-01-a-01-01')") takes
-   literally ONE THOUSAND TIMES longer than a query for the same node's exact
-   path.
-
-   So, what if we take all those generic lookups that come in, find the exact
-   path that corresponds to the generic path, and then cache those exact paths?
-   The first queries are still slow, but every subsequent query is suddenly
-   anywhere from 10 to 1000 times faster. So this exists as a drop-in wrapper
-   around jsonpath so that we can get the performance benefits everywhere
-   without having to change anything anywhere else.
- */
 import jsonpath from "jsonpath";
-import idLetterMarkers from "./idLetterMarkers";
+
+
+
+export const selectObjectInArrayByQuestionId = (array, id) => {
+    const jpexpr = `$..[?(@.question==='${id}')]`;
+    return jsonpath.query(array,jpexpr);
+};
+//ABOVE IS NEW FUNCTIONALITY FOR SEDS
+
+
 
 const fullPathFromIDPath = (originalPath) => {
     const idMatch = /\[\?\(@\.id===?['"]([^'"]+)['"]\)\](.*)$/.exec(originalPath);
@@ -36,9 +30,7 @@ const fullPathFromIDPath = (originalPath) => {
         }
         if (subsection) {
             // We'll make an assumption that subsections will always be a-zz, because
-            // that seems safe enough for now.
-            const subsectionNumber = idLetterMarkers.indexOf(subsection);
-            pathParts.push(`.subsections[${subsectionNumber}]`);
+            // that seems safe enough for now.);
         }
         if (part) {
             // Parts start at 1, but arrays don't.
@@ -66,8 +58,10 @@ const getExactPath = (data, path) => {
     // If we don't already have a matching exact path, we'll need to fetch it.
     if (!exact) {
         const pathShortCircuit = fullPathFromIDPath(path);
+        console.log("data in exact", data)
+        console.log("pathShortCircuit", pathShortCircuit)
         const paths = jsonpath.paths(data, pathShortCircuit);
-
+        console.log("paths", paths)
         if (paths.length > 0) {
             // If there are any matching paths, cache off the first one. The paths
             // we get back above are in array form, but we want to cache the string

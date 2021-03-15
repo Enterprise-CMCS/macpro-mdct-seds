@@ -19,7 +19,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
   // const sortedRows = rows.map(rowObject => sortQuestionColumns(rowObject));
   const sortedRows = sortQuestionColumns(rows);
-
+  console.log("sortedRows",sortedRows)
   return (
     <>
       <b>
@@ -33,6 +33,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
         />
       ) : (
           <SynthesizedGrid
+              questionID={answer_entry}
               questionData={questionData}
               gridData={sortedRows}
               answerData={answerData}
