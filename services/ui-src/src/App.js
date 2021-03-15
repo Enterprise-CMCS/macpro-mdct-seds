@@ -125,10 +125,12 @@ function App() {
       return role;
     }
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
+    if (role) {
+      if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+        return "admin";
+      } else if (role.includes("CHIP_D_USER_GROUP")) {
+        return "state";
+      }
     } else {
       return null;
     }
