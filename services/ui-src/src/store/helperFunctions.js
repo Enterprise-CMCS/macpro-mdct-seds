@@ -17,8 +17,6 @@ const formatAnswerData = answerArray => {
   // return the single object
 };
 
-export { sortQuestionsByNumber, selectAnswer, formatAnswerData };
-
 // ANSWERS is an ARRAY of OBJECTS
 
 // in a given answer object I want to update:
@@ -122,3 +120,29 @@ export { sortQuestionsByNumber, selectAnswer, formatAnswerData };
 //     created_by: "seed"
 //   }
 // ];
+
+const extractAgeRanges = answersArray => {
+  // call back for a reduce method
+  const findAges = (accumulator, answer) => {
+    let ageRange = answer.rangeId;
+
+    if (accumulator[ageRange]) {
+      return accumulator;
+    } else {
+      accumulator[ageRange] = "";
+    }
+    return accumulator;
+  };
+
+  // sort through the answers and return an object whose keys are the unique age ranges present
+  // Extract the keys from that object and sort them
+  const foundAges = Object.keys(answersArray.reduce(findAges, {})).sort();
+  return foundAges;
+};
+
+export {
+  sortQuestionsByNumber,
+  extractAgeRanges,
+  selectAnswer,
+  formatAnswerData
+};
