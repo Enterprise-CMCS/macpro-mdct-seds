@@ -1,6 +1,6 @@
 // ENDPOINTS
 import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
-import { sortQuestionsByNumber } from "../helperFunctions";
+import { sortQuestionsByNumber, formatAnswerData } from "../helperFunctions";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -26,10 +26,10 @@ export const updatedStatus = activeBoolean => {
   };
 };
 
-export const gotAnswer = something => {
+export const gotAnswer = answerObject => {
   return {
     type: UPDATE_ANSWER,
-    something
+    answerObject
   };
 };
 
@@ -80,10 +80,11 @@ export const disableForm = activeBoolean => {
 
 export const setAnswer = something => {
   return dispatch => {
+    // helper function to format array, single Object
     dispatch(gotAnswer(something));
   };
 };
-// should there be some kind of loading indicator so people dont navigate away while save is occuring
+// use JSONPATH right in the reducer to update the answer array
 
 // INITIAL STATE
 const initialState = {
@@ -97,8 +98,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_ANSWER:
       return {
-        ...state,
-        answers: [...state.answers]
+        ...state
+        // answers: [...state.answers]
       };
     case LOAD_SINGLE_FORM:
       return {

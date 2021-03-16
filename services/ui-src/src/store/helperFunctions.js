@@ -5,10 +5,19 @@ const sortQuestionsByNumber = (q1, q2) => {
 };
 
 const selectAnswer = () => {
-  return `1`;
+  // use jsonpath to format array into object
 };
 
-export { sortQuestionsByNumber, selectAnswer };
+const formatAnswerData = answerArray => {
+  const answerObject = {};
+
+  // slice off first two elements of the array entirely
+  // slice off the first two elements of each array
+  // assign each value to a column named after its new index
+  // return the single object
+};
+
+export { sortQuestionsByNumber, selectAnswer, formatAnswerData };
 
 // ANSWERS is an ARRAY of OBJECTS
 

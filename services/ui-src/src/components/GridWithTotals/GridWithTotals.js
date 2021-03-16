@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Table } from "@trussworks/react-uswds";
 import "./GridWithTotals.scss";
+import { setAnswer } from "../../store/reducers/singleForm";
+
+// props.questionID
+// this is being saved by row
+// [undefined, undefined, 1,2,3,4,5]
+// [undefined, undefined, 6,7,8,9,10]
+// [undefined, undefined, 11,12,13,14,15]
+
+//       {
+//         col1: "A. Fee-for-Service",
+//         col2: null, ==> 1
+//         col3: null, ==> 2
+//         col4: null, ==> 3
+//         col5: null, ==> 4
+//         col6: null  ==> 5
+//       },
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -22,6 +38,7 @@ const GridWithTotals = props => {
 
     updateGridData(gridCopy);
     updateTotals();
+    // setAnswer(gridCopy)
   };
 
   const updateTotals = () => {
