@@ -40,12 +40,12 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/unauthorized">
+      {/* <AuthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
-      </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/totals">
+      </AuthenticatedRoute> */}
+      <AuthenticatedRoute exact path="/totals">
         <GridWithTotals />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <UnauthenticatedRoute exact path="/login">
         {localLogin ? <LocalLogin /> : <Login />}
       </UnauthenticatedRoute>
@@ -64,7 +64,7 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      {user.role === "admin" ? (
+      {user.attributes["ismemberof"] === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />

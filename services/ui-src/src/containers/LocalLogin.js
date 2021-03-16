@@ -33,6 +33,13 @@ export default function Login() {
     history.go(0);
   }
 
+       // if (payload) {
+      //   console.log(payload)
+      //   payload.role = determineRole("CHIP_D_USER_GROUP_ADMIN")
+      //   payload.username = payload["cognito:username"];
+      //   if (payload.role) setIsAuthenticating(true);
+      // } else history.push("/login");
+
   return (
     <div className="Login">
       <GridContainer className="container page-login">
