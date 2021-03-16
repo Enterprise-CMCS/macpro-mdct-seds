@@ -9,12 +9,24 @@ const selectAnswer = () => {
 };
 
 const formatAnswerData = answerArray => {
-  const answerObject = {};
+  const rowArray = [];
 
-  // slice off first two elements of the array entirely
-  // slice off the first two elements of each array
-  // assign each value to a column named after its new index
-  // return the single object
+  // The first two values of the state data from GridWithTotals are undefined and always will be
+  const rows = answerArray.slice(2);
+
+  // for each row, build an object representing the column data
+  rows.forEach(singleRow => {
+    let rowObject = {};
+    // The first two elements of each array is undefined, remove them
+    const filteredRow = singleRow.slice(2);
+
+    // Map through the array of input numbers
+    filteredRow.forEach((singleInput, columnIndex) => {
+      rowObject[`col${columnIndex + 2}`] = singleInput;
+    });
+    rowArray.push(rowObject);
+  });
+  return rowArray;
 };
 
 // ANSWERS is an ARRAY of OBJECTS

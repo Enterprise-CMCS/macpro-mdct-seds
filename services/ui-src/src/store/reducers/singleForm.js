@@ -84,11 +84,14 @@ export const disableForm = activeBoolean => {
   };
 };
 
-export const setAnswer = something => {
-  return dispatch => {
-    // helper function to format array, single Object
-    dispatch(gotAnswer(something));
-  };
+export const setAnswer = inputArray => {
+  // return dispatch => {
+  // helper function to format array, single Object
+  const formattedAnswers = formatAnswerData(inputArray);
+
+  // console.log("No console log??? \n\n\n\n\n", formattedAnswers);
+  // dispatch(gotAnswer(something));
+  // };
 };
 // use JSONPATH right in the reducer to update the answer array
 
