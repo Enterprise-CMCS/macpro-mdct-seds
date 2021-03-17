@@ -38,7 +38,7 @@ const SynthesizedGrid = props => {
         tempGridData.push(tempRowObject);
       }
       setSynthGridData(tempGridData);
-      return true
+      return true;
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
