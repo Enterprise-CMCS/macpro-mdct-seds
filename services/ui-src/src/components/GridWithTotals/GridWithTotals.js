@@ -16,13 +16,13 @@ const GridWithTotals = props => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const roundValue = (value) => {
+  const roundValue = value => {
     let returnValue = value;
-    if(value % 1 > 0){
+    if (value % 1 > 0) {
       returnValue = (Math.round(value * 100) / 100).toFixed(1);
     }
     return returnValue;
-  }
+  };
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -168,7 +168,9 @@ const GridWithTotals = props => {
 
             return formattedCell;
           })}
-          <td className="total-column">{roundValue(gridRowTotals[rowIndex])}</td>
+          <td className="total-column">
+            {roundValue(gridRowTotals[rowIndex])}
+          </td>
         </tr>
       );
     }
@@ -186,13 +188,13 @@ const GridWithTotals = props => {
         </th>
       );
     } else {
-      column = <td className="total-column">{roundValue(gridColumnTotals[i])}</td>;
+      column = (
+        <td className="total-column">{roundValue(gridColumnTotals[i])}</td>
+      );
     }
 
     return column;
   });
-
-
 
   return (
     <div className="grid-with-totals">
