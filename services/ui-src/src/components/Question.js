@@ -19,27 +19,30 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
   const sortedRows = sortQuestionColumns(rows);
 
-  let tempComponent = {}
-  if(sortedRows.length > 0){
-    if(questionNumber === 5){
-      tempComponent = <SynthesizedGrid
+  let tempComponent = {};
+  if (sortedRows.length > 0) {
+    if (questionNumber === 5) {
+      tempComponent = (
+        <SynthesizedGrid
           questionID={answer_entry}
           questionData={questionData}
           gridData={sortedRows}
           answerData={answerData}
-      />
-    }
-    else if(questionNumber > 0){
-      tempComponent = <GridWithTotals
+        />
+      );
+    } else if (questionNumber > 0) {
+      tempComponent = (
+        <GridWithTotals
           questionID={answer_entry}
           gridData={sortedRows}
           disabled={disabled}
-      />
+        />
+      );
     }
   }
   return (
     <>
-     <b>
+      <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
       {tempComponent}
