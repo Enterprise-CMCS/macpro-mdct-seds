@@ -16,6 +16,14 @@ const GridWithTotals = props => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const roundValue = (value) => {
+    let returnValue = value;
+    if(value % 1 > 0){
+      returnValue = (Math.round(value * 100) / 100).toFixed(1);
+    }
+    return returnValue;
+  }
+
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(event.target.value);
@@ -138,7 +146,7 @@ const GridWithTotals = props => {
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={column}
+                      defaultValue={roundValue(column)}
                       disabled={props.disabled}
                     />
                   </td>
@@ -151,7 +159,7 @@ const GridWithTotals = props => {
                     type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={column}
+                    defaultValue={roundValue(column)}
                     disabled={props.disabled}
                   />
                 </td>
@@ -160,7 +168,7 @@ const GridWithTotals = props => {
 
             return formattedCell;
           })}
-          <td className="total-column">{gridRowTotals[rowIndex]}</td>
+          <td className="total-column">{roundValue(gridRowTotals[rowIndex])}</td>
         </tr>
       );
     }
@@ -178,11 +186,13 @@ const GridWithTotals = props => {
         </th>
       );
     } else {
-      column = <td className="total-column">{gridColumnTotals[i]}</td>;
+      column = <td className="total-column">{roundValue(gridColumnTotals[i])}</td>;
     }
 
     return column;
   });
+
+
 
   return (
     <div className="grid-with-totals">
@@ -194,7 +204,7 @@ const GridWithTotals = props => {
           {tableData}
           <tr>
             {totalsRow}
-            <td className="total-column">{gridTotalOfTotals}</td>
+            <td className="total-column">{roundValue(gridTotalOfTotals)}</td>
           </tr>
         </tbody>
       </Table>

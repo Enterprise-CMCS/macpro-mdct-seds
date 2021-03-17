@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals"
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import jsonpath,{selectObjectInArrayByQuestionId} from "../../utilityFunctions/jsonPath";
+import {selectObjectInArrayByQuestionId} from "../../utilityFunctions/jsonPath";
 import { sortQuestionColumns } from "../../utilityFunctions/sortingFunctions";
 import QuestionComponent from "../Question";
 
 
 const SynthesizedGrid = props => {
   const tempQuestionId = props.questionID;
-  let tempGridData = []
-  const tempDisabled = props.disabled
+  const [synthGridData, setSynthGridData] = useState([]);
   useEffect(() => {
     const {answerData,questionData, gridData, allAnswers} = props
-    console.log("questionData",questionData)
-    console.log("answerData",answerData)
 
+    let tempGridData = []
     const tabAnswers = allAnswers.filter(
         element => element.rangeId === answerData.rangeId
     );
@@ -42,7 +40,7 @@ const SynthesizedGrid = props => {
         })
         tempGridData.push(tempRowObject)
       }
-      console.log("final tempgridedata",tempGridData)
+      setSynthGridData(tempGridData)
     })
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -53,44 +51,45 @@ const SynthesizedGrid = props => {
       Object.entries(incomingCalculation.targets).forEach((key) => {
         tempCalculation[key[0]] = getValue(key[1],tabAnswers)
       })
-
-      return eval(incomingCalculation.formula.replace("<0>",tempCalculation[0]).replace("<1>",tempCalculation[1]))
+      // calculates the value based off of the formula <0> / <1>
+      returnValue = (tempCalculation[0]/tempCalculation[1])
+      return returnValue
     }
   }
 
   const getValue = (target,tabAnswers) => {
-    // example target "$..*[?(@.question=='2021-64.21E-04')].rows[2].col2",
-    const targetInfo = target.split("'")
-    // rowIndex = '2' (out of .rows[2])
-    const rowIndex = targetInfo[2].split("rows[")[1].substring(0,1)
-    // colName = 'col2' out of .rows[2].col2
-    const colName = targetInfo[2].substring(targetInfo[2].length - 4)
+    let returnValue = {}
+    if (target !== "" && tabAnswers.length > 0 ) {
+      // example target "$..*[?(@.question=='2021-64.21E-04')].rows[2].col2",
+      const targetInfo = target.split("'")
+      // rowIndex = '2' out of .rows[2]
+      const rowIndex = targetInfo[2].split("rows[")[1].substring(0, 1)
+      // colName = 'col2' out of .rows[2].col2
+      const colName = targetInfo[2].substring(targetInfo[2].length - 4)
 
-    let tempTargetHolder = target.split("'")
-    const tempValue = selectObjectInArrayByQuestionId(tabAnswers,tempTargetHolder[1])
-    return tempValue[0].rows[rowIndex][colName]
+      const tempValue = selectObjectInArrayByQuestionId(tabAnswers, targetInfo[1])
+      returnValue = tempValue[0].rows[rowIndex][colName]
+    }
+    return returnValue;
   }
-  console.log("tempquestionID", tempQuestionId)
-  console.log("tempGridData", tempGridData)
-  console.log("tempDisabled",tempDisabled)
-  const sortedRows = sortQuestionColumns(tempGridData);
+
+  const sortedRows = sortQuestionColumns(synthGridData);
   let returnObject = [];
-  console.log("sorted Rows",sortedRows.length)
-  if (sortedRows.length >= 4){
-    returnObject = <GridWithTotals
+
+  if (sortedRows.length > 0){
+    returnObject =  <GridWithTotals
         questionID={tempQuestionId}
         gridData={sortedRows}
-        disabled={tempDisabled}
+        disabled={true}
     />
   }
-
-  return returnObject
+  return returnObject;
 };
 
 
 
 SynthesizedGrid.propTypes = {
-  answerData: PropTypes.array.isRequired,
+  answerData: PropTypes.object.isRequired,
   allAnswers: PropTypes.array.isRequired,
 };
 

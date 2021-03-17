@@ -16,27 +16,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": 2,
+        "col2": 1,
         "col3": 2,
-        "col4": 2,
-        "col5": 2,
-        "col6": 2
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": 2,
-        "col3": 2,
-        "col4": 2,
-        "col5": 2,
-        "col6": 2
+        "col2": 6,
+        "col3": 7,
+        "col4": 8,
+        "col5": 9,
+        "col6": 10
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": 2,
-        "col3": 2,
-        "col4": 2,
-        "col5": 2,
-        "col6": 2
+        "col2": 11,
+        "col3": 12,
+        "col4": 13,
+        "col5": 14,
+        "col6": 15
       }
     ],
     "last_modified": "01/15/2021",
@@ -151,27 +151,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": 6,
-        "col3": 6,
-        "col4": 6,
-        "col5": 6,
-        "col6": 6
+        "col2": 61,
+        "col3": 62,
+        "col4": 63,
+        "col5": 64,
+        "col6": 65
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": 6,
-        "col3": 6,
-        "col4": 6,
-        "col5": 6,
-        "col6": 6
+        "col2": 66,
+        "col3": 67,
+        "col4": 68,
+        "col5": 69,
+        "col6": 70
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": 6,
-        "col3": 6,
-        "col4": 6,
-        "col5": 6,
-        "col6": 6
+        "col2": 76,
+        "col3": 86,
+        "col4": 96,
+        "col5": 16,
+        "col6": 26
       }
     ],
     "last_modified": "01/15/2021",
@@ -556,27 +556,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 2,
+        "col3": 5,
+        "col4": 4,
+        "col5": 6,
+        "col6": 7
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 99,
+        "col3": 8,
+        "col4": 54,
+        "col5": 34,
+        "col6": 32
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 66,
+        "col3": 55,
+        "col4": 95,
+        "col5": 82,
+        "col6": 29
       }
     ],
     "last_modified": "01/15/2021",
@@ -691,27 +691,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 73,
+        "col3": 3,
+        "col4": 231,
+        "col5": 55,
+        "col6": 1
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 7,
+        "col3": 5,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 76,
+        "col3": 54,
+        "col4": 3,
+        "col5": 22,
+        "col6": 17
       }
     ],
     "last_modified": "01/15/2021",
@@ -876,7 +876,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-64.21E-04')].rows[3].col5",
-              "$..*[?(@.question=='64.21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.21E-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -1416,7 +1416,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-64.21E-04')].rows[3].col5",
-              "$..*[?(@.question=='64.21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.21E-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -1956,7 +1956,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-64.21E-04')].rows[3].col5",
-              "$..*[?(@.question=='64.21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.21E-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -2496,7 +2496,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-64.21E-04')].rows[3].col5",
-              "$..*[?(@.question=='64.21E-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.21E-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
