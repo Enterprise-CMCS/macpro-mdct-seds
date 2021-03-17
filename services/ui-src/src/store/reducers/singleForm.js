@@ -1,6 +1,6 @@
 // ENDPOINTS
 import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
-import { sortQuestionsByNumber } from "../helperFunctions";
+import { sortQuestionsByNumber, extractAgeRanges } from "../helperFunctions";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -41,9 +41,10 @@ export const getFormData = (state, year, quarter, formName) => {
       const stateFormsByQuarter = await getStateForms(state, year, quarter);
 
       // Sort questions by question number
-      let sortedQuestions = [...questions].sort(sortQuestionsByNumber);
+      const sortedQuestions = [...questions].sort(sortQuestionsByNumber);
 
-      // Sort answers
+      // Sort answers to get the available age ranges
+      const presentAgeRanges = extractAgeRanges(answers);
 
       // Filter status data for single form
       const singleFormStatusData = stateFormsByQuarter.find(
@@ -53,7 +54,8 @@ export const getFormData = (state, year, quarter, formName) => {
       const allFormData = {
         answers: answers,
         questions: sortedQuestions,
-        statusData: singleFormStatusData
+        statusData: singleFormStatusData,
+        tabs: [...presentAgeRanges]
       };
       // Dispatch action creator to set data in redux
       dispatch(gotFormData(allFormData));
@@ -74,7 +76,8 @@ export const disableForm = activeBoolean => {
 const initialState = {
   questions: [],
   answers: [],
-  statusData: {}
+  statusData: {},
+  tabs: []
 };
 
 // REDUCER
@@ -85,7 +88,8 @@ export default (state = initialState, action) => {
         ...state,
         questions: action.formObject.questions,
         answers: action.formObject.answers,
-        statusData: action.formObject.statusData
+        statusData: action.formObject.statusData,
+        tabs: action.formObject.tabs
       };
     case UPDATE_FORM_STATUS:
       return {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import { useHistory } from "react-router-dom";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
@@ -11,6 +12,7 @@ export default function Login() {
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
+  let history = useHistory();
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: ""
@@ -21,9 +23,7 @@ export default function Login() {
   }
 
   function signInWithOkta() {
-    console.log("login.js 1");
     const authConfig = Auth.configure();
-    console.log("login.js 1");
     const { domain, redirectSignIn, responseType } = authConfig.oauth;
     const clientId = authConfig.userPoolWebClientId;
     const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
@@ -45,14 +45,11 @@ export default function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     setIsLoading(true);
-
     try {
-      console.log("login.js 2");
       await Auth.signIn(fields.email, fields.password);
-      console.log("login.js 2");
       userHasAuthenticated(true);
+      history.push("/");
     } catch (e) {
       onError(e);
       setIsLoading(false);
