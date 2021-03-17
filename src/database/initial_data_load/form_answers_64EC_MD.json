@@ -335,8 +335,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.question=='64.EC-2021-04')].rows[3].col5",
-              "$..*[?(@.question=='64.EC-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col5",
+              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -1416,7 +1416,7 @@
           {
             "targets": [
               "$..*[?(@.question=='2021-64.EC-04')].rows[3].col5",
-              "$..*[?(@.question=='64.EC-2021-01')].rows[3].col5"
+              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
