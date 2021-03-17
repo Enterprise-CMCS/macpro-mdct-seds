@@ -40,9 +40,9 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
       </AuthenticatedRoute>
-      {/* <AuthenticatedRoute exact path="/unauthorized">
+      <AuthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
-      </AuthenticatedRoute> */}
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/totals">
         <GridWithTotals />
       </AuthenticatedRoute>

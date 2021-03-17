@@ -1,43 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import "./App.scss";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import config from "./config";
+/*import config from "./config";
 import { currentUserInfo } from "./libs/user";
-import { getUserByUsername, createUser, updateUser } from "./libs/api";
+import { getUserByUsername, createUser, updateUser } from "./libs/api";*/
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
-  const history = useHistory();
+  // const history = useHistory();
 
-
-  useEffect(()=> {
-    onLoad();
-  }, []);
-
-  async function onLoad() {
-    try{
-      let user = await Auth.currentAuthenticatedUser();
-      user.attributes["ismemberof"] = "admin";
-      setUser(user)
-      userHasAuthenticated(true);
-      setIsAuthenticating(false);
-      setIsAuthorized(true)
-    } catch (error) {
-      console.log(error)
-      setIsAuthenticating(false);
+  useEffect(() => {
+    async function onLoad() {
+      try {
+        setIsAuthenticating(true);
+        let user = await Auth.currentAuthenticatedUser();
+        user.attributes["ismemberof"] = "admin";
+        setUser(user);
+        userHasAuthenticated(true);
+        setIsAuthenticating(false);
+        setIsAuthorized(true);
+      } catch (error) {
+        console.log(error);
+        setIsAuthenticating(false);
+      }
     }
-  }
-
-
-
+    onLoad();
+  }, [isAuthenticated]);
 
   // useEffect(() => {
   //   async function getUpdateOrAddUser(payload) {
@@ -157,7 +153,6 @@ function App() {
   //     return null;
   //   }
   // };
-
 
   return (
     !isAuthenticating && (
