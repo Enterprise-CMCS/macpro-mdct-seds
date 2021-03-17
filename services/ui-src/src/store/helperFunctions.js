@@ -1,11 +1,9 @@
+import jsonpath from "../";
+
 const sortQuestionsByNumber = (q1, q2) => {
   const q1Number = Number.parseInt(q1.question.split("-").slice(-1));
   const q2Number = Number.parseInt(q2.question.split("-").slice(-1));
   return q1Number > q2Number ? 1 : -1;
-};
-
-const selectAnswer = () => {
-  // use jsonpath to format array into object
 };
 
 const formatAnswerData = answerArray => {
@@ -27,6 +25,10 @@ const formatAnswerData = answerArray => {
     rowArray.push(rowObject);
   });
   return rowArray;
+};
+
+const insertAnswer = () => {
+  // use jsonpath to find location of answer
 };
 
 // ANSWERS is an ARRAY of OBJECTS
@@ -155,6 +157,6 @@ const extractAgeRanges = answersArray => {
 export {
   sortQuestionsByNumber,
   extractAgeRanges,
-  selectAnswer,
+  insertAnswer,
   formatAnswerData
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Table } from "@trussworks/react-uswds";
 import "./GridWithTotals.scss";
-import { setAnswer } from "../../store/reducers/singleForm";
+import { setAnswer, gotAnswer } from "../../store/reducers/singleForm";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -23,7 +23,7 @@ const GridWithTotals = props => {
 
     updateGridData(gridCopy);
     updateTotals();
-    setAnswer(gridCopy);
+    gotAnswer(gridCopy, props.questionID);
   };
 
   const updateTotals = () => {
