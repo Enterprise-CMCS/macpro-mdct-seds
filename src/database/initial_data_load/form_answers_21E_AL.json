@@ -16,27 +16,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 6,
+        "col3": 7,
+        "col4": 8,
+        "col5": 9,
+        "col6": 10
       }
     ],
     "last_modified": "01/15/2021",
@@ -61,27 +61,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       }
     ],
     "last_modified": "01/15/2021",
@@ -106,27 +106,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 2,
+        "col3": 3,
+        "col4": 4,
+        "col5": 5,
+        "col6": 6
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 6,
+        "col3": 7,
+        "col4": 8,
+        "col5": 9,
+        "col6": 20
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       }
     ],
     "last_modified": "01/15/2021",
@@ -151,27 +151,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       }
     ],
     "last_modified": "01/15/2021",
@@ -376,27 +376,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 21,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       }
     ],
     "last_modified": "01/15/2021",
@@ -421,27 +421,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 6,
+        "col4": 7,
+        "col5": 8,
+        "col6": 9
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 4,
+        "col3": 2,
+        "col4": 8,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 3,
+        "col3": 2,
+        "col4": 1,
+        "col5": 2,
+        "col6": 3
       }
     ],
     "last_modified": "01/15/2021",
@@ -466,27 +466,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       }
     ],
     "last_modified": "01/15/2021",
@@ -511,27 +511,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       }
     ],
     "last_modified": "01/15/2021",
@@ -556,27 +556,27 @@
       },
       {
         "col1": "A. Fee-for-Service",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 1,
+        "col3": 2,
+        "col4": 3,
+        "col5": 4,
+        "col6": 5
       },
       {
         "col1": "B. Managed Care Arrangements",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 5,
+        "col3": 4,
+        "col4": 3,
+        "col5": 2,
+        "col6": 1
       },
       {
         "col1": "C. Primary Care Case Management",
-        "col2": null,
-        "col3": null,
-        "col4": null,
-        "col5": null,
-        "col6": null
+        "col2": 6,
+        "col3": 7,
+        "col4": 8,
+        "col5": 9,
+        "col6": 10
       }
     ],
     "last_modified": "01/15/2021",
