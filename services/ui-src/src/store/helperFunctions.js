@@ -1,4 +1,4 @@
-import jsonpath from "../";
+import jsonpath from "jsonpath";
 
 const sortQuestionsByNumber = (q1, q2) => {
   const q1Number = Number.parseInt(q1.question.split("-").slice(-1));
@@ -20,15 +20,41 @@ const formatAnswerData = answerArray => {
 
     // Map through the array of input numbers
     filteredRow.forEach((singleInput, columnIndex) => {
-      rowObject[`col${columnIndex + 2}`] = singleInput;
+      let input = null;
+      if (Number.isNaN(singleInput) === false) {
+        input = singleInput;
+      }
+      rowObject[`col${columnIndex + 2}`] = input;
     });
     rowArray.push(rowObject);
   });
   return rowArray;
 };
 
-const insertAnswer = () => {
+const insertAnswer = (stateAnswers, dataArray, questionID) => {
   // use jsonpath to find location of answer
+  const queryString = `$..[?(@.answer_entry == "${questionID}")]`;
+  const response = jsonpath.query(stateAnswers, queryString);
+
+  // get just the rows array from the answer object
+  const rowsOfAnswers = response[0].rows;
+
+  // create a new, updated array with the new values skipping the header row
+  const updated = rowsOfAnswers.map((singleRow, idx) => {
+    // if this is the header row
+    if (singleRow["col1"] === "") {
+      return singleRow;
+    } else {
+      const matchingInputRow = dataArray[idx - 1];
+      return { ...singleRow, ...matchingInputRow };
+    }
+  });
+
+  // TODO:
+
+  console.log("PROOF OF CONCEPT", updated);
+  // return array of objects, the rows in this specific answer
+  // return updated
 };
 
 // ANSWERS is an ARRAY of OBJECTS

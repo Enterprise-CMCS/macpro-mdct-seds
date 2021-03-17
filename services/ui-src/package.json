@@ -17,6 +17,7 @@
     "aws-amplify": "^3.0.23",
     "browserify": "^17.0.0",
     "geckodriver": "^1.21.1",
+    "jsonpath": "^1.1.0",
     "nightwatch": "^1.5.1",
     "node-sass": "4.14.1",
     "prettier": "^2.2.1",

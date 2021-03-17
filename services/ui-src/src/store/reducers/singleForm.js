@@ -82,11 +82,12 @@ export const disableForm = activeBoolean => {
   };
 };
 
+// TRIGGER WITH MAPDISPATCH
 export const gotAnswer = (answerArray, questionID) => {
-  // const payload = answerArray ? answerArray : []
+  const formattedAnswers = formatAnswerData(answerArray);
   return {
     type: UPDATE_ANSWER,
-    answerArray,
+    answerArray: formattedAnswers,
     questionID
   };
 };
@@ -113,15 +114,6 @@ export const setAnswer = inputArray => {
 //   fragment.answer.entry = action.data;
 //   return JSON.parse(JSON.stringify(state));
 // }
-
-// @ reducer
-// return {
-//   ...state,
-// answers: [...state.answers, someFunc(state.answers)]
-// }
-
-// @ action
-// send type, ID and data with type UPDATE ANSWER
 
 // @ helper function
 // state is the entire store/ the state tied to this reducer
@@ -151,12 +143,9 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_ANSWER:
+      insertAnswer(state.answers, action.answerArray, action.questionID);
       return {
         ...state,
-        // answers: [
-        //   ...state.answers,
-        //   insertAnswer(state.answers, action.answerArray, action.questionID)
-        // ],
         answers: [...state.answers]
       };
     case LOAD_SINGLE_FORM:
