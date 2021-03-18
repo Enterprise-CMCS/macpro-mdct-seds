@@ -1,5 +1,4 @@
 import React from "react";
-import { TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "./Question";
 import jsonpath from "jsonpath";
@@ -15,28 +14,13 @@ const SummaryTab = ({ questions, tabs, answers }) => {
         const questionID = singleQuestion.question;
 
         let newRows = [];
-        let ageRangeID;
         let tabAnswers;
-
-        // Create age range and tab answers
-        tabs.map((tab, idx) => {
-          // Extract the range ID and filter the array of form answers by tab
-          tabAnswers = answers.filter(element => element.rangeId === tab);
-        });
 
         // Create array of tab IDs
         let tabArray = [];
         for (let tab in tabs) {
           tabArray.push(tabs[tab].range_id);
         }
-
-        // Find the first question that has the same QuestionID
-        // This is for a sample question that will have its rows replaced by newRows
-        const questionAnswerTemp = tabAnswers.find(
-          element => element.question === questionID
-        );
-        const questionAnswer = Object.assign({}, questionAnswerTemp);
-        let a = 0;
 
         // Find all questions that match questionID
         const jpexpr = `$..[?(@.question==='${questionID}')]`;
@@ -58,18 +42,12 @@ const SummaryTab = ({ questions, tabs, answers }) => {
 
             // If key doesn't exist, add entire row
             if (!newRows.hasOwnProperty(key)) {
-              // Convert null to zero
-              for (let c in column) {
-                let currentColumn = column[c];
-                if (currentColumn === null) {
-                  currentColumn = 0;
-                }
-              }
               newRows.push(column);
             } else {
               // If exists, add values where applicable
               for (let k in column) {
                 let currentColumn = column[k];
+
                 // If null change to zero
                 if (currentColumn === null) {
                   currentColumn = 0;
@@ -88,9 +66,37 @@ const SummaryTab = ({ questions, tabs, answers }) => {
           }
         }
 
+        // Find the first question that has the same QuestionID
+        // This is for a sample question that will have its rows replaced by newRows
+        let v = 0;
+
+        // Create age range and tab answers
+        tabs.map((tab, idx) => {
+          // Extract the range ID and filter the array of form answers by tab
+          tabAnswers = answers.filter(element => element.rangeId === tab);
+        });
+
+        const questionAnswer = tabAnswers.find(
+          element => element.question === questionID
+        );
+
+        // let questionAnswer = {
+        //   age_range: "Summary",
+        //   rangeId: "0000",
+        //   question: "2021-21E-01",
+        //   state_form: "AL-2021-1-21E",
+        //   last_modified_by: "seed",
+        //   created_date: "01/15/2021",
+        //   last_modified: "01/15/2021",
+        //   created_by: "seed",
+        //   answer_entry: "AL-2021-1-21E-1318-01"
+        // };
+
+        let a = 0;
+
         // Set rows for the question
         questionAnswer.rows = newRows;
-
+        let b = 0;
         return (
           <QuestionComponent
             key={idx}
