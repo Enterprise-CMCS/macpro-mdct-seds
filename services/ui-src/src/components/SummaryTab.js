@@ -66,16 +66,14 @@ const SummaryTab = ({ questions, tabs, answers }) => {
           }
         }
 
-        // Find the first question that has the same QuestionID
-        // This is for a sample question that will have its rows replaced by newRows
-        let v = 0;
-
         // Create age range and tab answers
         tabs.map((tab, idx) => {
           // Extract the range ID and filter the array of form answers by tab
           tabAnswers = answers.filter(element => element.rangeId === tab);
         });
 
+        // Find the first question that has the same QuestionID
+        // This is for a sample question that will have its rows replaced by newRows
         const questionAnswer = tabAnswers.find(
           element => element.question === questionID
         );
