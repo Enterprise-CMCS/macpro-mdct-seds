@@ -3,7 +3,7 @@ import config from "../config";
 // import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
-const requestOptions = async () => {
+const requestOptions = () => {
   const localLogin = config.LOCAL_LOGIN === "true";
 
   if (localLogin) {
