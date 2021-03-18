@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Table } from "@trussworks/react-uswds";
+import {roundValue} from "../../utilityFunctions/mathFunctions"
 import "./GridWithTotals.scss";
 
 const GridWithTotals = props => {
@@ -16,13 +17,6 @@ const GridWithTotals = props => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const roundValue = value => {
-    let returnValue = value;
-    if (value % 1 > 0) {
-      returnValue = (Math.round(value * 100) / 100).toFixed(1);
-    }
-    return returnValue;
-  };
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
