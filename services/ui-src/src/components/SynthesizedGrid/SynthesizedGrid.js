@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { selectObjectInArrayByQuestionId } from "../../utilityFunctions/jsonPath";
+import { selectRowColumnValueFromArray } from "../../utilityFunctions/jsonPath";
 import { sortQuestionColumns } from "../../utilityFunctions/sortingFunctions";
 
 const SynthesizedGrid = props => {
@@ -50,7 +50,11 @@ const SynthesizedGrid = props => {
       let tempCalculation = [];
       let returnValue = {};
       Object.entries(incomingCalculation.targets).forEach(key => {
-        tempCalculation[key[0]] = getValue(key[1], tabAnswers);
+        // gets value for each target
+        tempCalculation[key[0]] = selectRowColumnValueFromArray(
+            tabAnswers,
+            key[1]
+        )
       });
       // calculates the value based off of the formula <0> / <1>
       returnValue = tempCalculation[0] / tempCalculation[1];
@@ -58,24 +62,7 @@ const SynthesizedGrid = props => {
     }
   };
 
-  const getValue = (target, tabAnswers) => {
-    let returnValue = {};
-    if (target !== "" && tabAnswers.length > 0) {
-      // example target "$..*[?(@.question=='2021-64.21E-04')].rows[2].col2",
-      const targetInfo = target.split("'");
-      // rowIndex = '2' out of .rows[2]
-      const rowIndex = targetInfo[2].split("rows[")[1].substring(0, 1);
-      // colName = 'col2' out of .rows[2].col2
-      const colName = targetInfo[2].substring(targetInfo[2].length - 4);
 
-      const tempValue = selectObjectInArrayByQuestionId(
-        tabAnswers,
-        targetInfo[1]
-      );
-      returnValue = tempValue[0].rows[rowIndex][colName];
-    }
-    return returnValue;
-  };
 
   const sortedRows = sortQuestionColumns(synthGridData);
   let returnObject = [];
@@ -89,8 +76,8 @@ const SynthesizedGrid = props => {
       />
     );
   }
-  return returnObject;
-};
+  return returnObject
+}
 
 SynthesizedGrid.propTypes = {
   answerData: PropTypes.object.isRequired,

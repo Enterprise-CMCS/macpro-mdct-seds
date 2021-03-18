@@ -1,8 +1,7 @@
 import jsonpath from "jsonpath";
 
-export const selectObjectInArrayByQuestionId = (array, id) => {
-  const jpexpr = `$..[?(@.question==='${id}')]`;
-  return jsonpath.query(array, jpexpr);
+export const selectRowColumnValueFromArray = (array, id) => {
+  return jsonpath.query(array, id)[0];
 };
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
