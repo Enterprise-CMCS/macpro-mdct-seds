@@ -140,7 +140,9 @@ const GridWithTotals = props => {
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={Math.round(column).toFixed(currentPrecision)}
+                      defaultValue={Math.round(column).toFixed(
+                        currentPrecision
+                      )}
                       disabled={props.disabled}
                     />
                   </td>
@@ -183,7 +185,9 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">{Math.round(gridColumnTotals[i]).toFixed(currentPrecision)}</td>
+        <td className="total-column">
+          {Math.round(gridColumnTotals[i]).toFixed(currentPrecision)}
+        </td>
       );
     }
 
@@ -200,7 +204,9 @@ const GridWithTotals = props => {
           {tableData}
           <tr>
             {totalsRow}
-            <td className="total-column">{Math.round(gridTotalOfTotals).toFixed(currentPrecision)}</td>
+            <td className="total-column">
+              {Math.round(gridTotalOfTotals).toFixed(currentPrecision)}
+            </td>
           </tr>
         </tbody>
       </Table>
