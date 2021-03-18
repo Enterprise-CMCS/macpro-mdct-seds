@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Table } from "@trussworks/react-uswds";
-import {roundValue} from "../../utilityFunctions/mathFunctions"
+import { roundValue } from "../../utilityFunctions/mathFunctions";
 import "./GridWithTotals.scss";
 
 const GridWithTotals = props => {
@@ -16,7 +16,6 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];

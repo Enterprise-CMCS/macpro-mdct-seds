@@ -52,17 +52,15 @@ const SynthesizedGrid = props => {
       Object.entries(incomingCalculation.targets).forEach(key => {
         // gets value for each target
         tempCalculation[key[0]] = selectRowColumnValueFromArray(
-            tabAnswers,
-            key[1]
-        )
+          tabAnswers,
+          key[1]
+        );
       });
       // calculates the value based off of the formula <0> / <1>
       returnValue = tempCalculation[0] / tempCalculation[1];
       return returnValue;
     }
   };
-
-
 
   const sortedRows = sortQuestionColumns(synthGridData);
   let returnObject = [];
@@ -76,8 +74,8 @@ const SynthesizedGrid = props => {
       />
     );
   }
-  return returnObject
-}
+  return returnObject;
+};
 
 SynthesizedGrid.propTypes = {
   answerData: PropTypes.object.isRequired,
