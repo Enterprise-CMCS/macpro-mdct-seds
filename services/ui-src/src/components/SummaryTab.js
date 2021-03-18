@@ -31,10 +31,12 @@ const SummaryTab = ({ questions, tabs, answers }) => {
         }
 
         // Find the first question that has the same QuestionID
-        // (rows will be replaced on return)
-        const questionAnswer = tabAnswers.find(
+        // This is for a sample question that will have its rows replaced by newRows
+        const questionAnswerTemp = tabAnswers.find(
           element => element.question === questionID
         );
+        const questionAnswer = Object.assign({}, questionAnswerTemp);
+        let a = 0;
 
         // Find all questions that match questionID
         const jpexpr = `$..[?(@.question==='${questionID}')]`;
@@ -45,7 +47,7 @@ const SummaryTab = ({ questions, tabs, answers }) => {
         for (let answer in allAnswers) {
           allTabs.push(allAnswers[answer].rows);
         }
-        let a = 0;
+
         // Loop through all tabs
         for (let tabKey in allTabs) {
           let row = allTabs[tabKey];
@@ -58,28 +60,28 @@ const SummaryTab = ({ questions, tabs, answers }) => {
             if (!newRows.hasOwnProperty(key)) {
               // Convert null to zero
               for (let c in column) {
-                if (column[c] === null) {
-                  column[c] = 0;
+                let currentColumn = column[c];
+                if (currentColumn === null) {
+                  currentColumn = 0;
                 }
               }
               newRows.push(column);
             } else {
               // If exists, add values where applicable
               for (let k in column) {
-                let a = column[k];
-
+                let currentColumn = column[k];
                 // If null change to zero
-                if (column[k] === null) {
-                  column[k] = 0;
+                if (currentColumn === null) {
+                  currentColumn = 0;
                 }
 
                 // If not a number, copy it wholesale, else add together
-                if (isNaN(column[k])) {
-                  newRows[key][k] = column[k];
-                } else if (column[k] === "") {
+                if (isNaN(currentColumn)) {
+                  newRows[key][k] = currentColumn;
+                } else if (currentColumn === "") {
                   newRows[key][k] = "";
                 } else {
-                  newRows[key][k] = newRows[key][k] + parseFloat(column[k]);
+                  newRows[key][k] += parseFloat(currentColumn);
                 }
               }
             }
