@@ -50,7 +50,8 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
     }
   });
 
-  // TODO:
+  // TODO: find a way to update the rows property in the found answer_entry
+  // find a way to put that updated answer object back into state WITHOUT duplicating it
 
   console.log("PROOF OF CONCEPT", updated);
   // return array of objects, the rows in this specific answer
