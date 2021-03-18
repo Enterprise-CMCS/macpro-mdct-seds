@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Table } from "@trussworks/react-uswds";
-import { roundValue } from "../../utilityFunctions/mathFunctions";
 import "./GridWithTotals.scss";
 
 const GridWithTotals = props => {
@@ -12,6 +11,8 @@ const GridWithTotals = props => {
   const [gridRowTotals, updateGridRowTotals] = useState([]);
 
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
+
+  const currentPrecision = 1;
 
   useEffect(() => {
     updateTotals();
@@ -139,7 +140,7 @@ const GridWithTotals = props => {
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={roundValue(column)}
+                      defaultValue={Math.round(column).toFixed(currentPrecision)}
                       disabled={props.disabled}
                     />
                   </td>
@@ -152,7 +153,7 @@ const GridWithTotals = props => {
                     type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={roundValue(column)}
+                    defaultValue={Math.round(column).toFixed(currentPrecision)}
                     disabled={props.disabled}
                   />
                 </td>
@@ -162,7 +163,7 @@ const GridWithTotals = props => {
             return formattedCell;
           })}
           <td className="total-column">
-            {roundValue(gridRowTotals[rowIndex])}
+            {Math.round(gridRowTotals[rowIndex]).toFixed(currentPrecision)}
           </td>
         </tr>
       );
@@ -182,7 +183,7 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">{roundValue(gridColumnTotals[i])}</td>
+        <td className="total-column">{Math.round(gridColumnTotals[i]).toFixed(currentPrecision)}</td>
       );
     }
 
@@ -199,7 +200,7 @@ const GridWithTotals = props => {
           {tableData}
           <tr>
             {totalsRow}
-            <td className="total-column">{roundValue(gridTotalOfTotals)}</td>
+            <td className="total-column">{Math.round(gridTotalOfTotals).toFixed(currentPrecision)}</td>
           </tr>
         </tbody>
       </Table>
