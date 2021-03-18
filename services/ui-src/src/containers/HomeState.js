@@ -1,16 +1,14 @@
 import React from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
-import { connect } from "react-redux";
 
-const HomeState = ({ userData }) => {
+
+const HomeState = ({ states }) => {
   // Pull state from redux
-  const state = userData.abbrev;
-  console.log(state);
+  const state = states;
   // TODO: Pull years and quarters
   // define years and months
   const date = new Date();
   let fiscalYear = date.getFullYear();
-  console.log(fiscalYear);
   let month = date.getMonth() + 1;
   // create array years with subarrays year and quarters
   // const years = [...year, ...quarters];
@@ -49,10 +47,10 @@ const HomeState = ({ userData }) => {
 
   const test = dateMachine(fiscalYear, month);
   console.log("dateMachine output", test);
-
   let accordionItems = [];
   for (const year in years) {
     // Build node with link to each quarters reports
+    
     let quarters = (
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
@@ -95,7 +93,5 @@ const HomeState = ({ userData }) => {
     </Grid>
   );
 };
-const mapState = state => ({
-  userData: state.userData.userState
-});
-export default connect(mapState)(HomeState);
+
+export default HomeState;

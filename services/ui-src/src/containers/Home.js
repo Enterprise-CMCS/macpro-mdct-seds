@@ -25,11 +25,11 @@ export default function Home({ user }) {
 
   function renderLander() {
     let content = null;
-    console.log(user);
-    console.log("asdfasdfasdf");
+    const stateAbbrev = user.states[0];
+
     switch (user.role) {
       case "state":
-        content = <HomeState />;
+        content = <HomeState states={stateAbbrev}/>;
         break;
       case "business":
         content = <HomeBus />;
