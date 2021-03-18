@@ -32,16 +32,16 @@ const formatAnswerData = answerArray => {
 };
 
 const insertAnswer = (stateAnswers, dataArray, questionID) => {
-  // use jsonpath to find location of answer
+  // use jsonpath to find location of answer and query for that single answer object
   const queryString = `$..[?(@.answer_entry == "${questionID}")]`;
-  const response = jsonpath.query(stateAnswers, queryString);
+  const response = jsonpath.query(stateAnswers, queryString)[0];
 
-  // get just the rows array from the answer object
-  const rowsOfAnswers = response[0].rows;
+  // get just the 'rows' array from the answer object
+  const rowsOfAnswers = response.rows;
 
-  // create a new, updated array with the new values skipping the header row
+  // create a new, updated array with the new values (skipping the header row)
   const updated = rowsOfAnswers.map((singleRow, idx) => {
-    // if this is the header row
+    // if this is the header row, return it unaltered
     if (singleRow["col1"] === "") {
       return singleRow;
     } else {
@@ -50,117 +50,32 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
     }
   });
 
-  // TODO: find a way to update the rows property in the found answer_entry
-  // find a way to put that updated answer object back into state WITHOUT duplicating it
+  let A = 0;
+  // replace the answer object's rows array with the updated version
+  response.rows = updated;
 
-  console.log("PROOF OF CONCEPT", updated);
-  // return array of objects, the rows in this specific answer
-  // return updated
+  // find the location of this specific answer object
+  const idx = stateAnswers.findIndex(
+    answerObject => answerObject.answer_entry === questionID
+  );
+
+  // replace the entire answer object
+  stateAnswers[idx] = response;
+
+  return stateAnswers;
 };
+
+// CONFIRM!!! does this need to be sorted before coming back
 
 // ANSWERS is an ARRAY of OBJECTS
 
-// in a given answer object I want to update:
-// rows, last_modified, last_modified_by
+// ASK JENNA: Do we want to change last_modified, last_modified_by or will that be handled by save?
 
-// sorting through all the answers (AGAIN) is too much.
-// Maybe theres a way to use the already sorted answers from the front end
-// take that ONE object and replace that object
-
-// it still has to be searched through by answer_entry to find where it should be place
-
-// [
-//   {
-//     answer_entry: "AL-2021-1-21E-0000-01",
-//     state_form: "AL-2021-1-21E",
-//     question: "2021-21E-01",
-//     age_range: "Under Age 0",
-//     rangeId: "0000",
-//     rows: [
-//       {
-//         col1: "",
-//         col2: "% of FPL 0-133",
-//         col3: "% of FPL 134-200",
-//         col4: "% of FPL 201-250",
-//         col5: "% of FPL 251-300",
-//         col6: "% of FPL 301-317"
-//       },
-//       {
-//         col1: "A. Fee-for-Service",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       },
-//       {
-//         col1: "B. Managed Care Arrangements",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       },
-//       {
-//         col1: "C. Primary Care Case Management",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       }
-//     ],
-//     last_modified: "01/15/2021",
-//     last_modified_by: "seed",
-//     created_date: "01/15/2021",
-//     created_by: "seed"
-//   },
-//   {
-//     answer_entry: "AL-2021-1-21E-0000-02",
-//     state_form: "AL-2021-1-21E",
-//     question: "2021-21E-02",
-//     age_range: "Under Age 0",
-//     rangeId: "0000",
-//     rows: [
-//       {
-//         col1: "",
-//         col2: "% of FPL 0-133",
-//         col3: "% of FPL 134-200",
-//         col4: "% of FPL 201-250",
-//         col5: "% of FPL 251-300",
-//         col6: "% of FPL 301-317"
-//       },
-//       {
-//         col1: "A. Fee-for-Service",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       },
-//       {
-//         col1: "B. Managed Care Arrangements",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       },
-//       {
-//         col1: "C. Primary Care Case Management",
-//         col2: null,
-//         col3: null,
-//         col4: null,
-//         col5: null,
-//         col6: null
-//       }
-//     ],
-//     last_modified: "01/15/2021",
-//     last_modified_by: "seed",
-//     created_date: "01/15/2021",
-//     created_by: "seed"
-//   }
-// ];
+// CHECKS:
+// look at the data
+// check it against ALL forms
+// look at the data again
+// what happens if i delete my entries
 
 const extractAgeRanges = answersArray => {
   // call back for a reduce method

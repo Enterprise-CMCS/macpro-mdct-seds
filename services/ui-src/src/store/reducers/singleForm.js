@@ -107,30 +107,6 @@ export const setAnswer = inputArray => {
 
 // will maybe only need ID and value??
 
-// @ carts: formdata.js
-
-// case QUESTION_ANSWERED: {
-//   const fragment = selectQuestion({ formData: state }, action.fragmentId);
-//   fragment.answer.entry = action.data;
-//   return JSON.parse(JSON.stringify(state));
-// }
-
-// @ helper function
-// state is the entire store/ the state tied to this reducer
-// build a path to the correct answer place
-// query the store using the path
-// retun the question???
-
-// export const selectQuestion = (state, id) => {
-//   const jp = `$..[*].contents.section.subsections[*].parts[*]..questions[?(@.id=='${id}')]`;
-//   const questions = jsonpath.query(state, jp);
-//   if (questions.length) {
-//     return questions[0];
-//   }
-
-//   return null;
-// };
-
 // INITIAL STATE
 const initialState = {
   questions: [],
@@ -143,10 +119,13 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_ANSWER:
-      insertAnswer(state.answers, action.answerArray, action.questionID);
       return {
         ...state,
-        answers: [...state.answers]
+        answers: insertAnswer(
+          state.answers,
+          action.answerArray,
+          action.questionID
+        )
       };
     case LOAD_SINGLE_FORM:
       return {
