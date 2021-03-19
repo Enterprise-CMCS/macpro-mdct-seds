@@ -19,7 +19,10 @@ const SummaryTab = ({ questions, answers }) => {
 
         // Find all questions that match questionID
         const jpexpr = `$..[?(@.question==='${questionID}')]`;
-        const allAnswers = jsonpath.query(answers, jpexpr);
+        const allAnswersTemp = jsonpath.query(answers, jpexpr);
+
+        // Make a deep copy of answers to prevent overwriting data
+        let allAnswers = JSON.parse(JSON.stringify(allAnswersTemp));
 
         // Put all rows in one array (all answers for the current question)
         // This is to decrease the complexity of later loops
@@ -62,21 +65,9 @@ const SummaryTab = ({ questions, answers }) => {
 
         // Find the first question that has the same QuestionID
         // This is for a sample question that will have its rows replaced by newRows
-        // const questionAnswer = questions.find(
-        //   element => element.question === questionID
-        // );
-
-        let questionAnswer = {
-          age_range: "Summary",
-          rangeId: "0000",
-          question: "2021-21E-01",
-          state_form: "AL-2021-1-21E",
-          last_modified_by: "seed",
-          created_date: "01/15/2021",
-          last_modified: "01/15/2021",
-          created_by: "seed",
-          answer_entry: "AL-2021-1-21E-0000-01"
-        };
+        const questionAnswer = questions.find(
+          element => element.question === questionID
+        );
 
         // Set rows for the question
         questionAnswer.rows = newRows;
