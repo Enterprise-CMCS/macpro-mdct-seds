@@ -16,7 +16,7 @@ export const main = handler(async (event, context) => {
 
   console.log("!!!Retrieving user:");
 
-  const user = userFromCognitoAuthProvider(
+  const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
