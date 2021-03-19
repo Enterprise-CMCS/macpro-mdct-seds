@@ -53,8 +53,7 @@ function userAttrDict(cognitoUser) {
 
 // userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
 export async function userFromCognitoAuthProvider(authProvider) {
-  const parseResult = parseAuthProvider(authProvider);
-  const userInfo = parseResult.value;
+  const userInfo = parseAuthProvider(authProvider);
 
   // calling a dependency so we have to try
   try {
