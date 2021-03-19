@@ -1,7 +1,7 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
-import { parseAuthProvider } from "../../../auth/cognito-auth";
+import { userFromCognitoAuthProvider } from "../../../auth/cognito-auth";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -16,7 +16,7 @@ export const main = handler(async (event, context) => {
 
   console.log("!!!Retrieving user:");
 
-  const user = parseAuthProvider(
+  const user = userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
