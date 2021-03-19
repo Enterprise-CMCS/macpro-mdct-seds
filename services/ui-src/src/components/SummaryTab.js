@@ -3,78 +3,66 @@ import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "./Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const SummaryTab = ({ questions, tabs, answers }) => {
+const SummaryTab = ({ questions, answers }) => {
   return (
     <>
       <h3>Summary:</h3>
 
       {questions.map((singleQuestion, idx) => {
-        // Extract the ID from each question and find its corresponding answer object
-        const questionID = singleQuestion.question;
-
+        // Initialize newRows
         let newRows = [];
-        let tabAnswers;
 
-        // Create array of tab IDs
-        let tabArray = [];
-        for (let tab in tabs) {
-          tabArray.push(tabs[tab].range_id);
-        }
+        // Extract the question ID
+        const questionID = singleQuestion.question;
 
         // Find all questions that match questionID
         const jpexpr = `$..[?(@.question==='${questionID}')]`;
         const allAnswers = jsonpath.query(answers, jpexpr);
 
-        // All rows in one array (all answers for a specific question)
-        const allTabs = [];
-        for (let answer in allAnswers) {
-          allTabs.push(allAnswers[answer].rows);
-        }
+        // Put all rows in one array (all answers for the current question)
+        // This is to decrease the complexity of later loops
+        let allTabs = allAnswers.map(a => a.rows);
 
-        // Loop through all tabs
-        for (let tabKey in allTabs) {
-          let row = allTabs[tabKey];
+        // Loop through all tabs array
+        for (let allTabsKey in allTabs) {
+          let row = allTabs[allTabsKey];
 
-          // Loop through all rows
-          for (let key in row) {
-            let column = row[key];
+          // Loop through all rows in the current tab (allTabs)
+          for (let rowKey in row) {
+            // Set to variable to avoid reference issues
+            let column = row[rowKey];
 
             // If key doesn't exist, add entire row
-            if (!newRows.hasOwnProperty(key)) {
+            if (!Object.prototype.hasOwnProperty.call(newRows, rowKey)) {
               newRows.push(column);
             } else {
               // If exists, add values where applicable
-              for (let k in column) {
-                let currentColumn = column[k];
+              for (let columnKey in column) {
+                let currentColumn = column[columnKey];
 
                 // If null change to zero
-                if (currentColumn === null) {
-                  currentColumn = 0;
-                }
+                currentColumn = currentColumn === null ? 0 : currentColumn;
 
                 // If not a number, copy it wholesale, else add together
                 if (isNaN(currentColumn)) {
-                  newRows[key][k] = currentColumn;
+                  newRows[rowKey][columnKey] = currentColumn;
                 } else if (currentColumn === "") {
-                  newRows[key][k] = "";
+                  // If empty string, return an empty string
+                  newRows[rowKey][columnKey] = "";
                 } else {
-                  newRows[key][k] += parseFloat(currentColumn);
+                  // Add value to current value
+                  newRows[rowKey][columnKey] += parseFloat(currentColumn);
                 }
               }
             }
           }
         }
 
-        // Create age range and tab answers
-        tabs.map((tab, idx) => {
-          // Extract the range ID and filter the array of form answers by tab
-          tabAnswers = answers.filter(element => element.rangeId === tab);
-        });
-
         // Find the first question that has the same QuestionID
         // This is for a sample question that will have its rows replaced by newRows
-        const questionAnswer = tabAnswers.find(
+        const questionAnswer = questions.find(
           element => element.question === questionID
         );
 
@@ -90,11 +78,9 @@ const SummaryTab = ({ questions, tabs, answers }) => {
         //   answer_entry: "AL-2021-1-21E-1318-01"
         // };
 
-        let a = 0;
-
         // Set rows for the question
         questionAnswer.rows = newRows;
-        let b = 0;
+
         return (
           <QuestionComponent
             key={idx}
@@ -109,10 +95,14 @@ const SummaryTab = ({ questions, tabs, answers }) => {
   );
 };
 
+SummaryTab.propTypes = {
+  questions: PropTypes.array.isRequired,
+  answers: PropTypes.array.isRequired
+};
+
 const mapState = state => ({
   answers: state.currentForm.answers,
-  questions: state.currentForm.questions,
-  tabs: state.currentForm.tabs
+  questions: state.currentForm.questions
 });
 
 export default connect(mapState)(SummaryTab);
