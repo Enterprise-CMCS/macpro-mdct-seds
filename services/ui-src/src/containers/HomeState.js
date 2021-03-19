@@ -1,7 +1,6 @@
 import React from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
 
-
 const HomeState = ({ states }) => {
   // Pull state from redux
   const state = states;
@@ -94,4 +93,4 @@ const HomeState = ({ states }) => {
   );
 };
 
-export default HomeState;
+export default HomeState({states});
