@@ -49,7 +49,6 @@ const HomeState = ({ states }) => {
   let accordionItems = [];
   for (const year in years) {
     // Build node with link to each quarters reports
-    
     let quarters = (
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
@@ -93,4 +92,4 @@ const HomeState = ({ states }) => {
   );
 };
 
-export default HomeState({states});
+export default HomeState;

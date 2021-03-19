@@ -29,7 +29,7 @@ export default function Home({ user }) {
 
     switch (user.role) {
       case "state":
-        content = <HomeState states={stateAbbrev}/>;
+        content = <HomeState states={stateAbbrev} />;
         break;
       case "business":
         content = <HomeBus />;
