@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
-import LocalLogin from "./containers/LocalLogin";
 import NotFound from "./containers/NotFound";
 import Signup from "./containers/Signup";
 import Profile from "./containers/Profile";
@@ -10,7 +9,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import Users from "./components/users/Users";
 import UserEdit from "./components/users/UserEdit";
-import config from "./config";
 import GridWithTotals from "./components/GridWithTotals/GridWithTotals";
 import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
@@ -19,7 +17,6 @@ import Unauthorized from "./containers/Unauthorized";
 import FormPage from "./components/form/FormPage";
 
 export default function Routes({ user, isAuthorized }) {
-  const localLogin = config.LOCAL_LOGIN === "true";
   if (!isAuthorized) {
     return (
       <Switch>
@@ -27,7 +24,7 @@ export default function Routes({ user, isAuthorized }) {
           <Unauthorized />
         </AuthenticatedRoute>
         <UnauthenticatedRoute exact path="/login">
-          {localLogin ? <LocalLogin /> : <Login />}
+          <Login />
         </UnauthenticatedRoute>
         <UnauthenticatedRoute exact path="/signup">
           <Signup />
@@ -37,21 +34,20 @@ export default function Routes({ user, isAuthorized }) {
   }
   return (
     <Switch>
+      // *************** UNAUTHENTICATED ROUTES ***************
+      <UnauthenticatedRoute exact path="/signup">
+        <Signup />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/unauthorized">
+        <Unauthorized />
+      </UnauthenticatedRoute>
+      // *************** AUTHENTICATED ROTES ***************
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/unauthorized">
-        <Unauthorized />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/totals">
         <GridWithTotals />
       </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/login">
-        {localLogin ? <LocalLogin /> : <Login />}
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/signup">
-        <Signup />
-      </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/example">
         <Example />
       </AuthenticatedRoute>
@@ -64,6 +60,7 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
+      // *************** ADMIN ROUTES ***************
       {user.attributes["ismemberof"] === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
@@ -77,9 +74,9 @@ export default function Routes({ user, isAuthorized }) {
           </AuthenticatedRoute>
         </>
       ) : null}
-      <Route>
+      <UnauthenticatedRoute>
         <NotFound />
-      </Route>
+      </UnauthenticatedRoute>
     </Switch>
   );
 }

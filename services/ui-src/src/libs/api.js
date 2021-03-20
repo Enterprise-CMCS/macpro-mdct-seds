@@ -1,22 +1,7 @@
 import { API } from "aws-amplify";
-import config from "../config";
-// import { Auth } from "aws-amplify";
-import { getLocalUserInfo } from "./user";
 
 const requestOptions = () => {
-  const localLogin = config.LOCAL_LOGIN === "true";
-
-  if (localLogin) {
-    // serverless offline passes the value of the cognito-identity-id into our lambdas as
-    // requestContext.identity.cognitoIdentityId. This lets us set a user locally without involving Cognito.
-    const currentUser = getLocalUserInfo();
-    const options = {
-      headers: { "cognito-identity-id": currentUser.username }
-    };
-    return options;
-  } else {
-    return {};
-  }
+  return {};
 };
 
 export function listAmendments() {

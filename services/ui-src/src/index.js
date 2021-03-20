@@ -42,7 +42,7 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-  <Router basename="/">
+  <Router>
     <Provider store={store}>
       <App />
     </Provider>

@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { Auth } from "aws-amplify";
 import {
   Grid,
   GridContainer,
@@ -6,72 +9,40 @@ import {
   Link,
   NavList
 } from "@trussworks/react-uswds";
-import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { Auth } from "aws-amplify";
-import { useHistory } from "react-router-dom";
-import { currentUserInfo } from "../../libs/user";
-import config from "../../config";
+import { HashRouter } from "react-router-dom";
 
 const Header = () => {
-  const history = useHistory();
-  // const [email, setEmail] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    function loadProfile() {
-      return currentUserInfo();
-    }
-
-    async function onLoad() {
+    const onLoad = async () => {
       try {
-        // Get user info
-        const userInfo = await loadProfile();
-
-        if (userInfo === null) {
-          setIsAuthenticated(false);
-        } else {
-          if (userInfo.signInUserSession) {
-            // Get payload
-            //const payload = userInfo.signInUserSession.idToken.payload;
-            //setEmail(payload.email);
-          } else {
-            //setEmail(userInfo.email);
-          }
-          setIsAuthenticated(true);
-        }
+        const userInfo = (await Auth.currentSession()).getIdToken().payload;
+        setIsAuthenticated(userInfo !== null);
       } catch (error) {
-        if (error !== "The user is not authenticated") {
-          console.log(
-            "There was an error while loading the user information.",
-            error
-          );
-        }
+        console.log(
+          "There was an error while loading the user information.",
+          error
+        );
       }
-    }
+    };
 
-    onLoad();
+    onLoad().then();
   }, []);
 
-  function handleLogout() {
-    if (config.LOCAL_LOGIN === "true") {
-      window.localStorage.removeItem("userKey");
-      history.push("/login");
-      history.go(0);
-    } else {
-      try {
-        const authConfig = Auth.configure();
-        Auth.signOut();
-        window.location.href = authConfig.oauth.redirectSignOut;
-      } catch (error) {
-        console.log("error signing out: ", error);
-      }
+  const handleLogout = () => {
+    try {
+      Auth.signOut().then(() => {
+        window.location.href = Auth.configure().oauth.redirectSignOut;
+      });
+    } catch (error) {
+      console.log("error signing out: ", error);
     }
-  }
+  };
 
   let testItems = [
-    <Link to={"/"}>Home</Link>,
-    <Link to={"/contact"}>Contact</Link>
+    <Link href="/">Home</Link>,
+    <Link href="#/contact">Contact</Link>
   ];
 
   return (

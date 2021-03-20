@@ -9,23 +9,15 @@ import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();
-  console.log(isAuthenticated);
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    async function onLoad() {
-      if (!isAuthenticated) {
-        return;
-      }
 
-      setIsLoading(false);
-    }
-    onLoad();
+  useEffect(() => {
+    setIsLoading(isAuthenticated === false);
   }, [isAuthenticated]);
 
   function renderLander() {
-    let content = null;
-    console.log(user);
+    let content;
 
     switch (user.attributes["ismemberof"]) {
       case "state":
@@ -50,25 +42,7 @@ export default function Home({ user }) {
     );
   }
 
-  function renderUnauthorized() {
-    const content = <Unauthorized />;
-
-    return (
-      <GridContainer className="container page-home">
-        <Grid row>
-          <Grid col={12}>{content}</Grid>
-        </Grid>
-      </GridContainer>
-    );
-  }
-
-  return (
-    <div className="Home">
-      {/* TODO: Check for authentication */}
-      {/*{isAuthenticated ? renderLander() : renderUnauthorized()}*/}
-      {renderLander()}
-    </div>
-  );
+  return <div className="Home">{renderLander()}</div>;
 }
 
 Home.propTypes = {};
