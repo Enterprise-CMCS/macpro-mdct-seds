@@ -7,6 +7,8 @@ import {
 
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
+import { localUser } from "./local-user";
+
 export function parseAuthProvider(authProvider) {
   // Cognito authentication provider looks like:
   // cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
@@ -29,7 +31,8 @@ export function parseAuthProvider(authProvider) {
   } catch (e) {
     const errorObject = {
       status: "error",
-      errorMessage: "authProvider doesnt have enough parts",
+      errorMessage:
+        "Error (parseAuthProvider): parseAuth doesnt have enough parts",
       detailedErrorMessage: e,
     };
 
@@ -53,31 +56,51 @@ function userAttrDict(cognitoUser) {
 
 // userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
 export async function userFromCognitoAuthProvider(authProvider) {
-  const userInfo = parseAuthProvider(authProvider);
+  let userObject = {};
 
-  // calling a dependency so we have to try
-  try {
-    const cognito = new CognitoIdentityServiceProvider();
-    const userResponse = await cognito
-      .adminGetUser({
-        Username: userInfo.userId,
-        UserPoolId: userInfo.poolId,
-      })
-      .promise();
+  switch (authProvider) {
+    case "offlineContext_cognitoAuthenticationProvider":
+      userObject = localUser;
+      break;
 
-    // we lose type safety here...
-    const attributes = userAttrDict(userResponse);
+    default:
+      const userInfo = parseAuthProvider(authProvider);
 
-    const user = {
-      status: "success",
-      email: attributes.email,
-      name: attributes.given_name + " " + attributes.family_name,
-      state: attributes["custom:state_code"],
-      role: "STATE_USER",
-    };
+      // calling a dependency so we have to try
+      try {
+        const cognito = new CognitoIdentityServiceProvider();
+        const userResponse = await cognito
+          .adminGetUser({
+            Username: userInfo.userId,
+            UserPoolId: userInfo.poolId,
+          })
+          .promise();
 
-    return user;
-  } catch (e) {
-    return e;
+        console.log("????userResponse from cognito:");
+        console.log(userResponse);
+
+        // we lose type safety here...
+        const attributes = userAttrDict(userResponse);
+
+        userObject = {
+          status: "success",
+          email: attributes.email,
+          name: attributes.given_name + " " + attributes.family_name,
+          state: attributes["custom:state_code"],
+          role: "STATE_USER",
+        };
+      } catch (e) {
+        const errorObject = {
+          status: "error",
+          errorMessage:
+            "Error (userFromCognitoAuthProvider): cannot retrieve user info",
+          detailedErrorMessage: e,
+        };
+
+        return errorObject;
+      }
+      break;
   }
+
+  return userObject;
 }
