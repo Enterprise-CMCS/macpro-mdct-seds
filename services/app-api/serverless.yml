@@ -265,6 +265,10 @@ resources:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
+                - Effect: 'Allow'
+                  Action:
+                    - cognito-idp:AdminGetUser
+                  Resource: '*'
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:

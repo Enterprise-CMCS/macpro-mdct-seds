@@ -190,10 +190,6 @@ resources:
                         - - ${self:custom.attachments_bucket_arn}/private/
                           - "$"
                           - "{cognito-identity.amazonaws.com:sub}/*"
-                - Effect: "Allow"
-                  Action:
-                    - "cognito-idp:AdminGetUser"
-                  Resource: "*"
   Outputs:
     UserPoolId:
       Value: !Ref CognitoUserPool
