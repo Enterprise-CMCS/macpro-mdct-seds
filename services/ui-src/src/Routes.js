@@ -20,9 +20,9 @@ export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
     return (
       <Switch>
-        <AuthenticatedRoute exact path="/">
+        <UnauthenticatedRoute exact path="/">
           <Unauthorized />
-        </AuthenticatedRoute>
+        </UnauthenticatedRoute>
         <UnauthenticatedRoute exact path="/login">
           <Login />
         </UnauthenticatedRoute>
