@@ -175,6 +175,7 @@ resources:
                     - "mobileanalytics:PutEvents"
                     - "cognito-sync:*"
                     - "cognito-identity:*"
+                    - "cognito-idp:AdminGetUser"
                   Resource: "*"
                 - Effect: "Allow"
                   Action:
