@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import { TextField } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
@@ -169,7 +169,7 @@ const UserEdit = ({ stateList }) => {
     <div className="edit-user ds-l-col--6">
       <GridContainer className="container">
         <Grid col={6}>
-          <a href="/users">&laquo; Back to User List</a>
+          <Link to="/users">&laquo; Back to User List</Link>
           <h1>Edit User</h1>
           {user ? (
             <>

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
 import config from "./config";
 import { Provider } from "react-redux";
@@ -42,7 +42,7 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-  <Router>
+  <Router basename="/">
     <Provider store={store}>
       <App />
     </Provider>

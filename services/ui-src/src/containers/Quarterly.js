@@ -6,6 +6,7 @@ import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
 import Card from "@material-ui/core/Card";
+import { Link } from "react-router-dom";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -62,13 +63,10 @@ const Quarterly = () => {
       sortable: true,
       cell: function generateFormLink(e) {
         return (
-          <a
-            href={`/forms/${state}/${year}/${quarter}/${getFormSegment(
-              e.form
-            )}`}
-          >
+          <Link>
+            to={`/forms/${state}/${year}/${quarter}/${getFormSegment(e.form)}`}>
             {e.form}
-          </a>
+          </Link>
         );
       }
     },
@@ -119,9 +117,9 @@ const Quarterly = () => {
       cell: function getPrintLink(row) {
         const formId = getFormSegment(row.form);
         return (
-          <a href={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
+          <Link to={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
             <FontAwesomeIcon icon={faFilePdf} />
-          </a>
+          </Link>
         );
       }
     }
@@ -193,7 +191,7 @@ const Quarterly = () => {
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> &gt;{" "}
+            <Link to="/">Enrollment Data Home</Link> &gt;{" "}
             {`${state} Q${quarter} ${year}`}
           </div>
         </Grid>

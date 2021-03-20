@@ -9,7 +9,7 @@ import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();
-  console.log(isAuthenticated)
+  console.log(isAuthenticated);
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function Home({ user }) {
   function renderLander() {
     let content = null;
     console.log(user);
-    
+
     switch (user.attributes["ismemberof"]) {
       case "state":
         content = <HomeState />;

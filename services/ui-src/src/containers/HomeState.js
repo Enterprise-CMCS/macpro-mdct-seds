@@ -33,7 +33,7 @@ const HomeState = () => {
         {years[year].quarters.map(element => {
           return (
             <li key={`${state}-${year}-${element}`}>
-              <Link href={`/forms/${state}/${years[year].year}/${element}`}>
+              <Link to={`/forms/${state}/${years[year].year}/${element}`}>
                 Quarter {element}
               </Link>
             </li>

@@ -1,5 +1,6 @@
 import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -23,12 +24,12 @@ const Footer = () => {
                 aria-label="Footer navigation"
                 size="slim"
                 links={[
-                  <a className="usa-footer__primary-link" href="/faq">
+                  <Link className="usa-footer__primary-link" to="/faq">
                     FAQs
-                  </a>,
-                  <a className="usa-footer__primary-link" href="/contact">
+                  </Link>,
+                  <Link className="usa-footer__primary-link" to="/contact">
                     Contact
-                  </a>,
+                  </Link>,
                   <a
                     className="usa-footer__primary-link"
                     href="https://www.cms.gov/"

@@ -70,8 +70,8 @@ const Header = () => {
   }
 
   let testItems = [
-    <Link href={"/"}>Home</Link>,
-    <Link href={"/contact"}>Contact</Link>
+    <Link to={"/"}>Home</Link>,
+    <Link to={"/contact"}>Contact</Link>
   ];
 
   return (
@@ -84,7 +84,7 @@ const Header = () => {
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
-              <Link href="/">
+              <Link to="/">
                 <img
                   src="/img/logo-cms.png"
                   alt="Centers for Medicare and Medicaid Services"

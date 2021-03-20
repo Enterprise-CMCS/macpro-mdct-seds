@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 
 const HomeAdmin = () => {
   return (
@@ -8,10 +9,10 @@ const HomeAdmin = () => {
         <h1>Home Admin User Page</h1>
         <ul>
           <li>
-            <a href="/users">View/Edit users</a>
+            <Link to="/users">View/Edit users</Link>
           </li>
           <li>
-            <a href="/users/add">Create user</a>
+            <Link to="/users/add">Create user</Link>
           </li>
         </ul>
       </Grid>

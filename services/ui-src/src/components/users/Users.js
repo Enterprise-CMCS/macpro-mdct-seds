@@ -6,6 +6,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { listUsers, activateDeactivateUser } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 /**
  * Display all users with options
  *
@@ -64,7 +65,7 @@ const Users = () => {
         cell: function editUser(e) {
           return (
             <span>
-              <a href={`/users/${e.userId}/edit`}>{e.username}</a>
+              <Link to={`/users/${e.userId}/edit`}>{e.username}</Link>
             </span>
           );
         }
@@ -170,7 +171,7 @@ const Users = () => {
     <div className="user-profiles">
       <Grid className="container">
         <h1>Users</h1>
-        <a href="/users/add">Add new user</a>
+        <Link to="/users/add">Add new user</Link>
         <Card>
           {tableData ? (
             <DataTableExtensions {...tableData}>

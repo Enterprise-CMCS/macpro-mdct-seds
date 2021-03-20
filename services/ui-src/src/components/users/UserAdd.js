@@ -6,6 +6,7 @@ import { TextField, Button } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { createUser } from "../../libs/api";
+import { Link } from "react-router-dom";
 
 const AddUser = ({ currentUser, stateList }) => {
   const [userId, setUserId] = useState();
@@ -73,7 +74,7 @@ const AddUser = ({ currentUser, stateList }) => {
               </p>
               <p className="note">
                 Note: Users will not show up in the{" "}
-                <a href="/users">User List</a> until they have logged in.
+                <Link to="/users">User List</Link> until they have logged in.
               </p>
               {error && (
                 <p className="error" id="Error">
@@ -88,7 +89,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     className=""
                     name="eua-id"
                     required={true}
-                  ></TextField>
+                  />
                 </div>
                 <div className="role">
                   Role:
