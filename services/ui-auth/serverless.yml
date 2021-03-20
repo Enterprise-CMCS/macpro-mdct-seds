@@ -164,7 +164,7 @@ resources:
                 StringEquals:
                   "cognito-identity.amazonaws.com:aud": !Ref CognitoIdentityPool
                 "ForAnyValue:StringLike":
-                  "cognito-identity.amazonaws.com:amr": authenticated
+                  "cognito-identity.amazonaws.com:amr": unauthenticated
         Policies:
           - PolicyName: "CognitoAuthorizedPolicy"
             PolicyDocument:
