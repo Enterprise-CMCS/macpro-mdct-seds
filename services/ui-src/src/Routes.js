@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import NotFound from "./containers/NotFound";
@@ -21,7 +21,7 @@ export default function Routes({ user, isAuthorized }) {
     return (
       <Switch>
         <UnauthenticatedRoute exact path="/">
-          <Unauthorized />
+          <Redirect to="/login" />
         </UnauthenticatedRoute>
         <UnauthenticatedRoute exact path="/login">
           <Login />

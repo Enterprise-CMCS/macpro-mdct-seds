@@ -26,7 +26,6 @@ function App() {
         setIsAuthenticating(false);
         setIsAuthorized(true);
       } catch (error) {
-        console.log(error);
         setIsAuthenticating(false);
       }
     }

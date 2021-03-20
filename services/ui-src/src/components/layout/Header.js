@@ -18,12 +18,7 @@ const Header = () => {
       try {
         const userInfo = (await Auth.currentSession()).getIdToken().payload;
         setIsAuthenticated(userInfo !== null);
-      } catch (error) {
-        console.log(
-          "There was an error while loading the user information.",
-          error
-        );
-      }
+      } catch (error) {}
     };
 
     onLoad().then();
