@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import NotFound from "./containers/NotFound";
@@ -34,14 +34,14 @@ export default function Routes({ user, isAuthorized }) {
   }
   return (
     <Switch>
-      // *************** UNAUTHENTICATED ROUTES ***************
+      {/*************** UNAUTHENTICATED ROUTES ***************/}
       <UnauthenticatedRoute exact path="/signup">
         <Signup />
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
       </UnauthenticatedRoute>
-      // *************** AUTHENTICATED ROTES ***************
+      {/*************** AUTHENTICATED ROUTES ***************/}
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
       </AuthenticatedRoute>
@@ -60,7 +60,7 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-      // *************** ADMIN ROUTES ***************
+      {/*************** ADMIN ROUTES ***************/}
       {user.attributes["ismemberof"] === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">

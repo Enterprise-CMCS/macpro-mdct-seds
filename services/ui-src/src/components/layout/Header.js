@@ -9,7 +9,6 @@ import {
   Link,
   NavList
 } from "@trussworks/react-uswds";
-import { HashRouter } from "react-router-dom";
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
