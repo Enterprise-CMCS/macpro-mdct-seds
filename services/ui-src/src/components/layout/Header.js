@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <div className="header" data-test="component-header">
       <div className="gov-info">
-        <GovBanner />
+        <GovBanner className="react-transition swipe-right" />
       </div>
 
       <div className="logo">

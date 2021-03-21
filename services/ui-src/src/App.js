@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./App.scss";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+
+import "./App.scss";
+import "./animations/transitions.scss";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -35,7 +37,7 @@ function App() {
 
   return (
     !isAuthenticating && (
-      <div className="App">
+      <div className="App react-transition scale-in">
         <Header user={user} />
         <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
           <div className="main">

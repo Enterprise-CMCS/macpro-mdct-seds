@@ -7,6 +7,7 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { listUsers, activateDeactivateUser } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
+
 /**
  * Display all users with options
  *
@@ -62,7 +63,7 @@ const Users = () => {
         name: "Username",
         selector: "username",
         sortable: true,
-        cell: function editUser(e) {
+        cell: e => {
           return (
             <span>
               <Link to={`/users/${e.userId}/edit`}>{e.username}</Link>
@@ -84,7 +85,7 @@ const Users = () => {
         name: "Email",
         selector: "email",
         sortable: true,
-        cell: function modifyEmail(e) {
+        cell: e => {
           return (
             <span>
               <a href={`mailto:${e.email}`}>{e.email}</a>
@@ -96,7 +97,7 @@ const Users = () => {
         name: "Role",
         selector: "role",
         sortable: true,
-        cell: function Role(r) {
+        cell: r => {
           if (r) {
             return r.role;
           } else {
@@ -108,7 +109,7 @@ const Users = () => {
         name: "Joined",
         selector: "dateJoined",
         sortable: true,
-        cell: function convertDate(s) {
+        cell: s => {
           return s.dateJoined
             ? new Date(s.dateJoined).toLocaleDateString("en-US")
             : null;
@@ -118,7 +119,7 @@ const Users = () => {
         name: "Last Active",
         selector: "lastLogin",
         sortable: true,
-        cell: function convertDate(s) {
+        cell: s => {
           return s.lastLogin
             ? new Date(s.lastLogin).toLocaleDateString("en-US")
             : null;
@@ -128,7 +129,7 @@ const Users = () => {
         name: "States",
         selector: "state_codes",
         sortable: true,
-        cell: function modifyStateCodes(s) {
+        cell: s => {
           return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
         }
       },
@@ -136,7 +137,7 @@ const Users = () => {
         name: "Status",
         selector: "isActive",
         sortable: true,
-        cell: function modifyIsActive(s) {
+        cell: s => {
           return (
             <span>
               {s.isActive ? (
@@ -168,7 +169,7 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles">
+    <div className="user-profiles react-transition swipe-down">
       <Grid className="container">
         <h1>Users</h1>
         <Link to="/users/add">Add new user</Link>

@@ -16,7 +16,7 @@ export default function Home({ user }) {
     setIsLoading(isAuthenticated === false);
   }, [isAuthenticated]);
 
-  function renderLander() {
+  const renderLander = () => {
     let content;
 
     switch (user.attributes["ismemberof"]) {
@@ -40,9 +40,11 @@ export default function Home({ user }) {
         </Grid>
       </GridContainer>
     );
-  }
+  };
 
-  return <div className="Home">{renderLander()}</div>;
+  return (
+    <div className="Home react-transition swipe-right">{renderLander()}</div>
+  );
 }
 
 Home.propTypes = {};

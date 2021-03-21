@@ -57,7 +57,7 @@ export default function Login() {
   }
 
   return (
-    <div className="Logins">
+    <div className="Logins react-transition scale-in">
       <div
         className="LoginWithOkta"
         style={{
