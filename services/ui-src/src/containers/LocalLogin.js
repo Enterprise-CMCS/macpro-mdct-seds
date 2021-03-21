@@ -6,7 +6,7 @@ import { loginLocalUser } from "../libs/user";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Login() {
-  const { userHasAuthenticated } = useAppContext();
+  const { setIsAuthenticated } = useAppContext();
   let history = useHistory();
 
   function loginUser() {
@@ -28,17 +28,17 @@ export default function Login() {
     };
 
     loginLocalUser(alice);
-    userHasAuthenticated(true);
+    setIsAuthenticated(true);
     history.push("/");
     history.go(0);
   }
 
-       // if (payload) {
-      //   console.log(payload)
-      //   payload.role = determineRole("CHIP_D_USER_GROUP_ADMIN")
-      //   payload.username = payload["cognito:username"];
-      //   if (payload.role) setIsAuthenticating(true);
-      // } else history.push("/login");
+  // if (payload) {
+  //   console.log(payload)
+  //   payload.role = determineRole("CHIP_D_USER_GROUP_ADMIN")
+  //   payload.username = payload["cognito:username"];
+  //   if (payload.role) setIsAuthenticating(true);
+  // } else history.push("/login");
 
   return (
     <div className="Login">

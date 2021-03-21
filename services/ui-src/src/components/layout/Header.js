@@ -18,6 +18,7 @@ const Header = () => {
       try {
         const userInfo = (await Auth.currentSession()).getIdToken().payload;
         setIsAuthenticated(userInfo !== null);
+        // eslint-disable-next-line no-empty
       } catch (error) {}
     };
 
@@ -34,7 +35,7 @@ const Header = () => {
     }
   };
 
-  let testItems = [
+  const menuItems = [
     <Link href="/">Home</Link>,
     <Link href="#/contact">Contact</Link>
   ];
@@ -62,28 +63,31 @@ const Header = () => {
       <div className="navigation">
         <GridContainer className="container">
           <Grid row>
-            <Grid col={7}>
-              <NavList items={testItems} type="primary" />
-            </Grid>
+            {isAuthenticated ? (
+              <Grid col={7}>
+                <NavList items={menuItems} type="primary" />
+              </Grid>
+            ) : null}
             <Grid col={5}>
               <Navbar.Collapse>
                 <Nav pullRight>
-                  {isAuthenticated ? (
-                    <>
-                      <NavDropdown id="User" title="My Profile">
-                        <LinkContainer to="/profile">
-                          <NavItem>User Profile</NavItem>
-                        </LinkContainer>
-                        <NavItem onClick={handleLogout}>Logout</NavItem>
-                      </NavDropdown>
-                    </>
-                  ) : (
-                    <>
+                  {
+                    isAuthenticated ? (
+                      <>
+                        <NavDropdown id="User" title="My Profile">
+                          <LinkContainer to="/profile">
+                            <NavItem>User Profile</NavItem>
+                          </LinkContainer>
+                          <NavItem onClick={handleLogout}>Logout</NavItem>
+                        </NavDropdown>
+                      </>
+                    ) : null
+                    /*<>
                       <LinkContainer to="/login">
                         <NavItem>Login</NavItem>
                       </LinkContainer>
-                    </>
-                  )}
+                    </>*/
+                  }
                 </Nav>
               </Navbar.Collapse>
             </Grid>

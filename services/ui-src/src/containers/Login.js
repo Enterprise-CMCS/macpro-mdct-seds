@@ -9,7 +9,7 @@ import { onError } from "../libs/errorLib";
 import "./Login.css";
 
 export default function Login() {
-  const { userHasAuthenticated } = useAppContext();
+  const { setIsAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
   let history = useHistory();
@@ -48,7 +48,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       await Auth.signIn(fields.email, fields.password);
-      userHasAuthenticated(true);
+      setIsAuthenticated(true);
       history.push("/");
     } catch (e) {
       onError(e);

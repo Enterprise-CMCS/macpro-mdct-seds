@@ -8,21 +8,22 @@ import Footer from "./components/layout/Footer";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
 
   useEffect(() => {
     async function onLoad() {
+      setIsAuthenticating(true);
+
       try {
-        setIsAuthenticating(true);
         let user = await Auth.currentAuthenticatedUser();
 
-        // ***
+        // *** LOCAL ONLY ADMIN OVERRIDE
         user.attributes["ismemberof"] = "admin";
 
         setUser(user);
-        userHasAuthenticated(true);
+        setIsAuthenticated(true);
         setIsAuthenticating(false);
         setIsAuthorized(true);
       } catch (error) {
@@ -36,7 +37,7 @@ function App() {
     !isAuthenticating && (
       <div className="App">
         <Header user={user} />
-        <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+        <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
           <div className="main">
             <Routes user={user} isAuthorized={isAuthorized} />
           </div>

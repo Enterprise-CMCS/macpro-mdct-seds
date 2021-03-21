@@ -24,7 +24,7 @@ export default function Signup() {
   });
   const history = useHistory();
   const [newUser, setNewUser] = useState(null);
-  const { userHasAuthenticated } = useAppContext();
+  const { setIsAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -72,7 +72,7 @@ export default function Signup() {
     try {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
-      userHasAuthenticated(true);
+      setIsAuthenticated(true);
       history.push("/");
     } catch (e) {
       onError(e);
