@@ -28,5 +28,10 @@
     "ageRange": "Ages 19 - 64",
     "ageDescription": "Age 19 years through age 64 years",
     "rangeId": "1964"
+  },
+  {
+    "ageRange": "Ages 0 - 18",
+    "ageDescription": "Conception through age 18 years",
+    "rangeId": "0018"
   }
 ]
