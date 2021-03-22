@@ -27,27 +27,30 @@ const Users = () => {
   };
 
   const handleExport = async format => {
-    let buffer, fileName;
+    let buffer, blob, fileName;
 
     switch (format) {
       case "excel":
-        buffer = new Uint8Array(await exportToExcel()).buffer;
+        buffer = await exportToExcel();
+        // *** lambdas will convert buffer to Int32Array
+        // *** we are going to instantiate Uint8Array (binary) buffer
+        // *** to avoid having to care about MIME type of file we're saving
+        buffer = new Uint8Array(buffer.data).buffer;
         fileName = "test.xlsx";
-        break;
-      case "pdf":
         break;
       default:
         break;
     }
-
-    saveAs(new Blob([buffer]), fileName);
+    // *** save file as blob
+    blob = new Blob([buffer]);
+    saveAs(blob, fileName);
   };
 
   useEffect(() => {
     async function fetchData() {
       await loadUserData();
     }
-    fetchData();
+    fetchData().then();
   }, []);
 
   const deactivateUser = async e => {
