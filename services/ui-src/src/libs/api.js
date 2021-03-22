@@ -4,6 +4,12 @@ const requestOptions = () => {
   return {};
 };
 
+export const exportToExcel = async () => {
+  const opts = requestOptions();
+
+  return API.post("amendments", "/users/export-to-excel", opts);
+};
+
 export function listAmendments() {
   const opts = requestOptions();
   return API.get("amendments", "/amendments", opts);

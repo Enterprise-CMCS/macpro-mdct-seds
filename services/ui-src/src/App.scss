@@ -16,3 +16,20 @@
 @import "./scss/form";
 @import "./scss/main";
 @import "./scss/print";
+
+.data-table-extensions > .data-table-extensions-filter {
+  float: right;
+
+  input.filter-text {
+    width: 300px;
+  }
+
+  ::placeholder {
+    color: #205493 !important;
+    font-style: italic !important;
+  }
+}
+
+.rdt_TableHeader {
+  display: none !important;
+}

@@ -8,6 +8,9 @@ import { listUsers, activateDeactivateUser } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
+import { exportToExcel } from "../../libs/api";
+import { saveAs } from "file-saver";
+
 /**
  * Display all users with options
  *
@@ -21,6 +24,34 @@ const Users = () => {
 
   const loadUserData = async () => {
     setUsers(await listUsers());
+  };
+
+  const arrayBufferToBase64 = buffer => {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    let len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
+  const handleExport = async format => {
+    let buffer, blob, fileName;
+
+    switch (format) {
+      case "excel":
+        buffer = await exportToExcel();
+        blob = new Blob(new Uint8Array(buffer.data));
+        fileName = "test.xlsx";
+
+        break;
+      default:
+        break;
+    }
+
+    console.log(buffer);
+    saveAs(blob, fileName);
   };
 
   useEffect(() => {
@@ -168,21 +199,71 @@ const Users = () => {
     };
   }
 
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "72px" // override the row height
+      }
+    },
+    headCells: {
+      style: {
+        backgroundColor: "#205493",
+        color: "#fff",
+        fontWeight: "bold",
+        border: "solid 1px #fff",
+        textAlign: "center",
+        "&:focus": {
+          outline: "none",
+          color: "#fff"
+        },
+        "&:hover:not(:focus)": {
+          color: "#fff"
+        }
+      },
+      activeSortStyle: {
+        color: "#fff",
+        textAlign: "center",
+        "&:focus": {
+          outline: "none",
+          color: "#fff"
+        },
+        "&:hover:not(:focus)": {
+          color: "#fff"
+        }
+      }
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px", // override the cell padding for data cells
+        paddingRight: "8px",
+        border: "ridge 1px"
+      }
+    }
+  };
+
   return (
-    <div className="user-profiles react-transition swipe-down">
+    <div className="user-profiles react-transition scale-in">
       <Grid className="container">
         <h1>Users</h1>
         <Link to="/users/add">Add new user</Link>
+        <button
+          className="margin-left-5 usa-button usa-button--secondary text-normal"
+          onClick={async () => await handleExport("excel")}
+        >
+          Excel
+        </button>
         <Card>
           {tableData ? (
-            <DataTableExtensions {...tableData}>
+            <DataTableExtensions {...tableData} export={false} print={false}>
               <DataTable
-                title="Users"
+                title=""
                 defaultSortField="username"
                 sortIcon={<SortIcon />}
-                highlightOnHover
+                highlightOnHover={true}
                 selectableRows={false}
                 responsive={true}
+                customStyles={customStyles}
+                striped={true}
               />
             </DataTableExtensions>
           ) : null}

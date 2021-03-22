@@ -1,12 +1,5 @@
 /* reusable variables */
-:root {
-  --animation-duration: 900ms;
-}
-
-/*
-.app-container {
-  perspective: 800px;
-}*/
+$animationDuration: 900ms;
 
 .react-transition {
   animation-fill-mode: initial;
@@ -28,7 +21,7 @@
   animation-timing-function: linear;
   transform-origin: bottom center;
   animation-name: swipeUp;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes swipeLeft {
@@ -47,7 +40,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: swipeLeft;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes swipeRight {
@@ -66,7 +59,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: swipeRight;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes swipeDown {
@@ -85,7 +78,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: swipeDown;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes fadeIn {
@@ -102,7 +95,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: fadeIn;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes fadeOut {
@@ -119,7 +112,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: fadeOut;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes scaleIn {
@@ -136,7 +129,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: scaleIn;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes scaleInRight {
@@ -153,7 +146,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: scaleInRight;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes scaleInLeft {
@@ -170,7 +163,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: scaleInLeft;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes dropIn {
@@ -187,7 +180,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: dropIn;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes dropInRight {
@@ -204,7 +197,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: dropInRight;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes dropInLeft {
@@ -221,7 +214,7 @@
   animation-timing-function: ease-in-out;
   transform-origin: bottom center;
   animation-name: dropInLeft;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes flipInX {
@@ -242,7 +235,7 @@
   animation-timing-function: linear;
   animation-name: flipInX;
   transform-style: preserve-3d;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes flipInXReverse {
@@ -263,7 +256,7 @@
   animation-timing-function: linear;
   animation-name: flipInXReverse;
   transform-style: preserve-3d;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
 }
 
 @keyframes flipInY {
@@ -283,7 +276,7 @@
 .flip-in-y {
   animation-timing-function: linear;
   animation-name: flipInY;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
   transform-style: preserve-3d;
 }
 
@@ -304,7 +297,7 @@
 .flip-in-y-reverse {
   animation-timing-function: linear;
   animation-name: flipInYReverse;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
   transform-style: preserve-3d;
 }
 
@@ -325,7 +318,7 @@
 .rotate-in {
   animation-timing-function: ease-in-out;
   animation-name: rotateIn;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
   transform-style: preserve-3d;
 }
 
@@ -346,7 +339,7 @@
 .rotate-in-reverse {
   animation-timing-function: ease-in-out;
   animation-name: rotateInReverse;
-  animation-duration: var(--animation-duration);
+  animation-duration: $animationDuration;
   transform-style: preserve-3d;
 }
 

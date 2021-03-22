@@ -25,6 +25,7 @@
     "aws-sdk": "^2.788.0",
     "dynamodb-atomic-counter": "^0.1.1",
     "exceljs": "^4.2.1",
+    "unstream": "^2.0.0",
     "uuid": "^7.0.3"
   }
 }

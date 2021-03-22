@@ -166,7 +166,7 @@ const UserEdit = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user ds-l-col--6">
+    <div className="edit-user ds-l-col--6 react-transition flip-in-x">
       <GridContainer className="container">
         <Grid col={6}>
           <Link to="/users">&laquo; Back to User List</Link>

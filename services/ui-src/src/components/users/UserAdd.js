@@ -63,7 +63,7 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="user-add react-transition scale-in">
+      <div className="user-add react-transition rotate-in">
         <GridContainer className="container">
           <Grid row>
             <Grid col={12}>
