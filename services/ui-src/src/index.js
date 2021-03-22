@@ -33,7 +33,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "amendments",
+        name: "mdct-seds",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       }

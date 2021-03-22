@@ -7,76 +7,47 @@ const requestOptions = () => {
 export const exportToExcel = async () => {
   const opts = requestOptions();
 
-  return API.post("amendments", "/users/export-to-excel", opts);
+  return API.post("mdct-seds", "/users/export-to-excel", opts);
 };
-
-export function listAmendments() {
-  const opts = requestOptions();
-  return API.get("amendments", "/amendments", opts);
-}
-
-export function getAmendment(id) {
-  const opts = requestOptions();
-  return API.get("amendments", `/amendments/${id}`, opts);
-}
-
-export function createAmendment(body) {
-  const opts = requestOptions();
-  opts.body = body;
-  return API.post("amendments", "/amendments", opts);
-}
-
-export function updateAmendment(id, body) {
-  const opts = requestOptions();
-  opts.body = body;
-  return API.put("amendments", `/amendments/${id}`, opts);
-}
-
-export function deleteAmendment(id) {
-  const opts = requestOptions();
-  return API.del("amendments", `/amendments/${id}`, opts);
-}
 
 export function listUsers() {
   const opts = requestOptions();
-  return API.get("amendments", `/users`, opts);
+  return API.get("mdct-seds", `/users`, opts);
 }
 
 export function activateDeactivateUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/activation/${data.username}`, opts);
+  return API.post("mdct-seds", `/users/activation/${data.username}`, opts);
 }
 
 export function getUserById(data) {
   const opts = requestOptions();
-  return API.get("amendments", `/users/${data.userId}`, opts);
+  return API.get("mdct-seds", `/users/${data.userId}`, opts);
 }
 
 export function getUserByUsername(data) {
-  // console.log("zzzGetUesrByUserName");
   const opts = requestOptions();
   opts.body = data;
-  // console.log("zzzGetUesrByUserName opts", opts);
-  return API.post("amendments", `/users/get`, opts);
+  return API.post("mdct-seds", `/users/get`, opts);
 }
 
 export function updateUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/update/${data.userId}`, opts);
+  return API.post("mdct-seds", `/users/update/${data.userId}`, opts);
 }
 
 export function createUser(data) {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/add`, opts);
+  return API.post("mdct-seds", `/users/add`, opts);
 }
 
 export function getStateForms(stateId, specifiedYear, quarter) {
   const opts = requestOptions();
   return API.get(
-    "amendments",
+    "mdct-seds",
     `/forms/${stateId}/${specifiedYear}/${quarter}`,
     opts
   );
@@ -85,7 +56,7 @@ export function getStateForms(stateId, specifiedYear, quarter) {
 export function getSingleForm(state, specifiedYear, quarter, form) {
   const opts = requestOptions();
   return API.get(
-    "amendments",
+    "mdct-seds",
     `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
     opts
   );
@@ -93,5 +64,5 @@ export function getSingleForm(state, specifiedYear, quarter, form) {
 
 export function getFormTypes() {
   const opts = requestOptions();
-  return API.get("amendments", "/form-types", opts);
+  return API.get("mdct-seds", "/form-types", opts);
 }
