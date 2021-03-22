@@ -1,10 +1,3 @@
-/*import { Result, ok, err } from 'neverthrow'
-
-import {
-  StateUserType,
-  UserType,
-} from '../../app-web/src/common-code/domain-models/user'*/
-
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";

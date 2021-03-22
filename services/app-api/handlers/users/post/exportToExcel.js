@@ -27,6 +27,13 @@ export const main = handler(async (event, context) => {
 
   console.log("\n\n\n!!!!!===>returning");
   console.log(buffer);
+  const view = new Int32Array(buffer);
+
+  console.log("\n\n\n????sample:");
+  console.log("\n_________________\n");
+  console.log(view);
 
   return buffer;
 });
+
+// ** individual functions

@@ -26,32 +26,21 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const arrayBufferToBase64 = buffer => {
-    let binary = "";
-    const bytes = new Uint8Array(buffer);
-    let len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  };
-
   const handleExport = async format => {
-    let buffer, blob, fileName;
+    let buffer, fileName;
 
     switch (format) {
       case "excel":
-        buffer = await exportToExcel();
-        blob = new Blob(new Uint8Array(buffer.data));
+        buffer = new Uint8Array(await exportToExcel()).buffer;
         fileName = "test.xlsx";
-
+        break;
+      case "pdf":
         break;
       default:
         break;
     }
 
-    console.log(buffer);
-    saveAs(blob, fileName);
+    saveAs(new Blob([buffer]), fileName);
   };
 
   useEffect(() => {

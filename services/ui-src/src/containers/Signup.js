@@ -47,7 +47,6 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      console.log("signup");
       const newUser = await Auth.signUp({
         username: fields.email,
         password: fields.password,
@@ -166,7 +165,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="Signup">
+    <div className="Signup react-transition flip-in-y">
       {newUser === null ? renderForm() : renderConfirmationForm()}
     </div>
   );
