@@ -16,6 +16,8 @@
     "@trussworks/react-uswds": "^1.10.0",
     "aws-amplify": "^3.0.23",
     "browserify": "^17.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "geckodriver": "^1.21.1",
     "jsonpath": "^1.1.0",
     "nightwatch": "^1.5.1",
@@ -48,7 +50,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --setupFiles dotenv/config",
+    "test2": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
@@ -58,6 +61,21 @@
       "eslint:recommended",
       "google"
     ]
+  },
+  "jest": {
+    "verbose": true,
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupEnzyme.js"
+    ],
+    "globals": {
+      "_env_": {
+        "S3_ATTACHMENTS_BUCKET_REGION": "placeholder"
+      }
+    },
+    "testEnvironment": "jest-environment-jsdom"
   },
   "browserslist": {
     "production": [
@@ -72,9 +90,13 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
     "redux-devtools": "^3.7.0",
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-plugin-scripts": "^1.0.2",
