@@ -17,9 +17,6 @@ function App() {
   const [user, setUser] = useState();
   const history = useHistory();
 
-  const test = () => {
-    setIsAuthenticating(false);
-  };
   useEffect(() => {
     async function getUpdateOrAddUser(payload) {
       // Set ismemberof to role for easier comprehension
