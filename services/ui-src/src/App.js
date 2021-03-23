@@ -141,17 +141,19 @@ function App() {
 
   return (
     <div className="App">
-      !isAuthenticating && (
-      <>
-        <Header user={user} />
-        <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-          <div className="main">
-            <Routes user={user} isAuthorized={isAuthorized} />
-          </div>
-        </AppContext.Provider>
-        <Footer />
-      </>
-      )
+      {!isAuthenticating && (
+        <>
+          <Header user={user} />
+          <AppContext.Provider
+            value={{ isAuthenticated, userHasAuthenticated }}
+          >
+            <div className="main">
+              <Routes user={user} isAuthorized={isAuthorized} />
+            </div>
+          </AppContext.Provider>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
