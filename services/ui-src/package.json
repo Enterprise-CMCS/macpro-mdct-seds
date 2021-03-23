@@ -66,8 +66,8 @@
     "moduleNameMapper": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     },
-    "setupFiles": [
-      "<rootDir>/setupTest.js"
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupEnzyme.js"
     ],
     "globals": {
       "_env_": {
