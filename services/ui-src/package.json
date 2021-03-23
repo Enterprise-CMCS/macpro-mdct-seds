@@ -70,9 +70,7 @@
       "<rootDir>/setupEnzyme.js"
     ],
     "globals": {
-      "_env_": {
-        "S3_ATTACHMENTS_BUCKET_REGION": "placeholder"
-      }
+      "_env_": {}
     },
     "testEnvironment": "jest-environment-jsdom"
   },
