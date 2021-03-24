@@ -18,6 +18,7 @@ describe("Test SummaryTab.js", () => {
       </Provider>
     );
   });
+
   test("Check the main div, with classname app, exists", () => {
     expect(wrapper.find(".summary-tab").length).toBe(1);
   });
