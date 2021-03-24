@@ -125,27 +125,33 @@ function App() {
       return role;
     }
 
-    if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-      return "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
-      return "state";
+    if (role) {
+      if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
+        return "admin";
+      } else if (role.includes("CHIP_D_USER_GROUP")) {
+        return "state";
+      }
     } else {
       return null;
     }
   };
 
   return (
-    !isAuthenticating && (
-      <div className="App">
-        <Header user={user} />
-        <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-          <div className="main">
-            <Routes user={user} isAuthorized={isAuthorized} />
-          </div>
-        </AppContext.Provider>
-        <Footer />
-      </div>
-    )
+    <div className="App">
+      {!isAuthenticating && (
+        <>
+          <Header user={user} />
+          <AppContext.Provider
+            value={{ isAuthenticated, userHasAuthenticated }}
+          >
+            <div className="main">
+              <Routes user={user} isAuthorized={isAuthorized} />
+            </div>
+          </AppContext.Provider>
+          <Footer />
+        </>
+      )}
+    </div>
   );
 }
 

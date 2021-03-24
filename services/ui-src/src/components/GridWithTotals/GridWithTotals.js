@@ -139,6 +139,7 @@ const GridWithTotals = props => {
                         updateGrid(rowIndex, columnIndex, event)
                       }
                       defaultValue={column}
+                      disabled={props.disabled}
                     />
                   </td>
                 </React.Fragment>
@@ -151,6 +152,7 @@ const GridWithTotals = props => {
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
                     defaultValue={column}
+                    disabled={props.disabled}
                   />
                 </td>
               );
@@ -184,11 +186,7 @@ const GridWithTotals = props => {
 
   return (
     <div className="grid-with-totals">
-      <Table
-        bordered={true}
-        caption="This is an example of a table with totals"
-        fullWidth={true}
-      >
+      <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>{headerCols}</tr>
         </thead>

@@ -1,6 +1,5 @@
 import { API } from "aws-amplify";
 import config from "../config";
-// import { Auth } from "aws-amplify";
 import { getLocalUserInfo } from "./user";
 
 const requestOptions = async () => {
@@ -98,4 +97,9 @@ export function getSingleForm(state, specifiedYear, quarter, form) {
     `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
     opts
   );
+}
+
+export function getFormTypes() {
+  const opts = requestOptions();
+  return API.get("amendments", "/form-types", opts);
 }
