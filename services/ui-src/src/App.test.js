@@ -1,9 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import App from "./App.js";
+import App from "./App";
+import { shallow } from "enzyme";
 
-test("renders learn react link", () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/CHIP Statistical Enrollment Data Reports/i);
-  expect(linkElement).toBeInTheDocument();
+describe("Test App.js", () => {
+  test("Check the main div, with classname app, exists", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find(".App").length).toBe(1);
+  });
 });
