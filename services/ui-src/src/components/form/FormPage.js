@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm";
 import FormHeader from "./FormHeader";
 import FormFooter from "./FormFooter";
+import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
