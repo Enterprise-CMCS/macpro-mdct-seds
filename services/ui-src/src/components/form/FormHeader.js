@@ -19,21 +19,20 @@ const FormHeader = ({ quarter, form, year, state }) => {
   return (
     <GridContainer>
       <Grid row className="upper-form-nav">
-        <Link className="upper-form-links" to="/">
-          {" "}
-          Enrollment Data Home {">"}
-          {"   "}
-        </Link>
-        <Link
-          className="upper-form-links"
-          to={`/forms/${state}/${year}/${quarter}`}
-        >
-          {` Q${quarter} ${year} > `}
-        </Link>
-        <Link className="upper-form-links" to={window.location.pathname}>
-          {" "}
-          {` Form ${form}`}{" "}
-        </Link>
+        <div className="breadcrumbs">
+          <Link className="upper-form-links" to="/">
+            {" "}
+            Enrollment Data Home {">"}
+            {"   "}
+          </Link>
+          <Link
+            className="upper-form-links"
+            to={`/forms/${state}/${year}/${quarter}`}
+          >
+            {` ${state} Q${quarter} ${year} > `}
+          </Link>
+          {` Form ${form}`}
+        </div>
       </Grid>
 
       <Grid row className="form-description-bar">
