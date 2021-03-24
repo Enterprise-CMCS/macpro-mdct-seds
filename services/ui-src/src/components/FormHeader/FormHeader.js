@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { getFormTypes } from "../../../src/libs/api";
+import { getFormTypes } from "../../libs/api";
 
 const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
