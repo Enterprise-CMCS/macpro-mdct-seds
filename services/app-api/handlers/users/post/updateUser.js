@@ -7,9 +7,7 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
-
   const data = JSON.parse(event.body);
-
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,

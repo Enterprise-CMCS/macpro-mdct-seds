@@ -153,6 +153,7 @@ const Users = () => {
         selector: "state_codes",
         sortable: true,
         cell: s => {
+          console.log(s.states, "yeet")
           return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
         }
       },

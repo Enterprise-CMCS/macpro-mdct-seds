@@ -6,6 +6,7 @@ import HomeBus from "./HomeBus";
 import HomeAdmin from "./HomeAdmin";
 import Unauthorized from "./Unauthorized";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
+import { determineRole } from "../utilityFunctions/initialLoadFunctions";
 
 export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();

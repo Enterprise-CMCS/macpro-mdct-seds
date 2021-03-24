@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Quarterly = () => {
   // Determine values based on URI
-  let url = window.location.pathname.split("/");
+  let url = window.location.hash.split("/");
   const state = url[2];
   const year = url[3];
   const quarter = url[4];
@@ -22,7 +22,6 @@ const Quarterly = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await getStateForms(state, year, quarter);
-      console.log(data);
       setStateFormsList(data);
     }
     fetchData();
@@ -63,8 +62,7 @@ const Quarterly = () => {
       sortable: true,
       cell: function generateFormLink(e) {
         return (
-          <Link>
-            to={`/forms/${state}/${year}/${quarter}/${getFormSegment(e.form)}`}>
+          <Link to={`/forms/${state}/${year}/${quarter}/${getFormSegment(e.form)}`} >
             {e.form}
           </Link>
         );

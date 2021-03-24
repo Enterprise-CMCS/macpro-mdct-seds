@@ -7,6 +7,8 @@ import Footer from "./components/layout/Footer";
 
 import "./App.scss";
 import "./animations/transitions.scss";
+import {ascertainUserPresence, determineRole} from "../src/utilityFunctions/initialLoadFunctions"
+import config from "./config";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -14,25 +16,27 @@ function App() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
 
-  useEffect(() => {
-    async function onLoad() {
-      setIsAuthenticating(true);
+  async function onLoad() {
+    try {
+      let user = await Auth.currentAuthenticatedUser();
 
-      try {
-        let user = await Auth.currentAuthenticatedUser();
-
-        // *** LOCAL ONLY ADMIN OVERRIDE
-        user.attributes["ismemberof"] = "admin";
-
-        setUser(user);
-        setIsAuthenticated(true);
-        setIsAuthenticating(false);
-        setIsAuthorized(true);
-      } catch (error) {
-        setIsAuthenticating(false);
+      // *** LOCAL ONLY ADMIN OVERRIDE
+      if (config.REMOTE_WORKFLOW === true) {
+        user.attributes["ismemberof"] = determineRole("CHIP_D_USER_GROUP_ADMIN");
       }
+      determineRole(user.attributes["ismemberof"])
+      setUser(user);
+      setIsAuthenticated(true);
+      setIsAuthenticating(false);
+      setIsAuthorized(true);
+      ascertainUserPresence(user);
+
+    } catch (error) {
+      setIsAuthenticating(false);
     }
-    onLoad().then();
+  }
+  useEffect(() => {
+    onLoad()
   }, [isAuthenticated]);
 
   return (
