@@ -5,9 +5,9 @@ import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const SummaryTab = ({ questions, answers }) => {
+const SummaryTab = ({ questions, answers, tempVar }) => {
   return (
-    <>
+    <div className="summary-tab">
       <h3>Summary:</h3>
 
       {questions.map((singleQuestion, idx) => {
@@ -82,7 +82,7 @@ const SummaryTab = ({ questions, answers }) => {
           />
         );
       })}
-    </>
+    </div>
   );
 };
 
@@ -93,7 +93,8 @@ SummaryTab.propTypes = {
 
 const mapState = state => ({
   answers: state.currentForm.answers,
-  questions: state.currentForm.questions
+  questions: state.currentForm.questions,
+  tempVar: state.currentForm
 });
 
 export default connect(mapState)(SummaryTab);
