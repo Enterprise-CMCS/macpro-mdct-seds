@@ -21,27 +21,27 @@ const currentFormMock_21E = {
             col1: ""
           },
           {
-            col6: 10,
-            col4: 6,
-            col5: 8,
-            col2: 2,
-            col3: 4,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "A. Fee-for-Service"
           },
           {
-            col6: 2,
-            col4: 6,
-            col5: 4,
-            col2: 10,
-            col3: 8,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "B. Managed Care Arrangements"
           },
           {
-            col6: 20,
-            col4: 16,
-            col5: 18,
-            col2: 12,
-            col3: 14,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "C. Primary Care Case Management"
           }
         ],
@@ -70,27 +70,27 @@ const currentFormMock_21E = {
             col1: ""
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "A. Fee-for-Service"
           },
           {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "B. Managed Care Arrangements"
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "C. Primary Care Case Management"
           }
         ],
@@ -119,27 +119,27 @@ const currentFormMock_21E = {
             col1: ""
           },
           {
-            col6: 6,
-            col4: 4,
-            col5: 5,
-            col2: 2,
-            col3: 3,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "A. Fee-for-Service"
           },
           {
-            col6: 20,
-            col4: 8,
-            col5: 9,
-            col2: 6,
-            col3: 7,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "B. Managed Care Arrangements"
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "C. Primary Care Case Management"
           }
         ],
@@ -168,27 +168,27 @@ const currentFormMock_21E = {
             col1: ""
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "A. Fee-for-Service"
           },
           {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "B. Managed Care Arrangements"
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
+            col6: null,
+            col4: null,
+            col5: null,
+            col2: null,
+            col3: null,
             col1: "C. Primary Care Case Management"
           }
         ],
@@ -592,2502 +592,217 @@ const currentFormMock_21E = {
     ],
     answers: [
       {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-03",
+        answer_entry: "AL-2021-1-21E-0000-01",
         state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-03"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-08",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-08"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-09",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-09"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-02",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-02"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-03",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-03"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-03",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-03"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
         question: "2021-21E-01",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-01"
-      },
-      {
         age_range: "Under Age 0",
         rangeId: "0000",
-        question: "2021-21E-03",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
         rows: [
           {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
+            col1: "",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
           },
           {
-            col6: 6,
-            col4: 4,
-            col5: 5,
-            col2: 2,
-            col3: 3,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 20,
-            col4: 8,
-            col5: 9,
-            col2: 6,
-            col3: 7,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
+            col1: "A. Fee-for-Service",
             col2: 1,
             col3: 2,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-03"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-06",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-06"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-07",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-07"
-      },
-      {
-        age_range: "Under Age 0",
-        rangeId: "0000",
-        question: "2021-21E-01",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 5,
             col4: 3,
             col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
+            col6: 5
           },
           {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 10,
-            col4: 8,
-            col5: 9,
-            col2: 6,
-            col3: 7,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-01"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-05",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-05"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-04",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-04"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-09",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-09"
-      },
-      {
-        age_range: "Under Age 0",
-        rangeId: "0000",
-        question: "2021-21E-07",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 9,
-            col4: 7,
-            col5: 8,
-            col2: 5,
-            col3: 6,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 5,
-            col4: 8,
-            col5: 4,
-            col2: 4,
-            col3: 2,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 3,
-            col4: 1,
-            col5: 2,
+            col1: "B. Managed Care Arrangements",
             col2: 3,
-            col3: 2,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-07"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-08",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-08"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-08",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-08"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-06",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-06"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-01",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
             col3: 4,
-            col1: "B. Managed Care Arrangements"
+            col4: 5,
+            col5: 6,
+            col6: 7
           },
           {
-            col6: 10,
-            col4: 8,
-            col5: 9,
+            col1: "C. Primary Care Case Management",
             col2: 6,
             col3: 7,
-            col1: "C. Primary Care Case Management"
+            col4: 8,
+            col5: 9,
+            col6: 0
           }
         ],
         last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-01"
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
       },
       {
-        age_range: "Under Age 0",
-        rangeId: "0000",
+        answer_entry: "AL-2021-1-21E-0000-02",
+        state_form: "AL-2021-1-21E",
         question: "2021-21E-02",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-02"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-07",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-07"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-05",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-05"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-05",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-05"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-01",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-01"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-02",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-02"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-07",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-07"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-02",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-02"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-06",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-06"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-06",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-06"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-09",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-09"
-      },
-      {
         age_range: "Under Age 0",
         rangeId: "0000",
-        question: "2021-21E-08",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
         rows: [
           {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
+            col1: "",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
           },
           {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
+            col1: "A. Fee-for-Service",
             col2: 1,
             col3: 2,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-08"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-04",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-04"
-      },
-      {
-        age_range: "Ages 6 - 12",
-        rangeId: "0612",
-        question: "2021-21E-05",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col4: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col5: [
-              {
-                targets: [
-                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
-                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col2: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col3: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-05"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-04",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-04"
-      },
-      {
-        age_range: "Under Age 0",
-        rangeId: "0000",
-        question: "2021-21E-06",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 5,
             col4: 3,
             col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
+            col6: 5
           },
           {
-            col6: 1,
-            col4: 3,
-            col5: 21,
-            col2: 5,
-            col3: 4,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
+            col2: 4,
+            col3: 5,
+            col4: 6,
+            col5: 7,
+            col6: 8
           },
           {
-            col6: 5,
+            col1: "C. Primary Care Case Management",
+            col2: 9,
+            col3: 0,
             col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "C. Primary Care Case Management"
+            col5: 5,
+            col6: 2
           }
         ],
         last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-06"
-      },
-      {
-        age_range: "Under Age 0",
-        rangeId: "0000",
-        question: "2021-21E-09",
-        state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
         created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 1,
-            col4: 3,
-            col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-09"
+        created_by: "seed"
       },
       {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
-        question: "2021-21E-08",
+        answer_entry: "AL-2021-1-21E-0000-03",
         state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-08"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
         question: "2021-21E-03",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-03"
-      },
-      {
         age_range: "Under Age 0",
         rangeId: "0000",
-        question: "2021-21E-04",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
         rows: [
           {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
+            col1: "",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: 1,
+            col1: "A. Fee-for-Service",
+            col2: 6,
+            col3: 45,
             col4: 3,
             col5: 2,
-            col2: 5,
-            col3: 4,
-            col1: "B. Managed Care Arrangements"
+            col6: 1
           },
           {
-            col6: 5,
-            col4: 3,
-            col5: 4,
-            col2: 1,
-            col3: 2,
-            col1: "C. Primary Care Case Management"
+            col1: "B. Managed Care Arrangements",
+            col2: 6,
+            col3: 34,
+            col4: 73,
+            col5: 56,
+            col6: 39
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: 4,
+            col3: 234,
+            col4: 34,
+            col5: 73,
+            col6: 34
           }
         ],
         last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-04"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-01",
-        state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
         created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-01"
+        created_by: "seed"
       },
       {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-09",
+        answer_entry: "AL-2021-1-21E-0000-04",
         state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-09"
-      },
-      {
-        age_range: "Ages 1 - 5",
-        rangeId: "0105",
-        question: "2021-21E-07",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-07"
-      },
-      {
-        age_range: "Ages 0 - 1",
-        rangeId: "0001",
         question: "2021-21E-04",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
-        rows: [
-          {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
-            col2: "% of FPL 0-133",
-            col3: "% of FPL 134-200",
-            col1: ""
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: null,
-            col4: null,
-            col5: null,
-            col2: null,
-            col3: null,
-            col1: "C. Primary Care Case Management"
-          }
-        ],
-        last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-04"
-      },
-      {
         age_range: "Under Age 0",
         rangeId: "0000",
-        question: "2021-21E-05",
-        state_form: "AL-2021-1-21E",
-        last_modified_by: "seed",
-        created_date: "01/15/2021",
         rows: [
           {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
+            col1: "",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
           },
           {
-            col6: [
+            col1: "A. Fee-for-Service",
+            col2: 98,
+            col3: 4,
+            col4: 3,
+            col5: 457,
+            col6: 4
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: 4,
+            col3: 5,
+            col4: 9,
+            col5: 3,
+            col6: 1
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: 8,
+            col3: 7,
+            col4: 3,
+            col5: 2,
+            col6: 1
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0000-05",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-05",
+        age_range: "Under Age 0",
+        rangeId: "0000",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: [
               {
                 targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
                 ],
                 actions: ["formula"],
                 formula: "<0> / <1>"
@@ -3113,11 +828,24 @@ const currentFormMock_21E = {
                 formula: "<0> / <1>"
               }
             ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "B. Managed Care Arrangements",
             col2: [
               {
                 targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
                 ],
                 actions: ["formula"],
                 formula: "<0> / <1>"
@@ -3126,21 +854,8 @@ const currentFormMock_21E = {
             col3: [
               {
                 targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "A. Fee-for-Service"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
                 ],
                 actions: ["formula"],
                 formula: "<0> / <1>"
@@ -3166,11 +881,24 @@ const currentFormMock_21E = {
                 formula: "<0> / <1>"
               }
             ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "C. Primary Care Case Management",
             col2: [
               {
                 targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
                 ],
                 actions: ["formula"],
                 formula: "<0> / <1>"
@@ -3179,21 +907,8 @@ const currentFormMock_21E = {
             col3: [
               {
                 targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
-                ],
-                actions: ["formula"],
-                formula: "<0> / <1>"
-              }
-            ],
-            col1: "B. Managed Care Arrangements"
-          },
-          {
-            col6: [
-              {
-                targets: [
-                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
                 ],
                 actions: ["formula"],
                 formula: "<0> / <1>"
@@ -3219,6 +934,506 @@ const currentFormMock_21E = {
                 formula: "<0> / <1>"
               }
             ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0000-06",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-06",
+        age_range: "Under Age 0",
+        rangeId: "0000",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0000-07",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-07",
+        age_range: "Under Age 0",
+        rangeId: "0000",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0000-08",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-08",
+        age_range: "Under Age 0",
+        rangeId: "0000",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0000-09",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-09",
+        age_range: "Under Age 0",
+        rangeId: "0000",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-01",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-01",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: 1,
+            col3: 2,
+            col4: 3,
+            col5: 4,
+            col6: 5
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: 1,
+            col3: 2,
+            col4: 3,
+            col5: 4,
+            col6: 5
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-02",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-02",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-03",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-03",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-04",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-04",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-05",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-05",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "C. Primary Care Case Management",
             col2: [
               {
                 targets: [
@@ -3239,57 +1454,1842 @@ const currentFormMock_21E = {
                 formula: "<0> / <1>"
               }
             ],
-            col1: "C. Primary Care Case Management"
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
+                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
           }
         ],
         last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-05"
-      },
-      {
-        age_range: "Ages 13 - 18",
-        rangeId: "1318",
-        question: "2021-21E-02",
-        state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
         created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-06",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-06",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
         rows: [
           {
-            col6: "% of FPL 301-317",
-            col4: "% of FPL 201-250",
-            col5: "% of FPL 251-300",
+            col1: "",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
           },
           {
-            col6: null,
-            col4: null,
-            col5: null,
+            col1: "A. Fee-for-Service",
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col4: null,
+            col5: null,
+            col6: null
           },
           {
-            col6: null,
-            col4: null,
-            col5: null,
+            col1: "B. Managed Care Arrangements",
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col4: null,
+            col5: null,
+            col6: null
           },
           {
-            col6: null,
-            col4: null,
-            col5: null,
+            col1: "C. Primary Care Case Management",
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
+            col4: null,
+            col5: null,
+            col6: null
           }
         ],
         last_modified: "01/15/2021",
-        created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-02"
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-07",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-07",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-08",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-08",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0001-09",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-09",
+        age_range: "Ages 0 - 1",
+        rangeId: "0001",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-01",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-01",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-02",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-02",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-03",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-03",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-04",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-04",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-05",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-05",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
+                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-06",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-06",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-07",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-07",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-08",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-08",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0105-09",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-09",
+        age_range: "Ages 1 - 5",
+        rangeId: "0105",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-01",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-01",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-02",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-02",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-03",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-03",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-04",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-04",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-05",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-05",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
+                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-06",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-06",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-07",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-07",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-08",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-08",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-0612-09",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-09",
+        age_range: "Ages 6 - 12",
+        rangeId: "0612",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-01",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-01",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-02",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-02",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-03",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-03",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-04",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-04",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-05",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-05",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[1].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[1].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col5",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[2].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[2].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col2",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col2"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col3: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col3",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col3"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col4: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col4",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col4"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col5: [
+              {
+                targets: [
+                  "$..*[?(@.question=='21E-2021-04')].rows[3].col5",
+                  "$..*[?(@.question=='21E-2021-01')].rows[3].col5"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ],
+            col6: [
+              {
+                targets: [
+                  "$..*[?(@.question=='2021-21E-04')].rows[3].col6",
+                  "$..*[?(@.question=='2021-21E-01')].rows[3].col6"
+                ],
+                actions: ["formula"],
+                formula: "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-06",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-06",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-07",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-07",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-08",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-08",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
+      },
+      {
+        answer_entry: "AL-2021-1-21E-1318-09",
+        state_form: "AL-2021-1-21E",
+        question: "2021-21E-09",
+        age_range: "Ages 13 - 18",
+        rangeId: "1318",
+        rows: [
+          {
+            col1: "",
+            col2: "% of FPL 0-133",
+            col3: "% of FPL 134-200",
+            col4: "% of FPL 201-250",
+            col5: "% of FPL 251-300",
+            col6: "% of FPL 301-317"
+          },
+          {
+            col1: "A. Fee-for-Service",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "B. Managed Care Arrangements",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          },
+          {
+            col1: "C. Primary Care Case Management",
+            col2: null,
+            col3: null,
+            col4: null,
+            col5: null,
+            col6: null
+          }
+        ],
+        last_modified: "01/15/2021",
+        last_modified_by: "seed",
+        created_date: "01/15/2021",
+        created_by: "seed"
       }
     ],
     statusData: {
