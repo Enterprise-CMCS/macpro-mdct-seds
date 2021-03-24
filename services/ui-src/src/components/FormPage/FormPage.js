@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { GridContainer } from "@trussworks/react-uswds";
-import TabContainer from "../layout/TabContainer";
+import TabContainer from "../TabContainer/TabContainer";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm";
