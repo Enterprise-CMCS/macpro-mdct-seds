@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
 import { connect } from "react-redux";
 import "./GridWithTotals.scss";
-import { gotAnswer } from "../../store/reducers/singleForm";
+import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(

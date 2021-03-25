@@ -4,14 +4,14 @@ import {
   extractAgeRanges,
   formatAnswerData,
   insertAnswer
-} from "../helperFunctions";
+} from "./helperFunctions";
 
 // ENDPOINTS
-import { getSingleForm, getStateForms } from "../../../src/libs/api.js";
+import { getSingleForm, getStateForms } from "../../../libs/api.js";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
-} from "../actions/certify";
+} from "../../actions/certify";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
@@ -27,10 +27,9 @@ export const gotFormData = formObject => {
   };
 };
 export const gotAnswer = (answerArray, questionID) => {
-  const formattedAnswers = formatAnswerData(answerArray);
   return {
     type: UPDATE_ANSWER,
-    answerArray: formattedAnswers,
+    answerArray: formatAnswerData(answerArray),
     questionID
   };
 };
