@@ -4,7 +4,6 @@ import TabContainer from "../layout/TabContainer";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_64_21E from "../../providerMocks/currentFormMock_64_21E.js";
-import { GridWithTotals } from "../GridWithTotals/GridWithTotals.js";
 const mockStore = configureStore([]);
 
 describe("Test SummaryTab.js", () => {
@@ -56,7 +55,7 @@ describe("Test SummaryTab.js", () => {
   });
   // Check the math for the synthesized grid
   test("Check synthesized table values for correct math", () => {
-    const currentPrecision = 1;
+
     expect(
       wrapper
         .find("GridWithTotals")
