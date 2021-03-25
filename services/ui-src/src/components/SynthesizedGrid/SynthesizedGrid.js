@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GridWithTotals } from "../GridWithTotals/GridWithTotals";
+import  GridWithTotals  from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { selectRowColumnValueFromArray } from "../../utilityFunctions/jsonPath";

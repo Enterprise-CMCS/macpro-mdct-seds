@@ -55,7 +55,6 @@ describe("Test SummaryTab.js", () => {
   });
   // Check the math for the synthesized grid
   test("Check synthesized table values for correct math", () => {
-
     expect(
       wrapper
         .find("GridWithTotals")
