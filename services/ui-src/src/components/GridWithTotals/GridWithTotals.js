@@ -233,8 +233,8 @@ const translateInitialData = gridDataObject => {
 };
 
 GridWithTotals.propTypes = {
-  gridData: PropTypes.object.isRequired,
-  questionID: PropTypes.func.isRequired,
+  gridData: PropTypes.array.isRequired,
+  questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
 };

@@ -194,8 +194,4 @@ describe("Single Form Reducer, component parts", () => {
   });
 });
 
-// TODO:
-// use: services/ui-src/src/providerMocks/currentFormMock_21E.js from Summary Tab PR
-// move helper function tests to own suite
-
 // move files around
