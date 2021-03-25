@@ -54,7 +54,7 @@ const Footer = () => {
                   Email{" "}
                   <a
                     data-test="attribute-email"
-                    href="mailto:cartshelp@cms.hhs.gov"
+                    href="mailto:SEDSHELP@cms.hhs.gov"
                   >
                     CARTSHELP@cms.hhs.gov
                   </a>{" "}
