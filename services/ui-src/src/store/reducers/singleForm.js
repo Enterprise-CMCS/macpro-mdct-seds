@@ -1,4 +1,4 @@
-//
+// HELPER FUNCTIONS
 import {
   sortQuestionsByNumber,
   extractAgeRanges,
@@ -26,14 +26,20 @@ export const gotFormData = formObject => {
     formObject
   };
 };
+export const gotAnswer = (answerArray, questionID) => {
+  const formattedAnswers = formatAnswerData(answerArray);
+  return {
+    type: UPDATE_ANSWER,
+    answerArray: formattedAnswers,
+    questionID
+  };
+};
 export const updatedStatus = activeBoolean => {
   return {
     type: UPDATE_FORM_STATUS,
     activeStatus: activeBoolean
   };
 };
-
-// end type, ID and data with type UPDATE ANSWER
 
 // THUNKS
 export const getFormData = (state, year, quarter, formName) => {
@@ -81,31 +87,6 @@ export const disableForm = activeBoolean => {
     dispatch(updatedStatus(activeBoolean));
   };
 };
-
-// TRIGGER WITH MAPDISPATCH
-export const gotAnswer = (answerArray, questionID) => {
-  const formattedAnswers = formatAnswerData(answerArray);
-  return {
-    type: UPDATE_ANSWER,
-    answerArray: formattedAnswers,
-    questionID
-  };
-};
-
-export const setAnswer = inputArray => {
-  return dispatch => {
-    // helper function to format array of data into an array of objects
-    const formattedAnswers = formatAnswerData(inputArray);
-
-    console.log("columned answers !! \n\n\n\n\n", formattedAnswers);
-    dispatch(gotAnswer(formattedAnswers));
-  };
-};
-// use JSONPATH right in the reducer to update the answer array
-// different jsonpath methods
-// .query .stringify .paths .parse .apply**,
-
-// will maybe only need ID and value??
 
 // INITIAL STATE
 const initialState = {

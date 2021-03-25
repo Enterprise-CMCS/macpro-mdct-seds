@@ -232,12 +232,12 @@ const translateInitialData = gridDataObject => {
   return translatedData;
 };
 
-// GridWithTotals.propTypes = {
-//   gridData: PropTypes.object.isRequired,
-//   questionID: PropTypes.func.isRequired,
-//   setAnswer: PropTypes.func.isRequired,
-//   disabled: PropTypes.bool.isRequired
-// };
+GridWithTotals.propTypes = {
+  gridData: PropTypes.object.isRequired,
+  questionID: PropTypes.func.isRequired,
+  setAnswer: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
+};
 
 const mapDispatch = {
   setAnswer: gotAnswer ?? {}

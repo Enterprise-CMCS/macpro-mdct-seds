@@ -50,7 +50,6 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
     }
   });
 
-  let A = 0;
   // replace the answer object's rows array with the updated version
   response.rows = updated;
 
@@ -64,18 +63,6 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
 
   return stateAnswers;
 };
-
-// CONFIRM!!! does this need to be sorted before coming back
-
-// ANSWERS is an ARRAY of OBJECTS
-
-// ASK JENNA: Do we want to change last_modified, last_modified_by or will that be handled by save?
-
-// CHECKS:
-// look at the data
-// check it against ALL forms
-// look at the data again
-// what happens if i delete my entries
 
 const extractAgeRanges = answersArray => {
   // call back for a reduce method

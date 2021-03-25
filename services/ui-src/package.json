@@ -89,12 +89,14 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "check-prop-types": "^1.1.2",
     "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
     "identity-obj-proxy": "^3.0.0",
     "redux-devtools": "^3.7.0",
+    "redux-mock-store": "^1.5.4",
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-s3-sync": "^1.14.4"
