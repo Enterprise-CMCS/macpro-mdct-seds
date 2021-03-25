@@ -266,9 +266,3 @@ describe("Single Form Reducer, component parts", () => {
     expect(typeof returnedValue).toEqual("function");
   });
 });
-
-// remove prop types check - add when writing tests for a component
-// remove unused imports
-// move files around
-// remove any console logs
-// ensure prop types are up to date

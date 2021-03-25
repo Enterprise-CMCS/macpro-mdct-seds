@@ -8,7 +8,7 @@ import { getFormData } from "../../store/reducers/singleForm";
 import FormHeader from "./FormHeader";
 import FormFooter from "./FormFooter";
 
-const FormPage = ({ getForm, statusData, temp }) => {
+const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
 
   // Extract state, year, quarter and formName from URL segments
@@ -59,8 +59,7 @@ FormPage.propTypes = {
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData,
-  temp: state.currentForm
+  statusData: state.currentForm.statusData
 });
 
 const mapDispatch = {
