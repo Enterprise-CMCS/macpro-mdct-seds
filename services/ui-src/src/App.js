@@ -7,7 +7,10 @@ import Footer from "./components/layout/Footer";
 
 import "./App.scss";
 import "./animations/transitions.scss";
-import {ascertainUserPresence, determineRole} from "../src/utilityFunctions/initialLoadFunctions"
+import {
+  ascertainUserPresence,
+  determineRole
+} from "../src/utilityFunctions/initialLoadFunctions";
 import config from "./config";
 
 function App() {
@@ -22,21 +25,21 @@ function App() {
 
       // *** LOCAL ONLY ADMIN OVERRIDE
       if (config.REMOTE_WORKFLOW === true) {
-        user.attributes["ismemberof"] = determineRole("CHIP_D_USER_GROUP_ADMIN");
+        user.attributes["ismemberof"] = "CHIP_D_USER_GROUP_ADMIN";
       }
-      determineRole(user.attributes["ismemberof"])
+
+      determineRole(user.attributes["ismemberof"]);
       setUser(user);
       setIsAuthenticated(true);
       setIsAuthenticating(false);
       setIsAuthorized(true);
-      ascertainUserPresence(user);
-
+      await ascertainUserPresence(user);
     } catch (error) {
       setIsAuthenticating(false);
     }
   }
   useEffect(() => {
-    onLoad()
+    onLoad();
   }, [isAuthenticated]);
 
   return (

@@ -1,8 +1,8 @@
 import { createUser, getUserByUsername, updateUser } from "../libs/api";
 
 export async function ascertainUserPresence(user) {
-  const userExist = await getUserByUsername({
-    username: user.username,
+  const existingUser = await getUserByUsername({
+    username: user.username
   });
   const userObject = {
     username: user.username,
@@ -10,30 +10,32 @@ export async function ascertainUserPresence(user) {
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
     role: determineRole(user.attributes.ismemberof),
-    lastLogin: new Date().toISOString(),
-  } 
-  if (userExist === false) {
-      await createUser(userObject);
-    } else {
-      let updateItem = userExist["Items"];
-      updateItem.map(async (e) => {
-        await updateUser(e);
-      })
-    }      
-};
+    lastLogin: new Date().toISOString()
+  };
+  if (existingUser === false) {
+    await createUser(userObject);
+  } else {
+    let updateItem = existingUser["Items"];
+    updateItem.map(async userInfo => {
+      await updateUser(userInfo);
+    });
+  }
+}
 
-export const determineRole = role => {
-    const roleArray = ["admin", "business", "state"];
-    if (roleArray.includes(role)) {
-      return role;
-    }
-    if (role) {
-      if (role.includes("CHIP_D_USER_GROUP_ADMIN")) {
-        role = "admin"
-      } else if (role.includes("CHIP_D_USER_GROUP")) {
-        role =  "state";
-      }
-    }
-    return role;
-};
+export const determineRole = specRole => {
+  const roleArray = ["admin", "business", "state"];
+  let role;
 
+  if (roleArray.includes(specRole)) {
+    role = specRole;
+  }
+
+  if (specRole) {
+    if (specRole.includes("CHIP_D_USER_GROUP_ADMIN")) {
+      role = "admin";
+    } else if (role.includes("CHIP_D_USER_GROUP")) {
+      role = "state";
+    }
+  }
+  return role;
+};
