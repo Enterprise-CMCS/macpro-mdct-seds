@@ -17,7 +17,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <img
-                    src="/img/logo-macpro.png"
+                    src="/img/logo-mdct.png"
                     alt="Medicaid & CHIP Program System"
                   />
                 </li>
