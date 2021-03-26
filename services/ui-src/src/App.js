@@ -19,7 +19,7 @@ function App() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
 
-  async function onLoad(config) {
+  async function onLoad() {
     try {
       let user = await Auth.currentAuthenticatedUser();
 
@@ -41,7 +41,7 @@ function App() {
     }
   }
   useEffect(() => {
-    onLoad(config);
+    onLoad().then();
   }, [isAuthenticated]);
 
   return (
