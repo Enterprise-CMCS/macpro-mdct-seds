@@ -4,24 +4,18 @@ import {
   Button,
   Grid,
   GridContainer,
+  Link,
   TextInput
 } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
 
 const FormHeader = ({ quarter, form, year, state }) => {
+  console.log("FORM", form);
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
-
-  // Get url for processing
-  const url = window.location.pathname.split("/");
-
-  // Format url pieces
-  const formattedStateName = url[2].toUpperCase();
-  const formYear = Number.parseInt(url[3]);
-  const quarterInt = Number.parseInt(url[4]).toString();
-  const formattedFormName = url[5].toUpperCase().replace("-", ".");
+  const formsWithOutFPL = ["GRE"];
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -37,29 +31,18 @@ const FormHeader = ({ quarter, form, year, state }) => {
       const formDetails = data.find(element => element.form === form);
       setFormDescription(formDetails);
 
-      // Get answers for this form from DB
-      const { answers } = await getSingleForm(
-        formattedStateName,
-        formYear,
-        quarterInt,
-        formattedFormName
-      );
+      // Only get FPL data if correct form
+      if (!formsWithOutFPL.includes(form)) {
+        // Get answers for this form from DB
+        const { answers } = await getSingleForm(state, year, quarter, form);
 
-      // Determine Maximum FPL
-      const maxFPL = getMaxFPL(answers);
-      setMaxFPL(maxFPL);
+        // Determine Maximum FPL
+        const maxFPL = getMaxFPL(answers);
+        setMaxFPL(maxFPL);
+      }
     }
     fetchData();
-  }, [
-    quarter,
-    form,
-    state,
-    year,
-    formattedStateName,
-    formYear,
-    quarterInt,
-    formattedFormName
-  ]);
+  }, [quarter, form, state, year]);
 
   // Saves maximum FPL to the database
   const updateMaxFPL = e => {};
@@ -78,7 +61,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
   };
 
   return (
-    <GridContainer>
+    <GridContainer className="form-header">
       <Grid row className="upper-form-nav">
         <Link className="upper-form-links" to="/">
           {" "}
@@ -114,29 +97,33 @@ const FormHeader = ({ quarter, form, year, state }) => {
           {` ${quarter}/${year}`}
         </Grid>
       </Grid>
-      <Grid row className="form-max-fpl">
-        <Grid col={12}>
-          <p>What is the highest FPL that received benefits from your state?</p>
-          <div className="fpl-input">
-            <TextInput
-              id="max-fpl"
-              name="max-fpl"
-              type="number"
-              onChange={e => validateFPL(e)}
-              value={maxFPL}
-            ></TextInput>
-          </div>
-          <div className="fpl-button">
-            <Button
-              type="button"
-              className="max-fpl-btn"
-              onClick={updateMaxFPL}
-            >
-              Apply FPL Changes
-            </Button>
-          </div>
+      {!formsWithOutFPL.includes(form) ? (
+        <Grid row className="form-max-fpl">
+          <Grid col={12}>
+            <p>
+              What is the highest FPL that received benefits from your state?
+            </p>
+            <div className="fpl-input">
+              <TextInput
+                id="max-fpl"
+                name="max-fpl"
+                type="number"
+                onChange={e => validateFPL(e)}
+                value={maxFPL}
+              ></TextInput>
+            </div>
+            <div className="fpl-button">
+              <Button
+                type="button"
+                className="max-fpl-btn"
+                onClick={updateMaxFPL}
+              >
+                Apply FPL Changes
+              </Button>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : null}
     </GridContainer>
   );
 };
