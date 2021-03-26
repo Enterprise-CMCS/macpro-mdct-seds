@@ -67,8 +67,8 @@ custom:
                 ../../src/database/initial_data_load/form_answers_21PW_MD.json,
                 ../../src/database/initial_data_load/form_answers_21PW_AL.json,
               ]
-#          - table: ${self:custom.stage}-auth-user
-#            sources: [../../src/database/initial_data_load/auth_user.json]
+          - table: ${self:custom.stage}-auth-user
+            sources: [../../src/database/initial_data_load/auth_user.json]
           - table: ${self:custom.stage}-auth-user-roles
             sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
@@ -171,7 +171,19 @@ resources:
           - AttributeName: status
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-
+    AuthUserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-auth-user
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -254,12 +266,12 @@ resources:
       Value: !GetAtt StatusTable.Arn
     StatusTableStreamArn:
       Value: !GetAtt StatusTable.StreamArn
-#    AuthUserTableName:
-#      Value: !Ref AuthUserTable
-#    AuthUserTableArn:
-#      Value: !GetAtt AuthUserTable.Arn
-#    AuthUserTableStreamArn:
-#      Value: !GetAtt AuthUserTable.StreamArn
+    AuthUserTableName:
+      Value: !Ref AuthUserTable
+    AuthUserTableArn:
+      Value: !GetAtt AuthUserTable.Arn
+    AuthUserTableStreamArn:
+      Value: !GetAtt AuthUserTable.StreamArn
     AuthUserRolesTableName:
       Value: !Ref AuthUserRolesTable
     AuthUserRolesTableArn:
