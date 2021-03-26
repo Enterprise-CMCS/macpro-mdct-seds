@@ -36,11 +36,19 @@ export const getUserById = data => {
 };
 
 // *** get user information by username
-export const getUserByUsername = data => {
+export const obtainUserByUsername = data => {
   const opts = requestOptions();
   opts.body = data;
 
   return API.post("mdct-seds", `/users/get`, opts);
+};
+
+// *** get user information by username
+export const obtainUserByEmail = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/get/email`, opts);
 };
 
 // *** update user information

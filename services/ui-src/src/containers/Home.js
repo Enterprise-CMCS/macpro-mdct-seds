@@ -6,7 +6,7 @@ import HomeBus from "./HomeBus";
 import HomeAdmin from "./HomeAdmin";
 import Unauthorized from "./Unauthorized";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { determineRole } from "../utilityFunctions/initialLoadFunctions";
+// import { determineRole } from "../utilityFunctions/initialLoadFunctions";
 
 export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();
@@ -20,7 +20,7 @@ export default function Home({ user }) {
   const renderLander = () => {
     let content;
 
-    switch (user.attributes["ismemberof"]) {
+    switch (user.attributes["app-role"]) {
       case "state":
         content = <HomeState />;
         break;

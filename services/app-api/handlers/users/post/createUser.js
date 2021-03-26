@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { main as getUserByUsername } from "./getUserByUsername";
+import { main as obtainUserByUsername } from "./obtainUserByUsername";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -23,7 +23,7 @@ export const main = handler(async (event, context) => {
     username: data.username,
   });
 
-  const currentUser = await getUserByUsername({
+  const currentUser = await obtainUserByUsername({
     body: body,
   });
 
@@ -72,7 +72,6 @@ export const main = handler(async (event, context) => {
 
   await dynamoDb.put(params, (err, data) => {
     if (err) throw err;
-    return {status: "success", messgage: `User ${data.username} Added!`}
+    return { status: "success", messgage: `User ${data.username} Added!` };
   });
-
 });

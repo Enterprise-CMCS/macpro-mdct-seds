@@ -1,8 +1,8 @@
-import { createUser, getUserByUsername, updateUser } from "../libs/api";
+import { createUser, obtainUserByEmail, updateUser } from "../libs/api";
 
 export async function ascertainUserPresence(user) {
-  const existingUser = await getUserByUsername({
-    username: user.username
+  const existingUser = await obtainUserByEmail({
+    email: user.attributes.email
   });
   const userObject = {
     username: user.username,

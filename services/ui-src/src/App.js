@@ -19,16 +19,18 @@ function App() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
 
-  async function onLoad() {
+  async function onLoad(config) {
     try {
       let user = await Auth.currentAuthenticatedUser();
 
       // *** LOCAL ONLY ADMIN OVERRIDE
-      if (config.REMOTE_WORKFLOW === true) {
+      if (config.REMOTE_WORKFLOW === false) {
         user.attributes["ismemberof"] = "CHIP_D_USER_GROUP_ADMIN";
       }
 
-      determineRole(user.attributes["ismemberof"]);
+      user.attributes["app-role"] = determineRole(
+        user.attributes["ismemberof"]
+      );
       setUser(user);
       setIsAuthenticated(true);
       setIsAuthenticating(false);
@@ -39,7 +41,7 @@ function App() {
     }
   }
   useEffect(() => {
-    onLoad();
+    onLoad(config);
   }, [isAuthenticated]);
 
   return (
