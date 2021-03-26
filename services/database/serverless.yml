@@ -171,6 +171,7 @@ resources:
           - AttributeName: status
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -253,12 +254,12 @@ resources:
       Value: !GetAtt StatusTable.Arn
     StatusTableStreamArn:
       Value: !GetAtt StatusTable.StreamArn
-    AuthUserTableName:
-      Value: !Ref AuthUserTable
-    AuthUserTableArn:
-      Value: !GetAtt AuthUserTable.Arn
-    AuthUserTableStreamArn:
-      Value: !GetAtt AuthUserTable.StreamArn
+#    AuthUserTableName:
+#      Value: !Ref AuthUserTable
+#    AuthUserTableArn:
+#      Value: !GetAtt AuthUserTable.Arn
+#    AuthUserTableStreamArn:
+#      Value: !GetAtt AuthUserTable.StreamArn
     AuthUserRolesTableName:
       Value: !Ref AuthUserRolesTable
     AuthUserRolesTableArn:
