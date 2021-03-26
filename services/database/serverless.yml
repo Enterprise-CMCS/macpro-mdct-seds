@@ -171,19 +171,6 @@ resources:
           - AttributeName: status
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    AuthUserTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.stage}-auth-user
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
-        AttributeDefinitions:
-          - AttributeName: email
-            AttributeType: S
-        KeySchema:
-          - AttributeName: email
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
