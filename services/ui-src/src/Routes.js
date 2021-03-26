@@ -61,7 +61,7 @@ export default function Routes({ user, isAuthorized }) {
         <Quarterly />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
-      {user.attributes["ismemberof"] === "admin" ? (
+      {user.attributes["app-role"] === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />
