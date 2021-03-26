@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab";
-import SummaryTab from "../SummaryTab";
+import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
