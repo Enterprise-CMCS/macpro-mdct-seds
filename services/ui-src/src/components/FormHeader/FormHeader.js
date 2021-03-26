@@ -12,7 +12,6 @@ import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
 
 const FormHeader = ({ quarter, form, year, state }) => {
-  console.log("FORM", form);
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const formsWithOutFPL = ["GRE"];
