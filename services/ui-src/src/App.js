@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 import "./App.scss";
 import "./animations/transitions.scss";
 import {
   ascertainUserPresence,
   determineRole
-} from "../src/utilityFunctions/initialLoadFunctions";
+} from "./utilityFunctions/initialLoadFunctions";
 import config from "./config";
 
 function App() {
@@ -49,9 +49,7 @@ function App() {
       {!isAuthenticating && (
         <>
           <Header user={user} />
-          <AppContext.Provider
-            value={{ isAuthenticated, userHasAuthenticated }}
-          >
+          <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
             <div className="main">
               <Routes user={user} isAuthorized={isAuthorized} />
             </div>
