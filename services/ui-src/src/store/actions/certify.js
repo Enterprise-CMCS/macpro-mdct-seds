@@ -35,7 +35,7 @@ export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
 
 export const certifyAndSubmitProvisional = () => async (dispatch, getState) => {
   const state = getState();
-  const user = state.userData.username;
+  const user = state.userData.username;//**** Need to add proper way to pull user information
 
   try {
     dispatch(setProvisionalCertify(user));

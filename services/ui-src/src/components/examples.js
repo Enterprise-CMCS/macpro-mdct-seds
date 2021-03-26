@@ -18,7 +18,7 @@ import {
 
 // Tabs
 import "react-tabs/style/react-tabs.css";
-import TabContainer from "./layout/TabContainer";
+import TabContainer from "./TabContainer/TabContainer";
 
 import GridWithTotals from "./GridWithTotals/GridWithTotals";
 

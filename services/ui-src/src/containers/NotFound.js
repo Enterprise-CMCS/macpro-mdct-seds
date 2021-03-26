@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./NotFound.css";
 
-import { disableForm } from "../store/reducers/singleForm";
+import { disableForm } from "../store/reducers/singleForm/singleForm";
 import { Button } from "@trussworks/react-uswds";
 
 const NotFound = ({ form, toggle }) => {

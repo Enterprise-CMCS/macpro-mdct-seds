@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { getFormTypes } from "../../../src/libs/api";
+import { getFormTypes } from "../../libs/api";
 
 const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
@@ -19,21 +19,20 @@ const FormHeader = ({ quarter, form, year, state }) => {
   return (
     <GridContainer>
       <Grid row className="upper-form-nav">
-        <Link className="upper-form-links" to="/">
-          {" "}
-          Enrollment Data Home {">"}
-          {"   "}
-        </Link>
-        <Link
-          className="upper-form-links"
-          to={`/forms/${state}/${year}/${quarter}`}
-        >
-          {` Q${quarter} ${year} > `}
-        </Link>
-        <Link className="upper-form-links" to={window.location.pathname}>
-          {" "}
-          {` Form ${form}`}{" "}
-        </Link>
+        <div className="breadcrumbs">
+          <Link className="upper-form-links" to="/">
+            {" "}
+            Enrollment Data Home {">"}
+            {"   "}
+          </Link>
+          <Link
+            className="upper-form-links"
+            to={`/forms/${state}/${year}/${quarter}`}
+          >
+            {` ${state} Q${quarter} ${year} > `}
+          </Link>
+          {` Form ${form}`}
+        </div>
       </Grid>
 
       <Grid row className="form-description-bar">

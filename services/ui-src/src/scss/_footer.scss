@@ -7,8 +7,26 @@
 
   .logo {
     margin-bottom: 1.2rem;
-    img {
-      max-height: 50px;
+
+    ul {
+      padding: 0;
+
+      li {
+        display: inline-block;
+        list-style-type: none;
+        margin-left: 0;
+        padding-right: 0.4rem;
+
+        img {
+          max-height: 50px;
+        }
+
+        &:last-of-type {
+          img {
+            max-height: 80px;
+          }
+        }
+      }
     }
   }
 
@@ -19,6 +37,7 @@
   }
 
   .info {
+    clear: both;
     font-size: 0.75rem;
     text-align: right;
 

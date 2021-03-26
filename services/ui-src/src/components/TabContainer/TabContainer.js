@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import CertificationTab from "../CertificationTab";
-import SummaryTab from "../SummaryTab";
+import CertificationTab from "../CertificationTab/CertificationTab";
+import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question";
 
@@ -51,8 +51,6 @@ const TabContainer = ({
             {questions.map((singleQuestion, idx) => {
               // Extract the ID from each question and find its corresponding answer object
               const questionID = singleQuestion.question;
-              console.log("questionID", questionID);
-              console.log("singleQuestion", singleQuestion);
               const questionAnswer = tabAnswers.find(
                 element => element.question === questionID
               );
@@ -71,7 +69,6 @@ const TabContainer = ({
                 activeContextData === false ||
                 (activeContextData && tempContextData === quarter)
               ) {
-                console.log("answerData", questionAnswer);
                 returnComponent = (
                   <QuestionComponent
                     key={idx}
