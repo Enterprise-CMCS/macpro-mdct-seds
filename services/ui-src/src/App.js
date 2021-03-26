@@ -45,17 +45,21 @@ function App() {
   }, [isAuthenticated]);
 
   return (
-    !isAuthenticating && (
-      <div className="App react-transition scale-in">
-        <Header user={user} />
-        <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-          <div className="main">
-            <Routes user={user} isAuthorized={isAuthorized} />
-          </div>
-        </AppContext.Provider>
-        <Footer />
-      </div>
-    )
+    <div className="App react-transition scale-in">
+      {!isAuthenticating && (
+        <>
+          <Header user={user} />
+          <AppContext.Provider
+            value={{ isAuthenticated, userHasAuthenticated }}
+          >
+            <div className="main">
+              <Routes user={user} isAuthorized={isAuthorized} />
+            </div>
+          </AppContext.Provider>
+          <Footer />
+        </>
+      )}
+    </div>
   );
 }
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -9,11 +8,22 @@ const Footer = () => {
         <Grid row>
           <Grid col={6} tablet={{ col: true }}>
             <div className="logo">
-              <img
-                src="/img/logo-cms.png"
-                alt="Centers for Medicare and Medicaid Services"
-              />
+              <ul>
+                <li>
+                  <img
+                    src="/img/logo-cms.png"
+                    alt="Centers for Medicare and Medicaid Services"
+                  />
+                </li>
+                <li>
+                  <img
+                    src="/img/logo-mdct.png"
+                    alt="Medicaid & CHIP Program System"
+                  />
+                </li>
+              </ul>
             </div>
+
             <div className="tagline">
               Centers for Medicare &amp; Medicaid Services
             </div>
@@ -24,12 +34,9 @@ const Footer = () => {
                 aria-label="Footer navigation"
                 size="slim"
                 links={[
-                  <Link className="usa-footer__primary-link" to="/faq">
-                    FAQs
-                  </Link>,
-                  <Link className="usa-footer__primary-link" to="/contact">
+                  <a className="usa-footer__primary-link" href="/contact">
                     Contact
-                  </Link>,
+                  </a>,
                   <a
                     className="usa-footer__primary-link"
                     href="https://www.cms.gov/"
@@ -42,6 +49,18 @@ const Footer = () => {
               />
             </div>
             <div className="info">
+              <div className="help">
+                <p>
+                  Email{" "}
+                  <a
+                    data-test="attribute-email"
+                    href="mailto:sedshelp@cms.hhs.gov"
+                  >
+                    SEDSHELP@cms.hhs.gov
+                  </a>{" "}
+                  for help or feedback.
+                </p>
+              </div>
               <div className="title">
                 A federal government managed website by the Centers for Medicare
                 &amp; Medicaid Services

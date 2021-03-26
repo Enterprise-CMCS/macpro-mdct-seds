@@ -14,7 +14,7 @@ import Example from "./components/examples";
 import Quarterly from "./containers/Quarterly";
 import UserAdd from "./components/users/UserAdd";
 import Unauthorized from "./containers/Unauthorized";
-import FormPage from "./components/form/FormPage";
+import FormPage from "./components/FormPage/FormPage";
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
