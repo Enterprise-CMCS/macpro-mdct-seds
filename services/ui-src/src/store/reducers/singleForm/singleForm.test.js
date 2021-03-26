@@ -193,5 +193,3 @@ describe("Single Form Reducer, component parts", () => {
     expect(typeof returnedValue).toEqual("function");
   });
 });
-
-// move files around
