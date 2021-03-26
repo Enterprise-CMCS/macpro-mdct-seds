@@ -274,7 +274,7 @@ resources:
                     - ${self:custom.StateFormsTableArn}
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
-                    - ${self:custom.AuthUserTableArn}
+                   #h - ${self:custom.AuthUserTableArn}
                     - ${self:custom.AuthUserRolesTableArn}
                     - ${self:custom.AuthJobCodesTableArn}
                     - ${self:custom.AuthUserStatesTableArn}
