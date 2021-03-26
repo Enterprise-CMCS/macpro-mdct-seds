@@ -42,8 +42,8 @@ custom:
   StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
   StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
   StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
-  AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
-  AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
+  # AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
+  # AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
   AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
   AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
   AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
