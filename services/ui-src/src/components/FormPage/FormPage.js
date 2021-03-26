@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { GridContainer } from "@trussworks/react-uswds";
-import TabContainer from "../../components/layout/TabContainer";
+import TabContainer from "../TabContainer/TabContainer";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
-import FormHeader from "./FormHeader";
-import FormFooter from "./FormFooter";
+import FormHeader from "../FormHeader/FormHeader";
+import FormFooter from "../FormFooter/FormFooter";
+import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;

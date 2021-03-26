@@ -6,6 +6,7 @@ import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../src/libs/api.js";
 import Card from "@material-ui/core/Card";
+import { Link } from "react-router-dom";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -177,8 +178,12 @@ const Quarterly = () => {
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
-            <a href="/">Enrollment Data Home</a> &gt;{" "}
-            {`${state} Q${quarter} ${year}`}
+            <Link className="upper-form-links" to="/">
+              {" "}
+              Enrollment Data Home
+            </Link>
+            {" >"}
+            {` ${state} Q${quarter} ${year} `}
           </div>
         </Grid>
       </Grid>
