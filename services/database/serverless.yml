@@ -67,8 +67,8 @@ custom:
                 ../../src/database/initial_data_load/form_answers_21PW_MD.json,
                 ../../src/database/initial_data_load/form_answers_21PW_AL.json,
               ]
-          - table: ${self:custom.stage}-auth-user
-            sources: [../../src/database/initial_data_load/auth_user.json]
+#          - table: ${self:custom.stage}-auth-user
+#            sources: [../../src/database/initial_data_load/auth_user.json]
           - table: ${self:custom.stage}-auth-user-roles
             sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
