@@ -1,0 +1,14 @@
+.form-max-fpl {
+  border: 1px solid black;
+  margin-top: 2.2rem;
+  padding: 0.6rem;
+
+  .fpl-input,
+  .fpl-button {
+    float: left;
+  }
+
+  .fpl-button {
+    margin-left: 0.6rem;
+  }
+}

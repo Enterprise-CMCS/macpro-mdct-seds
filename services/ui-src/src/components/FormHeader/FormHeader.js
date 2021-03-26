@@ -6,10 +6,9 @@ import {
   GridContainer,
   TextInput
 } from "@trussworks/react-uswds";
-import { Link, useParams } from "react-router-dom";
-import { getFormTypes, getSingleForm } from "../../../src/libs/api";
-import { getFormData } from "../../store/reducers/singleForm";
-import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { getFormTypes, getSingleForm } from "../../libs/api";
+import "./FormHeader.scss";
 
 const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
@@ -51,7 +50,16 @@ const FormHeader = ({ quarter, form, year, state }) => {
       setMaxFPL(maxFPL);
     }
     fetchData();
-  }, [quarter, form, state, year]);
+  }, [
+    quarter,
+    form,
+    state,
+    year,
+    formattedStateName,
+    formYear,
+    quarterInt,
+    formattedFormName
+  ]);
 
   // Saves maximum FPL to the database
   const updateMaxFPL = e => {};
@@ -108,17 +116,25 @@ const FormHeader = ({ quarter, form, year, state }) => {
       </Grid>
       <Grid row className="form-max-fpl">
         <Grid col={12}>
-          What is the highest FPL that received benefits from your state?{" "}
-          <TextInput
-            id="max-fpl"
-            name="max-fpl"
-            type="number"
-            onChange={e => validateFPL(e)}
-            value={maxFPL}
-          ></TextInput>
-          <Button type="button" className="max-fpl-btn" onClick={updateMaxFPL}>
-            Apply FPL Changes
-          </Button>
+          <p>What is the highest FPL that received benefits from your state?</p>
+          <div className="fpl-input">
+            <TextInput
+              id="max-fpl"
+              name="max-fpl"
+              type="number"
+              onChange={e => validateFPL(e)}
+              value={maxFPL}
+            ></TextInput>
+          </div>
+          <div className="fpl-button">
+            <Button
+              type="button"
+              className="max-fpl-btn"
+              onClick={updateMaxFPL}
+            >
+              Apply FPL Changes
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </GridContainer>
