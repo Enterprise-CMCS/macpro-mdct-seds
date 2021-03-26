@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
+import { connect } from "react-redux";
 import "./GridWithTotals.scss";
+import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -22,6 +25,7 @@ const GridWithTotals = props => {
 
     updateGridData(gridCopy);
     updateTotals();
+    props.setAnswer(gridCopy, props.questionID);
   };
 
   const updateTotals = () => {
@@ -238,4 +242,15 @@ const translateInitialData = gridDataObject => {
   return translatedData;
 };
 
-export default GridWithTotals;
+GridWithTotals.propTypes = {
+  gridData: PropTypes.array.isRequired,
+  questionID: PropTypes.string.isRequired,
+  setAnswer: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
+};
+
+const mapDispatch = {
+  setAnswer: gotAnswer ?? {}
+};
+
+export default connect(null, mapDispatch)(GridWithTotals);
