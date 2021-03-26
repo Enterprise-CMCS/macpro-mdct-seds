@@ -112,83 +112,83 @@ provider:
 
 functions:
   exportToExcel:
-    handler: handlers/users/post/exportToExcel.main
+    handler: handlers/Users/post/exportToExcel.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/export-to-excel
+          path: Users/export-to-excel
           method: post
           cors: true
           authorizer: aws_iam
   getUserById:
-    handler: handlers/users/get/getUserById.main
+    handler: handlers/Users/get/getUserById.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/{id}
+          path: Users/{id}
           method: get
           cors: true
           authorizer: aws_iam
   getUsers:
-    handler: handlers/users/get/listUsers.main
+    handler: handlers/Users/get/listUsers.main
     role: LambdaApiRole
     events:
       - http:
-          path: users
+          path: Users
           method: get
           cors: true
           authorizer: aws_iam
   obtainUserByUsername:
-    handler: handlers/users/post/obtainUserByUsername.main
+    handler: handlers/Users/post/obtainUserByUsername.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/get
+          path: Users/get
           method: post
           cors: true
           authorizer: aws_iam
   obtainUserByEmail:
-    handler: handlers/users/post/obtainUserByEmail.main
+    handler: handlers/Users/post/obtainUserByEmail.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/get/email
+          path: Users/get/email
           method: post
           cors: true
           authorizer: aws_iam
   createUser:
-    handler: handlers/users/post/createUser.main
+    handler: handlers/Users/post/createUser.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/add
+          path: Users/add
           method: post
           cors: true
           authorizer: aws_iam
   deleteUser:
-    handler: handlers/users/post/deleteUser.main
+    handler: handlers/Users/post/deleteUser.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/delete
+          path: Users/delete
           method: post
           cors: true
           authorizer: aws_iam
   activateDeactivateUser:
-    handler: handlers/users/post/activateDeactivateUser.main
+    handler: handlers/Users/post/activateDeactivateUser.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/activation/{username}
+          path: Users/activation/{username}
           method: post
           cors: true
           authorizer: aws_iam
   updateUser:
-    handler: handlers/users/post/updateUser.main
+    handler: handlers/Users/post/updateUser.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/update/{email}
+          path: Users/update/{email}
           method: post
           cors: true
           authorizer: aws_iam

@@ -1,0 +1,37 @@
+@import "../../../node_modules/@trussworks/react-uswds/lib/uswds.css";
+@import "../../../node_modules/@trussworks/react-uswds/lib/index.css";
+
+@import "../../additional-scss/variables";
+@import "../../additional-scss/mixins";
+@import "../../additional-scss/fonts";
+@import "../../additional-scss/globals";
+@import "../../additional-scss/layout";
+@import "../../additional-scss/buttons";
+@import "../../additional-scss/tabs";
+@import "../../additional-scss/alerts";
+@import "../../additional-scss/icons";
+@import "../../additional-scss/header";
+@import "../../additional-scss/footer";
+@import "../../additional-scss/sidebar";
+@import "../../additional-scss/form";
+@import "../../additional-scss/main";
+@import "../../additional-scss/print";
+
+.data-table-extensions > .data-table-extensions-filter {
+  float: right;
+
+  input.filter-text {
+    width: 300px;
+    border: inset 1px;
+    background: #f6fbfc;
+  }
+
+  ::placeholder {
+    color: #205493 !important;
+    font-style: italic !important;
+  }
+}
+
+.rdt_TableHeader {
+  display: none !important;
+}

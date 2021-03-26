@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import App from "./components/App/App";
 import * as serviceWorker from "./serviceWorker";
 import { HashRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
-import config from "./config";
+import config from "./config/config";
 import { Provider } from "react-redux";
 import store from "./store/storeIndex";
 
