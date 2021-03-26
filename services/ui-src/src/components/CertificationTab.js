@@ -7,6 +7,7 @@ import {
   certifyAndSubmitProvisional
 } from "../store/actions/certify";
 import PropTypes from "prop-types";
+import {Auth} from "aws-amplify";
 
 const CertificationTab = ({
   status,
@@ -21,9 +22,14 @@ const CertificationTab = ({
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
   );
+  const test = async () => {
+    const user = await Auth.currentAuthenticatedUser;
+    console.log("user",user)
+  }
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
-  const submitProvisional = () => {
+  const submitProvisional = async () => {
+
     certifyAndSubmitProvisional();
     setprovisionalButtonStatus(true);
   };
@@ -32,9 +38,51 @@ const CertificationTab = ({
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
   };
+  const certifyInformation = (
+    <div>
+      <p>
+        Double check that everything in your SEDS report is accurate. You will
+        have to uncertify your report to make any edits to your final data after
+        submitting.
+      </p>
+      <p>
+        Once you have reviewed your report, certify that it’s accurate and in
+        compliance with Title XXI of the Social Security Act (Section 2109(a)
+        and Section 2108(e)).
+      </p>
+      <>
+        This report was updated to <b>{status}</b> on <b>{lastModified}</b> by{" "}
+        <b>{lastModifiedBy}</b>
+      </>
+    </div>
+  );
 
+  let certifyText = <></>;
+  if (isFinal) {
+    certifyText = (
+      <>
+        <b> Thank you for submitting your SEDS data!</b>
+        <p>
+          Submitted on {lastModified} by {lastModifiedBy}
+        </p>
+      </>
+    );
+  } else if (isProvisional) {
+    certifyText = (
+      <div>
+        <b>Ready to final certify?</b> + {certifyInformation.toString()} +{" "}
+      </div>
+    );
+  } else {
+    certifyText = (
+      <div>
+        <b>Ready to certify?</b> {certifyInformation}{" "}
+      </div>
+    );
+  }
   return (
     <>
+      {test}
       {isFinal ? (
         <div>
           <Alert
@@ -57,28 +105,7 @@ const CertificationTab = ({
       ) : null}
 
       <h3> Certify and Submit</h3>
-      {isFinal ? (
-        <>
-          <b> Thank you for submitting your SEDS data!</b>
-          <p>
-            Submitted on {lastModified} by {lastModifiedBy}
-          </p>
-        </>
-      ) : (
-        <>
-          <b>Ready to certify?</b>
-          <p>
-            Double check that everything in your SEDS report is accurate. You
-            will have to uncertify your report to make any edits to your final
-            data after submitting.
-          </p>
-          <p>
-            Once you have reviewed your report, certify that it’s accurate and
-            in compliance with Title XXI of the Social Security Act (Section
-            2109(a) and Section 2108(e)).
-          </p>
-        </>
-      )}
+      {certifyText}
 
       <GridContainer>
         <Grid row>

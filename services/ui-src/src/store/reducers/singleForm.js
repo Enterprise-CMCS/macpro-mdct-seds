@@ -101,14 +101,14 @@ export default (state = initialState, action) => {
         ...state,
         status: "final",
         last_modified_by: action.username,
-        last_modified: new Date().toString()
+        last_modified: new Date().toISOString()
       };
     case CERTIFY_AND_SUBMIT_PROVISIONAL:
       return {
         ...state,
-        status: "provisional",
+        status: "Provisional Data Certified and Submitted",
         last_modified_by: action.username,
-        last_modified: new Date().toString()
+        last_modified: new Date().toISOString()
       };
     case UNCERTIFY_FORM:
       return {
