@@ -188,7 +188,7 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: users/update/{email}
+          path: users/update/{userId}
           method: post
           cors: true
           authorizer: aws_iam
@@ -283,10 +283,10 @@ resources:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
-                - Effect: 'Allow'
+                - Effect: "Allow"
                   Action:
                     - cognito-idp:AdminGetUser
-                  Resource: '*'
+                  Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
