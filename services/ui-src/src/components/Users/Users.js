@@ -53,24 +53,24 @@ const Users = () => {
     fetchData().then();
   }, []);
 
-  const deactivateUser = async e => {
+  const deactivateUser = async user => {
     const confirm = window.confirm(
-      `Are you sure you want to deactivate user ${e.username}`
+      `Are you sure you want to deactivate user ${user.username}`
     );
     if (confirm) {
-      const deactivateData = { isActive: false, userId: e.userId };
+      const deactivateData = { isActive: false, userId: user.userId };
       await activateDeactivateUser(deactivateData).then(async () => {
         await loadUserData();
       });
     }
   };
 
-  const activateUser = async e => {
+  const activateUser = async user => {
     const confirm = window.confirm(
-      `Are you sure you want to activate user ${e.username}`
+      `Are you sure you want to activate user ${user.username}`
     );
     if (confirm) {
-      const activateData = { isActive: true, userId: e.userId };
+      const activateData = { isActive: true, userId: user.userId };
       await activateDeactivateUser(activateData).then(async () => {
         await loadUserData();
       });
@@ -80,16 +80,15 @@ const Users = () => {
   let tableData = false;
 
   if (users) {
-    // Build column structure for react-data-tables
     const columns = [
       {
         name: "Username",
         selector: "username",
         sortable: true,
-        cell: e => {
+        cell: user => {
           return (
             <span>
-              <Link to={`/users/${e.userId}/edit`}>{e.username}</Link>
+              <Link to={`/users/${user.userId}/edit`}>{user.username}</Link>
             </span>
           );
         }
@@ -108,10 +107,10 @@ const Users = () => {
         name: "Email",
         selector: "email",
         sortable: true,
-        cell: e => {
+        cell: user => {
           return (
             <span>
-              <a href={`mailto:${e.email}`}>{e.email}</a>
+              <a href={`mailto:${user.email}`}>{user.email}</a>
             </span>
           );
         }
@@ -120,21 +119,17 @@ const Users = () => {
         name: "Role",
         selector: "role",
         sortable: true,
-        cell: r => {
-          if (r) {
-            return r.role;
-          } else {
-            return "";
-          }
+        cell: user => {
+          return user.role ? user.role : null;
         }
       },
       {
         name: "Joined",
         selector: "dateJoined",
         sortable: true,
-        cell: s => {
-          return s.dateJoined
-            ? new Date(s.dateJoined).toLocaleDateString("en-US")
+        cell: user => {
+          return user.dateJoined
+            ? new Date(user.dateJoined).toLocaleDateString("en-US")
             : null;
         }
       },
@@ -142,9 +137,9 @@ const Users = () => {
         name: "Last Active",
         selector: "lastLogin",
         sortable: true,
-        cell: s => {
-          return s.lastLogin
-            ? new Date(s.lastLogin).toLocaleDateString("en-US")
+        cell: user => {
+          return user.lastLogin
+            ? new Date(user.lastLogin).toLocaleDateString("en-US")
             : null;
         }
       },
@@ -152,29 +147,30 @@ const Users = () => {
         name: "States",
         selector: "state_codes",
         sortable: true,
-        cell: s => {
-          console.log(s.states, "yeet")
-          return s.states ? <span>{s.states.sort().join(", ")}</span> : null;
+        cell: user => {
+          return user.states ? (
+            <span>{user.states.sort().join(", ")}</span>
+          ) : null;
         }
       },
       {
         name: "Status",
         selector: "isActive",
         sortable: true,
-        cell: s => {
+        cell: user => {
           return (
             <span>
-              {s.isActive ? (
+              {user.isActive ? (
                 <button
                   className="btn btn-primary"
-                  onClick={() => deactivateUser(s)}
+                  onClick={() => deactivateUser(user)}
                 >
                   Deactivate
                 </button>
               ) : (
                 <button
                   className="btn btn-secondary"
-                  onClick={() => activateUser(s)}
+                  onClick={() => activateUser(user)}
                 >
                   Activate
                 </button>

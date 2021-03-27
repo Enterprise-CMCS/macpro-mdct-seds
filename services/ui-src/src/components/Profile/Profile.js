@@ -44,7 +44,7 @@ export default function Profile({ user }) {
       }
     }
 
-    onLoad();
+    onLoad().then();
   }, []);
 
   function validateForm() {

@@ -3,8 +3,8 @@ import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByUsername } from "./obtainUserByUsername";
 
 export const main = handler(async (event, context) => {
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
+  // If this invocation is a prewarm, do nothing and return.
+  if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
   }

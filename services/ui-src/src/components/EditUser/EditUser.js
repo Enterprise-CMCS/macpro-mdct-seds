@@ -33,19 +33,19 @@ const EditUser = ({ stateList }) => {
     // Retrive user data from datastore
     const getUserData = { userId: id };
 
-    const data = await getUserById(getUserData);
-    setUser(data);
-    setRole(data.role);
-
+    const user = await getUserById(getUserData);
+    if (user.status === "success") {
+      setUser(user.data);
+      setRole(user.data.role);
+    }
     // Sort states alphabetically and place in array
     let theStates = [];
-    console.log("zzzData.states", data.states);
-    if (data.states) {
-      theStates = data.states.sort();
+    if (user.data.states) {
+      theStates = user.data.states.sort();
     }
 
     // Set states to array of objects
-    if (data.role !== "state") {
+    if (user.data.role !== "state") {
       setSelectedStates(
         theStates.map(e => {
           let stateName;
@@ -60,23 +60,28 @@ const EditUser = ({ stateList }) => {
       );
     } else {
       // Get user state, if multiple take only the first
-      const userState = data.states[0];
+      const userState = user.data.states[0];
+      const selectedStates = [];
 
       // Loop through U.S. states to find a match and set to local state (storage)
       for (const state in stateList) {
         if (stateList[state].value === userState) {
-          setSelectedStates({
+          selectedStates.push({
             label: stateList[state].label,
             value: stateList[state].value
           });
         }
       }
+
+      if (selectedStates.length > 0) {
+        setSelectedStates(selectedStates);
+      }
     }
-    return data;
+    return user.data;
   };
 
   useEffect(() => {
-    loadUserData();
+    loadUserData().then();
     // eslint-disable-next-line
   }, []);
 
