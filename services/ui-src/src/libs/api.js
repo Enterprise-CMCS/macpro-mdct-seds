@@ -56,7 +56,7 @@ export const updateUser = data => {
   const opts = requestOptions();
   opts.body = data;
 
-  return API.post("mdct-seds", `/users/update/${data.email}`, opts);
+  return API.post("mdct-seds", `/users/update/${data.userId}`, opts);
 };
 
 // *** create user
