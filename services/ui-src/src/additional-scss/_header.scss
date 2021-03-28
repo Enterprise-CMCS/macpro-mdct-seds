@@ -3,76 +3,38 @@
 **********************/
 
 .header {
-  .gov-info {
-    img {
-      margin-top: 0;
-      max-height: 18px;
-      padding-top: 0;
-    }
+  .logo {
+    @extend .padding-left-9;
+    @extend .padding-y-1;
+    @extend .bg-primary;
+  }
+}
 
-    .flag,
-    .flag-copy {
-      display: inline-block;
-    }
+.app-title {
+  @extend .text-white;
+  @extend .text-bold;
+  @extend .padding-y-3;
+  @extend .padding-left-9;
+}
 
-    .flag {
-    }
-    .flag-copy {
-      padding-left: 0.2rem;
-    }
+.navigation {
+  @extend .bg-primary-light;
+  @extend .text-white;
+  @extend .text-bold;
+  @extend .padding-left-9;
+
+  a {
+    @extend .text-white;
   }
 
-  .navigation {
-    background: $brand-secondary;
-
-    a {
-      &:link,
-      &:visited {
-        color: $white;
-      }
-
-      &:hover {
-        background: none;
-        color: darken($white, 20);
-      }
-
-      &:active {
-        background: none;
-      }
-      &:focus {
-        background: none;
-      }
-    }
-    ul {
-      background: $brand-secondary;
-      color: $white;
-    }
-
-    .collapse {
-      display: block;
-    }
+  .dropdown-toggle {
+    background: #73b3e7 !important;
+    @extend .text-white;
+    @extend .text-bold;
   }
 
-  .nav .open > a {
-    background: $brand-secondary;
-  }
-
-  .page-title {
-    @extend .bg-primary-dark;
-    padding: 0.6rem 0;
-    width: 100%;
-
-    h1 {
-      @extend .text-white;
-      @extend .text-bold;
-    }
-  }
-
-  .usa-nav__primary > .usa-nav__primary-item > a,
-  .usa-nav__primary > .usa-nav__primary-item > a:visited {
-    text-decoration: underline;
-    &:hover {
-      color: darken($brand-primary, 20);
-    }
+  .usa-link {
+    color: #fff !important;
+    @extend .font-alt-lg;
   }
 }

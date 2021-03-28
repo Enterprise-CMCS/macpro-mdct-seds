@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import {
-  Grid,
-  GridContainer,
-  GovBanner,
-  Link,
-  NavList
-} from "@trussworks/react-uswds";
+import { GovBanner, Link, NavList } from "@trussworks/react-uswds";
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,54 +39,37 @@ const Header = () => {
       <GovBanner className="react-transition swipe-right padding-y-1px" />
 
       <div className="logo">
-        <GridContainer className="container">
-          <Grid row>
-            <Grid col={12}>
-              <Link to="/">
-                <img
-                  src="/img/logo-cms.png"
-                  alt="Centers for Medicare and Medicaid Services"
-                />
-              </Link>
-            </Grid>
-          </Grid>
-        </GridContainer>
+        <Link to="/">
+          <img
+            src="/img/logo-cms.png"
+            alt="Centers for Medicare and Medicaid Services"
+          />
+        </Link>
+        <span className="app-title font-alt-xl">
+          CHIP Statistical Enrollment Data Reports
+        </span>
       </div>
-      <div className="page-title">
-        <GridContainer className="container">
-          <Grid row>
-            <Grid col={12}>
-              <h1>CHIP Statistical Enrollment Data Reports</h1>
-            </Grid>
-          </Grid>
-        </GridContainer>
-      </div>
+
       <div className="navigation">
-        <GridContainer className="container">
-          <Grid row className="full-width">
+        {isAuthenticated ? (
+          <Nav pullLeft={true}>
+            <NavList items={menuItems} type="primary" />
+          </Nav>
+        ) : null}
+        <Navbar.Collapse>
+          <Nav pullRight={true} className="padding-right-9">
             {isAuthenticated ? (
-              <Grid col={7}>
-                <NavList items={menuItems} type="primary" />
-              </Grid>
+              <>
+                <NavDropdown id="User" title="My Profile">
+                  <LinkContainer to="/profile">
+                    <NavItem>User Profile</NavItem>
+                  </LinkContainer>
+                  <NavItem onClick={handleLogout}>Logout</NavItem>
+                </NavDropdown>
+              </>
             ) : null}
-            <Grid col={5}>
-              <Navbar.Collapse>
-                <Nav pullRight>
-                  {isAuthenticated ? (
-                    <>
-                      <NavDropdown id="User" title="My Profile">
-                        <LinkContainer to="/profile">
-                          <NavItem>User Profile</NavItem>
-                        </LinkContainer>
-                        <NavItem onClick={handleLogout}>Logout</NavItem>
-                      </NavDropdown>
-                    </>
-                  ) : null}
-                </Nav>
-              </Navbar.Collapse>
-            </Grid>
-          </Grid>
-        </GridContainer>
+          </Nav>
+        </Navbar.Collapse>
       </div>
     </div>
   );

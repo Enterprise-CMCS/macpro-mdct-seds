@@ -8,6 +8,8 @@ import { listUsers, activateDeactivateUser } from "../../libs/api";
 import { Grid } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
+import "./Users.scss";
+
 import { exportToExcel } from "../../libs/api";
 import { saveAs } from "file-saver";
 
@@ -190,7 +192,7 @@ const Users = () => {
 
   return (
     <div className="user-profiles react-transition scale-in">
-      <Grid className="container">
+      <Grid>
         <h1 className="page-header">Users</h1>
         <div className="page-subheader">
           <Link to="/users/add">Add new user</Link>

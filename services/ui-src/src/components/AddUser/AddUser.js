@@ -4,9 +4,11 @@ import { connect } from "react-redux";
 import Searchable from "react-searchable-dropdown";
 import { TextField, Button } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { createUser } from "../../libs/api";
 import { Link } from "react-router-dom";
+import { Table } from "@trussworks/react-uswds";
+
+import "./AddUser.scss";
 
 const AddUser = ({ currentUser, stateList }) => {
   const [userId, setUserId] = useState();
@@ -63,90 +65,95 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="user-add react-transition rotate-in">
-        <GridContainer className="container">
-          <Grid row>
-            <Grid col={12}>
-              <h1>Add User</h1>
-              <p>
-                To add a state user, enter their EUA Id, select their state, and
-                click Add User.
-              </p>
-              <p className="note">
-                Note: Users will not show up in the{" "}
-                <Link to="/users">User List</Link> until they have logged in.
-              </p>
-              {error && (
-                <p className="error" id="Error">
-                  You must enter an EUA Id, and select a role and state(s).
-                </p>
-              )}
-              <div>
-                <div className="eua-id">
+      <div className="react-transition rotate-in">
+        <h1 className="page-header">Add User</h1>
+
+        <div className="padding-left-9">
+          <p>
+            To add a state user, enter their EUA Id, select their state, and
+            click Add User.
+          </p>
+          <p className="note">
+            Note: Users will not show up in the{" "}
+            <Link to="/users">User List</Link> until they have logged in.
+          </p>
+          {error && (
+            <p className="error" id="Error">
+              You must enter an EUA Id, and select a role and state(s).
+            </p>
+          )}
+          <div className="center-content">
+            <Table>
+              <tr>
+                <th>EUA ID:</th>
+                <td>
                   <TextField
-                    label="EUA Id:"
                     onBlur={e => setUserId(e.target.value)}
                     className=""
                     name="eua-id"
                     required={true}
                   />
-                </div>
-                <div className="role">
-                  Role:
-                  <br />
+                </td>
+              </tr>
+              <tr>
+                <th>Role</th>
+                <td>
                   <Searchable
                     options={roles}
                     placeholder="Select a Role"
                     onSelect={setRoleOnSelect}
                     required={true}
                   />
-                </div>
-                <div>
-                  {role === "state" ? (
-                    <>
-                      State:
-                      <br />
-                      <Searchable
-                        options={stateList}
-                        multiple={true}
-                        placeholder="Select a State"
-                        required
-                        onSelect={option => {
-                          // Set for searchable use
-                          setStateId(option);
-                          // Set for sending to API
-                          setStatesToSend([option.value]);
-                        }}
-                      />
-                    </>
-                  ) : null}
-                  {role !== "state" && role !== null ? (
-                    <>
-                      States:
-                      <br />
-                      <MultiSelect
-                        options={stateList}
-                        value={stateId ? stateId : []}
-                        required
-                        onChange={setStatesFromSelect}
-                        labelledBy={"Select States"}
-                        multiple={false}
-                      />
-                    </>
-                  ) : null}
-                </div>
-                <br />
-                <Button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => createThisUser()}
-                >
-                  Add User
-                </Button>
-              </div>
-            </Grid>
-          </Grid>
-        </GridContainer>
+                </td>
+              </tr>
+
+              {role === "state" ? (
+                <tr>
+                  <th>State:</th>
+                  <td>
+                    <Searchable
+                      options={stateList}
+                      multiple={true}
+                      placeholder="Select a State"
+                      required
+                      onSelect={option => {
+                        // Set for searchable use
+                        setStateId(option);
+                        // Set for sending to API
+                        setStatesToSend([option.value]);
+                      }}
+                    />
+                  </td>
+                </tr>
+              ) : null}
+              {role !== "state" && role !== null ? (
+                <tr>
+                  <th>States:</th>
+                  <td>
+                    <MultiSelect
+                      options={stateList}
+                      value={stateId ? stateId : []}
+                      required
+                      onChange={setStatesFromSelect}
+                      labelledBy={"Select States"}
+                      multiple={false}
+                    />
+                  </td>
+                </tr>
+              ) : null}
+            </Table>
+
+            <div className="action-buttons">
+              <Button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => createThisUser()}
+              >
+                Add User
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

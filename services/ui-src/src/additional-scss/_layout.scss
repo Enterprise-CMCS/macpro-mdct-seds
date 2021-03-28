@@ -3,24 +3,35 @@
 **********************/
 
 .page-header {
-  @extend .bg-primary-dark;
+  @extend .bg-primary;
   @extend .text-white;
   @extend .padding-3;
   @extend .text-center;
   @extend .text-bold;
+  width: 99% !important;
+  margin-left: 0.5%;
 }
 
 .page-subheader {
-  @extend .padding-left-3;
+  @extend .padding-left-9;
 }
 
 .main {
   .container {
-    width: 98% !important;
-    margin: auto;
+    width: 100% !important;
   }
 }
 
-.full-width {
-  width: 100% !important;
+.center-content {
+  text-align: center;
+  .usa-table {
+    margin: auto !important;
+    text-align: center;
+    th {
+      @extend .bg-primary-dark;
+      @extend .text-white;
+      @extend .padding-x-3;
+      @extend .text-bold;
+    }
+  }
 }
