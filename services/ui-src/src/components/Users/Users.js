@@ -188,59 +188,19 @@ const Users = () => {
     };
   }
 
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "72px" // override the row height
-      }
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#205493",
-        color: "#fff",
-        fontWeight: "bold",
-        border: "solid 1px #fff",
-        textAlign: "center",
-        "&:focus": {
-          outline: "none",
-          color: "#fff"
-        },
-        "&:hover:not(:focus)": {
-          color: "#fff"
-        }
-      },
-      activeSortStyle: {
-        color: "#fff",
-        textAlign: "center",
-        "&:focus": {
-          outline: "none",
-          color: "#fff"
-        },
-        "&:hover:not(:focus)": {
-          color: "#fff"
-        }
-      }
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-        border: "ridge 1px"
-      }
-    }
-  };
-
   return (
     <div className="user-profiles react-transition scale-in">
       <Grid className="container">
-        <h1>Users</h1>
-        <Link to="/users/add">Add new user</Link>
-        <button
-          className="margin-left-5 usa-button usa-button--secondary text-normal"
-          onClick={async () => await handleExport("excel")}
-        >
-          Excel
-        </button>
+        <h1 className="page-header">Users</h1>
+        <div className="page-subheader">
+          <Link to="/users/add">Add new user</Link>
+          <button
+            className="margin-left-5 usa-button usa-button--secondary text-normal"
+            onClick={async () => await handleExport("excel")}
+          >
+            Excel
+          </button>
+        </div>
         <Card>
           {tableData ? (
             <DataTableExtensions {...tableData} export={false} print={false}>
@@ -251,8 +211,8 @@ const Users = () => {
                 highlightOnHover={true}
                 selectableRows={false}
                 responsive={true}
-                customStyles={customStyles}
                 striped={true}
+                className="grid-display-table"
               />
             </DataTableExtensions>
           ) : null}

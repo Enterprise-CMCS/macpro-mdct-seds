@@ -4,11 +4,6 @@
 
 .header {
   .gov-info {
-    background: $color-gray-lightest;
-    color: $color-gray-dark;
-    font-size: 0.85rem;
-    padding: 0.1rem 0 0.3rem;
-
     img {
       margin-top: 0;
       max-height: 18px;
@@ -63,11 +58,13 @@
   }
 
   .page-title {
-    background: $brand-primary;
+    @extend .bg-primary-dark;
     padding: 0.6rem 0;
+    width: 100%;
 
     h1 {
-      color: $white;
+      @extend .text-white;
+      @extend .text-bold;
     }
   }
 

@@ -1,4 +1,4 @@
-@import "../../../node_modules/@trussworks/react-uswds/lib/uswds.css";
+@import "~uswds/dist/css/uswds";
 @import "../../../node_modules/@trussworks/react-uswds/lib/index.css";
 
 @import "../../additional-scss/variables";
@@ -16,22 +16,4 @@
 @import "../../additional-scss/form";
 @import "../../additional-scss/main";
 @import "../../additional-scss/print";
-
-.data-table-extensions > .data-table-extensions-filter {
-  float: right;
-
-  input.filter-text {
-    width: 300px;
-    border: inset 1px;
-    background: #f6fbfc;
-  }
-
-  ::placeholder {
-    color: #205493 !important;
-    font-style: italic !important;
-  }
-}
-
-.rdt_TableHeader {
-  display: none !important;
-}
+@import "../../additional-scss/react-datatable-component-override";

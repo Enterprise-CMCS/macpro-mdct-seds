@@ -2,9 +2,25 @@
   Layout
 **********************/
 
-.edit-user {
-  .ds-c-field {
-    min-width: 300px;
-    padding: 0.4rem;
+.page-header {
+  @extend .bg-primary-dark;
+  @extend .text-white;
+  @extend .padding-3;
+  @extend .text-center;
+  @extend .text-bold;
+}
+
+.page-subheader {
+  @extend .padding-left-3;
+}
+
+.main {
+  .container {
+    width: 98% !important;
+    margin: auto;
   }
+}
+
+.full-width {
+  width: 100% !important;
 }
