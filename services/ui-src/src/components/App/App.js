@@ -11,7 +11,6 @@ import {
   ascertainUserPresence,
   determineRole
 } from "../../utility-functions/initialLoadFunctions";
-import config from "../../config/config";
 
 function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
