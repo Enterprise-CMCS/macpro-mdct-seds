@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Searchable from "react-searchable-dropdown";
-import { TextField, Button } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import { createUser } from "../../libs/api";
 import { Link } from "react-router-dom";
-import { Table } from "@trussworks/react-uswds";
+import { Table, Button, TextInput } from "@trussworks/react-uswds";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 
 import "./AddUser.scss";
 
@@ -33,7 +34,6 @@ const AddUser = ({ currentUser, stateList }) => {
 
     const response = await createUser(data);
     window.alert(response);
-    window.location.reload(false);
   }
 
   // Save selections for local use and API use
@@ -70,12 +70,16 @@ const AddUser = ({ currentUser, stateList }) => {
 
         <div className="padding-left-9">
           <p>
-            To add a state user, enter their EUA Id, select their state, and
-            click Add User.
+            To add a <b>state user</b>, enter their EUA Id, select their state,
+            and click Add User.
           </p>
           <p className="note">
-            Note: Users will not show up in the{" "}
-            <Link to="/users">User List</Link> until they have logged in.
+            <b className="margin-right-3 text-secondary-dark">Note:</b> Users
+            will not show up in the{" "}
+            <Link to="/users" className="text-bold margin-x-2">
+              User List
+            </Link>{" "}
+            until they have logged in.
           </p>
           {error && (
             <p className="error" id="Error">
@@ -84,72 +88,78 @@ const AddUser = ({ currentUser, stateList }) => {
           )}
           <div className="center-content">
             <Table>
-              <tr>
-                <th>EUA ID:</th>
-                <td>
-                  <TextField
-                    onBlur={e => setUserId(e.target.value)}
-                    className=""
-                    name="eua-id"
-                    required={true}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th>Role</th>
-                <td>
-                  <Searchable
-                    options={roles}
-                    placeholder="Select a Role"
-                    onSelect={setRoleOnSelect}
-                    required={true}
-                  />
-                </td>
-              </tr>
-
-              {role === "state" ? (
+              <tbody>
                 <tr>
-                  <th>State:</th>
+                  <th>EUA ID:</th>
+                  <td>
+                    <TextInput
+                      onBlur={e => setUserId(e.target.value)}
+                      className="form-input"
+                      name="eua-id"
+                      required={true}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>Role</th>
                   <td>
                     <Searchable
-                      options={stateList}
-                      multiple={true}
-                      placeholder="Select a State"
-                      required
-                      onSelect={option => {
-                        // Set for searchable use
-                        setStateId(option);
-                        // Set for sending to API
-                        setStatesToSend([option.value]);
-                      }}
+                      options={roles}
+                      placeholder="Select a Role"
+                      onSelect={setRoleOnSelect}
+                      required={true}
+                      className="form-input"
                     />
                   </td>
                 </tr>
-              ) : null}
-              {role !== "state" && role !== null ? (
-                <tr>
-                  <th>States:</th>
-                  <td>
-                    <MultiSelect
-                      options={stateList}
-                      value={stateId ? stateId : []}
-                      required
-                      onChange={setStatesFromSelect}
-                      labelledBy={"Select States"}
-                      multiple={false}
-                    />
-                  </td>
-                </tr>
-              ) : null}
+
+                {role === "state" ? (
+                  <tr>
+                    <th>State:</th>
+                    <td>
+                      <Searchable
+                        options={stateList}
+                        className="form-input"
+                        multiple={true}
+                        placeholder="Select a State"
+                        required
+                        onSelect={option => {
+                          // Set for searchable use
+                          setStateId(option);
+                          // Set for sending to API
+                          setStatesToSend([option.value]);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ) : null}
+                {role !== "state" && role !== null ? (
+                  <tr>
+                    <th>States:</th>
+                    <td>
+                      <MultiSelect
+                        options={stateList}
+                        className="form-input"
+                        value={stateId ? stateId : []}
+                        required
+                        onChange={setStatesFromSelect}
+                        labelledBy={"Select States"}
+                        multiple={false}
+                      />
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
             </Table>
 
             <div className="action-buttons">
               <Button
                 type="button"
-                className="btn btn-primary"
+                className="form-button"
                 onClick={() => createThisUser()}
               >
                 Add User
+                <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
               </Button>
             </div>
           </div>

@@ -43,6 +43,8 @@ const Header = () => {
           <img
             src="/img/logo-cms.png"
             alt="Centers for Medicare and Medicaid Services"
+            width={200}
+            height={100}
           />
         </Link>
         <span className="app-title font-alt-xl">

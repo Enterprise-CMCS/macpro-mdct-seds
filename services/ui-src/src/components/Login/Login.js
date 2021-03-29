@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
-import { useHistory } from "react-router-dom";
-import { useAppContext } from "../../libs/contextLib";
 import { useFormFields } from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
 import "./Login.scss";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
+
 export default function Login() {
-  const { setIsAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
-  let history = useHistory();
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: ""
   });
+
+  const onLoad = async () => {
+    if (Auth !== undefined && Auth !== null) {
+      await Auth.signOut();
+    }
+  };
+
+  useEffect(() => {
+    onLoad().then();
+  }, []);
 
   function validateForm() {
     return fields.email.length > 0 && fields.password.length > 0;
@@ -48,8 +57,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       await Auth.signIn(fields.email, fields.password);
-      setIsAuthenticated(true);
-      history.push("/");
+      window.location.href = "/";
     } catch (e) {
       onError(e);
       setIsLoading(false);
@@ -57,41 +65,39 @@ export default function Login() {
   }
 
   return (
-    <div className="Logins react-transition scale-in">
-      <div
-        className="LoginWithOkta"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "50px"
-        }}
-      >
-        <form onSubmit={handleSubmitOkta}>
-          <LoaderButton type="submit" bsSize="large" isLoading={isLoadingOkta}>
-            Login with EUA ID
-          </LoaderButton>
-        </form>
+    <div className="login-wrapper react-transition scale-in text-center">
+      <div className="padding-y-9">
+        <LoaderButton
+          type="button"
+          onClick={handleSubmitOkta}
+          isLoading={isLoadingOkta}
+          outline={true}
+        >
+          Login with EUA ID
+          <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+        </LoaderButton>
       </div>
-      <div className="Login">
-        <form onSubmit={handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              autoFocus
-              type="email"
-              value={fields.email}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              type="password"
-              value={fields.password}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
+      <form onSubmit={handleSubmit} className="text-center">
+        <FormGroup controlId="email" bsSize="large">
+          <ControlLabel>Email</ControlLabel>
+          <FormControl
+            autoFocus
+            type="email"
+            value={fields.email}
+            onChange={handleFieldChange}
+            className="form-input"
+          />
+        </FormGroup>
+        <FormGroup controlId="password" bsSize="large">
+          <ControlLabel>Password</ControlLabel>
+          <FormControl
+            type="password"
+            value={fields.password}
+            onChange={handleFieldChange}
+            className="form-input"
+          />
+        </FormGroup>
+        <div className="padding-y-9">
           <LoaderButton
             block
             type="submit"
@@ -100,9 +106,10 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
+            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
           </LoaderButton>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

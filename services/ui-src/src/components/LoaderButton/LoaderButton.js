@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Glyphicon } from "react-bootstrap";
+import { Button } from "@trussworks/react-uswds";
 import "./LoaderButton.scss";
 
 export default function LoaderButton({
@@ -10,12 +10,19 @@ export default function LoaderButton({
 }) {
   return (
     <Button
-      className={`LoaderButton ${className}`}
+      className="login-button"
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <Glyphicon glyph="refresh" className="spinning" />}
       {props.children}
+      {isLoading && (
+        <img
+          src="preloaders/spheres.gif"
+          alt="Loading... Please wait..."
+          title="Loading... Please wait..."
+          className="display-inline margin-left-2"
+        />
+      )}
     </Button>
   );
 }

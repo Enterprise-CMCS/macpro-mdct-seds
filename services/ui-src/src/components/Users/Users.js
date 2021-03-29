@@ -5,8 +5,13 @@ import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import { listUsers, activateDeactivateUser } from "../../libs/api";
-import { Grid } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
+import { Grid, Button } from "@trussworks/react-uswds";
+import { Link, useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
+import { faFileExcel } from "@fortawesome/free-solid-svg-icons/faFileExcel";
+import { faUserAltSlash } from "@fortawesome/free-solid-svg-icons/faUserAltSlash";
+import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 
 import "./Users.scss";
 
@@ -23,6 +28,7 @@ import { saveAs } from "file-saver";
 const Users = () => {
   // const dispatch = useDispatch();
   const [users, setUsers] = useState();
+  const history = useHistory();
 
   const loadUserData = async () => {
     setUsers(await listUsers());
@@ -54,6 +60,10 @@ const Users = () => {
     }
     fetchData().then();
   }, []);
+
+  const handleAddNewUser = () => {
+    history.push("/users/add");
+  };
 
   const deactivateUser = async user => {
     const confirm = window.confirm(
@@ -163,19 +173,28 @@ const Users = () => {
           return (
             <span>
               {user.isActive ? (
-                <button
-                  className="btn btn-primary"
+                <Button
+                  className="row-action-button"
+                  secondary={true}
                   onClick={() => deactivateUser(user)}
                 >
                   Deactivate
-                </button>
+                  <FontAwesomeIcon
+                    icon={faUserAltSlash}
+                    className="margin-left-2"
+                  />
+                </Button>
               ) : (
-                <button
-                  className="btn btn-secondary"
+                <Button
+                  className="row-action-button"
                   onClick={() => activateUser(user)}
                 >
                   Activate
-                </button>
+                  <FontAwesomeIcon
+                    icon={faUserCheck}
+                    className="margin-left-2"
+                  />
+                </Button>
               )}
             </span>
           );
@@ -195,13 +214,22 @@ const Users = () => {
       <Grid>
         <h1 className="page-header">Users</h1>
         <div className="page-subheader">
-          <Link to="/users/add">Add new user</Link>
-          <button
-            className="margin-left-5 usa-button usa-button--secondary text-normal"
+          <Button
+            onClick={() => handleAddNewUser()}
+            className="action-button"
+            outline={true}
+          >
+            Add New User
+            <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
+          </Button>
+          <Button
+            className="margin-left-5 action-button"
+            outline={true}
             onClick={async () => await handleExport("excel")}
           >
-            Excel
-          </button>
+            Excel{" "}
+            <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+          </Button>
         </div>
         <Card>
           {tableData ? (

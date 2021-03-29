@@ -8,6 +8,7 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+
   const data = JSON.parse(event.body);
 
   const body = JSON.stringify({

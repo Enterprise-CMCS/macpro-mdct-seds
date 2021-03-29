@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
-import { TextField } from "@cmsgov/design-system-core";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
 import { getUserById, updateUser } from "../../libs/api";
 import Dropdown from "react-dropdown";
+import { Table, TextInput, Button } from "@trussworks/react-uswds";
 import "react-dropdown/style.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+
+import "./EditUser.scss";
 
 /**
  * View/edit a single user with options
@@ -172,93 +175,114 @@ const EditUser = ({ stateList }) => {
 
   return (
     <div className="edit-user react-transition flip-in-x">
-      <GridContainer className="container">
-        <Grid col={6}>
-          <Link to="/users">&laquo; Back to User List</Link>
-          <h1>Edit User</h1>
-          {user ? (
-            <>
-              <div className="textfield">
-                <TextField
-                  value={user.username}
-                  type="text"
-                  label="Username"
-                  onChange={e => updateLocalUser(e, "username")}
-                  disabled={true}
-                  name="username"
-                />
-              </div>
-              <div className="textfield">
-                <TextField
-                  value={user.firstName}
-                  type="text"
-                  label="First Name"
-                  onChange={e => updateLocalUser(e, "firstName")}
-                  disabled={true}
-                  name="firstName"
-                />
-              </div>
-              <div className="textfield">
-                <TextField
-                  value={user.lastName}
-                  type="text"
-                  label="Last Name"
-                  onChange={e => updateLocalUser(e, "lastName")}
-                  disabled={true}
-                  name="lastName"
-                />
-              </div>
-              <div className="textfield">
-                <TextField
-                  value={user.email}
-                  type="text"
-                  label="Email"
-                  onChange={e => updateLocalUser(e, "email")}
-                  disabled={true}
-                  name="email"
-                />
-              </div>
-              <div className="dropdown">
-                <>
-                  <label className="ds-c-label">Role</label>
+      <h1 className="page-header">Edit User</h1>
+      <div className="page-subheader">
+        <Link to="/users">&laquo; Back to User List</Link>
+      </div>
+      {user ? (
+        <div className="center-content">
+          <Table>
+            <tbody>
+              <tr>
+                <th>Username:</th>
+                <td>
+                  <TextInput
+                    value={user.username}
+                    type="text"
+                    onChange={e => updateLocalUser(e, "username")}
+                    disabled={true}
+                    name="username"
+                    className="form-input"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>First Name:</th>
+                <td>
+                  <TextInput
+                    value={user.firstName}
+                    type="text"
+                    onChange={e => updateLocalUser(e, "firstName")}
+                    disabled={true}
+                    name="firstName"
+                    className="form-input"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Last Name:</th>
+                <td>
+                  <TextInput
+                    value={user.lastName}
+                    type="text"
+                    onChange={e => updateLocalUser(e, "lastName")}
+                    disabled={true}
+                    name="lastName"
+                    className="form-input"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Email:</th>
+                <td>
+                  <TextInput
+                    value={user.email}
+                    type="text"
+                    onChange={e => updateLocalUser(e, "email")}
+                    disabled={true}
+                    name="email"
+                    className="form-input"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Role:</th>
+                <td>
                   <Searchable
                     options={roles}
                     placeholder="Select a Role"
                     onSelect={e => updateLocalUser(e, "role")}
                     value={role ? role : user.role}
+                    className="form-input"
                   />
-                </>
-              </div>
-              <div className="dropdown">
-                {role === "state" ? (
-                  <>
-                    <label className="ds-c-label">State</label>
-                    <Dropdown
-                      options={stateList}
-                      onChange={e => updateLocalUser(e, "states")}
-                      value={selectedStates ? selectedStates : ""}
-                      placeholder="Select a state"
-                      autosize={false}
-                      className="state-select-list"
-                    />
-                  </>
-                ) : null}
-                {role !== "state" && role !== null ? (
-                  <>
-                    <label className="ds-c-label">State</label>
-                    <MultiSelect
-                      options={stateList}
-                      value={selectedStates ? selectedStates : []}
-                      onChange={e => updateLocalUser(e, "states")}
-                      labelledBy={"Select States"}
-                      multiple={false}
-                    />
-                  </>
-                ) : null}
-              </div>
-              <div className="dropdown">
+                </td>
+              </tr>
+              {role === "state" ? (
                 <>
-                  <label className="ds-c-label">Status</label>
+                  <tr>
+                    <th>State:</th>
+                    <td>
+                      <Dropdown
+                        options={stateList}
+                        onChange={e => updateLocalUser(e, "states")}
+                        value={selectedStates ? selectedStates : ""}
+                        placeholder="Select a state"
+                        autosize={false}
+                        className="state-select-list"
+                      />
+                    </td>
+                  </tr>
+                </>
+              ) : null}
+              {role !== "state" && role !== null ? (
+                <>
+                  <tr>
+                    <th>State:</th>
+                    <td>
+                      <MultiSelect
+                        options={stateList}
+                        value={selectedStates ? selectedStates : []}
+                        onChange={e => updateLocalUser(e, "states")}
+                        labelledBy={"Select States"}
+                        multiple={false}
+                      />
+                    </td>
+                  </tr>
+                </>
+              ) : null}
+              <tr>
+                <th>Status:</th>
+                <td>
                   <Searchable
                     options={statuses}
                     multiple={false}
@@ -266,46 +290,38 @@ const EditUser = ({ stateList }) => {
                     onSelect={e => updateLocalUser(e, "isActive")}
                     value={isActive ? isActive : getStatus(user.isActive)}
                   />
-                </>
-              </div>
-              <div className="textfield">
-                <TextField
-                  value={new Date(user.dateJoined).toLocaleDateString("en-US")}
-                  type="text"
-                  label="Registration Date"
-                  disabled={true}
-                  name="registration date"
-                />
-              </div>
-              <div className="textfield">
-                <TextField
-                  value={
-                    user.lastLogin
-                      ? new Date(user.lastLogin).toLocaleDateString("en-US")
-                      : "No login yet"
-                  }
-                  type="text"
-                  label="Last Login"
-                  disabled={true}
-                  name="last login"
-                />
-              </div>
-              <br />
-              <Button
-                type="button"
-                className="btn btn-primary"
-                onClick={async () => {
-                  await updateUserStore(user);
-                }}
-              >
-                Update User
-              </Button>
-            </>
-          ) : (
-            `Cannot find user with id ${id}`
-          )}
-        </Grid>
-      </GridContainer>
+                </td>
+              </tr>
+              <tr>
+                <th>Registration Date</th>
+                <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
+              </tr>
+              <tr>
+                <th>Last Login:</th>
+                <td>
+                  {user.lastLogin
+                    ? new Date(user.lastLogin).toLocaleDateString("en-US")
+                    : "No login yet"}
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <div className="action-buttons">
+            <Button
+              type="button"
+              className="form-button"
+              onClick={async () => {
+                await updateUserStore(user);
+              }}
+            >
+              Update User
+              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+            </Button>
+          </div>
+        </div>
+      ) : (
+        `Cannot find user with id ${id}`
+      )}
     </div>
   );
 };

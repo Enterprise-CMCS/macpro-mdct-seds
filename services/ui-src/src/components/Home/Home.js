@@ -5,8 +5,6 @@ import HomeState from "../HomeState/HomeState";
 import HomeBus from "../HomeBus/HomeBus";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
-// import { determineRole } from "../utility-functions/initialLoadFunctions";
 
 export default function Home({ user }) {
   const { isAuthenticated } = useAppContext();
@@ -34,13 +32,7 @@ export default function Home({ user }) {
         content = <Unauthorized />;
         break;
     }
-    return (
-      <GridContainer className="container page-home">
-        <Grid row>
-          <Grid col={12}>{content}</Grid>
-        </Grid>
-      </GridContainer>
-    );
+    return content;
   };
 
   return (

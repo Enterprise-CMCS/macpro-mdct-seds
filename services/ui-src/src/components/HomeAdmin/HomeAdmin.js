@@ -1,22 +1,25 @@
 import React from "react";
-import { Grid } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
 const HomeAdmin = () => {
   return (
-    <Grid row className="page-home-admin">
-      <Grid col={12}>
-        <h1>Home Admin User Page</h1>
+    <>
+      <h1 className="page-header">Home Admin User Page</h1>
+      <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
           <li>
-            <Link to="/users">View/Edit users</Link>
+            <Link to="/users" className="text-bold">
+              View / Edit Users
+            </Link>
           </li>
           <li>
-            <Link to="/users/add">Create user</Link>
+            <Link to="/users/add" className="text-bold">
+              Create User
+            </Link>
           </li>
         </ul>
-      </Grid>
-    </Grid>
+      </div>
+    </>
   );
 };
 

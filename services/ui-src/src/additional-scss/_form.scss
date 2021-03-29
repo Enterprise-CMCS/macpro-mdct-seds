@@ -2,6 +2,10 @@
   FORM
 **********************/
 
+.form-input {
+  width: 23em;
+}
+
 .searchable {
   .searchable-input {
     .searchable-input-control {
@@ -9,12 +13,14 @@
         background-color: $white;
         border: 1px solid $color-gray-light;
         color: $black;
+        width: 25em;
       }
     }
   }
 
   .searchable-list {
     background: $white;
+    width: 25em;
 
     .searchable-list-item {
       color: $black;
@@ -34,11 +40,6 @@
   .dropdown-content {
     z-index: 999;
   }
-}
-
-.searchable,
-.multi-select {
-  max-width: 320px;
 }
 
 .edit-user {

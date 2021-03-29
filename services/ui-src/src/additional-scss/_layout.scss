@@ -16,6 +16,16 @@
   @extend .padding-left-9;
 }
 
+.list-display-container {
+  @extend .padding-y-9;
+
+  li {
+    @extend .padding-y-2;
+    @extend .padding-left-9;
+    list-style-type: circle;
+  }
+}
+
 .main {
   .container {
     width: 100% !important;
@@ -32,6 +42,10 @@
       @extend .text-white;
       @extend .padding-x-3;
       @extend .text-bold;
+    }
+    td {
+      @extend .padding-x-5;
+      @extend .padding-y-2;
     }
   }
 }

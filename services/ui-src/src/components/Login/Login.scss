@@ -1,10 +1,15 @@
-@media all and (min-width: 480px) {
-  .Login {
-    padding: 60px 0;
-  }
+.login-button {
+  width: 25em !important;
+}
 
-  .Login form {
-    margin: 0 auto;
-    max-width: 320px;
+.action-button-row {
+  padding-top: 3em !important;
+  padding-bottom: 3em !important;
+}
+
+.login-wrapper form {
+  margin: auto;
+  input {
+    margin-left: 39%;
   }
 }

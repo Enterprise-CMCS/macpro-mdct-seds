@@ -48,7 +48,7 @@ function App() {
     <div className="App react-transition scale-in">
       {!isAuthenticating && (
         <>
-          <Header user={user} />
+          <Header user={user} displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
             <div className="main">
               <Routes user={user} isAuthorized={isAuthorized} />

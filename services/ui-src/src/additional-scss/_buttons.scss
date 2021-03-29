@@ -2,11 +2,6 @@
   Buttons
 **********************/
 
-.btn-secondary {
-  background-color: $brand-quinary;
-  color: $white;
-}
-
 .usa-button {
   background: $lochmara;
   width: 140px;
@@ -21,6 +16,34 @@
       color: $lochmara;
     }
   }
+}
+
+.usa-button--secondary {
+  background: #b50909 !important;
+}
+
+.usa-button--outline {
+  background: transparent !important;
+  :hover {
+    background: $lochmara !important;
+  }
+}
+
+.form-button {
+  width: 23em;
+}
+
+.action-button {
+  width: 12em;
+}
+
+.row-action-button {
+  width: 10em;
+}
+
+.btn-secondary {
+  background-color: $brand-quinary !important;
+  color: $white;
 }
 
 .status-wrapper {
