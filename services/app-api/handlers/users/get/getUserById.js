@@ -11,17 +11,28 @@ export const main = handler(async (event) => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
-    Key: {
-      userId: event.pathParameters["id"],
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":userId": event.pathParameters["id"],
     },
+    FilterExpression: "userId = :userId",
   };
 
-  const result = await dynamoDb.get(params);
+  const queryResult = await dynamoDb.scan(params);
 
-  if (!result.Item) {
-    return false;
+  let returnResult;
+
+  if (!queryResult["Items"]) {
+    returnResult = {
+      status: "error",
+      message: "No user by specified id found",
+    };
+  } else {
+    returnResult = {
+      status: "success",
+      data: queryResult["Items"][0],
+    };
   }
 
-  // Return the retrieved item
-  return result.Item;
+  return returnResult;
 });

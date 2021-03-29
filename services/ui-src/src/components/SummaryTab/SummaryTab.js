@@ -1,6 +1,6 @@
 import React from "react";
 import "react-tabs/style/react-tabs.css";
-import QuestionComponent from "../Question";
+import QuestionComponent from "../Question/Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
