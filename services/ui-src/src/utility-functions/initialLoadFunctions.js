@@ -18,15 +18,14 @@ export async function ascertainUserPresence(user) {
     isMemberOf = user.attributes["custom:ismemberof"];
   }
 
-  console.log("got the isMemberOf: ");
-  console.log(isMemberOf);
+  const userRole = await determineRole(isMemberOf);
 
   const userObject = {
     username: user.username,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
-    role: determineRole(isMemberOf),
+    role: userRole,
     lastLogin: new Date().toISOString()
   };
   if (existingUser === false) {
