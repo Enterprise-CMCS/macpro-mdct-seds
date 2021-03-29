@@ -7,12 +7,26 @@ export async function ascertainUserPresence(user) {
   const existingUser = await obtainUserByEmail({
     email: user.attributes.email
   });
+
+  let isMemberOf = "";
+
+  if (user.attributes.ismemberof !== undefined) {
+    isMemberOf = user.attributes.ismemberof;
+  }
+
+  if (user.attributes["custom:ismemberof"] !== undefined && isMemberOf === "") {
+    isMemberOf = user.attributes["custom:ismemberof"];
+  }
+
+  console.log("got the isMemberOf: ");
+  console.log(isMemberOf);
+
   const userObject = {
     username: user.username,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
-    role: determineRole(user.attributes.ismemberof),
+    role: determineRole(isMemberOf),
     lastLogin: new Date().toISOString()
   };
   if (existingUser === false) {
