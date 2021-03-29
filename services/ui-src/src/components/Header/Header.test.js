@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "./Home";
+import Header from "./Header";
 import { render } from "@testing-library/react";
 
 let realUseContext;
@@ -16,14 +16,14 @@ afterEach(() => {
   React.useContext = realUseContext;
 });
 
-describe("Test Home.js", () => {
-  test("Check the main element, with classname Home, exists", () => {
+describe("Test Header.js", () => {
+  test("Check the main element, with classname Header, exists", () => {
     useContextMock.mockReturnValue(true);
 
     const mockUser = { attributes: { "app-role": "admin" } };
 
-    const { getByTestId } = render(<Home user={mockUser} />);
+    const { getByTestId } = render(<Header user={mockUser} />);
 
-    expect(getByTestId("Home")).toBeVisible();
+    expect(getByTestId("Header")).toBeVisible();
   });
 });

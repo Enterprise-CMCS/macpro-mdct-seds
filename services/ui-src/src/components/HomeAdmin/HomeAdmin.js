@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const HomeAdmin = () => {
   return (
@@ -8,14 +7,14 @@ const HomeAdmin = () => {
       <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
           <li>
-            <Link to="/users" className="text-bold">
+            <a to="/users" className="text-bold">
               View / Edit Users
-            </Link>
+            </a>
           </li>
           <li>
-            <Link to="/users/add" className="text-bold">
+            <a to="/users/add" className="text-bold">
               Create User
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

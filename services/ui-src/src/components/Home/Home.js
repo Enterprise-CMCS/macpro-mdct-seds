@@ -36,7 +36,9 @@ export default function Home({ user }) {
   };
 
   return (
-    <div className="Home react-transition swipe-right">{renderLander()}</div>
+    <div className="Home react-transition swipe-right" data-testid="Home">
+      {renderLander()}
+    </div>
   );
 }
 

@@ -86,7 +86,7 @@ const AddUser = ({ currentUser, stateList }) => {
               You must enter an EUA Id, and select a role and state(s).
             </p>
           )}
-          <div className="center-content">
+          <div className="center-content margin-top-5">
             <Table>
               <tbody>
                 <tr>

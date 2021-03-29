@@ -35,7 +35,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="header">
+    <div className="header" data-testid="Header">
       <GovBanner className="react-transition swipe-right padding-y-1px" />
 
       <div className="logo">
@@ -44,7 +44,7 @@ const Header = () => {
             src="/img/logo-cms.png"
             alt="Centers for Medicare and Medicaid Services"
             width={200}
-            height={100}
+            height={90}
           />
         </Link>
         <span className="app-title font-alt-xl">
