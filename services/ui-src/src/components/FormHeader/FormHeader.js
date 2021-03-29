@@ -7,7 +7,6 @@ import {
   Link,
   TextInput
 } from "@trussworks/react-uswds";
-// import { Link } from "react-router-dom";
 import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
 
@@ -41,7 +40,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       }
     }
     fetchData();
-  }, [quarter, form, state, year]);
+  }, [quarter, form, state, year, formsWithOutFPL]);
 
   // Saves maximum FPL to the database
   const updateMaxFPL = e => {};
@@ -56,6 +55,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
     // Remove all non-numeric chars
     value = value.replace(/[^\d]/g, "");
 
+    // Save to state
     setMaxFPL(value);
   };
 
@@ -89,11 +89,11 @@ const FormHeader = ({ quarter, form, year, state }) => {
       <Grid row className="program-code-bar">
         <Grid col={6}>
           <b>State: </b> <br />
-          {` ${state}`}
+          <div className="state-value">{`${state}`}</div>
         </Grid>
         <Grid col={6}>
           <b>Quarter: </b> <br />
-          {` ${quarter}/${year}`}
+          <div className="quarter-value">{`${quarter}/${year}`}</div>
         </Grid>
       </Grid>
       {!formsWithOutFPL.includes(form) ? (
