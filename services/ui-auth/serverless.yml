@@ -91,7 +91,7 @@ resources:
           - http://localhost:3000/
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         ExplicitAuthFlows:
-          - ADMIN_NO_SRP_AUTH
+          - ALLOW_USER_SRP_AUTH
         GenerateSecret: false
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
