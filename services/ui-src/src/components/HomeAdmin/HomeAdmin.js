@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 
 const HomeAdmin = () => {
   return (

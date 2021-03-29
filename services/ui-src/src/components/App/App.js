@@ -23,6 +23,8 @@ function App() {
     try {
       let user = await Auth.currentAuthenticatedUser();
 
+      console.log("\n\n\n");
+
       // *** LOCAL ONLY ADMIN OVERRIDE
       if (config.REMOTE_WORKFLOW === false) {
         user.attributes["ismemberof"] = "CHIP_D_USER_GROUP_ADMIN";
