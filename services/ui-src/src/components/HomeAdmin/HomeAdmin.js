@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link } from "@trussworks/react-uswds";
+
 const HomeAdmin = () => {
   return (
     <>
@@ -7,14 +9,14 @@ const HomeAdmin = () => {
       <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
           <li>
-            <a to="/users" className="text-bold">
+            <Link to="/users" className="text-bold">
               View / Edit Users
-            </a>
+            </Link>
           </li>
           <li>
-            <a to="/users/add" className="text-bold">
+            <Link to="/users/add" className="text-bold">
               Create User
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
