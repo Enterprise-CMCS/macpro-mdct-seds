@@ -9,6 +9,9 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  console.log("\n\n---in lambda: ");
+  console.log(event.body);
+
   const data = JSON.parse(event.body);
 
   const body = JSON.stringify({
