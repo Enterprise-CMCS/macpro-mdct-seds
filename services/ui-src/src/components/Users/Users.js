@@ -233,12 +233,7 @@ const Users = () => {
         </div>
         <Card>
           {tableData ? (
-            <DataTableExtensions
-              {...tableData}
-              export={false}
-              print={false}
-              className="react-transition flip-in-y"
-            >
+            <DataTableExtensions {...tableData} export={false} print={false}>
               <DataTable
                 title=""
                 defaultSortField="username"
@@ -247,7 +242,7 @@ const Users = () => {
                 selectableRows={false}
                 responsive={true}
                 striped={true}
-                className="grid-display-table"
+                className="grid-display-table react-transition flip-in-x"
               />
             </DataTableExtensions>
           ) : (
