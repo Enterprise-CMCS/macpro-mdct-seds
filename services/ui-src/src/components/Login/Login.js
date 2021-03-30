@@ -65,7 +65,7 @@ export default function Login() {
   }
 
   return (
-    <div className="login-wrapper react-transition scale-in text-center">
+    <div className="login-wrapper react-transition flip-in-y text-center">
       <div className="padding-y-9">
         <LoaderButton
           type="button"

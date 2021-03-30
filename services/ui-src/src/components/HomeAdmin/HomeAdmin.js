@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const HomeAdmin = () => {
   return (
-    <>
+    <div className="HomeAdmin" data-testid="HomeAdmin">
       <h1 className="page-header">Home Admin User Page</h1>
       <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
@@ -20,7 +20,7 @@ const HomeAdmin = () => {
           </li>
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 
