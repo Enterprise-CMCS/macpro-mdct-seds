@@ -21,7 +21,6 @@ function App() {
   async function onLoad() {
     try {
       let user = await Auth.currentAuthenticatedUser();
-
       user.attributes["app-role"] = determineRole(
         user.attributes["custom:ismemberof"]
       );
