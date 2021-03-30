@@ -1881,11 +1881,7 @@ esniff@^1.1.0:
 
 esprima@1.2.2:
   version "1.2.2"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.2.2.tgz#76a0fd66fcfe154fd292667dc264019750b1657b"
-=======
   resolved "https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz"
->>>>>>> master
   integrity sha1-dqD9Zvz+FU/SkmZ9wmQBl1CxZXs=
 
 esprima@3.x.x:
@@ -3013,11 +3009,7 @@ jsonfile@^6.0.1:
 
 jsonpath@^1.1.0:
   version "1.1.0"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/jsonpath/-/jsonpath-1.1.0.tgz#ff3e9e4746eae77c11bc09d542e7219333c28055"
-=======
   resolved "https://registry.npmjs.org/jsonpath/-/jsonpath-1.1.0.tgz"
->>>>>>> master
   integrity sha512-CZHwa1sZOf42qkIyK7evwToFXeTB4iplbl6Z9CVwU0wmBQPffL6gtYJXCoeciJoZENMuzaidPjhp2iOLRei4wQ==
   dependencies:
     esprima "1.2.2"
@@ -4741,11 +4733,7 @@ stack-trace@0.0.x:
 
 static-eval@2.0.2:
   version "2.0.2"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/static-eval/-/static-eval-2.0.2.tgz#2d1759306b1befa688938454c546b7871f806a42"
-=======
   resolved "https://registry.npmjs.org/static-eval/-/static-eval-2.0.2.tgz"
->>>>>>> master
   integrity sha512-N/D219Hcr2bPjLxPiV+TQE++Tsmrady7TqAJugLy7Xk1EumfDWS/f5dtBbkRCGE7wKKXuYockQoj8Rm2/pVKyg==
   dependencies:
     escodegen "^1.8.1"
@@ -5177,11 +5165,7 @@ unbzip2-stream@^1.0.9:
 
 underscore@1.7.0:
   version "1.7.0"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.7.0.tgz#6bbaf0877500d36be34ecaa584e0db9fef035209"
-=======
   resolved "https://registry.npmjs.org/underscore/-/underscore-1.7.0.tgz"
->>>>>>> master
   integrity sha1-a7rwh3UA02vjTsqlhODbn+8DUgk=
 
 universalify@^0.1.0:

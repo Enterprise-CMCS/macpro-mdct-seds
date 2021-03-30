@@ -5,7 +5,7 @@ _Describe the problem or feature in addition to a link to the issues._
 #### Linked Issues to Close
 
 _Links to issue(s) that are closed by this PR. Be sure to use the phrase "Closes #XXX" for each issue, so they automatically close_
-_example: close#115
+\_example: close#115
 
 ## Approach
 
