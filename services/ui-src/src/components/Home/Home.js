@@ -6,7 +6,7 @@ import HomeBus from "../HomeBus/HomeBus";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
-export default function Home({ user }) {
+const Home = ({ user }) => {
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +40,8 @@ export default function Home({ user }) {
       {renderLander()}
     </div>
   );
-}
+};
 
 Home.propTypes = {};
+
+export default Home;

@@ -233,7 +233,12 @@ const Users = () => {
         </div>
         <Card>
           {tableData ? (
-            <DataTableExtensions {...tableData} export={false} print={false}>
+            <DataTableExtensions
+              {...tableData}
+              export={false}
+              print={false}
+              className="react-transition flip-in-y"
+            >
               <DataTable
                 title=""
                 defaultSortField="username"
