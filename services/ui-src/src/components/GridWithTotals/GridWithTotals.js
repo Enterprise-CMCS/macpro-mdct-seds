@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
+import { connect } from "react-redux";
 import "./GridWithTotals.scss";
+import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -22,6 +25,7 @@ const GridWithTotals = props => {
 
     updateGridData(gridCopy);
     updateTotals();
+    props.setAnswer(gridCopy, props.questionID);
   };
 
   const updateTotals = () => {
@@ -110,12 +114,18 @@ const GridWithTotals = props => {
     }
   }
 
-  const headerCols = headerColArray.map(header => {
-    return <th scope="col">{header}</th>;
+  let nextHeaderIndex;
+  const headerCols = headerColArray.map((header, headerIndex) => {
+    nextHeaderIndex = headerIndex;
+    return (
+      <th scope="col" key={headerIndex}>
+        <span>{header}</span>
+      </th>
+    );
   });
 
   headerCols.push(
-    <th scope="col" className="total-header-cell">
+    <th scope="col" className="total-header-cell" key={nextHeaderIndex + 1}>
       Totals
     </th>
   );
@@ -123,13 +133,13 @@ const GridWithTotals = props => {
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
       return (
-        <tr>
+        <tr key={rowIndex}>
           {row.map((column, columnIndex) => {
             let formattedCell;
 
             if (columnIndex === 2) {
               formattedCell = (
-                <React.Fragment>
+                <React.Fragment key={columnIndex}>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     <TextInput
@@ -146,7 +156,7 @@ const GridWithTotals = props => {
               );
             } else {
               formattedCell = (
-                <td>
+                <td key={columnIndex}>
                   <TextInput
                     type="number"
                     className="grid-column"
@@ -173,12 +183,16 @@ const GridWithTotals = props => {
 
     if (i === 0) {
       column = (
-        <th scope="row" className="total-header-cell">
+        <th scope="row" className="total-header-cell" key={i}>
           Totals:
         </th>
       );
     } else {
-      column = <td className="total-column">{gridColumnTotals[i]}</td>;
+      column = (
+        <td className="total-column" key={i}>
+          {gridColumnTotals[i]}
+        </td>
+      );
     }
 
     return column;
@@ -228,4 +242,15 @@ const translateInitialData = gridDataObject => {
   return translatedData;
 };
 
-export default GridWithTotals;
+GridWithTotals.propTypes = {
+  gridData: PropTypes.array.isRequired,
+  questionID: PropTypes.string.isRequired,
+  setAnswer: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
+};
+
+const mapDispatch = {
+  setAnswer: gotAnswer ?? {}
+};
+
+export default connect(null, mapDispatch)(GridWithTotals);

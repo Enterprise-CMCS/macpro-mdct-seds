@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import "./index.scss";
+import App from "./components/App/App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
-import config from "./config";
+import config from "./config/config";
 import { Provider } from "react-redux";
 import store from "./store/storeIndex";
 
@@ -33,7 +33,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "amendments",
+        name: "mdct-seds",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       }
