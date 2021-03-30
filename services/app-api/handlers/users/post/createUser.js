@@ -67,11 +67,9 @@ export const main = handler(async (event, context) => {
       username: data.username,
       lastLogin: data.lastLogin ? data.lastLogin : "",
     },
-    ConditionExpression: "attribute_not_exists(username)",
   };
 
-  await dynamoDb.put(params, (err, data) => {
-    if (err) throw err;
-    return { status: "success", messgage: `User ${data.username} Added!` };
-  });
+  await dynamoDb.put(params);
+
+  return `User ${data.username} Added!`;
 });
