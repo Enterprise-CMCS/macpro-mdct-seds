@@ -80,7 +80,7 @@ resources:
       Properties:
         ClientName: ${self:custom.stage}-user-pool-client
         AllowedOAuthFlows:
-          - client_credentials
+          - implicit
         AllowedOAuthFlowsUserPoolClient: true
         AllowedOAuthScopes:
           - email
@@ -91,7 +91,8 @@ resources:
           - http://localhost:3000/
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         ExplicitAuthFlows:
-          - ALLOW_USER_PASSWORD_AUTH
+          - ADMIN_NO_SRP_AUTH
+          - ALLOW_USER_SRP_AUTH
         GenerateSecret: false
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
