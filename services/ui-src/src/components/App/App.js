@@ -19,9 +19,12 @@ function App() {
   const [user, setUser] = useState();
 
   async function onLoad() {
+    console.log("inside onLoad function");
     try {
       let user = await Auth.currentAuthenticatedUser();
 
+      console.log("got user");
+      console.log(user);
       user.attributes["app-role"] = determineRole(
         user.attributes["custom:ismemberof"]
       );
@@ -29,12 +32,14 @@ function App() {
       setIsAuthenticated(true);
       setIsAuthenticating(false);
       setIsAuthorized(true);
+      console.log("testing user presence");
       await ascertainUserPresence(user);
     } catch (error) {
       setIsAuthenticating(false);
     }
   }
   useEffect(() => {
+    console.log("running onload");
     onLoad().then();
   }, [isAuthenticated]);
 
