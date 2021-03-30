@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { selectRowColumnValueFromArray } from "../../utilityFunctions/jsonPath";
-import { sortQuestionColumns } from "../../utilityFunctions/sortingFunctions";
+import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
+import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
 const SynthesizedGrid = props => {
   const tempQuestionId = props.questionID;
