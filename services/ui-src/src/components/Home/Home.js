@@ -36,7 +36,7 @@ const Home = ({ user }) => {
   };
 
   return (
-    <div className="Home react-transition swipe-right" data-testid="Home">
+    <div className="Home react-transition flip-in-x" data-testid="Home">
       {renderLander()}
     </div>
   );

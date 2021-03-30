@@ -174,7 +174,7 @@ const EditUser = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user react-transition flip-in-x">
+    <div className="edit-user react-transition fade-in">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
         <Link to="/users">&laquo; Back to User List</Link>

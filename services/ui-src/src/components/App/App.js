@@ -39,7 +39,7 @@ function App() {
   }, [isAuthenticated]);
 
   return (
-    <div className="App react-transition scale-in">
+    <div className="App react-transition fade-in">
       {!isAuthenticating && (
         <>
           <Header user={user} displayHeader={true} />

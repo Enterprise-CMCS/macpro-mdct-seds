@@ -210,7 +210,7 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles react-transition scale-in">
+    <div className="user-profiles react-transition fade-in">
       <Grid>
         <h1 className="page-header">Users</h1>
         <div className="page-subheader">
@@ -250,7 +250,24 @@ const Users = () => {
                 className="grid-display-table"
               />
             </DataTableExtensions>
-          ) : null}
+          ) : (
+            <div className="padding-y-9">
+              <p className="center-content">
+                <img
+                  src="preloaders/gears.gif"
+                  alt="Loading..."
+                  title="Loading"
+                />
+              </p>
+              <p className="center-content">
+                <img
+                  src="preloaders/loading_text.gif"
+                  alt="Loading..."
+                  title="Loading"
+                />
+              </p>
+            </div>
+          )}
         </Card>
       </Grid>
     </div>
