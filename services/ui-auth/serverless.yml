@@ -80,7 +80,7 @@ resources:
       Properties:
         ClientName: ${self:custom.stage}-user-pool-client
         AllowedOAuthFlows:
-          - implicit
+          - client_credentials
         AllowedOAuthFlowsUserPoolClient: true
         AllowedOAuthScopes:
           - email
