@@ -70,6 +70,7 @@ const SynthesizedGrid = props => {
       <GridWithTotals
         questionID={tempQuestionId}
         gridData={sortedRows}
+        precision={1}
         disabled={true}
       />
     );

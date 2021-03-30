@@ -12,7 +12,7 @@ const GridWithTotals = props => {
 
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
-  const currentPrecision = 1;
+  const currentPrecision = props.precision;
 
   useEffect(() => {
     updateTotals();
@@ -155,9 +155,7 @@ const GridWithTotals = props => {
                     type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={Number.parseFloat(column).toFixed(
-                      currentPrecision
-                    )}
+                    defaultValue={Number.parseFloat(column).toFixed(currentPrecision)}
                     disabled={props.disabled}
                   />
                 </td>
@@ -167,7 +165,7 @@ const GridWithTotals = props => {
             return formattedCell;
           })}
           <td className="total-column">
-            {Number.parseFloat(gridRowTotals[rowIndex]).toFixed(1)}
+            {Number.parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)}
           </td>
         </tr>
       );
