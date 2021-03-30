@@ -162,10 +162,9 @@ const EditUser = ({ stateList }) => {
     data.states = statesToSend;
     await updateUser(data).then(() => {
       alert(`User with username: "${data.username}" has been updated`);
-      // window.location.reload(false);
+      window.location.reload(false);
     });
   };
-  console.log(selectedStates)
 
   return (
     <div className="edit-user react-transition flip-in-x">

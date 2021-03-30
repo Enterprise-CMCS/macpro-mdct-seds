@@ -28,7 +28,6 @@ export default function Profile({ user }) {
     try {
       const AuthUserInfo = await Auth.currentAuthenticatedUser();
       const currentUserInfo = await obtainUserByEmail({email: AuthUserInfo.attributes.email})
-      console.log(currentUserInfo)
       let userObj = currentUserInfo["Items"];
       userObj.map(async userInfo => {
       setEmail(userInfo.email);
@@ -47,7 +46,7 @@ export default function Profile({ user }) {
 
   useEffect(() => {
     onLoad();
-  }, []);
+  });
 
   function validateForm() {
     return (
