@@ -27,6 +27,9 @@ export const main = handler(async (event, context) => {
     body: body,
   });
 
+  console.log("this is the current user: ");
+  console.log(currentUser);
+
   if (currentUser.body !== "false") {
     return `User ${data.username} already exists`;
   }
