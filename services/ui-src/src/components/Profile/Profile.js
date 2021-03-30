@@ -43,7 +43,7 @@ export default function Profile({ user }) {
     } catch (e) {
       onError(e);
     }
-  }
+  };
 
   useEffect(() => {
     onLoad();
