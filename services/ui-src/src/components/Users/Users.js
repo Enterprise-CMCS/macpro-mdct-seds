@@ -242,7 +242,7 @@ const Users = () => {
                 selectableRows={false}
                 responsive={true}
                 striped={true}
-                className="grid-display-table react-transition flip-in-x"
+                className="grid-display-table react-transition fade-in"
               />
             </DataTableExtensions>
           ) : (
