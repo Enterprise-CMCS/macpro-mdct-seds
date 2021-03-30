@@ -27,18 +27,19 @@ export default function Profile({ user }) {
   async function onLoad() {
     try {
       const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      const currentUserInfo = await obtainUserByEmail({email: AuthUserInfo.attributes.email})
+      const currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.attributes.email
+      });
       let userObj = currentUserInfo["Items"];
       userObj.map(async userInfo => {
-      setEmail(userInfo.email);
-      setFirstName(capitalize(userInfo.firstName));
-      setLastName(capitalize(userInfo.lastName));
-      setRole(capitalize(userInfo.role));
-      if (userInfo.states) {
-        setStates(formatStates(userInfo.states));
-      }
-    });
-      
+        setEmail(userInfo.email);
+        setFirstName(capitalize(userInfo.firstName));
+        setLastName(capitalize(userInfo.lastName));
+        setRole(capitalize(userInfo.role));
+        if (userInfo.states) {
+          setStates(formatStates(userInfo.states));
+        }
+      });
     } catch (e) {
       onError(e);
     }
