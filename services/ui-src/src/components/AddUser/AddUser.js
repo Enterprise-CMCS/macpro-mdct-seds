@@ -65,7 +65,7 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="react-transition rotate-in">
+      <div className="react-transition fade-in">
         <h1 className="page-header">Add User</h1>
 
         <div className="padding-left-9">
