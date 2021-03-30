@@ -39,6 +39,8 @@ export const determineRole = specRole => {
   const roleArray = ["admin", "business", "state"];
   let role;
 
+  console.log("determining role");
+
   if (roleArray.includes(specRole)) {
     role = specRole;
   }
@@ -50,5 +52,8 @@ export const determineRole = specRole => {
       role = "state";
     }
   }
+
+  console.log("!!!!!!role determined: ", role);
+
   return role;
 };

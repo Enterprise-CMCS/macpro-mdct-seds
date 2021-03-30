@@ -6,7 +6,7 @@ import HomeBus from "../HomeBus/HomeBus";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
-export default function Home({ user }) {
+const Home = ({ user }) => {
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
@@ -36,10 +36,12 @@ export default function Home({ user }) {
   };
 
   return (
-    <div className="Home react-transition swipe-right" data-testid="Home">
+    <div className="Home react-transition flip-in-x" data-testid="Home">
       {renderLander()}
     </div>
   );
-}
+};
 
 Home.propTypes = {};
+
+export default Home;

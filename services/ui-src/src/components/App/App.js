@@ -19,26 +19,36 @@ function App() {
   const [user, setUser] = useState();
 
   async function onLoad() {
+    console.log("inside onLoad function");
     try {
       let user = await Auth.currentAuthenticatedUser();
       user.attributes["app-role"] = determineRole(
         user.attributes["custom:ismemberof"]
       );
+
+      console.log("role figured out");
+      console.log(user);
       setUser(user);
+      console.log("user set");
       setIsAuthenticated(true);
+      console.log("user is authenticated set");
       setIsAuthenticating(false);
+      console.log("user is authenticatING set");
+
       setIsAuthorized(true);
+      console.log("testing user presence");
       await ascertainUserPresence(user);
     } catch (error) {
       setIsAuthenticating(false);
     }
   }
   useEffect(() => {
+    console.log("running onload");
     onLoad().then();
   }, [isAuthenticated]);
 
   return (
-    <div className="App react-transition scale-in">
+    <div className="App react-transition fade-in">
       {!isAuthenticating && (
         <>
           <Header user={user} displayHeader={true} />
