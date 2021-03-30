@@ -1,10 +1,10 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { main as obtainUserByUsername } from "./obtainUserByUsername";
+import { main as getUserByUsername } from "./getUserByUsername";
 
 export const main = handler(async (event, context) => {
-  // If this invocation is a prewarm, do nothing and return.
-  if (event.source === "serverless-plugin-warmup") {
+  // If this invokation is a prewarm, do nothing and return.
+  if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
   }
@@ -23,7 +23,7 @@ export const main = handler(async (event, context) => {
     username: data.username,
   });
 
-  const currentUser = await obtainUserByUsername({
+  const currentUser = await getUserByUsername({
     body: body,
   });
 
@@ -67,11 +67,9 @@ export const main = handler(async (event, context) => {
       username: data.username,
       lastLogin: data.lastLogin ? data.lastLogin : "",
     },
-    ConditionExpression: "attribute_not_exists(username)",
   };
 
-  await dynamoDb.put(params, (err, data) => {
-    if (err) throw err;
-    return { status: "success", messgage: `User ${data.username} Added!` };
-  });
+  await dynamoDb.put(params);
+
+  return `User ${data.username} Added!`;
 });
