@@ -1,0 +1,52 @@
+/**********************
+  Layout
+**********************/
+
+.page-header {
+  @extend .bg-primary;
+  @extend .text-white;
+  @extend .padding-3;
+  @extend .text-center;
+  @extend .text-bold;
+  @extend .font-alt-2xl;
+  width: 99% !important;
+  margin-left: 0.5%;
+}
+
+.page-subheader {
+  @extend .padding-left-9;
+}
+
+.list-display-container {
+  @extend .padding-y-9;
+
+  li {
+    @extend .padding-y-2;
+    @extend .padding-left-9;
+    list-style-type: circle;
+  }
+}
+
+.main {
+  .container {
+    width: 100% !important;
+  }
+}
+
+.center-content {
+  text-align: center;
+  .usa-table {
+    margin: auto !important;
+    text-align: center;
+    th {
+      @extend .bg-primary-dark;
+      @extend .text-white;
+      @extend .padding-x-3;
+      @extend .text-bold;
+    }
+    td {
+      @extend .padding-x-5;
+      @extend .padding-y-2;
+    }
+  }
+}
