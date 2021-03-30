@@ -177,7 +177,9 @@ const EditUser = ({ stateList }) => {
     <div className="edit-user react-transition fade-in">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
-        <Link to="/users">&laquo; Back to User List</Link>
+        <Link to="/users" className="text-bold">
+          &laquo; Back to User List
+        </Link>
       </div>
       {user ? (
         <div className="center-content">
