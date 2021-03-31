@@ -42,7 +42,7 @@ export const determineRole = specRole => {
   if (specRole) {
     if (specRole.includes("CHIP_D_USER_GROUP_ADMIN")) {
       role = "admin";
-    } else if (role.includes("CHIP_D_USER_GROUP")) {
+    } else if (specRole.includes("CHIP_D_USER_GROUP")) {
       role = "state";
     }
   }
