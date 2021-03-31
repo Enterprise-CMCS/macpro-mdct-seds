@@ -8,26 +8,15 @@ export async function ascertainUserPresence(user) {
     email: user.attributes.email
   });
 
-  let isMemberOf = "";
-
-  if (user.attributes.ismemberof !== undefined) {
-    isMemberOf = user.attributes.ismemberof;
-  }
-
-  if (user.attributes["custom:ismemberof"] !== undefined && isMemberOf === "") {
-    isMemberOf = user.attributes["custom:ismemberof"];
-  }
-
-  const userRole = await determineRole(isMemberOf);
-
   const userObject = {
     username: user.username,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
-    role: userRole,
+    role: user.attributes["app-role"],
     lastLogin: new Date().toISOString()
   };
+
   if (existingUser === false) {
     await createUser(userObject);
   } else {
