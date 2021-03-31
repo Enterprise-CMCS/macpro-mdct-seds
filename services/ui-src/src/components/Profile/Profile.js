@@ -6,16 +6,16 @@ import "./Profile.scss";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { currentUserInfo } from "../../libs/user";
+import { obtainUserByEmail } from "../../libs/api";
 
 export default function Profile({ user }) {
   const history = useHistory();
   /* eslint-disable no-unused-vars */
-  const [email, setEmail] = useState(user.email);
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [role, setRole] = useState(user.role);
-  const [states, setStates] = useState(formatStates(user.states));
+  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [role, setRole] = useState();
+  const [states, setStates] = useState();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,28 +24,30 @@ export default function Profile({ user }) {
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
-  useEffect(() => {
-    function loadProfile() {
-      return currentUserInfo();
-    }
-
-    async function onLoad() {
-      try {
-        const userInfo = await loadProfile();
+  const onLoad = async () => {
+    try {
+      const AuthUserInfo = await Auth.currentAuthenticatedUser();
+      const currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.attributes.email
+      });
+      let userObj = currentUserInfo["Items"];
+      userObj.map(async userInfo => {
         setEmail(userInfo.email);
-        setFirstName(capitalize(userInfo.first_name));
-        setLastName(capitalize(userInfo.last_name));
+        setFirstName(capitalize(userInfo.firstName));
+        setLastName(capitalize(userInfo.lastName));
         setRole(capitalize(userInfo.role));
         if (userInfo.states) {
           setStates(formatStates(userInfo.states));
         }
-      } catch (e) {
-        onError(e);
-      }
+      });
+    } catch (e) {
+      onError(e);
     }
+  };
 
-    onLoad().then();
-  }, []);
+  useEffect(() => {
+    onLoad();
+  });
 
   function validateForm() {
     return (
