@@ -37,6 +37,8 @@ export const determineRole = specRole => {
     role = specRole;
   }
 
+  console.log(specRole);
+
   if (specRole) {
     if (specRole.includes("CHIP_D_USER_GROUP_ADMIN")) {
       role = "admin";
@@ -45,7 +47,8 @@ export const determineRole = specRole => {
     }
   }
 
-  console.log("!!!!!!role determined: ", role);
+  console.log("!!!!!!role determined: ");
+  console.log(role);
 
   return role;
 };
