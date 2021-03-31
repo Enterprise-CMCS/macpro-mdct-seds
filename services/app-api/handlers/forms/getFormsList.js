@@ -11,7 +11,8 @@ export const main = handler(async (event, context) => {
   console.log(process.env);
 
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
