@@ -3,6 +3,7 @@
   "description": "",
   "version": "1.0.0",
   "dependencies": {
+    "@babel/parser": "^7.13.13",
     "@cmsgov/design-system-core": "^3.7.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
