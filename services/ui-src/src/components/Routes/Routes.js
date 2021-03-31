@@ -7,7 +7,7 @@ import Signup from "../Signup/Signup";
 import Profile from "../Profile/Profile";
 import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
 import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
-import Users from "../users/Users";
+import Users from "../Users/Users";
 import EditUser from "../EditUser/EditUser";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import Example from "../Example/Example";
