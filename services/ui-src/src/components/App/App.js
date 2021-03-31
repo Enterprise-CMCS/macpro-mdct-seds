@@ -22,6 +22,16 @@ function App() {
     console.log("inside onLoad function");
     try {
       let user = await Auth.currentAuthenticatedUser();
+
+      console.log("got user");
+      console.log(user);
+
+      // *** make sure attributes exist and are in standard format
+      user.attributes = user.signInUserSession.idToken.payload;
+
+      console.log("attributes created: ");
+      console.log(user);
+
       user.attributes["app-role"] = determineRole(
         user.attributes["custom:ismemberof"]
       );
