@@ -40,7 +40,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       }
     }
     fetchData();
-  }, [quarter, form, state, year, formsWithOutFPL]);
+  }, [quarter, form, state, year]);
 
   // Saves maximum FPL to the database
   const updateMaxFPL = e => {};
