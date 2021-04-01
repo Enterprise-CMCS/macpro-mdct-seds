@@ -108,7 +108,7 @@ const mapState = state => ({
     state.currentForm.statusData.not_applicable ||
     state.currentForm.statusData.status === "final",
   currentTabs: state.currentForm.tabs,
-  tabDetails: state.global.age_ranges, // update age ranges
+  tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers
 });
