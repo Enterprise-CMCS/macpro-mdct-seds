@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
+import { getUserById } from "../../libs/api";
+import { useParams } from "react-router";
 
-const HomeState = ({ states }) => {
-  // Pull state from redux
-  const state = states;
+const HomeState = () => {
+  let { id } = useParams; 
+    // Set up local state
+  const [user, setUser] = useState();
+  const [state, setState] = useState();
+  
+  // Get User data
+  const loadUserData = async () => {
+
+    let userIdData = { userId : id };
+
+    const user = await getUserById(userIdData);
+
+    console.log(user.data, "awaiting this object");
+    setUser(user.data);
+    const userState = user.data.states[0].value;
+    if( userState < 0 ) {
+      updateLocalUser("AL", "states");
+      setState(userState[state]);
+    } else {
+      setState(user.data.states[0]);
+    }
+    
+    return user.data;
+  }
+  useEffect(() => {
+    loadUserData().then();
+  }, []);
+  // Update user object
+  const updateLocalUser = (e, field) => {
+    let tempUser = { ...user };
+    let response;
+
+    tempUser[field] = response;
+    setUser(tempUser);
+  };
+
+  console.log(state, "kody the state is here lets sing a song thats really long");
   // TODO: Pull years and quarters
   // define years and months
   const date = new Date();
@@ -44,8 +81,8 @@ const HomeState = ({ states }) => {
     return years;
   }
 
-  const test = dateMachine(fiscalYear, month);
-  console.log("dateMachine output", test);
+  dateMachine(fiscalYear, month);
+  
   let accordionItems = [];
   for (const year in years) {
     // Build node with link to each quarters reports
@@ -53,13 +90,8 @@ const HomeState = ({ states }) => {
       <ul className="quarterly-items">
         {years[year].quarters.map(element => {
           return (
-<<<<<<< HEAD:services/ui-src/src/containers/HomeState.js
-            <li key={`${state}-${years[year].year}-${element}`}>
-              <Link href={`/forms/${state}/${years[year].year}/${element}`}>
-=======
             <li key={`${state}-${year}-${element}`}>
               <Link to={`/forms/${state}/${years[year].year}/${element}`}>
->>>>>>> d2d1c6dea62095e3d800e2fd0ad1ea6272bc09b6:services/ui-src/src/components/HomeState/HomeState.js
                 Quarter {element}
               </Link>
             </li>
