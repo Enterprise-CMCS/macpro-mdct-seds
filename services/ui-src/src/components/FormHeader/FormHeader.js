@@ -13,7 +13,7 @@ import "./FormHeader.scss";
 const FormHeader = ({ quarter, form, year, state }) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
-  const formsWithOutFPL = ["GRE"];
+  const [showFPL, setShowFPL] = useState(false);
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -24,6 +24,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
     return fplRange.substring(fplRange.length - 3);
   };
   useEffect(() => {
+    // List of forms that do NOT show fpl
+    const formsWithOutFPL = ["GRE"];
     async function fetchData() {
       const data = await getFormTypes();
       const formDetails = data.find(element => element.form === form);
@@ -37,6 +39,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
         // Determine Maximum FPL
         const maxFPL = getMaxFPL(answers);
         setMaxFPL(maxFPL);
+        setShowFPL(true);
       }
     }
     fetchData();
@@ -96,7 +99,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <div className="quarter-value">{`${quarter}/${year}`}</div>
         </Grid>
       </Grid>
-      {!formsWithOutFPL.includes(form) ? (
+      {showFPL ? (
         <Grid row className="form-max-fpl">
           <Grid col={12}>
             <p>

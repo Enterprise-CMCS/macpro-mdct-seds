@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
+import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
@@ -16,30 +17,38 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   const labelWithAgeVariable = label.replace("&&&VARIABLE&&&", ageVariable);
 
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
-  // const sortedRows = rows.map(rowObject => sortQuestionColumns(rowObject));
   const sortedRows = sortQuestionColumns(rows);
 
-  return (
-    <>
-      <b>
-        {questionNumber}. {labelWithAgeVariable}
-      </b>
-      {questionNumber !== 5 ? (
+  let tempComponent = {};
+  if (sortedRows.length > 0) {
+    if (questionNumber === 5) {
+      tempComponent = (
+        <SynthesizedGrid
+          questionID={answer_entry}
+          questionData={questionData}
+          gridData={sortedRows}
+          answerData={answerData}
+        />
+      );
+    } else if (questionNumber > 0) {
+      tempComponent = (
         <GridWithTotals
           questionID={answer_entry}
           gridData={sortedRows}
           disabled={disabled}
         />
-      ) : (
-        <p>
-          Question five requires special logic. There is a separate ticket for
-          it{" "}
-        </p>
-      )}
+      );
+    }
+  }
+  return (
+    <>
+      <b>
+        {questionNumber}. {labelWithAgeVariable}
+      </b>
+      {tempComponent}
     </>
   );
 };
-
 QuestionComponent.propTypes = {
   questionData: PropTypes.object.isRequired,
   rangeID: PropTypes.string.isRequired,
