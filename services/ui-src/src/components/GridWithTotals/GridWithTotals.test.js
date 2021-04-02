@@ -58,19 +58,13 @@ describe("Test GridWithTotals.js", () => {
     expect(wrapper.find(".grid-with-totals").length).toBe(1);
   });
 
-  // test("Check for appropriate tab header", () => {
-  //     expect(wrapper.find(".summary-tab").children().find("h3").text()).toMatch(
-  //         /Summary:/
-  //     );
-  // });
-  //
-  // test("Check for all top headers", () => {
-  //     expect(wrapper.text()).toMatch(/% of FPL 0-133/);
-  //     expect(wrapper.text()).toMatch(/% of FPL 134-200/);
-  //     expect(wrapper.text()).toMatch(/% of FPL 201-250/);
-  //     expect(wrapper.text()).toMatch(/% of FPL 251-300/);
-  //     expect(wrapper.text()).toMatch(/% of FPL 301-317/);
-  // });
+  test("Check for all top headers", () => {
+    expect(wrapper.text()).toMatch(/% of FPL 0-133/);
+    expect(wrapper.text()).toMatch(/% of FPL 134-200/);
+    expect(wrapper.text()).toMatch(/% of FPL 201-250/);
+    expect(wrapper.text()).toMatch(/% of FPL 251-300/);
+    expect(wrapper.text()).toMatch(/% of FPL 301-317/);
+  });
   //
   // test("Check for all side headers", () => {
   //     expect(wrapper.text()).toMatch(/A. Fee-for-Service/);

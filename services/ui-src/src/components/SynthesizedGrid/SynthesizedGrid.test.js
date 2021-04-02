@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import TabContainer from "../layout/TabContainer";
+import TabContainer from "../TabContainer/TabContainer";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_64_21E from "../../providerMocks/currentFormMock_64_21E.js";
