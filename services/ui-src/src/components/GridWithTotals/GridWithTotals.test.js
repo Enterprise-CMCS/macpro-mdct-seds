@@ -65,70 +65,86 @@ describe("Test GridWithTotals.js", () => {
     expect(wrapper.text()).toMatch(/% of FPL 251-300/);
     expect(wrapper.text()).toMatch(/% of FPL 301-317/);
   });
-  //
-  // test("Check for all side headers", () => {
-  //     expect(wrapper.text()).toMatch(/A. Fee-for-Service/);
-  //     expect(wrapper.text()).toMatch(/B. Managed Care Arrangements/);
-  //     expect(wrapper.text()).toMatch(/C. Primary Care Case Management/);
-  // });
-  //
-  // test("Check number of gridwithtotal elements", () => {
-  //     expect(wrapper.find(".grid-with-totals").length).toBe(8);
-  // });
-  //
-  // test("Check table input values for correct math", () => {
-  //     expect(
-  //         wrapper
-  //             .find("tbody")
-  //             .children()
-  //             .find("td")
-  //             .at(0)
-  //             .children()
-  //             .find("input")
-  //             .instance().value
-  //     ).toMatch(/2/);
-  //
-  //     expect(
-  //         wrapper
-  //             .find("tbody")
-  //             .children()
-  //             .find("td")
-  //             .at(1)
-  //             .children()
-  //             .find("input")
-  //             .instance().value
-  //     ).toMatch(/4/);
-  //
-  //     expect(
-  //         wrapper
-  //             .find("tbody")
-  //             .children()
-  //             .find("td")
-  //             .at(2)
-  //             .children()
-  //             .find("input")
-  //             .instance().value
-  //     ).toMatch(/6/);
-  //
-  //     expect(
-  //         wrapper
-  //             .find("tbody")
-  //             .children()
-  //             .find("td")
-  //             .at(3)
-  //             .children()
-  //             .find("input")
-  //             .instance().value
-  //     ).toMatch(/8/);
-  //     expect(
-  //         wrapper
-  //             .find("tbody")
-  //             .children()
-  //             .find("td")
-  //             .at(4)
-  //             .children()
-  //             .find("input")
-  //             .instance().value
-  //     ).toMatch(/10/);
-  // });
+
+  test("Check for all side headers", () => {
+    expect(wrapper.text()).toMatch(/A. Fee-for-Service/);
+    expect(wrapper.text()).toMatch(/B. Managed Care Arrangements/);
+    expect(wrapper.text()).toMatch(/C. Primary Care Case Management/);
+  });
+
+  test("Check table input values from provided data", () => {
+    expect(
+      wrapper
+        .find("tbody")
+        .children()
+        .find("td")
+        .at(0)
+        .children()
+        .find("input")
+        .instance().value
+    ).toMatch(/1/);
+
+    expect(
+      wrapper
+        .find("tbody")
+        .children()
+        .find("td")
+        .at(1)
+        .children()
+        .find("input")
+        .instance().value
+    ).toMatch(/2/);
+
+    expect(
+      wrapper
+        .find("tbody")
+        .children()
+        .find("td")
+        .at(2)
+        .children()
+        .find("input")
+        .instance().value
+    ).toMatch(/3/);
+
+    expect(
+      wrapper
+        .find("tbody")
+        .children()
+        .find("td")
+        .at(3)
+        .children()
+        .find("input")
+        .instance().value
+    ).toMatch(/4/);
+    expect(
+      wrapper
+        .find("tbody")
+        .children()
+        .find("td")
+        .at(4)
+        .children()
+        .find("input")
+        .instance().value
+    ).toMatch(/5/);
+  });
+  test("Check table output values after addition occurs", () => {
+    expect(
+      wrapper.find(".total-row").children().find("td").at(0).text()
+    ).toMatch(/48/);
+    expect(
+      wrapper.find(".total-row").children().find("td").at(1).text()
+    ).toMatch(/51/);
+    expect(
+      wrapper.find(".total-row").children().find("td").at(2).text()
+    ).toMatch(/54/);
+    expect(
+      wrapper.find(".total-row").children().find("td").at(3).text()
+    ).toMatch(/57/);
+    expect(
+      wrapper.find(".total-row").children().find("td").at(4).text()
+    ).toMatch(/60/);
+    expect(
+      wrapper.find(".total-row").children().find("td").at(5).text()
+    ).toMatch(/270/);
+  });
 });

@@ -224,7 +224,7 @@ const GridWithTotals = props => {
         </thead>
         <tbody>
           {tableData}
-          <tr>
+          <tr className="total-row">
             {totalsRow}
             <td className="total-column">
               {Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
