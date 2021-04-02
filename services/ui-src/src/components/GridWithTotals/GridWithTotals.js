@@ -15,6 +15,8 @@ const GridWithTotals = props => {
 
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
+  const currentPrecision = props.precision;
+
   useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -148,7 +150,9 @@ const GridWithTotals = props => {
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={column}
+                      defaultValue={Number.parseFloat(column).toFixed(
+                        currentPrecision
+                      )}
                       disabled={props.disabled}
                     />
                   </td>
@@ -161,7 +165,9 @@ const GridWithTotals = props => {
                     type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={column}
+                    defaultValue={Number.parseFloat(column).toFixed(
+                      currentPrecision
+                    )}
                     disabled={props.disabled}
                   />
                 </td>
@@ -170,7 +176,11 @@ const GridWithTotals = props => {
 
             return formattedCell;
           })}
-          <td className="total-column">{gridRowTotals[rowIndex]}</td>
+          <td className="total-column">
+            {Number.parseFloat(gridRowTotals[rowIndex]).toFixed(
+              currentPrecision
+            )}
+          </td>
         </tr>
       );
     }
@@ -189,8 +199,8 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column" key={i}>
-          {gridColumnTotals[i]}
+        <td className="total-column">
+          {Number.parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)}
         </td>
       );
     }
@@ -208,7 +218,9 @@ const GridWithTotals = props => {
           {tableData}
           <tr>
             {totalsRow}
-            <td className="total-column">{gridTotalOfTotals}</td>
+            <td className="total-column">
+              {Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
+            </td>
           </tr>
         </tbody>
       </Table>
