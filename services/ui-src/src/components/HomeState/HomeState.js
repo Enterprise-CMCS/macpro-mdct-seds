@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
-import { getUserById } from "../../libs/api";
+import {getUserById, obtainUserByEmail} from "../../libs/api";
 import { useParams } from "react-router";
+import {Auth} from "aws-amplify";
 
 const HomeState = () => {
   let { id } = useParams; 
@@ -12,21 +13,16 @@ const HomeState = () => {
   // Get User data
   const loadUserData = async () => {
 
-    let userIdData = { userId : id };
+    const AuthUserInfo = await Auth.currentAuthenticatedUser();
+    const currentUserInfo = await obtainUserByEmail({
+      email: AuthUserInfo.attributes.email
+    });
 
-    const user = await getUserById(userIdData);
+    // Set temporary state ONLY for debugging
+    currentUserInfo.Items[0].states=["MA"];
 
-    console.log(user.data, "awaiting this object");
-    setUser(user.data);
-    const userState = user.data.states[0].value;
-    if( userState < 0 ) {
-      updateLocalUser("AL", "states");
-      setState(userState[state]);
-    } else {
-      setState(user.data.states[0]);
-    }
-    
-    return user.data;
+    setUser(currentUserInfo);
+    setState(currentUserInfo.Items[0].states[0])
   }
   useEffect(() => {
     loadUserData().then();
@@ -91,7 +87,7 @@ const HomeState = () => {
         {years[year].quarters.map(element => {
           return (
             <li key={`${state}-${year}-${element}`}>
-              <Link to={`/forms/${state}/${years[year].year}/${element}`}>
+              <Link href={`/forms/${state}/${years[year].year}/${element}`}>
                 Quarter {element}
               </Link>
             </li>
