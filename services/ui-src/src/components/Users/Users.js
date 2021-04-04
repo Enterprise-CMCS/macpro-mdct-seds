@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
-import Card from "@material-ui/core/Card";
 import "react-data-table-component-extensions/dist/index.css";
-import SortIcon from "@material-ui/icons/ArrowDownward";
-import { listUsers, activateDeactivateUser } from "../../libs/api";
-import { Grid, Button } from "@trussworks/react-uswds";
-import { Link, useHistory } from "react-router-dom";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { listUsers, activateDeactivateUser } from "../../libs/api";
+import { Grid, Button, Card } from "@trussworks/react-uswds";
+import { Link, useHistory } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons/faFileExcel";
 import { faUserAltSlash } from "@fortawesome/free-solid-svg-icons/faUserAltSlash";
@@ -237,7 +236,14 @@ const Users = () => {
               <DataTable
                 title=""
                 defaultSortField="username"
-                sortIcon={<SortIcon />}
+                sortIcon={
+                  <>
+                    <FontAwesomeIcon
+                      icon={faArrowDown}
+                      className="margin-left-2"
+                    />
+                  </>
+                }
                 highlightOnHover={true}
                 selectableRows={false}
                 responsive={true}

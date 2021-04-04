@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
+import { Button, Grid, GridContainer, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
-import SortIcon from "@material-ui/icons/ArrowDownward";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
-import Card from "@material-ui/core/Card";
 import { Link } from "react-router-dom";
 
 const Quarterly = () => {
@@ -186,7 +184,14 @@ const Quarterly = () => {
             <Card>
               {stateFormsList ? (
                 <DataTable
-                  sortIcon={<SortIcon />}
+                  sortIcon={
+                    <>
+                      <FontAwesomeIcon
+                        icon={faArrowDown}
+                        className="margin-left-2"
+                      />
+                    </>
+                  }
                   highlightOnHover
                   title={
                     <p style={{ fontSize: "14px", fontWeight: "600" }}>
