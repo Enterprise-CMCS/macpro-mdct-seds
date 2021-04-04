@@ -62,22 +62,16 @@ const EditUser = ({ stateList }) => {
         })
       );
     } else {
-      // Get user state, if multiple take only the first
-      const userState = user.data.states[0];
-      const selectedStates = [];
-
+      // Get user state, which will always be the first index.
+      let userHomeState = user.data.states;
       // Loop through U.S. states to find a match and set to local state (storage)
       for (const state in stateList) {
-        if (stateList[state].value === userState) {
-          selectedStates.push({
+        if (stateList[state].value === userHomeState[0]) {
+          setSelectedStates({
             label: stateList[state].label,
             value: stateList[state].value
           });
         }
-      }
-
-      if (selectedStates.length > 0) {
-        setSelectedStates(selectedStates);
       }
     }
     return user.data;
@@ -163,7 +157,6 @@ const EditUser = ({ stateList }) => {
     }
     return false;
   };
-
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
     data.states = statesToSend;
