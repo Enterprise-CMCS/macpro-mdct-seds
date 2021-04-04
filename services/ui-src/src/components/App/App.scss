@@ -1,5 +1,4 @@
 @import "~uswds/dist/css/uswds";
-@import "../../../node_modules/@trussworks/react-uswds/lib/index.css";
 
 @import "../../additional-scss/variables";
 @import "../../additional-scss/mixins";
@@ -17,3 +16,4 @@
 @import "../../additional-scss/main";
 @import "../../additional-scss/print";
 @import "../../additional-scss/react-datatable-component-override";
+@import "../../animations/transitions";
