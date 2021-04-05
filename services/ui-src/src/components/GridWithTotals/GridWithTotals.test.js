@@ -4,7 +4,6 @@ import GridWithTotals from "./GridWithTotals";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
-import SummaryTab from "../SummaryTab/SummaryTab";
 const mockStore = configureStore([]);
 
 describe("Test GridWithTotals.js", () => {
