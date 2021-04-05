@@ -103,7 +103,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
         <Grid row className="form-max-fpl">
           <Grid col={12}>
             <p>
-              What is the highest FPL that received benefits from your state?
+              What is the highest percentage of FPL that received benefits from
+              your state?
             </p>
             <div className="fpl-input">
               <TextInput
