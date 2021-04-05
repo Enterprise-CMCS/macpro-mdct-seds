@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
+import { Link } from "@trussworks/react-uswds";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

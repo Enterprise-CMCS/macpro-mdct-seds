@@ -1,61 +1,41 @@
 import React from "react";
+import {mount, shallow} from "enzyme";
 import FormFooter from "./FormFooter";
-import { render } from "@testing-library/react";
 
-let realUseContext;
-let useContextMock;
+describe("Test FormFooter.js - Shallow", () => {
+  let wrapper;
 
-// *** set up mocks
-beforeEach(() => {
-  realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
-});
-
-// *** garbage clean up (mocks)
-afterEach(() => {
-  React.useContext = realUseContext;
-});
-
-describe("Test FormFooter.js", () => {
-  test("Check the main element, with classname footer, exists", () => {
-    useContextMock.mockReturnValue(true);
-
-    const mockUser = { attributes: { "app-role": "admin" } };
-
-    const { getByTestId } = render(<FormFooter user={mockUser} />);
-
-    expect(getByTestId("Footer")).toBeVisible();
-  });
-
-  test("Check for CMS Logo", () => {
-    const { getByAltText } = render(<Footer />);
-    const image = getByAltText("Centers for Medicare and Medicaid Services");
-    expect(image.src).toContain("/img/logo-cms.png");
-  });
-
-  test("Check for MDCT Logo", () => {
-    const { getByAltText } = render(<Footer />);
-    const image = getByAltText("Medicaid & CHIP Program System");
-    expect(image.src).toContain("/img/logo-mdct.png");
-  });
-
-  test("Check for Contact link", () => {
-    const { getByText } = render(<Footer />);
-    expect(getByText("Contact")).toHaveAttribute("href", "/contact");
-  });
-
-  test("Check for CMS Home Page link", () => {
-    const { getByText } = render(<Footer />);
-    expect(
-      getByText("Centers for Medicare & Medicaid Services Website")
-    ).toHaveAttribute("href", "https://www.cms.gov/");
-  });
-
-  test("Check for SEDS Help Desk email link", () => {
-    const { getByText } = render(<Footer />);
-    expect(getByText("SEDSHELP@cms.hhs.gov")).toHaveAttribute(
-      "href",
-      "mailto:sedshelp@cms.hhs.gov"
+  beforeEach(() => {
+    wrapper = shallow(
+        <FormFooter state="AL" year="2021" quarter="1" lastModified="01-15-2021"/>
     );
+  });
+
+  test("Check the form footer div exists", () => {
+    expect(wrapper.find(".formfooter").length).toBe(1);
+  });
+});
+
+describe("Test FormFooter.js - Mount", () => {
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = mount(
+        <FormFooter state="AL" year="2021" quarter="1" lastModified="01-15-2021" />
+    );
+  });
+
+  test("Check for Link back to Quarter Page list of available reports", () => {
+    // Using Link from TrussWorks results in the component AND link sharing the same class name...
+    // This would be 3 otherwise
+    expect(wrapper.find(".form-nav").length).toBe(2);
+  });
+
+  test("Check for Last Saved Date display", () => {
+    expect(wrapper.find(".form-actions").length).toBe(2);
+  });
+
+  test("Check for Save button", () => {
+    expect(wrapper.find(".hollow").length).toBe(2);
   });
 });
