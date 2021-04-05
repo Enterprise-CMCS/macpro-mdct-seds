@@ -10,7 +10,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const FormFooter = ({ state, year, quarter, lastModified }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
-    <div>
+    <div className="formfooter" data-testid="FormFooter">
       <GridContainer>
         <Grid row>
           <Grid col={6} className="form-nav">
