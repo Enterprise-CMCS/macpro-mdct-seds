@@ -1,5 +1,4 @@
 import React from "react";
-import { mount } from "enzyme";
 import Footer from "./Footer";
 import { render } from "@testing-library/react";
 
