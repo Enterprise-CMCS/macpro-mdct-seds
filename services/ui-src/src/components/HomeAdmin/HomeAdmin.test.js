@@ -9,6 +9,11 @@ describe("Tests for HomeAdmin.js", () => {
   beforeEach(() => {
     wrapper = mount(<HomeAdmin />);
   });
+
+  test("Ensure HomeAdmin exists", () => {
+    expect(wrapper.find(".HomeAdmin").length).toBe(1);
+  });
+
   test("Ensure links are visible", () => {
     expect(wrapper.containsMatchingElement(<Link />));
   });
