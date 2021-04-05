@@ -10,27 +10,29 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const FormFooter = ({ state, year, quarter, lastModified }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
-    <GridContainer>
-      <Grid row>
-        <Grid col={6} className="form-nav">
-          <Link to={quarterPath}>
-            {" "}
-            <FontAwesomeIcon icon={faArrowLeft} /> Back to{" "}
-            {`Q${quarter} ${year}`}
-          </Link>
-        </Grid>
-
-        <Grid col={6} className="form-actions">
-          <Grid row>
-            <Grid col={6}> Last saved: {lastModified} </Grid>
-            <Grid col={6}>
+    <div>
+      <GridContainer>
+        <Grid row>
+          <Grid col={6} className="form-nav">
+            <Link to={quarterPath}>
               {" "}
-              <Button className="hollow">Save</Button>
+              <FontAwesomeIcon icon={faArrowLeft} /> Back to{" "}
+              {`Q${quarter} ${year}`}
+            </Link>
+          </Grid>
+
+          <Grid col={6} className="form-actions">
+            <Grid row>
+              <Grid col={6}> Last saved: {lastModified} </Grid>
+              <Grid col={6}>
+                {" "}
+                <Button className="hollow">Save</Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </GridContainer>
+      </GridContainer>
+    </div>
   );
 };
 
