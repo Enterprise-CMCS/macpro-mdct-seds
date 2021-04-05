@@ -1,5 +1,5 @@
 import React from "react";
-import {mount, shallow} from "enzyme";
+import { mount, shallow } from "enzyme";
 import FormFooter from "./FormFooter";
 
 describe("Test FormFooter.js - Shallow", () => {
@@ -7,7 +7,12 @@ describe("Test FormFooter.js - Shallow", () => {
 
   beforeEach(() => {
     wrapper = shallow(
-        <FormFooter state="AL" year="2021" quarter="1" lastModified="01-15-2021"/>
+      <FormFooter
+        state="AL"
+        year="2021"
+        quarter="1"
+        lastModified="01-15-2021"
+      />
     );
   });
 
@@ -21,7 +26,12 @@ describe("Test FormFooter.js - Mount", () => {
 
   beforeEach(() => {
     wrapper = mount(
-        <FormFooter state="AL" year="2021" quarter="1" lastModified="01-15-2021" />
+      <FormFooter
+        state="AL"
+        year="2021"
+        quarter="1"
+        lastModified="01-15-2021"
+      />
     );
   });
 
