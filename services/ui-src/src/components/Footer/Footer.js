@@ -3,7 +3,7 @@ import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className="footer" data-testid="Footer">
       <GridContainer className="container">
         <Grid row>
           <Grid col={6} tablet={{ col: true }}>
@@ -43,7 +43,7 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Centers for Medicare &amp; Medicaid Services
+                    Centers for Medicare &amp; Medicaid Services Website
                   </a>
                 ]}
               />

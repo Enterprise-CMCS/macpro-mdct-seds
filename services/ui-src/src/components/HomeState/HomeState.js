@@ -1,6 +1,5 @@
 import React from "react";
-import { Accordion, Grid } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
+import { Accordion, Grid, Link } from "@trussworks/react-uswds";
 
 const HomeState = () => {
   // TODO: Pull state from redux
