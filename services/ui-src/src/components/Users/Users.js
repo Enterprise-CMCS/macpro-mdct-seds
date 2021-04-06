@@ -210,7 +210,7 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles react-transition fade-in">
+    <div className="user-profiles react-transition fade-in" data-testid="Users">
       <Grid>
         <h1 className="page-header">Users</h1>
         <div className="page-subheader">
