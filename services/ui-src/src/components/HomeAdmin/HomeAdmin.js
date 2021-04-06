@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { Link } from "@trussworks/react-uswds";
 
 const HomeAdmin = () => {
   return (
@@ -14,7 +14,7 @@ const HomeAdmin = () => {
             </Link>
           </li>
           <li>
-            <Link to="/users/add" className="text-bold">
+            <Link href="/users/add" className="text-bold">
               Create User
             </Link>
           </li>
