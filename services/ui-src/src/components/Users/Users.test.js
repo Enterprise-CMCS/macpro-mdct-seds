@@ -17,7 +17,7 @@ afterEach(() => {
 describe("Test Header.js", () => {
   test("Check the main element, with classname user-profiles, exists", () => {
     useContextMock.mockReturnValue(true);
-    const mockUser = { attributes: { "app-role": "admin" } };
+    // const mockUser = { attributes: { "app-role": "admin" } };
     // const { getByTestId } = render(<Users />);
     // expect(getByTestId("Users")).toBeVisible();
   });
