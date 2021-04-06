@@ -1,21 +1,31 @@
+// *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+
+// *** 3rd party dependencies
+import { Grid, Button, Card } from "@trussworks/react-uswds";
+
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
-import "react-data-table-component-extensions/dist/index.css";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { listUsers, activateDeactivateUser } from "../../libs/api";
-import { Grid, Button, Card } from "@trussworks/react-uswds";
-import { Link, useHistory } from "react-router-dom";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons/faFileExcel";
 import { faUserAltSlash } from "@fortawesome/free-solid-svg-icons/faUserAltSlash";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 
-import "./Users.scss";
-
-import { exportToExcel } from "../../libs/api";
 import { saveAs } from "file-saver";
+
+// *** API / data / etc
+import {
+  listUsers,
+  activateDeactivateUser,
+  exportToExcel
+} from "../../libs/api";
+
+// *** styles
+import "./Users.scss";
 
 /**
  * Display all Users with options

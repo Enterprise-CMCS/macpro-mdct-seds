@@ -5,10 +5,17 @@ import { render } from "@testing-library/react";
 let realUseContext;
 let useContextMock;
 
+const mockUser = { attributes: { "app-role": "admin" } };
+
+let component;
+
 // *** set up mocks
 beforeEach(() => {
   realUseContext = React.useContext;
   useContextMock = React.useContext = jest.fn();
+
+  const { getByTestId } = render(<Home user={mockUser} />);
+  component = getByTestId;
 });
 
 // *** garbage clean up (mocks)
@@ -19,11 +26,6 @@ afterEach(() => {
 describe("Test Home.js", () => {
   test("Check the main element, with classname Home, exists", () => {
     useContextMock.mockReturnValue(true);
-
-    const mockUser = { attributes: { "app-role": "admin" } };
-
-    const { getByTestId } = render(<Home user={mockUser} />);
-
-    expect(getByTestId("Home")).toBeVisible();
+    expect(component("Home")).toBeVisible();
   });
 });
