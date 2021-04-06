@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import Searchable from "react-searchable-dropdown";
 import MultiSelect from "react-multi-select-component";
 import { createUser } from "../../libs/api";
-import { Link } from "react-router-dom";
-import { Table, Button, TextInput } from "@trussworks/react-uswds";
+import { Table, Button, TextInput, Link } from "@trussworks/react-uswds";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 
