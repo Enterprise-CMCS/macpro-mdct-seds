@@ -1,9 +1,10 @@
 import React from "react";
 import { mount } from "enzyme";
-import TabContainer from "../TabContainer/TabContainer.js";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
+import TabContainer from "../TabContainer/TabContainer.js";
 import currentFormMock_64_21E from "../../providerMocks/currentFormMock_64_21E.js";
+
 const mockStore = configureStore([]);
 
 describe("Test Question.js", () => {
@@ -13,9 +14,9 @@ describe("Test Question.js", () => {
   beforeEach(() => {
     store = mockStore(currentFormMock_64_21E);
     wrapper = mount(
-        <Provider store={store}>
-          <TabContainer />
-        </Provider>
+      <Provider store={store}>
+        <TabContainer />
+      </Provider>
     );
   });
 
@@ -26,8 +27,6 @@ describe("Test Question.js", () => {
     expect(wrapper.text()).toMatch(/4. What is the/);
     expect(wrapper.text()).toMatch(/5. What is the/);
     expect(wrapper.text()).toMatch(/6. What is the/);
-
-
   });
 
   test("Check for correct age range", () => {
