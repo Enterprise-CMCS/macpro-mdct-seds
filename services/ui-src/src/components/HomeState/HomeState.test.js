@@ -13,7 +13,7 @@ describe("Test HomeState.js", () => {
     expect(wrapper.find(".page-home-state").length).toBe(2);
   });
 
-  test("Confirm number of uls ", () => {
+  test("Confirm number of uls", () => {
     expect(wrapper.find("ul").length).toBe(4);
   });
 
