@@ -1,6 +1,4 @@
 import React from "react";
-import Users from "./Users";
-import { render } from "@testing-library/react";
 
 let realUseContext;
 let useContextMock;
