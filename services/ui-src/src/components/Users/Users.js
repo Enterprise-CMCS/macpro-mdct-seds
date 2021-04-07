@@ -9,11 +9,15 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons/faFileExcel";
-import { faUserAltSlash } from "@fortawesome/free-solid-svg-icons/faUserAltSlash";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+
+import {
+  faArrowDown,
+  faUserPlus,
+  faFileExcel,
+  faUserAltSlash,
+  faUserCheck,
+  faFilePdf
+} from "@fortawesome/free-solid-svg-icons";
 
 import { saveAs } from "file-saver";
 
@@ -216,6 +220,8 @@ const Users = () => {
       data: users,
       exportHeaders: true
     };
+
+    console.log(tableData);
   }
 
   return (
@@ -236,8 +242,17 @@ const Users = () => {
             outline={true}
             onClick={async () => await handleExport("excel")}
           >
-            Excel{" "}
+            Excel
             <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+          </Button>
+
+          <Button
+            className="margin-left-5 action-button"
+            outline={true}
+            onClick={async () => await handleExport("pdf")}
+          >
+            PDF
+            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
           </Button>
         </div>
         <Card>
