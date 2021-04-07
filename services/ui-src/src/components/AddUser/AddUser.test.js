@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { mount, shallow } from "enzyme";
+import React from "react";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
