@@ -9,7 +9,7 @@ import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import "./FormPage.scss";
 
-const FormPage = ({ getForm, statusData }) => {
+const FormPage = ({ getForm, statusData, mystate }) => {
   const { last_modified } = statusData;
 
   // Extract state, year, quarter and formName from URL segments
@@ -21,13 +21,16 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   // Call the API and set questions, answers and status data in redux based on URL parameters
-  useEffect(() => {
-    getForm(formattedStateName, year, quarterInt, formattedFormName);
+  useEffect(async () => {
+    await getForm(formattedStateName, year, quarterInt, formattedFormName);
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (
     <>
-      <GridContainer className="form-header" data-testid="FormPage">
+      <GridContainer
+        className="form-header form-header-main"
+        data-testid="FormPage"
+      >
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}

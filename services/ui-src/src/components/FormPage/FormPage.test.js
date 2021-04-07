@@ -1,32 +1,29 @@
-import React, { Component } from "react";
-import { shallow, mount } from "enzyme";
+import React from "react";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import {
-  storeFactory,
-  findByTestAttribute
-} from "../../provider-mocks/testUtils";
-import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E";
-
+import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import configureStore from "redux-mock-store";
-
 import FormPage from "./FormPage";
-import Routes from "../Routes/Routes";
-
-// import { render } from "@testing-library/react";
-
-// FormPage.propTypes = {
-//     statusData: PropTypes.object.isRequired,
-//     getForm: PropTypes.func.isRequired
-//   };
 
 const mockStore = configureStore([]);
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: () => ({
+    state: "AL",
+    year: "2021",
+    quarter: "01",
+    formName: "21E"
+  }),
+  useRouteMatch: () => ({ url: "/#/forms/AL/2021/1/21E" })
+}));
 
 describe("FormPage component- shallow render includes classNames", () => {
   let store;
   let wrapper;
 
   beforeEach(() => {
-    store = mockStore(currentFormMock_21E);
+    store = mockStore(fullStoreMock);
     wrapper = mount(
       <Provider store={store}>
         <FormPage />
@@ -34,20 +31,8 @@ describe("FormPage component- shallow render includes classNames", () => {
     );
   });
 
-  jest.mock("react-router", () => ({
-    useParams: jest.fn().mockReturnValue({
-      state: "AL",
-      year: "2021",
-      quarter: "01",
-      formName: "21E"
-    })
-  }));
-
   test("Should include a form-header className", () => {
-    // wrapper = shallowSetup(currentFormMock_21E);
-
-    console.log("DEBUG!!! \n\n\n\n", wrapper.debug());
-    expect(wrapper.find(".header").length).toBe(1);
+    expect(wrapper.find(".form-header-main").length).toBe(2);
   });
 
   //   test("Should include a tab-container className", () => {});
