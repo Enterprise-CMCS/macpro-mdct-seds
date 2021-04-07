@@ -74,6 +74,4 @@ describe("Test CertificationTab.js", () => {
     );
   });
 
-  // test("Check number of gridwithtotal elements", () => {
-  //   expect(wrapper.find(".grid-with-totals").length).toBe(6);
 });
