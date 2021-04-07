@@ -22,6 +22,7 @@ import "./EditUser.scss";
 const EditUser = ({ stateList }) => {
   // Get params from url
   let { id } = useParams();
+  console.log("useParams: ", useParams());
 
   // Set up local state
   const [user, setUser] = useState();
@@ -167,7 +168,7 @@ const EditUser = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user react-transition fade-in">
+    <div className="edit-user react-transition fade-in" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
         <Link to="/users" className="text-bold">
