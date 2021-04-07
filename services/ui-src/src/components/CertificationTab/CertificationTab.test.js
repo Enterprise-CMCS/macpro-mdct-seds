@@ -73,5 +73,4 @@ describe("Test CertificationTab.js", () => {
       "Thank you for submitting your SEDS data!"
     );
   });
-
 });
