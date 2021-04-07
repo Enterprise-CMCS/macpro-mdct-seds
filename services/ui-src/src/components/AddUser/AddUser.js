@@ -64,9 +64,8 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="react-transition fade-in" data-testid="AddUser">>
-        <h1 className="page-header">Add User</h1>
-
+      <div className="react-transition fade-in" data-testid="AddUser">
+        ><h1 className="page-header">Add User</h1>
         <div className="addUserMain padding-left-9">
           <p>
             To add a <b>state user</b>, enter their EUA Id, select their state,
