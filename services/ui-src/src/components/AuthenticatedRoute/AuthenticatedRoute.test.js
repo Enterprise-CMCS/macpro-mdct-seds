@@ -13,7 +13,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("AuthenticatedRoute tests", () => {
-  test("Check the main element, with classname LoaderButton, exists", () => {
+  test("Check that a route is available", () => {
     // Set Context values
     const contextValues = { isAuthenticated: true };
 
