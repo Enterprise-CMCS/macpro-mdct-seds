@@ -92,6 +92,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "check-prop-types": "^1.1.2",
     "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
