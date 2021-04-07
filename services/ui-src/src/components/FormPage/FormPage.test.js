@@ -14,8 +14,7 @@ jest.mock("react-router-dom", () => ({
     year: "2021",
     quarter: "01",
     formName: "21E"
-  }),
-  useRouteMatch: () => ({ url: "/#/forms/AL/2021/1/21E" })
+  })
 }));
 
 describe("FormPage component- shallow render includes classNames", () => {

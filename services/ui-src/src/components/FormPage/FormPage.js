@@ -21,8 +21,12 @@ const FormPage = ({ getForm, statusData, mystate }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   // Call the API and set questions, answers and status data in redux based on URL parameters
-  useEffect(async () => {
-    await getForm(formattedStateName, year, quarterInt, formattedFormName);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getForm(formattedStateName, year, quarterInt, formattedFormName);
+    };
+
+    fetchData();
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (

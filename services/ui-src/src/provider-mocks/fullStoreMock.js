@@ -1,5 +1,3 @@
-import stateListMock from "./stateListMock";
-
 const fullStoreMock = {
   quarterStatuses: {
     quarterForms: []
