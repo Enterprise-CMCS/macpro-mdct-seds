@@ -34,7 +34,11 @@ const StatusButton = ({ type = "inprogress" }) => {
   }
 
   return (
-    <Button type="button" className={"status " + classValue}>
+    <Button
+      type="button"
+      className={"status " + classValue}
+      data-testid="StatusButton"
+    >
       {buttonValue}
     </Button>
   );
