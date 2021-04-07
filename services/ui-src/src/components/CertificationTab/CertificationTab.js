@@ -35,7 +35,7 @@ const CertificationTab = ({
   };
 
   return (
-    <GridContainer>
+    <GridContainer className="certificationText">
       <Grid row>
         <Grid col={12}>
           {isFinal ? (
@@ -63,7 +63,7 @@ const CertificationTab = ({
           {isFinal ? (
             <>
               <b> Thank you for submitting your SEDS data!</b>
-              <p>
+              <p className="statusText">
                 Submitted on {lastModified} by {lastModifiedBy}
               </p>
             </>
@@ -136,8 +136,12 @@ const mapState = state => ({
   notApplicable: state.currentForm.statusData.not_applicable,
   lastModified: state.currentForm.statusData.last_modified,
   lastModifiedBy: state.currentForm.statusData.last_modified_by,
-  isFinal: state.currentForm.statusData.status === "final",
-  isProvisional: state.currentForm.statusData.status === "provisional"
+  isFinal:
+    state.currentForm.statusData.status ===
+    "Final Data Certified and Submitted",
+  isProvisional:
+    state.currentForm.statusData.status ===
+    "Provisional Data Certified and Submitted"
 });
 
 const mapDispatch = {
