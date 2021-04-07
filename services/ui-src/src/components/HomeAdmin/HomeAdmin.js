@@ -9,7 +9,7 @@ const HomeAdmin = () => {
       <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
           <li>
-            <Link to="/users" className="text-bold">
+            <Link href="/users/" className="text-bold">
               View / Edit Users
             </Link>
           </li>
