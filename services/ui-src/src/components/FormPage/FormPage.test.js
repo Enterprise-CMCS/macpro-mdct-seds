@@ -21,56 +21,6 @@ import Routes from "../Routes/Routes";
 
 const mockStore = configureStore([]);
 
-// USE MOCKSTORE WORKED AT SOME POINT
-// const shallowSetup = (initialState = {}, props = {}, path = "") => {
-//   const store = mockStore(initialState);
-//   const setupProps = { ...defaultProps, ...props };
-//   return shallow(
-//     <Provider store={store}>
-//       <FormPage path={path} {...setupProps} />
-//     </Provider>
-//   );
-// };
-
-// const defaultProps = {base line props};
-
-// const mountedSetup = (initialState = {}, props = {}, path = "") => {
-//   const setupProps = { ...defaultProps, ...props };
-//   const store = storeFactory(initialState);
-//   return mount(<FormPage store={store} path={path} {...setupProps} />);
-// };
-
-// mountedSetup(yourStore, specific props)
-
-// const mountedSetup = (initialState = {}, props = {}) => {
-//   const setupProps = {
-//     match: {}
-//   };
-//   const store = mockStore(initialState);
-//   return mount(
-//     <Provider store={store}>
-//       <FormPage {...setupProps} />
-//     </Provider>
-//   );
-// };
-
-// const wrapper = shallow(
-//   <Provider store={store}>
-//     <FormPage />
-//   </Provider>
-// );
-// Keeping this object empty, <FormPage/> does not receive props from a parent
-
-// const shallowSetup = (initialState = {}, props = {}, path = "") => {
-//   const store = storeFactory(initialState);
-//   const setupProps = { ...defaultProps, ...props };
-//   return shallow(
-//     <Provider store={store}>
-//       <FormPage path={path} {...setupProps} />
-//     </Provider>
-//   );
-// };
-
 describe("FormPage component- shallow render includes classNames", () => {
   let store;
   let wrapper;
