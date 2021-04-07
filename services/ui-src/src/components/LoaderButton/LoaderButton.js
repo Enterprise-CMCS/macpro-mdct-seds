@@ -13,6 +13,7 @@ export default function LoaderButton({
       className="login-button"
       disabled={disabled || isLoading}
       {...props}
+      data-testid="LoaderButton"
     >
       {props.children}
       {isLoading && (
