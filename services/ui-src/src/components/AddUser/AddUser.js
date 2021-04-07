@@ -67,7 +67,7 @@ const AddUser = ({ currentUser, stateList }) => {
       <div className="react-transition fade-in" data-testid="AddUser">>
         <h1 className="page-header">Add User</h1>
 
-        <div className="padding-left-9">
+        <div className="addUserMain padding-left-9">
           <p>
             To add a <b>state user</b>, enter their EUA Id, select their state,
             and click Add User.
@@ -75,7 +75,7 @@ const AddUser = ({ currentUser, stateList }) => {
           <p className="note">
             <b className="margin-right-3 text-secondary-dark">Note:</b> Users
             will not show up in the{" "}
-            <Link to="/users" className="text-bold margin-x-2">
+            <Link to="/users" className="userList text-bold margin-x-2">
               User List
             </Link>{" "}
             until they have logged in.
@@ -85,7 +85,7 @@ const AddUser = ({ currentUser, stateList }) => {
               You must enter an EUA Id, and select a role and state(s).
             </p>
           )}
-          <div className="center-content margin-top-5">
+          <div className="euaID center-content margin-top-5">
             <Table>
               <tbody>
                 <tr>
@@ -93,7 +93,7 @@ const AddUser = ({ currentUser, stateList }) => {
                   <td>
                     <TextInput
                       onBlur={e => setUserId(e.target.value)}
-                      className="form-input"
+                      className="eua-ID form-input"
                       name="eua-id"
                       required={true}
                     />
@@ -107,7 +107,7 @@ const AddUser = ({ currentUser, stateList }) => {
                       placeholder="Select a Role"
                       onSelect={setRoleOnSelect}
                       required={true}
-                      className="form-input"
+                      className="selectRole form-input"
                     />
                   </td>
                 </tr>
@@ -118,7 +118,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     <td>
                       <Searchable
                         options={stateList}
-                        className="form-input"
+                        className="selectState form-input"
                         multiple={true}
                         placeholder="Select a State"
                         required
@@ -138,7 +138,7 @@ const AddUser = ({ currentUser, stateList }) => {
                     <td>
                       <MultiSelect
                         options={stateList}
-                        className="form-input"
+                        className="selectState form-input"
                         value={stateId ? stateId : []}
                         required
                         onChange={setStatesFromSelect}
@@ -154,7 +154,7 @@ const AddUser = ({ currentUser, stateList }) => {
             <div className="action-buttons">
               <Button
                 type="button"
-                className="form-button"
+                className="createUser form-button"
                 onClick={() => createThisUser()}
               >
                 Add User
