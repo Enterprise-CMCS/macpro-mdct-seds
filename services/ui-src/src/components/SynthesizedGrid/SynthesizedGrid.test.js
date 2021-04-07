@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import currentFormMock_64_21E from "../../providerMocks/currentFormMock_64_21E.js";
 const mockStore = configureStore([]);
 
-describe("Test SummaryTab.js", () => {
+describe("Test SynthesizedGrid.js", () => {
   let store;
   let wrapper;
 
