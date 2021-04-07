@@ -1,5 +1,3 @@
-import * as states from "../../../../src/database/initial_data_load/states";
-
 const stateListMock = {
   global: {
     stateList: [
