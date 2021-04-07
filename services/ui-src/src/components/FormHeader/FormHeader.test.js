@@ -14,10 +14,6 @@ describe("Test FormHeader.js - Shallow", () => {
   test("Check the header div exists", () => {
     expect(wrapper.find(".form-header").length).toBe(1);
   });
-
-  test("Check for max FPL div", () => {
-    expect(wrapper.find(".form-max-fpl").length).toBe(1);
-  });
 });
 
 describe("Test FormHeader.js - Mount", () => {

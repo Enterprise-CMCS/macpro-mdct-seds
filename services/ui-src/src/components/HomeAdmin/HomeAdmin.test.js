@@ -24,10 +24,10 @@ describe("Tests for HomeAdmin.js", () => {
       .children()
       .find("a")
       .prop("href");
-    expect(anchor).toEqual("/users");
+    expect(anchor).toEqual("/#/users");
   });
   test("Ensure add user link exists", () => {
     let anchor = wrapper.find(".user-add").children().find("a").prop("href");
-    expect(anchor).toEqual("/users/add");
+    expect(anchor).toEqual("/#/users/add");
   });
 });
