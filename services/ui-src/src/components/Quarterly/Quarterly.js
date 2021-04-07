@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import SortIcon from "@material-ui/icons/ArrowDownward";
@@ -14,17 +14,18 @@ const Quarterly = () => {
   const state = url[2];
   const year = url[3];
   const quarter = url[4];
-  const [stateFormsList, setStateFormsList] = useState();
+  const [stateFormsList, setStateFormsList] = React.useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await getStateForms(state, year, quarter);
-      setStateFormsList(data);
-    }
-    fetchData();
+      async function fetchData() {
+        const data = await getStateForms(state, year, quarter);
+        setStateFormsList(data);
+      }
+
+      fetchData();
   }, [state, year, quarter]);
   // Translate form name from redux into url value
   const getFormSegment = formName => {
@@ -168,7 +169,129 @@ const Quarterly = () => {
       }
     }
   };
-  console.log(stateFormsList);
+  const tempData = [
+    {
+      "status_date": "01-15-2021",
+      "year": 2021,
+      "state_comments": [
+        {
+          "type": "text_multiline",
+          "entry": null
+        }
+      ],
+      "form_id": "5",
+      "last_modified_by": "seed",
+      "created_by": "seed",
+      "validation_percent": 0.03,
+      "form": "GRE",
+      "program_code": "AL",
+      "state_form": "AL-2021-1-GRE",
+      "state_id": "AL",
+      "not_applicable": false,
+      "created_date": "01-15-2021",
+      "form_name": "Gender, Race & Ethnicity",
+      "last_modified": "01-15-2021",
+      "quarter": 1,
+      "status": "Not Started"
+    },
+    {
+      "status_date": "03-02-2021",
+      "year": 2021,
+      "state_comments": [
+        {
+          "type": "text_multiline",
+          "entry": null
+        }
+      ],
+      "form_id": "6",
+      "last_modified_by": "seed",
+      "created_by": "seed",
+      "validation_percent": 0.03,
+      "form": "21PW",
+      "program_code": "AL",
+      "state_form": "AL-2021-1-21PW",
+      "state_id": "AL",
+      "not_applicable": false,
+      "created_date": "03-02-2021",
+      "form_name": "Number of Pregnant Women Served",
+      "last_modified": "03-02-2021",
+      "quarter": 1,
+      "status": "Not Started"
+    },
+    {
+      "status_date": "01-15-2021",
+      "year": 2021,
+      "state_comments": [
+        {
+          "type": "text_multiline",
+          "entry": null
+        }
+      ],
+      "form_id": "3",
+      "last_modified_by": "seed",
+      "created_by": "seed",
+      "validation_percent": 0.03,
+      "form": "64.21E",
+      "program_code": "AL",
+      "state_form": "AL-2021-1-64.21E",
+      "state_id": "AL",
+      "not_applicable": false,
+      "created_date": "01-15-2021",
+      "form_name": "Number of Children Served in Medicaid Expansion Program",
+      "last_modified": "01-15-2021",
+      "quarter": 1,
+      "status": "Not Started"
+    },
+    {
+      "status_date": "01-15-2021",
+      "year": 2021,
+      "state_comments": [
+        {
+          "type": "text_multiline",
+          "entry": null
+        }
+      ],
+      "form_id": "1",
+      "last_modified_by": "seed",
+      "created_by": "seed",
+      "validation_percent": 0.03,
+      "form": "21E",
+      "program_code": "AL",
+      "state_form": "AL-2021-1-21E",
+      "state_id": "AL",
+      "not_applicable": false,
+      "created_date": "01-15-2021",
+      "form_name": "Number of Children Served in Separate CHIP Program",
+      "last_modified": "01-15-2021",
+      "quarter": 1,
+      "status": "Not Started"
+    },
+    {
+      "status_date": "01-15-2021",
+      "year": 2021,
+      "state_comments": [
+        {
+          "type": "text_multiline",
+          "entry": null
+        }
+      ],
+      "form_id": "2",
+      "last_modified_by": "seed",
+      "created_by": "seed",
+      "validation_percent": 0.03,
+      "form": "64.EC",
+      "program_code": "AL",
+      "state_form": "AL-2021-1-64.EC",
+      "state_id": "AL",
+      "not_applicable": false,
+      "created_date": "01-15-2021",
+      "form_name": "Number of Children Served in Medicaid Program",
+      "last_modified": "01-15-2021",
+      "quarter": 1,
+      "status": "Not Started"
+    }
+  ];
+
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
@@ -184,7 +307,7 @@ const Quarterly = () => {
           <h2>{title}</h2>
           <div className="quarterly-report-listing">
             <Card>
-              {stateFormsList ? (
+              {tempData ? (
                 <DataTable
                   sortIcon={<SortIcon />}
                   highlightOnHover
