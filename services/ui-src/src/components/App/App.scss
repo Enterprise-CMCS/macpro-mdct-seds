@@ -1,5 +1,8 @@
 @import "~uswds/dist/css/uswds";
 @import "~react-data-table-component-extensions/dist/index.css";
+@import "../../additional-scss/uswds_overrides";
+
+@import "../../additional-scss/pdf_generator";
 
 @import "../../additional-scss/variables";
 @import "../../additional-scss/mixins";

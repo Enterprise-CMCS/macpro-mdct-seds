@@ -1,9 +1,12 @@
 // *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { renderToString } from "react-dom/server";
 
 // *** 3rd party dependencies
 import { Grid, Button, Card } from "@trussworks/react-uswds";
+
+import { jsPDF } from "jspdf";
 
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -31,6 +34,15 @@ import {
 // *** styles
 import "./Users.scss";
 
+const PdfContent = () => {
+  return (
+    <div className="export-to-pdf">
+      <div className="padding-y-2 border-1 text-center">PDF Example</div>
+      <div className="padding-y-2 text-center">Content goes here</div>
+    </div>
+  );
+};
+
 /**
  * Display all Users with options
  *
@@ -47,8 +59,8 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async format => {
-    let buffer, blob, fileName;
+  const handleExport = async (format, pdfContent = null) => {
+    let buffer, blob, fileName, pdf;
 
     switch (format) {
       case "excel":
@@ -58,13 +70,26 @@ const Users = () => {
         // *** to avoid having to care about MIME type of file we're saving
         buffer = new Uint8Array(buffer.data).buffer;
         fileName = "test.xlsx";
+
+        // *** save file as blob
+        blob = new Blob([buffer]);
+        saveAs(blob, fileName);
         break;
+
+      case "pdf":
+        pdf = new jsPDF({ unit: "px", format: "letter", userUnit: "px" });
+
+        pdf
+          .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
+          .then(() => {
+            pdf.save("test.pdf");
+          });
+        break;
+
       default:
+        // *** no default behavior currently specified
         break;
     }
-    // *** save file as blob
-    blob = new Blob([buffer]);
-    saveAs(blob, fileName);
   };
 
   useEffect(() => {
@@ -220,8 +245,6 @@ const Users = () => {
       data: users,
       exportHeaders: true
     };
-
-    console.log(tableData);
   }
 
   return (
@@ -238,7 +261,7 @@ const Users = () => {
             <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
           </Button>
           <Button
-            className="margin-left-5 action-button"
+            className="margin-left-3 action-button"
             outline={true}
             onClick={async () => await handleExport("excel")}
           >
@@ -247,9 +270,9 @@ const Users = () => {
           </Button>
 
           <Button
-            className="margin-left-5 action-button"
+            className="margin-left-3 action-button"
             outline={true}
-            onClick={async () => await handleExport("pdf")}
+            onClick={async () => await handleExport("pdf", <PdfContent />)}
           >
             PDF
             <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
