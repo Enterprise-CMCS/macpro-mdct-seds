@@ -5,12 +5,13 @@ import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
-  // Get the question ID and label from the question
-  const { label, question } = questionData;
+  // Get the question ID, label and question type from the question
+  const { label, question, type } = questionData;
   // Get the rows from the answers table
   const { rows, answer_entry } = answerData;
 
   const questionNumber = Number.parseInt(question.split("-").slice(-1));
+  const questionType = type;
 
   // Turn the age range into a grammatically correct variable in the label
   const ageVariable = questionVariables[rangeID];
@@ -30,13 +31,22 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
           answerData={answerData}
         />
       );
-    } else if (questionNumber > 0) {
+    } else if (questionNumber > 0 && questionType === "datagridwithtotals") {
       tempComponent = (
         <GridWithTotals
           questionID={answer_entry}
           gridData={sortedRows}
           disabled={disabled}
         />
+      );
+    }
+    else if (questionNumber > 0 && questionType === "gregridwithtotals") {
+      tempComponent = (
+          <GREGridWithTotals
+              questionID={answer_entry}
+              gridData={sortedRows}
+              disabled={disabled}
+          />
       );
     }
   }
