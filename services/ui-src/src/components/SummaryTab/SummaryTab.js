@@ -8,7 +8,9 @@ import PropTypes from "prop-types";
 const SummaryTab = ({ questions, answers, tempVar }) => {
   return (
     <div className="summary-tab">
-      <h3>Summary:</h3>
+      <div className="age-range-description">
+        <h3>Summary:</h3>
+      </div>
 
       {questions.map((singleQuestion, idx) => {
         // Initialize newRows

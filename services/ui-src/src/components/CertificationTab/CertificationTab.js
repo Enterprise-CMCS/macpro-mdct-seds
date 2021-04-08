@@ -59,7 +59,10 @@ const CertificationTab = ({
             </div>
           ) : null}
 
-          <h3> Certify and Submit</h3>
+          <div className="age-range-description">
+            <h3> Certify and Submit:</h3>
+          </div>
+
           {isFinal ? (
             <>
               <b> Thank you for submitting your SEDS data!</b>
