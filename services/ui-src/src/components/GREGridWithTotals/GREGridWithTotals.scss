@@ -1,0 +1,33 @@
+$mdct-gray: #a9aeb1;
+$mdct-blue: #1a4480;
+$mdct-light-blue: #73b3e7;
+$mdct-white: #fff;
+
+.grid-header {
+  border: solid 1px #000;
+  width: 20%;
+  padding: 1em;
+  text-align: center;
+}
+
+.grid-with-totals {
+  th {
+    font-weight: bold;
+    background: $mdct-gray !important;
+
+    span {
+      display: block;
+      width: 70px;
+    }
+  }
+
+  .total-header-cell {
+    background: $mdct-blue !important;
+    color: $mdct-white;
+  }
+
+  .total-column {
+    background: $mdct-light-blue;
+    font-weight: bold;
+  }
+}
