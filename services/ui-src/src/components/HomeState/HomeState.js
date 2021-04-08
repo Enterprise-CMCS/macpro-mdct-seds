@@ -45,6 +45,7 @@ const HomeState = () => {
     loadUserData();
   }, []);
 
+  // Create an array of unique years
   let uniqueYears;
   if (formData) {
     uniqueYears = Array.from(new Set(formData.map(a => a.year))).map(year => {
@@ -54,10 +55,11 @@ const HomeState = () => {
 
   let accordionItems = [];
 
+  // Loop through years to build quarters
   for (const year in uniqueYears) {
     let quarters = [];
 
-    // Loop through all formData and get quarters
+    // Loop through all formData and get quarters if year matches
     for (const form in formData) {
       // If years match, add quarter to array
       if (formData[form].year === uniqueYears[year].year) {
@@ -93,7 +95,7 @@ const HomeState = () => {
     );
 
     // If current year, set expanded to true
-    let expanded = true;
+    let expanded = false;
     let currentDate = new Date();
     if (uniqueYears[year].year === currentDate.getFullYear()) {
       expanded = true;
@@ -105,7 +107,7 @@ const HomeState = () => {
       description: "Quarters for " + uniqueYears[year].year,
       title: uniqueYears[year].year,
       content: quartersOutput,
-      expanded: true
+      expanded: expanded
     };
 
     accordionItems.push(item);
@@ -119,7 +121,9 @@ const HomeState = () => {
           to view available reports.
         </p>
         <div className="quarterly-report-list">
-          <Accordion bordered={true} items={accordionItems} />
+          {accordionItems.length !== 0 ? (
+            <Accordion bordered={true} items={accordionItems} />
+          ) : null}
         </div>
       </Grid>
     </Grid>
