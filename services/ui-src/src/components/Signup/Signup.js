@@ -82,7 +82,7 @@ export default function Signup() {
 
   function renderConfirmationForm() {
     return (
-      <form onSubmit={handleConfirmationSubmit}>
+      <form onSubmit={handleConfirmationSubmit} >
         <FormGroup controlId="confirmationCode" bsSize="large">
           <ControlLabel>Confirmation Code</ControlLabel>
           <FormControl
@@ -108,7 +108,7 @@ export default function Signup() {
 
   function renderForm() {
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="signupForm" data-testid="signup">
         <FormGroup controlId="firstName" bsSize="large">
           <ControlLabel>First Name</ControlLabel>
           <FormControl
@@ -166,7 +166,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="Signup react-transition flip-in-y">
+    <div className="Signup react-transition flip-in-y" data-testid="parentComponent">
       {newUser === null ? renderForm() : renderConfirmationForm()}
     </div>
   );
