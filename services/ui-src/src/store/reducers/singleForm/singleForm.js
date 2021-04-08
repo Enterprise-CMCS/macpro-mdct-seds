@@ -13,6 +13,8 @@ import {
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../../actions/certify";
 
+import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
+
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
@@ -133,6 +135,14 @@ export default (state = initialState, action) => {
         status: "provisional",
         last_modified_by: action.username,
         last_modified: new Date().toString()
+      };
+    case SUMMARY_NOTES_SUCCESS:
+      return {
+        ...state,
+        statusData: {
+          ...state.statusData,
+          state_comments: action.tempSummaryNotes
+        }
       };
     default:
       return state;

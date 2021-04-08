@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Textarea } from "@trussworks/react-uswds";
+import { saveSummaryNotes } from "../../store/actions/statusData";
 
-const SummaryTab = ({ questions, answers, tempVar }) => {
+const SummaryTab = ({ questions, answers, statusData, saveSummaryNotes }) => {
+  const [summaryNotes, setSummaryNotes] = useState([]);
+  let currentSummaryNotes;
+
+  // Summary tab will load before statusData is populated and this prevents an error
+  if (statusData.state_comments !== undefined) {
+    currentSummaryNotes = statusData.state_comments[0].entry;
+  }
+
+  // Set the initial state of the summary notes
+  useEffect(() => {
+    setSummaryNotes(currentSummaryNotes);
+  }, [currentSummaryNotes]);
+
+  // Update summary notes object locally and in redux
+  const updateTempSummaryNotes = e => {
+    setSummaryNotes(e.target.value);
+    saveSummaryNotes(e.target.value);
+  };
+
   return (
     <div className="summary-tab">
       <h3>Summary:</h3>
@@ -82,19 +103,36 @@ const SummaryTab = ({ questions, answers, tempVar }) => {
           />
         );
       })}
+      <label htmlFor="summaryNotesInput">
+        Add any notes here to accompany the form submission
+      </label>
+      <Textarea
+        id="summaryNotesInput"
+        name="summaryNotesInput"
+        value={summaryNotes}
+        type="text"
+        onChange={e => updateTempSummaryNotes(e)}
+        disabled={false}
+        className="form-input"
+      />
     </div>
   );
 };
 
 SummaryTab.propTypes = {
   questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired
+  answers: PropTypes.array.isRequired,
+  statusData: PropTypes.array.isRequired
 };
 
 const mapState = state => ({
   answers: state.currentForm.answers,
   questions: state.currentForm.questions,
-  tempVar: state.currentForm
+  statusData: state.currentForm.statusData
 });
 
-export default connect(mapState)(SummaryTab);
+const mapDispatch = {
+  saveSummaryNotes
+};
+
+export default connect(mapState, mapDispatch)(SummaryTab);
