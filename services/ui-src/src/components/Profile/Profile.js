@@ -24,8 +24,6 @@ export default function Profile({ user }) {
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
-
-
   useEffect(() => {
     const onLoad = async () => {
       try {
@@ -47,7 +45,7 @@ export default function Profile({ user }) {
         onError(e);
       }
     };
-    
+
     onLoad();
   });
 
