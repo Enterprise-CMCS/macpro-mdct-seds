@@ -6,10 +6,12 @@ import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E";
 import configureStore from "redux-mock-store";
 import FormPage from "./FormPage";
 import { storeFactory, checkProps } from "../../provider-mocks/testUtils";
+import checkPropTypes from "check-prop-types";
 
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import TabContainer from "../TabContainer/TabContainer";
+import { wrap } from "yargs";
 
 const shallowSetup = (initialState = {}, props = {}, path = "") => {
   const setupProps = { ...defaultProps, ...props };
@@ -21,7 +23,11 @@ const shallowSetup = (initialState = {}, props = {}, path = "") => {
 const mountedSetup = (initialState = {}, props = {}, path = "") => {
   const setupProps = { ...defaultProps, ...props };
   const store = storeFactory(initialState);
-  return mount(<FormPage store={store} path={path} {...setupProps} />);
+  return mount(
+    <Provider store={store}>
+      <FormPage path={path} {...setupProps} />
+    </Provider>
+  );
 };
 
 // The props this component requires in order to render
@@ -59,36 +65,50 @@ describe("FormPage component- shallow render includes classNames", () => {
 });
 
 describe("FormPage component- incoming props", () => {
-  const wrapper = shallowSetup(fullStoreMock);
-
-  test("Accurate props should return no error", () => {
-    expect(checkProps(FormPage, defaultProps)).toBe(undefined);
+  let wrapper;
+  beforeEach(() => {
+    wrapper = mountedSetup(fullStoreMock);
   });
 
-  test("Inaccurate prop types should return an error (statusData)", () => {
-    const badProps = {
-      statusData: "I should be an object!",
-      getForm: function () {
-        return;
-      }
-    };
-    expect(checkProps(FormPage, badProps)).toBe(
-      "Failed prop type: Invalid prop `statusData` of type `string` supplied to `FormPage`, expected `object`."
-    );
-  });
-  test("Inaccurate prop types should return an error (getForm)", () => {
-    const badProps = {
-      statusData: { last_modified: "01-15-2021" },
-      getForm: "I should be a function!"
-    };
-    expect(checkProps(FormPage, badProps)).toBe(
-      "Failed prop type: Invalid prop `getForm` of type `string` supplied to `FormPage`, expected `function`."
-    );
-  });
-  test("Should include a statusData prop as an object", () => {});
+  //   const wrapper = shallowSetup(fullStoreMock);
 
-  test("Should include a getForm prop as a function", () => {});
-  test("Accesses params from the URL", () => {});
+  //   test("Accurate props should return no error", () => {
+  //     const propsErr = checkProps(FormPage, defaultProps);
+  //     expect(propsErr).toBeUndefined();
+  //   });
+
+  //   test("Inaccurate prop types should return an error (statusData)", () => {
+  //     const badProps = {
+  //       statusData: "I should be an object!",
+  //       getForm: function () {
+  //         return;
+  //       }
+  //     };
+  //     const propsErr = checkProps(FormPage, badProps);
+  //     expect(propsErr).toBeUndefined();
+  //   });
+
+  it("Should not render when given no props", () => {
+    const found = wrapper.find(".form-footer");
+    expect(found.length).toBe(0);
+  });
+
+  //   test("Inaccurate prop types should return an error (getForm)", () => {
+  //     const badProps = {
+  //       statusData: { last_modified: "01-15-2021" },
+  //       getForm: "I should be a function!"
+  //     };
+  //     expect(checkProps(FormPage, badProps)).toBe(
+  //       "Failed prop type: Invalid prop `getForm` of type `string` supplied to `FormPage`, expected `function`."
+  //     );
+  //   });
+  //   test("Should include a statusData prop as an object", () => {
+
+  //   });
+
+  //   test("Should include a getForm prop as a function", () => {
+  //     expect(wrapper.prop("statusData")).toEqual(null);
+  //   });
 });
 
 describe("FormPage component- Child Components", () => {
