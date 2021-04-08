@@ -210,6 +210,15 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  getStateYearsQuarters:
+    handler: handlers/forms/getFormYearsQuarters.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: forms/{stateId}
+          method: get
+          cors: true
+          authorizer: aws_iam
   getFormTypes:
     handler: handlers/forms/get/getFormTypes.main
     role: LambdaApiRole

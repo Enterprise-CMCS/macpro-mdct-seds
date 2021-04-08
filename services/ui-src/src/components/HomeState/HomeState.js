@@ -1,43 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
-import {getUserById, obtainUserByEmail} from "../../libs/api";
+import { obtainUserByEmail, getFormYearsQuarters } from "../../libs/api";
 import { useParams } from "react-router";
-import {Auth} from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 const HomeState = () => {
-  let { id } = useParams; 
-    // Set up local state
+  let { id } = useParams;
+  // Set up local state
   const [user, setUser] = useState();
   const [state, setState] = useState();
-  
+  const [formData, setFormData] = useState();
+
   // Get User data
   const loadUserData = async () => {
-
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
     const currentUserInfo = await obtainUserByEmail({
       email: AuthUserInfo.attributes.email
     });
 
     // Set temporary state ONLY for debugging
-    currentUserInfo.Items[0].states=["MA"];
+    currentUserInfo.Items[0].states = ["AL"];
 
     setUser(currentUserInfo);
-    setState(currentUserInfo.Items[0].states[0])
-  }
-  useEffect(() => {
-    loadUserData().then();
-  }, []);
-  // Update user object
-  const updateLocalUser = (e, field) => {
-    let tempUser = { ...user };
-    let response;
+    setState(currentUserInfo.Items[0].states[0]);
 
-    tempUser[field] = response;
-    setUser(tempUser);
+    // Get list of state forms by year and quarter
+    const forms = await getFormYearsQuarters({ state: "AL" });
+    setFormData(forms);
   };
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
-  console.log(state, "kody the state is here lets sing a song thats really long");
-  // TODO: Pull years and quarters
   // define years and months
   const date = new Date();
   let fiscalYear = date.getFullYear();
@@ -78,7 +72,7 @@ const HomeState = () => {
   }
 
   dateMachine(fiscalYear, month);
-  
+
   let accordionItems = [];
   for (const year in years) {
     // Build node with link to each quarters reports
@@ -87,7 +81,7 @@ const HomeState = () => {
         {years[year].quarters.map(element => {
           return (
             <li key={`${state}-${year}-${element}`}>
-              <Link href={`/forms/${state}/${years[year].year}/${element}`}>
+              <Link href={`/#/forms/${state}/${years[year].year}/${element}`}>
                 Quarter {element}
               </Link>
             </li>
@@ -113,6 +107,7 @@ const HomeState = () => {
   return (
     <Grid row className="page-home-state">
       <Grid col={12}>
+        {console.log("zzzFormData", formData)}
         <p>
           Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
           to view available reports.
