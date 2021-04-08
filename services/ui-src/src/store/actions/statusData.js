@@ -4,7 +4,7 @@ export const SUMMARY_NOTES_FAILURE = "SUMMARY_NOTES_FAILURE";
 
 // ACTION CREATORS
 export const setSummaryNotes = summaryNotes => {
-  const tempSummaryNotes = [
+  const tempStateComments = [
     {
       type: "text_multiline",
       entry: summaryNotes
@@ -12,7 +12,7 @@ export const setSummaryNotes = summaryNotes => {
   ];
   return {
     type: SUMMARY_NOTES_SUCCESS,
-    tempSummaryNotes
+    tempStateComments: tempStateComments
   };
 };
 

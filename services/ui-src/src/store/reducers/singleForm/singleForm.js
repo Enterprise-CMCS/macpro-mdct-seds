@@ -141,7 +141,7 @@ export default (state = initialState, action) => {
         ...state,
         statusData: {
           ...state.statusData,
-          state_comments: action.tempSummaryNotes
+          state_comments: action.tempStateComments
         }
       };
     default:
