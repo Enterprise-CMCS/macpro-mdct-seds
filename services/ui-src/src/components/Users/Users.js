@@ -3,16 +3,20 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 
-// *** 3rd party dependencies
-import { Grid, Button, Card } from "@trussworks/react-uswds";
-
+// *** 3rd party functional dependencies
+import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
 
+// *** 3rd party component dependencies
+// * trussworks
+import { Grid, Button, Card } from "@trussworks/react-uswds";
+
+// * react-data-table-compnent
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 
+// * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import {
   faArrowDown,
   faUserPlus,
@@ -21,8 +25,6 @@ import {
   faUserCheck,
   faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
-
-import { saveAs } from "file-saver";
 
 // *** API / data / etc
 import {
@@ -255,14 +257,14 @@ const Users = () => {
           <Button
             onClick={() => handleAddNewUser()}
             className="action-button"
-            outline={true}
+            primary="true"
           >
             Add New User
             <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
           </Button>
           <Button
             className="margin-left-3 action-button"
-            outline={true}
+            primary="true"
             onClick={async () => await handleExport("excel")}
           >
             Excel
@@ -271,7 +273,7 @@ const Users = () => {
 
           <Button
             className="margin-left-3 action-button"
-            outline={true}
+            primary="true"
             onClick={async () => await handleExport("pdf", <PdfContent />)}
           >
             PDF
