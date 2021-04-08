@@ -21,20 +21,13 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   // Call the API and set questions, answers and status data in redux based on URL parameters
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await getForm(formattedStateName, year, quarterInt, formattedFormName);
-    };
-
-    fetchData();
+  useEffect(() => {
+    getForm(formattedStateName, year, quarterInt, formattedFormName);
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (
     <>
-      <GridContainer
-        className="form-header form-header-main"
-        data-testid="FormPage"
-      >
+      <GridContainer className="form-header" data-testid="FormPage">
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
@@ -43,8 +36,10 @@ const FormPage = ({ getForm, statusData }) => {
         />
       </GridContainer>
 
-      <GridContainer className="tab-container">
-        <TabContainer quarter={quarter} />
+      <GridContainer>
+        <div className="tab-container">
+          <TabContainer quarter={quarter} />
+        </div>
       </GridContainer>
 
       <GridContainer className="form-footer">
