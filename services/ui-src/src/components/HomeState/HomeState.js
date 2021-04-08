@@ -5,7 +5,6 @@ import { Auth } from "aws-amplify";
 
 const HomeState = () => {
   // Set up local state
-  const [user, setUser] = useState();
   const [state, setState] = useState();
   const [formData, setFormData] = useState();
 
@@ -21,7 +20,6 @@ const HomeState = () => {
     currentUserInfo.Items[0].states = ["MD"];
 
     // Save to local state
-    setUser(currentUserInfo);
     setState(currentUserInfo.Items[0].states[0]);
 
     // Get list of all state forms
@@ -38,6 +36,7 @@ const HomeState = () => {
       } else if (a.year > b.year) {
         return -1;
       }
+      return false;
     });
 
     setFormData(forms);
@@ -76,11 +75,12 @@ const HomeState = () => {
       );
     }
 
+    // Build output for each accordion item
     let quartersOutput = (
       <ul className="quarterly-items">
         {uniqueQuarters.map(element => {
           return (
-            <li>
+            <li key={`${element.quarter}`}>
               <Link
                 href={`/#/forms/${state}/${uniqueYears[year].year}/${element.quarter}`}
               >
@@ -92,29 +92,28 @@ const HomeState = () => {
       </ul>
     );
 
-    let b;
-
     // If current year, set expanded to true
-    let expanded = false;
+    let expanded = true;
     let currentDate = new Date();
     if (uniqueYears[year].year === currentDate.getFullYear()) {
       expanded = true;
     }
+
     // Build single item
     let item = {
       id: uniqueYears[year].year,
       description: "Quarters for " + uniqueYears[year].year,
       title: uniqueYears[year].year,
       content: quartersOutput,
-      expanded: expanded
+      expanded: true
     };
+
     accordionItems.push(item);
   }
 
   return (
     <Grid row className="page-home-state">
       <Grid col={12}>
-        {console.log("zzzFormData", formData)}
         <p>
           Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
           to view available reports.
