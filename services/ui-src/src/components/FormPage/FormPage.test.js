@@ -1,13 +1,8 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
-import { Provider } from "react-redux";
+import { shallow } from "enzyme";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E";
-import configureStore from "redux-mock-store";
 import FormPage from "./FormPage";
-import { storeFactory, checkProps } from "../../provider-mocks/testUtils";
-import checkPropTypes from "check-prop-types";
-
+import { storeFactory } from "../../provider-mocks/testUtils";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 
@@ -25,15 +20,6 @@ const shallowSetup = (initialState = {}, props = {}, path = "") => {
   return shallow(<FormPage store={store} path={path} {...setupProps} />)
     .dive()
     .dive();
-};
-const mountedSetup = (initialState = {}, props = {}, path = "") => {
-  const setupProps = { ...defaultProps, ...props };
-  const store = storeFactory(initialState);
-  return mount(
-    <Provider store={store}>
-      <FormPage path={path} {...setupProps} />
-    </Provider>
-  );
 };
 
 // Mock the useParams react-router-dom function
@@ -62,78 +48,22 @@ describe("FormPage component- shallow render includes classNames", () => {
   });
 });
 
-describe("FormPage component- incoming props", () => {
-  //   let wrapper;
-  //   beforeEach(() => {
-  //     wrapper = mountedSetup(fullStoreMock);
-  //   });
+describe("FormPage component- props", () => {
+  const tempStore = storeFactory(fullStoreMock);
+  const wrapper = shallow(<FormPage store={tempStore} {...defaultProps} />);
 
-  //   const wrapper = shallowSetup(fullStoreMock);
+  describe("FormPage component- accurate incoming props", () => {
+    // creating a true shallow wrapper so that the props are accessible
 
-  //   test("Accurate props should return no error", () => {
-  //     const propsErr = checkProps(FormPage, defaultProps);
-  //     expect(propsErr).toBeUndefined();
-  //   });
-
-  //   test("Inaccurate prop types should return an error (statusData)", () => {
-  //     const badProps = {
-  //       statusData: "I should be an object!",
-  //       getForm: function () {
-  //         return;
-  //       }
-  //     };
-  //     const propsErr = checkProps(FormPage, badProps);
-  //     expect(propsErr).toBeUndefined();
-  //   });
-
-  //   it("Should not render when given no props", () => {
-  //     const someProps = {
-  //       statusData: 9999,
-  //       getForm: function () {
-  //         return;
-  //       }
-  //     };
-  //     const propError = checkPropTypes(
-  //       FormPage.propTypes,
-  //       {},
-  //       "prop",
-  //       FormPage.name
-  //     );
-  //     expect(propError).toBeUndefined();
-  //   });
-
-  //     test("Inaccurate prop types should return an error (getForm)", () => {
-  //       const badProps = {
-  //         statusData: { last_modified: "01-15-2021" },
-  //         getForm: "I should be a function!"
-  //       };
-  //       expect(checkProps(FormPage, badProps)).toBe(
-  //         "Failed prop type: Invalid prop `getForm` of type `string` supplied to `FormPage`, expected `function`."
-  //       );
-  //     });
-  // const defaultProps = {
-  //     statusData: { last_modified: "01-15-2021" },
-  //     getForm: function () {
-  //       return;
-  //     }
-  //   };
-
-  test("Should include a statusData prop as an object", () => {
-    const tempStore = storeFactory(fullStoreMock);
-    const trueShallowWrapper = shallow(
-      <FormPage store={tempStore} {...defaultProps} />
-    );
-
-    console.log(
-      "PROPS??? \n\n\n",
-      trueShallowWrapper.props().children.props.statusData
-    );
-    expect(trueShallowWrapper.props().children.props.statusData).toEqual("boo");
+    test("Should include a statusData prop as an object", () => {
+      expect(typeof wrapper.props().children.props.statusData).toEqual(
+        "object"
+      );
+    });
+    test("Should include a getForm prop as a function", () => {
+      expect(typeof wrapper.props().children.props.getForm).toEqual("function");
+    });
   });
-
-  // test("Should include a getForm prop as a function", () => {
-  //   expect(wrapper.prop("statusData")).toEqual(null);
-  // });
 });
 
 describe("FormPage component- Child Components", () => {
@@ -174,12 +104,21 @@ describe("FormPage component- Child Components", () => {
   });
 });
 
-// if the store starts empty, does the rendering of FormPage populate it??
-
-describe("FormPage component- useEffect", () => {
-  test("Populates the redux store, based on the params", () => {});
-  test("Triggers useEffect at least once", () => {});
-});
+// jest.mock("react-router-dom", () => ({
+//     ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+//     useParams: () => ({
+//       state: "AL",
+//       year: "2021",
+//       quarter: "01",
+//       formName: "21E"
+//     })
+//   }));
+// const defaultProps = {
+//   statusData: { last_modified: "01-15-2021" },
+//   getForm: function () {
+//     return;
+//   }
+// };
 
 // component.debug() will show you what its getting
 

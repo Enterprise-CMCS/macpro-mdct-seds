@@ -21,7 +21,7 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   // Call the API and set questions, answers and status data in redux based on URL parameters
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
       await getForm(formattedStateName, year, quarterInt, formattedFormName);
     };

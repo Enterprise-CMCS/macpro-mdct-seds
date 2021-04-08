@@ -11,15 +11,3 @@ export const findByTestAttribute = (wrapper, val) => {
 export const storeFactory = initialState => {
   return createStore(reducers, initialState, applyMiddleware(thunk));
 };
-
-export const checkProps = (component, conformingProps) => {
-  const propError = checkPropTypes(
-    component.propTypes,
-    conformingProps,
-    "prop",
-    component.name
-  );
-  return propError;
-};
-
-// REMOVE CHECK-PROP-TYPE PACKAGE
