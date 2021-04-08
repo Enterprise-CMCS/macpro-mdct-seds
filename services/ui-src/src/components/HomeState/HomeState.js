@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
-import { useParams } from "react-router";
 import { Auth } from "aws-amplify";
 
 const HomeState = () => {
-  let { id } = useParams;
   // Set up local state
   const [user, setUser] = useState();
   const [state, setState] = useState();
@@ -13,98 +11,106 @@ const HomeState = () => {
 
   // Get User data
   const loadUserData = async () => {
+    // Get user data via email from amplify
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
     const currentUserInfo = await obtainUserByEmail({
       email: AuthUserInfo.attributes.email
     });
 
     // Set temporary state ONLY for debugging
-    currentUserInfo.Items[0].states = ["AL"];
+    currentUserInfo.Items[0].states = ["MD"];
 
+    // Save to local state
     setUser(currentUserInfo);
     setState(currentUserInfo.Items[0].states[0]);
 
-    // Get list of state forms by year and quarter
-    const forms = await obtainAvailableForms({ stateId: "AL" });
-    console.log("zzzForms", forms);
+    // Get list of all state forms
+    const forms = await obtainAvailableForms({
+      stateId: currentUserInfo.Items[0].states[0]
+    });
+
+    // Sort forms descending by year and then quarter
+    forms.sort(function (a, b) {
+      if (a.year === b.year) {
+        return a.quarter - b.quarter;
+      } else if (a.year < b.year) {
+        return 1;
+      } else if (a.year > b.year) {
+        return -1;
+      }
+    });
+
     setFormData(forms);
   };
   useEffect(() => {
     loadUserData();
   }, []);
 
-  // define years and months
-  const date = new Date();
-  let fiscalYear = date.getFullYear();
-  let month = date.getMonth() + 1;
-  // create array years with subarrays year and quarters
-  // const years = [...year, ...quarters];
-  const years = [];
-  // for loops to populate subarrays
-  function dateMachine(fiscalYear, month) {
-    for (let i = fiscalYear; i >= 2018; i--) {
-      let currentYear;
-      let currentQuarters;
-
-      if (i === fiscalYear) {
-        currentYear = fiscalYear;
-        if (month > 9) {
-          currentYear = fiscalYear + 1;
-          currentQuarters = [1];
-        } else if (month < 4) {
-          currentQuarters = [1, 2];
-        } else if (month > 3 && month < 7) {
-          currentQuarters = [1, 2, 3];
-        } else {
-          currentQuarters = [1, 2, 3, 4];
-        }
-        years.push({
-          year: currentYear,
-          quarters: currentQuarters
-        });
-      } else {
-        years.push({
-          year: i,
-          quarters: [1, 2, 3, 4]
-        });
-      }
-    }
-    return years;
+  let uniqueYears;
+  if (formData) {
+    uniqueYears = Array.from(new Set(formData.map(a => a.year))).map(year => {
+      return formData.find(a => a.year === year);
+    });
   }
 
-  dateMachine(fiscalYear, month);
-
   let accordionItems = [];
-  for (const year in years) {
-    // Build node with link to each quarters reports
-    let quarters = (
+
+  for (const year in uniqueYears) {
+    let quarters = [];
+
+    // Loop through all formData and get quarters
+    for (const form in formData) {
+      // If years match, add quarter to array
+      if (formData[form].year === uniqueYears[year].year) {
+        quarters.push(formData[form]);
+      }
+    }
+
+    // Remove duplicate quarters
+    let uniqueQuarters;
+    if (quarters) {
+      uniqueQuarters = Array.from(new Set(quarters.map(a => a.quarter))).map(
+        quarter => {
+          return quarters.find(a => a.quarter === quarter);
+        }
+      );
+    }
+
+    let quartersOutput = (
       <ul className="quarterly-items">
-        {years[year].quarters.map(element => {
+        {uniqueQuarters.map(element => {
           return (
-            <li key={`${state}-${year}-${element}`}>
-              <Link href={`/#/forms/${state}/${years[year].year}/${element}`}>
-                Quarter {element}
+            <li>
+              <Link
+                href={`/#/forms/${state}/${uniqueYears[year].year}/${element.quarter}`}
+              >
+                Quarter {`${element.quarter}`}
               </Link>
             </li>
           );
         })}
       </ul>
     );
+
+    let b;
+
     // If current year, set expanded to true
     let expanded = false;
-    if (years[year].year === date.getFullYear()) {
+    let currentDate = new Date();
+    if (uniqueYears[year].year === currentDate.getFullYear()) {
       expanded = true;
     }
     // Build single item
     let item = {
-      id: years[year].year,
-      description: "Quarters for " + years[year].year,
-      title: years[year].year,
-      content: quarters,
+      id: uniqueYears[year].year,
+      description: "Quarters for " + uniqueYears[year].year,
+      title: uniqueYears[year].year,
+      content: quartersOutput,
       expanded: expanded
     };
     accordionItems.push(item);
   }
+
   return (
     <Grid row className="page-home-state">
       <Grid col={12}>
