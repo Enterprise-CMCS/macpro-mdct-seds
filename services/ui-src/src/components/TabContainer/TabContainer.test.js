@@ -39,7 +39,7 @@ describe("TabContainer tests", () => {
     expect(tabs.at(6).text()).toMatch("Certification");
   });
 
-  test("Check first tab header value", () => {
+  test("Check tab header values", () => {
     let tabControl;
 
     // Get all tab lists
