@@ -25,4 +25,34 @@ describe("Test LoaderButton.js", () => {
     expect(getByTestId("parentComponent")).toBeVisible();
     expect(getByTestId("signup")).toBeVisible();
   });
+  test("Check for First Name input box", () => {
+    useContextMock.mockReturnValue(true);
+    const { getByLabelText } = render(<Signup />);
+    const formControl = getByLabelText("First Name")
+    expect(formControl.type).toContain("firstname");
+  });
+  test("Check for Last Name input box", () => {
+    useContextMock.mockReturnValue(true);
+    const { getByLabelText } = render(<Signup />);
+    const formControl = getByLabelText("Last Name")
+    expect(formControl.type).toContain("lastname");
+  });
+  test("Check for Email input box", () => {
+    useContextMock.mockReturnValue(true);
+    const { getByLabelText } = render(<Signup />);
+    const formControl = getByLabelText("Email")
+    expect(formControl.type).toContain("email");
+  });
+  test("Check for Password input box", () => {
+    useContextMock.mockReturnValue(true);
+    const { getByLabelText } = render(<Signup />);
+    const formControl = getByLabelText("Password")
+    expect(formControl.type).toContain("password");
+  });
+  test("Check for Confirm Password input box", () => {
+    useContextMock.mockReturnValue(true);
+    const { getByLabelText } = render(<Signup />);
+    const formControl = getByLabelText("Confirm Password")
+    expect(formControl.type).toContain("password");
+  });
 });
