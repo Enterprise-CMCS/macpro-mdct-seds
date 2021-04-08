@@ -167,10 +167,10 @@ const EditUser = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user react-transition fade-in">
+    <div className="edit-user react-transition fade-in" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
-        <Link to="/users" className="text-bold">
+        <Link href="/#/users" className="userListLink text-bold">
           &laquo; Back to User List
         </Link>
       </div>
@@ -178,7 +178,7 @@ const EditUser = ({ stateList }) => {
         <div className="center-content">
           <Table>
             <tbody>
-              <tr>
+              <tr className="userName">
                 <th>Username:</th>
                 <td>
                   <TextInput
