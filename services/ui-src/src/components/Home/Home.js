@@ -26,8 +26,7 @@ const Home = ({ user }) => {
         content = <HomeBus />;
         break;
       case "admin":
-        // content = <HomeAdmin />;
-        content = <HomeState />;
+        content = <HomeAdmin />;
         break;
       default:
         content = <Unauthorized />;

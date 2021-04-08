@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Grid, Link } from "@trussworks/react-uswds";
+import { Accordion, Link } from "@trussworks/react-uswds";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
 
@@ -114,19 +114,17 @@ const HomeState = () => {
   }
 
   return (
-    <Grid row className="page-home-state">
-      <Grid col={12}>
-        <p>
-          Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
-          to view available reports.
-        </p>
-        <div className="quarterly-report-list">
-          {accordionItems.length !== 0 ? (
-            <Accordion bordered={true} items={accordionItems} />
-          ) : null}
-        </div>
-      </Grid>
-    </Grid>
+    <div className="page-home-state">
+      <p>
+        Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
+        to view available reports.
+      </p>
+      <div className="quarterly-report-list">
+        {accordionItems.length !== 0 ? (
+          <Accordion bordered={true} items={accordionItems} />
+        ) : null}
+      </div>
+    </div>
   );
 };
 

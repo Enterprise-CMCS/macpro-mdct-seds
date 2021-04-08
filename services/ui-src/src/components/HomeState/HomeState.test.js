@@ -1,29 +1,23 @@
 import React from "react";
 import HomeState from "./HomeState";
-import { render } from "@testing-library/react";
-
-let realUseContext;
-let useContextMock;
-
-// *** set up mocks
-beforeEach(() => {
-  realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
-});
-
-// *** garbage clean up (mocks)
-afterEach(() => {
-  React.useContext = realUseContext;
-});
+import { mount } from "enzyme";
 
 describe("Test HomeState.js", () => {
-  test("Check the main element, with classname Home, exists", () => {
-    useContextMock.mockReturnValue(true);
+  let wrapper;
 
-    const mockUser = { attributes: { "states": "Pa" } };
+  beforeEach(() => {
+    wrapper = mount(<HomeState />);
+  });
 
-    const { getByTestId } = render(<HomeState states={mockUser} />);
+  test("Check the main element exists", () => {
+    expect(wrapper.find(".page-home-state").length).toBe(1);
+  });
 
-    expect(getByTestId("page-home-state")).toBeVisible();
+  test("Check the main element exists", () => {
+    expect(
+      wrapper.find(".page-home-state").children().find("p").at(0).text()
+    ).toMatch(
+      "Welcome to SEDS! Please select a Federal Fiscal Year and quarter below to view available reports."
+    );
   });
 });
