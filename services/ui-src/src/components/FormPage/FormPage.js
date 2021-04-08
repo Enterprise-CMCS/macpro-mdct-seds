@@ -27,7 +27,10 @@ const FormPage = ({ getForm, statusData }) => {
 
   return (
     <>
-      <GridContainer className="form-header" data-testid="FormPage">
+      <GridContainer
+        className="form-header form-header-main"
+        data-testid="FormPage"
+      >
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
