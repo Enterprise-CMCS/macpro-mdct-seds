@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
 import { getUserById, updateUser } from "../../libs/api";
 import Dropdown from "react-dropdown";
-import { Table, TextInput, Button } from "@trussworks/react-uswds";
+import { Table, TextInput, Button, Link } from "@trussworks/react-uswds";
 import "react-dropdown/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
@@ -22,7 +22,6 @@ import "./EditUser.scss";
 const EditUser = ({ stateList }) => {
   // Get params from url
   let { id } = useParams();
-  console.log("useParams: ", useParams());
 
   // Set up local state
   const [user, setUser] = useState();
@@ -171,7 +170,7 @@ const EditUser = ({ stateList }) => {
     <div className="edit-user react-transition fade-in" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
-        <Link to="/users" className="text-bold">
+        <Link href="/#/users" className="userListLink text-bold">
           &laquo; Back to User List
         </Link>
       </div>
@@ -179,7 +178,7 @@ const EditUser = ({ stateList }) => {
         <div className="center-content">
           <Table>
             <tbody>
-              <tr>
+              <tr className="userName">
                 <th>Username:</th>
                 <td>
                   <TextInput
