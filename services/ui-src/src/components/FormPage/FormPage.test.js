@@ -1,12 +1,38 @@
 import React from "react";
-import { mount } from "enzyme";
+import { mount, shallow } from "enzyme";
 import { Provider } from "react-redux";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E";
 import configureStore from "redux-mock-store";
 import FormPage from "./FormPage";
+import { storeFactory, checkProps } from "../../provider-mocks/testUtils";
 
-const mockStore = configureStore([]);
+import FormHeader from "../FormHeader/FormHeader";
+import FormFooter from "../FormFooter/FormFooter";
+import TabContainer from "../TabContainer/TabContainer";
 
+const shallowSetup = (initialState = {}, props = {}, path = "") => {
+  const setupProps = { ...defaultProps, ...props };
+  const store = storeFactory(initialState);
+  return shallow(<FormPage store={store} path={path} {...setupProps} />)
+    .dive()
+    .dive();
+};
+const mountedSetup = (initialState = {}, props = {}, path = "") => {
+  const setupProps = { ...defaultProps, ...props };
+  const store = storeFactory(initialState);
+  return mount(<FormPage store={store} path={path} {...setupProps} />);
+};
+
+// The props this component requires in order to render
+const defaultProps = {
+  statusData: { last_modified: "01-15-2021" },
+  getForm: function () {
+    return;
+  }
+};
+
+// Mock the useParams react-router-dom function
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
   useParams: () => ({
@@ -18,39 +44,89 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("FormPage component- shallow render includes classNames", () => {
-  let store;
-  let wrapper;
-
-  beforeEach(() => {
-    store = mockStore(fullStoreMock);
-    wrapper = mount(
-      <Provider store={store}>
-        <FormPage />
-      </Provider>
-    );
-  });
-
+  const wrapper = shallowSetup(fullStoreMock);
   test("Should include a form-header className", () => {
-    expect(wrapper.find(".form-header-main").length).toBe(2);
+    expect(wrapper.find(".form-header-main").length).toBe(1);
   });
 
-  //   test("Should include a tab-container className", () => {});
+  test("Should include a tab-container className", () => {
+    expect(wrapper.find(".tab-container").length).toBe(1);
+  });
 
-  //   test("Should include a form-footer className", () => {});
+  test("Should include a form-footer className", () => {
+    expect(wrapper.find(".form-footer").length).toBe(1);
+  });
 });
 
 describe("FormPage component- incoming props", () => {
-  test("Accurate props should return no error", () => {});
-  test("Inaccurate props should return an error", () => {});
+  const wrapper = shallowSetup(fullStoreMock);
+
+  test("Accurate props should return no error", () => {
+    expect(checkProps(FormPage, defaultProps)).toBe(undefined);
+  });
+
+  test("Inaccurate prop types should return an error (statusData)", () => {
+    const badProps = {
+      statusData: "I should be an object!",
+      getForm: function () {
+        return;
+      }
+    };
+    expect(checkProps(FormPage, badProps)).toBe(
+      "Failed prop type: Invalid prop `statusData` of type `string` supplied to `FormPage`, expected `object`."
+    );
+  });
+  test("Inaccurate prop types should return an error (getForm)", () => {
+    const badProps = {
+      statusData: { last_modified: "01-15-2021" },
+      getForm: "I should be a function!"
+    };
+    expect(checkProps(FormPage, badProps)).toBe(
+      "Failed prop type: Invalid prop `getForm` of type `string` supplied to `FormPage`, expected `function`."
+    );
+  });
   test("Should include a statusData prop as an object", () => {});
 
   test("Should include a getForm prop as a function", () => {});
   test("Accesses params from the URL", () => {});
 });
+
 describe("FormPage component- Child Components", () => {
-  test("Should include a FormHeader component", () => {});
-  test("Should include a TabContainer component", () => {});
-  test("Should include a FormFooter component", () => {});
+  let state = "AL";
+  let year = "2021";
+  let quarter = "1";
+  let formName = "21E";
+  let last_modified = "01-15-2021";
+
+  const wrapper = shallowSetup(fullStoreMock);
+
+  test("Should include a FormHeader component", () => {
+    expect(
+      wrapper.containsMatchingElement(
+        <FormHeader
+          quarter={quarter}
+          form={formName}
+          year={year}
+          state={state}
+        />
+      )
+    ).toEqual(true);
+  });
+  test("Should include a FormFooter component", () => {
+    expect(
+      wrapper.containsMatchingElement(
+        <FormFooter
+          state={state}
+          year={year}
+          quarter={quarter}
+          lastModified={last_modified}
+        />
+      )
+    ).toEqual(true);
+  });
+  test("Should include a (connected) TabContainer component", () => {
+    expect(wrapper.find("Connect(TabContainer)")).toHaveLength(1);
+  });
 });
 
 // if the store starts empty, does the rendering of FormPage populate it??

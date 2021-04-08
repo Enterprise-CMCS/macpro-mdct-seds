@@ -9,7 +9,7 @@ import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import "./FormPage.scss";
 
-const FormPage = ({ getForm, statusData, mystate }) => {
+const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
 
   // Extract state, year, quarter and formName from URL segments
@@ -43,10 +43,8 @@ const FormPage = ({ getForm, statusData, mystate }) => {
         />
       </GridContainer>
 
-      <GridContainer>
-        <div className="tab-container">
-          <TabContainer quarter={quarter} />
-        </div>
+      <GridContainer className="tab-container">
+        <TabContainer quarter={quarter} />
       </GridContainer>
 
       <GridContainer className="form-footer">

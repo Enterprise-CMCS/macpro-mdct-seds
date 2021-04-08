@@ -16,10 +16,11 @@ export const storeFactory = initialState => {
 export const checkProps = (component, conformingProps) => {
   /* eslint-disable react/forbid-foreign-prop-types */
   const propError = checkPropTypes(
-    component.propTypes,
+    component[propTypes],
     conformingProps,
     "prop",
-    component.name
+    component[name]
   );
+  console.log(`PROP ERROR??? ${component.name} \n\n\n\n\n\n`, propError);
   return propError;
 };
