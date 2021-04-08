@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
 import { getUserById, updateUser } from "../../libs/api";
 import Dropdown from "react-dropdown";
-import { Table, TextInput, Button, Link } from "@trussworks/react-uswds";
+import { Table, TextInput, Button } from "@trussworks/react-uswds";
 import "react-dropdown/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
