@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Grid, Link } from "@trussworks/react-uswds";
-import { obtainUserByEmail, getFormYearsQuarters } from "../../libs/api";
+import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { useParams } from "react-router";
 import { Auth } from "aws-amplify";
 
@@ -25,7 +25,8 @@ const HomeState = () => {
     setState(currentUserInfo.Items[0].states[0]);
 
     // Get list of state forms by year and quarter
-    const forms = await getFormYearsQuarters({ state: "AL" });
+    const forms = await obtainAvailableForms({ stateId: "AL" });
+    console.log("zzzForms", forms);
     setFormData(forms);
   };
   useEffect(() => {

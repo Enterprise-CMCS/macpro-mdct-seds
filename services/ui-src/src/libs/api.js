@@ -98,8 +98,9 @@ export const getFormTypes = _ => {
 };
 
 // *** get form years and quarters
-export const getFormYearsQuarters = state => {
+export const obtainAvailableForms = data => {
   const opts = requestOptions();
+  opts.body = data;
 
-  return API.get("mdct-seds", `/forms/${state}`, opts);
+  return API.post("mdct-seds", `/forms/obtainAvailableForms`, opts);
 };

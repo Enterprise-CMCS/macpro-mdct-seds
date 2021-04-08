@@ -13,14 +13,14 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log(process.env);
+  let data = JSON.parse(event.body);
 
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":stateId": event.pathParameters["stateId"],
+      ":stateId": data.stateId,
     },
     FilterExpression: "state_id = :stateId",
   };
