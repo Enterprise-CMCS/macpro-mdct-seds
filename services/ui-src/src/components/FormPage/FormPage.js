@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
+import NotApplicable from "../NotApplicable/NotApplicable";
 import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
@@ -28,6 +29,7 @@ const FormPage = ({ getForm, statusData }) => {
   return (
     <>
       <GridContainer className="form-header" data-testid="FormPage">
+        <NotApplicable />
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
