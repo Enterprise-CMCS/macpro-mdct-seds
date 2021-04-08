@@ -49,10 +49,10 @@ describe("FormPage component- shallow render includes classNames", () => {
 });
 
 describe("FormPage component- props", () => {
+  // creating a true shallow wrapper so that the props are accessible
   const tempStore = storeFactory(fullStoreMock);
   const wrapper = shallow(<FormPage store={tempStore} {...defaultProps} />);
 
-  // creating a true shallow wrapper so that the props are accessible
   test("Should include a statusData prop as an object", () => {
     expect(typeof wrapper.props().children.props.statusData).toEqual("object");
   });
