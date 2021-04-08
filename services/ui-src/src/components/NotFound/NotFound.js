@@ -18,7 +18,7 @@ const NotFound = ({ form, toggle }) => {
   }
 
   return (
-    <div className="NotFound">
+    <div className="NotFound" data-testid="NotFound">
       <Button type="buton" onClick={() => toggle(newStatus)}>
         {statusButtonText}
       </Button>

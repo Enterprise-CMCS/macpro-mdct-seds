@@ -23,7 +23,9 @@ const GridWithTotals = props => {
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
-    gridCopy[row][column] = parseFloat(event.target.value);
+    gridCopy[row][column] = parseFloat(
+      event.target.value.replace(/[^0-9]/g, "")
+    );
 
     updateGridData(gridCopy);
     updateTotals();
@@ -153,6 +155,9 @@ const GridWithTotals = props => {
                       defaultValue={Number.parseFloat(column).toFixed(
                         currentPrecision
                       )}
+                      value={Number.parseFloat(
+                        gridData[rowIndex][columnIndex]
+                      ).toFixed(currentPrecision)}
                       disabled={props.disabled}
                     />
                   </td>
@@ -168,6 +173,9 @@ const GridWithTotals = props => {
                     defaultValue={Number.parseFloat(column).toFixed(
                       currentPrecision
                     )}
+                    value={Number.parseFloat(
+                      gridData[rowIndex][columnIndex]
+                    ).toFixed(currentPrecision)}
                     disabled={props.disabled}
                   />
                 </td>
@@ -216,7 +224,7 @@ const GridWithTotals = props => {
         </thead>
         <tbody>
           {tableData}
-          <tr>
+          <tr className="total-row">
             {totalsRow}
             <td className="total-column">
               {Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
