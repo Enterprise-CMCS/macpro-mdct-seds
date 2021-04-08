@@ -13,7 +13,7 @@ beforeEach(() => {
 
 // *** garbage clean up (mocks)
 afterEach(() => {
-    React.useContext = realUseContext;
+  React.useContext = realUseContext;
 });
 
 describe("Test LoaderButton.js", () => {
@@ -28,31 +28,31 @@ describe("Test LoaderButton.js", () => {
   test("Check for First Name input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
-    const formControl = getByLabelText("First Name")
+    const formControl = getByLabelText("First Name");
     expect(formControl.type).toContain("firstname");
   });
   test("Check for Last Name input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
-    const formControl = getByLabelText("Last Name")
+    const formControl = getByLabelText("Last Name");
     expect(formControl.type).toContain("lastname");
   });
   test("Check for Email input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
-    const formControl = getByLabelText("Email")
+    const formControl = getByLabelText("Email");
     expect(formControl.type).toContain("email");
   });
   test("Check for Password input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
-    const formControl = getByLabelText("Password")
+    const formControl = getByLabelText("Password");
     expect(formControl.type).toContain("password");
   });
   test("Check for Confirm Password input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
-    const formControl = getByLabelText("Confirm Password")
+    const formControl = getByLabelText("Confirm Password");
     expect(formControl.type).toContain("password");
   });
 });
