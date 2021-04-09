@@ -13,7 +13,7 @@ import singleFormReducer, {
 } from "./singleForm";
 import {
   SUMMARY_NOTES_SUCCESS,
-  setSummaryNotes
+  saveSummaryNotes
 } from "../../actions/statusData";
 
 const initialState = {
@@ -211,7 +211,7 @@ describe("Single Form Reducer, component parts", () => {
       ]
     };
 
-    store.dispatch(setSummaryNotes(summaryNotes));
+    store.dispatch(saveSummaryNotes(summaryNotes));
     expect(actions).toEqual([expectedPayload]);
   });
 });
