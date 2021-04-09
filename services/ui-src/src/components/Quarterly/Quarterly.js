@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Button, Grid, GridContainer, Card } from "@trussworks/react-uswds";
+import React, { useEffect } from "react";
+import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
-import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import SortIcon from "@material-ui/icons/ArrowDownward";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
-import { Link } from "react-router-dom";
+import Card from "@material-ui/core/Card";
+import { Link, useParams } from "react-router-dom";
 
 const Quarterly = () => {
   // Determine values based on URI
-  let url = window.location.hash.split("/");
-  const state = url[2];
-  const year = url[3];
-  const quarter = url[4];
-  const [stateFormsList, setStateFormsList] = useState();
+  const { state, year, quarter } = useParams();
+  const [stateFormsList, setStateFormsList] = React.useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
@@ -22,6 +21,7 @@ const Quarterly = () => {
       const data = await getStateForms(state, year, quarter);
       setStateFormsList(data);
     }
+
     fetchData();
   }, [state, year, quarter]);
   // Translate form name from redux into url value
@@ -166,7 +166,7 @@ const Quarterly = () => {
       }
     }
   };
-  console.log(stateFormsList);
+
   return (
     <GridContainer className="page-quarterly container">
       <Grid row>
@@ -184,14 +184,7 @@ const Quarterly = () => {
             <Card>
               {stateFormsList ? (
                 <DataTable
-                  sortIcon={
-                    <>
-                      <FontAwesomeIcon
-                        icon={faArrowDown}
-                        className="margin-left-2"
-                      />
-                    </>
-                  }
+                  sortIcon={<SortIcon />}
                   highlightOnHover
                   title={
                     <p style={{ fontSize: "14px", fontWeight: "600" }}>
