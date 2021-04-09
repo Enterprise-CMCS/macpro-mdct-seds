@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
+import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
