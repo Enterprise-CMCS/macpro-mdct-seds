@@ -131,7 +131,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         status: "Provisional Data Certified and Submitted",
-        last_modified_by: action.username,
+        last_modified_by: action.userName,
         last_modified: new Date().toISOString()
       };
     default:
