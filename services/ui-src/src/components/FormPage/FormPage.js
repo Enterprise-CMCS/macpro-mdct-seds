@@ -29,13 +29,13 @@ const FormPage = ({ getForm, statusData }) => {
   return (
     <>
       <GridContainer className="form-header" data-testid="FormPage">
-        <NotApplicable />
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
           year={year}
           state={formattedStateName}
         />
+        <NotApplicable />
       </GridContainer>
 
       <GridContainer>
