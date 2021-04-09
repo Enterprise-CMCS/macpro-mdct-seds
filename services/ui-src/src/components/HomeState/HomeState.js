@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Link } from "@trussworks/react-uswds";
+import { Accordion, Grid, Link } from "@trussworks/react-uswds";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 
 const HomeState = () => {
   // Set up local state
@@ -15,9 +16,6 @@ const HomeState = () => {
     const currentUserInfo = await obtainUserByEmail({
       email: AuthUserInfo.attributes.email
     });
-
-    // Set temporary state ONLY for debugging
-    currentUserInfo.Items[0].states = ["MD"];
 
     // Save to local state
     setState(currentUserInfo.Items[0].states[0]);
@@ -115,15 +113,27 @@ const HomeState = () => {
 
   return (
     <div className="page-home-state">
-      <p>
-        Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
-        to view available reports.
-      </p>
-      <div className="quarterly-report-list">
-        {accordionItems.length !== 0 ? (
-          <Accordion bordered={true} items={accordionItems} />
-        ) : null}
-      </div>
+      {accordionItems.length !== 0 ? (
+        <>
+          <p>
+            Welcome to SEDS! Please select a Federal Fiscal Year and quarter
+            below to view available reports.
+          </p>
+
+          <div className="quarterly-report-list">
+            <Accordion bordered={true} items={accordionItems} />
+          </div>
+        </>
+      ) : (
+        <>
+          <h1>Insufficient Privileges</h1>
+          <p>This account is not associated with any states.</p>
+          <p>
+            If you feel this is an error, please contact the helpdesk{" "}
+            <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
+          </p>
+        </>
+      )}
     </div>
   );
 };
