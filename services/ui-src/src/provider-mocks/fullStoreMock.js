@@ -1,7 +1,4 @@
 const fullStoreMock = {
-  quarterStatuses: {
-    quarterForms: []
-  },
   currentForm: {
     questions: [
       {
@@ -3320,17 +3317,6 @@ const fullStoreMock = {
       status: "Not Started"
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
-  },
-  userData: {
-    userState: {
-      name: "",
-      abbrev: ""
-    },
-    programType: "",
-    role: false,
-    id: "",
-    username: "",
-    email: ""
   },
   global: {
     formTypes: [],

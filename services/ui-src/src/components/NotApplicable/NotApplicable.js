@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { RangeInput } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
@@ -26,7 +26,20 @@ const NotApplicable = ({}) => {
   );
 };
 
-export default NotApplicable;
+// NotApplicable.propTypes = {
+//     gridData: PropTypes.array.isRequired,
+//     questionID: PropTypes.string.isRequired,
+//     setAnswer: PropTypes.func.isRequired,
+//     disabled: PropTypes.bool.isRequired
+//   };
+
+const mapState = state => ({
+  statusData: state.currentForm.statusData
+});
+
+const mapDispatch = {};
+
+export default connect(mapState, mapDispatch)(NotApplicable);
 
 //TODO:
 
