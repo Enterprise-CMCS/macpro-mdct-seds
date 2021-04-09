@@ -21,7 +21,7 @@ const GREGridWithTotals = props => {
     const [gridColumnTotals, updateGridColumnTotals] = useState([]);
     const [gridRowTotals, updateGridRowTotals] = useState([]);
 
-    //const [gridCHIPTotals, updateGridCHIPTotals] = useState([]);
+    const [gridCHIPTotals, updateGridCHIPTotals] = useState([]);
     const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
     const currentPrecision = props.precision;
@@ -31,7 +31,8 @@ const GREGridWithTotals = props => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const updateGrid = (row, column, event) => {
-        let gridCopy = [...gridData];
+        let gridCopy = [...gridData]
+
         gridCopy[row][column] = parseFloat(
             event.target.value.replace(/[^0-9]/g, "")
         );
@@ -44,6 +45,7 @@ const GREGridWithTotals = props => {
     const updateTotals = () => {
         updateRowTotals();
         updateColumnTotals();
+        updateCHIPTotals();
     };
 
     const updateColumnTotals = () => {
@@ -58,7 +60,6 @@ const GREGridWithTotals = props => {
             if (row !== undefined) {
                 row.map((column, columnIndex) => {
                     let currentValue = 0;
-                    //let totalCHIP = 0;
 
                     const gridColumnIndex = columnIndex - 1;
 
@@ -74,14 +75,10 @@ const GREGridWithTotals = props => {
                         gridColumnTotalsCopy[gridColumnIndex] = 0;
                     }
 
-                    //If the value is entered in either the 21E or 64.21 columns, add the value to totalCHIP
-                    /*if (columnIndex === 2 || columnIndex ===3) {
-                        totalCHIP += currentValue;
-                    }*/
+                    gridColumnTotalsCopy[gridColumnIndex] += currentValue;
 
                     //Do not add the Total CHIP Enrolled column (4) to the Totals column (last column)
                     if (columnIndex !== 4) {
-                        gridColumnTotalsCopy[gridColumnIndex] += currentValue;
                         totalOfTotals += currentValue;
                     }
 
@@ -92,7 +89,6 @@ const GREGridWithTotals = props => {
         });
 
         updateGridColumnTotals(gridColumnTotalsCopy);
-        //updateGridCHIPTotals(totalCHIP);
         updateGridTotalOfTotals(totalOfTotals);
     };
 
@@ -123,6 +119,47 @@ const GREGridWithTotals = props => {
         });
 
         updateGridRowTotals(gridRowTotalsCopy);
+    };
+
+    const updateCHIPTotals = () => {
+        let gridCHIPTotalsCopy = [...gridColumnTotals];
+        let totalCHIP = 0;
+
+        gridCHIPTotalsCopy.forEach((part, index, columnCHIPArray) => {
+            columnCHIPArray[index] = 0;
+        });
+
+        gridData.map((row, rowIndex) => {
+            if (row !== undefined) {
+                row.map((column, columnIndex) => {
+                    let currentValue = 0;
+
+                    const gridColumnIndex = columnIndex - 1;
+
+                    if (isNaN(column) === false) {
+                        currentValue = parseFloat(column);
+                    }
+
+                    if (
+                        gridCHIPTotalsCopy[gridColumnIndex] === undefined ||
+                        gridCHIPTotalsCopy[gridColumnIndex] === null ||
+                        gridCHIPTotalsCopy[gridColumnIndex] === ""
+                    ) {
+                        gridCHIPTotalsCopy[gridColumnIndex] = 0;
+                    }
+
+                    //If the value is entered in either the 21E or 64.21 columns, add the value to totalCHIP
+                    if (columnIndex === 2 || columnIndex ===3) {
+                        totalCHIP += currentValue;
+                    }
+
+                    return true;
+                });
+            }
+            return true;
+        });
+
+        updateGridCHIPTotals(totalCHIP);
     };
 
     let headerColArray = [];
