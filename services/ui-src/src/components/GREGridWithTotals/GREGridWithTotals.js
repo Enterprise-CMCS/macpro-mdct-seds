@@ -2,8 +2,16 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
 import { connect } from "react-redux";
+
 import "./GREGridWithTotals.scss";
+
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
+
+/*This component is specifically designed to for the Gender/Race/Ethnicity form as of 2021.
+* It is based off of the GridWithTotals component.
+* The expectation is that the rows array will follow this pattern:
+* [0] Row Header, [1] 21E, [2] 64.21E, [3] Total CHIP ([1] + [2]), [4] 64.EC, [5] 21PW
+* The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
 const GREGridWithTotals = props => {
     const [gridData, updateGridData] = useState(
@@ -64,8 +72,10 @@ const GREGridWithTotals = props => {
                         gridColumnTotalsCopy[gridColumnIndex] = 0;
                     }
 
-                    gridColumnTotalsCopy[gridColumnIndex] += currentValue;
-                    totalOfTotals += currentValue;
+                    if (columnIndex !== 3) {
+                        gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+                        totalOfTotals += currentValue;
+                    }
 
                     return true;
                 });
@@ -217,7 +227,7 @@ const GREGridWithTotals = props => {
     });
 
     return (
-        <div className="grid-with-totals">
+        <div className="gre-grid-with-totals">
             <Table bordered={true} fullWidth={true}>
                 <thead>
                 <tr>{headerCols}</tr>
@@ -262,7 +272,7 @@ const translateInitialData = gridDataObject => {
     return translatedData;
 };
 
-GridWithTotals.propTypes = {
+GREGridWithTotals.propTypes = {
     gridData: PropTypes.array.isRequired,
     questionID: PropTypes.string.isRequired,
     setAnswer: PropTypes.func.isRequired,
