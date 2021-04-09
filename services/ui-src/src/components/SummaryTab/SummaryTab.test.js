@@ -4,6 +4,8 @@ import SummaryTab from "./SummaryTab";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import SummaryNotes from "../SummaryNotes/SummaryNotes";
+
 const mockStore = configureStore([]);
 
 describe("Test SummaryTab.js", () => {
@@ -110,15 +112,7 @@ describe("Test SummaryTab.js", () => {
         .instance().value
     ).toMatch(/10/);
   });
-  test("Check for Summary Notes label and input", () => {
-    expect(wrapper.find("label").at(0).text()).toMatch(
-      /Add any notes here to accompany the form submission/
-    );
-    expect(wrapper.find("#summaryNotesInput").at(1).exists()).toBe(true);
-  });
-  test("Check that the Summary notes contain the correct values", () => {
-    expect(wrapper.find("#summaryNotesInput").at(1).text()).toMatch(
-      "This is an example of summary notes on the state form 21E for AL"
-    );
+  test("Check for Summary Notes component", () => {
+    expect(wrapper.contains(<SummaryNotes />)).toBe(true);
   });
 });
