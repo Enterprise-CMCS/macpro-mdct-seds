@@ -11,15 +11,7 @@ const mockStore = configureStore([]);
 describe("Test SummaryTab.js", () => {
   let store;
   let wrapper;
-  // Cache original functionality
-  const realUseState = React.useState;
-  // Stub the initial state
-  const mockInitialState =
-    currentFormMock_21E.currentForm.statusData.state_comments[0].entry;
-  // Mock useState before rendering your component to set initial state values
-  jest
-    .spyOn(React, "useState")
-    .mockImplementationOnce(() => realUseState(mockInitialState));
+
   beforeEach(() => {
     store = mockStore(currentFormMock_21E);
     wrapper = mount(
