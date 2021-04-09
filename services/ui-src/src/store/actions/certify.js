@@ -19,8 +19,7 @@ export const setProvisionalCertify = username => {
 
 // THUNK FUNCTIONS
 export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
-  const state = getState();
-  const user = state.userData.username;
+  const user = "placeholder";
 
   try {
     dispatch(setFinalCertify(user));
@@ -34,8 +33,7 @@ export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
 };
 
 export const certifyAndSubmitProvisional = () => async (dispatch, getState) => {
-  const state = getState();
-  const user = state.userData.username;
+  const user = "Placeholder";
 
   try {
     dispatch(setProvisionalCertify(user));

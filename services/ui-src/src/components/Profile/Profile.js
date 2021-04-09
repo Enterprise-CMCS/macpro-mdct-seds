@@ -24,28 +24,28 @@ export default function Profile({ user }) {
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
-  const onLoad = async () => {
-    try {
-      const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      const currentUserInfo = await obtainUserByEmail({
-        email: AuthUserInfo.attributes.email
-      });
-      let userObj = currentUserInfo["Items"];
-      userObj.map(async userInfo => {
-        setEmail(userInfo.email);
-        setFirstName(capitalize(userInfo.firstName));
-        setLastName(capitalize(userInfo.lastName));
-        setRole(capitalize(userInfo.role));
-        if (userInfo.states) {
-          setStates(formatStates(userInfo.states));
-        }
-      });
-    } catch (e) {
-      onError(e);
-    }
-  };
-
   useEffect(() => {
+    const onLoad = async () => {
+      try {
+        const AuthUserInfo = await Auth.currentAuthenticatedUser();
+        const currentUserInfo = await obtainUserByEmail({
+          email: AuthUserInfo.attributes.email
+        });
+        let userObj = currentUserInfo["Items"];
+        for (const userInfo of userObj) {
+          setEmail(userInfo.email);
+          setFirstName(capitalize(userInfo.firstName));
+          setLastName(capitalize(userInfo.lastName));
+          setRole(capitalize(userInfo.role));
+          if (userInfo.states) {
+            setStates(formatStates(userInfo.states));
+          }
+        }
+      } catch (e) {
+        onError(e);
+      }
+    };
+
     onLoad();
   });
 
