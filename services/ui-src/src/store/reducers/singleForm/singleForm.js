@@ -12,6 +12,7 @@ import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../../actions/certify";
+import { SAVE_FORM } from "../../actions/saveForm";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
@@ -131,6 +132,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         status: "provisional",
+        last_modified_by: action.username,
+        last_modified: new Date().toString()
+      };
+    case SAVE_FORM:
+      return {
+        ...state,
         last_modified_by: action.username,
         last_modified: new Date().toString()
       };
