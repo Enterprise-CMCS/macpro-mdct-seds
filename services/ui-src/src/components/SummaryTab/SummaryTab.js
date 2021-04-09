@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Textarea } from "@trussworks/react-uswds";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
 const SummaryTab = ({ questions, answers }) => {
