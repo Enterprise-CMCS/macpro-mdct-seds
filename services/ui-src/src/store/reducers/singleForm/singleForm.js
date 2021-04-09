@@ -33,10 +33,10 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updatedStatus = activeBoolean => {
+export const updatedStatus = activeStatus => {
   return {
     type: UPDATE_FORM_STATUS,
-    activeStatus: activeBoolean
+    activeStatus
   };
 };
 
@@ -81,12 +81,6 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
-export const disableForm = activeBoolean => {
-  return dispatch => {
-    dispatch(updatedStatus(activeBoolean));
-  };
-};
-
 // INITIAL STATE
 const initialState = {
   questions: [],
@@ -118,7 +112,7 @@ export default (state = initialState, action) => {
     case UPDATE_FORM_STATUS:
       return {
         ...state,
-        not_applicable: action.activeStatus
+        statusData: { ...state.statusData, not_applicable: action.activeStatus }
       };
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
       return {
