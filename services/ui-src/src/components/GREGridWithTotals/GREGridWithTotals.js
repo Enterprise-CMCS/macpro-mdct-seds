@@ -179,11 +179,19 @@ const GREGridWithTotals = props => {
     let nextHeaderIndex;
     const headerCols = headerColArray.map((header, headerIndex) => {
         nextHeaderIndex = headerIndex;
-        return (
-            <th scope="col" key={headerIndex}>
-                <span>{header}</span>
-            </th>
-        );
+            if (headerIndex !== 3) {
+                return (
+                <th scope="col" key={headerIndex}>
+                    <span>{header}</span>
+                </th>
+                );
+            } else {
+                return (
+                <th scope="col" className="total-header-cell" key={headerIndex}>
+                    <span>{header}</span>
+                </th>
+                );
+            }
     });
 
     headerCols.push(
