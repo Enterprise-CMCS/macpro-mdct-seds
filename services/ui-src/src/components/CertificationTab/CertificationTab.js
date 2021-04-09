@@ -35,7 +35,7 @@ const CertificationTab = ({
   };
 
   return (
-    <GridContainer className="certificationText">
+    <GridContainer data-testid="certificationText">
       <Grid row>
         <Grid col={12}>
           {isFinal ? (
@@ -63,7 +63,7 @@ const CertificationTab = ({
           {isFinal ? (
             <>
               <b> Thank you for submitting your SEDS data!</b>
-              <p className="statusText">
+              <p data-testid="statusText">
                 Submitted on {lastModified} by {lastModifiedBy}
               </p>
             </>

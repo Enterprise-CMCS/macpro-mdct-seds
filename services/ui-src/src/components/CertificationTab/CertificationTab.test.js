@@ -37,12 +37,12 @@ describe("Test CertificationTab.js", () => {
     );
   });
 
-  test("Check for modified_on and modified_by for all three statuses", () => {
-    expect(wrapper.find(".statusText")).toEqual({});
+  test("Check for modified_on and modified_by for all three statuses", async () => {
+    expect(wrapper.find({ "data-testid": "statusText" })).toEqual({});
 
-    expect(wrapper2.find(".statusText")).toEqual({});
+    expect(wrapper2.find({ "data-testid": "statusText" })).toEqual({});
 
-    expect(wrapper3.find(".statusText").text()).toMatch(
+    expect(wrapper3.find({ "data-testid": "statusText" }).text()).toMatch(
       /Submitted on 01-15-2021 by Timothy Griesemer/
     );
   });
@@ -58,19 +58,35 @@ describe("Test CertificationTab.js", () => {
   });
 
   test("Check truthy text for all three statuses", () => {
-    expect(wrapper.find(".certificationText").find("b").at(0).text()).toMatch(
-      "Ready to certify?"
-    );
+    expect(
+      wrapper
+        .find({ "data-testid": "certificationText" })
+        .find("b")
+        .at(0)
+        .text()
+    ).toMatch("Ready to certify?");
 
-    expect(wrapper2.find(".certificationText").find("b").at(0).text()).toMatch(
-      "Ready to certify?"
-    );
+    expect(
+      wrapper2
+        .find({ "data-testid": "certificationText" })
+        .find("b")
+        .at(0)
+        .text()
+    ).toMatch("Ready to certify?");
 
-    expect(wrapper3.find(".certificationText").find("b").at(0).text()).toMatch(
-      " What to expect next:"
-    );
-    expect(wrapper3.find(".certificationText").find("b").at(1).text()).toMatch(
-      "Thank you for submitting your SEDS data!"
-    );
+    expect(
+      wrapper3
+        .find({ "data-testid": "certificationText" })
+        .find("b")
+        .at(0)
+        .text()
+    ).toMatch(" What to expect next:");
+    expect(
+      wrapper3
+        .find({ "data-testid": "certificationText" })
+        .find("b")
+        .at(1)
+        .text()
+    ).toMatch("Thank you for submitting your SEDS data!");
   });
 });
