@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Grid, Link } from "@trussworks/react-uswds";
+import { Accordion, Link } from "@trussworks/react-uswds";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
-import { useHistory } from "react-router-dom";
 
 const HomeState = () => {
   // Set up local state
