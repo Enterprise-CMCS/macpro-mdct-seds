@@ -21,6 +21,7 @@ const GREGridWithTotals = props => {
     const [gridColumnTotals, updateGridColumnTotals] = useState([]);
     const [gridRowTotals, updateGridRowTotals] = useState([]);
 
+    //const [gridCHIPTotals, updateGridCHIPTotals] = useState([]);
     const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
     const currentPrecision = props.precision;
@@ -57,6 +58,7 @@ const GREGridWithTotals = props => {
             if (row !== undefined) {
                 row.map((column, columnIndex) => {
                     let currentValue = 0;
+                    //let totalCHIP = 0;
 
                     const gridColumnIndex = columnIndex - 1;
 
@@ -72,7 +74,13 @@ const GREGridWithTotals = props => {
                         gridColumnTotalsCopy[gridColumnIndex] = 0;
                     }
 
-                    if (columnIndex !== 3) {
+                    //If the value is entered in either the 21E or 64.21 columns, add the value to totalCHIP
+                    /*if (columnIndex === 2 || columnIndex ===3) {
+                        totalCHIP += currentValue;
+                    }*/
+
+                    //Do not add the Total CHIP Enrolled column (4) to the Totals column (last column)
+                    if (columnIndex !== 4) {
                         gridColumnTotalsCopy[gridColumnIndex] += currentValue;
                         totalOfTotals += currentValue;
                     }
@@ -84,6 +92,7 @@ const GREGridWithTotals = props => {
         });
 
         updateGridColumnTotals(gridColumnTotalsCopy);
+        //updateGridCHIPTotals(totalCHIP);
         updateGridTotalOfTotals(totalOfTotals);
     };
 
@@ -101,7 +110,9 @@ const GREGridWithTotals = props => {
                         currentValue = parseFloat(column);
                     }
 
-                    rowTotal += currentValue;
+                    if (columnIndex !== 4) {
+                        rowTotal += currentValue;
+                    }
 
                     return true;
                 });
@@ -172,6 +183,24 @@ const GREGridWithTotals = props => {
                                         />
                                     </td>
                                 </React.Fragment>
+                            );
+                        } else if (columnIndex === 4) {
+                            //This is the Total CHIP Enrolled column
+                            formattedCell = (
+                                <td key={columnIndex}>
+                                    <TextInput
+                                        type="number"
+                                        className="total-column"
+                                        onChange={event => updateGrid(rowIndex, columnIndex, event)}
+                                        defaultValue={Number.parseFloat(column).toFixed(
+                                            currentPrecision
+                                        )}
+                                        value={Number.parseFloat(
+                                            gridData[rowIndex][columnIndex]
+                                        ).toFixed(currentPrecision)}
+                                        disabled={true}
+                                    />
+                                </td>
                             );
                         } else {
                             formattedCell = (
