@@ -3,6 +3,7 @@
   "description": "",
   "version": "1.0.0",
   "dependencies": {
+    "@babel/parser": "^7.13.13",
     "@cmsgov/design-system-core": "^3.7.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -18,6 +19,7 @@
     "browserify": "^17.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
+    "file-saver": "^2.0.5",
     "geckodriver": "^1.21.1",
     "jsonpath": "^1.1.0",
     "nightwatch": "^1.5.1",
@@ -43,6 +45,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "serverless-stack-termination-protection": "^1.0.4",
     "styled-components": "^5.2.1"

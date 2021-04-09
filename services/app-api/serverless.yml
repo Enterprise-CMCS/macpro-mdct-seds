@@ -111,6 +111,15 @@ provider:
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
 
 functions:
+  exportToExcel:
+    handler: handlers/users/post/exportToExcel.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/export-to-excel
+          method: post
+          cors: true
+          authorizer: aws_iam
   getUserById:
     handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
@@ -129,12 +138,21 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  getUserByUsername:
-    handler: handlers/users/post/getUserByUsername.main
+  obtainUserByUsername:
+    handler: handlers/users/post/obtainUserByUsername.main
     role: LambdaApiRole
     events:
       - http:
           path: users/get
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainUserByEmail:
+    handler: handlers/users/post/obtainUserByEmail.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/get/email
           method: post
           cors: true
           authorizer: aws_iam
@@ -265,6 +283,10 @@ resources:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
+                - Effect: "Allow"
+                  Action:
+                    - cognito-idp:AdminGetUser
+                  Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:

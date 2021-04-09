@@ -5,7 +5,7 @@ import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
-import QuestionComponent from "../Question";
+import QuestionComponent from "../Question/Question";
 
 const TabContainer = ({
   tabDetails,
@@ -16,7 +16,7 @@ const TabContainer = ({
   quarter
 }) => {
   return (
-    <Tabs>
+    <Tabs className="tab-container-main">
       <TabList>
         {currentTabs.map((tab, idx) => {
           const rangeDetails = tabDetails.find(

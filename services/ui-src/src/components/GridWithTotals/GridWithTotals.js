@@ -15,13 +15,17 @@ const GridWithTotals = props => {
 
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
+  const currentPrecision = props.precision;
+
   useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
-    gridCopy[row][column] = parseFloat(event.target.value);
+    gridCopy[row][column] = parseFloat(
+      event.target.value.replace(/[^0-9]/g, "")
+    );
 
     updateGridData(gridCopy);
     updateTotals();
@@ -148,7 +152,12 @@ const GridWithTotals = props => {
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={column}
+                      defaultValue={Number.parseFloat(column).toFixed(
+                        currentPrecision
+                      )}
+                      value={Number.parseFloat(
+                        gridData[rowIndex][columnIndex]
+                      ).toFixed(currentPrecision)}
                       disabled={props.disabled}
                     />
                   </td>
@@ -161,7 +170,12 @@ const GridWithTotals = props => {
                     type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={column}
+                    defaultValue={Number.parseFloat(column).toFixed(
+                      currentPrecision
+                    )}
+                    value={Number.parseFloat(
+                      gridData[rowIndex][columnIndex]
+                    ).toFixed(currentPrecision)}
                     disabled={props.disabled}
                   />
                 </td>
@@ -170,7 +184,11 @@ const GridWithTotals = props => {
 
             return formattedCell;
           })}
-          <td className="total-column">{gridRowTotals[rowIndex]}</td>
+          <td className="total-column">
+            {Number.parseFloat(gridRowTotals[rowIndex]).toFixed(
+              currentPrecision
+            )}
+          </td>
         </tr>
       );
     }
@@ -189,8 +207,8 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column" key={i}>
-          {gridColumnTotals[i]}
+        <td className="total-column">
+          {Number.parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)}
         </td>
       );
     }
@@ -206,9 +224,11 @@ const GridWithTotals = props => {
         </thead>
         <tbody>
           {tableData}
-          <tr>
+          <tr className="total-row">
             {totalsRow}
-            <td className="total-column">{gridTotalOfTotals}</td>
+            <td className="total-column">
+              {Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
+            </td>
           </tr>
         </tbody>
       </Table>

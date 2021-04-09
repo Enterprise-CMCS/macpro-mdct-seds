@@ -211,8 +211,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[1].col2",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[1].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -221,8 +221,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[1].col3",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[1].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -231,8 +231,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[1].col4",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[1].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -241,8 +241,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[1].col5",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[1].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -251,8 +251,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[1].col6",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[1].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -264,8 +264,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[2].col2",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[2].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -274,8 +274,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[2].col3",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[2].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -284,8 +284,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[2].col4",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[2].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -294,8 +294,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[2].col5",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[2].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -304,8 +304,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[2].col6",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[2].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -317,8 +317,8 @@
         "col2": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col2",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -327,8 +327,8 @@
         "col3": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col3",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -337,8 +337,8 @@
         "col4": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col4",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -347,8 +347,8 @@
         "col5": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col5",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -357,8 +357,8 @@
         "col6": [
           {
             "targets": [
-              "$..*[?(@.question=='2021-64.EC-04')].rows[3].col6",
-              "$..*[?(@.question=='2021-64.EC-01')].rows[3].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -425,7 +425,7 @@
     "type": "datagridwithtotals",
     "rowTotal": true,
     "columnTotal": true,
-    "contextData": {
+    "context_data": {
       "show_if_quarter_in": "4"
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
@@ -475,7 +475,7 @@
     "type": "datagridwithtotals",
     "rowTotal": true,
     "columnTotal": true,
-    "contextData": {
+    "context_data": {
       "show_if_quarter_in": "4"
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
@@ -525,7 +525,7 @@
     "type": "datagridwithtotals",
     "rowTotal": true,
     "columnTotal": true,
-    "contextData": {
+    "context_data": {
       "show_if_quarter_in": "4"
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",

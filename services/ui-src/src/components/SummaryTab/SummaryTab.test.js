@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import SummaryTab from "./SummaryTab";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import currentFormMock_21E from "../../providerMocks/currentFormMock_21E.js";
+import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 const mockStore = configureStore([]);
 
 describe("Test SummaryTab.js", () => {
@@ -44,7 +44,7 @@ describe("Test SummaryTab.js", () => {
   });
 
   test("Check number of gridwithtotal elements", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(8);
+    expect(wrapper.find(".grid-with-totals").length).toBe(9);
   });
 
   test("Check table input values for correct math", () => {

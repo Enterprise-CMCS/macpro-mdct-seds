@@ -15,7 +15,7 @@ stage=${1:-dev}
 echo "Fetching information for stage $stage..."
 
 api_region=`sh ../output.sh ../app-api Region $stage`
-api_url=`sh ../output.sh ../app-api ApiGatewayRestApiUrl $stage`
+api_url="http://localhost:3030/local"
 cognito_region=`sh ../output.sh ../ui-auth Region $stage`
 cognito_identity_pool_id=`sh ../output.sh ../ui-auth IdentityPoolId $stage`
 cognito_user_pool_id=`sh ../output.sh ../ui-auth UserPoolId $stage`
@@ -34,9 +34,10 @@ export COGNITO_USER_POOL_CLIENT_ID=$cognito_user_pool_client_id
 export COGNITO_USER_POOL_CLIENT_DOMAIN=$cognito_user_pool_client_domain
 export COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
 export COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
-export S3_ATTACHMENTS_BUCKET_REGION=$s3_attachments_bucket_region
-export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_name
+# export S3_ATTACHMENTS_BUCKET_REGION=$s3_attachments_bucket_region
+# export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_nameﬁ
 # This is set to false, as using this script points your local react server to Amazon
 export LOCAL_LOGIN=false
 
 ./env.sh
+echo "Done fetching for stage $stage..."

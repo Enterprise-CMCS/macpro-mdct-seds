@@ -1,6 +1,6 @@
 import React from "react";
 import "react-tabs/style/react-tabs.css";
-import QuestionComponent from "../Question";
+import QuestionComponent from "../Question/Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -8,7 +8,9 @@ import PropTypes from "prop-types";
 const SummaryTab = ({ questions, answers, tempVar }) => {
   return (
     <div className="summary-tab">
-      <h3>Summary:</h3>
+      <div className="age-range-description">
+        <h3>Summary:</h3>
+      </div>
 
       {questions.map((singleQuestion, idx) => {
         // Initialize newRows

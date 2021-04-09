@@ -7,27 +7,25 @@ import {
   certifyAndSubmitProvisional
 } from "../../store/actions/certify";
 import PropTypes from "prop-types";
-import {Auth} from "aws-amplify";
+import "./CertificationTab.scss";
 
 const CertificationTab = ({
-                            status,
-                            notApplicable,
-                            lastModified,
-                            lastModifiedBy,
-                            isFinal,
-                            isProvisional,
-                            certifyAndSubmitFinal,
-                            certifyAndSubmitProvisional
-                          }) => {
+  status,
+  notApplicable,
+  lastModified,
+  lastModifiedBy,
+  isFinal,
+  isProvisional,
+  certifyAndSubmitFinal,
+  certifyAndSubmitProvisional
+}) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
-      isFinal === true ? true : isProvisional
+    isFinal === true ? true : isProvisional
   );
-
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
-
-  const submitProvisional = async () => {
-    certifyAndSubmitProvisional();//*** Need to add proper way to pull user information
+  const submitProvisional = () => {
+    certifyAndSubmitProvisional();
     setprovisionalButtonStatus(true);
   };
   const submitFinal = () => {
@@ -35,98 +33,93 @@ const CertificationTab = ({
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
   };
-  const certifyInformation = (
-      <div>
-        <p>
-          Double check that everything in your SEDS report is accurate. You will
-          have to uncertify your report to make any edits to your final data after
-          submitting.
-        </p>
-        <p>
-          Once you have reviewed your report, certify that it’s accurate and in
-          compliance with Title XXI of the Social Security Act (Section 2109(a)
-          and Section 2108(e)).
-        </p>
-        <>
-          This report was updated to <b>{status}</b> on <b>{lastModified}</b> by{" "}
-          <b>{lastModifiedBy}</b>
-        </>
-      </div>
-  );
 
-  let certifyText = <></>;
-  if (isFinal) {
-    certifyText = (
-        <>
-          <b> Thank you for submitting your SEDS data!</b>
-          <p>
-            Submitted on {lastModified} by {lastModifiedBy}
-          </p>
-        </>
-    );
-  } else if (isProvisional) {
-    certifyText = (
-        <div>
-          <b>Ready to final certify?</b> + {certifyInformation.toString()} +{" "}
-        </div>
-    );
-  } else {
-    certifyText = (
-        <div>
-          <b>Ready to certify?</b> {certifyInformation}{" "}
-        </div>
-    );
-  }
   return (
-      <>
-        {test}
-        {isFinal ? (
+    <GridContainer>
+      <Grid row>
+        <Grid col={12}>
+          {isFinal ? (
             <div>
               <Alert
-                  type="success"
-                  heading="Thank you for submitting your SEDS data!"
+                type="success"
+                heading="Thank you for submitting your SEDS data!"
               >
-                <b> What to expect next:</b> You will hear from CMS if they have any
-                questions about your report.
+                <b> What to expect next:</b> You will hear from CMS if they have
+                any questions about your report.
               </Alert>
             </div>
-        ) : null}
+          ) : null}
 
-        {isProvisional ? (
+          {isProvisional ? (
             <div>
               <Alert
-                  type="info"
-                  heading="You have submitted provisional SEDS data"
+                type="info"
+                heading="You have submitted provisional SEDS data"
               />
             </div>
-        ) : null}
+          ) : null}
 
-        <h3> Certify and Submit</h3>
-        {certifyText}
+          <div className="age-range-description">
+            <h3> Certify and Submit:</h3>
+          </div>
 
-        <GridContainer>
-          <Grid row>
-            <Grid col={6} className="certify-btn provisional">
-              <Button
-                  onClick={() => submitProvisional()}
-                  type="button"
-                  disabled={provisionalButtonStatus}
-              >
-                {"Certify & Submit Provisional Data"}
-              </Button>
-            </Grid>
-            <Grid col={6} className="certify-btn final">
-              <Button
-                  onClick={() => submitFinal()}
-                  type="button"
-                  disabled={finalButtonStatus}
-              >
-                {"Certify & Submit Final Data"}
-              </Button>
-            </Grid>
-          </Grid>
-        </GridContainer>
-      </>
+          {isFinal ? (
+            <>
+              <b> Thank you for submitting your SEDS data!</b>
+              <p>
+                Submitted on {lastModified} by {lastModifiedBy}
+              </p>
+            </>
+          ) : (
+            <>
+              <b>Ready to certify?</b>
+              <p>
+                Double check that everything in your SEDS report is accurate.
+                You will have to uncertify your report to make any edits to your
+                final data after submitting.
+              </p>
+              <p>
+                Once you have reviewed your report, certify that it’s accurate
+                and in compliance with Title XXI of the Social Security Act
+                (Section 2109(a) and Section 2108(e)).
+              </p>
+            </>
+          )}
+        </Grid>
+      </Grid>
+      <Grid row>
+        <Grid col={6} className="certify-btn provisional">
+          <Button
+            onClick={() => submitProvisional()}
+            type="button"
+            disabled={provisionalButtonStatus}
+          >
+            {"Certify & Submit Provisional Data"}
+          </Button>
+        </Grid>
+        <Grid col={6} className="certify-btn final">
+          <Button
+            onClick={() => submitFinal()}
+            type="button"
+            disabled={finalButtonStatus}
+          >
+            {"Certify & Submit Final Data"}
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid row>
+        <Grid col={12} className="note">
+          <p>
+            Certify & Submit Provisional Data will allow you to submit your form
+            now, but it will remain editable to allow you to submit final data.
+          </p>
+          <p>
+            Certify & Submit Final Data will submit your data and the form will
+            no longer be editable unless you uncertify.
+          </p>
+        </Grid>
+      </Grid>
+    </GridContainer>
   );
 };
 
@@ -147,7 +140,7 @@ const mapState = state => ({
   lastModified: state.currentForm.statusData.last_modified,
   lastModifiedBy: state.currentForm.statusData.last_modified_by,
   isFinal: state.currentForm.statusData.status === "final",
-  isProvisional: state.currentForm.statusData.status === "Provisional Data Certified and Submitted"
+  isProvisional: state.currentForm.statusData.status === "provisional"
 });
 
 const mapDispatch = {
