@@ -77,7 +77,7 @@ const GREGridWithTotals = props => {
 
                     gridColumnTotalsCopy[gridColumnIndex] += currentValue;
 
-                    //Do not add the Total CHIP Enrolled column (4) to the Totals column (last column)
+                    //Do not add the Total CHIP Enrolled column (4) to the Total of Totals value (last column, last cell)
                     if (columnIndex !== 4) {
                         totalOfTotals += currentValue;
                     }
@@ -106,6 +106,7 @@ const GREGridWithTotals = props => {
                         currentValue = parseFloat(column);
                     }
 
+                    //Do not add the Total CHIP Enrolled column (4) to the row Totals value (last column of row)
                     if (columnIndex !== 4) {
                         rowTotal += currentValue;
                     }
@@ -122,44 +123,34 @@ const GREGridWithTotals = props => {
     };
 
     const updateCHIPTotals = () => {
-        let gridCHIPTotalsCopy = [...gridColumnTotals];
+        let gridCHIPTotalsCopy = [...gridCHIPTotals];
         let totalCHIP = 0;
 
-        gridCHIPTotalsCopy.forEach((part, index, columnCHIPArray) => {
-            columnCHIPArray[index] = 0;
-        });
-
         gridData.map((row, rowIndex) => {
+            totalCHIP = 0;
             if (row !== undefined) {
                 row.map((column, columnIndex) => {
                     let currentValue = 0;
-
-                    const gridColumnIndex = columnIndex - 1;
 
                     if (isNaN(column) === false) {
                         currentValue = parseFloat(column);
                     }
 
-                    if (
-                        gridCHIPTotalsCopy[gridColumnIndex] === undefined ||
-                        gridCHIPTotalsCopy[gridColumnIndex] === null ||
-                        gridCHIPTotalsCopy[gridColumnIndex] === ""
-                    ) {
-                        gridCHIPTotalsCopy[gridColumnIndex] = 0;
-                    }
-
-                    //If the value is entered in either the 21E or 64.21 columns, add the value to totalCHIP
-                    if (columnIndex === 2 || columnIndex ===3) {
+                    //If we are in Columns 2 (21E) or 3 (64.21E), sum the values to send to Column 4 (Total CHIP Enrolled)
+                    if (columnIndex === 2 || columnIndex === 3) {
                         totalCHIP += currentValue;
                     }
 
                     return true;
                 });
+                gridCHIPTotalsCopy[rowIndex] = totalCHIP;
             }
+
             return true;
         });
 
-        updateGridCHIPTotals(totalCHIP);
+        console.log ("gridCHIPTotalsCopy: ", gridCHIPTotalsCopy)
+        updateGridCHIPTotals(gridCHIPTotalsCopy);
     };
 
     let headerColArray = [];
@@ -232,11 +223,10 @@ const GREGridWithTotals = props => {
                         } else if (columnIndex === 4) {
                             //This is the Total CHIP Enrolled column
                             formattedCell = (
-                                <td key={columnIndex}>
-                                    <TextInput
+                                <td key={columnIndex}
                                         type="number"
                                         className="total-column"
-                                        onChange={event => updateGrid(rowIndex, columnIndex, event)}
+                                        //onChange={event => updateGrid(rowIndex, columnIndex, event)}
                                         defaultValue={Number.parseFloat(column).toFixed(
                                             currentPrecision
                                         )}
@@ -245,7 +235,6 @@ const GREGridWithTotals = props => {
                                         ).toFixed(currentPrecision)}
                                         disabled={true}
                                     />
-                                </td>
                             );
                         } else {
                             formattedCell = (
