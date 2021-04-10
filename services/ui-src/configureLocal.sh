@@ -38,6 +38,6 @@ export COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
 # export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_nameﬁ
 # This is set to false, as using this script points your local react server to Amazon
 export LOCAL_LOGIN=false
-export REMOTE_WORKFLOW=false
 
 ./env.sh
+echo "Done fetching for stage $stage..."

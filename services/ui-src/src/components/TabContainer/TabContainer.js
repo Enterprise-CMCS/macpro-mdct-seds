@@ -16,7 +16,7 @@ const TabContainer = ({
   quarter
 }) => {
   return (
-    <Tabs>
+    <Tabs className="tab-container-main">
       <TabList>
         {currentTabs.map((tab, idx) => {
           const rangeDetails = tabDetails.find(
