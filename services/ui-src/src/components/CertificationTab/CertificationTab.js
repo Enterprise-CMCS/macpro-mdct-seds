@@ -98,7 +98,9 @@ const CertificationTab = ({
         </div>
       ) : null}
 
-      <h3> Certify and Submit</h3>
+      <div className="age-range-description">
+        <h3>Certify and Submit:</h3>
+      </div>
       {certifyText}
       {certifyInformation}
       <GridContainer>
