@@ -3,14 +3,21 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
 import { Link } from "@trussworks/react-uswds";
-import { saveForm } from "../../store/actions/saveForm";
 import { Auth } from "aws-amplify";
+import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const FormFooter = ({ state, year, quarter, lastModified }) => {
+const FormFooter = ({
+  state,
+  year,
+  quarter,
+  lastModified,
+  saveForm,
+  formAnswers
+}) => {
   const [username, setUsername] = useState();
 
   useEffect(() => {
@@ -21,6 +28,10 @@ const FormFooter = ({ state, year, quarter, lastModified }) => {
 
     loadUserData();
   });
+
+  const handleClick = () => {
+    saveForm(username, formAnswers);
+  };
 
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
@@ -40,7 +51,7 @@ const FormFooter = ({ state, year, quarter, lastModified }) => {
               <Grid col={6}> Last saved: {lastModified} </Grid>
               <Grid col={6}>
                 {" "}
-                <Button className="hollow" onClick={saveForm(username)}>
+                <Button className="hollow" onClick={() => handleClick()}>
                   Save
                 </Button>
               </Grid>
@@ -60,8 +71,13 @@ FormFooter.propTypes = {
   saveForm: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  lastModified: state.currentForm.statusData.last_modified,
+  formAnswers: state.currentForm.answers
+});
+
 const mapDispatchToProps = {
-  saveForm
+  saveForm: saveForm
 };
 
-export default connect(null, mapDispatchToProps)(FormFooter);
+export default connect(mapStateToProps, mapDispatchToProps)(FormFooter);

@@ -12,13 +12,14 @@ import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../../actions/certify";
-import { SAVE_FORM } from "../../actions/saveForm";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
+export const SAVE_FORM = "SAVE_FORM";
+export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
 
 // ACTION CREATORS
 export const gotFormData = formObject => {
@@ -38,6 +39,13 @@ export const updatedStatus = activeBoolean => {
   return {
     type: UPDATE_FORM_STATUS,
     activeStatus: activeBoolean
+  };
+};
+
+export const updatedLastSaved = username => {
+  return {
+    type: SAVE_FORM,
+    username
   };
 };
 
@@ -85,6 +93,24 @@ export const getFormData = (state, year, quarter, formName) => {
 export const disableForm = activeBoolean => {
   return dispatch => {
     dispatch(updatedStatus(activeBoolean));
+  };
+};
+
+export const saveForm = (username, formAnswers) => {
+  return async dispatch => {
+    try {
+      // Update Database
+      // graphQL call goes here
+      const stateForm = formAnswers[0].state_form;
+
+      // await mySaveGraphQLFucntion(stuff);
+
+      // Update Last Saved in redux state
+      dispatch(updatedLastSaved(username, formAnswers));
+    } catch (error) {
+      // If updating the form data fails, state will remain unchanged
+      dispatch({ type: SAVE_FORM_FAILURE });
+    }
   };
 };
 
@@ -138,8 +164,17 @@ export default (state = initialState, action) => {
     case SAVE_FORM:
       return {
         ...state,
-        last_modified_by: action.username,
-        last_modified: new Date().toString()
+        statusData: {
+          ...state.statusData,
+          last_modified: new Date().toString(),
+          saveError: false,
+          last_modified_by: action.username
+        }
+      };
+    case SAVE_FORM_FAILURE:
+      return {
+        ...state,
+        saveError: true
       };
     default:
       return state;
