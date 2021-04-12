@@ -39,6 +39,11 @@ const GREGridWithTotals = props => {
 
         updateGridData(gridCopy);
         updateTotals();
+
+        //Set the Total CHIP Enrolled value
+        gridCopy[row][4] = gridCHIPTotals[row];
+        updateGridData(gridCopy);
+
         props.setAnswer(gridCopy, props.questionID);
     };
 
@@ -136,6 +141,14 @@ const GREGridWithTotals = props => {
                         currentValue = parseFloat(column);
                     }
 
+                    if (
+                        gridCHIPTotalsCopy[columnIndex] === undefined ||
+                        gridCHIPTotalsCopy[columnIndex] === null ||
+                        gridCHIPTotalsCopy[columnIndex] === ""
+                    ) {
+                        gridCHIPTotalsCopy[columnIndex] = 0;
+                    }
+
                     //If we are in Columns 2 (21E) or 3 (64.21E), sum the values to send to Column 4 (Total CHIP Enrolled)
                     if (columnIndex === 2 || columnIndex === 3) {
                         totalCHIP += currentValue;
@@ -224,17 +237,13 @@ const GREGridWithTotals = props => {
                             //This is the Total CHIP Enrolled column
                             formattedCell = (
                                 <td key={columnIndex}
-                                        type="number"
-                                        className="total-column"
-                                        //onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                                        defaultValue={Number.parseFloat(column).toFixed(
-                                            currentPrecision
-                                        )}
-                                        value={Number.parseFloat(
-                                            gridData[rowIndex][columnIndex]
-                                        ).toFixed(currentPrecision)}
-                                        disabled={true}
-                                    />
+                                    className="total-column"
+                                    disabled={true}
+                                >
+                                    {Number.parseFloat(gridCHIPTotals[rowIndex]).toFixed(
+                                        currentPrecision
+                                    )}
+                                </td>
                             );
                         } else {
                             formattedCell = (
