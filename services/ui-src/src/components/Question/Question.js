@@ -11,7 +11,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // Get the rows from the answers table
   const { rows, answer_entry } = answerData;
 
-  const questionNumber = Number.parseInt(question.split("-").slice(-1));
+  const questionNumber = parseInt(question.split("-").slice(-1));
   const questionType = type;
 
   // Turn the age range into a grammatically correct variable in the label
@@ -21,10 +21,14 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
   const sortedRows = sortQuestionColumns(rows);
 
-  let tempComponent = {};
-  if (sortedRows.length > 0) {
+  // *** question component will be determined on the fly
+  let questionComponent = {};
+
+  if (sortedRows.length > 0 && questionNumber > 0) {
+    // *** question 5 is special
     if (questionNumber === 5) {
-      tempComponent = (
+      // *** and as such, will require a synthesized grid
+      questionComponent = (
         <SynthesizedGrid
           questionID={answer_entry}
           questionData={questionData}
@@ -32,23 +36,34 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
           answerData={answerData}
         />
       );
-    } else if (questionNumber > 0 && questionType === "datagridwithtotals") {
-      tempComponent = (
-        <GridWithTotals
-          questionID={answer_entry}
-          gridData={sortedRows}
-          disabled={disabled}
-        />
-      );
     }
-    else if (questionNumber > 0 && questionType === "gregridwithtotals") {
-      tempComponent = (
-          <GREGridWithTotals
+    // *** all other questions will be treated according to type
+    else {
+      switch (questionType) {
+        // *** grid with totals
+        case "datagridwithtotals":
+          questionComponent = (
+            <GridWithTotals
               questionID={answer_entry}
               gridData={sortedRows}
               disabled={disabled}
-          />
-      );
+            />
+          );
+          break;
+        // *** gre grid with totals
+        case "gregridwithtotals":
+          questionComponent = (
+            <GREGridWithTotals
+              questionID={answer_entry}
+              gridData={sortedRows}
+              disabled={disabled}
+            />
+          );
+          break;
+
+        default:
+          break;
+      }
     }
   }
   return (
@@ -56,7 +71,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
-      {tempComponent}
+      {questionComponent}
     </>
   );
 };
