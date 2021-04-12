@@ -4,7 +4,8 @@ import "react-tabs/style/react-tabs.css";
 import { Button, Alert, GridContainer, Grid } from "@trussworks/react-uswds";
 import {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 } from "../../store/actions/certify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
@@ -17,7 +18,8 @@ const CertificationTab = ({
   isFinal,
   isProvisional,
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
@@ -32,6 +34,13 @@ const CertificationTab = ({
     certifyAndSubmitFinal();
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
+  };
+
+  const submitUncertify = () => {
+    uncertify();
+    isFinal = false;
+    setprovisionalButtonStatus(false);
+    setfinalButtonStatus(false);
   };
 
   const certifyInformation = (
@@ -88,7 +97,6 @@ const CertificationTab = ({
           </Alert>
         </div>
       ) : null}
-
       {isProvisional ? (
         <div>
           <Alert
@@ -97,7 +105,6 @@ const CertificationTab = ({
           />
         </div>
       ) : null}
-
       <div className="age-range-description">
         <h3>Certify and Submit:</h3>
       </div>
@@ -124,6 +131,17 @@ const CertificationTab = ({
             </Button>
           </Grid>
         </Grid>
+        {isFinal ? (
+          <Grid row>
+            <Grid col={4}></Grid>
+            <Grid col={4} className="certify-btn uncertify">
+              <Button onClick={() => submitUncertify()} type="button">
+                {"Uncertify Data"}
+              </Button>
+            </Grid>
+            <Grid col={4}></Grid>
+          </Grid>
+        ) : null}
       </GridContainer>
     </>
   );
@@ -132,6 +150,7 @@ const CertificationTab = ({
 CertificationTab.propTypes = {
   certifyAndSubmitFinal: PropTypes.func.isRequired,
   certifyAndSubmitProvisional: PropTypes.func.isRequired,
+  uncertify: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
   notApplicable: PropTypes.bool.isRequired,
   lastModified: PropTypes.string.isRequired,
@@ -155,6 +174,7 @@ const mapState = state => ({
 
 const mapDispatch = {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 };
 export default connect(mapState, mapDispatch)(CertificationTab);

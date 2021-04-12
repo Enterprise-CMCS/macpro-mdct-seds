@@ -10,13 +10,13 @@ import {
 import { getSingleForm, getStateForms } from "../../../libs/api.js";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
-  CERTIFY_AND_SUBMIT_PROVISIONAL
+  CERTIFY_AND_SUBMIT_PROVISIONAL,
+  UNCERTIFY
 } from "../../actions/certify";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
-export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
 
 // ACTION CREATORS
@@ -127,12 +127,21 @@ export default (state = initialState, action) => {
         last_modified_by: action.username,
         last_modified: new Date().toISOString()
       };
-    case CERTIFY_AND_SUBMIT_PROVISIONAL: // needs updating since the shape of the initial state has changed
+    case CERTIFY_AND_SUBMIT_PROVISIONAL:
       return {
         ...state,
         status: "Provisional Data Certified and Submitted",
         last_modified_by: action.userName,
-        last_modified: new Date().toISOString()
+        last_modified: new Date().toISOString(),
+        status_date: new Date().toISOString()
+      };
+    case UNCERTIFY:
+      return {
+        ...state,
+        status: "In Progress",
+        last_modified_by: action.userName,
+        last_modified: new Date().toString(),
+        status_date: new Date().toISOString()
       };
     default:
       return state;
