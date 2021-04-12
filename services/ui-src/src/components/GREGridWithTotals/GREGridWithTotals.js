@@ -42,6 +42,9 @@ const GREGridWithTotals = props => {
 
         //Set the Total CHIP Enrolled value
         gridCopy[row][4] = gridCHIPTotals[row];
+        console.log("gridCopy: ", gridCopy);
+        console.log("gridCHIPTotals-updateGrid: ", gridCHIPTotals);
+        console.log("gridCHIPTotals[row]: ", gridCHIPTotals[row]);
         updateGridData(gridCopy);
 
         props.setAnswer(gridCopy, props.questionID);
@@ -162,8 +165,10 @@ const GREGridWithTotals = props => {
             return true;
         });
 
+
         console.log ("gridCHIPTotalsCopy: ", gridCHIPTotalsCopy)
         updateGridCHIPTotals(gridCHIPTotalsCopy);
+        console.log ("gridCHIPTotals-postCopy: ", gridCHIPTotals)
     };
 
     let headerColArray = [];
@@ -219,6 +224,7 @@ const GREGridWithTotals = props => {
                                         <TextInput
                                             type="number"
                                             className="grid-column"
+                                            //onBlur={updateTotals()}
                                             onChange={event =>
                                                 updateGrid(rowIndex, columnIndex, event)
                                             }
