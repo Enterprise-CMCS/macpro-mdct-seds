@@ -96,3 +96,11 @@ export const getFormTypes = _ => {
 
   return API.get("mdct-seds", "/form-types", opts);
 };
+
+// *** save single form
+export const saveForm = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.get("mdct-seds", "/single-form/save", opts);
+};
