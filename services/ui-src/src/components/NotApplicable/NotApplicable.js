@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import { updatedStatus } from "../../store/reducers/singleForm/singleForm";
+import { Auth } from "aws-amplify";
 
 const NotApplicable = ({
   statusObject,
@@ -13,8 +14,18 @@ const NotApplicable = ({
   status
 }) => {
   const [applicableStatus, setApplicableStatus] = useState(0);
+  const [username, setUsername] = useState();
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const AuthUserInfo = await Auth.currentAuthenticatedUser();
+      const { given_name, family_name } = AuthUserInfo.attributes;
+      setUsername(`${given_name} ${family_name}`);
+    };
+    loadUserData();
+  });
 
   useEffect(() => {
     let booleanToInt = not_applicable === false ? 0 : 1;
@@ -32,7 +43,7 @@ const NotApplicable = ({
       status === "Not Required" ? "In Progress" : "Not Required";
 
     let integerToBool = applicableStatus === 0 ? false : true;
-    toggle(integerToBool, "Me!", updatedStatus);
+    toggle(integerToBool, username, updatedStatus);
   };
 
   return (

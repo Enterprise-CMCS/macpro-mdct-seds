@@ -84,10 +84,15 @@ const extractAgeRanges = answersArray => {
 };
 
 const dateFormatter = () => {
-  const backwardsDate = new Date().toLocaleDateString("en-gb");
-  const dateSplit = backwardsDate.split("/");
+  const newDate = new Date();
 
-  return `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
+  // ge tthe date and format it
+  const backwardsDate = newDate.toLocaleDateString("en-gb").split("/");
+
+  // get the time and format it
+  const time = newDate.toTimeString().split(" ")[0];
+
+  return `${backwardsDate[1]}/${backwardsDate[0]}/${backwardsDate[2]} at ${time}`;
 };
 
 export {
