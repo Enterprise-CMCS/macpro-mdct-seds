@@ -16,6 +16,7 @@ export const main = handler(async (event, context) => {
   const answers = data.formAnswers;
   let result = [];
 
+  // Loop through answers to add individually
   for (const answer in answers) {
     // Extract question number
     const questionNumber = answers[answer].question.split("-")[2];
@@ -28,7 +29,6 @@ export const main = handler(async (event, context) => {
       "-" +
       questionNumber;
 
-    console.log("\n\n\n\n zzzAnswerEntry", answerEntry);
     const params = {
       TableName: process.env.FormAnswersTableName,
       Key: {

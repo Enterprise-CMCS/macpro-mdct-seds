@@ -104,8 +104,7 @@ export const saveForm = (username, formAnswers) => {
   return async dispatch => {
     try {
       // Update Database
-
-      const form = await saveSingleForm({
+      await saveSingleForm({
         username: username,
         formAnswers: formAnswers
       });
@@ -179,7 +178,10 @@ export default (state = initialState, action) => {
     case SAVE_FORM_FAILURE:
       return {
         ...state,
-        saveError: true
+        statusData: {
+          ...state.statusData,
+          saveError: true
+        }
       };
     default:
       return state;
