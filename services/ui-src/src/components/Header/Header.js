@@ -4,6 +4,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { GovBanner, Link, NavList } from "@trussworks/react-uswds";
 
+import "./Header.scss";
+
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
