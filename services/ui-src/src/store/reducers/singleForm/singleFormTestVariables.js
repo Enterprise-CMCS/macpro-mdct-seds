@@ -3,7 +3,12 @@ export const tabs = ["0000", "0001", "0105", "0612"];
 export const statusData = {
   status_date: "03-02-2021",
   year: 2021,
-  state_comments: [],
+  state_comments: [
+    {
+      type: "text_multiline",
+      entry: "This is an example of summary notes on the state form 21PW for PA"
+    }
+  ],
   form_id: "6",
   last_modified_by: "Timothy Griesemer",
   created_by: "seed",

@@ -5,6 +5,7 @@
 .usa-button {
   background: $lochmara;
   width: 140px;
+  box-shadow: 5px 10px 8px #888888;
 
   &.hollow {
     background-color: $white;
@@ -23,7 +24,7 @@
 }
 
 .usa-button--outline {
-  background: transparent !important;
+  background: $white !important;
   :hover {
     background: $lochmara !important;
   }

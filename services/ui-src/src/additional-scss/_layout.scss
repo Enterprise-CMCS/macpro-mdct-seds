@@ -11,10 +11,13 @@
   @extend .font-alt-xl;
   width: 99% !important;
   margin-left: 0.5%;
+  box-shadow: 15px 5px 8px #888888;
+  letter-spacing: 0.2em;
 }
 
 .page-subheader {
   @extend .padding-left-9;
+  @extend .padding-bottom-2;
 }
 
 .list-display-container {

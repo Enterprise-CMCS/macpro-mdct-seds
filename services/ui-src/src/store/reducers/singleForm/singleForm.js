@@ -13,6 +13,8 @@ import {
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../../actions/certify";
 
+import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
+
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
@@ -125,14 +127,25 @@ export default (state = initialState, action) => {
         ...state,
         status: "final",
         last_modified_by: action.username,
-        last_modified: new Date().toISOString()
+        last_modified: new Date().toISOString() // Need to update this with coming soon helper function
       };
-    case CERTIFY_AND_SUBMIT_PROVISIONAL: // needs updating since the shape of the initial state has changed
+    case CERTIFY_AND_SUBMIT_PROVISIONAL:
       return {
         ...state,
-        status: "Provisional Data Certified and Submitted",
-        last_modified_by: action.userName,
-        last_modified: new Date().toISOString()
+        statusData: {
+          ...state.statusData,
+          status: "Provisional Data Certified and Submitted",
+          last_modified_by: action.userName,
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+        }
+      };
+    case SUMMARY_NOTES_SUCCESS:
+      return {
+        ...state,
+        statusData: {
+          ...state.statusData,
+          state_comments: action.tempStateComments
+        }
       };
     default:
       return state;

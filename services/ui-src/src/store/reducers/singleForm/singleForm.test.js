@@ -197,6 +197,24 @@ describe("Single Form Reducer, component parts", () => {
     expect(typeof returnedValue).toEqual("function");
   });
 
+  test("Should return the correct summary notes from the mock statusData object", () => {
+    const summaryNotes = statusData.state_comments;
+    const store = mockStore(initialState);
+    const actions = store.getActions();
+    const expectedPayload = {
+      type: SUMMARY_NOTES_SUCCESS,
+      tempStateComments: [
+        {
+          type: "text_multiline",
+          entry: summaryNotes
+        }
+      ]
+    };
+
+    store.dispatch(saveSummaryNotes(summaryNotes));
+    expect(actions).toEqual([expectedPayload]);
+  });
+
   test("Should return the correct last_modified_by from the mock statusData object", () => {
     const store = mockStore(initialState);
     const actions = store.getActions();

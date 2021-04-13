@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import HomeAdmin from "./HomeAdmin";
-import { Link } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 
 describe("Tests for HomeAdmin.js", () => {
   let wrapper;

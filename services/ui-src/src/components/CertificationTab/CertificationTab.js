@@ -34,27 +34,6 @@ const CertificationTab = ({
     setfinalButtonStatus(true);
   };
 
-  const certifyInformation = (
-    <div>
-      <p>
-        Double check that everything in your SEDS report is accurate. You will
-        have to uncertify your report to make any edits to your final data after
-        submitting.
-      </p>
-      <p>
-        Once you have reviewed your report, certify that it’s accurate and in
-        compliance with Title XXI of the Social Security Act (Section 2109(a)
-        and Section 2108(e)).
-      </p>
-      <div data-testid="statusText">
-        <p>
-          This report was updated to <b>{status}</b> on <b>{lastModified}</b> by{" "}
-          <b>{lastModifiedBy}</b>
-        </p>
-      </div>
-    </div>
-  );
-
   let certifyText = <></>;
   if (isFinal) {
     certifyText = (
@@ -102,7 +81,24 @@ const CertificationTab = ({
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
-      {certifyInformation}
+      <div>
+        <p>
+          Double check that everything in your SEDS report is accurate. You will
+          have to uncertify your report to make any edits to your final data
+          after submitting.
+        </p>
+        <p>
+          Once you have reviewed your report, certify that it’s accurate and in
+          compliance with Title XXI of the Social Security Act (Section 2109(a)
+          and Section 2108(e)).
+        </p>
+        <div data-testid="statusText">
+          <p>
+            This report was updated to <b>{status}</b> on <b>{lastModified}</b>{" "}
+            by <b>{lastModifiedBy}</b>
+          </p>
+        </div>
+      </div>
       <GridContainer>
         <Grid row>
           <Grid col={6} className="certify-btn provisional">
