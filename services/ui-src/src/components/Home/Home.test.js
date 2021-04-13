@@ -16,7 +16,7 @@ afterEach(() => {
   React.useContext = realUseContext;
 });
 
-describe("Test Home.js", () => {
+describe("Test ExportToPdf.js", () => {
   test("Check the main element, with classname Home, exists", () => {
     useContextMock.mockReturnValue(true);
 

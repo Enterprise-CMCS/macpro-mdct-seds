@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
