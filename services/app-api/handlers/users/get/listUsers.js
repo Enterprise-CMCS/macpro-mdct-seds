@@ -10,18 +10,9 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log("!!! in lambda");
-  console.log("\n\n\n!!!=>>got provider: ");
-  console.log(event.requestContext.identity.cognitoAuthenticationProvider);
-
-  console.log("!!!Retrieving user:");
-
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
-
-  console.log("\n\n\n~~~GOT USER!!");
-  console.log(user);
 
   const params = {
     TableName:

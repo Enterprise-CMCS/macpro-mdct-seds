@@ -221,10 +221,10 @@ functions:
           authorizer: aws_iam
   saveForm:
     handler: handlers/forms/post/saveForm.main
-    role: LamdbaApiRole
+    role: LambdaApiRole
     events:
       - http:
-          path: /single-form/save
+          path: single-form/save
           method: post
           cors: true
           authorizer: aws_iam

@@ -7,7 +7,11 @@ import {
 } from "./helperFunctions";
 
 // ENDPOINTS
-import { getSingleForm, getStateForms } from "../../../libs/api.js";
+import {
+  getSingleForm,
+  getStateForms,
+  saveSingleForm
+} from "../../../libs/api.js";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -100,10 +104,11 @@ export const saveForm = (username, formAnswers) => {
   return async dispatch => {
     try {
       // Update Database
-      // Find stateform
-      const stateForm = formAnswers[0].state_form;
 
-      // await mySaveGraphQLFucntion(stuff);
+      const form = await saveSingleForm({
+        username: username,
+        formAnswers: formAnswers
+      });
 
       // Update Last Saved in redux state
       dispatch(updatedLastSaved(username, formAnswers));

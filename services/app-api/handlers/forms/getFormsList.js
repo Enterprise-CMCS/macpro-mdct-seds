@@ -8,8 +8,6 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log(process.env);
-
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
