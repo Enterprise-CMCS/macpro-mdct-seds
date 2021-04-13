@@ -170,7 +170,7 @@ const EditUser = ({ stateList }) => {
     <div className="edit-user react-transition fade-in" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
-        <Link href="/#/users" className="userListLink text-bold">
+        <Link to="/users" className="text-bold">
           &laquo; Back to User List
         </Link>
       </div>

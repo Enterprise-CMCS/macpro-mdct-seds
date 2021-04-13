@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import { GovBanner, Link, NavList } from "@trussworks/react-uswds";
+import { GovBanner, NavList } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
+
+import "./Header.scss";
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -30,8 +33,8 @@ const Header = () => {
   };
 
   const menuItems = [
-    <Link href="/">Home</Link>,
-    <Link href="#/contact">Contact</Link>
+    <Link to="/">Home</Link>,
+    <Link to="/contact">Contact</Link>
   ];
 
   return (

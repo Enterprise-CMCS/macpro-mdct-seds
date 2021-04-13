@@ -53,7 +53,7 @@ export default function Signup() {
         attributes: {
           given_name: fields.firstName,
           family_name: fields.lastName,
-          "custom:ismemberof": "CHIP_D_USER_GROUP_ADMIN"
+          "custom:ismemberof": "CHIP_D_USER_GROUP"
         }
       });
       setIsLoading(false);
