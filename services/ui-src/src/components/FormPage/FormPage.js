@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { GridContainer } from "@trussworks/react-uswds";
+import { Alert, GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
@@ -10,7 +10,7 @@ import FormFooter from "../FormFooter/FormFooter";
 import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
-  const { last_modified } = statusData;
+  const { last_modified, save_error } = statusData;
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -31,6 +31,17 @@ const FormPage = ({ getForm, statusData }) => {
         className="form-header form-header-main"
         data-testid="FormPage"
       >
+        {save_error ? (
+          <div className="save-error">
+            <Alert type="error" heading="Save Error:">
+              A problem occurred while saving. Please save again. If the problem
+              persists, contact{" "}
+              <a href="mailto:sedshelp@cms.hhs.gov" target="_blank">
+                SEDSHELP@cms.hhs.gov
+              </a>
+            </Alert>
+          </div>
+        ) : null}
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}

@@ -1,3 +1,11 @@
 .form-footer {
   margin-top: 1.2rem;
 }
+
+.save-error {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  margin-left: -392px;
+  z-index: 999;
+}

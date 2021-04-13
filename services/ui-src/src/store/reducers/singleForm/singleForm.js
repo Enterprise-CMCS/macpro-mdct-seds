@@ -171,7 +171,7 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           last_modified: new Date().toString(),
-          saveError: false,
+          save_error: false,
           last_modified_by: action.username
         }
       };
@@ -180,7 +180,7 @@ export default (state = initialState, action) => {
         ...state,
         statusData: {
           ...state.statusData,
-          saveError: true
+          save_error: true
         }
       };
     default:
