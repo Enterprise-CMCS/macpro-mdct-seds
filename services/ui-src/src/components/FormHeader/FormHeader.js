@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Button,
   Grid,
   GridContainer,
-  Link,
   TextInput
 } from "@trussworks/react-uswds";
 import { getFormTypes, getSingleForm } from "../../libs/api";

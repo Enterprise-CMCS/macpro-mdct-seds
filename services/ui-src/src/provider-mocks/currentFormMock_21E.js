@@ -3298,7 +3298,8 @@ const currentFormMock_21E = {
       state_comments: [
         {
           type: "text_multiline",
-          entry: null
+          entry:
+            "This is an example of summary notes on the state form 21E for AL"
         }
       ],
       form_id: "1",

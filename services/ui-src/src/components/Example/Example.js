@@ -22,6 +22,8 @@ import TabContainer from "../TabContainer/TabContainer";
 
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 
+import "./Example.scss";
+
 const Example = () => {
   let accordionItems = [
     {
