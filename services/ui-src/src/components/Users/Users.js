@@ -285,7 +285,6 @@ const Users = () => {
           {tableData ? (
             <DataTableExtensions {...tableData} export={false} print={false}>
               <DataTable
-                className="react-transition flip-in-x"
                 defaultSortField="username"
                 sortIcon={
                   <FontAwesomeIcon
@@ -297,7 +296,7 @@ const Users = () => {
                 selectableRows={false}
                 responsive={true}
                 striped={true}
-                className="grid-display-table react-transition fade-in"
+                className="grid-display-table react-transition flip-in-x"
               />
             </DataTableExtensions>
           ) : (
