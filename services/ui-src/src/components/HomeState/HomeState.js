@@ -1,5 +1,5 @@
-import React from "react";
-import { Accordion, Grid } from "@trussworks/react-uswds";
+import React, { useState, useEffect } from "react";
+import { Accordion } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
@@ -40,7 +40,7 @@ const HomeState = () => {
     setFormData(forms);
   };
   useEffect(() => {
-    loadUserData();
+    loadUserData().then();
   }, []);
 
   // Create an array of unique years
