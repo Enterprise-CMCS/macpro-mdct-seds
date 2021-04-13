@@ -1,4 +1,5 @@
 import jsonpath from "jsonpath";
+import configureStore from "redux-mock-store";
 import {
   answers,
   questions,
@@ -10,7 +11,10 @@ import singleFormReducer, {
   UPDATE_ANSWER,
   getFormData
 } from "./singleForm";
-import configureStore from "redux-mock-store";
+import {
+  SUMMARY_NOTES_SUCCESS,
+  saveSummaryNotes
+} from "../../actions/statusData";
 
 const initialState = {
   questions: [],
@@ -191,5 +195,23 @@ describe("Single Form Reducer, component parts", () => {
   test("thunks should return a function", () => {
     const returnedValue = getFormData("AL", "2021", "1", "21E");
     expect(typeof returnedValue).toEqual("function");
+  });
+
+  test("Should return the correct summary notes from the mock statusData object", () => {
+    const summaryNotes = statusData.state_comments;
+    const store = mockStore(initialState);
+    const actions = store.getActions();
+    const expectedPayload = {
+      type: SUMMARY_NOTES_SUCCESS,
+      tempStateComments: [
+        {
+          type: "text_multiline",
+          entry: summaryNotes
+        }
+      ]
+    };
+
+    store.dispatch(saveSummaryNotes(summaryNotes));
+    expect(actions).toEqual([expectedPayload]);
   });
 });

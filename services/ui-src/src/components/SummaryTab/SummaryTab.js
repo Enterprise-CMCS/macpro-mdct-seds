@@ -4,8 +4,9 @@ import QuestionComponent from "../Question/Question";
 import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
-const SummaryTab = ({ questions, answers, tempVar }) => {
+const SummaryTab = ({ questions, answers }) => {
   return (
     <div className="summary-tab">
       <div className="age-range-description">
@@ -84,6 +85,7 @@ const SummaryTab = ({ questions, answers, tempVar }) => {
           />
         );
       })}
+      <SummaryNotes />
     </div>
   );
 };
@@ -95,8 +97,7 @@ SummaryTab.propTypes = {
 
 const mapState = state => ({
   answers: state.currentForm.answers,
-  questions: state.currentForm.questions,
-  tempVar: state.currentForm
+  questions: state.currentForm.questions
 });
 
 export default connect(mapState)(SummaryTab);
