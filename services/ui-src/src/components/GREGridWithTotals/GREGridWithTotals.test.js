@@ -1,9 +1,11 @@
 import React from "react";
 import { mount } from "enzyme";
-import GREGridWithTotals from "./GREGridWithTotals";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
+
+import GREGridWithTotals from "./GREGridWithTotals";
 import currentFormMock_GRE from "../../provider-mocks/currentFormMock_GRE.js";
+
 const mockStore = configureStore([]);
 
 describe("Test GREGridWithTotals.js", () => {
