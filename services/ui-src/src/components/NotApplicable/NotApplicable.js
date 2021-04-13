@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { RangeInput, Button } from "@trussworks/react-uswds";
-import TabContainer from "../TabContainer/TabContainer";
-import { useParams } from "react-router-dom";
+import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import { updatedStatus } from "../../store/reducers/singleForm/singleForm";
 
@@ -14,36 +12,35 @@ const NotApplicable = ({
   not_applicable,
   status
 }) => {
-  const [applicableStatus, setApplicableStatus] = useState([]);
-  // FALSE = the form DOES APPLY TO THIS STATE
-  // TRUE = the form is NOT APPLICABLE
+  const [applicableStatus, setApplicableStatus] = useState(0);
+  // FALSE = the form APPLIES TO THIS STATE (0)
+  // TRUE = the form is NOT APPLICABLE (1)
 
   useEffect(() => {
-    setApplicableStatus(not_applicable);
+    let booleanToInt = not_applicable === false ? 0 : 1;
+    setApplicableStatus(booleanToInt);
   }, [not_applicable]);
 
-  const changeStatus = event => {
-    setApplicableStatus(event.target.value);
-    updatedStatus(applicableStatus);
+  const changeStatus = () => {
+    if (applicableStatus === 0) {
+      setApplicableStatus(1);
+    } else {
+      setApplicableStatus(0);
+    }
+
+    let updatedStatus =
+      status === "Not Required" ? "In Progress" : "Not Required";
+
+    let integerToBool = applicableStatus === 0 ? false : true;
+    toggle(integerToBool, "Me!", updatedStatus);
   };
-
-  //   <Button type="buton" onClick={() => toggle(newStatus)}>
-  //     {statusButtonText}
-  //   </Button>
-
-  //   if (applicableStatus === true) {
-  //     newStatus = false;
-  //     statusText = "Not Applicable";
-  //   } else {
-  //     newStatus = true;
-  //     statusText = "Active";
-  //   }
 
   return (
     <>
-      <h3>
-        {applicableStatus === true ? <p> Not Applicable</p> : <p>Active</p>}{" "}
-      </h3>
+      <h3>Does this form apply to your state?</h3>
+      <h2>
+        {applicableStatus === 0 ? <p>Active</p> : <p> Not Applicable</p>}{" "}
+      </h2>
       <>
         <RangeInput
           onClick={() => changeStatus()}
@@ -51,14 +48,11 @@ const NotApplicable = ({
           name="range"
           min={0}
           max={1}
+          value={applicableStatus}
           defaultValue={0}
           list="range-list-id"
-          style={{ width: 50 }}
+          style={{ width: 100 }}
         />
-        <datalist id="range-list-id">
-          <option>0</option>
-          <option>1</option>
-        </datalist>
       </>
     </>
   );

@@ -3,7 +3,8 @@ import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
-  insertAnswer
+  insertAnswer,
+  dateFormatter
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -33,10 +34,13 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updatedStatus = activeStatus => {
+export const updatedStatus = (activeStatus, user, status) => {
   return {
     type: UPDATE_FORM_STATUS,
-    activeStatus
+    activeStatus,
+    user,
+    status,
+    timeStamp: dateFormatter()
   };
 };
 
@@ -112,7 +116,14 @@ export default (state = initialState, action) => {
     case UPDATE_FORM_STATUS:
       return {
         ...state,
-        statusData: { ...state.statusData, not_applicable: action.activeStatus }
+        statusData: {
+          ...state.statusData,
+          not_applicable: action.activeStatus,
+          last_modified_by: action.user,
+          last_modified: action.timeStamp,
+          status: action.status,
+          status_date: action.timeStamp
+        }
       };
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
       return {
