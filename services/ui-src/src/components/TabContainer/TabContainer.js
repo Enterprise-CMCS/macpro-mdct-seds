@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -11,10 +11,31 @@ const TabContainer = ({
   tabDetails,
   questions,
   answers,
-  disabled,
+  notApplicable,
+  formStatus,
   currentTabs,
   quarter
 }) => {
+  const [disabledStatus, setDisabledStatus] = useState();
+
+  useEffect(() => {
+    const establishStatus = () => {
+      let statusBoolean = false;
+      if (
+        notApplicable === true ||
+        formStatus === "Final Data Certified and Submitted" ||
+        formStatus === "Not Required" ||
+        formStatus === "Provisional Data Certified and Submitted"
+      ) {
+        statusBoolean = true;
+      }
+      setDisabledStatus(statusBoolean);
+    };
+    establishStatus();
+  }, [notApplicable, formStatus]);
+
+  // notApplicable: state.currentForm.statusData.not_applicable,
+  // formStatus: state.currentForm.statusData.status,
   return (
     <Tabs className="tab-container-main">
       <TabList>
@@ -75,7 +96,7 @@ const TabContainer = ({
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
-                    disabled={disabled}
+                    disabled={disabledStatus}
                   />
                 );
               }
@@ -99,14 +120,14 @@ TabContainer.propTypes = {
   currentTabs: PropTypes.array.isRequired,
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired,
-  disabled: PropTypes.bool.isRequired
+  answers: PropTypes.array.isRequired
+  // notApplicable: PropTypes.array.isRequired,
+  // formStatus: PropTypes.bool.isRequired
 };
 
 const mapState = state => ({
-  disabled:
-    state.currentForm.statusData.not_applicable ||
-    state.currentForm.statusData.status === "final",
+  notApplicable: state.currentForm.statusData.not_applicable,
+  formStatus: state.currentForm.statusData.status,
   currentTabs: state.currentForm.tabs,
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,

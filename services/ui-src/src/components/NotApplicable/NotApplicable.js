@@ -43,6 +43,8 @@ const NotApplicable = ({
       status === "Not Required" ? "In Progress" : "Not Required";
 
     let integerToBool = applicableStatus === 0 ? false : true;
+    // THIS IS WHERE WE STOP AND TELL USERS TO CONFIRM THEIR CHOICE BEFORE PRECEEDING
+    // IF THEY CANCEL THEIR CHOICE, RETURN OUT OF THIS CHANGE STATUS FUNCTION
     toggle(integerToBool, username, updatedStatus);
   };
 
