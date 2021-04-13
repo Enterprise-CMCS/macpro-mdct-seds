@@ -139,14 +139,10 @@ CertificationTab.propTypes = {
 const mapState = state => ({
   status: state.currentForm.statusData.status,
   notApplicable: state.currentForm.statusData.not_applicable,
-  lastModified: state.currentForm.statusData.last_modified,
-  lastModifiedBy: state.currentForm.statusData.last_modified_by,
-  isFinal:
-    state.currentForm.statusData.status ===
-    "Final Data Certified and Submitted",
-  isProvisional:
-    state.currentForm.statusData.status ===
-    "Provisional Data Certified and Submitted"
+  lastModified: state.currentForm.statusData.status_date,
+  lastModifiedBy: state.currentForm.statusData.status_modified_by,
+  isFinal: state.currentForm.statusData.status_id === 4,
+  isProvisional: state.currentForm.statusData.status_id === 3
 });
 
 const mapDispatch = {

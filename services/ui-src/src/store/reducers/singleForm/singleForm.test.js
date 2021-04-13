@@ -16,6 +16,11 @@ import {
   CERTIFY_AND_SUBMIT_PROVISIONAL
 } from "../../actions/certify";
 
+import {
+  SUMMARY_NOTES_SUCCESS,
+  saveSummaryNotes
+} from "../../actions/statusData";
+
 const initialState = {
   questions: [],
   answers: [],

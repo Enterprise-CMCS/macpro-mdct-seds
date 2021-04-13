@@ -135,8 +135,10 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Provisional Data Certified and Submitted",
+          status_id: 3,
+          status_modified_by: action.userName,
           last_modified_by: action.userName,
-          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+          last_modified: new Date().toISOString().substring(0, 10) // Need to update this with coming soon helper function
         }
       };
     case SUMMARY_NOTES_SUCCESS:

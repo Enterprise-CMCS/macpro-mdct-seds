@@ -3303,6 +3303,8 @@ const currentFormMock_21E = {
       quarter: 1,
       validation_percent: 0.03,
       status: "Not Started",
+      status_id: 1,
+      status_modified_by: "seed",
       status_date: "01-15-2021",
       not_applicable: false,
       state_comments: [
