@@ -1,7 +1,7 @@
 const certificationTabMock2 = {
   currentForm: {
     statusData: {
-      status_modified_by: "seed",
+      status_modified_by: "Tim Griesemer",
       status_date: "01-15-2021",
       year: 2021,
       state_comments: [
