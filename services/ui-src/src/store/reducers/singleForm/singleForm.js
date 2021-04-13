@@ -14,6 +14,8 @@ import {
   UNCERTIFY
 } from "../../actions/certify";
 
+import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
+
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
@@ -125,23 +127,40 @@ export default (state = initialState, action) => {
         ...state,
         status: "final",
         last_modified_by: action.username,
-        last_modified: new Date().toISOString()
+        last_modified: new Date().toISOString() // Need to update this with coming soon helper function
       };
-    case CERTIFY_AND_SUBMIT_PROVISIONAL:
+    case CERTIFY_AND_SUBMIT_PROVISIONAL: // needs updating since the shape of the initial state has changed
       return {
         ...state,
-        status: "Provisional Data Certified and Submitted",
-        last_modified_by: action.userName,
-        last_modified: new Date().toISOString(),
-        status_date: new Date().toISOString()
+        statusData: {
+          ...state.statusData,
+          status: "Provisional Data Certified and Submitted",
+          status_id: 3,
+          status_modified_by: action.userName,
+          last_modified_by: action.userName,
+          last_modified: new Date().toISOString().substring(0, 10) // Need to update this with coming soon helper function
+        }
+      };
+    case SUMMARY_NOTES_SUCCESS:
+      return {
+        ...state,
+        statusData: {
+          ...state.statusData,
+          state_comments: action.tempStateComments
+        }
       };
     case UNCERTIFY:
       return {
         ...state,
-        status: "In Progress",
-        last_modified_by: action.userName,
-        last_modified: new Date().toString(),
-        status_date: new Date().toISOString()
+        statusData: {
+          ...state.statusData,
+          status: "In Progress",
+          status_id: 2,
+          status_modified_by: action.userName,
+          last_modified_by: action.userName,
+          last_modified: new Date().toISOString().substring(0, 10), // Need to update this with coming soon helper function
+          status_date: new Date().toISOString().substring(0, 10) // Need to update this with coming soon helper function
+        }
       };
     default:
       return state;

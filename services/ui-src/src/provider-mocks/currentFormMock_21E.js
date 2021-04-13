@@ -3293,12 +3293,14 @@ const currentFormMock_21E = {
       }
     ],
     statusData: {
+      status_modified_by: "seed",
       status_date: "01-15-2021",
       year: 2021,
       state_comments: [
         {
           type: "text_multiline",
-          entry: null
+          entry:
+            "This is an example of summary notes on the state form 21E for AL"
         }
       ],
       form_id: "1",
@@ -3314,6 +3316,7 @@ const currentFormMock_21E = {
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "01-15-2021",
       quarter: 1,
+      status_id: 1,
       status: "Not Started"
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]

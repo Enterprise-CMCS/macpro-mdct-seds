@@ -43,27 +43,6 @@ const CertificationTab = ({
     setfinalButtonStatus(false);
   };
 
-  const certifyInformation = (
-    <div>
-      <p>
-        Double check that everything in your SEDS report is accurate. You will
-        have to uncertify your report to make any edits to your final data after
-        submitting.
-      </p>
-      <p>
-        Once you have reviewed your report, certify that it’s accurate and in
-        compliance with Title XXI of the Social Security Act (Section 2109(a)
-        and Section 2108(e)).
-      </p>
-      <div data-testid="statusText">
-        <p>
-          This report was updated to <b>{status}</b> on <b>{lastModified}</b> by{" "}
-          <b>{lastModifiedBy}</b>
-        </p>
-      </div>
-    </div>
-  );
-
   let certifyText = <></>;
   if (isFinal) {
     certifyText = (
@@ -97,6 +76,7 @@ const CertificationTab = ({
           </Alert>
         </div>
       ) : null}
+
       {isProvisional ? (
         <div>
           <Alert
@@ -105,11 +85,29 @@ const CertificationTab = ({
           />
         </div>
       ) : null}
+
       <div className="age-range-description">
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
-      {certifyInformation}
+      <div>
+        <p>
+          Double check that everything in your SEDS report is accurate. You will
+          have to uncertify your report to make any edits to your final data
+          after submitting.
+        </p>
+        <p>
+          Once you have reviewed your report, certify that it’s accurate and in
+          compliance with Title XXI of the Social Security Act (Section 2109(a)
+          and Section 2108(e)).
+        </p>
+        <div data-testid="statusText">
+          <p>
+            This report was updated to <b>{status}</b> on <b>{lastModified}</b>{" "}
+            by <b>{lastModifiedBy}</b>
+          </p>
+        </div>
+      </div>
       <GridContainer>
         <Grid row>
           <Grid col={6} className="certify-btn provisional">
@@ -150,7 +148,6 @@ const CertificationTab = ({
 CertificationTab.propTypes = {
   certifyAndSubmitFinal: PropTypes.func.isRequired,
   certifyAndSubmitProvisional: PropTypes.func.isRequired,
-  uncertify: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
   notApplicable: PropTypes.bool.isRequired,
   lastModified: PropTypes.string.isRequired,
@@ -162,14 +159,10 @@ CertificationTab.propTypes = {
 const mapState = state => ({
   status: state.currentForm.statusData.status,
   notApplicable: state.currentForm.statusData.not_applicable,
-  lastModified: state.currentForm.statusData.last_modified,
-  lastModifiedBy: state.currentForm.statusData.last_modified_by,
-  isFinal:
-    state.currentForm.statusData.status ===
-    "Final Data Certified and Submitted",
-  isProvisional:
-    state.currentForm.statusData.status ===
-    "Provisional Data Certified and Submitted"
+  lastModified: state.currentForm.statusData.status_date,
+  lastModifiedBy: state.currentForm.statusData.status_modified_by,
+  isFinal: state.currentForm.statusData.status_id === 4,
+  isProvisional: state.currentForm.statusData.status_id === 3
 });
 
 const mapDispatch = {

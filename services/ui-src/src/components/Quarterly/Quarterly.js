@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { Button, Grid, GridContainer } from "@trussworks/react-uswds";
+import { Button, Grid, GridContainer, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
-import SortIcon from "@material-ui/icons/ArrowDownward";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
-import Card from "@material-ui/core/Card";
 import { Link, useParams } from "react-router-dom";
+import Preloader from "../Preloader/Preloader";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -168,7 +167,7 @@ const Quarterly = () => {
   };
 
   return (
-    <GridContainer className="page-quarterly container">
+    <GridContainer className="page-quarterly react-transition fade-in">
       <Grid row>
         <Grid col={12}>
           <div className="breadcrumbs">
@@ -184,7 +183,13 @@ const Quarterly = () => {
             <Card>
               {stateFormsList ? (
                 <DataTable
-                  sortIcon={<SortIcon />}
+                  className="react-transition flip-in-x"
+                  sortIcon={
+                    <FontAwesomeIcon
+                      icon={faArrowDown}
+                      className="margin-left-2"
+                    />
+                  }
                   highlightOnHover
                   title={
                     <p style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -198,7 +203,9 @@ const Quarterly = () => {
                   data={stateFormsList}
                   customStyles={customStyles}
                 />
-              ) : null}
+              ) : (
+                <Preloader />
+              )}
             </Card>
           </div>
         </Grid>
