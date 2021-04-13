@@ -5,14 +5,7 @@ import PropTypes from "prop-types";
 import { updatedStatus } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
 
-const NotApplicable = ({
-  statusObject,
-  toggle,
-  last_modified_by,
-  last_modified,
-  not_applicable,
-  status
-}) => {
+const NotApplicable = ({ toggle, not_applicable, status }) => {
   const [applicableStatus, setApplicableStatus] = useState(0);
   const [username, setUsername] = useState();
   // FALSE = the form APPLIES TO THIS STATE (0)
@@ -33,6 +26,9 @@ const NotApplicable = ({
   }, [not_applicable]);
 
   const changeStatus = () => {
+    // USERS STOP RIGHT HERE
+    // THIS IS WHERE WE STOP AND TELL USERS TO CONFIRM THEIR CHOICE BEFORE PRECEEDING
+    // IF THEY CANCEL THEIR CHOICE, RETURN OUT OF THIS CHANGE STATUS FUNCTION
     if (applicableStatus === 0) {
       setApplicableStatus(1);
     } else {
@@ -43,8 +39,6 @@ const NotApplicable = ({
       status === "Not Required" ? "In Progress" : "Not Required";
 
     let integerToBool = applicableStatus === 0 ? false : true;
-    // THIS IS WHERE WE STOP AND TELL USERS TO CONFIRM THEIR CHOICE BEFORE PRECEEDING
-    // IF THEY CANCEL THEIR CHOICE, RETURN OUT OF THIS CHANGE STATUS FUNCTION
     toggle(integerToBool, username, updatedStatus);
   };
 
@@ -72,8 +66,12 @@ const NotApplicable = ({
 };
 
 NotApplicable.propTypes = {
+  toggle: PropTypes.func.isRequired,
   statusObject: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired
+  last_modified_by: PropTypes.string.isRequired,
+  last_modified: PropTypes.string.isRequired,
+  not_applicable: PropTypes.bool.isRequired,
+  status: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
@@ -85,74 +83,20 @@ const mapState = state => ({
 });
 
 const mapDispatch = {
-  toggle: updatedStatus ?? {}
+  toggle: updatedStatus
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);
 
-// ----------------
-// const NotFound = ({ form, toggle }) => {
-//     let newStatus;
-//     let statusButtonText;
-
-//     if (form.not_applicable === true) {
-//       newStatus = false;
-//       statusButtonText = "Not Applicable";
-//     } else {
-//       newStatus = true;
-//       statusButtonText = "Active";
-//     }
-
-//     return (
-//       <div className="NotFound" data-testid="NotFound">
-//         <Button type="buton" onClick={() => toggle(newStatus)}>
-//           {statusButtonText}
-//         </Button>
-//         <h3>Sorry, page not found!</h3>
-//       </div>
-//     );
-//   };
-
-//   const mapStateToProps = state => ({
-//     form: state.currentForm.statusData
-//   });
-
-// const mapDispatchToProps = dispatch => ({
-//     toggle: status => dispatch(disableForm(status))
-//   });
-
-//   export default connect(mapStateToProps, mapDispatchToProps)(NotFound);
-// ---------------
-
 //TODO:
 
-// XXX Make slider “Does this form apply to your state”, initially set to “Applicable”
-// props to play with: draggable,
-
-// Should be accessing/connected to the statusData object
-
-// Need user data
-// —
 // Selecting “Not applicable” triggers a prompt (pop up window), all your data will be lost.
 
-// Change status of form in statusData reducer
-
-// Save user’s name
-
-// Send crazy big array of null values? To reset? Or will disable reset?
-
-// The form should become disabled as soon as that prop is set to disabled or whatever
-
-// Trigger a save??
-// — Re selecting applicable changes form status back to “in progress”
-
-// Change status of form in statusData reducer
-
-// Save user’s name
-
-// Form should now be totally editable
-
-//QUESTIONS: Is a pop up window really the way to go? maybe we use a trussworks alert component
+//QUESTIONS:
+// — Re selecting applicable changes form status back to “in progress”?
+// Is a pop up window really the way to go? maybe we use a trussworks alert component
+// DO WE WANT TO CLEAR THEIR INPUT WHEN THE STATUS IS CHANGED TO DISABLED??
+// ???? should this Trigger a save??
 
 // NOTES:
 // THIS MUST MUST MUST DISABLE THE CERTIFICATION  ABILITIES

@@ -34,8 +34,6 @@ const TabContainer = ({
     establishStatus();
   }, [notApplicable, formStatus]);
 
-  // notApplicable: state.currentForm.statusData.not_applicable,
-  // formStatus: state.currentForm.statusData.status,
   return (
     <Tabs className="tab-container-main">
       <TabList>
@@ -120,9 +118,9 @@ TabContainer.propTypes = {
   currentTabs: PropTypes.array.isRequired,
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired
-  // notApplicable: PropTypes.array.isRequired,
-  // formStatus: PropTypes.bool.isRequired
+  answers: PropTypes.array.isRequired,
+  notApplicable: PropTypes.bool.isRequired,
+  formStatus: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
