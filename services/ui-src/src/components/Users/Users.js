@@ -35,6 +35,7 @@ import {
 
 // *** styles
 import "./Users.scss";
+import Preloader from "../Preloader/Preloader";
 
 const PdfContent = () => {
   return (
@@ -284,15 +285,13 @@ const Users = () => {
           {tableData ? (
             <DataTableExtensions {...tableData} export={false} print={false}>
               <DataTable
-                title=""
+                className="react-transition flip-in-x"
                 defaultSortField="username"
                 sortIcon={
-                  <>
-                    <FontAwesomeIcon
-                      icon={faArrowDown}
-                      className="margin-left-2"
-                    />
-                  </>
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    className="margin-left-2"
+                  />
                 }
                 highlightOnHover={true}
                 selectableRows={false}
@@ -302,22 +301,7 @@ const Users = () => {
               />
             </DataTableExtensions>
           ) : (
-            <div className="padding-y-9">
-              <p className="center-content">
-                <img
-                  src="preloaders/gears.gif"
-                  alt="Loading..."
-                  title="Loading"
-                />
-              </p>
-              <p className="center-content">
-                <img
-                  src="preloaders/loading_text.gif"
-                  alt="Loading..."
-                  title="Loading"
-                />
-              </p>
-            </div>
+            <Preloader />
           )}
         </Card>
       </Grid>
