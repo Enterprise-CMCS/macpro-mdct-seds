@@ -44,8 +44,8 @@ const NotApplicable = ({ toggle, not_applicable, status }) => {
 
   return (
     <>
-      <h3>Does this form apply to your state?</h3>
-      <h2>
+      <h3 data-test="applicable-prompt">Does this form apply to your state?</h3>
+      <h2 data-test="applicable-status">
         {applicableStatus === 0 ? <p>Active</p> : <p> Not Applicable</p>}{" "}
       </h2>
       <>
@@ -59,6 +59,7 @@ const NotApplicable = ({ toggle, not_applicable, status }) => {
           defaultValue={0}
           list="range-list-id"
           style={{ width: 100 }}
+          data-test="applicable-slider"
         />
       </>
     </>
