@@ -1,5 +1,6 @@
 const quarterlyDataMock = [
   {
+    status_modified_by: "seed",
     status_date: "04-08-2021",
     year: 2021,
     state_comments: [
@@ -21,9 +22,11 @@ const quarterlyDataMock = [
     form_name: "Gender, Race & Ethnicity",
     last_modified: "04-08-2021",
     quarter: 1,
+    status_id: 1,
     status: "Not Started"
   },
   {
+    status_modified_by: "seed",
     status_date: "04-07-2021",
     year: 2021,
     state_comments: [
@@ -45,9 +48,11 @@ const quarterlyDataMock = [
     form_name: "Number of Pregnant Women Served",
     last_modified: "04-07-2021",
     quarter: 1,
+    status_id: 2,
     status: "In Progress"
   },
   {
+    status_modified_by: "seed",
     status_date: "04-06-2021",
     year: 2021,
     state_comments: [
@@ -69,9 +74,11 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Medicaid Expansion Program",
     last_modified: "04-06-2021",
     quarter: 1,
+    status_id: 3,
     status: "Provisional Data Certified and Submitted"
   },
   {
+    status_modified_by: "seed",
     status_date: "04-05-2021",
     year: 2021,
     state_comments: [
@@ -93,9 +100,11 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Separate CHIP Program",
     last_modified: "04-05-2021",
     quarter: 1,
+    status_id: 4,
     status: "Final Data Certified and Submitted"
   },
   {
+    status_modified_by: "seed",
     status_date: "04-04-2021",
     year: 2021,
     state_comments: [
@@ -117,6 +126,7 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Medicaid Program",
     last_modified: "04-04-2021",
     quarter: 1,
+    status_id: 4,
     status: "Final Data Certified and Submitted"
   }
 ];

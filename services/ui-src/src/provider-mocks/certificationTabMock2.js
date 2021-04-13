@@ -1,6 +1,7 @@
 const certificationTabMock2 = {
   currentForm: {
     statusData: {
+      status_modified_by: "Tim Griesemer",
       status_date: "01-15-2021",
       year: 2021,
       state_comments: [
@@ -22,6 +23,7 @@ const certificationTabMock2 = {
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "01-15-2021",
       quarter: 1,
+      status_id: 3,
       status: "Provisional Data Certified and Submitted"
     }
   }

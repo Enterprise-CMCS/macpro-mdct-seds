@@ -1,6 +1,7 @@
 export const tabs = ["0000", "0001", "0105", "0612"];
 
 export const statusData = {
+  status_modified_by: "seed",
   status_date: "03-02-2021",
   year: 2021,
   state_comments: [
@@ -10,7 +11,7 @@ export const statusData = {
     }
   ],
   form_id: "6",
-  last_modified_by: "seed",
+  last_modified_by: "Timothy Griesemer",
   created_by: "seed",
   validation_percent: 0.03,
   form: "21PW",
@@ -20,8 +21,9 @@ export const statusData = {
   not_applicable: false,
   created_date: "03-02-2021",
   form_name: "Number of Pregnant Women Served",
-  last_modified: "03-02-2021",
+  last_modified: "04-09-2021",
   quarter: 1,
+  status_id: 1,
   status: "Not Started"
 };
 

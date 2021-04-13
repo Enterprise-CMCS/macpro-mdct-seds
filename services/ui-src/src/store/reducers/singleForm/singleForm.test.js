@@ -1,5 +1,4 @@
 import jsonpath from "jsonpath";
-import configureStore from "redux-mock-store";
 import {
   answers,
   questions,
@@ -11,6 +10,12 @@ import singleFormReducer, {
   UPDATE_ANSWER,
   getFormData
 } from "./singleForm";
+import configureStore from "redux-mock-store";
+import {
+  setProvisionalCertify,
+  CERTIFY_AND_SUBMIT_PROVISIONAL
+} from "../../actions/certify";
+
 import {
   SUMMARY_NOTES_SUCCESS,
   saveSummaryNotes
@@ -212,6 +217,19 @@ describe("Single Form Reducer, component parts", () => {
     };
 
     store.dispatch(saveSummaryNotes(summaryNotes));
+    expect(actions).toEqual([expectedPayload]);
+  });
+
+  test("Should return the correct last_modified_by from the mock statusData object", () => {
+    const store = mockStore(initialState);
+    const actions = store.getActions();
+    const userName = statusData.last_modified_by;
+    const expectedPayload = {
+      type: CERTIFY_AND_SUBMIT_PROVISIONAL,
+      userName
+    };
+
+    store.dispatch(setProvisionalCertify(userName));
     expect(actions).toEqual([expectedPayload]);
   });
 });
