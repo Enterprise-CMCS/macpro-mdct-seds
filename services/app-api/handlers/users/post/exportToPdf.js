@@ -42,6 +42,7 @@ export const main = handler(async (event, context) => {
     type: "buffer", // "stream" || "buffer" || "" ("" defaults to pdf)
   };
 
+  console.log(document);
   create(document, options)
     .then((res) => {
       console.log(res);
