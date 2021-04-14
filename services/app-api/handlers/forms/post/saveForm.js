@@ -14,7 +14,7 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
   const answers = data.formAnswers;
-  let result = [];
+  let questionResult = [];
 
   // Loop through answers to add individually
   for (const answer in answers) {
@@ -29,14 +29,18 @@ export const main = handler(async (event, context) => {
       "-" +
       questionNumber;
 
-    const params = {
+    // Params for updating questions
+    const questionParams = {
       TableName: process.env.FormAnswersTableName,
       Key: {
         answer_entry: answerEntry,
       },
-      UpdateExpression: "SET #r = :rows",
+      UpdateExpression:
+        "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
         ":rows": answers[answer].rows,
+        ":last_modified_by": data.username,
+        ":last_modified": new Date().toISOString(),
       },
       ExpressionAttributeNames: {
         "#r": "rows",
@@ -45,12 +49,29 @@ export const main = handler(async (event, context) => {
       ReturnValues: "ALL_NEW",
     };
 
-    result.push(await dynamoDb.update(params));
+    questionResult.push(await dynamoDb.update(questionParams));
   }
 
-  if (result.Count === 0) {
-    throw new Error("Form type query failed");
+  // Params for updating for statusData; last_modified_by, last_modified for state-forms
+  const formParams = {
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    Key: {
+      state_form: answers[0].state_form,
+    },
+    UpdateExpression:
+      "SET last_modified_by = :last_modified_by, last_modified = :last_modified",
+    ExpressionAttributeValues: {
+      ":last_modified_by": data.username,
+      ":last_modified": new Date().toISOString(),
+    },
+    ReturnValues: "ALL_NEW",
+  };
+  const formResult = await dynamoDb.update(formParams);
+
+  if (questionResult.Count === 0 || !formResult) {
+    throw new Error("Form save query failed");
   }
 
-  return result;
+  return questionResult;
 });

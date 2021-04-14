@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Alert, GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
@@ -36,7 +36,11 @@ const FormPage = ({ getForm, statusData }) => {
             <Alert type="error" heading="Save Error:">
               A problem occurred while saving. Please save again. If the problem
               persists, contact{" "}
-              <a href="mailto:sedshelp@cms.hhs.gov" target="_blank">
+              <a
+                href="mailto:sedshelp@cms.hhs.gov"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 SEDSHELP@cms.hhs.gov
               </a>
             </Alert>

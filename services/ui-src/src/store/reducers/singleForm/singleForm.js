@@ -170,7 +170,7 @@ export default (state = initialState, action) => {
         ...state,
         statusData: {
           ...state.statusData,
-          last_modified: new Date().toString(),
+          last_modified: new Date().toISOString(),
           save_error: false,
           last_modified_by: action.username
         }

@@ -5,6 +5,7 @@ import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
 import { Link } from "@trussworks/react-uswds";
 import { Auth } from "aws-amplify";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,8 +49,10 @@ const FormFooter = ({
 
           <Grid col={6} className="form-actions">
             <Grid row>
-              <Grid col={6}> Last saved: {lastModified} </Grid>
-              <Grid col={6}>
+              {lastModified ? (
+                <Grid col={9}> Last saved: {dateFormatter(lastModified)} </Grid>
+              ) : null}
+              <Grid col={3}>
                 {" "}
                 <Button className="hollow" onClick={() => handleClick()}>
                   Save
