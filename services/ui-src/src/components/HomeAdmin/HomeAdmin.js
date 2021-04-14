@@ -9,12 +9,12 @@ const HomeAdmin = () => {
       <div className="padding-left-9 margin-left-9 list-display-container">
         <ul>
           <li className="user-view-edit">
-            <Link href="/#/users" className="text-bold">
+            <Link to="/users" className="text-bold">
               View / Edit Users
             </Link>
           </li>
           <li className="user-add">
-            <Link href="/#/users/add" className="text-bold">
+            <Link to="/users/add" className="text-bold">
               Create User
             </Link>
           </li>

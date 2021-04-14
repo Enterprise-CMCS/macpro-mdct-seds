@@ -210,6 +210,15 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  obtainAvailableForms:
+    handler: handlers/forms/post/obtainAvailableForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: forms/obtainAvailableForms
+          method: post
+          cors: true
+          authorizer: aws_iam
   getFormTypes:
     handler: handlers/forms/get/getFormTypes.main
     role: LambdaApiRole

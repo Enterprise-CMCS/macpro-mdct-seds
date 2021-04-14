@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -26,34 +25,29 @@ const FormPage = ({ getForm, statusData }) => {
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (
-    <>
-      <GridContainer
-        className="form-header form-header-main"
-        data-testid="FormPage"
-      >
+    <div className="react-transition fade-in" data-testid="FormPage">
+      <div className="margin-x-5 margin-bottom-3">
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
           year={year}
           state={formattedStateName}
         />
-      </GridContainer>
+      </div>
 
-      <GridContainer>
-        <div className="tab-container">
-          <TabContainer quarter={quarter} />
-        </div>
-      </GridContainer>
+      <div className="tab-container margin-x-5 margin-y-3">
+        <TabContainer quarter={quarter} />
+      </div>
 
-      <GridContainer className="form-footer">
+      <div className="margin-top-2">
         <FormFooter
           state={formattedStateName}
           year={year}
           quarter={quarterInt}
           lastModified={last_modified}
         />
-      </GridContainer>
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -8,9 +8,6 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log("????");
-  console.log(event);
-
   let data = JSON.parse(event.body);
   console.log("\n\n\n---->about to obtain user: ");
   console.log(data);

@@ -9,7 +9,7 @@ import { jsPDF } from "jspdf";
 
 // *** 3rd party component dependencies
 // * trussworks
-import { Grid, Button, Card } from "@trussworks/react-uswds";
+import { Button, Card } from "@trussworks/react-uswds";
 
 // * react-data-table-compnent
 import DataTable from "react-data-table-component";
@@ -252,58 +252,53 @@ const Users = () => {
 
   return (
     <div className="user-profiles react-transition fade-in" data-testid="Users">
-      <Grid>
-        <h1 className="page-header">Users</h1>
-        <div className="page-subheader">
-          <Button
-            onClick={() => handleAddNewUser()}
-            className="action-button"
-            primary="true"
-          >
-            Add New User
-            <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-          </Button>
-          <Button
-            className="margin-left-3 action-button"
-            primary="true"
-            onClick={async () => await handleExport("excel")}
-          >
-            Excel
-            <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
-          </Button>
+      <h1 className="page-header">Users</h1>
+      <div className="page-subheader">
+        <Button
+          onClick={() => handleAddNewUser()}
+          className="action-button"
+          primary="true"
+        >
+          Add New User
+          <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
+        </Button>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () => await handleExport("excel")}
+        >
+          Excel
+          <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+        </Button>
 
-          <Button
-            className="margin-left-3 action-button"
-            primary="true"
-            onClick={async () => await handleExport("pdf", <PdfContent />)}
-          >
-            PDF
-            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-          </Button>
-        </div>
-        <Card>
-          {tableData ? (
-            <DataTableExtensions {...tableData} export={false} print={false}>
-              <DataTable
-                defaultSortField="username"
-                sortIcon={
-                  <FontAwesomeIcon
-                    icon={faArrowDown}
-                    className="margin-left-2"
-                  />
-                }
-                highlightOnHover={true}
-                selectableRows={false}
-                responsive={true}
-                striped={true}
-                className="grid-display-table react-transition flip-in-x"
-              />
-            </DataTableExtensions>
-          ) : (
-            <Preloader />
-          )}
-        </Card>
-      </Grid>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () => await handleExport("pdf", <PdfContent />)}
+        >
+          PDF
+          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+        </Button>
+      </div>
+      <Card>
+        {tableData ? (
+          <DataTableExtensions {...tableData} export={false} print={false}>
+            <DataTable
+              defaultSortField="username"
+              sortIcon={
+                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+              }
+              highlightOnHover={true}
+              selectableRows={false}
+              responsive={true}
+              striped={true}
+              className="grid-display-table react-transition fade-in"
+            />
+          </DataTableExtensions>
+        ) : (
+          <Preloader />
+        )}
+      </Card>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import configureMockStore from "redux-mock-store";
 
 import EditUser from "./EditUser.js";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import { BrowserRouter } from "react-router-dom";
 
 const mockStore = configureMockStore([]);
 
@@ -25,7 +26,9 @@ describe("Test EditUser.js", () => {
 
     wrapper = mount(
       <Provider store={store}>
-        <EditUser />
+        <BrowserRouter>
+          <EditUser />
+        </BrowserRouter>
       </Provider>
     );
   });
@@ -35,7 +38,7 @@ describe("Test EditUser.js", () => {
   });
 
   test("Check for User List link", () => {
-    expect(wrapper.find(".userListLink").length).toBe(2);
+    expect(wrapper.find(".userListLink").length).toBe(3);
   });
 
   test("Check for Cannot Find User message", () => {

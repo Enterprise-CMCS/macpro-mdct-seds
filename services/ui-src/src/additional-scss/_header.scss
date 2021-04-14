@@ -22,6 +22,8 @@
   @extend .text-white;
   @extend .text-bold;
   @extend .padding-left-9;
+  @extend .padding-y-1;
+  box-shadow: 5px 10px 8px #888888;
 
   a {
     @extend .text-white;
