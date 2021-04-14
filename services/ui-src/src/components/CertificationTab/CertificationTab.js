@@ -132,9 +132,7 @@ const CertificationTab = ({
           </Button>
         </div>
       ) : null}
-      <p>
-        <br />
-        <br />
+      <p className="padding-top-3">
         Certify & Submit Provisional Data will allow you to submit your form
         now, but it will remain editable to allow you to submit final data.
       </p>
