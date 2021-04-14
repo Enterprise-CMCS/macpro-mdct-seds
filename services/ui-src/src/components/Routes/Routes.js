@@ -9,7 +9,6 @@ import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
 import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
 import Users from "../Users/Users";
 import EditUser from "../EditUser/EditUser";
-import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import Example from "../Example/Example";
 import Quarterly from "../Quarterly/Quarterly";
 import UserAdd from "../AddUser/AddUser";
@@ -44,9 +43,6 @@ export default function Routes({ user, isAuthorized }) {
       {/*************** AUTHENTICATED ROUTES ***************/}
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/totals">
-        <GridWithTotals />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/example">
         <Example />

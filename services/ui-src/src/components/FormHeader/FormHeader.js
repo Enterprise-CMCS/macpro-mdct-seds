@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-  Button,
-  Grid,
-  GridContainer,
-  Link,
-  TextInput
-} from "@trussworks/react-uswds";
+import { Button, TextInput, Table } from "@trussworks/react-uswds";
 import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
 
@@ -63,45 +58,47 @@ const FormHeader = ({ quarter, form, year, state }) => {
   };
 
   return (
-    <GridContainer className="form-header">
-      <Grid row className="upper-form-nav">
-        <Link className="upper-form-links" to="/">
-          {" "}
-          Enrollment Data Home {">"}
-          {"   "}
-        </Link>
-        <Link
-          className="upper-form-links"
-          to={`/forms/${state}/${year}/${quarter}`}
-        >
-          {`${state} Q${quarter} ${year} > `}
-        </Link>
-        <Link className="upper-form-links" to={window.location.pathname}>
-          {" "}
-          {` Form ${form}`}{" "}
-        </Link>
-      </Grid>
+    <>
+      <div row className="form-header upper-form-nav">
+        <div className="breadcrumbs">
+          <Link to="/">
+            {" "}
+            Enrollment Data Home {">"}
+            {"   "}
+          </Link>
+          <Link to={`/forms/${state}/${year}/${quarter}`}>
+            {`${state} Q${quarter} ${year} > `}
+          </Link>
+          <Link to={window.location.pathname}> {` Form ${form}`} </Link>
+        </div>
+      </div>
+      <h1 className="page-header">FORM {form}</h1>
+      <hr />
+      <div className="padding-x-5">
+        <div className="margin-y-2">
+          <h2 className="form-name">{formDescription.form_name}</h2>
+          <p className="instructions"> {formDescription.form_text}</p>
+        </div>
+        <div className="unstyled padding-bottom-3 padding-top-1">
+          <Table>
+            <tbody>
+              <tr>
+                <th>
+                  <b>State:</b>
+                </th>
+                <td className="state-value">{`${state}`}</td>
 
-      <Grid row className="form-description-bar">
-        <h5>FORM {form}</h5>
-        <hr />
-        <h2 className="form-name">{formDescription.form_name}</h2>
-        <p className="form-description"> {formDescription.form_text}</p>
-      </Grid>
+                <th>
+                  <b>Quarter:</b>
+                </th>
+                <td className="quarter-value">{`${quarter}/${year}`}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
 
-      <Grid row className="program-code-bar">
-        <Grid col={6}>
-          <b>State: </b> <br />
-          <div className="state-value">{`${state}`}</div>
-        </Grid>
-        <Grid col={6}>
-          <b>Quarter: </b> <br />
-          <div className="quarter-value">{`${quarter}/${year}`}</div>
-        </Grid>
-      </Grid>
-      {showFPL ? (
-        <Grid row className="form-max-fpl">
-          <Grid col={12}>
+        {showFPL ? (
+          <div className="form-max-fpl">
             <p>
               What is the highest percentage of FPL that received benefits from
               your state?
@@ -113,7 +110,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 type="number"
                 onChange={e => validateFPL(e)}
                 value={maxFPL}
-              ></TextInput>
+              />
             </div>
             <div className="fpl-button">
               <Button
@@ -124,10 +121,10 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 Apply FPL Changes
               </Button>
             </div>
-          </Grid>
-        </Grid>
-      ) : null}
-    </GridContainer>
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 };
 

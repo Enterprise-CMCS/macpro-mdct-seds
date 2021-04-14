@@ -11,10 +11,13 @@
   @extend .font-alt-xl;
   width: 99% !important;
   margin-left: 0.5%;
+  box-shadow: 15px 5px 8px #888888;
+  letter-spacing: 0.2em;
 }
 
 .page-subheader {
   @extend .padding-left-9;
+  @extend .padding-bottom-2;
 }
 
 .list-display-container {
@@ -28,8 +31,29 @@
 }
 
 .main {
+  max-width: 95%;
+  margin: 2% 0 0 2.5%;
+
   .container {
     width: 100% !important;
+  }
+}
+
+.instructions {
+  @extend .text-italic;
+  @extend .padding-y-2;
+  @extend .font-mono-md;
+}
+
+.breadcrumbs {
+  @extend .padding-left-5;
+  @extend .font-heading-md;
+  @extend .text-italic;
+  @extend .text-base-dark;
+  text-decoration: underline !important;
+
+  a {
+    text-decoration: none;
   }
 }
 
@@ -47,6 +71,17 @@
     td {
       @extend .padding-x-5;
       @extend .padding-y-2;
+    }
+  }
+}
+
+.unstyled {
+  .usa-table {
+    border: none !important;
+    box-shadow: none !important;
+
+    tr {
+      border: none !important;
     }
   }
 }

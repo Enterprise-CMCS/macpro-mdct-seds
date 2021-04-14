@@ -11,7 +11,7 @@ import { Auth } from "aws-amplify";
 const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   const [username, setUsername] = useState();
   const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
-  const [disableSlider, setDisableSlider] = useState(); // should the slider be killed
+  const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
@@ -21,6 +21,7 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   const final = "Final Data Certified and Submitted";
   const notRequired = "Not Required";
 
+  // Fetch a user's name
   useEffect(() => {
     const loadUserData = async () => {
       const AuthUserInfo = await Auth.currentAuthenticatedUser();

@@ -1,22 +1,50 @@
+// *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { renderToString } from "react-dom/server";
+
+// *** 3rd party functional dependencies
+import { saveAs } from "file-saver";
+import { jsPDF } from "jspdf";
+
+// *** 3rd party component dependencies
+// * trussworks
+import { Button, Card } from "@trussworks/react-uswds";
+
+// * react-data-table-compnent
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
-import Card from "@material-ui/core/Card";
-import "react-data-table-component-extensions/dist/index.css";
-import SortIcon from "@material-ui/icons/ArrowDownward";
-import { listUsers, activateDeactivateUser } from "../../libs/api";
-import { Grid, Button } from "@trussworks/react-uswds";
-import { Link, useHistory } from "react-router-dom";
+
+// * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons/faFileExcel";
-import { faUserAltSlash } from "@fortawesome/free-solid-svg-icons/faUserAltSlash";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+import {
+  faArrowDown,
+  faUserPlus,
+  faFileExcel,
+  faUserAltSlash,
+  faUserCheck,
+  faFilePdf
+} from "@fortawesome/free-solid-svg-icons";
 
+// *** API / data / etc
+import {
+  listUsers,
+  activateDeactivateUser,
+  exportToExcel
+} from "../../libs/api";
+
+// *** styles
 import "./Users.scss";
+import Preloader from "../Preloader/Preloader";
 
-import { exportToExcel } from "../../libs/api";
-import { saveAs } from "file-saver";
+const PdfContent = () => {
+  return (
+    <div className="export-to-pdf">
+      <div className="padding-y-2 border-1 text-center">PDF Example</div>
+      <div className="padding-y-2 text-center">Content goes here</div>
+    </div>
+  );
+};
 
 /**
  * Display all Users with options
@@ -34,8 +62,8 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async format => {
-    let buffer, blob, fileName;
+  const handleExport = async (format, pdfContent = null) => {
+    let buffer, blob, fileName, pdf;
 
     switch (format) {
       case "excel":
@@ -45,13 +73,26 @@ const Users = () => {
         // *** to avoid having to care about MIME type of file we're saving
         buffer = new Uint8Array(buffer.data).buffer;
         fileName = "test.xlsx";
+
+        // *** save file as blob
+        blob = new Blob([buffer]);
+        saveAs(blob, fileName);
         break;
+
+      case "pdf":
+        pdf = new jsPDF({ unit: "px", format: "letter", userUnit: "px" });
+
+        pdf
+          .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
+          .then(() => {
+            pdf.save("test.pdf");
+          });
+        break;
+
       default:
+        // *** no default behavior currently specified
         break;
     }
-    // *** save file as blob
-    blob = new Blob([buffer]);
-    saveAs(blob, fileName);
   };
 
   useEffect(() => {
@@ -211,60 +252,53 @@ const Users = () => {
 
   return (
     <div className="user-profiles react-transition fade-in" data-testid="Users">
-      <Grid>
-        <h1 className="page-header">Users</h1>
-        <div className="page-subheader">
-          <Button
-            onClick={() => handleAddNewUser()}
-            className="action-button"
-            outline={true}
-          >
-            Add New User
-            <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-          </Button>
-          <Button
-            className="margin-left-5 action-button"
-            outline={true}
-            onClick={async () => await handleExport("excel")}
-          >
-            Excel{" "}
-            <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
-          </Button>
-        </div>
-        <Card>
-          {tableData ? (
-            <DataTableExtensions {...tableData} export={false} print={false}>
-              <DataTable
-                title=""
-                defaultSortField="username"
-                sortIcon={<SortIcon />}
-                highlightOnHover={true}
-                selectableRows={false}
-                responsive={true}
-                striped={true}
-                className="grid-display-table react-transition fade-in"
-              />
-            </DataTableExtensions>
-          ) : (
-            <div className="padding-y-9">
-              <p className="center-content">
-                <img
-                  src="preloaders/gears.gif"
-                  alt="Loading..."
-                  title="Loading"
-                />
-              </p>
-              <p className="center-content">
-                <img
-                  src="preloaders/loading_text.gif"
-                  alt="Loading..."
-                  title="Loading"
-                />
-              </p>
-            </div>
-          )}
-        </Card>
-      </Grid>
+      <h1 className="page-header">Users</h1>
+      <div className="page-subheader">
+        <Button
+          onClick={() => handleAddNewUser()}
+          className="action-button"
+          primary="true"
+        >
+          Add New User
+          <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
+        </Button>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () => await handleExport("excel")}
+        >
+          Excel
+          <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+        </Button>
+
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () => await handleExport("pdf", <PdfContent />)}
+        >
+          PDF
+          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+        </Button>
+      </div>
+      <Card>
+        {tableData ? (
+          <DataTableExtensions {...tableData} export={false} print={false}>
+            <DataTable
+              defaultSortField="username"
+              sortIcon={
+                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+              }
+              highlightOnHover={true}
+              selectableRows={false}
+              responsive={true}
+              striped={true}
+              className="grid-display-table react-transition fade-in"
+            />
+          </DataTableExtensions>
+        ) : (
+          <Preloader />
+        )}
+      </Card>
     </div>
   );
 };

@@ -17,6 +17,7 @@ export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
     firstName: "",
     lastName: "",
+    userType: "CHIP_D_USER_GROUP_ADMIN",
     email: "",
     password: "",
     confirmPassword: "",
@@ -53,7 +54,7 @@ export default function Signup() {
         attributes: {
           given_name: fields.firstName,
           family_name: fields.lastName,
-          "custom:ismemberof": "CHIP_D_USER_GROUP_ADMIN"
+          "custom:ismemberof": fields.userType
         }
       });
       setIsLoading(false);
@@ -151,6 +152,18 @@ export default function Signup() {
             onChange={handleFieldChange}
             value={fields.confirmPassword}
           />
+        </FormGroup>
+        <FormGroup controlId="userType" bsSize="large">
+          <ControlLabel>User Type</ControlLabel>
+          <FormControl
+            type="select"
+            componentClass="select"
+            onChange={handleFieldChange}
+            value={fields.userType}
+          >
+            <option value="CHIP_D_USER_GROUP_ADMIN">Admin</option>
+            <option value="CHIP_D_USER_GROUP">State User</option>
+          </FormControl>
         </FormGroup>
         <LoaderButton
           block
