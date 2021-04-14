@@ -36,10 +36,12 @@ const CertificationTab = ({
     setfinalButtonStatus(true);
   };
   const submitUncertify = () => {
-    uncertify();
-    isFinal = false;
-    setprovisionalButtonStatus(false);
-    setfinalButtonStatus(false);
+    if (window.confirm("Are you sure you want to uncertify this form?")) {
+      uncertify();
+      isFinal = false;
+      setprovisionalButtonStatus(false);
+      setfinalButtonStatus(false);
+    }
   };
 
   let certifyText;
@@ -107,7 +109,7 @@ const CertificationTab = ({
           </p>
         </div>
       </div>
-      <div className="certify-btn provisional">
+      <div className="certify-btn ">
         <Button
           onClick={() => submitProvisional()}
           type="button"
@@ -123,6 +125,13 @@ const CertificationTab = ({
           {"Certify & Submit Final Data"}
         </Button>
       </div>
+      {isFinal ? (
+        <div className="certify-btn uncertify">
+          <Button onClick={() => submitUncertify()} type="button">
+            {"Uncertify"}
+          </Button>
+        </div>
+      ) : null}
       <p>
         <br />
         <br />
