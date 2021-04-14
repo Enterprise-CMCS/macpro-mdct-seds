@@ -21,7 +21,7 @@ const HomeState = () => {
     if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
       email = AuthUserInfo.attributes.email;
     } else {
-      email = AuthUserInfo.idToken.payload.email;
+      email = AuthUserInfo.signInUserSession.idToken.payload.email;
     }
 
     console.log("Retrieved email: -----");
