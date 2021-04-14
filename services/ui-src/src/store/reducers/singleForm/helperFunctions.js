@@ -83,19 +83,9 @@ const extractAgeRanges = answersArray => {
   return foundAges;
 };
 
-const dateFormatter = () => {
-  const newDate = new Date();
-
-  const backwardsDate = newDate.toLocaleDateString("en-gb").split("/");
-  const time = newDate.toTimeString().split(" ")[0];
-
-  return `${backwardsDate[1]}/${backwardsDate[0]}/${backwardsDate[2]} at ${time}`;
-};
-
 export {
   sortQuestionsByNumber,
   extractAgeRanges,
   insertAnswer,
-  formatAnswerData,
-  dateFormatter
+  formatAnswerData
 };

@@ -3,8 +3,7 @@ import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
-  insertAnswer,
-  dateFormatter
+  insertAnswer
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -40,7 +39,7 @@ export const updatedStatus = (activeStatus, user, status) => {
     activeStatus,
     user,
     status,
-    timeStamp: dateFormatter()
+    timeStamp: new Date().toISOString()
   };
 };
 

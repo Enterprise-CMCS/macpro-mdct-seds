@@ -5,11 +5,19 @@ import PropTypes from "prop-types";
 import { updatedStatus } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
 
-const NotApplicable = ({ toggle, not_applicable, status }) => {
-  const [applicableStatus, setApplicableStatus] = useState(0);
+const NotApplicable = ({ not_applicable, status, toggle }) => {
   const [username, setUsername] = useState();
+  const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
+  const [currentStatus, setCurrentStatus] = useState(); // status description
+  const [disableSlider, setDisableSlider] = useState(); // should the slider be killed
+
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
+
+  // Status constants in lieu of IDS
+  const inProgress = "In Progress";
+  const final = "Final Data Certified and Submitted";
+  const notRequired = "Not Required";
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -21,25 +29,24 @@ const NotApplicable = ({ toggle, not_applicable, status }) => {
   });
 
   useEffect(() => {
-    let booleanToInt = not_applicable === false ? 0 : 1;
-    setApplicableStatus(booleanToInt);
-  }, [not_applicable]);
+    const booleanToInteger = not_applicable ? 1 : 0;
+    setApplicableStatus(booleanToInteger);
+
+    if (status === final) {
+      setDisableSlider(true);
+    }
+  }, [not_applicable, status, toggle]);
 
   const changeStatus = () => {
-    // USERS STOP RIGHT HERE
-    // THIS IS WHERE WE STOP AND TELL USERS TO CONFIRM THEIR CHOICE BEFORE PRECEEDING
-    // IF THEY CANCEL THEIR CHOICE, RETURN OUT OF THIS CHANGE STATUS FUNCTION
-    if (applicableStatus === 0) {
-      setApplicableStatus(1);
-    } else {
-      setApplicableStatus(0);
+    const confirm = window.confirm(
+      `Are you sure you do not want to complete this form? Any data you entered will be lost. Select cancel to revert your selection`
+    );
+    if (confirm) {
+      const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
+      const invertedStatus =
+        currentStatus === notRequired ? inProgress : notRequired;
+      toggle(invertIntegerToBoolean, username, invertedStatus);
     }
-
-    let updatedStatus =
-      status === "Not Required" ? "In Progress" : "Not Required";
-
-    let integerToBool = applicableStatus === 0 ? false : true;
-    toggle(integerToBool, username, updatedStatus);
   };
 
   return (
@@ -48,7 +55,7 @@ const NotApplicable = ({ toggle, not_applicable, status }) => {
       <h2 data-test="applicable-status">
         {applicableStatus === 0 ? <p>Active</p> : <p> Not Applicable</p>}{" "}
       </h2>
-      <>
+      <p>
         <RangeInput
           onClick={() => changeStatus()}
           id="range-slider"
@@ -56,29 +63,22 @@ const NotApplicable = ({ toggle, not_applicable, status }) => {
           min={0}
           max={1}
           value={applicableStatus}
-          defaultValue={0}
           list="range-list-id"
           style={{ width: 100 }}
+          disabled={disableSlider}
           data-test="applicable-slider"
         />
-      </>
+      </p>
     </>
   );
 };
 
 NotApplicable.propTypes = {
-  toggle: PropTypes.func.isRequired,
-  statusObject: PropTypes.object.isRequired,
-  last_modified_by: PropTypes.string.isRequired,
-  last_modified: PropTypes.string.isRequired,
   not_applicable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
-  statusObject: state.currentForm.statusData,
-  last_modified_by: state.currentForm.statusData,
-  last_modified: state.currentForm.statusData.last_modified,
   not_applicable: state.currentForm.statusData.not_applicable,
   status: state.currentForm.statusData.status
 });
@@ -101,3 +101,29 @@ export default connect(mapState, mapDispatch)(NotApplicable);
 
 // NOTES:
 // THIS MUST MUST MUST DISABLE THE CERTIFICATION  ABILITIES
+
+//
+// const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
+// const [currentStatus, setCurrentStatus] = useState(); // status description
+
+// const { not_applicable, status } = props;
+
+// // FALSE = the form APPLIES TO THIS STATE (0)
+// // TRUE = the form is NOT APPLICABLE (1)
+
+// // Status constants in lieu of IDS
+// const notStarted = "Not Started";
+// const inProgress = "In Progress";
+// const final = "Final Data Certified and Submitted";
+// const notRequired = "Not Required";
+// const provisional = "Provisional Data Certified and Submitted";
+
+// useEffect(() => {
+//   console.log("PROPS????", props);
+//   const booleanToInteger = not_applicable ? 1 : 0; // translate redux values into local state
+//   const tempStatus = "".concat(status);
+//   setApplicableStatus(booleanToInteger); // set integer to local state [WORKING]
+//   setCurrentStatus(tempStatus); // set current status description to state [NOT WORKING]
+// }, []);
+
+// console.log("STILL??????", currentStatus);

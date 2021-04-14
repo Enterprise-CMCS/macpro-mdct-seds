@@ -29,6 +29,7 @@ const GridWithTotals = props => {
 
     updateGridData(gridCopy);
     updateTotals();
+    console.log("HOME STRETCH", gridCopy);
     props.setAnswer(gridCopy, props.questionID);
   };
 
