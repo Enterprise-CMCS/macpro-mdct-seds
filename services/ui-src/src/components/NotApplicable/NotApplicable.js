@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import {
-  updatedStatus,
-  gotAnswer,
+  updatedApplicableStatus,
   clearFormData
 } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
@@ -95,7 +94,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = {
-  toggle: updatedStatus,
+  toggle: updatedApplicableStatus,
   resetData: clearFormData
 };
 

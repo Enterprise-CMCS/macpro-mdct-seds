@@ -72,7 +72,7 @@ const clearSingleQuestion = populatedRows => {
     col5: null,
     col6: null
   };
-  let clearedRows = populatedRows.map(singleRow => {
+  const clearedRows = populatedRows.map(singleRow => {
     // if this is the header row, return it unaltered
     if (singleRow["col1"] === "") {
       return singleRow;

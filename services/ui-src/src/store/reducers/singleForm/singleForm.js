@@ -16,7 +16,7 @@ import {
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
-export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
+export const UPDATE_APPLICABLE_STATUS = "UPDATE_APPLICABLE_STATUS"; // *
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
 export const WIPE_FORM = "WIPE_FORM";
@@ -42,9 +42,10 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updatedStatus = (activeStatus, user, status) => {
+export const updatedApplicableStatus = (activeStatus, user, status) => {
+  // *
   return {
-    type: UPDATE_FORM_STATUS,
+    type: UPDATE_APPLICABLE_STATUS,
     activeStatus,
     user,
     status,
@@ -145,7 +146,7 @@ export default (state = initialState, action) => {
         statusData: action.formObject.statusData,
         tabs: action.formObject.tabs
       };
-    case UPDATE_FORM_STATUS:
+    case UPDATE_APPLICABLE_STATUS:
       return {
         ...state,
         statusData: {

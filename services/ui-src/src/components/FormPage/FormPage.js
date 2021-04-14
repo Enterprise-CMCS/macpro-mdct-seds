@@ -12,7 +12,6 @@ import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
-  const [wipe, setWipe] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -39,12 +38,12 @@ const FormPage = ({ getForm, statusData }) => {
           year={year}
           state={formattedStateName}
         />
-        <NotApplicable wipeForm={setWipe} />
+        <NotApplicable />
       </GridContainer>
 
       <GridContainer>
         <div className="tab-container">
-          <TabContainer quarter={quarter} wipe={wipe} />
+          <TabContainer quarter={quarter} />
         </div>
       </GridContainer>
 
