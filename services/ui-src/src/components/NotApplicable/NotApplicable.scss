@@ -1,0 +1,14 @@
+.applicable-slider {
+  input[type="range"] {
+    width: 50px;
+    display: inline-block;
+  }
+  p {
+    display: inline-block;
+    padding: 0 0.4rem;
+  }
+
+  .is-selected {
+    font-weight: bold;
+  }
+}

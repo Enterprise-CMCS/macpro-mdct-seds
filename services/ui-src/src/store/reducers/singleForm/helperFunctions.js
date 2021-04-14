@@ -65,21 +65,22 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
 };
 
 const clearSingleQuestion = populatedRows => {
-  const emptyRow = {
-    col2: null,
-    col3: null,
-    col4: null,
-    col5: null,
-    col6: null
-  };
   const clearedRows = populatedRows.map(singleRow => {
+    const accumulator = {};
+
+    Object.keys(singleRow).forEach(element => {
+      if (element !== "col1") {
+        accumulator[element] = null;
+      }
+    });
+
     // if this is the header row, return it unaltered
     if (singleRow["col1"] === "") {
       return singleRow;
     } else if (Array.isArray(singleRow["col2"])) {
       return singleRow;
     } else {
-      return { ...singleRow, ...emptyRow };
+      return { ...singleRow, ...accumulator };
     }
   });
 

@@ -7,6 +7,7 @@ import {
   clearFormData
 } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
+import "./NotApplicable.scss";
 
 const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   const [username, setUsername] = useState();
@@ -43,10 +44,10 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   const changeStatus = async () => {
     if (applicableStatus === 0) {
       const confirm = window.confirm(
-        `Are you sure you do not want to complete this form? Any data you entered will be lost. Select cancel to revert your selection`
+        `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
       if (confirm) {
-        resetData();
+        await resetData();
       } else {
         return;
       }
@@ -57,12 +58,13 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   };
 
   return (
-    <>
-      <h3 data-test="applicable-prompt">Does this form apply to your state?</h3>
-      <h2 data-test="applicable-status">
-        {applicableStatus === 0 ? <p>Active</p> : <p> Not Applicable</p>}{" "}
-      </h2>
-      <p>
+    <div className="padding-x-5">
+      <h3 className="padding-x-5" data-test="applicable-prompt">
+        Does this form apply to your state?
+      </h3>
+      <div className="padding-x-5 applicable-slider">
+        <p className={applicableStatus === 0 ? "is-selected" : null}>Active</p>
+
         <RangeInput
           onClick={() => changeStatus()}
           id="range-slider"
@@ -71,12 +73,16 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
           max={1}
           value={applicableStatus}
           list="range-list-id"
-          style={{ width: 50 }}
           disabled={disableSlider}
-          data-test="applicable-slider"
+          class="slider"
         />
-      </p>
-    </>
+
+        <p className={applicableStatus === 1 ? "is-selected" : null}>
+          {" "}
+          Not Applicable
+        </p>
+      </div>
+    </div>
   );
 };
 
