@@ -14,8 +14,7 @@ const TabContainer = ({
   notApplicable,
   formStatus,
   currentTabs,
-  quarter,
-  wipe
+  quarter
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
 
@@ -96,7 +95,6 @@ const TabContainer = ({
                     questionData={singleQuestion}
                     answerData={questionAnswer}
                     disabled={disabledStatus}
-                    wipe={wipe}
                   />
                 );
               }

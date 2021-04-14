@@ -9,14 +9,7 @@ import {
 } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
 
-const NotApplicable = ({
-  not_applicable,
-  status,
-  toggle,
-  answers,
-  resetData,
-  wipeForm
-}) => {
+const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   const [username, setUsername] = useState();
   const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
   const [disableSlider, setDisableSlider] = useState(); // should the slider be killed
@@ -53,11 +46,7 @@ const NotApplicable = ({
         `Are you sure you do not want to complete this form? Any data you entered will be lost. Select cancel to revert your selection`
       );
       if (confirm) {
-        // answers.forEach(element => {
-        //   resetData(clearGrid, element.answer_entry);
-        // });
         resetData();
-        wipeForm(true);
       } else {
         return;
       }
@@ -82,7 +71,7 @@ const NotApplicable = ({
           max={1}
           value={applicableStatus}
           list="range-list-id"
-          style={{ width: 100 }}
+          style={{ width: 50 }}
           disabled={disableSlider}
           data-test="applicable-slider"
         />
@@ -112,37 +101,6 @@ const mapDispatch = {
 
 export default connect(mapState, mapDispatch)(NotApplicable);
 
-//TODO:
-
-//QUESTIONS:
-// — Re selecting applicable changes form status back to “in progress”?
-// Is a pop up window really the way to go? maybe we use a trussworks alert component
-// DO WE WANT TO CLEAR THEIR INPUT WHEN THE STATUS IS CHANGED TO DISABLED??
-// ???? should this Trigger a save??
-
 // NOTES:
 // THIS MUST MUST MUST DISABLE THE CERTIFICATION  ABILITIES
-
-const formatedAnswerData = [
-  {
-    col2: null,
-    col3: null,
-    col4: null,
-    col5: null,
-    col6: null
-  },
-  {
-    col2: null,
-    col3: null,
-    col4: null,
-    col5: null,
-    col6: null
-  },
-  {
-    col2: null,
-    col3: null,
-    col4: null,
-    col5: null,
-    col6: null
-  }
-];
+// ???? should this Trigger a save??

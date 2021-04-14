@@ -16,18 +16,10 @@ const GridWithTotals = props => {
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
   const currentPrecision = props.precision;
-  const wipe = props.wipe;
-
-  const clearGrid = [
-    null,
-    null,
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null]
-  ];
 
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
+    updateTotals();
   }, [props.gridData]);
 
   useEffect(() => {
