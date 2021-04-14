@@ -58,12 +58,22 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   };
 
   return (
-    <div className="padding-x-5">
+    <div className="padding-x-5" data-test="applicable-wrapper">
       <h3 className="padding-x-5" data-test="applicable-prompt">
         Does this form apply to your state?
       </h3>
-      <div className="padding-x-5 applicable-slider">
-        <p className={applicableStatus === 0 ? "is-selected" : null}>Active</p>
+      <div
+        className="padding-x-5 applicable-slider"
+        data-test="applicable-slider"
+      >
+        <p
+          className={
+            applicableStatus === 0 ? "applicable-selected is-selected" : null
+          }
+          data-test="applicable-selected"
+        >
+          Active
+        </p>
 
         <RangeInput
           onClick={() => changeStatus()}
@@ -75,9 +85,17 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
           list="range-list-id"
           disabled={disableSlider}
           class="slider"
+          data-test="slider-input"
         />
 
-        <p className={applicableStatus === 1 ? "is-selected" : null}>
+        <p
+          className={
+            applicableStatus === 1
+              ? "not-applicable-selected is-selected"
+              : null
+          }
+          data-test="not-applicable-selected"
+        >
           {" "}
           Not Applicable
         </p>
@@ -106,7 +124,3 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);
-
-// NOTES:
-// THIS MUST MUST MUST DISABLE THE CERTIFICATION  ABILITIES
-// ???? should this Trigger a save??

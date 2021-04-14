@@ -1,8 +1,9 @@
 .applicable-slider {
-  input[type="range"] {
+  #range-slider {
     width: 50px;
     display: inline-block;
   }
+
   p {
     display: inline-block;
     padding: 0 0.4rem;
