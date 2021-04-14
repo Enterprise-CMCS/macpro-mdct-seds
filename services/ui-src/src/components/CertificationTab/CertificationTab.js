@@ -36,7 +36,7 @@ const CertificationTab = ({
     setfinalButtonStatus(true);
   };
   const submitUncertify = () => {
-    if (window.confirm("Are you sure you want to uncertify this form?")) {
+    if (window.confirm("Are you sure you want to uncertify this report?")) {
       uncertify();
       isFinal = false;
       setprovisionalButtonStatus(false);
