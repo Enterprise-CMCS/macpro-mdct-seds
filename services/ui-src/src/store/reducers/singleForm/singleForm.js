@@ -129,7 +129,7 @@ export default (state = initialState, action) => {
         last_modified_by: action.username,
         last_modified: new Date().toISOString() // Need to update this with coming soon helper function
       };
-    case CERTIFY_AND_SUBMIT_PROVISIONAL: // needs updating since the shape of the initial state has changed
+    case CERTIFY_AND_SUBMIT_PROVISIONAL:
       return {
         ...state,
         statusData: {

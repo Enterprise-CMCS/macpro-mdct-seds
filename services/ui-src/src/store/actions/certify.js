@@ -57,7 +57,5 @@ export const uncertify = () => async dispatch => {
   let userName = await Auth.currentAuthenticatedUser();
   userName =
     userName.attributes.given_name + " " + userName.attributes.family_name;
-  console.log("USER NAME HERE", userName);
-
   dispatch(setUncertify(userName));
 };
