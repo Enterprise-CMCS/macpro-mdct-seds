@@ -120,6 +120,21 @@ const CertificationTab = ({
             </Button>
           </Grid>
         </Grid>
+        <Grid row>
+          <Grid col={12}>
+            <p>
+              <br />
+              <br />
+              Certify & Submit Provisional Data will allow you to submit your
+              form now, but it will remain editable to allow you to submit final
+              data.
+            </p>
+            <p>
+              Certify & Submit Final Data will submit your data and the form
+              will no longer be editable unless you uncertify.
+            </p>
+          </Grid>
+        </Grid>
       </GridContainer>
     </>
   );
