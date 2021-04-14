@@ -50,8 +50,8 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-02",
@@ -99,8 +99,8 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-03",
@@ -148,8 +148,8 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-04",
@@ -197,8 +197,8 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-05",
@@ -384,8 +384,8 @@ const fullStoreMock = {
         readonly: true,
         comment:
           "Divide the entries in Question 4 by the entries in Question 1.",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-06",
@@ -433,8 +433,8 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-07",
@@ -485,8 +485,8 @@ const fullStoreMock = {
           show_if_quarter_in: "4"
         },
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-08",
@@ -537,8 +537,8 @@ const fullStoreMock = {
           show_if_quarter_in: "4"
         },
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       },
       {
         question: "2021-21E-09",
@@ -589,8 +589,8 @@ const fullStoreMock = {
           show_if_quarter_in: "4"
         },
         form: "21E",
-        created_date: "01/15/2021",
-        last_modified: "01/15/2021"
+        created_date: "2021-04-14T12:46:35.838Z",
+        last_modified: "2021-04-14T12:46:35.838Z"
       }
     ],
     answers: [
@@ -600,7 +600,7 @@ const fullStoreMock = {
         question: "2021-21E-03",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -635,7 +635,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-03"
       },
@@ -645,7 +645,7 @@ const fullStoreMock = {
         question: "2021-21E-08",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -680,7 +680,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-08"
       },
@@ -690,7 +690,7 @@ const fullStoreMock = {
         question: "2021-21E-09",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -725,7 +725,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-09"
       },
@@ -735,7 +735,7 @@ const fullStoreMock = {
         question: "2021-21E-02",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -770,7 +770,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-02"
       },
@@ -780,7 +780,7 @@ const fullStoreMock = {
         question: "2021-21E-03",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -815,7 +815,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-03"
       },
@@ -825,7 +825,7 @@ const fullStoreMock = {
         question: "2021-21E-03",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -860,7 +860,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-03"
       },
@@ -870,7 +870,7 @@ const fullStoreMock = {
         question: "2021-21E-01",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -905,7 +905,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-01"
       },
@@ -915,7 +915,7 @@ const fullStoreMock = {
         question: "2021-21E-03",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -950,7 +950,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-03"
       },
@@ -960,7 +960,7 @@ const fullStoreMock = {
         question: "2021-21E-06",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -995,7 +995,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-06"
       },
@@ -1005,7 +1005,7 @@ const fullStoreMock = {
         question: "2021-21E-07",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1040,7 +1040,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-07"
       },
@@ -1050,7 +1050,7 @@ const fullStoreMock = {
         question: "2021-21E-01",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1085,7 +1085,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-01"
       },
@@ -1095,7 +1095,7 @@ const fullStoreMock = {
         question: "2021-21E-05",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1265,7 +1265,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-05"
       },
@@ -1275,7 +1275,7 @@ const fullStoreMock = {
         question: "2021-21E-04",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1310,7 +1310,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-04"
       },
@@ -1320,7 +1320,7 @@ const fullStoreMock = {
         question: "2021-21E-09",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1355,7 +1355,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-09"
       },
@@ -1365,7 +1365,7 @@ const fullStoreMock = {
         question: "2021-21E-07",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1400,7 +1400,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-07"
       },
@@ -1410,7 +1410,7 @@ const fullStoreMock = {
         question: "2021-21E-08",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1445,7 +1445,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-08"
       },
@@ -1455,7 +1455,7 @@ const fullStoreMock = {
         question: "2021-21E-08",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1490,7 +1490,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-08"
       },
@@ -1500,7 +1500,7 @@ const fullStoreMock = {
         question: "2021-21E-06",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1535,7 +1535,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-06"
       },
@@ -1545,7 +1545,7 @@ const fullStoreMock = {
         question: "2021-21E-01",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1580,7 +1580,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-01"
       },
@@ -1590,7 +1590,7 @@ const fullStoreMock = {
         question: "2021-21E-02",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1625,7 +1625,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-02"
       },
@@ -1635,7 +1635,7 @@ const fullStoreMock = {
         question: "2021-21E-07",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1670,7 +1670,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-07"
       },
@@ -1680,7 +1680,7 @@ const fullStoreMock = {
         question: "2021-21E-05",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -1850,7 +1850,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-05"
       },
@@ -1860,7 +1860,7 @@ const fullStoreMock = {
         question: "2021-21E-05",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2030,7 +2030,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-05"
       },
@@ -2040,7 +2040,7 @@ const fullStoreMock = {
         question: "2021-21E-01",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2075,7 +2075,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-01"
       },
@@ -2085,7 +2085,7 @@ const fullStoreMock = {
         question: "2021-21E-02",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2120,7 +2120,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-02"
       },
@@ -2130,7 +2130,7 @@ const fullStoreMock = {
         question: "2021-21E-07",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2165,7 +2165,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-07"
       },
@@ -2175,7 +2175,7 @@ const fullStoreMock = {
         question: "2021-21E-02",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2210,7 +2210,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-02"
       },
@@ -2220,7 +2220,7 @@ const fullStoreMock = {
         question: "2021-21E-06",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2255,7 +2255,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-06"
       },
@@ -2265,7 +2265,7 @@ const fullStoreMock = {
         question: "2021-21E-06",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2300,7 +2300,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-06"
       },
@@ -2310,7 +2310,7 @@ const fullStoreMock = {
         question: "2021-21E-09",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2345,7 +2345,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-09"
       },
@@ -2355,7 +2355,7 @@ const fullStoreMock = {
         question: "2021-21E-08",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2390,7 +2390,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-08"
       },
@@ -2400,7 +2400,7 @@ const fullStoreMock = {
         question: "2021-21E-04",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2435,7 +2435,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-04"
       },
@@ -2445,7 +2445,7 @@ const fullStoreMock = {
         question: "2021-21E-05",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2615,7 +2615,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0612-05"
       },
@@ -2625,7 +2625,7 @@ const fullStoreMock = {
         question: "2021-21E-04",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2660,7 +2660,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-04"
       },
@@ -2670,7 +2670,7 @@ const fullStoreMock = {
         question: "2021-21E-06",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2705,7 +2705,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-06"
       },
@@ -2715,7 +2715,7 @@ const fullStoreMock = {
         question: "2021-21E-09",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2750,7 +2750,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-09"
       },
@@ -2760,7 +2760,7 @@ const fullStoreMock = {
         question: "2021-21E-08",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2795,7 +2795,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-08"
       },
@@ -2805,7 +2805,7 @@ const fullStoreMock = {
         question: "2021-21E-03",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2840,7 +2840,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-03"
       },
@@ -2850,7 +2850,7 @@ const fullStoreMock = {
         question: "2021-21E-04",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2885,7 +2885,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-04"
       },
@@ -2895,7 +2895,7 @@ const fullStoreMock = {
         question: "2021-21E-01",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2930,7 +2930,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-01"
       },
@@ -2940,7 +2940,7 @@ const fullStoreMock = {
         question: "2021-21E-09",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -2975,7 +2975,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-09"
       },
@@ -2985,7 +2985,7 @@ const fullStoreMock = {
         question: "2021-21E-07",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -3020,7 +3020,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0105-07"
       },
@@ -3030,7 +3030,7 @@ const fullStoreMock = {
         question: "2021-21E-04",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -3065,7 +3065,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0001-04"
       },
@@ -3075,7 +3075,7 @@ const fullStoreMock = {
         question: "2021-21E-05",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -3245,7 +3245,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-0000-05"
       },
@@ -3255,7 +3255,7 @@ const fullStoreMock = {
         question: "2021-21E-02",
         state_form: "AL-2021-1-21E",
         last_modified_by: "seed",
-        created_date: "01/15/2021",
+        created_date: "2021-04-14T12:46:35.838Z",
         rows: [
           {
             col6: "% of FPL 301-317",
@@ -3290,7 +3290,7 @@ const fullStoreMock = {
             col1: "C. Primary Care Case Management"
           }
         ],
-        last_modified: "01/15/2021",
+        last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
         answer_entry: "AL-2021-1-21E-1318-02"
       }
@@ -3316,7 +3316,7 @@ const fullStoreMock = {
       not_applicable: false,
       created_date: "01-15-2021",
       form_name: "Number of Children Served in Separate CHIP Program",
-      last_modified: "01-15-2021",
+      last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
       status_id: 1,
       status: "Not Started"

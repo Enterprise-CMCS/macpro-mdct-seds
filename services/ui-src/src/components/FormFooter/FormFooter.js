@@ -50,11 +50,18 @@ const FormFooter = ({
           <Grid col={6} className="form-actions">
             <Grid row>
               {lastModified ? (
-                <Grid col={9}> Last saved: {dateFormatter(lastModified)} </Grid>
+                <Grid col={9} data-testid="lastModified">
+                  {" "}
+                  Last saved: {dateFormatter(lastModified)}{" "}
+                </Grid>
               ) : null}
               <Grid col={3}>
                 {" "}
-                <Button primary="true" onClick={() => handleClick()}>
+                <Button
+                  primary="true"
+                  onClick={() => handleClick()}
+                  data-testid="saveButton"
+                >
                   Save{" "}
                   <FontAwesomeIcon icon={faSave} className="margin-left-2" />
                 </Button>

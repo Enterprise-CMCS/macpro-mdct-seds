@@ -2,29 +2,17 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
-import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E";
+import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import configureMockStore from "redux-mock-store";
 
 const mockStore = configureMockStore([]);
-
-// The props this component requires in order to render
-// const defaultProps = {
-//   statusData: { last_modified: "2021-04-14T12:46:35.838Z" },
-//   getForm: function () {
-//     return;
-//   }
-// };
 
 describe("Test FormFooter.js - Mount", () => {
   let wrapper;
   let store;
 
   beforeEach(() => {
-    // store = mockStore(currentFormMock_21E);
-
-    store = createStore(() => {}, {
-      last_modified: "2021-04-14T12:46:35.838Z"
-    });
+    store = mockStore(fullStoreMock);
 
     wrapper = mount(
       <Provider store={store}>
@@ -48,6 +36,10 @@ describe("Test FormFooter.js - Mount", () => {
   });
 
   test("Check for Save button", () => {
-    expect(wrapper.find(".hollow").length).toBe(2);
+    expect(wrapper.find({ "data-testid": "saveButton" }).length).toBe(2);
+  });
+
+  test("Check for last modified button", () => {
+    expect(wrapper.find({ "data-testid": "lastModified" }).length).toBe(2);
   });
 });
