@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Alert, GridContainer } from "@trussworks/react-uswds";
+import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -27,21 +27,21 @@ const FormPage = ({ getForm, statusData }) => {
 
   return (
     <div className="react-transition fade-in" data-testid="FormPage">
-        {save_error ? (
-            <div className="save-error">
-                <Alert type="error" heading="Save Error:">
-                    A problem occurred while saving. Please save again. If the problem
-                    persists, contact{" "}
-                    <a
-                        href="mailto:sedshelp@cms.hhs.gov"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                    >
-                        SEDSHELP@cms.hhs.gov
-                    </a>
-                </Alert>
-            </div>
-        ) : null}
+      {save_error ? (
+        <div className="save-error">
+          <Alert type="error" heading="Save Error:">
+            A problem occurred while saving. Please save again. If the problem
+            persists, contact{" "}
+            <a
+              href="mailto:sedshelp@cms.hhs.gov"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              SEDSHELP@cms.hhs.gov
+            </a>
+          </Alert>
+        </div>
+      ) : null}
       <div className="margin-x-5 margin-bottom-3">
         <FormHeader
           quarter={quarterInt}

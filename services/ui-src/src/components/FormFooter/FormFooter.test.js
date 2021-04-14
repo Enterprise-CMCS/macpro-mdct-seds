@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
@@ -26,8 +26,6 @@ describe("Test FormFooter.js - Mount", () => {
   });
 
   test("Check for Link back to Quarter Page list of available reports", () => {
-    // Using Link from TrussWorks results in the component AND link sharing the same class name...
-    // This would be 3 otherwise
     expect(wrapper.find(".form-nav").length).toBe(2);
   });
 
