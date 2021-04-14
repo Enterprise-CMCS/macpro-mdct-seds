@@ -2,13 +2,23 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
-import { updatedStatus } from "../../store/reducers/singleForm/singleForm";
+import {
+  updatedStatus,
+  gotAnswer,
+  clearFormData
+} from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
 
-const NotApplicable = ({ not_applicable, status, toggle }) => {
+const NotApplicable = ({
+  not_applicable,
+  status,
+  toggle,
+  answers,
+  resetData,
+  wipeForm
+}) => {
   const [username, setUsername] = useState();
   const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
-  const [currentStatus, setCurrentStatus] = useState(); // status description
   const [disableSlider, setDisableSlider] = useState(); // should the slider be killed
 
   // FALSE = the form APPLIES TO THIS STATE (0)
@@ -37,16 +47,24 @@ const NotApplicable = ({ not_applicable, status, toggle }) => {
     }
   }, [not_applicable, status, toggle]);
 
-  const changeStatus = () => {
-    const confirm = window.confirm(
-      `Are you sure you do not want to complete this form? Any data you entered will be lost. Select cancel to revert your selection`
-    );
-    if (confirm) {
-      const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
-      const invertedStatus =
-        currentStatus === notRequired ? inProgress : notRequired;
-      toggle(invertIntegerToBoolean, username, invertedStatus);
+  const changeStatus = async () => {
+    if (applicableStatus === 0) {
+      const confirm = window.confirm(
+        `Are you sure you do not want to complete this form? Any data you entered will be lost. Select cancel to revert your selection`
+      );
+      if (confirm) {
+        // answers.forEach(element => {
+        //   resetData(clearGrid, element.answer_entry);
+        // });
+        resetData();
+        wipeForm(true);
+      } else {
+        return;
+      }
     }
+    const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
+    const invertedStatus = status === notRequired ? inProgress : notRequired;
+    toggle(invertIntegerToBoolean, username, invertedStatus);
   };
 
   return (
@@ -75,23 +93,26 @@ const NotApplicable = ({ not_applicable, status, toggle }) => {
 
 NotApplicable.propTypes = {
   not_applicable: PropTypes.bool.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
+  toggle: PropTypes.func.isRequired,
+  resetData: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
   not_applicable: state.currentForm.statusData.not_applicable,
-  status: state.currentForm.statusData.status
+  status: state.currentForm.statusData.status,
+  answers: state.currentForm.answers
 });
 
 const mapDispatch = {
-  toggle: updatedStatus
+  toggle: updatedStatus,
+  resetData: clearFormData
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);
 
 //TODO:
-
-// Selecting “Not applicable” triggers a prompt (pop up window), all your data will be lost.
 
 //QUESTIONS:
 // — Re selecting applicable changes form status back to “in progress”?
@@ -102,28 +123,26 @@ export default connect(mapState, mapDispatch)(NotApplicable);
 // NOTES:
 // THIS MUST MUST MUST DISABLE THE CERTIFICATION  ABILITIES
 
-//
-// const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
-// const [currentStatus, setCurrentStatus] = useState(); // status description
-
-// const { not_applicable, status } = props;
-
-// // FALSE = the form APPLIES TO THIS STATE (0)
-// // TRUE = the form is NOT APPLICABLE (1)
-
-// // Status constants in lieu of IDS
-// const notStarted = "Not Started";
-// const inProgress = "In Progress";
-// const final = "Final Data Certified and Submitted";
-// const notRequired = "Not Required";
-// const provisional = "Provisional Data Certified and Submitted";
-
-// useEffect(() => {
-//   console.log("PROPS????", props);
-//   const booleanToInteger = not_applicable ? 1 : 0; // translate redux values into local state
-//   const tempStatus = "".concat(status);
-//   setApplicableStatus(booleanToInteger); // set integer to local state [WORKING]
-//   setCurrentStatus(tempStatus); // set current status description to state [NOT WORKING]
-// }, []);
-
-// console.log("STILL??????", currentStatus);
+const formatedAnswerData = [
+  {
+    col2: null,
+    col3: null,
+    col4: null,
+    col5: null,
+    col6: null
+  },
+  {
+    col2: null,
+    col3: null,
+    col4: null,
+    col5: null,
+    col6: null
+  },
+  {
+    col2: null,
+    col3: null,
+    col4: null,
+    col5: null,
+    col6: null
+  }
+];

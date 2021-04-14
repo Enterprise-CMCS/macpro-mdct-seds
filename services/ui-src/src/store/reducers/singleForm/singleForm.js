@@ -3,7 +3,8 @@ import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
-  insertAnswer
+  insertAnswer,
+  clearSingleQuestion
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -18,8 +19,16 @@ export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
+export const WIPE_FORM = "WIPE_FORM";
 
 // ACTION CREATORS
+export const clearedForm = cleanAnswers => {
+  return {
+    type: WIPE_FORM,
+    cleanAnswers
+  };
+};
+
 export const gotFormData = formObject => {
   return {
     type: LOAD_SINGLE_FORM,
@@ -44,6 +53,25 @@ export const updatedStatus = (activeStatus, user, status) => {
 };
 
 // THUNKS
+export const clearFormData = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    try {
+      const emptyForm = await answers.map(singleQuestion => {
+        let deepCopy = JSON.parse(JSON.stringify(singleQuestion));
+        const clearedRows = clearSingleQuestion(deepCopy.rows);
+        deepCopy.rows = clearedRows;
+        return deepCopy;
+      });
+
+      dispatch(clearedForm(emptyForm));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
+  };
+};
 export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
     try {
@@ -95,6 +123,11 @@ const initialState = {
 // REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
+    case WIPE_FORM:
+      return {
+        ...state,
+        answers: action.cleanAnswers
+      };
     case UPDATE_ANSWER:
       return {
         ...state,

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { GridContainer } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
@@ -12,6 +12,7 @@ import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
   const { last_modified } = statusData;
+  const [wipe, setWipe] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -38,12 +39,12 @@ const FormPage = ({ getForm, statusData }) => {
           year={year}
           state={formattedStateName}
         />
-        <NotApplicable />
+        <NotApplicable wipeForm={setWipe} />
       </GridContainer>
 
       <GridContainer>
         <div className="tab-container">
-          <TabContainer quarter={quarter} />
+          <TabContainer quarter={quarter} wipe={wipe} />
         </div>
       </GridContainer>
 

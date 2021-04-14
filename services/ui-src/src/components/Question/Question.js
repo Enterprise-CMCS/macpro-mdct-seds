@@ -4,7 +4,13 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
+const QuestionComponent = ({
+  questionData,
+  rangeID,
+  answerData,
+  disabled,
+  wipe
+}) => {
   // Get the question ID and label from the question
   const { label, question } = questionData;
   // Get the rows from the answers table
@@ -33,6 +39,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
     } else if (questionNumber > 0) {
       tempComponent = (
         <GridWithTotals
+          wipe={wipe}
           questionID={answer_entry}
           gridData={sortedRows}
           disabled={disabled}

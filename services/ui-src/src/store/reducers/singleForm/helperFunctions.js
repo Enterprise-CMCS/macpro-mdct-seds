@@ -64,6 +64,26 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
   return stateAnswers;
 };
 
+const clearSingleQuestion = populatedRows => {
+  const emptyRow = {
+    col2: null,
+    col3: null,
+    col4: null,
+    col5: null,
+    col6: null
+  };
+  let clearedRows = populatedRows.map(singleRow => {
+    // if this is the header row, return it unaltered
+    if (singleRow["col1"] === "") {
+      return singleRow;
+    } else {
+      return { ...singleRow, ...emptyRow };
+    }
+  });
+
+  return clearedRows;
+};
+
 const extractAgeRanges = answersArray => {
   // call back for a reduce method
   const findAges = (accumulator, answer) => {
@@ -87,5 +107,6 @@ export {
   sortQuestionsByNumber,
   extractAgeRanges,
   insertAnswer,
-  formatAnswerData
+  formatAnswerData,
+  clearSingleQuestion
 };
