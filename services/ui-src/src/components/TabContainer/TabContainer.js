@@ -7,6 +7,8 @@ import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 
+import "./TabContainer.scss";
+
 const TabContainer = ({
   tabDetails,
   questions,
@@ -16,7 +18,7 @@ const TabContainer = ({
   quarter
 }) => {
   return (
-    <Tabs className="tab-container-main">
+    <Tabs className="tab-container-main padding-x-5">
       <TabList>
         {currentTabs.map((tab, idx) => {
           const rangeDetails = tabDetails.find(
@@ -41,9 +43,9 @@ const TabContainer = ({
           element => tab === element.range_id
         );
         return (
-          <TabPanel key={idx}>
+          <TabPanel key={idx} className="react-transition fade-in">
             {ageRangeDetails ? (
-              <div className="age-range-description">
+              <div className="age-range-description padding-y-2">
                 <h3>{ageRangeDetails.age_description}:</h3>
               </div>
             ) : null}
