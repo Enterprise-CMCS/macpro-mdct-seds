@@ -13,6 +13,9 @@ const HomeState = () => {
   const loadUserData = async () => {
     // Get user data via email from amplify
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
+
+    console.log(AuthUserInfo);
+
     const currentUserInfo = await obtainUserByEmail({
       email: AuthUserInfo.attributes.email
     });
@@ -82,7 +85,7 @@ const HomeState = () => {
           return (
             <li key={`${element.quarter}`}>
               <Link
-                href={`/#/forms/${state}/${uniqueYears[year].year}/${element.quarter}`}
+                to={`/forms/${state}/${uniqueYears[year].year}/${element.quarter}`}
               >
                 Quarter {`${element.quarter}`}
               </Link>
@@ -115,7 +118,7 @@ const HomeState = () => {
     <div className="page-home-state">
       {accordionItems.length !== 0 ? (
         <>
-          <p>
+          <p className="instructions">
             Welcome to SEDS! Please select a Federal Fiscal Year and quarter
             below to view available reports.
           </p>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Grid, GridContainer, Card } from "@trussworks/react-uswds";
+import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -72,7 +72,6 @@ const Quarterly = () => {
           <div className="status-wrapper">
             <Button
               style={{
-                margin: "15px 0 15px -55px",
                 outline: "none",
                 cursor: "pointer"
               }}
@@ -97,7 +96,10 @@ const Quarterly = () => {
       cell: function getPrintLink(row) {
         const formId = getFormSegment(row.form);
         return (
-          <Link to={`/forms/${state}/${year}/${quarter}/${formId}/print`}>
+          <Link
+            to={`/forms/${state}/${year}/${quarter}/${formId}/print`}
+            className="font-heading-2xl padding-left-5"
+          >
             <FontAwesomeIcon icon={faFilePdf} />
           </Link>
         );
@@ -105,112 +107,39 @@ const Quarterly = () => {
     }
   ];
 
-  // Custom styles for data table
-  const customStyles = {
-    headRow: {
-      style: {
-        textTransform: "uppercase",
-        fontWeight: "600"
-      }
-    },
-    headCells: {
-      style: {
-        "&:last-of-type": {
-          // Print
-          fontWeight: "600",
-          maxWidth: "120px"
-        },
-        "&:first-of-type": {
-          // Form
-          fontWeight: "600",
-          maxWidth: "120px"
-        },
-        "&:nth-of-type(2n)": {
-          // FormName
-          fontWeight: "600",
-          maxWidth: "400px"
-        },
-        "&:nth-of-type(3n)": {
-          // Status
-          fontWeight: "600",
-          maxWidth: "180px"
-        },
-        "&:nth-of-type(4n)": {
-          //Last Updated
-          fontWeight: "600",
-          maxWidth: "140px"
-        }
-      }
-    },
-    cells: {
-      style: {
-        "&:last-of-type": {
-          fontSize: "2.2rem",
-          maxWidth: "120px"
-        },
-        "&:first-of-type": {
-          maxWidth: "120px"
-        },
-        "&:nth-of-type(2n)": {
-          maxWidth: "400px"
-        },
-        "&:nth-of-type(3n)": {
-          maxWidth: "180px",
-          pointerType: "default"
-        },
-        "&:nth-of-type(4n)": {
-          maxWidth: "140px",
-          minWidth: "140px"
-        }
-      }
-    }
-  };
-
   return (
-    <GridContainer className="page-quarterly react-transition fade-in">
-      <Grid row>
-        <Grid col={12}>
-          <div className="breadcrumbs">
-            <Link to="/">Enrollment Data Home</Link> &gt;{" "}
-            {`${state} Q${quarter} ${year}`}
-          </div>
-        </Grid>
-      </Grid>
-      <Grid row>
-        <Grid col={12}>
-          <h2>{title}</h2>
-          <div className="quarterly-report-listing">
-            <Card>
-              {stateFormsList ? (
-                <DataTable
-                  className="react-transition flip-in-x"
-                  sortIcon={
-                    <FontAwesomeIcon
-                      icon={faArrowDown}
-                      className="margin-left-2"
-                    />
-                  }
-                  highlightOnHover
-                  title={
-                    <p style={{ fontSize: "14px", fontWeight: "600" }}>
-                      Start, complete, and print this quarter's CHIP Enrollment
-                      Data Reports.
-                    </p>
-                  }
-                  selectableRows={false}
-                  responsive={true}
-                  columns={columns}
-                  data={stateFormsList}
-                  customStyles={customStyles}
-                />
-              ) : (
-                <Preloader />
-              )}
-            </Card>
-          </div>
-        </Grid>
-      </Grid>
-    </GridContainer>
+    <div className="page-quarterly react-transition fade-in">
+      <div className="breadcrumbs">
+        <Link to="/">Enrollment Data Home</Link> &gt;{" "}
+        {`${state} Q${quarter} ${year}`}
+      </div>
+      <h1 className="page-header">{title}</h1>
+      <div className="quarterly-report-listing">
+        <Card>
+          {stateFormsList ? (
+            <DataTable
+              className="grid-display-table react-transition fade-in"
+              sortIcon={
+                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+              }
+              highlightOnHover
+              title={
+                <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                  Start, complete, and print this quarter's CHIP Enrollment Data
+                  Reports.
+                </p>
+              }
+              selectableRows={false}
+              responsive={true}
+              columns={columns}
+              data={stateFormsList}
+            />
+          ) : (
+            <Preloader />
+          )}
+        </Card>
+      </div>
+    </div>
   );
 };
 

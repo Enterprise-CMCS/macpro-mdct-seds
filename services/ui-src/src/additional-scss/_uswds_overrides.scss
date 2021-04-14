@@ -13,3 +13,11 @@ li.usa-card {
 .usa-table {
   box-shadow: 5px 10px 8px #888888;
 }
+
+.usa-nav__primary-item {
+  a {
+    color: #fff !important;
+    @extend .font-heading-lg;
+    @extend .padding-y-5;
+  }
+}
