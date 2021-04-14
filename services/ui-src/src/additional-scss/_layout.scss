@@ -31,8 +31,29 @@
 }
 
 .main {
+  max-width: 95%;
+  margin: 2% 0 0 2.5%;
+
   .container {
     width: 100% !important;
+  }
+}
+
+.instructions {
+  @extend .text-italic;
+  @extend .padding-y-2;
+  @extend .font-mono-md;
+}
+
+.breadcrumbs {
+  @extend .padding-left-5;
+  @extend .font-heading-md;
+  @extend .text-italic;
+  @extend .text-base-dark;
+  text-decoration: underline !important;
+
+  a {
+    text-decoration: none;
   }
 }
 
@@ -50,6 +71,17 @@
     td {
       @extend .padding-x-5;
       @extend .padding-y-2;
+    }
+  }
+}
+
+.unstyled {
+  .usa-table {
+    border: none !important;
+    box-shadow: none !important;
+
+    tr {
+      border: none !important;
     }
   }
 }

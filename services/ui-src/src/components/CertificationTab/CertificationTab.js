@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
-import { Button, Alert, GridContainer, Grid } from "@trussworks/react-uswds";
+import { Button, Alert } from "@trussworks/react-uswds";
 import {
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional
@@ -34,30 +34,31 @@ const CertificationTab = ({
     setfinalButtonStatus(true);
   };
 
-  let certifyText = <></>;
+  let certifyText;
+
   if (isFinal) {
     certifyText = (
-      <div data-testid="certificationText">
+      <div data-testid="certificationText" className="padding-y-2">
         <b> Thank you for submitting your SEDS data!</b>
       </div>
     );
   } else if (isProvisional) {
     certifyText = (
-      <div data-testid="certificationText">
+      <div data-testid="certificationText" className="padding-y-2">
         <b>Ready to final certify?</b>
       </div>
     );
   } else {
     certifyText = (
-      <div data-testid="certificationText">
+      <div data-testid="certificationText" className="padding-y-2">
         <b>Ready to certify?</b>
       </div>
     );
   }
   return (
-    <>
+    <div className="react-transition fade-in">
       {isFinal ? (
-        <div>
+        <div className="padding-y-2">
           <Alert
             type="success"
             heading="Thank you for submitting your SEDS data!"
@@ -69,7 +70,7 @@ const CertificationTab = ({
       ) : null}
 
       {isProvisional ? (
-        <div>
+        <div className="padding-y-2">
           <Alert
             type="info"
             heading="You have submitted provisional SEDS data"
@@ -77,7 +78,7 @@ const CertificationTab = ({
         </div>
       ) : null}
 
-      <div className="age-range-description">
+      <div className="age-range-description padding-y-2">
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
@@ -99,29 +100,23 @@ const CertificationTab = ({
           </p>
         </div>
       </div>
-      <GridContainer>
-        <Grid row>
-          <Grid col={6} className="certify-btn provisional">
-            <Button
-              onClick={() => submitProvisional()}
-              type="button"
-              disabled={provisionalButtonStatus}
-            >
-              {"Certify & Submit Provisional Data"}
-            </Button>
-          </Grid>
-          <Grid col={6} className="certify-btn final">
-            <Button
-              onClick={() => submitFinal()}
-              type="button"
-              disabled={finalButtonStatus}
-            >
-              {"Certify & Submit Final Data"}
-            </Button>
-          </Grid>
-        </Grid>
-      </GridContainer>
-    </>
+      <div className="certify-btn provisional">
+        <Button
+          onClick={() => submitProvisional()}
+          type="button"
+          disabled={provisionalButtonStatus}
+        >
+          {"Certify & Submit Provisional Data"}
+        </Button>
+        <Button
+          onClick={() => submitFinal()}
+          type="button"
+          disabled={finalButtonStatus}
+        >
+          {"Certify & Submit Final Data"}
+        </Button>
+      </div>
+    </div>
   );
 };
 

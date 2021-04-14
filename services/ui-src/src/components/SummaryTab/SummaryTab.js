@@ -8,8 +8,8 @@ import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
 const SummaryTab = ({ questions, answers }) => {
   return (
-    <div className="summary-tab">
-      <div className="age-range-description">
+    <div className="summary-tab react-transition fade-in">
+      <div className="age-range-description padding-y-2">
         <h3>Summary:</h3>
       </div>
 
