@@ -13,6 +13,9 @@ const HomeState = () => {
   const loadUserData = async () => {
     // Get user data via email from amplify
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
+
+    console.log(AuthUserInfo);
+
     const currentUserInfo = await obtainUserByEmail({
       email: AuthUserInfo.attributes.email
     });
