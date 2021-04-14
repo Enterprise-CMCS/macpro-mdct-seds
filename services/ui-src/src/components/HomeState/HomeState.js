@@ -16,10 +16,12 @@ const HomeState = () => {
 
     let email;
 
+    console.log(AuthUserInfo);
+
     if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
       email = AuthUserInfo.attributes.email;
     } else {
-      email = AuthUserInfo.idToken.email;
+      email = AuthUserInfo.idToken.payload.email;
     }
 
     console.log("Retrieved email: -----");
