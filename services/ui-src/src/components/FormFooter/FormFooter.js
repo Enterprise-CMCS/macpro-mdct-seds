@@ -49,7 +49,6 @@ const FormFooter = ({
 
           <Grid col={6} className="form-actions">
             <Grid row>
-              console.log("zzzLastModified", lastModified)
               {lastModified ? (
                 <Grid col={9}> Last saved: {dateFormatter(lastModified)} </Grid>
               ) : null}
