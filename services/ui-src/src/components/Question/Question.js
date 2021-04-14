@@ -67,12 +67,12 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
     }
   }
   return (
-    <>
+    <div className="padding-top-5 border-top-1px">
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
       {questionComponent}
-    </>
+    </div>
   );
 };
 QuestionComponent.propTypes = {

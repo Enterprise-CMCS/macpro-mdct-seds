@@ -26,49 +26,44 @@ const FormPage = ({ getForm, statusData }) => {
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   return (
-    <>
-      <GridContainer
-        className="form-header form-header-main"
-        data-testid="FormPage"
-      >
+    <div className="react-transition fade-in" data-testid="FormPage">
         {save_error ? (
-          <div className="save-error">
-            <Alert type="error" heading="Save Error:">
-              A problem occurred while saving. Please save again. If the problem
-              persists, contact{" "}
-              <a
-                href="mailto:sedshelp@cms.hhs.gov"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                SEDSHELP@cms.hhs.gov
-              </a>
-            </Alert>
-          </div>
+            <div className="save-error">
+                <Alert type="error" heading="Save Error:">
+                    A problem occurred while saving. Please save again. If the problem
+                    persists, contact{" "}
+                    <a
+                        href="mailto:sedshelp@cms.hhs.gov"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        SEDSHELP@cms.hhs.gov
+                    </a>
+                </Alert>
+            </div>
         ) : null}
+      <div className="margin-x-5 margin-bottom-3">
         <FormHeader
           quarter={quarterInt}
           form={formattedFormName}
           year={year}
           state={formattedStateName}
         />
-      </GridContainer>
+      </div>
 
-      <GridContainer>
-        <div className="tab-container">
-          <TabContainer quarter={quarter} />
-        </div>
-      </GridContainer>
+      <div className="tab-container margin-x-5 margin-y-3">
+        <TabContainer quarter={quarter} />
+      </div>
 
-      <GridContainer className="form-footer">
+      <div className="margin-top-2">
         <FormFooter
           state={formattedStateName}
           year={year}
           quarter={quarterInt}
           lastModified={last_modified}
         />
-      </GridContainer>
-    </>
+      </div>
+    </div>
   );
 };
 
