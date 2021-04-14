@@ -76,6 +76,8 @@ const clearSingleQuestion = populatedRows => {
     // if this is the header row, return it unaltered
     if (singleRow["col1"] === "") {
       return singleRow;
+    } else if (Array.isArray(singleRow["col2"])) {
+      return singleRow;
     } else {
       return { ...singleRow, ...emptyRow };
     }
