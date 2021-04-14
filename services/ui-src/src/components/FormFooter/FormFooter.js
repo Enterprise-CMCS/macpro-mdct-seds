@@ -9,7 +9,7 @@ import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
 const FormFooter = ({
   state,
@@ -54,8 +54,9 @@ const FormFooter = ({
               ) : null}
               <Grid col={3}>
                 {" "}
-                <Button className="hollow" onClick={() => handleClick()}>
-                  Save
+                <Button primary="true" onClick={() => handleClick()}>
+                  Save{" "}
+                  <FontAwesomeIcon icon={faSave} className="margin-left-2" />
                 </Button>
               </Grid>
             </Grid>

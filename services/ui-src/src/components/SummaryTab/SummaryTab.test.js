@@ -4,6 +4,8 @@ import SummaryTab from "./SummaryTab";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import SummaryNotes from "../SummaryNotes/SummaryNotes";
+
 const mockStore = configureStore([]);
 
 describe("Test SummaryTab.js", () => {
@@ -101,5 +103,8 @@ describe("Test SummaryTab.js", () => {
         .find("input")
         .instance().value
     ).toMatch(/10/);
+  });
+  test("Check for Summary Notes component", () => {
+    expect(wrapper.contains(<SummaryNotes />)).toBe(true);
   });
 });

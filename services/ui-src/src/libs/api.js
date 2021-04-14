@@ -97,6 +97,14 @@ export const getFormTypes = _ => {
   return API.get("mdct-seds", "/form-types", opts);
 };
 
+// *** get form years and quarters
+export const obtainAvailableForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/forms/obtainAvailableForms`, opts);
+};
+
 // *** save single form
 export const saveSingleForm = data => {
   const opts = requestOptions();

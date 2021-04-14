@@ -4,12 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
-import { getUserById, updateUser } from "../../libs/api";
 import Dropdown from "react-dropdown";
 import { Table, TextInput, Button } from "@trussworks/react-uswds";
 import "react-dropdown/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+
+import { getUserById, updateUser } from "../../libs/api";
 
 import "./EditUser.scss";
 
@@ -170,7 +171,7 @@ const EditUser = ({ stateList }) => {
     <div className="edit-user react-transition fade-in" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
-        <Link href="/#/users" className="userListLink text-bold">
+        <Link to="/users" className="userListLink text-bold">
           &laquo; Back to User List
         </Link>
       </div>

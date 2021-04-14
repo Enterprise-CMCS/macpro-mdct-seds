@@ -38,12 +38,16 @@ describe("Test CertificationTab.js", () => {
   });
 
   test("Check for modified_on and modified_by for all three statuses", async () => {
-    expect(wrapper.find({ "data-testid": "statusText" })).toEqual({});
+    expect(wrapper.find({ "data-testid": "statusText" }).text()).toMatch(
+      "This report was updated to In Progress on 01-15-2021 by Timothy Griesemer"
+    );
 
-    expect(wrapper2.find({ "data-testid": "statusText" })).toEqual({});
+    expect(wrapper2.find({ "data-testid": "statusText" }).text()).toMatch(
+      "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 by Tim Griesemer"
+    );
 
     expect(wrapper3.find({ "data-testid": "statusText" }).text()).toMatch(
-      /Submitted on 01-15-2021 by Timothy Griesemer/
+      "This report was updated to Final Data Certified and Submitted on 01-15-2021 by Timothy Griesemer"
     );
   });
   test("Check button prop disabled for all three statuses", () => {
@@ -72,20 +76,13 @@ describe("Test CertificationTab.js", () => {
         .find("b")
         .at(0)
         .text()
-    ).toMatch("Ready to certify?");
+    ).toMatch("Ready to final certify?");
 
     expect(
       wrapper3
         .find({ "data-testid": "certificationText" })
         .find("b")
         .at(0)
-        .text()
-    ).toMatch(" What to expect next:");
-    expect(
-      wrapper3
-        .find({ "data-testid": "certificationText" })
-        .find("b")
-        .at(1)
         .text()
     ).toMatch("Thank you for submitting your SEDS data!");
   });
