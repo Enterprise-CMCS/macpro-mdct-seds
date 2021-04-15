@@ -24,10 +24,11 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   };
 
   return (
-    <>
+    <div className="padding-top-5 border-top-1px">
       <label htmlFor="summaryNotesInput">
         Add any notes here to accompany the form submission
       </label>
+
       <Textarea
         id="summaryNotesInput"
         name="summaryNotesInput"
@@ -36,9 +37,9 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
         disabled={false}
-        className="form-input"
+        className="form-input-full-width"
       />
-    </>
+    </div>
   );
 };
 

@@ -5,7 +5,10 @@
 .form-input {
   width: 23em;
 }
-
+.form-input-full-width{
+  max-width: 100%;
+  width:100%;
+}
 .searchable {
   .searchable-input {
     .searchable-input-control {
