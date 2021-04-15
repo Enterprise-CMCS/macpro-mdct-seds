@@ -21,22 +21,49 @@ _Links to blog posts, patterns, libraries or addons used to solve this problem_
 
 _List any other information that you think is important... a post-merge activity, someone to notify, etc._
 
-#### Pull Request Creator Checklist
+## Pull Request Creator Checklist
 
-- [ ] This PR has an associated GitHub issue or issues.
-- [ ] The associated issue(s) are linked above.
-- [ ] This PR meets all acceptance criteria for those issues.
+#### Documentation
+
+- [ ] This PR has an associated JIRA issue or issues
+- [ ] The associated issue(s) are linked above
 - [ ] This PR and linked issue(s) are adequately documented
-- [ ] update the architecture diagram if applicable
-- [ ] This PR and linked issues(s) are a complete description of the changeset; an individual or team should be able to understand the issue(s) and changes by reading through this PR and it's links, with no further interaction.
-- [ ] Someone has been assigned this PR.
-- [ ] At least one person has been marked as reviewer on this PR.
-- [ ] This PR has been assigned to a Project (right hand side, near Assignees etc.)
+- [ ] The architecture diagram has been updated
+- [ ] The architecture diagram does not require updates as a result of this PR
+- [ ] This PR and linked issues(s) are a complete description of the change set; an individual or team should be able to understand the issue(s) and changes by reading through this PR and its links, with no further interaction
 
-#### Pull Request Reviewer/Assignee Checklist
+#### Implementation
 
-- [ ] This PR has an associated GitHub issue or issues.
-- [ ] The associated issue(s) are linked above.
-- [ ] This PR meets all acceptance criteria for those issues.
+- [ ] This PR meets all acceptance criteria for the linked issue(s)
+- [ ] This PR has been functionally tested to ensure the changes included do not impact other functionality within the application
+
+#### Automated Testing
+
+- [ ] This PR includes automated testing (new tests have been created and/or existing tests modified to account for changes made)
+- [ ] This PR does not require any new automated tests or changes to existing automated testing
+- [ ] The automated testing passes for all components touched by this PR
+
+#### Peer Review & Merging
+
+- [ ] A Tech Lead or Sr. Developer responsible for merging has been assigned this PR
+- [ ] At least one person has been marked as reviewer on this PR
+
+## Pull Request Reviewer/Assignee Checklist
+
+#### Documentation
+
+- [ ] This PR has an associated JIRA issue or issues
+- [ ] The associated issue(s) are linked above
 - [ ] This PR and linked issue(s) are adequately documented
-- [ ] This PR and linked issues(s) are a complete description of the changeset; an individual or team should be able to understand the issue(s) and changes by reading through this PR and it's links, with no further interaction.
+- [ ] This PR and linked issues(s) are a complete description of the change set; an individual or team should be able to understand the issue(s) and changes by reading through this PR and its links, with no further interaction
+  
+#### Implementation
+
+- [ ] This PR meets all acceptance criteria for the linked issue(s)
+- [ ] This PR has been functionally tested
+
+#### Automated Testing
+
+- [ ] This PR includes new/updated automated testing
+- [ ] This PR does not require new/updated automated testing
+- [ ] The automated testing passes for all components touched by this PR
