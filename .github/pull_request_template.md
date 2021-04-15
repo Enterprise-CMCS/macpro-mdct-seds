@@ -45,8 +45,8 @@ _List any other information that you think is important... a post-merge activity
 
 #### Peer Review & Merging
 
-- [ ] A Tech Lead or Sr. Developer responsible for merging has been assigned this PR
 - [ ] At least one person has been marked as reviewer on this PR
+- [ ] A Tech Lead or Sr. Developer responsible for merging has been assigned this PR
 
 ## Pull Request Reviewer/Assignee Checklist
 
@@ -56,7 +56,7 @@ _List any other information that you think is important... a post-merge activity
 - [ ] The associated issue(s) are linked above
 - [ ] This PR and linked issue(s) are adequately documented
 - [ ] This PR and linked issues(s) are a complete description of the change set; an individual or team should be able to understand the issue(s) and changes by reading through this PR and its links, with no further interaction
-  
+
 #### Implementation
 
 - [ ] This PR meets all acceptance criteria for the linked issue(s)
