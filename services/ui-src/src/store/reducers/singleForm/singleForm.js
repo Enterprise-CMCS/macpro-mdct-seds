@@ -164,7 +164,8 @@ export default (state = initialState, action) => {
           last_modified: action.timeStamp,
           status: action.status,
           status_id: action.statusId,
-          status_date: action.timeStamp
+          status_date: action.timeStamp,
+          status_modified_by: action.user
         }
       };
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
