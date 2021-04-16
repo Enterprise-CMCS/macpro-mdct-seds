@@ -18,16 +18,7 @@ export const main = handler(async (event, context, callback) => {
 
   console.log(email);
 
-  ses.sendEmail(email, function (err, data) {
-    callback(null, { err: err, data: data });
-    if (err) {
-      console.log(err);
-      context.fail(err);
-    } else {
-      console.log(data);
-      context.succeed(event);
-    }
-  });
+  await ses.sendEmail(email).promise();
 });
 
 function unCetifiedTemplate(payload) {
