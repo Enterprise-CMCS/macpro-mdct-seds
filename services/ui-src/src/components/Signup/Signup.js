@@ -17,7 +17,7 @@ export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
     firstName: "",
     lastName: "",
-    userType: "",
+    userType: "CHIP_D_USER_GROUP_ADMIN",
     email: "",
     password: "",
     confirmPassword: "",
