@@ -1,4 +1,4 @@
-service: stream-functions
+service: data-deployment
 
 frameworkVersion: "2"
 
@@ -35,8 +35,8 @@ custom:
   reviewerEmailAddress: ${ssm:/configuration/${self:custom.stage}/reviewerEmailAddress~true, ssm:/configuration/default/reviewerEmailAddress~true, "reviewteam@example.com"}
 
 functions:
-  emailSubmitter:
-    handler: handlers/emailSubmitter.handler
+  loadData:
+    handler: handlers/loadData.handler
     events:
       - stream:
           arn: ${self:custom.tableStreamArn}
@@ -45,18 +45,6 @@ functions:
     role: LambdaEmailerRole
     environment:
       emailSource: ${self:custom.sesSourceEmailAddress}
-    maximumRetryAttempts: 2
-  emailReviewer:
-    handler: handlers/emailReviewer.handler
-    events:
-      - stream:
-          arn: ${self:custom.tableStreamArn}
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-    role: LambdaEmailerRole
-    environment:
-      emailSource: ${self:custom.sesSourceEmailAddress}
-      reviewerEmail: ${self:custom.reviewerEmailAddress}
     maximumRetryAttempts: 2
 
 resources:
