@@ -228,7 +228,7 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  unCertified.js:
+  unCertified:
     handler: handlers/notification/uncertified.main
     role: LambdaApiRole
     events:
@@ -237,7 +237,7 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
-  stateUsers.js:
+  stateUsers:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
     events:
@@ -246,7 +246,7 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
-  businessUsers.js:
+  businessUsers:
     handler: handlers/notification/businessUsers.main
     role: LambdaApiRole
     events:
