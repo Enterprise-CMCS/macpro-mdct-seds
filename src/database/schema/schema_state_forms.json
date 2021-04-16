@@ -10,6 +10,14 @@
         "type": "string",
         "description": "State id as form year and quarter"
       },
+      "status_id": {
+        "type": "string",
+        "description": "ID of the current status"
+      },
+      "status_modified_by": {
+        "type": "string",
+        "description": "The user who last changed the status of the form"
+      },
       "state_id": {
         "type": "string",
         "description": "State abbreviation"
@@ -66,6 +74,8 @@
     "required": [
       "state_form",
       "state_id",
+      "status_modified_by",
+      "status_id",
       "form",
       "program_code",
       "year",

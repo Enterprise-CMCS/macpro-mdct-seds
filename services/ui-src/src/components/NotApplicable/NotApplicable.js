@@ -60,6 +60,7 @@ const NotApplicable = ({
     const newStatusString = statusTypes.find(
       element => element.statusId == invertedStatus
     );
+    console.log("NEW STATUS STRING", newStatusString);
 
     setApplicableStatus(applicableStatus === 0 ? 1 : 0);
     updatedApplicableStatus(
@@ -120,7 +121,7 @@ const NotApplicable = ({
 NotApplicable.propTypes = {
   notApplicable: PropTypes.bool,
   status: PropTypes.string.isRequired,
-  statusId: PropTypes.string.isRequired,
+  statusId: PropTypes.number.isRequired,
   updatedApplicableStatus: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
   statusTypes: PropTypes.array.isRequired

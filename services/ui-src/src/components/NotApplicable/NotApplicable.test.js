@@ -10,7 +10,7 @@ import { RangeInput } from "@trussworks/react-uswds";
 const defaultProps = {
   notApplicable: false,
   status: "In Progress",
-  statusId: "2",
+  statusId: 2,
   statusTypes: [fullStoreMock.global.status],
   updatedApplicableStatus: function () {},
   resetData: function () {}

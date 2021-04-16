@@ -117,7 +117,7 @@ TabContainer.propTypes = {
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
   notApplicable: PropTypes.bool.isRequired,
-  statusId: PropTypes.string.isRequired
+  statusId: PropTypes.number.isRequired
 };
 
 const mapState = state => ({
