@@ -11,7 +11,7 @@ import { jsPDF } from "jspdf";
 // * trussworks
 import { Button, Card } from "@trussworks/react-uswds";
 
-// * react-data-table-compnent
+// * react-data-table-component
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 
@@ -26,6 +26,8 @@ import {
   faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
 
+import Preloader from "../Preloader/Preloader";
+
 // *** API / data / etc
 import {
   listUsers,
@@ -35,7 +37,6 @@ import {
 
 // *** styles
 import "./Users.scss";
-import Preloader from "../Preloader/Preloader";
 
 const PdfContent = () => {
   return (
@@ -62,8 +63,8 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async (format, pdfContent = null) => {
-    let buffer, blob, fileName, pdf;
+  const handleExport = async (format, fileName, pdfContent = null) => {
+    let buffer, blob, pdf;
 
     switch (format) {
       case "excel":
@@ -72,7 +73,6 @@ const Users = () => {
         // *** we are going to instantiate Uint8Array (binary) buffer
         // *** to avoid having to care about MIME type of file we're saving
         buffer = new Uint8Array(buffer.data).buffer;
-        fileName = "test.xlsx";
 
         // *** save file as blob
         blob = new Blob([buffer]);
@@ -85,7 +85,7 @@ const Users = () => {
         pdf
           .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
           .then(() => {
-            pdf.save("test.pdf");
+            pdf.save(fileName);
           });
         break;
 
@@ -265,7 +265,7 @@ const Users = () => {
         <Button
           className="margin-left-3 action-button"
           primary="true"
-          onClick={async () => await handleExport("excel")}
+          onClick={async () => await handleExport("excel", "test_one.xlsx")}
         >
           Excel
           <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
@@ -274,7 +274,9 @@ const Users = () => {
         <Button
           className="margin-left-3 action-button"
           primary="true"
-          onClick={async () => await handleExport("pdf", <PdfContent />)}
+          onClick={async () =>
+            await handleExport("pdf", "test_one.pdf", <PdfContent />)
+          }
         >
           PDF
           <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
