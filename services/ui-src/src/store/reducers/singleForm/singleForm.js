@@ -44,13 +44,18 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updatedApplicableStatus = (activeStatus, user, status) => {
-  // *
+export const updatedApplicableStatus = (
+  activeStatus,
+  user,
+  status,
+  statusId
+) => {
   return {
     type: UPDATE_APPLICABLE_STATUS,
     activeStatus,
     user,
     status,
+    statusId,
     timeStamp: new Date().toISOString()
   };
 };
@@ -99,6 +104,7 @@ export const getFormData = (state, year, quarter, formName) => {
       const singleFormStatusData = stateFormsByQuarter.find(
         ({ form }) => form === formName
       );
+
       // Final payload for redux
       const allFormData = {
         answers: answers,
@@ -157,6 +163,7 @@ export default (state = initialState, action) => {
           last_modified_by: action.user,
           last_modified: action.timeStamp,
           status: action.status,
+          status_id: action.statusId,
           status_date: action.timeStamp
         }
       };

@@ -9,18 +9,20 @@ import {
 import { Auth } from "aws-amplify";
 import "./NotApplicable.scss";
 
-const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
+const NotApplicable = ({
+  notApplicable,
+  status,
+  statusId,
+  updatedApplicableStatus,
+  resetData,
+  statusTypes
+}) => {
   const [username, setUsername] = useState();
-  const [applicableStatus, setApplicableStatus] = useState(); // 0 or 1
+  const [applicableStatus, setApplicableStatus] = useState(1); // 0 or 1
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
-
-  // Status constants in lieu of IDS
-  const inProgress = "In Progress";
-  const final = "Final Data Certified and Submitted";
-  const notRequired = "Not Required";
 
   // Fetch a user's name
   useEffect(() => {
@@ -33,13 +35,13 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
   });
 
   useEffect(() => {
-    const booleanToInteger = not_applicable ? 1 : 0;
+    const booleanToInteger = notApplicable ? 1 : 0;
     setApplicableStatus(booleanToInteger);
 
-    if (status === final) {
+    if (statusId === 4) {
       setDisableSlider(true);
     }
-  }, [not_applicable, status, toggle]);
+  }, [notApplicable, status, statusId, updatedApplicableStatus]);
 
   const changeStatus = async () => {
     if (applicableStatus === 0) {
@@ -53,8 +55,19 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
       }
     }
     const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
-    const invertedStatus = status === notRequired ? inProgress : notRequired;
-    toggle(invertIntegerToBoolean, username, invertedStatus);
+    const invertedStatus = statusId == "5" ? "2" : "5";
+
+    const newStatusString = statusTypes.find(
+      element => element.statusId == invertedStatus
+    );
+
+    setApplicableStatus(applicableStatus === 0 ? 1 : 0);
+    updatedApplicableStatus(
+      invertIntegerToBoolean,
+      username,
+      newStatusString.status,
+      invertedStatus
+    );
   };
 
   return (
@@ -76,15 +89,15 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
         </p>
 
         <RangeInput
-          onClick={() => changeStatus()}
+          onChange={() => changeStatus()}
           id="range-slider"
           name="range"
           min={0}
           max={1}
           value={applicableStatus}
+          color="red"
           list="range-list-id"
           disabled={disableSlider}
-          class="slider"
           data-test="slider-input"
         />
 
@@ -105,21 +118,23 @@ const NotApplicable = ({ not_applicable, status, toggle, resetData }) => {
 };
 
 NotApplicable.propTypes = {
-  not_applicable: PropTypes.bool.isRequired,
+  notApplicable: PropTypes.bool,
   status: PropTypes.string.isRequired,
-  answers: PropTypes.array.isRequired,
-  toggle: PropTypes.func.isRequired,
-  resetData: PropTypes.func.isRequired
+  statusId: PropTypes.string.isRequired,
+  updatedApplicableStatus: PropTypes.func.isRequired,
+  resetData: PropTypes.func.isRequired,
+  statusTypes: PropTypes.array.isRequired
 };
 
 const mapState = state => ({
-  not_applicable: state.currentForm.statusData.not_applicable,
-  status: state.currentForm.statusData.status,
-  answers: state.currentForm.answers
+  notApplicable: state.currentForm.statusData.not_applicable,
+  status: state.currentForm.statusData.status || "",
+  statusId: state.currentForm.statusData.status_id || "",
+  statusTypes: state.global.status
 });
 
 const mapDispatch = {
-  toggle: updatedApplicableStatus,
+  updatedApplicableStatus: updatedApplicableStatus,
   resetData: clearFormData
 };
 

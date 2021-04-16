@@ -14,27 +14,22 @@ const TabContainer = ({
   questions,
   answers,
   notApplicable,
-  formStatus,
   currentTabs,
-  quarter
+  quarter,
+  statusId
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
 
   useEffect(() => {
     const establishStatus = () => {
       let statusBoolean = false;
-      if (
-        notApplicable === true ||
-        formStatus === "Final Data Certified and Submitted" ||
-        formStatus === "Not Required" ||
-        formStatus === "Provisional Data Certified and Submitted"
-      ) {
+      if (notApplicable === true || statusId == "4" || statusId === "5") {
         statusBoolean = true;
       }
       setDisabledStatus(statusBoolean);
     };
     establishStatus();
-  }, [notApplicable, formStatus]);
+  }, [notApplicable, statusId]);
 
   return (
     <Tabs className="tab-container-main padding-x-5">
@@ -122,16 +117,16 @@ TabContainer.propTypes = {
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
   notApplicable: PropTypes.bool.isRequired,
-  formStatus: PropTypes.string.isRequired
+  statusId: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
-  notApplicable: state.currentForm.statusData.not_applicable,
-  formStatus: state.currentForm.statusData.status,
   currentTabs: state.currentForm.tabs,
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
-  answers: state.currentForm.answers
+  answers: state.currentForm.answers,
+  notApplicable: state.currentForm.statusData.not_applicable || false,
+  statusId: state.currentForm.statusData.status_id || ""
 });
 
 export default connect(mapState)(TabContainer);

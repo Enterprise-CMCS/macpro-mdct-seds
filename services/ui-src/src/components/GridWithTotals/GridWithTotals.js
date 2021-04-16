@@ -23,8 +23,9 @@ const GridWithTotals = props => {
   }, [props.gridData]);
 
   useEffect(() => {
+    // eslint-disable-next-line
     updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];

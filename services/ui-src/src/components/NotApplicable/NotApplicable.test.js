@@ -4,12 +4,15 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import NotApplicable from "./NotApplicable";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
+import { RangeInput } from "@trussworks/react-uswds";
 
 // The props this component requires in order to render
 const defaultProps = {
-  not_applicable: false,
+  notApplicable: false,
   status: "In Progress",
-  toggle: function () {},
+  statusId: "2",
+  statusTypes: [fullStoreMock.global.status],
+  updatedApplicableStatus: function () {},
   resetData: function () {}
 };
 
@@ -48,77 +51,49 @@ describe("NotApplicable component- includes data attributes", () => {
   test("Should include data attribute: slider-input", () => {
     expect(wrapper.find(`[data-test="slider-input"]`).length).toBe(1);
   });
+  test("Should include RangeInput component", () => {
+    expect(wrapper.containsMatchingElement(<RangeInput />)).toEqual(true);
+  });
 });
 
-// const shallowSetup = (initialState = {}, props = {}, path = "") => {
-//   const setupProps = { ...defaultProps, ...props };
-//   const store = storeFactory(initialState);
-//   return shallow(<NotApplicable store={store} path={path} {...setupProps} />)
-//     .dive()
-//     .dive();
-// };
+describe("NotApplicable component- props", () => {
+  // creating a true shallow wrapper so that the props are accessible
+  const tempStore = storeFactory(fullStoreMock);
+  const wrapper = shallow(
+    <NotApplicable store={tempStore} {...defaultProps} />
+  );
+
+  test("Should include a notApplicable prop as a boolean", () => {
+    expect(typeof wrapper.props().children.props.notApplicable).toEqual(
+      "boolean"
+    );
+  });
+
+  test("Should include a resetData prop as a function", () => {
+    expect(typeof wrapper.props().children.props.resetData).toEqual("function");
+  });
+  test("Should include a status prop as a string", () => {
+    expect(typeof wrapper.props().children.props.status).toEqual("string");
+  });
+  test("Should include a statusTypes prop as an array", () => {
+    expect(Array.isArray(wrapper.props().children.props.statusTypes)).toEqual(
+      true
+    );
+  });
+});
 
 describe("NotApplicable component- disabled functionality", () => {
-  // let wrapper;
-
-  // beforeEach(() => {
-  //   wrapper = "";
-  // });
-  // test("Status should change when button clicked", () => {
-  //   // expect(wrapper.find(".form-header-main").length).toBe(1);
-  // });
-
-  describe("NotApplicable component- disabled functionality(In Progress)", () => {
-    const inProgressProps = {
-      status: "In Progress"
-    };
-    let wrapper = mountSetup(fullStoreMock, inProgressProps);
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".is-selected").length).toBe(1);
-    });
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".applicable-selected").length).toBe(1);
-    });
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".not-applicable-selected").length).toBe(0);
-    });
+  const inProgressProps = {
+    status: "In Progress"
+  };
+  let wrapper = mountSetup(fullStoreMock, inProgressProps);
+  test("Only one status should be selected", () => {
+    expect(wrapper.find(".is-selected").length).toBe(1);
   });
-
-  describe("NotApplicable component- disabled functionality(Final)", () => {
-    const finalProps = {
-      not_applicable: true
-    };
-    let wrapper = mountSetup(fullStoreMock, finalProps);
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".is-selected").length).toBe(1);
-    });
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".applicable-selected").length).toBe(0);
-    });
-    test("Status should change based on incoming props- In progress", () => {
-      expect(wrapper.find(".not-applicable-selected").length).toBe(1);
-    });
+  test("When the form status is `in progress` Applicable should be selected", () => {
+    expect(wrapper.find(".applicable-selected").length).toBe(1);
   });
-  // test("Status should change based on incoming props- status", () => {
-  //   const isFinalProps = {
-  //     not_applicable: false,
-  //     status: "Final Data Certified and Submitted",
-  //     toggle: function () {},
-  //     resetData: function () {}
-  //   };
-  //   wrapper = shallowSetup(fullStoreMock);
-  //   expect(wrapper.find(".is-selected").length).toBe(1);
-  //   // expect(wrapper.find(`[data-test="applicable-slider"]`).length).toBe(1);
-  // });
-
-  // test("Status should change based on incoming props- status", () => {
-  //   const notRequiredProps = {
-  //     not_applicable: false,
-  //     status: "Not Required",
-  //     toggle: function () {},
-  //     resetData: function () {}
-  //   };
-  //   wrapper = shallowSetup(fullStoreMock);
-  //   // expect(wrapper.find(".tab-container").length).toBe(1);
-  // });
+  test("When the form status is `in progress` Not Applicable should not be selected", () => {
+    expect(wrapper.find(".not-applicable-selected").length).toBe(0);
+  });
 });

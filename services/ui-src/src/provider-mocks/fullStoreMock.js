@@ -3557,24 +3557,29 @@ const fullStoreMock = {
     ],
     status: [
       {
+        statusId: "1",
         status: "Not Started",
         status_description: "The State has not saved any data to the form yet."
       },
       {
+        statusId: "2",
         status: "In Progress",
         status_description: "The State has begun saving data to the form."
       },
       {
+        statusId: "3",
         status: "Provisional Data Certified and Submitted",
         status_description:
           "The State has certified their provisional data submission."
       },
       {
+        statusId: "4",
         status: "Final Data Certified and Submitted",
         status_description:
           "The State has certified their final data submission."
       },
       {
+        statusId: "5",
         status: "Not Required",
         status_description: "The State is not required to complete the form."
       }

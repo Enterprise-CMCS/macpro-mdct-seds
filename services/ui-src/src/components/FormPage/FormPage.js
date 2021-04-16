@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams } from "react-router-dom";
@@ -40,7 +40,7 @@ const FormPage = ({ getForm, statusData }) => {
         <TabContainer quarter={quarter} />
       </div>
 
-      <div className="margin-top-2">
+      <div className="margin-top-2" data-testid="form-footer">
         <FormFooter
           state={formattedStateName}
           year={year}
