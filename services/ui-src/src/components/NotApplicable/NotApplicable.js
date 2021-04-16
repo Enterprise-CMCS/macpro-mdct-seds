@@ -49,7 +49,7 @@ const NotApplicable = ({
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
       if (confirm) {
-        await resetData();
+        await resetData(username);
       } else {
         return;
       }

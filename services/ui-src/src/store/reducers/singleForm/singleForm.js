@@ -61,15 +61,18 @@ export const updatedApplicableStatus = (
 };
 
 // THUNKS
-export const clearFormData = () => {
+export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
     const state = getState();
+    const timeStamp = new Date().toISOString();
     const answers = state.currentForm.answers;
     try {
       const emptyForm = await answers.map(singleQuestion => {
         let deepCopy = JSON.parse(JSON.stringify(singleQuestion));
         const clearedRows = clearSingleQuestion(deepCopy.rows);
         deepCopy.rows = clearedRows;
+        deepCopy.last_modified = timeStamp;
+        deepCopy.last_modified_by = user;
         return deepCopy;
       });
 
