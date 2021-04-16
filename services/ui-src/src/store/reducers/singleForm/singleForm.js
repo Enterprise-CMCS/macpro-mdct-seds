@@ -181,6 +181,7 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Provisional Data Certified and Submitted",
+          status_date: new Date().toISOString().substring(0, 10), // Need to update this with coming soon helper function
           status_id: 3,
           status_modified_by: action.userName,
           last_modified_by: action.userName,
