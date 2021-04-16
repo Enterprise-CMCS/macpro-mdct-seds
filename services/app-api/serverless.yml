@@ -228,7 +228,7 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  uncertified.js:
+  unCertified.js:
     handler: handlers/notification/uncertified.main
     role: LambdaApiRole
     events:
