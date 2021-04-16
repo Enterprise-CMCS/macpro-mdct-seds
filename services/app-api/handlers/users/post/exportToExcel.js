@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
   // *** create workbook
   const workbook = new Workbook();
 
-  // *** add worksheed
+  // *** add worksheet
   const worksheet = workbook.addWorksheet("test worksheet");
 
   const titleRow = worksheet.addRow(["Test title"]);
