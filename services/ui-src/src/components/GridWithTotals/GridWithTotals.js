@@ -20,7 +20,7 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]);
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTotals();
