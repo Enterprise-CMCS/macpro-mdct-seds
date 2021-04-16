@@ -1,7 +1,8 @@
-"use strict";
-
+// The script loads json data into Dynamodb tables
+//
+//var fs = require("fs");
+//
 var AWS = require("aws-sdk");
-var fs = require("fs");
 var s3 = new AWS.S3();
 
 AWS.config.update({ region: "us-east-1" });
