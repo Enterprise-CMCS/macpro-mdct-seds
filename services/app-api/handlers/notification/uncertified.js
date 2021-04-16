@@ -1,4 +1,4 @@
-import handler from "../../libs/handler-lib"
+import handler from "../../libs/handler-lib";
 var aws = require("aws-sdk");
 var ses = new aws.SES({ region: "us-east-1" });
 
@@ -7,16 +7,16 @@ var ses = new aws.SES({ region: "us-east-1" });
  * each time a state takes an uncertify action on any of their quarterly forms
  */
 
-export const main = handler (async (event, context) => {
-    // If this invokation is a prewarm, do nothing and return.
+export const main = handler(async (event, context) => {
+  // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
   }
   let data = JSON.parse(event.body);
-  const email = unCetifiedTemplate(data)
+  const email = unCetifiedTemplate(data);
 
-  console.log(email)
+  console.log(email);
 
   ses.sendEmail(email, function (err, data) {
     callback(null, { err: err, data: data });
@@ -28,18 +28,17 @@ export const main = handler (async (event, context) => {
       context.succeed(event);
     }
   });
-
-})
+});
 
 function unCetifiedTemplate(payload) {
-    return {
-      Destination: {
-        ToAddresses: ["eni.olaniyan@collabralink.com"],
-      },
-      Message: {
-        Body: {
-          Text: {
-            Data: `
+  return {
+    Destination: {
+      ToAddresses: ["eni.olaniyan@collabralink.com"],
+    },
+    Message: {
+      Body: {
+        Text: {
+          Data: `
   Hi Stephnie,
   
   A State user has uncertiied their quarterly forms
@@ -53,12 +52,12 @@ function unCetifiedTemplate(payload) {
   Seds.
   
   `,
-          },
-        },
-        Subject: {
-          Data: `Uncerteried quartly form`,
         },
       },
-      Source: process.env.emailSource || "eniola.olaniyan",
-    };
-  }
+      Subject: {
+        Data: `Uncerteried quartly form`,
+      },
+    },
+    Source: process.env.emailSource || "eniola.olaniyan",
+  };
+}

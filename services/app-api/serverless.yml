@@ -255,8 +255,6 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
-          
-          
 
 resources:
   Conditions:
