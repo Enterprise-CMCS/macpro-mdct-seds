@@ -33,7 +33,7 @@ export const main = handler(async (event, context, callback) => {
 function unCetifiedTemplate(payload) {
   return {
     Destination: {
-      ToAddresses: ["eni.olaniyan@collabralink.com"],
+      ToAddresses: ["eolaniyan@collabralink.com"],
     },
     Message: {
       Body: {
