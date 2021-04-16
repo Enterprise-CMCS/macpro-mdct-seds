@@ -58,7 +58,7 @@ const NotApplicable = ({
     const invertedStatus = statusId === 5 ? 2 : 5;
 
     const newStatusString = statusTypes.find(
-      element => element.statusId === invertedStatus
+      element => element.status_id === invertedStatus
     );
     console.log("NEW STATUS STRING", newStatusString);
 
