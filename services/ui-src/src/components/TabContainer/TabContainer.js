@@ -23,7 +23,7 @@ const TabContainer = ({
   useEffect(() => {
     const establishStatus = () => {
       let statusBoolean = false;
-      if (notApplicable === true || statusId == "4" || statusId === "5") {
+      if (notApplicable === true || statusId === 4 || statusId === 5) {
         statusBoolean = true;
       }
       setDisabledStatus(statusBoolean);
