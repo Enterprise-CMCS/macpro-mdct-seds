@@ -1,6 +1,5 @@
 import React from "react";
-import { shallow, mount } from "enzyme";
-import { BrowserRouter } from "react-router-dom";
+import { shallow } from "enzyme";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import FormPage from "./FormPage";
 import { storeFactory } from "../../provider-mocks/testUtils";
