@@ -55,10 +55,10 @@ const NotApplicable = ({
       }
     }
     const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
-    const invertedStatus = statusId == "5" ? "2" : "5";
+    const invertedStatus = statusId === 5 ? 2 : 5;
 
     const newStatusString = statusTypes.find(
-      element => element.statusId == invertedStatus
+      element => element.statusId === invertedStatus
     );
     console.log("NEW STATUS STRING", newStatusString);
 
