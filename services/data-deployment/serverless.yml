@@ -36,7 +36,7 @@ functions:
     handler: handlers/loadData.handler
     role: LambdaLoadDataRole
     environment:
-      connectorPrefix: seds-${self:custom.stage}-
+      emailSource: ${self:custom.sesSourceEmailAddress}
     maximumRetryAttempts: 2
 
 resources:
@@ -47,7 +47,7 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
-    LambdaEmailerRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
+    LambdaLoadDataRole: 
       Type: "AWS::IAM::Role"
       Properties:
         AssumeRolePolicyDocument:
@@ -64,7 +64,7 @@ resources:
             - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
             - !Ref AWS::NoValue
         Policies:
-          - PolicyName: "LambdaLoadDataPolicy"
+          - PolicyName: "LambdaRolePolicy"
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
@@ -84,15 +84,15 @@ resources:
                 - Effect: "Allow"
                   Action:
                     - dynamodb:BatchGetItem
-		    - dynamodb:GetItem
-		    - dynamodb:Query
-		    - dynamodb:Scan
-		    - dynamodb:BatchWriteItem
-		    - dynamodb:PutItem
-		    - dynamodb:UpdateItem
+                    - dynamodb:GetItem
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:BatchWriteItem
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
                   Resource: "arn:aws:dynamodb:*:*:table/testLoad"
                 - Effect: "Allow"
                   Action:
                     - s3:GetObject
                     - s3:PutObject
-                  Resource: arn:aws:s3::*:*
+                  Resource: "arn:aws:s3::*:*"
