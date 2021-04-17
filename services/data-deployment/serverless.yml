@@ -31,8 +31,6 @@ custom:
       - val
       - prod
   tableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn}
-  sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress~true, ssm:/configuration/default/sesSourceEmailAddress~true, "admin@example.com"}
-  reviewerEmailAddress: ${ssm:/configuration/${self:custom.stage}/reviewerEmailAddress~true, ssm:/configuration/default/reviewerEmailAddress~true, "reviewteam@example.com"}
 
 functions:
   loadData:
@@ -43,8 +41,6 @@ functions:
           startingPosition: LATEST
           maximumRetryAttempts: 2
     role: LambdaDataLoadRole
-    environment:
-      emailSource: ${self:custom.sesSourceEmailAddress}
     maximumRetryAttempts: 2
 
 resources:
