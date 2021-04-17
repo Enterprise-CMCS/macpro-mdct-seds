@@ -96,6 +96,13 @@ resources:
                   Resource: "*"
                 - Effect: "Allow"
                   Action:
+                    - dynamodb:GetItem
+                    - dynamodb:PutItem
+                    - dynamodb:BatchGetItem
+                    - dynamodb:BatchWriteItem
+                  Resource: "arn:aws:dynamodb:*:*:table/testLoad"
+                - Effect: "Allow"
+                  Action:
                     - s3:GetObject
                     - s3:PutObject
                   Resource: "arn:aws:s3::*:*"
