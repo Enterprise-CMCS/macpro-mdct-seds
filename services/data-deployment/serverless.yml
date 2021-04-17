@@ -42,7 +42,7 @@ functions:
           arn: ${self:custom.tableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
-    role: LambdaEmailerRole
+    role: LambdaDataLoadRole
     environment:
       emailSource: ${self:custom.sesSourceEmailAddress}
     maximumRetryAttempts: 2
