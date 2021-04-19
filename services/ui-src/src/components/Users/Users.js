@@ -114,6 +114,7 @@ const Users = () => {
     }
     fetchData().then();
   }, []);
+  ƒ;
 
   const handleAddNewUser = () => {
     history.push("/users/add");
