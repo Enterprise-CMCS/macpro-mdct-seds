@@ -1,5 +1,5 @@
 // *** GLOBAL (i.e., React, hooks, etc)
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, isValidElement } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 
@@ -38,15 +38,6 @@ import {
 // *** styles
 import "./Users.scss";
 
-const PdfContent = () => {
-  return (
-    <div className="export-to-pdf">
-      <div className="padding-y-2 border-1 text-center">PDF Example</div>
-      <div className="padding-y-2 text-center">Content goes here</div>
-    </div>
-  );
-};
-
 /**
  * Display all Users with options
  *
@@ -63,8 +54,13 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async (format, fileName, pdfContent = null) => {
-    let buffer, blob, pdf;
+  const handleExport = async (
+    format,
+    fileName,
+    pdfContent = null,
+    pdfContentType = "react-component"
+  ) => {
+    let buffer, blob, pdf, pdfToExport;
 
     switch (format) {
       case "excel":
@@ -80,10 +76,27 @@ const Users = () => {
         break;
 
       case "pdf":
-        pdf = new jsPDF({ unit: "px", format: "letter", userUnit: "px" });
+        // *** if element is react, do additional processing
+        if (pdfContentType === "react-component") {
+          pdfToExport = renderToString(pdfContent);
+        }
+
+        // *** otherwise, pipe in raw html
+        else {
+          pdfToExport = pdfContent;
+        }
+
+        pdf = new jsPDF({
+          unit: "px",
+          format: "a4",
+          userUnit: "px",
+          orientation: "landscape"
+        });
 
         pdf
-          .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
+          .html(pdfToExport, {
+            html2canvas: { scale: 0.33 }
+          })
           .then(() => {
             pdf.save(fileName);
           });
@@ -275,7 +288,12 @@ const Users = () => {
           className="margin-left-3 action-button"
           primary="true"
           onClick={async () =>
-            await handleExport("pdf", "test_one.pdf", <PdfContent />)
+            await handleExport(
+              "pdf",
+              "test_one.pdf",
+              document.getElementsByClassName("grid-display-table")[0],
+              "html"
+            )
           }
         >
           PDF
