@@ -1,5 +1,5 @@
 // *** GLOBAL (i.e., React, hooks, etc)
-import React, { useState, useEffect, isValidElement } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 
@@ -114,7 +114,6 @@ const Users = () => {
     }
     fetchData().then();
   }, []);
-  ƒ;
 
   const handleAddNewUser = () => {
     history.push("/users/add");
