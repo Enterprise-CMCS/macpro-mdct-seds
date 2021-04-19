@@ -44,6 +44,7 @@ custom:
             sources:
               [
                 ../../src/database/initial_data_load/21E.json,
+                ../../src/database/initial_data_load/21E_2020.json,
                 ../../src/database/initial_data_load/64_21E.json,
                 ../../src/database/initial_data_load/GenderRaceEthnicity.json,
                 ../../src/database/initial_data_load/21PW.json,
@@ -70,6 +71,7 @@ custom:
                 ../../src/database/initial_data_load/form_answers_21PW_AL.json,
                 ../../src/database/initial_data_load/form_answers_21PW_PA_Q4.json,
                 ../../src/database/initial_data_load/form_answers_21PW_PA_Q3.json,
+                ../../src/database/initial_data_load/form_answers_21E_AL_Q4.json,
               ]
           - table: ${self:custom.stage}-auth-user
             sources: [../../src/database/initial_data_load/auth_user.json]
