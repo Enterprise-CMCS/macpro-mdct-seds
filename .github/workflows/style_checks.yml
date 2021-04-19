@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install dependencies
-        working-directory: services/ui-src
+        working-directory: services/ui-srcv
         run: yarn install
       - name: run eslint
         working-directory: services/ui-src
