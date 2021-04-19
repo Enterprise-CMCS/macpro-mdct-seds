@@ -17,7 +17,7 @@ export const main = handler(async (event, context, callback) => {
   const email = unCetifiedTemplate(data);
 
   console.log(email);
-  console.log(data)
+  console.log(data);
 
   await ses.sendEmail(email).promise();
 });
