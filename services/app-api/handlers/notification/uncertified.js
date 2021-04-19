@@ -34,10 +34,10 @@ function unCetifiedTemplate(payload) {
   
   A State user has uncertiied their quarterly forms
   Details:
-   - Username: ${payload.username}  || "username"
-     State:  ${payload.state}       || "state"
-     Role:  ${payload.role}         || "role"
-     Email:  ${payload.email}       || "email
+   - Username: ${payload.username}
+     State:  ${payload.state}
+     Role:  ${payload.role}
+     Email:  ${payload.email}
      
   Regards,
   Seds.
