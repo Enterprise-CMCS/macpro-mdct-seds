@@ -76,26 +76,54 @@ const Users = () => {
         break;
 
       case "pdf":
-        // *** if element is react, do additional processing
-        if (pdfContentType === "react-component") {
-          pdfToExport = renderToString(pdfContent);
+        // *** do additional processing depending on content type
+        switch (pdfContentType) {
+          // *** if element is a react component, render it to html string
+          case "react-component":
+            pdfToExport = renderToString(pdfContent);
+            break;
+
+          // *** for content to be extracted from html selectors ...
+          case "html-selector":
+            // * ... temporarily add class to DOM prior to initiating render to pdf
+            // * this will enable overrides from scss
+            document.querySelector(pdfContent).classList.add("export-to-pdf");
+
+            // * store content to render to pdf
+            pdfToExport = document.querySelector(pdfContent);
+
+            // * remove temporarily added class from DOM
+            // * NOTE: setting time to 0 is a bit of a misnomer;
+            // *       the actual delay will be around 10 ms, or
+            // *       the shortest possible time after DOM change has taken place
+            setTimeout(() => {
+              document
+                .querySelector(pdfContent)
+                .classList.remove("export-to-pdf");
+            }, 0);
+
+            break;
+
+          case "html":
+            pdfToExport = pdfContent;
+            break;
+
+          default:
+            // *** no default behavior is currently specified
+            break;
         }
 
-        // *** otherwise, pipe in raw html
-        else {
-          pdfToExport = pdfContent;
-        }
-
+        // *** initiate pdf render
         pdf = new jsPDF({
           unit: "px",
-          format: "a4",
+          format: "letter",
           userUnit: "px",
           orientation: "landscape"
         });
 
         pdf
           .html(pdfToExport, {
-            html2canvas: { scale: 0.33 }
+            html2canvas: { scale: 0.25 }
           })
           .then(() => {
             pdf.save(fileName);
@@ -291,8 +319,8 @@ const Users = () => {
             await handleExport(
               "pdf",
               "test_one.pdf",
-              document.getElementsByClassName("grid-display-table")[0],
-              "html"
+              ".grid-display-table",
+              "html-selector"
             )
           }
         >
