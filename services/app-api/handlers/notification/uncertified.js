@@ -33,8 +33,6 @@ export const main = handler(async (event, context, callback) => {
   callback(null, "message");
 });
 
-
-
 function unCetifiedTemplate(payload) {
   return {
     Destination: {
