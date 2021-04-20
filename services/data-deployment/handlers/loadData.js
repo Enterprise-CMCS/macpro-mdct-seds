@@ -4,7 +4,7 @@ const s3 = new AWS.S3();
 
 AWS.config.update({ region: "us-east-1" });
 
-itemUpsert = (bucketName, tableName) => {
+const itemUpsert = (bucketName, tableName) => {
   const fileName = tableName + ".json";
   const getParams = { Key: fileName, Bucket: bucketName };
 
