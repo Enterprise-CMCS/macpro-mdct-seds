@@ -2,6 +2,7 @@ import { Auth } from "aws-amplify";
 // ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
 export const CERTIFY_AND_SUBMIT_PROVISIONAL = "CERTIFY_AND_SUBMIT_PROVISIONAL";
+export const UNCERTIFY = "UNCERTIFY";
 export const CERTIFY_AND_SUBMIT_FAILURE = "CERTIFY_AND_SUBMIT_FAILURE";
 
 // ACTION CREATORS
@@ -14,6 +15,13 @@ export const setFinalCertify = userName => {
 export const setProvisionalCertify = userName => {
   return {
     type: CERTIFY_AND_SUBMIT_PROVISIONAL,
+    userName
+  };
+};
+
+export const setUncertify = userName => {
+  return {
+    type: UNCERTIFY,
     userName
   };
 };
@@ -34,7 +42,7 @@ export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
   }
 };
 
-export const certifyAndSubmitProvisional = () => async (dispatch, getState) => {
+export const certifyAndSubmitProvisional = () => async dispatch => {
   let userName = await Auth.currentAuthenticatedUser();
   userName =
     userName.attributes.given_name + " " + userName.attributes.family_name;
@@ -43,4 +51,11 @@ export const certifyAndSubmitProvisional = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
   }
+};
+
+export const uncertify = () => async dispatch => {
+  let userName = await Auth.currentAuthenticatedUser();
+  userName =
+    userName.attributes.given_name + " " + userName.attributes.family_name;
+  dispatch(setUncertify(userName));
 };

@@ -53,12 +53,15 @@ describe("Test CertificationTab.js", () => {
   test("Check button prop disabled for all three statuses", () => {
     expect(wrapper.find("button").at(0).prop("disabled")).toBe(false);
     expect(wrapper.find("button").at(1).prop("disabled")).toBe(false);
+    expect(wrapper.find("button").at(2).exists()).toBe(false);
 
     expect(wrapper2.find("button").at(0).prop("disabled")).toBe(true);
     expect(wrapper2.find("button").at(1).prop("disabled")).toBe(false);
+    expect(wrapper.find("button").at(2).exists()).toBe(false);
 
     expect(wrapper3.find("button").at(0).prop("disabled")).toBe(true);
     expect(wrapper3.find("button").at(1).prop("disabled")).toBe(true);
+    expect(wrapper3.find("button").at(2).exists()).toBe(true);
   });
 
   test("Check truthy text for all three statuses", () => {
