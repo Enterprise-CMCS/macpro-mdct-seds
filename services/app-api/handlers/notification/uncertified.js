@@ -1,5 +1,5 @@
 import handler from "../../libs/handler-lib";
-var aws = require("aws-sdk");
+// var aws = require("aws-sdk");
 // var ses = new aws.SES({ region: "us-east-1" });
 
 /**
@@ -17,10 +17,8 @@ export const main = handler(async (event, context, callback) => {
   console.log(data);
   console.log(event);
 //   const email = unCetifiedTemplate(data);
-
 //   console.log(email);
 //   console.log(data);
-
 //   await ses.sendEmail(email).promise();
 });
 
@@ -34,14 +32,12 @@ export const main = handler(async (event, context, callback) => {
 //         Text: {
 //           Data: `
 //   Hi Stephnie,
-  
 //   A State user has uncertiied their quarterly forms
 //   Details:
 //    - Username: ${payload.username}
 //      State:  ${payload.state}
 //      Role:  ${payload.role}
 //      Email:  ${payload.email}
-     
 //   Regards,
 //   Seds.
 //   `,
