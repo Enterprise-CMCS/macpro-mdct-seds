@@ -93,14 +93,11 @@ const Users = () => {
             pdfToExport = document.querySelector(pdfContent);
 
             // * remove temporarily added class from DOM
-            // * NOTE: setting time to 0 is a bit of a misnomer;
-            // *       the actual delay will be around 10 ms, or
-            // *       the shortest possible time after DOM change has taken place
             setTimeout(() => {
               document
                 .querySelector(pdfContent)
                 .classList.remove("export-to-pdf");
-            }, 0);
+            }, 250);
 
             break;
 
