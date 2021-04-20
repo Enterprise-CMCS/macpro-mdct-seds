@@ -246,6 +246,11 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
+      - schedule:
+        name: your-scheduled-rate-event-name
+        description: 'your scheduled rate event description'
+        enabled: false
+        rate: cron(0 0 1 */3 *)
   businessUsers:
     handler: handlers/notification/businessUsers.main
     role: LambdaApiRole
@@ -255,6 +260,11 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
+      - schedule:
+        name: your-scheduled-rate-event-name
+        description: 'your scheduled rate event description'
+        enabled: false
+        rate: cron(0 0 1 */3 *)
 
 resources:
   Conditions:

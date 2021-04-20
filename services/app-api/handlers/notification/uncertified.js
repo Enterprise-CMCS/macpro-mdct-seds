@@ -13,14 +13,18 @@ export const main = handler(async (event, context, callback) => {
     console.log("Warmed up!");
     return null;
   }
-  let data = JSON.parse(event.body);
-  const email = unCetifiedTemplate(data);
-
-  console.log(email);
   console.log(data);
+  console.log(event)
+//   let data = JSON.parse(event.body);
+//   const email = unCetifiedTemplate(data);
 
-  await ses.sendEmail(email).promise();
+//   console.log(email);
+//   console.log(data);
+
+//   await ses.sendEmail(email).promise();
 });
+
+
 
 function unCetifiedTemplate(payload) {
   return {
@@ -42,7 +46,6 @@ function unCetifiedTemplate(payload) {
      
   Regards,
   Seds.
-  
   `,
         },
       },
