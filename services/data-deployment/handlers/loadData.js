@@ -4,11 +4,10 @@ var s3 = new AWS.S3();
 
 AWS.config.update({ region: "us-east-1" });
 
-function item_Upsert(bucketName, tableName)
-{
+function item_Upsert(bucketName, tableName) {
   let fileName = tableName + ".json";
-  let getParams = {Key: fileName, Bucket: bucketName};
-  
+  let getParams = { Key: fileName, Bucket: bucketName };
+
   console.log(getParams);
 
   //Fetch data from aws s3
@@ -18,14 +17,14 @@ function item_Upsert(bucketName, tableName)
     } else {
       var itemData = JSON.parse(data.Body.toString());
       var documentClient = new AWS.DynamoDB.DocumentClient();
-      
+
       console.log("Loading data into DynamoDB");
       console.log(itemData);
 
       itemData.forEach(function (record) {
         var params = {
           TableName: tableName,
-          Item: record
+          Item: record,
         };
         documentClient.put(params, function (err, data) {
           if (err) {
@@ -41,7 +40,6 @@ function item_Upsert(bucketName, tableName)
 }
 
 let bucket = "seds-s3bucket-data";
-// Call function to insert items in Dynamodb tables 
+// Call function to insert items in Dynamodb tables
 item_Upsert(bucket, "testLoad");
 item_Upsert(bucket, "testLoad2");
-
