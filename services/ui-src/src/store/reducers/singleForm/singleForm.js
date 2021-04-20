@@ -8,7 +8,11 @@ import {
 } from "./helperFunctions";
 
 // ENDPOINTS
-import { getSingleForm, getStateForms } from "../../../libs/api.js";
+import {
+  getSingleForm,
+  getStateForms,
+  saveSingleForm
+} from "../../../libs/api.js";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL
@@ -22,6 +26,8 @@ export const UPDATE_APPLICABLE_STATUS = "UPDATE_APPLICABLE_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
 export const WIPE_FORM = "WIPE_FORM";
+export const SAVE_FORM = "SAVE_FORM";
+export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
 
 // ACTION CREATORS
 export const clearedForm = cleanAnswers => {
@@ -57,6 +63,13 @@ export const updatedApplicableStatus = (
     status,
     statusId,
     timeStamp: new Date().toISOString()
+  };
+};
+
+export const updatedLastSaved = username => {
+  return {
+    type: SAVE_FORM,
+    username
   };
 };
 
@@ -120,6 +133,30 @@ export const getFormData = (state, year, quarter, formName) => {
     } catch (error) {
       console.log("Error:", error);
       console.dir(error);
+    }
+  };
+};
+
+export const disableForm = activeBoolean => {
+  return dispatch => {
+    dispatch(updatedApplicableStatus(activeBoolean));
+  };
+};
+
+export const saveForm = (username, formAnswers) => {
+  return async dispatch => {
+    try {
+      // Update Database
+      await saveSingleForm({
+        username: username,
+        formAnswers: formAnswers
+      });
+
+      // Update Last Saved in redux state
+      dispatch(updatedLastSaved(username, formAnswers));
+    } catch (error) {
+      // If updating the form data fails, state will remain unchanged
+      dispatch({ type: SAVE_FORM_FAILURE });
     }
   };
 };
@@ -197,6 +234,24 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           state_comments: action.tempStateComments
+        }
+      };
+    case SAVE_FORM:
+      return {
+        ...state,
+        statusData: {
+          ...state.statusData,
+          last_modified: new Date().toISOString(),
+          save_error: false,
+          last_modified_by: action.username
+        }
+      };
+    case SAVE_FORM_FAILURE:
+      return {
+        ...state,
+        statusData: {
+          ...state.statusData,
+          save_error: true
         }
       };
     default:

@@ -104,3 +104,11 @@ export const obtainAvailableForms = data => {
 
   return API.post("mdct-seds", `/forms/obtainAvailableForms`, opts);
 };
+
+// *** save single form
+export const saveSingleForm = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/single-form/save", opts);
+};
