@@ -139,7 +139,7 @@ export const getFormData = (state, year, quarter, formName) => {
 
 export const disableForm = activeBoolean => {
   return dispatch => {
-    dispatch(updatedStatus(activeBoolean));
+    dispatch(updatedApplicableStatus(activeBoolean));
   };
 };
 
