@@ -9,7 +9,7 @@ export default function handler(lambda) {
 
     try {
       // Run the Lambda
-      body = await lambda(event, context, callback);
+      body = await lambda(event, context);
       statusCode = 200;
     } catch (e) {
       // Print debug messages
@@ -20,6 +20,7 @@ export default function handler(lambda) {
     }
 
     // Return HTTP response
+
     return {
       statusCode,
       body: JSON.stringify(body),
