@@ -6,7 +6,7 @@ var ses = new aws.SES({ region: "us-east-1" });
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
  */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, context, callback) => {
   // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
@@ -20,7 +20,17 @@ export const main = handler(async (event, context) => {
   console.log(email);
   console.log(data);
 
-  await ses.sendEmail(email).promise();
+  ses.sendEmail(params, function (err, data) {
+    callback(null, { err: err, data: data });
+    if (err) {
+      console.log(err);
+      context.fail(err);
+    } else {
+      console.log(data);
+      context.succeed(event);
+    }
+  });
+  callback(null, "message");
 });
 
 
