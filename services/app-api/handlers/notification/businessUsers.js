@@ -1,5 +1,4 @@
 import handler from "./../../libs/handler-lib";
-var AWS = require('aws-sdk');
 /**
  * Handler responsible for sending notification to bussiness users
  * that have not submitted their data at the end of a quarter - all reports in progress
@@ -12,5 +11,5 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  console.log("yeet")
+  console.log("yeet");
 });
