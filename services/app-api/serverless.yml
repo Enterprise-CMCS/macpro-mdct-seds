@@ -233,7 +233,6 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: notification/uncertified
           method: post
           cors: true
           authorzier: aws_iam
@@ -242,7 +241,6 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: notification/stateUsers
           method: post
           cors: true
           authorzier: aws_iam
@@ -256,7 +254,6 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: notification/businessUsers
           method: post
           cors: true
           authorzier: aws_iam
