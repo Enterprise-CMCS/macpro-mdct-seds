@@ -228,6 +228,15 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  saveForm:
+    handler: handlers/forms/post/saveForm.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: single-form/save
+          method: post
+          cors: true
+          authorizer: aws_iam
 
 resources:
   Conditions:
