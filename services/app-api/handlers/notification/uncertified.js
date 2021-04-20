@@ -1,12 +1,11 @@
-import handler from "../../libs/handler-lib";
-var aws = require("aws-sdk");
-var ses = new aws.SES({ region: "us-east-1" });
+import { SES } from "aws-sdk";
+var ses = new SES({ region: "us-east-1" });
 
 /**
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
  */
-export const main = handler(async (event, context) => {
+ handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
@@ -30,6 +29,7 @@ export const main = handler(async (event, context) => {
       context.succeed(event);
     }
   });
+  callback(null, "message");
 });
 
 function unCetifiedTemplate(payload) {

@@ -5,7 +5,7 @@ export default function handler(lambda) {
     let body, statusCode;
 
     // Start debugger
-    debug.init(event, context, callback);
+    debug.init(event, context);
 
     try {
       // Run the Lambda
