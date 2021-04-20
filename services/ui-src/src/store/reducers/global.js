@@ -1,6 +1,7 @@
 // Temporary import, using forms.json static data
 import * as age_ranges from "../to-delete/age_ranges.json";
 import * as states from "../to-delete/states.json";
+import * as status from "../to-delete/status.json";
 
 import { getFormTypes } from "../../../src/libs/api.js";
 
@@ -62,7 +63,8 @@ export const getStates = () => {
 const initialState = {
   formTypes: [],
   age_ranges: [...age_ranges.default],
-  states: [...states.default]
+  states: [...states.default],
+  status: [...status.default]
 };
 
 // REDUCER

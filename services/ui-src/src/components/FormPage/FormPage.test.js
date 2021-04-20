@@ -35,16 +35,16 @@ jest.mock("react-router-dom", () => ({
 
 describe("FormPage component- shallow render includes classNames", () => {
   const wrapper = shallowSetup(fullStoreMock);
-  test("Should include a form-header className", () => {
-    expect(wrapper.find(".form-header-main").length).toBe(1);
+  test("Should include a form-header attribute", () => {
+    expect(wrapper.find(`[data-testid="FormPage"]`).length).toBe(1);
   });
 
   test("Should include a tab-container className", () => {
     expect(wrapper.find(".tab-container").length).toBe(1);
   });
 
-  test("Should include a form-footer className", () => {
-    expect(wrapper.find(".form-footer").length).toBe(1);
+  test("Should include a form-footer attribute", () => {
+    expect(wrapper.find(`[data-testid="form-footer"]`).length).toBe(1);
   });
 });
 

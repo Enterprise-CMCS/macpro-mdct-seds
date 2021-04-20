@@ -36,7 +36,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
         disabled={false}
-        className="form-input"
+        className=" margin-left-3 width-widescreen"
       />
     </>
   );

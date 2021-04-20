@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
+import NotApplicable from "../NotApplicable/NotApplicable";
 import "./FormPage.scss";
 
 const FormPage = ({ getForm, statusData }) => {
@@ -34,12 +35,12 @@ const FormPage = ({ getForm, statusData }) => {
           state={formattedStateName}
         />
       </div>
-
+      <NotApplicable />
       <div className="tab-container margin-x-5 margin-y-3">
         <TabContainer quarter={quarter} />
       </div>
 
-      <div className="margin-top-2">
+      <div className="margin-top-2" data-testid="form-footer">
         <FormFooter
           state={formattedStateName}
           year={year}

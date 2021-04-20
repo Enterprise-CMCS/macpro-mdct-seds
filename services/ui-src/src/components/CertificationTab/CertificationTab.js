@@ -90,11 +90,10 @@ const CertificationTab = ({
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
-      <div>
+      <div className="padding-top-3">
         <p>
-          Double check that everything in your SEDS report is accurate. You will
-          have to uncertify your report to make any edits to your final data
-          after submitting.
+          Certify & Submit Provisional Data will allow you to submit your form
+          now, but it will remain editable to allow you to submit final data.
         </p>
         <p>
           Once you have reviewed your report, certify that it’s accurate and in
