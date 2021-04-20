@@ -3,7 +3,8 @@ import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
-  insertAnswer
+  insertAnswer,
+  clearSingleQuestion
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -21,13 +22,21 @@ import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
-export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
+export const UPDATE_APPLICABLE_STATUS = "UPDATE_APPLICABLE_STATUS";
 export const UNCERTIFY_FORM = "UNCERTIFY_FORM";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
+export const WIPE_FORM = "WIPE_FORM";
 export const SAVE_FORM = "SAVE_FORM";
 export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
 
 // ACTION CREATORS
+export const clearedForm = cleanAnswers => {
+  return {
+    type: WIPE_FORM,
+    cleanAnswers
+  };
+};
+
 export const gotFormData = formObject => {
   return {
     type: LOAD_SINGLE_FORM,
@@ -41,10 +50,19 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updatedStatus = activeBoolean => {
+export const updatedApplicableStatus = (
+  activeStatus,
+  user,
+  status,
+  statusId
+) => {
   return {
-    type: UPDATE_FORM_STATUS,
-    activeStatus: activeBoolean
+    type: UPDATE_APPLICABLE_STATUS,
+    activeStatus,
+    user,
+    status,
+    statusId,
+    timeStamp: new Date().toISOString()
   };
 };
 
@@ -56,6 +74,28 @@ export const updatedLastSaved = username => {
 };
 
 // THUNKS
+export const clearFormData = (user = "cleared") => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const timeStamp = new Date().toISOString();
+    const answers = state.currentForm.answers;
+    try {
+      const emptyForm = await answers.map(singleQuestion => {
+        let deepCopy = JSON.parse(JSON.stringify(singleQuestion));
+        const clearedRows = clearSingleQuestion(deepCopy.rows);
+        deepCopy.rows = clearedRows;
+        deepCopy.last_modified = timeStamp;
+        deepCopy.last_modified_by = user;
+        return deepCopy;
+      });
+
+      dispatch(clearedForm(emptyForm));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
+  };
+};
 export const getFormData = (state, year, quarter, formName) => {
   return async dispatch => {
     try {
@@ -80,6 +120,7 @@ export const getFormData = (state, year, quarter, formName) => {
       const singleFormStatusData = stateFormsByQuarter.find(
         ({ form }) => form === formName
       );
+
       // Final payload for redux
       const allFormData = {
         answers: answers,
@@ -131,6 +172,11 @@ const initialState = {
 // REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
+    case WIPE_FORM:
+      return {
+        ...state,
+        answers: action.cleanAnswers
+      };
     case UPDATE_ANSWER:
       return {
         ...state,
@@ -148,10 +194,19 @@ export default (state = initialState, action) => {
         statusData: action.formObject.statusData,
         tabs: action.formObject.tabs
       };
-    case UPDATE_FORM_STATUS:
+    case UPDATE_APPLICABLE_STATUS:
       return {
         ...state,
-        not_applicable: action.activeStatus
+        statusData: {
+          ...state.statusData,
+          not_applicable: action.activeStatus,
+          last_modified_by: action.user,
+          last_modified: action.timeStamp,
+          status: action.status,
+          status_id: action.statusId,
+          status_date: action.timeStamp,
+          status_modified_by: action.user
+        }
       };
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
       return {
@@ -166,6 +221,7 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Provisional Data Certified and Submitted",
+          status_date: new Date().toISOString().substring(0, 10), // Need to update this with coming soon helper function
           status_id: 3,
           status_modified_by: action.userName,
           last_modified_by: action.userName,

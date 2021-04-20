@@ -14,9 +14,11 @@ const dateFormatter = dateString => {
   const time = splitDate[1].split(":");
   const minutes = time[1];
   const seconds = time[2].slice(0, 2);
+
   let amOrPm;
   let parsedHour = parseInt(time[0]);
   let hour;
+
   if (parsedHour > 12) {
     amOrPm = "pm";
     hour = parsedHour - 12;
@@ -24,7 +26,8 @@ const dateFormatter = dateString => {
     amOrPm = "am";
     hour = parsedHour;
   }
+
   return `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm}`;
 };
 
-export { dateFormatter, sortQuestionColumns };
+export { sortQuestionColumns, dateFormatter };

@@ -14,11 +14,11 @@
         "type": "string",
         "description": "Description of what it means for a form to be in this status"
       },
-      "statusId": {
-        "type": "string",
+      "status_id": {
+        "type": "integer",
         "description": "Status ID"
       }
     },
-    "required": ["status", "status_description", "statusId"]
+    "required": ["status", "status_description", "status_id"]
   }
 }

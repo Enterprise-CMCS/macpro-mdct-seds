@@ -1,7 +1,4 @@
 const fullStoreMock = {
-  quarterStatuses: {
-    quarterForms: []
-  },
   currentForm: {
     questions: [
       {
@@ -3323,17 +3320,6 @@ const fullStoreMock = {
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   },
-  userData: {
-    userState: {
-      name: "",
-      abbrev: ""
-    },
-    programType: "",
-    role: false,
-    id: "",
-    username: "",
-    email: ""
-  },
   global: {
     formTypes: [],
     age_ranges: [
@@ -3571,24 +3557,29 @@ const fullStoreMock = {
     ],
     status: [
       {
+        status_id: 1,
         status: "Not Started",
         status_description: "The State has not saved any data to the form yet."
       },
       {
+        status_id: 2,
         status: "In Progress",
         status_description: "The State has begun saving data to the form."
       },
       {
+        status_id: 3,
         status: "Provisional Data Certified and Submitted",
         status_description:
           "The State has certified their provisional data submission."
       },
       {
+        status_id: 4,
         status: "Final Data Certified and Submitted",
         status_description:
           "The State has certified their final data submission."
       },
       {
+        status_id: 5,
         status: "Not Required",
         status_description: "The State is not required to complete the form."
       }

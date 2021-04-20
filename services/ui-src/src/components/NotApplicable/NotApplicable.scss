@@ -1,0 +1,31 @@
+.applicable-slider {
+  #range-slider {
+    all: unset;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50px;
+    display: inline-block;
+    overflow: visible;
+    margin: 0;
+  }
+
+  #range-slider::-webkit-slider-thumb {
+    background: #2491ff;
+    border: 0.3rem solid #2491ff;
+  }
+
+  // for mozilla
+  #range-slider::-moz-range-thumb {
+    background: #2491ff;
+    border: 0.3rem solid #2491ff;
+  }
+
+  p {
+    display: inline-block;
+    padding: 0 0.4rem;
+  }
+
+  .is-selected {
+    font-weight: bold;
+  }
+}
