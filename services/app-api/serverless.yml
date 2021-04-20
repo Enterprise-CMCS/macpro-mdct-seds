@@ -248,7 +248,7 @@ functions:
           authorzier: aws_iam
       - schedule:
         name: your-scheduled-rate-event-name
-        description: 'your scheduled rate event description'
+        description: "your scheduled rate event description"
         enabled: false
         rate: cron(0 0 1 */3 *)
   businessUsers:
@@ -262,7 +262,7 @@ functions:
           authorzier: aws_iam
       - schedule:
         name: your-scheduled-rate-event-name
-        description: 'your scheduled rate event description'
+        description: "your scheduled rate event description"
         enabled: false
         rate: cron(0 0 1 */3 *)
 
