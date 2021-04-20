@@ -21,7 +21,6 @@ var ses = new aws.SES({ region: "us-east-1" });
   console.log(data);
 
   ses.sendEmail(email, function (err, data) {
-    callback(null, { err: err, data: data });
     if (err) {
       console.log(err);
       context.fail(err);
@@ -30,8 +29,7 @@ var ses = new aws.SES({ region: "us-east-1" });
       context.succeed(event);
     }
   });
-  
-  return { message: "sucess, email sent" }
+  return { message: "sucess, email sent" };
 });
 
 function unCetifiedTemplate(payload) {
