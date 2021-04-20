@@ -1,7 +1,9 @@
-.save-error {
+.save-error,
+.save-success {
   position: fixed;
   top: 0;
   left: 50%;
-  margin-left: -392px;
+  margin-left: -30%;
   z-index: 999;
+  width: 60%;
 }
