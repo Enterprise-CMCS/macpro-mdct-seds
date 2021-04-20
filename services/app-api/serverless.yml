@@ -229,18 +229,20 @@ functions:
           cors: true
           authorizer: aws_iam
   uncertified:
-    handler: handlers/notification/uncertified.handler
+    handler: handlers/notification/uncertified.main
     role: LambdaApiRole
     events:
       - http:
+          path: notification/uncertified
           method: post
           cors: true
           authorzier: aws_iam
   stateUsers:
-    handler: handlers/notification/stateUsers.handler
+    handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
     events:
       - http:
+          path: notification/stateUsers
           method: post
           cors: true
           authorzier: aws_iam
@@ -250,10 +252,11 @@ functions:
         enabled: false
         rate: cron(0 0 1 */3 *)
   businessUsers:
-    handler: handlers/notification/businessUsers.handler
+    handler: handlers/notification/businessUsers.main
     role: LambdaApiRole
     events:
       - http:
+          path: notification/businessUsers
           method: post
           cors: true
           authorzier: aws_iam
