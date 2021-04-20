@@ -237,7 +237,7 @@ export default (state = initialState, action) => {
           state_comments: action.tempStateComments
         }
       };
-      case UNCERTIFY:
+    case UNCERTIFY:
       return {
         ...state,
         statusData: {
@@ -250,7 +250,7 @@ export default (state = initialState, action) => {
           status_date: new Date().toISOString().substring(0, 10) // Need to update this with coming soon helper function
         }
       };
-      case SAVE_FORM:
+    case SAVE_FORM:
       return {
         ...state,
         statusData: {
