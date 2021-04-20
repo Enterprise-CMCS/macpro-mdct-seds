@@ -20,7 +20,7 @@ export const main = handler(async (event, context, callback) => {
   console.log(email);
   console.log(data);
 
-  ses.sendEmail(params, function (err, data) {
+  ses.sendEmail(email, function (err, data) {
     callback(null, { err: err, data: data });
     if (err) {
       console.log(err);
