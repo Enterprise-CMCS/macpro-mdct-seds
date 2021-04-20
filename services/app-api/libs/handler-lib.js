@@ -1,7 +1,7 @@
 import * as debug from "./debug-lib";
 
 export default function handler(lambda) {
-  return async function (event, context, callback) {
+  return async function (event, context) {
     let body, statusCode;
 
     // Start debugger
