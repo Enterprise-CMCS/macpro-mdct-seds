@@ -1,7 +1,4 @@
-var aws = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
-var ses = new aws.SES({ region: "us-east-1" });
-
 /**
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
