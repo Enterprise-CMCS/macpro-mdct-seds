@@ -333,11 +333,11 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
-                - Effect: "Allow"
-                  Action:
-                    - ses:SendEmail
-                    - ses:SendRawEmail
-                  Resource: "*"
+                # - Effect: "Allow"
+                #   Action:
+                #     - ses:SendEmail
+                #     - ses:SendRawEmail
+                #   Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
