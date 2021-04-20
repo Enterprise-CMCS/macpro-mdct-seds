@@ -10,13 +10,8 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
-  console.log(event);
-
   let data = JSON.parse(event.body);
   const email = unCetifiedTemplate(data);
-
-  console.log(email);
-  console.log(data);
 
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
     .sendEmail(email)
@@ -27,17 +22,7 @@ export const main = handler(async (event, context) => {
   } catch (err) {
     console.error(err, err.stack);
   }
-
-  //   ses.sendEmail(email, function (err, data) {
-  //     if (err) {
-  //       console.log(err);
-  //       context.fail(err);
-  //     } else {
-  //       console.log(data);
-  //       context.succeed(event);
-  //     }
-  //   });
-  //   return { message: "sucess, email sent" };
+    return { message: "sucess, email sent" };
 });
 
 function unCetifiedTemplate(payload) {
