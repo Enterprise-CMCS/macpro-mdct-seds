@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
-import { Link } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
