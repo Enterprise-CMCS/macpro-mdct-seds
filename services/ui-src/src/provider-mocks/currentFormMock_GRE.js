@@ -44,9 +44,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       },
       {
@@ -220,9 +220,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       },
       {
@@ -300,9 +300,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       }
     ],
@@ -347,9 +347,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       },
       {
@@ -520,9 +520,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       },
       {
@@ -597,9 +597,9 @@ const currentFormMock_GRE = {
             col6: null
           }
         ],
-        last_modified: "02/23/2021",
+        last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
-        created_date: "02/23/2021",
+        created_date: "2021-10-01T12:46:35.838Z",
         created_by: "seed"
       }
     ],
