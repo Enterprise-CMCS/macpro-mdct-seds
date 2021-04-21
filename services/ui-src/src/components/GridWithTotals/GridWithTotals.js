@@ -21,9 +21,18 @@ const GridWithTotals = props => {
   }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    //  updateGridData(translateInitialData(props.gridData)).then(updateTotals)
+
     const initialLoad = async () => {
-      await updateGridData(translateInitialData(props.gridData));
-      updateTotals();
+      let newData = await translateInitialData(props.gridData);
+      console.log("NEW DATA \n\n\n\n", newData);
+      await updateGridData(newData);
+      let A = 0;
+      console.log("PRE TOTALS! \n\n\n", gridRowTotals);
+      await updateTotals();
+      console.log("POST TOTALS! \n\n\n\n\n", gridRowTotals);
+
+      let B = 2;
     };
     initialLoad();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
