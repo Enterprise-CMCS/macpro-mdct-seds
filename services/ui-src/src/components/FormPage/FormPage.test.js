@@ -82,19 +82,4 @@ describe("FormPage component- Child Components", () => {
       )
     ).toEqual(true);
   });
-  test("Should include a FormFooter component", () => {
-    expect(
-      wrapper.containsMatchingElement(
-        <FormFooter
-          state={state}
-          year={year}
-          quarter={quarter}
-          lastModified={last_modified}
-        />
-      )
-    ).toEqual(true);
-  });
-  test("Should include a (connected) TabContainer component", () => {
-    expect(wrapper.find("Connect(TabContainer)")).toHaveLength(1);
-  });
 });
