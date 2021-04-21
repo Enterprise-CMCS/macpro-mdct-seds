@@ -65,7 +65,7 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: Jest setup
         working-directory: services/ui-src
-        run: yarn install jest
+        run: yarn add jest
       - name: Unit Tests
         working-directory: services/ui-src
         run: npm run-script coverage
