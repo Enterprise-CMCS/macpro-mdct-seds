@@ -2,13 +2,10 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
 import { userFromCognitoAuthProvider } from "../../../auth/cognito-auth";
+import { main as obtainUserByEmail } from "../post/obtainUserByEmail";
 
 export const main = handler(async (event, context) => {
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
+  if (event.source === "serverless-plugin-warmup") return null;
 
   console.log("!!! in lambda");
   console.log("\n\n\n!!!=>>got provider: ");
@@ -22,6 +19,14 @@ export const main = handler(async (event, context) => {
 
   console.log("\n\n\n~~~GOT USER!!");
   console.log(user);
+
+  const currentUser = await obtainUserByEmail({
+    body: user.email,
+  });
+
+  console.log("\n\n\n\n!!!!!current user: ");
+
+  console.log(currentUser);
 
   const params = {
     TableName:
