@@ -1,6 +1,7 @@
 import React from "react";
 import Home from "./Home";
 import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
 let realUseContext;
 let useContextMock;
@@ -22,7 +23,11 @@ describe("Test ExportToPdf.js", () => {
 
     const mockUser = { attributes: { "app-role": "admin" } };
 
-    const { getByTestId } = render(<Home user={mockUser} />);
+    const { getByTestId } = render(
+      <BrowserRouter>
+        <Home user={mockUser} />
+      </BrowserRouter>
+    );
 
     expect(getByTestId("Home")).toBeVisible();
   });

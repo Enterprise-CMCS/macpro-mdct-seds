@@ -4,7 +4,6 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import FormPage from "./FormPage";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import FormHeader from "../FormHeader/FormHeader";
-import FormFooter from "../FormFooter/FormFooter";
 
 // The props this component requires in order to render
 const defaultProps = {
@@ -66,7 +65,6 @@ describe("FormPage component- Child Components", () => {
   let year = "2021";
   let quarter = "1";
   let formName = "21E";
-  let last_modified = "01-15-2021";
 
   const wrapper = shallowSetup(fullStoreMock);
 
@@ -81,20 +79,5 @@ describe("FormPage component- Child Components", () => {
         />
       )
     ).toEqual(true);
-  });
-  test("Should include a FormFooter component", () => {
-    expect(
-      wrapper.containsMatchingElement(
-        <FormFooter
-          state={state}
-          year={year}
-          quarter={quarter}
-          lastModified={last_modified}
-        />
-      )
-    ).toEqual(true);
-  });
-  test("Should include a (connected) TabContainer component", () => {
-    expect(wrapper.find("Connect(TabContainer)")).toHaveLength(1);
   });
 });
