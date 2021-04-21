@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import configureMockStore from "redux-mock-store";
+import { BrowserRouter } from "react-router-dom";
 
 const mockStore = configureMockStore([]);
 
@@ -16,7 +17,9 @@ describe("Test FormFooter.js - Mount", () => {
 
     wrapper = mount(
       <Provider store={store}>
-        <FormFooter state="AL" year="2021" quarter="1" />
+        <BrowserRouter>
+          <FormFooter state="AL" year="2021" quarter="1" />
+        </BrowserRouter>
       </Provider>
     );
   });
