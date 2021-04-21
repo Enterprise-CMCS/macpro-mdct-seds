@@ -44,7 +44,7 @@ const quarterlyDataMock = [
     state_form: "AL-2021-1-21PW",
     state_id: "AL",
     not_applicable: false,
-    created_date: "03-02-2021",
+    created_date: "2021-03-02T12:46:35.838Z",
     form_name: "Number of Pregnant Women Served",
     last_modified: "04-07-2021",
     quarter: 1,
