@@ -76,7 +76,6 @@ jobs:
           CC_TEST_REPORTER_ID: fa046943aa94f8a791e6d346ff1cfad659599d3a559a37f54c1ebdb18e9c8e8d
         with:
           debug: true
-          coverageCommand: npm run-script coverage
           coverageLocations: |
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: deploy
