@@ -38,15 +38,6 @@ import {
 // *** styles
 import "./Users.scss";
 
-const PdfContent = () => {
-  return (
-    <div className="export-to-pdf">
-      <div className="padding-y-2 border-1 text-center">PDF Example</div>
-      <div className="padding-y-2 text-center">Content goes here</div>
-    </div>
-  );
-};
-
 /**
  * Display all Users with options
  *
@@ -63,8 +54,13 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async (format, fileName, pdfContent = null) => {
-    let buffer, blob, pdf;
+  const handleExport = async (
+      format,
+      fileName,
+      pdfContent = null,
+      pdfContentType = "react-component"
+  ) => {
+    let buffer, blob, pdf, pdfToExport;
 
     switch (format) {
       case "excel":
@@ -80,13 +76,55 @@ const Users = () => {
         break;
 
       case "pdf":
-        pdf = new jsPDF({ unit: "px", format: "letter", userUnit: "px" });
+        // *** do additional processing depending on content type
+        switch (pdfContentType) {
+            // *** if element is a react component, render it to html string
+          case "react-component":
+            pdfToExport = renderToString(pdfContent);
+            break;
+
+            // *** for content to be extracted from html selectors ...
+          case "html-selector":
+            // * ... temporarily add class to DOM prior to initiating render to pdf
+            // * this will enable overrides from scss
+            document.querySelector(pdfContent).classList.add("export-to-pdf");
+
+            // * store content to render to pdf
+            pdfToExport = document.querySelector(pdfContent);
+
+            // * remove temporarily added class from DOM
+            setTimeout(() => {
+              document
+                  .querySelector(pdfContent)
+                  .classList.remove("export-to-pdf");
+            }, 250);
+
+            break;
+
+          case "html":
+            pdfToExport = pdfContent;
+            break;
+
+          default:
+            // *** no default behavior is currently specified
+            break;
+        }
+
+        // *** initiate pdf render
+        pdf = new jsPDF({
+          unit: "px",
+          format: "letter",
+          userUnit: "px",
+          orientation: "landscape"
+        });
 
         pdf
-          .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
-          .then(() => {
-            pdf.save(fileName);
-          });
+            .html(pdfToExport, {
+              html2canvas: { scale: 0.25 }
+            })
+            .then(() => {
+              pdf.save(fileName);
+            });
         break;
 
       default:
@@ -108,7 +146,7 @@ const Users = () => {
 
   const deactivateUser = async user => {
     const confirm = window.confirm(
-      `Are you sure you want to deactivate user ${user.username}`
+        `Are you sure you want to deactivate user ${user.username}`
     );
     if (confirm) {
       const deactivateData = { isActive: false, userId: user.userId };
@@ -120,7 +158,7 @@ const Users = () => {
 
   const activateUser = async user => {
     const confirm = window.confirm(
-      `Are you sure you want to activate user ${user.username}`
+        `Are you sure you want to activate user ${user.username}`
     );
     if (confirm) {
       const activateData = { isActive: true, userId: user.userId };
@@ -140,7 +178,7 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return (
-            <span>
+              <span>
               <Link to={`/users/${user.userId}/edit`}>{user.username}</Link>
             </span>
           );
@@ -162,7 +200,7 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return (
-            <span>
+              <span>
               <a href={`mailto:${user.email}`}>{user.email}</a>
             </span>
           );
@@ -182,8 +220,8 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return user.dateJoined
-            ? new Date(user.dateJoined).toLocaleDateString("en-US")
-            : null;
+              ? new Date(user.dateJoined).toLocaleDateString("en-US")
+              : null;
         }
       },
       {
@@ -192,8 +230,8 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return user.lastLogin
-            ? new Date(user.lastLogin).toLocaleDateString("en-US")
-            : null;
+              ? new Date(user.lastLogin).toLocaleDateString("en-US")
+              : null;
         }
       },
       {
@@ -202,7 +240,7 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return user.states ? (
-            <span>{user.states.sort().join(", ")}</span>
+              <span>{user.states.sort().join(", ")}</span>
           ) : null;
         }
       },
@@ -212,30 +250,30 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return (
-            <span>
+              <span>
               {user.isActive ? (
-                <Button
-                  className="row-action-button"
-                  secondary={true}
-                  onClick={() => deactivateUser(user)}
-                >
-                  Deactivate
-                  <FontAwesomeIcon
-                    icon={faUserAltSlash}
-                    className="margin-left-2"
-                  />
-                </Button>
+                  <Button
+                      className="row-action-button"
+                      secondary={true}
+                      onClick={() => deactivateUser(user)}
+                  >
+                    Deactivate
+                    <FontAwesomeIcon
+                        icon={faUserAltSlash}
+                        className="margin-left-2"
+                    />
+                  </Button>
               ) : (
-                <Button
-                  className="row-action-button"
-                  onClick={() => activateUser(user)}
-                >
-                  Activate
-                  <FontAwesomeIcon
-                    icon={faUserCheck}
-                    className="margin-left-2"
-                  />
-                </Button>
+                  <Button
+                      className="row-action-button"
+                      onClick={() => activateUser(user)}
+                  >
+                    Activate
+                    <FontAwesomeIcon
+                        icon={faUserCheck}
+                        className="margin-left-2"
+                    />
+                  </Button>
               )}
             </span>
           );
@@ -251,57 +289,62 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles react-transition fade-in" data-testid="Users">
-      <h1 className="page-header">Users</h1>
-      <div className="page-subheader">
-        <Button
-          onClick={() => handleAddNewUser()}
-          className="action-button"
-          primary="true"
-        >
-          Add New User
-          <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-        </Button>
-        <Button
-          className="margin-left-3 action-button"
-          primary="true"
-          onClick={async () => await handleExport("excel", "test_one.xlsx")}
-        >
-          Excel
-          <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
-        </Button>
+      <div className="user-profiles react-transition fade-in" data-testid="Users">
+        <h1 className="page-header">Users</h1>
+        <div className="page-subheader">
+          <Button
+              onClick={() => handleAddNewUser()}
+              className="action-button"
+              primary="true"
+          >
+            Add New User
+            <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
+          </Button>
+          <Button
+              className="margin-left-3 action-button"
+              primary="true"
+              onClick={async () => await handleExport("excel", "test_one.xlsx")}
+          >
+            Excel
+            <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+          </Button>
 
-        <Button
-          className="margin-left-3 action-button"
-          primary="true"
-          onClick={async () =>
-            await handleExport("pdf", "test_one.pdf", <PdfContent />)
-          }
-        >
-          PDF
-          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-        </Button>
-      </div>
-      <Card>
-        {tableData ? (
-          <DataTableExtensions {...tableData} export={false} print={false}>
-            <DataTable
-              defaultSortField="username"
-              sortIcon={
-                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+          <Button
+              className="margin-left-3 action-button"
+              primary="true"
+              onClick={async () =>
+                  await handleExport(
+                      "pdf",
+                      "test_one.pdf",
+                      ".grid-display-table",
+                      "html-selector"
+                  )
               }
-              highlightOnHover={true}
-              selectableRows={false}
-              responsive={true}
-              striped={true}
-              className="grid-display-table react-transition fade-in"
-            />
-          </DataTableExtensions>
-        ) : (
-          <Preloader />
-        )}
-      </Card>
-    </div>
+          >
+            PDF
+            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+          </Button>
+        </div>
+        <Card>
+          {tableData ? (
+              <DataTableExtensions {...tableData} export={false} print={false}>
+                <DataTable
+                    defaultSortField="username"
+                    sortIcon={
+                      <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+                    }
+                    highlightOnHover={true}
+                    selectableRows={false}
+                    responsive={true}
+                    striped={true}
+                    className="grid-display-table react-transition fade-in"
+                />
+              </DataTableExtensions>
+          ) : (
+              <Preloader />
+          )}
+        </Card>
+      </div>
   );
 };
 
