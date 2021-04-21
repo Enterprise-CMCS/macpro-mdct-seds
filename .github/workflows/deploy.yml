@@ -81,14 +81,14 @@ jobs:
       #     coverageLocations: |
       #       ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: Test & publish code coverage
-      working-directory: services/ui-src
-      uses: paambaati/codeclimate-action@v2.7.5
-      env:
-        CC_TEST_REPORTER_ID: fa046943aa94f8a791e6d346ff1cfad659599d3a559a37f54c1ebdb18e9c8e8d
-      with:
-        coverageCommand: npm run-script coverage
-        coverageLocations: |
-          ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+        working-directory: services/ui-src
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: fa046943aa94f8a791e6d346ff1cfad659599d3a559a37f54c1ebdb18e9c8e8d
+        with:
+          coverageCommand: npm run-script coverage
+          coverageLocations: |
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
 
       - name: deploy
         run: |
