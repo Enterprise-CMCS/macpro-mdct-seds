@@ -63,13 +63,13 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Unit Tests
+        run: ./dev npm run-script coverage
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
           ./deploy.sh $STAGE_PREFIX$branch_name
-      - name: Unit Tests
-        run: ./dev npm run-script coverage
       #      - name: Run Nightwatch suite
       #        run: |
       #          pushd services
