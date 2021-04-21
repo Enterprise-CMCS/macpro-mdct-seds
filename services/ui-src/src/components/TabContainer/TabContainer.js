@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -13,10 +13,24 @@ const TabContainer = ({
   tabDetails,
   questions,
   answers,
-  disabled,
+  notApplicable,
   currentTabs,
-  quarter
+  quarter,
+  statusId
 }) => {
+  const [disabledStatus, setDisabledStatus] = useState();
+
+  useEffect(() => {
+    const establishStatus = () => {
+      let statusBoolean = false;
+      if (notApplicable === true || statusId === 4 || statusId === 5) {
+        statusBoolean = true;
+      }
+      setDisabledStatus(statusBoolean);
+    };
+    establishStatus();
+  }, [notApplicable, statusId]);
+
   return (
     <Tabs className="tab-container-main padding-x-5">
       <TabList>
@@ -77,7 +91,7 @@ const TabContainer = ({
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
-                    disabled={disabled}
+                    disabled={disabledStatus}
                   />
                 );
               }
@@ -102,17 +116,17 @@ TabContainer.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  disabled: PropTypes.bool.isRequired
+  notApplicable: PropTypes.bool.isRequired,
+  statusId: PropTypes.number.isRequired
 };
 
 const mapState = state => ({
-  disabled:
-    state.currentForm.statusData.not_applicable ||
-    state.currentForm.statusData.status === "final",
   currentTabs: state.currentForm.tabs,
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
-  answers: state.currentForm.answers
+  answers: state.currentForm.answers,
+  notApplicable: state.currentForm.statusData.not_applicable || false,
+  statusId: state.currentForm.statusData.status_id || ""
 });
 
 export default connect(mapState)(TabContainer);

@@ -18,6 +18,11 @@ const GridWithTotals = props => {
   const currentPrecision = props.precision;
 
   useEffect(() => {
+    updateGridData(translateInitialData(props.gridData));
+    updateTotals();
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
