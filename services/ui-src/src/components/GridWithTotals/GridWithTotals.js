@@ -227,7 +227,7 @@ const GridWithTotals = props => {
         <thead>
           <tr>{headerCols}</tr>
         </thead>
-        <tbody>
+        <tbody id={props.questionID}>
           {tableData}
           <tr className="total-row">
             {totalsRow}
