@@ -3293,8 +3293,8 @@ const fullStoreMock = {
       }
     ],
     statusData: {
-      status_modified_by: "seed",
-      status_date: "01-15-2021",
+      status_modified_by: "Timothy Griesemer",
+      status_date: "2021-01-15T12:46:35.838Z",
       year: 2021,
       state_comments: [
         {
@@ -3311,7 +3311,7 @@ const fullStoreMock = {
       state_form: "AL-2021-1-21E",
       state_id: "AL",
       not_applicable: false,
-      created_date: "01-15-2021",
+      created_date: "2021-04-14T12:46:35.838Z",
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
