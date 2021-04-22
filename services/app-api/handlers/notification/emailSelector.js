@@ -1,5 +1,5 @@
 import handler from "../../libs/handler-lib";
-var aws = require("aws_sdk");
+var aws = require("aws-sdk")
 var lambda = new aws.Lambda({
   region: "us-east-1",
 });
