@@ -324,7 +324,7 @@
     "status": "Not Started",
     "status_id": 1,
     "status_modified_by": "seed",
-    "status_date": "03-02-2021",
+    "status_date": "2021-03-02T12:46:35.838Z",
     "not_applicable": false,
     "state_comments": [
       {
@@ -332,9 +332,9 @@
         "entry": "The number of Pregnant women served will be contained within this form."
       }
     ],
-    "last_modified": "03-02-2021",
+    "last_modified": "2021-03-02T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "03-02-2021",
+    "created_date": "2021-03-02T12:46:35.838Z",
     "created_by": "seed"
   },
   {
@@ -350,7 +350,7 @@
     "status": "Not Started",
     "status_id": 1,
     "status_modified_by": "seed",
-    "status_date": "03-02-2021",
+    "status_date": "2021-03-02T12:46:35.838Z",
     "not_applicable": false,
     "state_comments": [
       {
@@ -358,9 +358,9 @@
         "entry": "This form is for keeping track of the number of Pregnant women in the state of MD."
       }
     ],
-    "last_modified": "03-02-2021",
+    "last_modified": "2021-03-02T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "03-02-2021",
+    "created_date": "2021-03-02T12:46:35.838Z",
     "created_by": "seed"
   },
   {
@@ -376,7 +376,7 @@
     "status": "Not Started",
     "status_id": 1,
     "status_modified_by": "seed",
-    "status_date": "03-02-2021",
+    "status_date": "2021-03-02T12:46:35.838Z",
     "not_applicable": false,
     "state_comments": [
       {
@@ -384,9 +384,9 @@
         "entry": "This is the 21PW form for the state of AL."
       }
     ],
-    "last_modified": "03-02-2021",
+    "last_modified": "2021-03-02T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "03-02-2021",
+    "created_date": "2021-03-02T12:46:35.838Z",
     "created_by": "seed"
   },
   {
@@ -454,7 +454,7 @@
     "status": "Not Started",
     "status_id": 1,
     "status_modified_by": "seed",
-    "status_date": "01-15-2020",
+    "status_date": "2021-03-02T12:46:35.838Z",
     "not_applicable": false,
     "state_comments": [
       {
@@ -462,9 +462,9 @@
         "entry": "This a 21E for AL"
       }
     ],
-    "last_modified": "01-15-2020",
+    "last_modified": "2021-03-02T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "01-15-2020",
+    "created_date": "2021-03-02T12:46:35.838Z",
     "created_by": "seed"
   }
 ]

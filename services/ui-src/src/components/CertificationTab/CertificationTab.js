@@ -9,6 +9,7 @@ import {
 } from "../../store/actions/certify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 const CertificationTab = ({
   status,
@@ -102,8 +103,8 @@ const CertificationTab = ({
         </p>
         <div data-testid="statusText">
           <p>
-            This report was updated to <b>{status}</b> on <b>{lastModified}</b>{" "}
-            by <b>{lastModifiedBy}</b>
+            This report was updated to <b>{status}</b> on{" "}
+            <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
           </p>
         </div>
       </div>

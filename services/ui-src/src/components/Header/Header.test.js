@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
 let realUseContext;
 let useContextMock;
@@ -22,7 +23,11 @@ describe("Test Header.js", () => {
 
     const mockUser = { attributes: { "app-role": "admin" } };
 
-    const { getByTestId } = render(<Header user={mockUser} />);
+    const { getByTestId } = render(
+      <BrowserRouter>
+        <Header user={mockUser} />
+      </BrowserRouter>
+    );
 
     expect(getByTestId("Header")).toBeVisible();
   });

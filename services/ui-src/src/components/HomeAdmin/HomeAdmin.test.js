@@ -1,13 +1,17 @@
 import React from "react";
 import { mount } from "enzyme";
 import HomeAdmin from "./HomeAdmin";
-import { Link } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 
 describe("Tests for HomeAdmin.js", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(<HomeAdmin />);
+    wrapper = mount(
+      <BrowserRouter>
+        <HomeAdmin />
+      </BrowserRouter>
+    );
   });
 
   test("Ensure HomeAdmin exists", () => {
@@ -24,10 +28,10 @@ describe("Tests for HomeAdmin.js", () => {
       .children()
       .find("a")
       .prop("href");
-    expect(anchor).toEqual("/#/users");
+    expect(anchor).toEqual("/users");
   });
   test("Ensure add user link exists", () => {
     let anchor = wrapper.find(".user-add").children().find("a").prop("href");
-    expect(anchor).toEqual("/#/users/add");
+    expect(anchor).toEqual("/users/add");
   });
 });
