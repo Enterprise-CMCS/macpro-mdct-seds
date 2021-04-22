@@ -2,7 +2,7 @@ export const tabs = ["0000", "0001", "0105", "0612"];
 
 export const statusData = {
   status_modified_by: "seed",
-  status_date: "03-02-2021",
+  status_date: "2021-03-02T12:46:35.838Z",
   year: 2021,
   state_comments: [
     {
@@ -19,7 +19,7 @@ export const statusData = {
   state_form: "PA-2021-1-21PW",
   state_id: "PA",
   not_applicable: false,
-  created_date: "03-02-2021",
+  created_date: "2021-03-02T12:46:35.838Z",
   form_name: "Number of Pregnant Women Served",
   last_modified: "04-09-2021",
   quarter: 1,
@@ -34,7 +34,7 @@ export const answers = [
     question: "2021-21E-03",
     state_form: "AL-2021-1-21E",
     last_modified_by: "seed",
-    created_date: "01/15/2021",
+    created_date: "2021-01-15T12:46:35.838Z",
     rows: [
       {
         col6: "% of FPL 301-317",
@@ -69,7 +69,7 @@ export const answers = [
         col1: "C. Primary Care Case Management"
       }
     ],
-    last_modified: "01/15/2021",
+    last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
     answer_entry: "AL-2021-1-21E-0612-03"
   },
@@ -79,7 +79,7 @@ export const answers = [
     question: "2021-21E-08",
     state_form: "AL-2021-1-21E",
     last_modified_by: "seed",
-    created_date: "01/15/2021",
+    created_date: "2021-01-15T12:46:35.838Z",
     rows: [
       {
         col6: "% of FPL 301-317",
@@ -114,7 +114,7 @@ export const answers = [
         col1: "C. Primary Care Case Management"
       }
     ],
-    last_modified: "01/15/2021",
+    last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
     answer_entry: "AL-2021-1-21E-0105-08"
   },
@@ -124,7 +124,7 @@ export const answers = [
     question: "2021-21E-09",
     state_form: "AL-2021-1-21E",
     last_modified_by: "seed",
-    created_date: "01/15/2021",
+    created_date: "2021-01-15T12:46:35.838Z",
     rows: [
       {
         col6: "% of FPL 301-317",
@@ -159,7 +159,7 @@ export const answers = [
         col1: "C. Primary Care Case Management"
       }
     ],
-    last_modified: "01/15/2021",
+    last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
     answer_entry: "AL-2021-1-21E-0612-09"
   }
@@ -212,8 +212,8 @@ export const questions = [
     ],
     created_by: "seed",
     form: "21E",
-    created_date: "01/15/2021",
-    last_modified: "01/15/2021"
+    created_date: "2021-01-15T12:46:35.838Z",
+    last_modified: "2021-01-15T12:46:35.838Z"
   },
   {
     question: "2021-21E-02",
@@ -261,8 +261,8 @@ export const questions = [
     ],
     created_by: "seed",
     form: "21E",
-    created_date: "01/15/2021",
-    last_modified: "01/15/2021"
+    created_date: "2021-01-15T12:46:35.838Z",
+    last_modified: "2021-01-15T12:46:35.838Z"
   },
   {
     question: "2021-21E-01",
@@ -310,7 +310,7 @@ export const questions = [
     ],
     created_by: "seed",
     form: "21E",
-    created_date: "01/15/2021",
-    last_modified: "01/15/2021"
+    created_date: "2021-01-15T12:46:35.838Z",
+    last_modified: "2021-01-15T12:46:35.838Z"
   }
 ];
