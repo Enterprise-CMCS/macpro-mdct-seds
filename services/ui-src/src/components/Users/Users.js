@@ -1,11 +1,9 @@
 // *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { renderToString } from "react-dom/server";
 
-// *** 3rd party functional dependencies
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
+// *** 3rd party and other functional dependencies
+import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
 // * trussworks
@@ -29,11 +27,7 @@ import {
 import Preloader from "../Preloader/Preloader";
 
 // *** API / data / etc
-import {
-  listUsers,
-  activateDeactivateUser,
-  exportToExcel
-} from "../../libs/api";
+import { listUsers, activateDeactivateUser } from "../../libs/api";
 
 // *** styles
 import "./Users.scss";
@@ -52,85 +46,6 @@ const Users = () => {
 
   const loadUserData = async () => {
     setUsers(await listUsers());
-  };
-
-  const handleExport = async (
-    format,
-    fileName,
-    pdfContent = null,
-    pdfContentType = "react-component"
-  ) => {
-    let buffer, blob, pdf, pdfToExport;
-
-    switch (format) {
-      case "excel":
-        buffer = await exportToExcel();
-        // *** lambdas will convert buffer to Int32Array
-        // *** we are going to instantiate Uint8Array (binary) buffer
-        // *** to avoid having to care about MIME type of file we're saving
-        buffer = new Uint8Array(buffer.data).buffer;
-
-        // *** save file as blob
-        blob = new Blob([buffer]);
-        saveAs(blob, fileName);
-        break;
-
-      case "pdf":
-        // *** do additional processing depending on content type
-        switch (pdfContentType) {
-          // *** if element is a react component, render it to html string
-          case "react-component":
-            pdfToExport = renderToString(pdfContent);
-            break;
-
-          // *** for content to be extracted from html selectors ...
-          case "html-selector":
-            // * ... temporarily add class to DOM prior to initiating render to pdf
-            // * this will enable overrides from scss
-            document.querySelector(pdfContent).classList.add("export-to-pdf");
-
-            // * store content to render to pdf
-            pdfToExport = document.querySelector(pdfContent);
-
-            // * remove temporarily added class from DOM
-            setTimeout(() => {
-              document
-                .querySelector(pdfContent)
-                .classList.remove("export-to-pdf");
-            }, 250);
-
-            break;
-
-          case "html":
-            pdfToExport = pdfContent;
-            break;
-
-          default:
-            // *** no default behavior is currently specified
-            break;
-        }
-
-        // *** initiate pdf render
-        pdf = new jsPDF({
-          unit: "px",
-          format: "letter",
-          userUnit: "px",
-          orientation: "landscape"
-        });
-
-        pdf
-          .html(pdfToExport, {
-            html2canvas: { scale: 0.25 }
-          })
-          .then(() => {
-            pdf.save(fileName);
-          });
-        break;
-
-      default:
-        // *** no default behavior currently specified
-        break;
-    }
   };
 
   useEffect(() => {

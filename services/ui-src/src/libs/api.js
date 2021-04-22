@@ -10,7 +10,7 @@ const requestOptions = () => {
 export const exportToExcel = async () => {
   const opts = requestOptions();
 
-  return API.post("mdct-seds", "/users/export-to-excel", opts);
+  return API.post("mdct-seds", "/export/export-to-excel", opts);
 };
 
 // *** list all Users

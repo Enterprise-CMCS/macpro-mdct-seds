@@ -6,6 +6,8 @@ import { getCurrentUserInfo } from "../../../auth/cognito-auth";
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
 
+  console.log("here");
+
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,

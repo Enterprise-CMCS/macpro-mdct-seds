@@ -5,7 +5,7 @@ import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEm
 
 export const parseAuthProvider = (authProvider) => {
   // *** cognito authentication provider example:
-  //               cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
+  //              cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
   // *** where
   //              us-east-1_aaaaaaaaa                   ==>  User Pool id
   // *** and
@@ -114,10 +114,10 @@ export const getCurrentUserInfo = async (event) => {
     body: body,
   });
 
-  const returnObject = {
+  const userObject = {
     status: "success",
     data: JSON.parse(currentUser.body)["Items"][0],
   };
 
-  return returnObject;
+  return userObject;
 };

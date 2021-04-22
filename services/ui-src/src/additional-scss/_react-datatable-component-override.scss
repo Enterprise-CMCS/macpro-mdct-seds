@@ -94,7 +94,7 @@
 
   .rdt_TableHeadRow {
     .rdt_TableCol {
-      @extend .bg-primary-dark;
+      @extend .bg-base-lightest;
       @extend .font-heading-lg;
       color: #fff;
       font-weight: bold;
