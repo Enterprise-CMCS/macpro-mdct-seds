@@ -228,6 +228,15 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  emailSelector:
+    handler: handlers/notification/emailSelector.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: notification/emailSelector
+          method: post
+          cors: true
+          authorzier: aws_iam
   uncertified:
     handler: handlers/notification/uncertified.main
     role: LambdaApiRole
