@@ -6,14 +6,14 @@ import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
+import 'jspdf-autotable'
 
-//import "./PrintPDF.scss";
+import "./PrintPDF.scss";
 const PrintPDF = ({ tabDetails, questions, answers, currentTabs, quarter }) => {
 
   useEffect(() => {}, []);
@@ -60,34 +60,48 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, quarter }) => {
             // *** no default behavior is currently specified
             break;
         }
-
+    // setTimeout(() => {// added timeout to avoid svg loading issue
         // *** initiate pdf render
         pdf = new jsPDF({
           unit: "px",
-          format: "a4",
+          format: "letter",
           userUnit: "px",
           orientation: "landscape",
-          textColor: "black",
-          drawColor:"black"
         });
 
 
-      setTimeout(() => {
+        // function footer(){
+
+        // };
+
+
           pdf
               .html(pdfToExport, {
                   html2canvas: { scale: 0.25 }
               })
               .then(() => {
+                  const pageCount = pdf.internal.getNumberOfPages()
+                  //pdf.autoTable({ html: '.my-table' }) supposed to help with page breaks
+                  //For above to work, you need to run npm install jspdf-autotable
+                  //  pdf.setFont('helvetica', 'bold')
+                  // pdf.setFontSize(8)
+                  for (let i = 1; i <= pageCount; i++) {
+                      console.log("page count",pageCount,"here",i)
+                      pdf.setPage(i)
+                      pdf.text('Page ' + String(i) + ' of ' + String(pageCount), pdf.internal.pageSize.width -5 , pdf.internal.pageSize.height - 5, {
+                          align: 'right'
+                      })
+                  }
                   pdf.save(fileName);
               });
-      }, 10000);
+      // }, 1000);
 
 
 
   };
 
   return (
-    <div className="tab-container-main padding-x-5 testClass" >
+    <>
       <Button
           className="margin-left-3 action-button"
           primary="true"
@@ -103,7 +117,7 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, quarter }) => {
         Print
         <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
       </Button>
-      {console.log("answers",answers)}
+  <div className="tab-container-main padding-x-5 testClass" >
       {currentTabs.map((tab, idx) => {
         // Filter out just the answer objects that belong in this tab
         const tabAnswers = answers.filter(element => element.rangeId === tab);
@@ -149,6 +163,7 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, quarter }) => {
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
+                    disabled={true}
                   />
                 );
               }
@@ -162,6 +177,7 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, quarter }) => {
 
       <CertificationTab />
     </div>
+        </>
   );
 };
 

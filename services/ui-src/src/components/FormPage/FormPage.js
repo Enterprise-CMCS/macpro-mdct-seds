@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -13,7 +14,8 @@ import {faFilePdf} from "@fortawesome/free-solid-svg-icons";
 import {Button} from "@trussworks/react-uswds";
 
 const FormPage = ({ getForm, statusData }) => {
-  const { last_modified } = statusData;
+  const [saveAlert, setSaveAlert] = useState(false);
+  const { last_modified,save_error } = statusData;
   const [redirectToPDF, setRedirectToPDF] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
