@@ -43,7 +43,14 @@ const FormHeader = ({ quarter, form, year, state }) => {
   }, [quarter, form, state, year]);
 
   // Saves maximum FPL to the database
-  const updateMaxFPL = e => {};
+  const updateMaxFPL = () => {
+    // maxFPL
+    // take value from state
+    // iterate through all questions and insert (redux)
+    // iterate through all answers and insert (redux)
+    // trigger a save (dynamodb)
+    // refresh the page
+  };
 
   // Ensure user input is valid for max FPL
   const validateFPL = e => {

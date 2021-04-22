@@ -29,8 +29,18 @@ export const UPDATE_ANSWER = "UPDATE_ANSWER";
 export const WIPE_FORM = "WIPE_FORM";
 export const SAVE_FORM = "SAVE_FORM";
 export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
+export const UPDATE_FPL = "UPDATE_FPL";
 
 // ACTION CREATORS
+
+const gotFPL = (answers, questions) => {
+  return {
+    type: UPDATE_FPL,
+    answers,
+    questions
+  };
+};
+
 export const clearedForm = cleanAnswers => {
   return {
     type: WIPE_FORM,
@@ -75,6 +85,21 @@ export const updatedLastSaved = username => {
 };
 
 // THUNKS
+
+export const updateFPL = newFPL => {
+  const state = getState();
+  const answers = state.currentForm.answers;
+  const questions = state.currentForm.questions;
+  return async dispatch => {
+    try {
+      dispatch(gotFPL(answers, questions));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
+  };
+};
+
 export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
     const state = getState();
