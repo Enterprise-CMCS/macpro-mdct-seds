@@ -223,7 +223,7 @@ const GridWithTotals = props => {
 
   return (
     <div className="grid-with-totals">
-      <Table bordered={true} fullWidth={true}>
+      <Table bordered={true} fullWidth={true} id={props.questionID}>
         <thead>
           <tr>{headerCols}</tr>
         </thead>
