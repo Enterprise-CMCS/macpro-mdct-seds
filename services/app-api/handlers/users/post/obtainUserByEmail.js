@@ -10,8 +10,6 @@ export const main = handler(async (event, context) => {
 
   let data = JSON.parse(event.body);
 
-  console.log("~~~~~>" + data.email);
-
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -23,8 +21,6 @@ export const main = handler(async (event, context) => {
   };
 
   const result = await dynamoDb.scan(params);
-
-  console.log(result);
 
   if (result.Count === 0) {
     return false;

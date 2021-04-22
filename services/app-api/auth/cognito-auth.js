@@ -1,8 +1,9 @@
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";
+import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
 
-export function parseAuthProvider(authProvider) {
+export const parseAuthProvider = (authProvider) => {
   // Cognito authentication provider looks like:
   // cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
   // Where us-east-1_aaaaaaaaa is the User Pool id
@@ -31,9 +32,9 @@ export function parseAuthProvider(authProvider) {
 
     return errorObject;
   }
-}
+};
 
-function userAttrDict(cognitoUser) {
+const userAttrDict = (cognitoUser) => {
   const attributes = {};
 
   if (cognitoUser.UserAttributes) {
@@ -45,10 +46,10 @@ function userAttrDict(cognitoUser) {
   }
 
   return attributes;
-}
+};
 
 // userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
-export async function userFromCognitoAuthProvider(authProvider) {
+export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
   switch (authProvider) {
@@ -96,4 +97,25 @@ export async function userFromCognitoAuthProvider(authProvider) {
   }
 
   return userObject;
-}
+};
+
+export const getCurrentUserInfo = async (event) => {
+  const user = await userFromCognitoAuthProvider(
+    event.requestContext.identity.cognitoAuthenticationProvider
+  );
+
+  const body = JSON.stringify({
+    email: user.email,
+  });
+
+  const currentUser = await obtainUserByEmail({
+    body: body,
+  });
+
+  const returnObject = {
+    status: "success",
+    data: JSON.parse(currentUser.body)["Items"][0],
+  };
+
+  return returnObject;
+};
