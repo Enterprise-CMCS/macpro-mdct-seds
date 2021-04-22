@@ -1,4 +1,4 @@
-var AWS = require('aws-sdk');
+var AWS = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
 /**
  * Handler responsible for sending notification to business users,
@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
   } catch (err) {
     console.error(err, err.stack);
   }
-    return { message: "sucess, email sent" };
+  return { message: "sucess, email sent" };
 });
 
 function unCetifiedTemplate(payload) {
