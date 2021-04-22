@@ -18,6 +18,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.0.0-rc.7",
+    "jest": "24.9.0",
     "jsonpath": "^1.1.0",
     "jspdf": "^2.3.1",
     "nightwatch": "^1.5.1",
@@ -54,6 +55,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --setupFiles dotenv/config",
+    "coverage": "jest --coverage",
     "test2": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ."
