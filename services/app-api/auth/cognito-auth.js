@@ -4,10 +4,12 @@ import { localUser } from "./local-user";
 import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
 
 export const parseAuthProvider = (authProvider) => {
-  // Cognito authentication provider looks like:
-  // cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
-  // Where us-east-1_aaaaaaaaa is the User Pool id
-  // And qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr is the User Pool User Id
+  // *** cognito authentication provider example:
+  //               cognito-idp.us-east-1.amazonaws.com/us-east-1_xxxxxxxxx,cognito-idp.us-east-1.amazonaws.com/us-east-1_aaaaaaaaa:CognitoSignIn:qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr
+  // *** where
+  //              us-east-1_aaaaaaaaa                   ==>  User Pool id
+  // *** and
+  //              qqqqqqqq-1111-2222-3333-rrrrrrrrrrrr  ==>  User Pool User Id
   try {
     const parts = authProvider.split(":");
     const userPoolIdParts = parts[parts.length - 3].split("/");
