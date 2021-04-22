@@ -37,12 +37,13 @@ export const handlePdfExport = (
       // * ... temporarily add class to DOM prior to initiating render to pdf
       // * this will enable overrides from scss
       document.querySelector(pdfContent).classList.add("export-to-pdf");
+      // * remove selector initially passed temporarily to minimize style clashes
       document.querySelector(".export-to-pdf").classList.remove(pdfContent);
 
       // * store content to render to pdf
       pdfToExport = document.querySelector(".export-to-pdf");
 
-      // * remove temporarily added class from DOM
+      // * remove temporarily added class from content element
       setTimeout(() => {
         document.querySelector(".export-to-pdf").classList.add(pdfContent);
         document.querySelector(pdfContent).classList.remove("export-to-pdf");
