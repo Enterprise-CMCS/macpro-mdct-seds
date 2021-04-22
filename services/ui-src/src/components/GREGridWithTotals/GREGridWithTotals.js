@@ -301,7 +301,7 @@ const GREGridWithTotals = props => {
   });
 
   return (
-    <div className="gre-grid-with-totals" id={props.questionID}>
+    <div className="gre-grid-with-totals" id={`"${props.questionID}"`}>
       <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>{headerCols}</tr>
