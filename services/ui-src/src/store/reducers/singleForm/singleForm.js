@@ -87,10 +87,10 @@ export const updatedLastSaved = username => {
 // THUNKS
 
 export const updateFPL = newFPL => {
-  const state = getState();
-  const answers = state.currentForm.answers;
-  const questions = state.currentForm.questions;
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    const questions = state.currentForm.questions;
     try {
       dispatch(gotFPL(answers, questions));
     } catch (error) {
