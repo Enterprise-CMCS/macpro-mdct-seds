@@ -39,7 +39,7 @@ export const main = handler(async (event, context) => {
 async function getBusinessUsers() {
   try {
     const lambdaParams = {
-      FunctionName: "obtainUserByRole",
+      FunctionName: "app-api-notification-system-obtainUserByRole",
       // RequestResponse is important here. Without it we won't get the result Payload
       InvocationType: "RequestResponse",
       LogType: "Tail", // other option is 'None'

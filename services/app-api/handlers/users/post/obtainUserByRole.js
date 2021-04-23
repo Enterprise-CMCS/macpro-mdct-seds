@@ -9,6 +9,7 @@ export const main = handler(async (event, context) => {
   }
 
   let data = JSON.parse(event.body);
+  console.log(data, "yeet")
 
   const params = {
     TableName:
