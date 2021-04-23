@@ -37,7 +37,7 @@ export const main = handler(async (event, context) => {
 });
 
 // obtains all businessUsers by invoking the "obtainUserRole" lambda
-function getBusinessUsers() {
+async function getBusinessUsers() {
   try {
     const lambdaParams = {
       FunctionName: "obtainUserByRole",
