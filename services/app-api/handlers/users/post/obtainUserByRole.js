@@ -18,8 +18,8 @@ export const main = handler(async (event, context) => {
       ":email": data.email,
     },
     ExpressionAttributeNames: {
-        "#r": "role",
-      },
+      "#r": "role",
+    },
     FilterExpression: "role = :role",
   };
 
@@ -28,7 +28,7 @@ export const main = handler(async (event, context) => {
   if (result.Count === 0) {
     return false;
   }
-  console.log(result)
+  console.log(result);
   // Return the retrieved item
   return result;
 });
