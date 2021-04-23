@@ -54,7 +54,6 @@ async function getBusinessUsers() {
     const lambdaResult = await lambda.invoke(lambdaParams).promise();
     console.log('Lambda invoke completed, result: ', lambdaResult.Payload);
 
-    const lambdaResult = await lambda.invoke(lambdaParams).promise();
     const resultObject = JSON.parse(lambdaResult.Payload)
     console.log(resultObject, "businesss Users")
     return {
