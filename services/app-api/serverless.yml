@@ -156,6 +156,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  obtainUserByRole:
+    handler: handlers/users/post/obtainUserByRole.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/obtainUserByRole
+          method: post
+          cors: true
+          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -346,6 +355,10 @@ resources:
                     - ses:SendEmail
                     - ses:SendRawEmail
                   Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -376,6 +389,7 @@ resources:
                 - Effect: "Allow"
                   Action:
                     - lambda:InvokeFunction
+                    - lambda:InvokeAsync
                   Resource: "*"
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"

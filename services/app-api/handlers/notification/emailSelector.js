@@ -11,10 +11,14 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  let data = JSON.parse(event.body);
+  console.log("before invoke", data);
+
   lambda.invoke(
     {
       FunctionName: "uncertified",
-      Payload: JSON.stringify(event, null, 2), // pass params
+      Payload: JSON.stringify(event), // pass params
+      InvocationType: "RequestResponse",
     },
     function (error, data) {
       if (error) {
@@ -25,12 +29,6 @@ export const main = handler(async (event, context) => {
       }
     }
   );
-
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
 });
 
 // function uncetifiedTemplate(payload) {
