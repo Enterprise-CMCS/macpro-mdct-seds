@@ -206,7 +206,7 @@ const Users = () => {
   return (
     <div className="user-profiles react-transition fade-in" data-testid="Users">
       <h1 className="page-header">Users</h1>
-      <div className="page-subheader">
+      <div className="page-subheader do-not-export">
         <Button
           onClick={() => handleAddNewUser()}
           className="action-button"
@@ -233,7 +233,7 @@ const Users = () => {
             await handleExport(
               "pdf",
               "MDCT Users Export.pdf",
-              ".grid-display-table",
+              ".user-profiles",
               "html-selector"
             )
           }
@@ -244,7 +244,12 @@ const Users = () => {
       </div>
       <Card>
         {tableData ? (
-          <DataTableExtensions {...tableData} export={false} print={false}>
+          <DataTableExtensions
+            {...tableData}
+            export={false}
+            print={false}
+            className="do-not-export"
+          >
             <DataTable
               defaultSortField="username"
               sortIcon={

@@ -48,7 +48,6 @@ export const handlePdfExport = (
         document.querySelector(".export-to-pdf").classList.add(pdfContent);
         document.querySelector(pdfContent).classList.remove("export-to-pdf");
       }, 250);
-
       break;
 
     case "html":
