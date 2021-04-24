@@ -7,8 +7,9 @@ const requestOptions = () => {
 
 /*************************** USER API ***************************/
 // *** export to excel
-export const exportToExcel = async () => {
+export const exportToExcel = async data => {
   const opts = requestOptions();
+  opts.body = data;
 
   return API.post("mdct-seds", "/export/export-to-excel", opts);
 };

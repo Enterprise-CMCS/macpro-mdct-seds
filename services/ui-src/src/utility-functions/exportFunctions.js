@@ -4,10 +4,10 @@ import { renderToString } from "react-dom/server";
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
 
-export const handleExcelExport = async fileName => {
+export const handleExcelExport = async (fileName, content) => {
   let buffer, blob;
 
-  buffer = await exportToExcel();
+  buffer = await exportToExcel(content);
   // *** lambdas will convert buffer to Int32Array
   // *** we are going to instantiate Uint8Array (binary) buffer
   // *** to avoid having to care about MIME type of file we're saving
@@ -34,7 +34,7 @@ export const handlePdfExport = (
 
     // *** for content to be extracted from html selectors ...
     case "html-selector":
-      // * ... temporarily add class to DOM prior to initiating render to pdf
+      // * ... temporarily add class to container prior to initiating render to pdf
       // * this will enable overrides from scss
       document.querySelector(pdfContent).classList.add("export-to-pdf");
       // * remove selector initially passed temporarily to minimize style clashes
@@ -80,16 +80,16 @@ export const handlePdfExport = (
 export const handleExport = async (
   format,
   fileName,
-  pdfContent = null,
+  content,
   pdfContentType = "react-component"
 ) => {
   switch (format) {
     case "excel":
-      await handleExcelExport(fileName);
+      await handleExcelExport(fileName, content);
       break;
 
     case "pdf":
-      handlePdfExport(fileName, pdfContent, pdfContentType);
+      handlePdfExport(fileName, content, pdfContentType);
       break;
 
     default:

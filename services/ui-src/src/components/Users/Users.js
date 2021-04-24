@@ -151,7 +151,7 @@ const Users = () => {
       },
       {
         name: "States",
-        selector: "state_codes",
+        selector: "states",
         sortable: true,
         cell: user => {
           return user.states ? (
@@ -218,7 +218,9 @@ const Users = () => {
         <Button
           className="margin-left-3 action-button"
           primary="true"
-          onClick={async () => await handleExport("excel", "test_one.xlsx")}
+          onClick={async () =>
+            await handleExport("excel", "MDCT Users Export.xlsx", tableData)
+          }
         >
           Excel
           <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
@@ -230,7 +232,7 @@ const Users = () => {
           onClick={async () =>
             await handleExport(
               "pdf",
-              "test_one.pdf",
+              "MDCT Users Export.pdf",
               ".grid-display-table",
               "html-selector"
             )
