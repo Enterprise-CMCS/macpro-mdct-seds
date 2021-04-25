@@ -162,6 +162,7 @@ const Users = () => {
       {
         name: "Status",
         selector: "isActive",
+        excludeFromExcel: true,
         sortable: true,
         cell: user => {
           return (

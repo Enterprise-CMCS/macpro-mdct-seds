@@ -66,8 +66,16 @@ const generateWorkbook = (currentUserInfo, content) => {
   worksheet.getRow(1).height = headerRowHeight;
 
   // *** generate header content
-  content.columns.forEach((item, index) => {
-    worksheet.getColumn(index + 1).header = item.name;
+  content.columns.forEach((column, index) => {
+    // *** skip the column excluded from output
+    if (
+      column.excludeFromExcel !== undefined &&
+      column.excludeFromExcel === true
+    ) {
+      return;
+    }
+
+    worksheet.getColumn(index + 1).header = column.name;
     worksheet.getColumn(index + 1).width = colWidth;
   });
 
@@ -129,6 +137,13 @@ const generateWorkbook = (currentUserInfo, content) => {
   // *** generate body content
   content.data.forEach((row, rowIndex) => {
     content.columns.forEach((column, columnIndex) => {
+      if (
+        column.excludeFromExcel !== undefined &&
+        column.excludeFromExcel === true
+      ) {
+        return;
+      }
+
       worksheet.getRow(rowIndex + 2).getCell(columnIndex + 1).value = row[
         column.selector
       ].toString();
