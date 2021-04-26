@@ -1,0 +1,26 @@
+.export-to-pdf {
+  .rdt_TableCol:last-child {
+    display: none !important;
+  }
+
+  .rdt_TableCell:last-child {
+    display: none !important;
+  }
+
+  .rdt_TableHeadRow {
+    .rdt_TableCol {
+    }
+
+    :focus {
+      color: #000 !important;
+    }
+
+    :hover:not(:focus) {
+      color: #000 !important;
+    }
+  }
+
+  .rdt_TableCol_Sortable {
+    color: #000;
+  }
+}

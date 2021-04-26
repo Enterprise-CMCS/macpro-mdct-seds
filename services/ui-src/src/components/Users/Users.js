@@ -1,11 +1,9 @@
 // *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { renderToString } from "react-dom/server";
 
-// *** 3rd party functional dependencies
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
+// *** 3rd party and other functional dependencies
+import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
 // * trussworks
@@ -29,23 +27,10 @@ import {
 import Preloader from "../Preloader/Preloader";
 
 // *** API / data / etc
-import {
-  listUsers,
-  activateDeactivateUser,
-  exportToExcel
-} from "../../libs/api";
+import { listUsers, activateDeactivateUser } from "../../libs/api";
 
 // *** styles
 import "./Users.scss";
-
-const PdfContent = () => {
-  return (
-    <div className="export-to-pdf">
-      <div className="padding-y-2 border-1 text-center">PDF Example</div>
-      <div className="padding-y-2 text-center">Content goes here</div>
-    </div>
-  );
-};
 
 /**
  * Display all Users with options
@@ -61,38 +46,6 @@ const Users = () => {
 
   const loadUserData = async () => {
     setUsers(await listUsers());
-  };
-
-  const handleExport = async (format, fileName, pdfContent = null) => {
-    let buffer, blob, pdf;
-
-    switch (format) {
-      case "excel":
-        buffer = await exportToExcel();
-        // *** lambdas will convert buffer to Int32Array
-        // *** we are going to instantiate Uint8Array (binary) buffer
-        // *** to avoid having to care about MIME type of file we're saving
-        buffer = new Uint8Array(buffer.data).buffer;
-
-        // *** save file as blob
-        blob = new Blob([buffer]);
-        saveAs(blob, fileName);
-        break;
-
-      case "pdf":
-        pdf = new jsPDF({ unit: "px", format: "letter", userUnit: "px" });
-
-        pdf
-          .html(renderToString(pdfContent), { html2canvas: { scale: 0.57 } })
-          .then(() => {
-            pdf.save(fileName);
-          });
-        break;
-
-      default:
-        // *** no default behavior currently specified
-        break;
-    }
   };
 
   useEffect(() => {
@@ -198,7 +151,7 @@ const Users = () => {
       },
       {
         name: "States",
-        selector: "state_codes",
+        selector: "states",
         sortable: true,
         cell: user => {
           return user.states ? (
@@ -209,6 +162,7 @@ const Users = () => {
       {
         name: "Status",
         selector: "isActive",
+        excludeFromExcel: true,
         sortable: true,
         cell: user => {
           return (
@@ -253,7 +207,7 @@ const Users = () => {
   return (
     <div className="user-profiles react-transition fade-in" data-testid="Users">
       <h1 className="page-header">Users</h1>
-      <div className="page-subheader">
+      <div className="page-subheader do-not-export">
         <Button
           onClick={() => handleAddNewUser()}
           className="action-button"
@@ -265,7 +219,9 @@ const Users = () => {
         <Button
           className="margin-left-3 action-button"
           primary="true"
-          onClick={async () => await handleExport("excel", "test_one.xlsx")}
+          onClick={async () =>
+            await handleExport("excel", "MDCT Users Export.xlsx", tableData)
+          }
         >
           Excel
           <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
@@ -275,7 +231,12 @@ const Users = () => {
           className="margin-left-3 action-button"
           primary="true"
           onClick={async () =>
-            await handleExport("pdf", "test_one.pdf", <PdfContent />)
+            await handleExport(
+              "pdf",
+              "MDCT Users Export.pdf",
+              ".user-profiles",
+              "html-selector"
+            )
           }
         >
           PDF
@@ -284,7 +245,12 @@ const Users = () => {
       </div>
       <Card>
         {tableData ? (
-          <DataTableExtensions {...tableData} export={false} print={false}>
+          <DataTableExtensions
+            {...tableData}
+            export={false}
+            print={false}
+            className="do-not-export"
+          >
             <DataTable
               defaultSortField="username"
               sortIcon={
