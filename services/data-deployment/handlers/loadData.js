@@ -38,7 +38,6 @@ const itemUpsert = (bucketName, tableName) => {
   });
 };
 
-
 const bucket = "seds-s3bucket-data";
 exports.handler = (event, context, callback) => {
   // Call function to insert items in Dynamodb tables

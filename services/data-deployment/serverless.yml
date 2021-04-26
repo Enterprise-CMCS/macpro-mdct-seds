@@ -51,7 +51,7 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
-    LambdaDataLoadRole: 
+    LambdaDataLoadRole:
       Type: "AWS::IAM::Role"
       Properties:
         AssumeRolePolicyDocument:
