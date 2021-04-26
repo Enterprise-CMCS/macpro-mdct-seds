@@ -5,6 +5,7 @@ import configureMockStore from "redux-mock-store";
 
 import AddUser from "./AddUser.js";
 import stateListMock from "../../provider-mocks/stateListMock";
+import { BrowserRouter } from "react-router-dom";
 
 let store;
 let wrapper;
@@ -16,7 +17,9 @@ describe("Test AddUser.js", () => {
     store = mockStore(stateListMock);
     wrapper = mount(
       <Provider store={store}>
-        <AddUser />
+        <BrowserRouter>
+          <AddUser />
+        </BrowserRouter>
       </Provider>
     );
   });
@@ -30,7 +33,7 @@ describe("Test AddUser.js", () => {
   });
 
   test("Check that the User List link is available", () => {
-    expect(wrapper.find(".userList").length).toBe(2);
+    expect(wrapper.find(".userList").length).toBe(3);
   });
 
   test("Check the EUA ID input component renders", () => {

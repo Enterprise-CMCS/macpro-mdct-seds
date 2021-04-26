@@ -4,10 +4,12 @@ import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@trussworks/react-uswds";
 import {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 } from "../../store/actions/certify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 const CertificationTab = ({
   status,
@@ -17,7 +19,8 @@ const CertificationTab = ({
   isFinal,
   isProvisional,
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
@@ -33,9 +36,15 @@ const CertificationTab = ({
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
   };
+  const submitUncertify = () => {
+    if (window.confirm("Are you sure you want to uncertify this report?")) {
+      uncertify();
+      setprovisionalButtonStatus(false);
+      setfinalButtonStatus(false);
+    }
+  };
 
   let certifyText;
-
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">
@@ -94,12 +103,12 @@ const CertificationTab = ({
         </p>
         <div data-testid="statusText">
           <p>
-            This report was updated to <b>{status}</b> on <b>{lastModified}</b>{" "}
-            by <b>{lastModifiedBy}</b>
+            This report was updated to <b>{status}</b> on{" "}
+            <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
           </p>
         </div>
       </div>
-      <div className="certify-btn provisional">
+      <div className="certify-btn ">
         <Button
           onClick={() => submitProvisional()}
           type="button"
@@ -115,9 +124,14 @@ const CertificationTab = ({
           {"Certify & Submit Final Data"}
         </Button>
       </div>
-      <p>
-        <br />
-        <br />
+      {isFinal ? (
+        <div className="certify-btn uncertify">
+          <Button onClick={() => submitUncertify()} type="button">
+            {"Uncertify"}
+          </Button>
+        </div>
+      ) : null}
+      <p className="padding-top-3">
         Certify & Submit Provisional Data will allow you to submit your form
         now, but it will remain editable to allow you to submit final data.
       </p>
@@ -151,6 +165,7 @@ const mapState = state => ({
 
 const mapDispatch = {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 };
 export default connect(mapState, mapDispatch)(CertificationTab);

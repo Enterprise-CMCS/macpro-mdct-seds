@@ -1,13 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
+import { Link } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { saveForm } from "../../store/reducers/singleForm/singleForm";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
-const FormFooter = ({ state, year, quarter, lastModified }) => {
+const FormFooter = ({
+  state,
+  year,
+  quarter,
+  lastModified,
+  saveForm,
+  formAnswers
+}) => {
+  const [username, setUsername] = useState();
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const AuthUserInfo = await Auth.currentAuthenticatedUser();
+      setUsername(AuthUserInfo.username);
+    };
+
+    loadUserData();
+  });
+
+  const handleClick = () => {
+    saveForm(username, formAnswers);
+  };
+
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
     <div className="formfooter" data-testid="FormFooter">
@@ -23,10 +49,19 @@ const FormFooter = ({ state, year, quarter, lastModified }) => {
 
           <Grid col={6} className="form-actions">
             <Grid row>
-              <Grid col={6}> Last saved: {lastModified} </Grid>
-              <Grid col={6}>
+              {lastModified ? (
+                <Grid col={9} data-testid="lastModified">
+                  {" "}
+                  Last saved: {dateFormatter(lastModified)}{" "}
+                </Grid>
+              ) : null}
+              <Grid col={3}>
                 {" "}
-                <Button primary="true">
+                <Button
+                  primary="true"
+                  onClick={() => handleClick()}
+                  data-testid="saveButton"
+                >
                   Save{" "}
                   <FontAwesomeIcon icon={faSave} className="margin-left-2" />
                 </Button>
@@ -43,7 +78,17 @@ FormFooter.propTypes = {
   state: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   quarter: PropTypes.string.isRequired,
-  lastModified: PropTypes.string
+  lastModified: PropTypes.string,
+  saveForm: PropTypes.func.isRequired
 };
 
-export default FormFooter;
+const mapStateToProps = state => ({
+  lastModified: state.currentForm.statusData.last_modified,
+  formAnswers: state.currentForm.answers
+});
+
+const mapDispatchToProps = {
+  saveForm: saveForm
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormFooter);
