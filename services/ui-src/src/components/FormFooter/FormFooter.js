@@ -11,14 +11,7 @@ import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
-const FormFooter = ({
-  state,
-  year,
-  quarter,
-  lastModified,
-  saveForm,
-  formAnswers
-}) => {
+const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
   const [username, setUsername] = useState();
 
   useEffect(() => {
@@ -31,7 +24,7 @@ const FormFooter = ({
   });
 
   const handleClick = () => {
-    saveForm(username, formAnswers);
+    saveForm();
   };
 
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
@@ -83,8 +76,7 @@ FormFooter.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  lastModified: state.currentForm.statusData.last_modified,
-  formAnswers: state.currentForm.answers
+  lastModified: state.currentForm.statusData.last_modified
 });
 
 const mapDispatchToProps = {

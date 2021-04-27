@@ -1,3 +1,6 @@
+// PACKAGES
+import { Auth } from "aws-amplify";
+
 // HELPER FUNCTIONS
 import {
   sortQuestionsByNumber,
@@ -85,7 +88,6 @@ export const updatedLastSaved = username => {
 };
 
 // THUNKS
-
 export const updateFPL = newFPL => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -164,16 +166,13 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
-export const disableForm = activeBoolean => {
-  return dispatch => {
-    dispatch(updatedApplicableStatus(activeBoolean));
-  };
-};
-
-export const saveForm = (username, formAnswers) => {
+export const saveForm = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const answers = state.currentForm.answers;
+
+    const userObject = await Auth.currentAuthenticatedUser();
+    const username = userObject.username;
     try {
       // Update Database
       await saveSingleForm({

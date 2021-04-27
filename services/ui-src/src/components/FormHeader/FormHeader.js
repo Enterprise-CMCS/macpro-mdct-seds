@@ -16,14 +16,15 @@ const FormHeader = ({
   form,
   year,
   state,
+  statusId,
   updateFPL,
-  saveForm,
-  formAnswers
+  saveForm
 }) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
   const [username, setUsername] = useState();
+  const [disableFPL, setDisableFPL] = useState(); // Users should not be allowed to edit FPL if form is disabled
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -33,6 +34,12 @@ const FormHeader = ({
 
     loadUserData();
   });
+
+  useEffect(() => {
+    if (statusId === 4 || statusId === 5) {
+      setDisableFPL(true);
+    }
+  }, [statusId]);
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -67,7 +74,7 @@ const FormHeader = ({
 
   // Saves maximum FPL to the database
   const updateMaxFPL = async () => {
-    await updateFPL(maxFPL).then(() => saveForm(username, formAnswers));
+    await updateFPL(maxFPL).then(() => saveForm());
   };
 
   // Ensure user input is valid for max FPL
@@ -144,6 +151,7 @@ const FormHeader = ({
                 type="button"
                 className="max-fpl-btn"
                 onClick={updateMaxFPL}
+                disabled={disableFPL}
               >
                 Apply FPL Changes
               </Button>
@@ -160,13 +168,13 @@ FormHeader.propTypes = {
   form: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  formAnswers: PropTypes.array.isRequired,
   updateFPL: PropTypes.func.isRequired,
-  saveForm: PropTypes.func.isRequired
+  saveForm: PropTypes.func.isRequired,
+  statusId: PropTypes.number.isRequired
 };
 
 const mapState = state => ({
-  formAnswers: state.currentForm.answers
+  statusId: state.currentForm.statusData.status_id || ""
 });
 
 const mapDispatch = {
