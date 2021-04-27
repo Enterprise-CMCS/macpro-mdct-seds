@@ -70,8 +70,6 @@ const TabContainer = ({
               const questionAnswer = tabAnswers.find(
                 element => element.question === questionID
               );
-              console.log("questionID", questionID);
-
               let returnComponent = "";
               let activeContextData = false;
               let tempContextData = {};

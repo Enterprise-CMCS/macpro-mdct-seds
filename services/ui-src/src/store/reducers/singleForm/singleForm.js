@@ -4,7 +4,8 @@ import {
   extractAgeRanges,
   formatAnswerData,
   insertAnswer,
-  clearSingleQuestion
+  clearSingleQuestion,
+  insertFPL
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -33,11 +34,10 @@ export const UPDATE_FPL = "UPDATE_FPL";
 
 // ACTION CREATORS
 
-const gotFPL = (answers, questions) => {
+const gotFPL = answers => {
   return {
     type: UPDATE_FPL,
-    answers,
-    questions
+    answers
   };
 };
 
@@ -90,9 +90,10 @@ export const updateFPL = newFPL => {
   return async (dispatch, getState) => {
     const state = getState();
     const answers = state.currentForm.answers;
-    const questions = state.currentForm.questions;
     try {
-      dispatch(gotFPL(answers, questions));
+      let deepCopy = JSON.parse(JSON.stringify(answers));
+      const updatedAnswers = insertFPL(deepCopy, newFPL);
+      dispatch(gotFPL(updatedAnswers));
     } catch (error) {
       console.log("Error:", error);
       console.dir(error);
@@ -170,16 +171,18 @@ export const disableForm = activeBoolean => {
 };
 
 export const saveForm = (username, formAnswers) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
     try {
       // Update Database
       await saveSingleForm({
         username: username,
-        formAnswers: formAnswers
+        formAnswers: answers
       });
 
       // Update Last Saved in redux state
-      dispatch(updatedLastSaved(username, formAnswers));
+      dispatch(updatedLastSaved(username, answers));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });
@@ -292,6 +295,11 @@ export default (state = initialState, action) => {
           ...state.statusData,
           save_error: true
         }
+      };
+    case UPDATE_FPL:
+      return {
+        ...state,
+        answers: action.answers
       };
     default:
       return state;

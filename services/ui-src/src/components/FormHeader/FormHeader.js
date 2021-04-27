@@ -1,16 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Auth } from "aws-amplify";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
 import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
+import {
+  updateFPL,
+  saveForm
+} from "../../store/reducers/singleForm/singleForm";
 
-const FormHeader = ({ quarter, form, year, state }) => {
+const FormHeader = ({
+  quarter,
+  form,
+  year,
+  state,
+  updateFPL,
+  saveForm,
+  formAnswers
+}) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
+  const [username, setUsername] = useState();
 
-  // making some small change to push to master
+  useEffect(() => {
+    const loadUserData = async () => {
+      const AuthUserInfo = await Auth.currentAuthenticatedUser();
+      setUsername(AuthUserInfo.username);
+    };
+
+    loadUserData();
+  });
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -20,6 +42,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
     // Strips out last three digits (ex. get 317 from `% of FPL 301-317`)
     return fplRange.substring(fplRange.length - 3);
   };
+
   useEffect(() => {
     // List of forms that do NOT show fpl
     const formsWithOutFPL = ["GRE"];
@@ -43,13 +66,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
   }, [quarter, form, state, year]);
 
   // Saves maximum FPL to the database
-  const updateMaxFPL = () => {
-    // maxFPL
-    // take value from state
-    // iterate through all questions and insert (redux)
-    // iterate through all answers and insert (redux)
-    // trigger a save (dynamodb)
-    // refresh the page
+  const updateMaxFPL = async () => {
+    await updateFPL(maxFPL).then(() => saveForm(username, formAnswers));
   };
 
   // Ensure user input is valid for max FPL
@@ -141,7 +159,19 @@ FormHeader.propTypes = {
   quarter: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired
+  state: PropTypes.string.isRequired,
+  formAnswers: PropTypes.array.isRequired,
+  updateFPL: PropTypes.func.isRequired,
+  saveForm: PropTypes.func.isRequired
 };
 
-export default FormHeader;
+const mapState = state => ({
+  formAnswers: state.currentForm.answers
+});
+
+const mapDispatch = {
+  updateFPL: updateFPL ?? {},
+  saveForm: saveForm ?? {}
+};
+
+export default connect(mapState, mapDispatch)(FormHeader);

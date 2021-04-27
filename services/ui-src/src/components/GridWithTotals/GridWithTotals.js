@@ -25,14 +25,7 @@ const GridWithTotals = props => {
 
     const initialLoad = async () => {
       let newData = await translateInitialData(props.gridData);
-      console.log("NEW DATA \n\n\n\n", newData);
       await updateGridData(newData);
-      // let A = 0;
-      // console.log("PRE TOTALS! \n\n\n", gridRowTotals);
-      // // await updateTotals();
-      // console.log("POST TOTALS! \n\n\n\n\n", gridRowTotals);
-
-      // let B = 2;
     };
     initialLoad().then(updateTotals());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
