@@ -6,7 +6,9 @@ import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
-  const [gridData, updateGridData] = useState(translateInitialData([]));
+  const [gridData, updateGridData] = useState(
+    translateInitialData(props.gridData)
+  );
 
   const [gridColumnTotals, updateGridColumnTotals] = useState([]);
   const [gridRowTotals, updateGridRowTotals] = useState([]);
@@ -18,16 +20,10 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData, props.questionID]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    //  updateGridData(translateInitialData(props.gridData)).then(updateTotals)
-
-    const initialLoad = async () => {
-      let newData = await translateInitialData(props.gridData);
-      await updateGridData(newData);
-    };
-    initialLoad().then(updateTotals());
+    updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateGrid = (row, column, event) => {
