@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Auth } from "aws-amplify";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
 import { getFormTypes, getSingleForm } from "../../libs/api";
 import "./FormHeader.scss";
@@ -11,28 +10,10 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 
-const FormHeader = ({
-  quarter,
-  form,
-  year,
-  state,
-
-  updateFPL,
-  saveForm
-}) => {
+const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
-  const [username, setUsername] = useState();
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      setUsername(AuthUserInfo.username);
-    };
-
-    loadUserData();
-  });
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { Auth } from "aws-amplify";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
@@ -12,17 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
 const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
-  const [username, setUsername] = useState();
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      setUsername(AuthUserInfo.username);
-    };
-
-    loadUserData();
-  });
-
   const handleClick = () => {
     saveForm();
   };
