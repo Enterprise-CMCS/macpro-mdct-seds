@@ -3,7 +3,8 @@ import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
-  insertAnswer
+  insertAnswer,
+  insertFPL
 } from "./helperFunctions";
 
 import { answers, questions } from "./singleFormTestVariables";
@@ -72,5 +73,12 @@ describe("Single Form Reducer, helper functions", () => {
     expect(answersWithUpdatedData[1].col6).toEqual(25);
     expect(answersWithUpdatedData[2].col5).toEqual(28);
     expect(answersWithUpdatedData[3].col4).toEqual(24);
+  });
+
+  test("insertFPL should update the FPL range in all answers", () => {
+    const updatedFPLanswers = insertFPL(answers, "428");
+    expect(updatedFPLanswers[0]["rows"][0]["col6"]).toEqual("% of FPL 428");
+    expect(updatedFPLanswers[1]["rows"][0]["col6"]).toEqual("% of FPL 428");
+    expect(updatedFPLanswers[2]["rows"][0]["col6"]).toEqual("% of FPL 428");
   });
 });

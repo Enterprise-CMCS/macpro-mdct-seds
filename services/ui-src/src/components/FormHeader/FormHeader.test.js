@@ -48,8 +48,6 @@ describe("Test FormHeader.js", () => {
   });
   test("Hides the FPL when the form is GRE", () => {
     const GREwrapper = mountSetup(currentFormMock_GRE);
-
-    console.log(GREwrapper.debug());
     expect(GREwrapper.find(".form-max-fpl").length).toBe(0);
   });
 });
