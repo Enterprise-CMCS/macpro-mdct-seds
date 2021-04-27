@@ -16,7 +16,7 @@ const FormHeader = ({
   form,
   year,
   state,
-  statusId,
+
   updateFPL,
   saveForm
 }) => {
@@ -24,7 +24,6 @@ const FormHeader = ({
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
   const [username, setUsername] = useState();
-  const [disableFPL, setDisableFPL] = useState(); // Users should not be allowed to edit FPL if form is disabled
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -34,12 +33,6 @@ const FormHeader = ({
 
     loadUserData();
   });
-
-  useEffect(() => {
-    if (statusId === 4 || statusId === 5) {
-      setDisableFPL(true);
-    }
-  }, [statusId]);
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -151,7 +144,6 @@ const FormHeader = ({
                 type="button"
                 className="max-fpl-btn"
                 onClick={updateMaxFPL}
-                disabled={disableFPL}
               >
                 Apply FPL Changes
               </Button>
@@ -169,17 +161,12 @@ FormHeader.propTypes = {
   year: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   updateFPL: PropTypes.func.isRequired,
-  saveForm: PropTypes.func.isRequired,
-  statusId: PropTypes.number.isRequired
+  saveForm: PropTypes.func.isRequired
 };
-
-const mapState = state => ({
-  statusId: state.currentForm.statusData.status_id || ""
-});
 
 const mapDispatch = {
   updateFPL: updateFPL ?? {},
   saveForm: saveForm ?? {}
 };
 
-export default connect(mapState, mapDispatch)(FormHeader);
+export default connect(null, mapDispatch)(FormHeader);

@@ -10,6 +10,7 @@ import {
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
@@ -20,7 +21,8 @@ const CertificationTab = ({
   isProvisional,
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
-  uncertify
+  uncertify,
+  saveForm
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
@@ -30,17 +32,20 @@ const CertificationTab = ({
   const submitProvisional = () => {
     certifyAndSubmitProvisional();
     setprovisionalButtonStatus(true);
+    saveForm();
   };
   const submitFinal = () => {
     certifyAndSubmitFinal();
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
+    saveForm();
   };
   const submitUncertify = () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       uncertify();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
+      saveForm();
     }
   };
 
@@ -151,7 +156,8 @@ CertificationTab.propTypes = {
   lastModified: PropTypes.string.isRequired,
   lastModifiedBy: PropTypes.string,
   isFinal: PropTypes.bool.isRequired,
-  isProvisional: PropTypes.bool.isRequired
+  isProvisional: PropTypes.bool.isRequired,
+  saveForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
@@ -166,6 +172,7 @@ const mapState = state => ({
 const mapDispatch = {
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
-  uncertify
+  uncertify,
+  saveForm
 };
 export default connect(mapState, mapDispatch)(CertificationTab);

@@ -170,18 +170,22 @@ export const saveForm = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const answers = state.currentForm.answers;
+    const statusData = state.currentForm.statusData;
 
     const userObject = await Auth.currentAuthenticatedUser();
     const username = userObject.username;
     try {
+      console.log("WHATS THE STATUS DATA???? \n\n\n\n", statusData);
       // Update Database
       await saveSingleForm({
         username: username,
-        formAnswers: answers
+        formAnswers: answers,
+        statusData: statusData
       });
+      // save status info
 
       // Update Last Saved in redux state
-      dispatch(updatedLastSaved(username, answers));
+      dispatch(updatedLastSaved(username));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });

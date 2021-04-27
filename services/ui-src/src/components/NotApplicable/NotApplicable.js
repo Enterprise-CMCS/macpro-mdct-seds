@@ -52,7 +52,6 @@ const NotApplicable = ({
       );
       if (confirm) {
         await resetData(username);
-        await resetData(username).then(() => saveForm());
       } else {
         return;
       }
@@ -71,6 +70,7 @@ const NotApplicable = ({
       newStatusString.status,
       invertedStatus
     );
+    saveForm();
   };
 
   return (
