@@ -14,6 +14,7 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
   const answers = data.formAnswers;
+  const tempStatusData = data.statusData;
   let questionResult = [];
 
   // Loop through answers to add individually
@@ -52,7 +53,7 @@ export const main = handler(async (event, context) => {
     questionResult.push(await dynamoDb.update(questionParams));
   }
 
-  // Params for updating for statusData; last_modified_by, last_modified for state-forms
+  // Params for updating for statusData;
   const formParams = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
@@ -60,10 +61,18 @@ export const main = handler(async (event, context) => {
       state_form: answers[0].state_form,
     },
     UpdateExpression:
-      "SET last_modified_by = :last_modified_by, last_modified = :last_modified",
+      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable",
     ExpressionAttributeValues: {
-      ":last_modified_by": data.username,
-      ":last_modified": new Date().toISOString(),
+      ":last_modified_by": tempStatusData.last_modified_by,
+      ":last_modified": tempStatusData.last_modified,
+      ":status_modified_by": tempStatusData.status_modified_by,
+      ":status_date": tempStatusData.status_date,
+      ":status": tempStatusData.status,
+      ":status_id": tempStatusData.status_id,
+      ":not_applicable": tempStatusData.not_applicable,
+    },
+    ExpressionAttributeNames: {
+      "#s": "status",
     },
     ReturnValues: "ALL_NEW",
   };

@@ -175,7 +175,6 @@ export const saveForm = () => {
     const userObject = await Auth.currentAuthenticatedUser();
     const username = userObject.username;
     try {
-      console.log("WHATS THE STATUS DATA???? \n\n\n\n", statusData);
       // Update Database
       await saveSingleForm({
         username: username,
@@ -183,7 +182,6 @@ export const saveForm = () => {
         statusData: statusData
       });
       // save status info
-
       // Update Last Saved in redux state
       dispatch(updatedLastSaved(username));
     } catch (error) {
