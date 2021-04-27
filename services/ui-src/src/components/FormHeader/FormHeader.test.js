@@ -47,9 +47,9 @@ describe("Test FormHeader.js", () => {
     expect(wrapper.find(".quarter-value").text()).toBe("1/2021");
   });
   test("Hides the FPL when the form is GRE", () => {
-    // Using Link from TrussWorks results in the component AND link sharing the same class name...
-    // This would be 3 otherwise
     const GREwrapper = mountSetup(currentFormMock_GRE);
+
+    console.log(GREwrapper.debug());
     expect(GREwrapper.find(".form-max-fpl").length).toBe(0);
   });
 });
