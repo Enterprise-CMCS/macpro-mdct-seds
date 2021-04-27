@@ -14,7 +14,7 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
   const answers = data.formAnswers;
-  const tempStatusData = data.statusData;
+  const statusData = data.statusData;
   let questionResult = [];
 
   // Loop through answers to add individually
@@ -63,13 +63,13 @@ export const main = handler(async (event, context) => {
     UpdateExpression:
       "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable",
     ExpressionAttributeValues: {
-      ":last_modified_by": tempStatusData.last_modified_by,
-      ":last_modified": tempStatusData.last_modified,
-      ":status_modified_by": tempStatusData.status_modified_by,
-      ":status_date": tempStatusData.status_date,
-      ":status": tempStatusData.status,
-      ":status_id": tempStatusData.status_id,
-      ":not_applicable": tempStatusData.not_applicable,
+      ":last_modified_by": statusData.last_modified_by,
+      ":last_modified": statusData.last_modified,
+      ":status_modified_by": statusData.status_modified_by,
+      ":status_date": statusData.status_date,
+      ":status": statusData.status,
+      ":status_id": statusData.status_id,
+      ":not_applicable": statusData.not_applicable,
     },
     ExpressionAttributeNames: {
       "#s": "status",
