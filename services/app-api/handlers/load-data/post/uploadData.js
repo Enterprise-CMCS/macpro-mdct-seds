@@ -24,12 +24,12 @@ const clearRecords = (tableName) => {
 };
 
 const deleteItem = (tableName, id) => {
-  const params = {
+  /*const params = {
     TableName: `${tableName}`,
     Key: {
       Id: id,
     },
-  };
+  };*/
 
   return true;
   /*return new Promise((resolve, reject) => {
