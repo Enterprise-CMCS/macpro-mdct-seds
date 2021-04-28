@@ -246,12 +246,12 @@ functions:
           method: post
           cors: true
           authorzier: aws_iam
-  stateUsers:
+  stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
     events:
       - http:
-          path: notification/stateUsers
+          path: notification/stateUsersEmail
           method: post
           cors: true
           authorzier: aws_iam
@@ -260,12 +260,12 @@ functions:
           description: "responsible for trigger lambda to send notification to specific seds users quarterly"
           enabled: false
           rate: cron(0/5 0-16,19-23 * * ? *)
-  businessUsers:
+  businessUsersEmail:
     handler: handlers/notification/businessUsers.main
     role: LambdaApiRole
     events:
       - http:
-          path: notification/businessUsers
+          path: notification/businessUsersEmail
           method: post
           cors: true
           authorzier: aws_iam

@@ -11,7 +11,7 @@ import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { sendUncertifyEmail, obtainUserByEmail } from "../../libs/api";
+import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
 
 
 const CertificationTab = ({
@@ -42,7 +42,8 @@ const CertificationTab = ({
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       uncertify();
-      await sendEmailtoBo();
+      await stateUsersEmail()
+      // await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
     }
