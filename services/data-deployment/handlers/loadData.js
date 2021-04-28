@@ -38,10 +38,28 @@ const itemUpsert = (bucketName, tableName) => {
   });
 };
 
-
-const bucket = "seds-s3bucket-data";
 exports.handler = (event, context, callback) => {
   // Call function to insert items in Dynamodb tables
-  itemUpsert(bucket, "testLoad");
-  itemUpsert(bucket, "testLoad2");
+  //const bucket = "seds-s3bucket-data";
+
+  const bucket = process.env.s3Bucket;
+  const tables = "loadTables.txt";
+
+  const params = {
+    Bucket: bucket,
+    Key: tables,
+  };
+
+  const readlineStream = async () => {
+    try {
+      const readline = require("readline");
+      const readStream = await s3.getObject(params).createReadStream();
+      const lineReader = await readline.createInterface({ input: readStream });
+      await lineReader.on("line", (table) => itemUpsert(bucket, table));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  readlineStream();
 };

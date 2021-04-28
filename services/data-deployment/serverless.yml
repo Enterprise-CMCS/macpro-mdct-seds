@@ -41,6 +41,8 @@ functions:
           startingPosition: LATEST
           maximumRetryAttempts: 2
     role: LambdaDataLoadRole
+    environment:
+      s3Bucket: ${self:custom.s3DynamoBucket}
     maximumRetryAttempts: 2
 
 resources:
@@ -91,7 +93,7 @@ resources:
                     - dynamodb:PutItem
                     - dynamodb:BatchGetItem
                     - dynamodb:BatchWriteItem
-                  Resource: "arn:aws:dynamodb:*:*:table/testLoad"
+                  Resource: "arn:aws:dynamodb:*:*:table/*"
                 - Effect: "Allow"
                   Action:
                     - s3:GetObject
