@@ -181,7 +181,7 @@ export const saveForm = () => {
         formAnswers: answers,
         statusData: statusData
       });
-      // save status info
+
       // Update Last Saved in redux state
       dispatch(updatedLastSaved(username));
     } catch (error) {
