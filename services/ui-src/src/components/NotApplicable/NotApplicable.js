@@ -4,7 +4,8 @@ import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import {
   updatedApplicableStatus,
-  clearFormData
+  clearFormData,
+  saveForm
 } from "../../store/reducers/singleForm/singleForm";
 import { Auth } from "aws-amplify";
 import "./NotApplicable.scss";
@@ -15,7 +16,8 @@ const NotApplicable = ({
   statusId,
   updatedApplicableStatus,
   resetData,
-  statusTypes
+  statusTypes,
+  saveForm
 }) => {
   const [username, setUsername] = useState();
   const [applicableStatus, setApplicableStatus] = useState(1); // 0 or 1
@@ -62,12 +64,13 @@ const NotApplicable = ({
     );
 
     setApplicableStatus(applicableStatus === 0 ? 1 : 0);
-    updatedApplicableStatus(
+    await updatedApplicableStatus(
       invertIntegerToBoolean,
       username,
       newStatusString.status,
       invertedStatus
     );
+    saveForm();
   };
 
   return (
@@ -121,9 +124,10 @@ NotApplicable.propTypes = {
   notApplicable: PropTypes.bool,
   status: PropTypes.string.isRequired,
   statusId: PropTypes.number.isRequired,
+  statusTypes: PropTypes.array.isRequired,
   updatedApplicableStatus: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
-  statusTypes: PropTypes.array.isRequired
+  saveForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
@@ -135,7 +139,8 @@ const mapState = state => ({
 
 const mapDispatch = {
   updatedApplicableStatus: updatedApplicableStatus,
-  resetData: clearFormData
+  resetData: clearFormData,
+  saveForm: saveForm
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);

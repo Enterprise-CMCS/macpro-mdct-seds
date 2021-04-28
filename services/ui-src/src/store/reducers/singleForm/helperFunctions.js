@@ -106,10 +106,24 @@ const extractAgeRanges = answersArray => {
   return foundAges;
 };
 
+const insertFPL = (answers, fpl) => {
+  const updatedAnswers = answers.map(singleAnswer => {
+    const rowHeader = singleAnswer.rows[0]["col6"];
+    const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
+    const newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
+
+    singleAnswer.rows[0]["col6"] = newHeader;
+    return singleAnswer;
+  });
+
+  return updatedAnswers;
+};
+
 export {
   sortQuestionsByNumber,
   extractAgeRanges,
   insertAnswer,
   formatAnswerData,
-  clearSingleQuestion
+  clearSingleQuestion,
+  insertFPL
 };

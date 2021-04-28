@@ -1,10 +1,14 @@
+// PACKAGES
+import { Auth } from "aws-amplify";
+
 // HELPER FUNCTIONS
 import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
   insertAnswer,
-  clearSingleQuestion
+  clearSingleQuestion,
+  insertFPL
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -29,8 +33,17 @@ export const UPDATE_ANSWER = "UPDATE_ANSWER";
 export const WIPE_FORM = "WIPE_FORM";
 export const SAVE_FORM = "SAVE_FORM";
 export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
+export const UPDATE_FPL = "UPDATE_FPL";
 
 // ACTION CREATORS
+
+const gotFPL = answers => {
+  return {
+    type: UPDATE_FPL,
+    answers
+  };
+};
+
 export const clearedForm = cleanAnswers => {
   return {
     type: WIPE_FORM,
@@ -75,6 +88,21 @@ export const updatedLastSaved = username => {
 };
 
 // THUNKS
+export const updateFPL = newFPL => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    try {
+      let deepCopy = JSON.parse(JSON.stringify(answers));
+      const updatedAnswers = insertFPL(deepCopy, newFPL);
+      dispatch(gotFPL(updatedAnswers));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
+  };
+};
+
 export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -138,23 +166,24 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
-export const disableForm = activeBoolean => {
-  return dispatch => {
-    dispatch(updatedApplicableStatus(activeBoolean));
-  };
-};
+export const saveForm = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    const statusData = state.currentForm.statusData;
 
-export const saveForm = (username, formAnswers) => {
-  return async dispatch => {
+    const userObject = await Auth.currentAuthenticatedUser();
+    const username = userObject.username;
     try {
       // Update Database
       await saveSingleForm({
         username: username,
-        formAnswers: formAnswers
+        formAnswers: answers,
+        statusData: statusData
       });
 
       // Update Last Saved in redux state
-      dispatch(updatedLastSaved(username, formAnswers));
+      dispatch(updatedLastSaved(username));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });
@@ -267,6 +296,11 @@ export default (state = initialState, action) => {
           ...state.statusData,
           save_error: true
         }
+      };
+    case UPDATE_FPL:
+      return {
+        ...state,
+        answers: action.answers
       };
     default:
       return state;

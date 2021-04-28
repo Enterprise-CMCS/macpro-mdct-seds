@@ -24,7 +24,10 @@ const FormPage = ({ getForm, statusData }) => {
 
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
-    getForm(formattedStateName, year, quarterInt, formattedFormName);
+    const fetchData = async () => {
+      await getForm(formattedStateName, year, quarterInt, formattedFormName);
+    };
+    fetchData();
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
 
   useEffect(() => {
