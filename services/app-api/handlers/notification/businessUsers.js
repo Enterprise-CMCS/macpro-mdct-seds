@@ -52,7 +52,7 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-function businessOwnersTemplate(payload) {
+async function businessOwnersTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   const recipient = {
     TO: sendToEmail,
