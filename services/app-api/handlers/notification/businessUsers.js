@@ -1,5 +1,5 @@
 import handler from "./../../libs/handler-lib";
-var aws = require("aws-sdk");
+// var aws = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to bussiness Owners
