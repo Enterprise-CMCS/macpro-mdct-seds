@@ -69,7 +69,7 @@ export const handlePdfExport = (
 
   pdf
     .html(pdfToExport, {
-      html2canvas: { scale: 0.25 }
+      html2canvas: { scale: 0.33 }
     })
     .then(() => {
       pdf.save(fileName);

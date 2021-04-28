@@ -111,6 +111,15 @@ provider:
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
 
 functions:
+  loadData:
+    handler: handlers/load-data/post/uploadData.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: load-data/upload
+          method: post
+          cors: true
+          authorizer: aws_iam
   exportToExcel:
     handler: export/exportToExcel.main
     role: LambdaApiRole
