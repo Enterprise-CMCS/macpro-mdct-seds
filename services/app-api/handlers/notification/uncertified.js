@@ -29,8 +29,8 @@ async function getBusinessUsersEmail() {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {"#r": "role"},
-    ExpressionAttributeValues: {":role": "business"},
+    ExpressionAttributeNames: { "#r": "role" },
+    ExpressionAttributeValues: { ":role": "business" },
     FilterExpression: "#r = :role",
   };
   const result = await dynamoDb.scan(params);
@@ -38,10 +38,10 @@ async function getBusinessUsersEmail() {
     return false;
   }
   const payload = result["Items"];
-  payload.map(userInfo => {
-    if(userInfo.email) {
+  payload.map((userInfo) => {
+    if (userInfo.email) {
       businessOwnersEmails.push(userInfo.email);
-    };
+    }
   });
   console.log(businessOwnersEmails);
   return businessOwnersEmails;
@@ -70,4 +70,3 @@ async function unCetifiedTemplate(payload) {
     Source: "olaniyan86@gmail.com",
   };
 }
-
