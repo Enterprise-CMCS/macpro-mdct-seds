@@ -17,7 +17,7 @@ const clearRecords = (tableName) => {
       console.log("\n\nitem found: \n---------------\n");
       console.log(item);
       console.log("\n\n-------------");
-      deleteItem(tableName, item.Id).then();
+      deleteItem(tableName, item.Id);
     });
     clearRecords(tableName);
   });
