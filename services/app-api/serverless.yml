@@ -256,8 +256,8 @@ functions:
           cors: true
           authorzier: aws_iam
       - schedule:
-          name: seds-quarterly-scheduled-event
-          description: "responsible for trigger lambda to send notification to specific seds users quarterly"
+          # name: seds-quarterly-scheduled-event
+          # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
           enabled: false
           rate: cron(0/5 0-16,19-23 * * ? *)
   businessUsersEmail:
