@@ -156,15 +156,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  obtainUserByRole:
-    handler: handlers/users/post/obtainUserByRole.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/obtainUserByRole
-          method: post
-          cors: true
-          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole

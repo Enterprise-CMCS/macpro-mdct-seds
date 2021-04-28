@@ -25,6 +25,7 @@
     "aws-sdk": "^2.891.0",
     "dynamodb-atomic-counter": "^0.1.1",
     "exceljs": "^4.2.1",
+    "node-ses": "^3.0.3",
     "uuid": "^7.0.3"
   }
 }
