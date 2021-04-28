@@ -1,4 +1,4 @@
-import { Auth } from "aws-amplify";
+import { API } from "aws-amplify";
 // ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
 export const CERTIFY_AND_SUBMIT_PROVISIONAL = "CERTIFY_AND_SUBMIT_PROVISIONAL";
@@ -12,17 +12,17 @@ export const setFinalCertify = userName => {
     userName
   };
 };
-export const setProvisionalCertify = userName => {
+export const setProvisionalCertify = username => {
   return {
     type: CERTIFY_AND_SUBMIT_PROVISIONAL,
-    userName
+    username
   };
 };
 
-export const setUncertify = userName => {
+export const setUncertify = username => {
   return {
     type: UNCERTIFY,
-    userName
+    username
   };
 };
 
@@ -43,19 +43,17 @@ export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
 };
 
 export const certifyAndSubmitProvisional = () => async dispatch => {
-  let userName = await Auth.currentAuthenticatedUser();
-  userName =
-    userName.attributes.given_name + " " + userName.attributes.family_name;
+  const { data } = await API.post("mdct-seds", "/users/get/username", {});
+  const username = data.username;
   try {
-    dispatch(setProvisionalCertify(userName));
+    dispatch(setProvisionalCertify(username));
   } catch (error) {
     dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
   }
 };
 
 export const uncertify = () => async dispatch => {
-  let userName = await Auth.currentAuthenticatedUser();
-  userName =
-    userName.attributes.given_name + " " + userName.attributes.family_name;
-  dispatch(setUncertify(userName));
+  const { data } = await API.post("mdct-seds", "/users/get/username", {});
+  const username = data.username;
+  dispatch(setUncertify(username));
 };
