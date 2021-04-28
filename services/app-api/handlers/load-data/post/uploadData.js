@@ -11,19 +11,19 @@ export const main = handler(async (event, context) => {
   clearRecords(tableName);
 });
 
-const clearRecords = () => {
+const clearRecords = (tableName) => {
   getRecords().then((data) => {
     data.Items.forEach((item) => {
       console.log("\n\nitem found: \n---------------\n");
       console.log(item);
       console.log("\n\n-------------");
-      //deleteItem(item.Id).then();
+      deleteItem(tableName, item.Id).then();
     });
-    clearRecords();
+    clearRecords(tableName);
   });
 };
 
-const deleteItem = (id, tableName) => {
+const deleteItem = (tableName, id) => {
   const params = {
     TableName: `${tableName}`,
     Key: {
@@ -31,7 +31,8 @@ const deleteItem = (id, tableName) => {
     },
   };
 
-  return new Promise((resolve, reject) => {
+  return true;
+  /*return new Promise((resolve, reject) => {
     dynamoDb.delete(params, (err, data) => {
       if (err) {
         reject(err);
@@ -39,7 +40,7 @@ const deleteItem = (id, tableName) => {
         resolve(data);
       }
     });
-  });
+  });*/
 };
 
 const getRecords = (tableName) => {
