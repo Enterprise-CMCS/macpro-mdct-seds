@@ -11,7 +11,9 @@ import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
+// import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
+import {stateUsersEmail, businessUsersEmail } from "../../libs/api";
+
 
 
 const CertificationTab = ({
