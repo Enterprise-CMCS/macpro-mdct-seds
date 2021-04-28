@@ -115,9 +115,3 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(FormPage);
-
-// These are all rendering at the same time. (formpage and tabcontainer and its children)
-// formpage fetches it at the same time tab container needs it
-// tab container should make the getform call
-
-// tab container will make the call, place the values in state and go from there
