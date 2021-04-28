@@ -7,12 +7,11 @@ var aws = require("aws-sdk");
  */
 
 export const main = handler(async (event, context) => {
-
+  
   let data = JSON.parse(event.body);
-  const businessUsers = businessOwnersTemplate(data);
-  console.log(businessUsers, "yeet");
 
-  const businessUserEmail = businessOwners(event)
+
+  const businessUserEmail = businessOwnersTemplate(data)
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   .sendEmail(email)
   .promise();
