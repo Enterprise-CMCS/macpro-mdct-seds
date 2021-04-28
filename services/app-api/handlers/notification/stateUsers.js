@@ -1,9 +1,11 @@
 import handler from "./../../libs/handler-lib";
+import dynamoDb from "./../../libs/dynamodb-lib";
+
 // var aws = require("aws-sdk");
 
 /**
- * Handler responsible for sending notification to bussiness users
- * that have not submitted their data at the end of a quarter - all reports in progress
+ * Handler responsible for sending notification to state users At the end of each Quarter.
+ * At the end of each Quarter, as a State User, I want to know if my state has NOT certified its data yet.
  */
 
 export const main = handler(async (event, context) => {

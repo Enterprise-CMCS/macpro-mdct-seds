@@ -1,9 +1,12 @@
 import handler from "./../../libs/handler-lib";
+import dynamoDb from "./../../libs/dynamodb-lib";
+
 // var aws = require("aws-sdk");
 
 /**
- * Handler responsible for sending notification to bussiness Owners
- * that have not submitted their data at the end of a quarter - all reports in progress
+ * Handler responsible for sending notification to bussiness Owners.
+ * as a CMS Business User, I want to know which states have NOT submitted 
+ * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
 
 export const main = handler(async (event, context) => {
