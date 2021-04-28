@@ -1,11 +1,9 @@
 // *** GLOBAL (i.e., React, hooks, etc)
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { renderToString } from "react-dom/server";
 
-// *** 3rd party functional dependencies
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
+// *** 3rd party and other functional dependencies
+import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
 // * trussworks
@@ -29,11 +27,7 @@ import {
 import Preloader from "../Preloader/Preloader";
 
 // *** API / data / etc
-import {
-  listUsers,
-  activateDeactivateUser,
-  exportToExcel
-} from "../../libs/api";
+import { listUsers, activateDeactivateUser } from "../../libs/api";
 
 // *** styles
 import "./Users.scss";
@@ -54,85 +48,6 @@ const Users = () => {
     setUsers(await listUsers());
   };
 
-  const handleExport = async (
-      format,
-      fileName,
-      pdfContent = null,
-      pdfContentType = "react-component"
-  ) => {
-    let buffer, blob, pdf, pdfToExport;
-
-    switch (format) {
-      case "excel":
-        buffer = await exportToExcel();
-        // *** lambdas will convert buffer to Int32Array
-        // *** we are going to instantiate Uint8Array (binary) buffer
-        // *** to avoid having to care about MIME type of file we're saving
-        buffer = new Uint8Array(buffer.data).buffer;
-
-        // *** save file as blob
-        blob = new Blob([buffer]);
-        saveAs(blob, fileName);
-        break;
-
-      case "pdf":
-        // *** do additional processing depending on content type
-        switch (pdfContentType) {
-            // *** if element is a react component, render it to html string
-          case "react-component":
-            pdfToExport = renderToString(pdfContent);
-            break;
-
-            // *** for content to be extracted from html selectors ...
-          case "html-selector":
-            // * ... temporarily add class to DOM prior to initiating render to pdf
-            // * this will enable overrides from scss
-            document.querySelector(pdfContent).classList.add("export-to-pdf");
-
-            // * store content to render to pdf
-            pdfToExport = document.querySelector(pdfContent);
-
-            // * remove temporarily added class from DOM
-            setTimeout(() => {
-              document
-                  .querySelector(pdfContent)
-                  .classList.remove("export-to-pdf");
-            }, 250);
-
-            break;
-
-          case "html":
-            pdfToExport = pdfContent;
-            break;
-
-          default:
-            // *** no default behavior is currently specified
-            break;
-        }
-
-        // *** initiate pdf render
-        pdf = new jsPDF({
-          unit: "px",
-          format: "letter",
-          userUnit: "px",
-          orientation: "landscape"
-        });
-
-        pdf
-            .html(pdfToExport, {
-              html2canvas: { scale: 0.25 }
-            })
-            .then(() => {
-              pdf.save(fileName);
-            });
-        break;
-
-      default:
-        // *** no default behavior currently specified
-        break;
-    }
-  };
-
   useEffect(() => {
     async function fetchData() {
       await loadUserData();
@@ -146,7 +61,7 @@ const Users = () => {
 
   const deactivateUser = async user => {
     const confirm = window.confirm(
-        `Are you sure you want to deactivate user ${user.username}`
+      `Are you sure you want to deactivate user ${user.username}`
     );
     if (confirm) {
       const deactivateData = { isActive: false, userId: user.userId };
@@ -158,7 +73,7 @@ const Users = () => {
 
   const activateUser = async user => {
     const confirm = window.confirm(
-        `Are you sure you want to activate user ${user.username}`
+      `Are you sure you want to activate user ${user.username}`
     );
     if (confirm) {
       const activateData = { isActive: true, userId: user.userId };
@@ -178,7 +93,7 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return (
-              <span>
+            <span>
               <Link to={`/users/${user.userId}/edit`}>{user.username}</Link>
             </span>
           );
@@ -200,7 +115,7 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return (
-              <span>
+            <span>
               <a href={`mailto:${user.email}`}>{user.email}</a>
             </span>
           );
@@ -220,8 +135,8 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return user.dateJoined
-              ? new Date(user.dateJoined).toLocaleDateString("en-US")
-              : null;
+            ? new Date(user.dateJoined).toLocaleDateString("en-US")
+            : null;
         }
       },
       {
@@ -230,50 +145,51 @@ const Users = () => {
         sortable: true,
         cell: user => {
           return user.lastLogin
-              ? new Date(user.lastLogin).toLocaleDateString("en-US")
-              : null;
+            ? new Date(user.lastLogin).toLocaleDateString("en-US")
+            : null;
         }
       },
       {
         name: "States",
-        selector: "state_codes",
+        selector: "states",
         sortable: true,
         cell: user => {
           return user.states ? (
-              <span>{user.states.sort().join(", ")}</span>
+            <span>{user.states.sort().join(", ")}</span>
           ) : null;
         }
       },
       {
         name: "Status",
         selector: "isActive",
+        excludeFromExcel: true,
         sortable: true,
         cell: user => {
           return (
-              <span>
+            <span>
               {user.isActive ? (
-                  <Button
-                      className="row-action-button"
-                      secondary={true}
-                      onClick={() => deactivateUser(user)}
-                  >
-                    Deactivate
-                    <FontAwesomeIcon
-                        icon={faUserAltSlash}
-                        className="margin-left-2"
-                    />
-                  </Button>
+                <Button
+                  className="row-action-button"
+                  secondary={true}
+                  onClick={() => deactivateUser(user)}
+                >
+                  Deactivate
+                  <FontAwesomeIcon
+                    icon={faUserAltSlash}
+                    className="margin-left-2"
+                  />
+                </Button>
               ) : (
-                  <Button
-                      className="row-action-button"
-                      onClick={() => activateUser(user)}
-                  >
-                    Activate
-                    <FontAwesomeIcon
-                        icon={faUserCheck}
-                        className="margin-left-2"
-                    />
-                  </Button>
+                <Button
+                  className="row-action-button"
+                  onClick={() => activateUser(user)}
+                >
+                  Activate
+                  <FontAwesomeIcon
+                    icon={faUserCheck}
+                    className="margin-left-2"
+                  />
+                </Button>
               )}
             </span>
           );
@@ -289,62 +205,69 @@ const Users = () => {
   }
 
   return (
-      <div className="user-profiles react-transition fade-in" data-testid="Users">
-        <h1 className="page-header">Users</h1>
-        <div className="page-subheader">
-          <Button
-              onClick={() => handleAddNewUser()}
-              className="action-button"
-              primary="true"
-          >
-            Add New User
-            <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-          </Button>
-          <Button
-              className="margin-left-3 action-button"
-              primary="true"
-              onClick={async () => await handleExport("excel", "test_one.xlsx")}
-          >
-            Excel
-            <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
-          </Button>
+    <div className="user-profiles react-transition fade-in" data-testid="Users">
+      <h1 className="page-header">Users</h1>
+      <div className="page-subheader do-not-export">
+        <Button
+          onClick={() => handleAddNewUser()}
+          className="action-button"
+          primary="true"
+        >
+          Add New User
+          <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
+        </Button>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () =>
+            await handleExport("excel", "MDCT Users Export.xlsx", tableData)
+          }
+        >
+          Excel
+          <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+        </Button>
 
-          <Button
-              className="margin-left-3 action-button"
-              primary="true"
-              onClick={async () =>
-                  await handleExport(
-                      "pdf",
-                      "test_one.pdf",
-                      ".grid-display-table",
-                      "html-selector"
-                  )
-              }
-          >
-            PDF
-            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-          </Button>
-        </div>
-        <Card>
-          {tableData ? (
-              <DataTableExtensions {...tableData} export={false} print={false}>
-                <DataTable
-                    defaultSortField="username"
-                    sortIcon={
-                      <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
-                    }
-                    highlightOnHover={true}
-                    selectableRows={false}
-                    responsive={true}
-                    striped={true}
-                    className="grid-display-table react-transition fade-in"
-                />
-              </DataTableExtensions>
-          ) : (
-              <Preloader />
-          )}
-        </Card>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={async () =>
+            await handleExport(
+              "pdf",
+              "MDCT Users Export.pdf",
+              ".user-profiles",
+              "html-selector"
+            )
+          }
+        >
+          PDF
+          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+        </Button>
       </div>
+      <Card>
+        {tableData ? (
+          <DataTableExtensions
+            {...tableData}
+            export={false}
+            print={false}
+            className="do-not-export"
+          >
+            <DataTable
+              defaultSortField="username"
+              sortIcon={
+                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
+              }
+              highlightOnHover={true}
+              selectableRows={false}
+              responsive={true}
+              striped={true}
+              className="grid-display-table react-transition fade-in"
+            />
+          </DataTableExtensions>
+        ) : (
+          <Preloader />
+        )}
+      </Card>
+    </div>
   );
 };
 

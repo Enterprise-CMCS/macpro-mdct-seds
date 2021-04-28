@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { Auth } from "aws-amplify";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
@@ -11,27 +10,9 @@ import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
-const FormFooter = ({
-  state,
-  year,
-  quarter,
-  lastModified,
-  saveForm,
-  formAnswers
-}) => {
-  const [username, setUsername] = useState();
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      setUsername(AuthUserInfo.username);
-    };
-
-    loadUserData();
-  });
-
+const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
   const handleClick = () => {
-    saveForm(username, formAnswers);
+    saveForm();
   };
 
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
@@ -83,8 +64,7 @@ FormFooter.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  lastModified: state.currentForm.statusData.last_modified,
-  formAnswers: state.currentForm.answers
+  lastModified: state.currentForm.statusData.last_modified
 });
 
 const mapDispatchToProps = {

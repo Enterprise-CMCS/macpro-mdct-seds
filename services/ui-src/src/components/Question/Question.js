@@ -4,6 +4,7 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
+import "./Question.scss"
 
 const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
   // Get the question ID, label and question type from the question
@@ -67,7 +68,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
     }
   }
   return (
-    <div className="padding-top-5 border-top-1px">
+    <div className="padding-top-5 border-top-1px tempQuestionClass">
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>
