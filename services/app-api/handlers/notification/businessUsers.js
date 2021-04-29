@@ -10,9 +10,8 @@ import dynamoDb from "./../../libs/dynamodb-lib";
  */
 
 export const main = handler(async (event, context) => {
-  // let data = JSON.parse(event.body);
-  await businessOwnersTemplate();
-  // const email = businessOwnersTemplate(data)
+  const email = await businessOwnersTemplate();
+  console.log(email.Message.Body)
   // let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   // .sendEmail(email)
   // .promise();
@@ -55,29 +54,41 @@ async function getBusinessUsersEmail() {
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
 async function getUncertifiedStates() {
+  // house the list of states from the state forms
+  let UncertifiedstateList = [];
+
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
     ExpressionAttributeValues: {
-      ":status": "In Progress",
+      ":status": "Not Started",
     },
     FilterExpression: "#Unceritifiedstatus = :status",
   };
+  // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
   if (result.Count === 0) {
-    return {
+    return [{
       message: "At this time, There are no states which is currrently status: In Progress"
-    }
+    }];
   }
-  return result;
+  // List of the state forms that are "In Progress"
+  const payload = result.Items;
+  payload.map(stateInfo => {
+    // pulled the state from each state forms and pushed into array
+    UncertifiedstateList.push(stateInfo.program_code) 
+  });
+  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) { 
+    // filter the state list so we dont have duplicates
+    return index === self.indexOf(elem);
+  });
+  return filteredStateList;
 }
 
-async function businessOwnersTemplate(payload) {
+async function businessOwnersTemplate() {
   const sendToEmail = await getBusinessUsersEmail();
-  const uncertifiedStates = getUncertifiedStates();
-
-  console.log(uncertifiedStates, "yeet");
+  const uncertifiedStates = await getUncertifiedStates();
 
   const fromEmail = "eniola.olaniyan@cms.hhs.gov";
 
@@ -88,11 +99,7 @@ async function businessOwnersTemplate(payload) {
     MESSAGE: `
     This is an automated message to notify you that the states listed below have
     not certified their SEDS data for FFY[Fiscal Year] Q[Quarter] as of
-    [DateTimeOfAction]:
-
-    - State1
-    - State2
-    - State3
+    [DateTimeOfAction]: {${uncertifiedStates}}
 
     Please follow up with the state’s representatives if you have any questions.
 
@@ -118,4 +125,3 @@ async function businessOwnersTemplate(payload) {
     Source: recipient.FROM
   };
 }
-// -  ${payload.state}
