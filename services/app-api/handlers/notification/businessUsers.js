@@ -11,7 +11,7 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
-  console.log(email.Message.Body)
+  console.log(email);
   // let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   // .sendEmail(email)
   // .promise();
@@ -77,9 +77,9 @@ async function getUncertifiedStates() {
   const payload = result.Items;
   payload.map(stateInfo => {
     // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code) 
+    UncertifiedstateList.push(stateInfo.program_code);
   });
-  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) { 
+  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) {
     // filter the state list so we dont have duplicates
     return index === self.indexOf(elem);
   });
