@@ -255,9 +255,15 @@ export default (state = initialState, action) => {
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
       return {
         ...state,
-        status: "final",
-        last_modified_by: action.username,
-        last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+        statusData: {
+          ...state.statusData,
+          status: "Final Data Certified and Submitted",
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
+          status_id: 4,
+          status_modified_by: action.username,
+          last_modified_by: action.username,
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+        }
       };
     case CERTIFY_AND_SUBMIT_PROVISIONAL:
       return {
