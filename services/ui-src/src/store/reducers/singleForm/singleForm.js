@@ -1,10 +1,14 @@
+// PACKAGES
+import { API } from "aws-amplify";
+
 // HELPER FUNCTIONS
 import {
   sortQuestionsByNumber,
   extractAgeRanges,
   formatAnswerData,
   insertAnswer,
-  clearSingleQuestion
+  clearSingleQuestion,
+  insertFPL
 } from "./helperFunctions";
 
 // ENDPOINTS
@@ -29,8 +33,17 @@ export const UPDATE_ANSWER = "UPDATE_ANSWER";
 export const WIPE_FORM = "WIPE_FORM";
 export const SAVE_FORM = "SAVE_FORM";
 export const SAVE_FORM_FAILURE = "SAVE_FORM_FAILURE";
+export const UPDATE_FPL = "UPDATE_FPL";
 
 // ACTION CREATORS
+
+const gotFPL = answers => {
+  return {
+    type: UPDATE_FPL,
+    answers
+  };
+};
+
 export const clearedForm = cleanAnswers => {
   return {
     type: WIPE_FORM,
@@ -53,14 +66,14 @@ export const gotAnswer = (answerArray, questionID) => {
 };
 export const updatedApplicableStatus = (
   activeStatus,
-  user,
+  username,
   status,
   statusId
 ) => {
   return {
     type: UPDATE_APPLICABLE_STATUS,
     activeStatus,
-    user,
+    username,
     status,
     statusId,
     timeStamp: new Date().toISOString()
@@ -75,8 +88,37 @@ export const updatedLastSaved = username => {
 };
 
 // THUNKS
+
+export const updatedApplicableThunk = (
+  activeStatus,
+  status,
+  statusId
+) => async dispatch => {
+  await API.post("mdct-seds", "/users/get/username", {}).then(data => {
+    const username = data.data.username;
+    dispatch(updatedApplicableStatus(activeStatus, username, status, statusId));
+  });
+};
+
+export const updateFPL = newFPL => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    try {
+      let deepCopy = JSON.parse(JSON.stringify(answers));
+      const updatedAnswers = insertFPL(deepCopy, newFPL);
+      dispatch(gotFPL(updatedAnswers));
+    } catch (error) {
+      console.log("Error:", error);
+      console.dir(error);
+    }
+  };
+};
+
 export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
+    const { data } = await API.post("mdct-seds", "/users/get/username", {});
+    const username = data.username;
     const state = getState();
     const timeStamp = new Date().toISOString();
     const answers = state.currentForm.answers;
@@ -86,7 +128,7 @@ export const clearFormData = (user = "cleared") => {
         const clearedRows = clearSingleQuestion(deepCopy.rows);
         deepCopy.rows = clearedRows;
         deepCopy.last_modified = timeStamp;
-        deepCopy.last_modified_by = user;
+        deepCopy.last_modified_by = username;
         return deepCopy;
       });
 
@@ -138,23 +180,24 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
-export const disableForm = activeBoolean => {
-  return dispatch => {
-    dispatch(updatedApplicableStatus(activeBoolean));
-  };
-};
+export const saveForm = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const answers = state.currentForm.answers;
+    const statusData = state.currentForm.statusData;
 
-export const saveForm = (username, formAnswers) => {
-  return async dispatch => {
+    const { data } = await API.post("mdct-seds", "/users/get/username", {});
+    const username = data.username;
     try {
       // Update Database
       await saveSingleForm({
         username: username,
-        formAnswers: formAnswers
+        formAnswers: answers,
+        statusData: statusData
       });
 
       // Update Last Saved in redux state
-      dispatch(updatedLastSaved(username, formAnswers));
+      dispatch(updatedLastSaved(username));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });
@@ -201,12 +244,12 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           not_applicable: action.activeStatus,
-          last_modified_by: action.user,
+          last_modified_by: action.username,
           last_modified: action.timeStamp,
           status: action.status,
           status_id: action.statusId,
           status_date: action.timeStamp,
-          status_modified_by: action.user
+          status_modified_by: action.username
         }
       };
     case CERTIFY_AND_SUBMIT_FINAL: // needs updating since the shape of the initial state has changed
@@ -224,8 +267,8 @@ export default (state = initialState, action) => {
           status: "Provisional Data Certified and Submitted",
           status_date: new Date().toISOString(), // Need to update this with coming soon helper function
           status_id: 3,
-          status_modified_by: action.userName,
-          last_modified_by: action.userName,
+          status_modified_by: action.username,
+          last_modified_by: action.username,
           last_modified: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
@@ -244,8 +287,8 @@ export default (state = initialState, action) => {
           ...state.statusData,
           status: "In Progress",
           status_id: 2,
-          status_modified_by: action.userName,
-          last_modified_by: action.userName,
+          status_modified_by: action.username,
+          last_modified_by: action.username,
           last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
           status_date: new Date().toISOString() // Need to update this with coming soon helper function
         }
@@ -267,6 +310,11 @@ export default (state = initialState, action) => {
           ...state.statusData,
           save_error: true
         }
+      };
+    case UPDATE_FPL:
+      return {
+        ...state,
+        answers: action.answers
       };
     default:
       return state;

@@ -112,11 +112,11 @@ provider:
 
 functions:
   exportToExcel:
-    handler: handlers/users/post/exportToExcel.main
+    handler: export/exportToExcel.main
     role: LambdaApiRole
     events:
       - http:
-          path: users/export-to-excel
+          path: export/export-to-excel
           method: post
           cors: true
           authorizer: aws_iam
@@ -153,6 +153,15 @@ functions:
     events:
       - http:
           path: users/get/email
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainUserStamp:
+    handler: handlers/users/get/getUsername.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/get/username
           method: post
           cors: true
           authorizer: aws_iam
