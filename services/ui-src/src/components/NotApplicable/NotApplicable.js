@@ -4,9 +4,10 @@ import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import {
   updatedApplicableStatus,
-  clearFormData
+  updatedApplicableThunk,
+  clearFormData,
+  saveForm
 } from "../../store/reducers/singleForm/singleForm";
-import { Auth } from "aws-amplify";
 import "./NotApplicable.scss";
 
 const NotApplicable = ({
@@ -15,24 +16,15 @@ const NotApplicable = ({
   statusId,
   updatedApplicableStatus,
   resetData,
-  statusTypes
+  statusTypes,
+  saveForm,
+  updatedApplicableThunk
 }) => {
-  const [username, setUsername] = useState();
   const [applicableStatus, setApplicableStatus] = useState(1); // 0 or 1
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
-
-  // Fetch a user's name
-  useEffect(() => {
-    const loadUserData = async () => {
-      const AuthUserInfo = await Auth.currentAuthenticatedUser();
-      const { given_name, family_name } = AuthUserInfo.attributes;
-      setUsername(`${given_name} ${family_name}`);
-    };
-    loadUserData();
-  });
 
   useEffect(() => {
     const booleanToInteger = notApplicable ? 1 : 0;
@@ -49,7 +41,7 @@ const NotApplicable = ({
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
       if (confirm) {
-        await resetData(username);
+        await resetData();
       } else {
         return;
       }
@@ -62,12 +54,12 @@ const NotApplicable = ({
     );
 
     setApplicableStatus(applicableStatus === 0 ? 1 : 0);
-    updatedApplicableStatus(
+    await updatedApplicableThunk(
       invertIntegerToBoolean,
-      username,
       newStatusString.status,
       invertedStatus
     );
+    saveForm();
   };
 
   return (
@@ -121,9 +113,11 @@ NotApplicable.propTypes = {
   notApplicable: PropTypes.bool,
   status: PropTypes.string.isRequired,
   statusId: PropTypes.number.isRequired,
+  statusTypes: PropTypes.array.isRequired,
   updatedApplicableStatus: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
-  statusTypes: PropTypes.array.isRequired
+  saveForm: PropTypes.func.isRequired,
+  updatedApplicableThunk: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
@@ -135,7 +129,9 @@ const mapState = state => ({
 
 const mapDispatch = {
   updatedApplicableStatus: updatedApplicableStatus,
-  resetData: clearFormData
+  resetData: clearFormData,
+  saveForm: saveForm,
+  updatedApplicableThunk: updatedApplicableThunk
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);
