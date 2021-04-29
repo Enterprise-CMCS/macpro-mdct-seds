@@ -11,10 +11,7 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
   // let data = JSON.parse(event.body);
-
-  const test = getBusinessUsersEmail();
-  console.log(test, "yeeeeet");
-
+  await businessOwnersTemplate();
   // const email = businessOwnersTemplate(data)
   // let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   // .sendEmail(email)
@@ -52,49 +49,73 @@ async function getBusinessUsersEmail() {
       businessOwnersEmails.push(userInfo.email);
     }
   });
-  console.log(businessOwnersEmails);
   return businessOwnersEmails;
 }
 
-// async function businessOwnersTemplate(payload) {
-//   const sendToEmail = await getBusinessUsersEmail();
-//   const fromEmail = "eniola.olaniyan@cms.hhs.gov";
+// retrieve all states have NOT submitted their data yet
+// (in other words - all states with ‘in progress’ reports for the prior quarter)
+async function getUncertifiedStates() {
+  const params = {
+    TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
+    ExpressionAttributeValues: {
+      ":status": "In Progress",
+    },
+    FilterExpression: "#Unceritifiedstatus = :status",
+  };
+  const result = await dynamoDb.scan(params);
+  if (result.Count === 0) {
+    return {
+      message: "At this time, There are no states which is currrently status: In Progress"
+    }
+  }
+  return result;
+}
 
-//   const recipient = {
-//     TO: sendToEmail,
-//     SUBJECT: "FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
-//     FROM: fromEmail,
-//     MESSAGE: `
-//     This is an automated message to notify you that the states listed below have
-//     not certified their SEDS data for FFY[Fiscal Year] Q[Quarter] as of
-//     [DateTimeOfAction]:
+async function businessOwnersTemplate(payload) {
+  const sendToEmail = await getBusinessUsersEmail();
+  const uncertifiedStates = getUncertifiedStates();
 
-//     - ${payload.state}
-//     - State1
-//     - State2
-//     - State3
+  console.log(uncertifiedStates, "yeet");
 
-//     Please follow up with the state’s representatives if you have any questions.
+  const fromEmail = "eniola.olaniyan@cms.hhs.gov";
 
-//     Regards,
-//     MDCT SEDS.
+  const recipient = {
+    TO: sendToEmail,
+    SUBJECT: "FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
+    FROM: fromEmail,
+    MESSAGE: `
+    This is an automated message to notify you that the states listed below have
+    not certified their SEDS data for FFY[Fiscal Year] Q[Quarter] as of
+    [DateTimeOfAction]:
 
-//     `,
-//   };
-//   return {
-//     Destination: {
-//       ToAddresses: recipient.TO
-//     },
-//     Message: {
-//       Body: {
-//         Text: {
-//           Data: recipient.MESSAGE
-//         },
-//       },
-//       Subject: {
-//         Data: recipient.SUBJECT
-//       },
-//     },
-//     Source: recipient.FROM
-//   };
-// }
+    - State1
+    - State2
+    - State3
+
+    Please follow up with the state’s representatives if you have any questions.
+
+    Regards,
+    MDCT SEDS.
+
+    `,
+  };
+  return {
+    Destination: {
+      ToAddresses: recipient.TO
+    },
+    Message: {
+      Body: {
+        Text: {
+          Data: recipient.MESSAGE
+        },
+      },
+      Subject: {
+        Data: recipient.SUBJECT
+      },
+    },
+    Source: recipient.FROM
+  };
+}
+// -  ${payload.state}

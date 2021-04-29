@@ -11,8 +11,7 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 export const main = handler(async (event, context) => {
   // let data = JSON.parse(event.body);
 
-  const test = getStsateUsersEmail();
-  console.log(test, "yeeeeet");
+  await getStsateUsersEmail();
 
   // const email = stateTemplate(data)
   // .sendEmail(email)
