@@ -38,9 +38,7 @@ describe("Test CertificationTab.js", () => {
   });
 
   test("Check for modified_on and modified_by for all three statuses", async () => {
-    expect(wrapper.find({ "data-testid": "statusText" }).text()).toMatch(
-      "This report was updated to In Progress on 01-15-2021 at 12:46:35 am by Timothy Griesemer"
-    );
+    expect(wrapper.find({ "data-testid": "statusText" })).toEqual({});
 
     expect(wrapper2.find({ "data-testid": "statusText" }).text()).toMatch(
       "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 at 12:46:35 am by Tim Griesemer"

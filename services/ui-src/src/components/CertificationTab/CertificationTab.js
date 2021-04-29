@@ -29,10 +29,10 @@ const CertificationTab = ({
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
-  const submitProvisional = () => {
-    certifyAndSubmitProvisional();
-    setprovisionalButtonStatus(true);
+  const submitProvisional = async () => {
+    await certifyAndSubmitProvisional();
     saveForm();
+    setprovisionalButtonStatus(true);
   };
   const submitFinal = () => {
     certifyAndSubmitFinal();
@@ -40,12 +40,12 @@ const CertificationTab = ({
     setfinalButtonStatus(true);
     saveForm();
   };
-  const submitUncertify = () => {
+  const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
-      uncertify();
+      await uncertify();
+      saveForm();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
-      saveForm();
     }
   };
 
@@ -106,12 +106,14 @@ const CertificationTab = ({
           compliance with Title XXI of the Social Security Act (Section 2109(a)
           and Section 2108(e)).
         </p>
-        <div data-testid="statusText">
-          <p>
-            This report was updated to <b>{status}</b> on{" "}
-            <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
-          </p>
-        </div>
+        {isFinal || isProvisional ? (
+          <div data-testid="statusText">
+            <p>
+              This report was updated to <b>{status}</b> on{" "}
+              <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
+            </p>
+          </div>
+        ) : null}
       </div>
       <div className="certify-btn ">
         <Button
