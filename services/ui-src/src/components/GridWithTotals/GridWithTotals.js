@@ -17,6 +17,8 @@ const GridWithTotals = props => {
 
   const currentPrecision = props.precision;
 
+  const synthesized = props.synthesized;
+
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
@@ -151,6 +153,35 @@ const GridWithTotals = props => {
                 <React.Fragment key={columnIndex}>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
+                    {!synthesized ? (
+                      <TextInput
+                        type="number"
+                        className="grid-column"
+                        onChange={event =>
+                          updateGrid(rowIndex, columnIndex, event)
+                        }
+                        defaultValue={Number.parseFloat(column).toFixed(
+                          currentPrecision
+                        )}
+                        value={Number.parseFloat(
+                          gridData[rowIndex][columnIndex]
+                        ).toFixed(currentPrecision)}
+                        disabled={props.disabled}
+                      />
+                    ) : (
+                      <span className="usa-input rid-column synthesized">
+                        {Number.parseFloat(
+                          gridData[rowIndex][columnIndex]
+                        ).toFixed(currentPrecision)}
+                      </span>
+                    )}
+                  </td>
+                </React.Fragment>
+              );
+            } else {
+              formattedCell = (
+                <td key={columnIndex}>
+                  {!synthesized ? (
                     <TextInput
                       type="number"
                       className="grid-column"
@@ -165,24 +196,11 @@ const GridWithTotals = props => {
                       ).toFixed(currentPrecision)}
                       disabled={props.disabled}
                     />
-                  </td>
-                </React.Fragment>
-              );
-            } else {
-              formattedCell = (
-                <td key={columnIndex}>
-                  <TextInput
-                    type="number"
-                    className="grid-column"
-                    onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={Number.parseFloat(column).toFixed(
-                      currentPrecision
-                    )}
-                    value={Number.parseFloat(
-                      gridData[rowIndex][columnIndex]
-                    ).toFixed(currentPrecision)}
-                    disabled={props.disabled}
-                  />
+                  ) : (
+                    <span className="usa-input grid-column synthesized ">
+                      {Number.parseFloat(column).toFixed(currentPrecision)}
+                    </span>
+                  )}
                 </td>
               );
             }
@@ -271,7 +289,8 @@ GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  synthesized: PropTypes.bool.isRequired
 };
 
 const mapDispatch = {

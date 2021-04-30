@@ -67,14 +67,13 @@ const SynthesizedGrid = props => {
 
   if (sortedRows.length > 0) {
     returnObject = (
-      <div className="react-transition fade-in">
         <GridWithTotals
           questionID={tempQuestionId}
           gridData={sortedRows}
           precision={1}
           disabled={true}
+          synthesized={true}
         />
-      </div>
     );
   }
   return returnObject;
