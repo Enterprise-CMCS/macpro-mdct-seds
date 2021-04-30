@@ -109,9 +109,17 @@ const extractAgeRanges = answersArray => {
 const insertFPL = (answers, fpl) => {
   const updatedAnswers = answers.map(singleAnswer => {
     const rowHeader = singleAnswer.rows[0]["col6"];
-    const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
-    const newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
+    let newHeader;
 
+    if (rowHeader.includes("-")) {
+      // ie: "col6": "% of FPL 301-317"
+      const hyphenBeforeFPL = rowHeader.lastIndexOf("-");
+      newHeader = `${rowHeader.slice(0, hyphenBeforeFPL)}-${fpl}`;
+    } else {
+      //  "col6": "% of FPL 301"
+      const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
+      newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
+    }
     singleAnswer.rows[0]["col6"] = newHeader;
     return singleAnswer;
   });

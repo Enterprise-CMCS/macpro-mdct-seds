@@ -78,9 +78,9 @@ describe("Single Form Reducer, helper functions", () => {
 
   test("insertFPL should update the FPL range in all answers", () => {
     const updatedFPLanswers = insertFPL(answers, "428");
-    expect(updatedFPLanswers[0]["rows"][0]["col6"]).toEqual("% of FPL 428");
-    expect(updatedFPLanswers[1]["rows"][0]["col6"]).toEqual("% of FPL 428");
-    expect(updatedFPLanswers[2]["rows"][0]["col6"]).toEqual("% of FPL 428");
+    expect(updatedFPLanswers[0]["rows"][0]["col6"]).toEqual("% of FPL 301-428");
+    expect(updatedFPLanswers[1]["rows"][0]["col6"]).toEqual("% of FPL 301-428");
+    expect(updatedFPLanswers[2]["rows"][0]["col6"]).toEqual("% of FPL 301-428");
   });
 
   test("clearSingleQuestion should clear the data of an answer object", () => {
