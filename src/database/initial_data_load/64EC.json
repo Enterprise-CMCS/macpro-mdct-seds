@@ -426,7 +426,7 @@
     "rowTotal": true,
     "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
     "rows": [
@@ -476,7 +476,7 @@
     "rowTotal": true,
     "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
     "rows": [
@@ -526,7 +526,7 @@
     "rowTotal": true,
     "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
     "rows": [

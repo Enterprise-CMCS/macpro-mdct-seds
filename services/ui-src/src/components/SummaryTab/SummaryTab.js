@@ -7,6 +7,10 @@ import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
 const SummaryTab = ({ questions, answers }) => {
+  // Get current quarter from URL
+  const pathname = window.location.pathname;
+  const quarter = pathname.split("/")[3];
+
   return (
     <div className="summary-tab react-transition fade-in">
       <div className="age-range-description padding-y-2">
@@ -14,6 +18,13 @@ const SummaryTab = ({ questions, answers }) => {
       </div>
 
       {questions.map((singleQuestion, idx) => {
+        // Remove any questions that are hidden in this quarter
+        if (
+          singleQuestion.context_data &&
+          !singleQuestion.context_data.show_if_quarter_in.includes(quarter)
+        ) {
+          return false;
+        }
         // Initialize newRows
         let newRows = [];
 
