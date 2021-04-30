@@ -4,10 +4,13 @@ import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@trussworks/react-uswds";
 import {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify
 } from "../../store/actions/certify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
@@ -17,25 +20,36 @@ const CertificationTab = ({
   isFinal,
   isProvisional,
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify,
+  saveForm
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
-  const submitProvisional = () => {
-    certifyAndSubmitProvisional();
+  const submitProvisional = async () => {
+    await certifyAndSubmitProvisional();
+    saveForm();
     setprovisionalButtonStatus(true);
   };
   const submitFinal = () => {
     certifyAndSubmitFinal();
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
+    saveForm();
+  };
+  const submitUncertify = async () => {
+    if (window.confirm("Are you sure you want to uncertify this report?")) {
+      await uncertify();
+      saveForm();
+      setprovisionalButtonStatus(false);
+      setfinalButtonStatus(false);
+    }
   };
 
   let certifyText;
-
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">
@@ -92,14 +106,16 @@ const CertificationTab = ({
           compliance with Title XXI of the Social Security Act (Section 2109(a)
           and Section 2108(e)).
         </p>
-        <div data-testid="statusText">
-          <p>
-            This report was updated to <b>{status}</b> on <b>{lastModified}</b>{" "}
-            by <b>{lastModifiedBy}</b>
-          </p>
-        </div>
+        {isFinal || isProvisional ? (
+          <div data-testid="statusText">
+            <p>
+              This report was updated to <b>{status}</b> on{" "}
+              <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
+            </p>
+          </div>
+        ) : null}
       </div>
-      <div className="certify-btn provisional">
+      <div className="certify-btn ">
         <Button
           onClick={() => submitProvisional()}
           type="button"
@@ -115,9 +131,14 @@ const CertificationTab = ({
           {"Certify & Submit Final Data"}
         </Button>
       </div>
-      <p>
-        <br />
-        <br />
+      {isFinal ? (
+        <div className="certify-btn uncertify">
+          <Button onClick={() => submitUncertify()} type="button">
+            {"Uncertify"}
+          </Button>
+        </div>
+      ) : null}
+      <p className="padding-top-3">
         Certify & Submit Provisional Data will allow you to submit your form
         now, but it will remain editable to allow you to submit final data.
       </p>
@@ -137,7 +158,8 @@ CertificationTab.propTypes = {
   lastModified: PropTypes.string.isRequired,
   lastModifiedBy: PropTypes.string,
   isFinal: PropTypes.bool.isRequired,
-  isProvisional: PropTypes.bool.isRequired
+  isProvisional: PropTypes.bool.isRequired,
+  saveForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
@@ -151,6 +173,8 @@ const mapState = state => ({
 
 const mapDispatch = {
   certifyAndSubmitFinal,
-  certifyAndSubmitProvisional
+  certifyAndSubmitProvisional,
+  uncertify,
+  saveForm
 };
 export default connect(mapState, mapDispatch)(CertificationTab);

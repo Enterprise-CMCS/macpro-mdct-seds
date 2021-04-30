@@ -8,9 +8,9 @@
     "quarter": 1,
     "validation_percent": 0.03,
     "status": "Not Started",
-    "statusId": 1,
+    "status_id": 1,
     "status_modified_by": "seed",
-    "status_date": "01-15-2021",
+    "status_date": "2021-04-14T12:46:35.838Z",
     "not_applicable": false,
     "state_comments": [
       {
@@ -18,7 +18,7 @@
         "entry": null
       }
     ],
-    "last_modified": "01-15-2021",
+    "last_modified": "2021-04-14T12:46:35.838Z",
     "last_modified_by": "seed",
     "questions": [
       {
@@ -63,9 +63,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -111,9 +111,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -159,9 +159,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -207,9 +207,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -391,9 +391,9 @@
             ]
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -439,9 +439,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -490,9 +490,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -541,9 +541,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       },
       {
@@ -592,9 +592,9 @@
             "col6": null
           }
         ],
-        "last_modified": "01/15/2021",
+        "last_modified": "2021-01-15T12:46:35.838Z",
         "last_modified_by": "seed",
-        "created_date": "01/15/2021",
+        "created_date": "2021-01-15T12:46:35.838Z",
         "created_by": "seed"
       }
     ]

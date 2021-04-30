@@ -38,7 +38,7 @@ describe("Quarterly tests", () => {
   );
 
   test("Check that the title and path are generated with the correct text", () => {
-    expect(wrapper.find(".grid-col-12").find("h2").at(0).text()).toMatch(
+    expect(wrapper.find(".page-quarterly").find("h1").at(0).text()).toMatch(
       "Q01 2021 Reports"
     );
     expect(wrapper.find(".breadcrumbs").text()).toContain(

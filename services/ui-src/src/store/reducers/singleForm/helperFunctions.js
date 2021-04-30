@@ -64,6 +64,29 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
   return stateAnswers;
 };
 
+const clearSingleQuestion = populatedRows => {
+  const clearedRows = populatedRows.map(singleRow => {
+    const accumulator = {};
+
+    Object.keys(singleRow).forEach(element => {
+      if (element !== "col1") {
+        accumulator[element] = null;
+      }
+    });
+
+    // if this is the header row, return it unaltered
+    if (singleRow["col1"] === "") {
+      return singleRow;
+    } else if (Array.isArray(singleRow["col2"])) {
+      return singleRow;
+    } else {
+      return { ...singleRow, ...accumulator };
+    }
+  });
+
+  return clearedRows;
+};
+
 const extractAgeRanges = answersArray => {
   // call back for a reduce method
   const findAges = (accumulator, answer) => {
@@ -83,9 +106,32 @@ const extractAgeRanges = answersArray => {
   return foundAges;
 };
 
+const insertFPL = (answers, fpl) => {
+  const updatedAnswers = answers.map(singleAnswer => {
+    const rowHeader = singleAnswer.rows[0]["col6"];
+    let newHeader;
+
+    if (rowHeader.includes("-")) {
+      // ie: "col6": "% of FPL 301-317"
+      const hyphenBeforeFPL = rowHeader.lastIndexOf("-");
+      newHeader = `${rowHeader.slice(0, hyphenBeforeFPL)}-${fpl}`;
+    } else {
+      //  "col6": "% of FPL 301"
+      const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
+      newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
+    }
+    singleAnswer.rows[0]["col6"] = newHeader;
+    return singleAnswer;
+  });
+
+  return updatedAnswers;
+};
+
 export {
   sortQuestionsByNumber,
   extractAgeRanges,
   insertAnswer,
-  formatAnswerData
+  formatAnswerData,
+  clearSingleQuestion,
+  insertFPL
 };

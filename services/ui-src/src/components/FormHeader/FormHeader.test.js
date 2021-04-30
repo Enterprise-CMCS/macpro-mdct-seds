@@ -1,34 +1,38 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
+import { BrowserRouter } from "react-router-dom";
 import FormHeader from "./FormHeader";
+import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import currentFormMock_GRE from "../../provider-mocks/currentFormMock_GRE";
+import { storeFactory } from "../../provider-mocks/testUtils";
 
-describe("Test FormHeader.js - Shallow", () => {
-  let wrapper;
+// The props this component requires in order to render
+const defaultProps = {
+  quarter: "1",
+  form: "21E",
+  year: "2021",
+  state: "AL",
+  formAnswers: [fullStoreMock.currentForm.answers],
+  updateFPL: function () {},
+  saveForm: function () {}
+};
 
-  beforeEach(() => {
-    wrapper = shallow(
-      <FormHeader quarter="1" form="21E" state="AL" year="2021" />
-    );
-  });
+const mountSetup = (initialState = {}, props = {}, path = "") => {
+  const setupProps = { ...defaultProps, ...props };
+  const store = storeFactory(initialState);
+  return mount(
+    <BrowserRouter>
+      {" "}
+      <FormHeader store={store} path={path} {...setupProps} />{" "}
+    </BrowserRouter>
+  );
+};
+
+describe("Test FormHeader.js", () => {
+  const wrapper = mountSetup(fullStoreMock);
 
   test("Check the header div exists", () => {
     expect(wrapper.find(".form-header").length).toBe(1);
-  });
-});
-
-describe("Test FormHeader.js - Mount", () => {
-  let wrapper;
-
-  beforeEach(() => {
-    wrapper = mount(
-      <FormHeader quarter="1" form="21E" state="AL" year="2021" />
-    );
-  });
-
-  test("Check for upper form links", () => {
-    // Using Link from TrussWorks results in the component AND link sharing the same class name...
-    // This would be 3 otherwise
-    expect(wrapper.find(".upper-form-links").length).toBe(6);
   });
 
   test("Check for correct state", () => {
@@ -41,5 +45,9 @@ describe("Test FormHeader.js - Mount", () => {
     // Using Link from TrussWorks results in the component AND link sharing the same class name...
     // This would be 3 otherwise
     expect(wrapper.find(".quarter-value").text()).toBe("1/2021");
+  });
+  test("Hides the FPL when the form is GRE", () => {
+    const GREwrapper = mountSetup(currentFormMock_GRE);
+    expect(GREwrapper.find(".form-max-fpl").length).toBe(0);
   });
 });

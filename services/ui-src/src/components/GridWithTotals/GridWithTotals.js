@@ -18,6 +18,11 @@ const GridWithTotals = props => {
   const currentPrecision = props.precision;
 
   useEffect(() => {
+    updateGridData(translateInitialData(props.gridData));
+    updateTotals();
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -217,7 +222,7 @@ const GridWithTotals = props => {
   });
 
   return (
-    <div className="grid-with-totals">
+    <div className="grid-with-totals" id={`"${props.questionID}"`}>
       <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>{headerCols}</tr>
