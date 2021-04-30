@@ -5,14 +5,14 @@ set -e
 stage=${1:-dev}
 
 services=(
-  'database'
-#  'data-deployment'
-  'uploads'
-  'app-api'
-  'stream-functions'
-  'ui'
-  'ui-auth'
-  'ui-src'
+#  'database'
+  'data-deployment'
+#  'uploads'
+#  'app-api'
+#  'stream-functions'
+#  'ui'
+#  'ui-auth'
+#  'ui-src'
 )
 
 install_deps() {

@@ -2,10 +2,10 @@
   "name": "data-deployment",
   "description": "",
   "version": "1.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "serverless-dynamodb-seed": "^0.3.0"
+  },
   "devDependencies": {
-    "serverless-bundle": "^3.0.0",
-    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-stack-termination-protection": "^1.0.4"
   }
 }
