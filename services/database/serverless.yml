@@ -4,6 +4,7 @@ frameworkVersion: "2"
 
 plugins:
   - serverless-dynamodb-local
+  - serverless-dynamodb-seed
   - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
