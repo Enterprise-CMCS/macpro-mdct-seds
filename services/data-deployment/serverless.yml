@@ -7,6 +7,10 @@ plugins:
   - serverless-dynamodb-seed
   - serverless-stack-termination-protection
 
+provider:
+  name: aws
+  region: us-east-1
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
