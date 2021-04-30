@@ -32,7 +32,7 @@ custom:
   seed:
     forms:
       table: ${self:custom.stage}-forms
-      sources: [- ../../src/database/initial_data_load/forms.json]
+      sources: [../../src/database/initial_data_load/forms.json]
 
   scripts:
     hooks:
