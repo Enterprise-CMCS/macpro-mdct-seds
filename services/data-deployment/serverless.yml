@@ -34,4 +34,4 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        echo ${self:custom.stage}-forms && echo ${self:custom.region} && sls dynamodb:seed
+        echo ${self:custom.stage}-forms && echo ${self:provider.stage} && sls dynamodb:seed
