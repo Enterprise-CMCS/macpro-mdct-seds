@@ -19,6 +19,10 @@ custom:
       - impl
       - val
       - prod
+  scripts:
+    hooks:
+      deploy:finalize: |
+        ([ -z "${LOCAL_LOGIN}" ] || [ "${LOCAL_LOGIN}" != "true" ]) && sls dynamodb:seed      
   dynamodb:
     stages:
       - local
