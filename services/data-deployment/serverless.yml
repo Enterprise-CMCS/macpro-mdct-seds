@@ -89,8 +89,4 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        serverless invoke --stage ${self:custom.stage} --function createTopics
-#  scripts:
-#    hooks:
-#      deploy:finalize: |
-#        serverless dynamodb:seed
+        sls dynamodb:seed
