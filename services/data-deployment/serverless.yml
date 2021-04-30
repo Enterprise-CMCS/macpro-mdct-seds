@@ -2,17 +2,10 @@ service: data-deployment
 
 frameworkVersion: "2"
 
-package:
-  individually: true
-
 plugins:
   - serverless-plugin-scripts
   - serverless-dynamodb-seed
   - serverless-stack-termination-protection
-
-provider:
-  name: aws
-  region: us-east-1
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -37,4 +30,4 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        echo ${self:custom.stage}-forms && sls dynamodb:seed
+        echo ${self:custom.stage}-forms && echo ${self:custom.region} && sls dynamodb:seed
