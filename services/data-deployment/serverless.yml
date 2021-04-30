@@ -37,4 +37,4 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        sls dynamodb:seed
+        echo ${self:custom.stage}-forms && sls dynamodb:seed
