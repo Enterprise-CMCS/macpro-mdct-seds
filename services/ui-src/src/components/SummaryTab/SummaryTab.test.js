@@ -46,7 +46,7 @@ describe("Test SummaryTab.js", () => {
   });
 
   test("Check number of gridwithtotal elements", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(9);
+    expect(wrapper.find(".grid-with-totals").length).toBe(6);
   });
 
   test("Check table input values for correct math", () => {
