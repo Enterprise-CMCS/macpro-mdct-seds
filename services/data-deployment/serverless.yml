@@ -88,4 +88,8 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        echo "DID IT RUN" && sls dynamodb:seed
+        serverless invoke --stage ${self:custom.stage} --function createTopics
+#  scripts:
+#    hooks:
+#      deploy:finalize: |
+#        serverless dynamodb:seed
