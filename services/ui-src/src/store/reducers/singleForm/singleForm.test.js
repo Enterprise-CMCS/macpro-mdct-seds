@@ -14,7 +14,7 @@ import configureStore from "redux-mock-store";
 import {
   setProvisionalCertify,
   setUncertify,
-    setFinalCertify,
+  setFinalCertify,
   CERTIFY_AND_SUBMIT_PROVISIONAL,
   UNCERTIFY,
   CERTIFY_AND_SUBMIT_FINAL
