@@ -113,7 +113,7 @@ export const saveSingleForm = data => {
 
   return API.post("mdct-seds", "/single-form/save", opts);
 };
-// ** 
+// **
 export const sendUncertifyEmail = data => {
   const opts = requestOptions();
   opts.body = data;

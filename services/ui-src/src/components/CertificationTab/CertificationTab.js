@@ -12,8 +12,7 @@ import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 // import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
-import {stateUsersEmail, businessUsersEmail } from "../../libs/api";
-
+import { stateUsersEmail, businessUsersEmail } from "../../libs/api";
 
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
@@ -73,7 +72,7 @@ const CertificationTab = ({
   //         username: userInfo.username
   //       }
   //       await sendUncertifyEmail(emailObj);
-  //     } 
+  //     }
   //   });
   // }
 
