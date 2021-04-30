@@ -5,15 +5,29 @@ const requestOptions = () => {
   return {};
 };
 
-/*************************** USER API ***************************/
+/*************************** EXPORT API ***************************/
 // *** export to excel
 export const exportToExcel = async data => {
   const opts = requestOptions();
   opts.body = data;
 
+  console.log(opts.body);
+
   return API.post("mdct-seds", "/export/export-to-excel", opts);
 };
 
+/*************************** LOAD DATA API ***************************/
+// *** export to excel
+export const loadData = async data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  console.log(opts.body);
+
+  return API.post("mdct-seds", "/load-data/upload", opts);
+};
+
+/*************************** USER API ***************************/
 // *** list all Users
 export const listUsers = () => {
   const opts = requestOptions();

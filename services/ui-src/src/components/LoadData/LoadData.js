@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { loadData } from "../../libs/api";
 
 import {
   FormGroup,
@@ -13,7 +15,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
 
 const LoadData = () => {
-  const uploadFile = () => {};
+  const [fileToUpload, setFileToUpload] = useState(null);
+  const [targetTable, setTargetTable] = useState("");
+
+  const uploadFile = async () => {
+    const formData = new FormData();
+    formData.append("targetTable", targetTable);
+    formData.append("fileToUpload", fileToUpload, fileToUpload.name);
+
+    return await loadData(formData);
+  };
 
   return (
     <div
@@ -29,7 +40,11 @@ const LoadData = () => {
               <tr>
                 <th>Select Data File:</th>
                 <td>
-                  <FileInput id="fileDataFile" name="fileDataFile" />
+                  <FileInput
+                    id="fileDataFile"
+                    name="fileDataFile"
+                    onChange={event => setFileToUpload(event.target.files[0])}
+                  />
                 </td>
               </tr>
               <tr>
@@ -38,7 +53,8 @@ const LoadData = () => {
                   <TextInput
                     id="txtTargetTable"
                     name="txtTargetTable"
-                    type="email"
+                    type="text"
+                    onChange={event => setTargetTable(event.target.value)}
                   />
                 </td>
               </tr>
