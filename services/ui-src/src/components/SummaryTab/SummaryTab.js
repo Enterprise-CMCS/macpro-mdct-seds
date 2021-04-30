@@ -5,11 +5,12 @@ import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
+import { useLocation } from "react-router-dom";
 
 const SummaryTab = ({ questions, answers }) => {
   // Get current quarter from URL
-  const pathname = window.location.pathname;
-  const quarter = pathname.split("/")[3];
+  const location = useLocation();
+  const quarter = location.pathname.split("/")[4];
 
   return (
     <div className="summary-tab react-transition fade-in">
@@ -21,7 +22,9 @@ const SummaryTab = ({ questions, answers }) => {
         // Remove any questions that are hidden in this quarter
         if (
           singleQuestion.context_data &&
-          !singleQuestion.context_data.show_if_quarter_in.includes(quarter)
+          !singleQuestion.context_data.show_if_quarter_in
+            .toString()
+            .includes(quarter)
         ) {
           return false;
         }

@@ -8,6 +8,13 @@ import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
 const mockStore = configureStore([]);
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: () => ({
+    pathname: "localhost:3000/forms/AL/2021/1/21E"
+  })
+}));
+
 describe("Test SummaryTab.js", () => {
   let store;
   let wrapper;
