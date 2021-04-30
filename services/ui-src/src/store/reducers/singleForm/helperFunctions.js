@@ -109,7 +109,7 @@ const extractAgeRanges = answersArray => {
 const insertFPL = (answers, fpl) => {
   const updatedAnswers = answers.map(singleAnswer => {
     const rowHeader = singleAnswer.rows[0]["col6"];
-    const newHeader;
+    let newHeader;
 
     if (rowHeader.includes("-")) {
       // ie: "col6": "% of FPL 301-317"
@@ -120,8 +120,6 @@ const insertFPL = (answers, fpl) => {
       const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
       newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
     }
-    console.log("OLD \n\n", rowHeader);
-    console.log("NEW \n\n", newHeader);
     singleAnswer.rows[0]["col6"] = newHeader;
     return singleAnswer;
   });
