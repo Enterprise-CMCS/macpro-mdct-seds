@@ -68,7 +68,7 @@ export default function Login() {
   if (process.env.NODE_ENV === "development") {
     development = true;
   }
-  console.log("development: ", development);
+  console.log("env: ", process.env.NODE_ENV);
 
   return (
     <div
