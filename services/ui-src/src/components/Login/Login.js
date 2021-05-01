@@ -64,6 +64,12 @@ export default function Login() {
     }
   }
 
+  let development = false;
+  if (process.env.NODE_ENV === "development") {
+    development = true;
+  }
+  console.log("development: ", development);
+
   return (
     <div
       className="login-wrapper react-transition flip-in-y text-center"
@@ -80,36 +86,36 @@ export default function Login() {
           <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
         </LoaderButton>
       </div>
-      <form onSubmit={handleSubmit} className="text-center">
+      <form onSubmit={handleSubmit} className="developer-login text-center" hidden={development}>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
-            autoFocus
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-            className="form-input"
+              autoFocus
+              type="email"
+              value={fields.email}
+              onChange={handleFieldChange}
+              className="form-input"
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
           <ControlLabel>Password</ControlLabel>
           <FormControl
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-            className="form-input"
+              type="password"
+              value={fields.password}
+              onChange={handleFieldChange}
+              className="form-input"
           />
         </FormGroup>
         <div className="padding-y-9">
           <LoaderButton
-            block
-            type="submit"
-            bsSize="large"
-            isLoading={isLoading}
-            disabled={!validateForm()}
+              block
+              type="submit"
+              bsSize="large"
+              isLoading={isLoading}
+              disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2"/>
           </LoaderButton>
         </div>
       </form>
