@@ -105,14 +105,27 @@ export const getCurrentUserInfo = async (event) => {
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
+
+  const test = true;
+  const mock = [
+    { Name: "sub", Value: "ae155078-abbc-4325-983c-6b558553818b" },
+    { Name: "custom:ismemberof", Value: "CHIP_D_USER_GROUP_ADMIN" },
+    { Name: "email_verified", Value: "false" },
+    { Name: "given_name", Value: "Tony" },
+    { Name: "family_name", Value: "Test" },
+    { Name: "email", Value: "t.davydets@collabralink.com" },
+  ];
+
   const email =
-    user.email !== undefined
+    test !== true
       ? user.email
-      : user["UserAttributes"].find((record) => {
+      : mock.find((record) => {
           if (record["Name"] === "email") {
             return record["Value"];
           }
         });
+
+  console.log(`found this:  + ${email}`);
 
   let body;
 
