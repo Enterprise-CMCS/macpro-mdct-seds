@@ -106,6 +106,9 @@ export const getCurrentUserInfo = async (event) => {
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
+  console.log("\n\n!!!!user is: ");
+  console.log(user);
+
   const email =
     user.email !== undefined
       ? user.email
