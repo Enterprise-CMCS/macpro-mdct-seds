@@ -105,19 +105,28 @@ export const getCurrentUserInfo = async (event) => {
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
+  const email =
+    user.email !== undefined
+      ? user.email
+      : user["UserAttributes"].find((record) => {
+          if (record["Name"] === "email") {
+            return record["Value"];
+          }
+        });
 
-  const body = JSON.stringify({
-    email: user.email,
-  });
+  let body;
+
+  if (email !== undefined)
+    body = JSON.stringify({
+      email: email,
+    });
 
   const currentUser = await obtainUserByEmail({
     body: body,
   });
 
-  const userObject = {
+  return {
     status: "success",
     data: JSON.parse(currentUser.body)["Items"][0],
   };
-
-  return userObject;
 };
