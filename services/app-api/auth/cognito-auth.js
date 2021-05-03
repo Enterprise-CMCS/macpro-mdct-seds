@@ -105,14 +105,15 @@ export const getCurrentUserInfo = async (event) => {
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
+
   const email =
     user.email !== undefined
       ? user.email
-      : user["UserAttributes"].find((record) => {
-          if (record["Name"] === "email") {
-            return record["Value"];
-          }
-        });
+      : user["UserAttributes"].find((record) => record["Name"] === "email")
+          .Value;
+
+  console.log(`found this:`);
+  console.log(email);
 
   let body;
 
@@ -124,6 +125,8 @@ export const getCurrentUserInfo = async (event) => {
   const currentUser = await obtainUserByEmail({
     body: body,
   });
+
+  console.log(currentUser);
 
   return {
     status: "success",
