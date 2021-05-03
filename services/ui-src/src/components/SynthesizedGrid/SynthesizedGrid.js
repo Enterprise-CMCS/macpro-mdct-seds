@@ -67,13 +67,13 @@ const SynthesizedGrid = props => {
 
   if (sortedRows.length > 0) {
     returnObject = (
-        <GridWithTotals
-          questionID={tempQuestionId}
-          gridData={sortedRows}
-          precision={1}
-          disabled={true}
-          synthesized={true}
-        />
+      <GridWithTotals
+        questionID={tempQuestionId}
+        gridData={sortedRows}
+        precision={1}
+        disabled={true}
+        synthesized={true}
+      />
     );
   }
   return returnObject;
