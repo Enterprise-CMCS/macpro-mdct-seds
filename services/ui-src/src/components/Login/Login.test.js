@@ -27,16 +27,19 @@ describe("Test LoaderButton.js", () => {
     const { getByTestId } = render(<Login />);
     expect(getByTestId("OktaLogin")).toBeVisible();
   });
-  test("Check for Email input box", () => {
-    useContextMock.mockReturnValue(true);
-    const { getByLabelText } = render(<Login />);
-    const formControl = getByLabelText("Email");
-    expect(formControl.type).toContain("email");
-  });
-  test("Check for Password input box", () => {
-    useContextMock.mockReturnValue(true);
-    const { getByLabelText } = render(<Login />);
-    const formControl = getByLabelText("Password");
-    expect(formControl.type).toContain("password");
-  });
+  //These options are only available on development branches
+  if (window._env_.STAGE !== "production" && window._env_.STAGE !== "prod" && window._env_.STAGE !== "val" && window._env_.STAGE !== "impl") {
+    test("Check for Email input box", () => {
+      useContextMock.mockReturnValue(true);
+      const { getByLabelText } = render(<Login />);
+      const formControl = getByLabelText("Email");
+      expect(formControl.type).toContain("email");
+    });
+    test("Check for Password input box", () => {
+      useContextMock.mockReturnValue(true);
+      const { getByLabelText } = render(<Login />);
+      const formControl = getByLabelText("Password");
+      expect(formControl.type).toContain("password");
+    });
+  }
 });
