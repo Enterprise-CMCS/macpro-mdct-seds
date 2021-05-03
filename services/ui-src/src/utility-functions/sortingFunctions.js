@@ -35,4 +35,45 @@ const dateFormatter = dateString => {
   return returnString;
 };
 
-export { sortQuestionColumns, dateFormatter };
+const compileSimpleArrayStates = complexArray => {
+  const simpleArray = [];
+  for (const item in complexArray) {
+    simpleArray.push(complexArray[item].value);
+  }
+  return simpleArray;
+};
+
+/**
+ * This function creates an array of objects suitable for dropdowns.
+ *
+ * @param stateList - list of all U.S. states (probably from redux)
+ * @param userStates - list of states to select from (user states)
+ * @returns {*[]} - an array of objects suitable for a dropdown component
+ */
+
+const compileStatesForDropdown = (stateList, userStates) => {
+  const selectedStates = [];
+
+  // Create single array of objects with label and value of userStates
+  // This is the format for dropdowns in this project
+  if (userStates.length > 0) {
+    for (const singleState in userStates) {
+      for (const state in stateList) {
+        if (stateList[state].value === userStates[singleState]) {
+          selectedStates.push({
+            label: stateList[state].label,
+            value: stateList[state].value
+          });
+        }
+      }
+    }
+  }
+  return selectedStates;
+};
+
+export {
+  sortQuestionColumns,
+  dateFormatter,
+  compileStatesForDropdown,
+  compileSimpleArrayStates
+};
