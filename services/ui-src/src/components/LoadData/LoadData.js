@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { loadData, getTableNames } from "../../libs/api";
 
-import { Alert, ComboBox, Dropdown } from "@trussworks/react-uswds";
+import { Alert, ComboBox } from "@trussworks/react-uswds";
 
 import { FormGroup, FileInput, Table, Button } from "@trussworks/react-uswds";
 
