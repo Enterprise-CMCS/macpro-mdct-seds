@@ -17,7 +17,7 @@ export const exportToExcel = async data => {
 };
 
 /*************************** LOAD DATA API ***************************/
-// *** export to excel
+// *** load data
 export const loadData = async data => {
   const opts = requestOptions();
   opts.body = data;
@@ -25,6 +25,12 @@ export const loadData = async data => {
   console.log(opts.body);
 
   return API.post("mdct-seds", "/load-data/upload", opts);
+};
+
+export const getTableNames = () => {
+  const opts = requestOptions();
+
+  return API.get("mdct-seds", "/load-data/get-table-names", opts);
 };
 
 /*************************** USER API ***************************/

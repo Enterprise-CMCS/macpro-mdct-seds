@@ -120,6 +120,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  getTableNames:
+    handler: handlers/load-data/get/getTableNames.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: load-data/get-table-names
+          method: get
+          cors: true
+          authorizer: aws_iam
   exportToExcel:
     handler: export/exportToExcel.main
     role: LambdaApiRole
