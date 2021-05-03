@@ -6,10 +6,10 @@ export const UNCERTIFY = "UNCERTIFY";
 export const CERTIFY_AND_SUBMIT_FAILURE = "CERTIFY_AND_SUBMIT_FAILURE";
 
 // ACTION CREATORS
-export const setFinalCertify = userName => {
+export const setFinalCertify = username => {
   return {
     type: CERTIFY_AND_SUBMIT_FINAL,
-    userName
+    username
   };
 };
 export const setProvisionalCertify = username => {
@@ -27,17 +27,12 @@ export const setUncertify = username => {
 };
 
 // THUNK FUNCTIONS
-export const certifyAndSubmitFinal = () => async (dispatch, getState) => {
-  const state = getState();
-  const user = state.userData.username;
-
+export const certifyAndSubmitFinal = () => async dispatch => {
+  const { data } = await API.post("mdct-seds", "/users/get/username", {});
+  const username = data.username;
   try {
-    dispatch(setFinalCertify(user));
-
-    // Here we should trigger save functionality and save store to DB
-    // CALL AWS Amplify, update form status, lastChanged, username and year
+    dispatch(setFinalCertify(username));
   } catch (error) {
-    // If updating the status in DB fails, state will remain unchanged
     dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
   }
 };

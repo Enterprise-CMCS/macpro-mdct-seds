@@ -14,8 +14,10 @@ import configureStore from "redux-mock-store";
 import {
   setProvisionalCertify,
   setUncertify,
+  setFinalCertify,
   CERTIFY_AND_SUBMIT_PROVISIONAL,
-  UNCERTIFY
+  UNCERTIFY,
+  CERTIFY_AND_SUBMIT_FINAL
 } from "../../actions/certify";
 
 import {
@@ -225,7 +227,7 @@ describe("Single Form Reducer, component parts", () => {
   test("Should return the correct last_modified_by from the mock statusData object for the Provisional Certify action", () => {
     const store = mockStore(initialState);
     const actions = store.getActions();
-    const username = statusData.last_modified_by;
+    const username = statusData.status_modified_by;
     const expectedPayload = {
       type: CERTIFY_AND_SUBMIT_PROVISIONAL,
       username
@@ -238,13 +240,26 @@ describe("Single Form Reducer, component parts", () => {
   test("Should return the correct payload for the Uncertify action", () => {
     const store = mockStore(initialState);
     const actions = store.getActions();
-    const username = statusData.last_modified_by;
+    const username = statusData.status_modified_by;
     const expectedPayload = {
       type: UNCERTIFY,
       username
     };
 
     store.dispatch(setUncertify(username));
+    expect(actions).toEqual([expectedPayload]);
+  });
+
+  test("Should return the correct payload for the Final certify action", () => {
+    const store = mockStore(initialState);
+    const actions = store.getActions();
+    const username = statusData.status_modified_by;
+    const expectedPayload = {
+      type: CERTIFY_AND_SUBMIT_FINAL,
+      username
+    };
+
+    store.dispatch(setFinalCertify(username));
     expect(actions).toEqual([expectedPayload]);
   });
 });

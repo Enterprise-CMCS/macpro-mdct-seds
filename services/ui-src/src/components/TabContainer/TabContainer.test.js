@@ -7,6 +7,13 @@ import { Provider } from "react-redux";
 
 const mockstore = configureStore([]);
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: () => ({
+    pathname: "localhost:3000/forms/AL/2021/1/21E"
+  })
+}));
+
 describe("TabContainer tests", () => {
   let store;
   let wrapper;
