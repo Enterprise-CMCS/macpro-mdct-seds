@@ -64,11 +64,12 @@ export default function Login() {
     }
   }
 
-  let development = false;
-  if (process.env.NODE_ENV === "development") {
-    development = true;
+  //This variable will be used to hide/show the developer login option
+  //If the environment is not PROD and is not VAL, the developer login will be shown
+  let development = true;
+  if (window.location.hostname !== "mdctseds.cms.gov" && window.location.hostname !== "mdctsedsval.cms.gov") {
+    development = false;
   }
-  console.log("env: ", process.env.NODE_ENV);
 
   return (
     <div
