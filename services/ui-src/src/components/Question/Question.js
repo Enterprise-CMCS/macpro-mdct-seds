@@ -47,6 +47,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
               questionID={answer_entry}
               gridData={sortedRows}
               disabled={disabled}
+              synthesized={false}
             />
           );
           break;
