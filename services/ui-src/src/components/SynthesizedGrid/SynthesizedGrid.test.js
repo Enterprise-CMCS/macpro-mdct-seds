@@ -63,9 +63,9 @@ describe("Test SynthesizedGrid.js", () => {
         .at(1)
         .find("td")
         .at(0)
-        .find("input")
-        .instance().value
-    ).toMatch(/61/);
+        .find("span")
+        .text()
+    ).toMatch(/61.0/);
     expect(
       wrapper
         .find("GridWithTotals")
@@ -84,8 +84,8 @@ describe("Test SynthesizedGrid.js", () => {
         .at(3)
         .find("td")
         .at(2)
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/7.4/);
     expect(
       wrapper
