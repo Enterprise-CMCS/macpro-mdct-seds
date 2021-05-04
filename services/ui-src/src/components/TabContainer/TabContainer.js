@@ -83,7 +83,7 @@ const TabContainer = ({
               //Conditional display only works with single quarters and equals (so far)
               if (
                 activeContextData === false ||
-                (activeContextData && tempContextData === quarter)
+                (activeContextData && tempContextData.includes(quarter))
               ) {
                 returnComponent = (
                   <QuestionComponent

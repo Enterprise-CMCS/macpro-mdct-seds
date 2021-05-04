@@ -207,7 +207,7 @@ const Users = () => {
   return (
     <div className="user-profiles react-transition fade-in" data-testid="Users">
       <h1 className="page-header">Users</h1>
-      <div className="page-subheader do-not-export">
+      <div className="page-subheader exclude-from-pdf">
         <Button
           onClick={() => handleAddNewUser()}
           className="action-button"
@@ -249,7 +249,7 @@ const Users = () => {
             {...tableData}
             export={false}
             print={false}
-            className="do-not-export"
+            className="exclude-from-pdf"
           >
             <DataTable
               defaultSortField="username"

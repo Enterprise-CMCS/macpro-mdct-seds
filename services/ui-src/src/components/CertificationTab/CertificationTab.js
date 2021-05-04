@@ -34,11 +34,11 @@ const CertificationTab = ({
     saveForm();
     setprovisionalButtonStatus(true);
   };
-  const submitFinal = () => {
-    certifyAndSubmitFinal();
+  const submitFinal = async () => {
+    await certifyAndSubmitFinal();
+    saveForm();
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
-    saveForm();
   };
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
