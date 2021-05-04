@@ -52,25 +52,11 @@ const HomeState = ({ stateList }) => {
     setState(currentUserInfo.Items[0].states[0]);
     setUser(currentUserInfo.Items[0]);
 
-    let forms = [];
-    try {
-      // Get list of all state forms
-      forms = await obtainAvailableForms({
-        stateId: currentUserInfo.Items[0].states[0]
-      });
-      setSaveAlert(true);
-      // After 5 seconds, remove the alert
-      setTimeout(() => {
-        setSaveAlert(false);
-      }, 5000);
-    } catch (error) {
-      console.log("ERROR OBTAINING AVAILABLE FORMS \n\n\n", error);
-      setSaveFailed(true);
-      // After 5 seconds, remove the alert
-      setTimeout(() => {
-        setSaveFailed(false);
-      }, 5000);
-    }
+    // Get list of all state forms
+    const forms = await obtainAvailableForms({
+      stateId: currentUserInfo.Items[0].states[0]
+    });
+
     // Sort forms descending by year and then quarter
     forms.sort(function (a, b) {
       if (a.year === b.year) {
