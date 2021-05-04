@@ -54,6 +54,9 @@ const userAttrDict = (cognitoUser) => {
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
+  console.log("\n\n@@@@@@auth provider is:");
+  console.log(authProvider);
+
   switch (authProvider) {
     case "offlineContext_cognitoAuthenticationProvider":
       userObject = localUser;
@@ -61,6 +64,9 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 
     default:
       const userInfo = parseAuthProvider(authProvider);
+
+      console.log("\n\n~~~~User info from COGNITO:");
+      console.log(userInfo);
 
       // calling a dependency so we have to try
       try {
