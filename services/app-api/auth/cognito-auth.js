@@ -62,6 +62,9 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
     default:
       const userInfo = parseAuthProvider(authProvider);
 
+      console.log("\n\n~~~~User info from COGNITO:");
+      console.log(userInfo);
+
       // calling a dependency so we have to try
       try {
         const cognito = new CognitoIdentityServiceProvider();
