@@ -19,7 +19,10 @@ export const main = handler(async (event, context) => {
       context.succeed(event);
     }
   });
-  return { message: "sucess, email sent" };
+  return {
+    status: "success",
+    message: "sucess, email sent"
+  };
 });
 
 async function getBusinessUsersEmail() {
@@ -42,15 +45,17 @@ async function getBusinessUsersEmail() {
       businessOwnersEmails.push(userInfo.email);
     }
   });
-  console.log(businessOwnersEmails);
   return businessOwnersEmails;
 }
 
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
+  if (sendToEmail.Count === 0) {
+    throw new Error("No Business users found.");
+  }
   return {
     Destination: {
-      ToAddresses: sendToEmail,
+      ToAddresses: sendToEmail || [],
     },
     Message: {
       Body: {

@@ -138,7 +138,7 @@ resources:
                     - s3:GetObject
                     - s3:PutObject
                   Resource: "arn:aws:s3::*:*"
-  scripts:
-    hooks:
-      deploy:finalize: |
-        sls --stage ${self:custom.stage} dynamodb:seed
+  # scripts:
+  #   hooks:
+  #     deploy:finalize: |
+  #       sls --stage ${self:custom.stage} dynamodb:seed

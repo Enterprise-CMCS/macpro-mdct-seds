@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+var ses = new AWS.SES({ region: "us-east-1" });
 
 // var aws = require("aws-sdk");
 
@@ -10,17 +11,18 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
 
-  const email = await stateUsersTemplate()
-  .sendEmail(email)
-  .promise();
-  try {
-    const data = await sendPromise;
-    console.log(data.MessageId);
-  } catch (err) {
-    console.error(err, err.stack);
-  }
+  const email = await stateUsersTemplate();
+  ses.sendEmail(email, function (err, data) {
+    if (err) {
+      console.log(err);
+      context.fail(err);
+    } else {
+      console.log(data);
+      context.succeed(event);
+    }
+  });
   return {
-    status: "sucess",
+    status: "success",
     message: "quartly Businness owners email sent"
   };
 });
@@ -97,7 +99,9 @@ async function certifiedStateUsersEmail() {
 async function stateUsersTemplate() {
   const stateUsersToEmail = await certifiedStateUsersEmail();
   console.log(stateUsersToEmail, "Email of state users whose state isnt certified yet");
-
+  if (stateUsersToEmail.Count === 0) {
+    throw new Error("No state user email to send reminder to");
+  }
   // const UncerteriedStateList = await getUncertifiedStates();
   const fromEmail = "eniola.olaniyan@cms.hhs.gov";
 
