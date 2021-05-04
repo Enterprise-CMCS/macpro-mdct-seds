@@ -2,19 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../libs/api";
+import { obtainAvailableForms, obtainUserByEmail } from "../../libs/api";
 import { onError } from "../../libs/errorLib";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   compileStatesForDropdown,
-  compileSimpleArrayStates
+  compileSimpleArrayStates,
+  buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
+import { Accordion } from "@trussworks/react-uswds";
+import "./HomeAdmin.scss";
 
 const HomeAdmin = ({ stateList }) => {
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
+  const [accordionItems, setAccordionItems] = useState("");
+  const [role, setRole] = useState();
 
   useEffect(() => {
     const onLoad = async () => {
@@ -34,11 +39,14 @@ const HomeAdmin = ({ stateList }) => {
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates;
 
+        setRole(userRole);
+
+        // If using all states, create a simple array of states for use in compileStatesForDropdown
         if (userRole === "admin") {
           userStates = compileSimpleArrayStates(stateList);
         }
 
-        if (userStates && userStates !== "null") {
+        if (userStates && userStates !== "null" && userStates.length > 0) {
           // Convert simple array into array of objects for dropdown
           selectedStates = compileStatesForDropdown(stateList, userStates);
           // Remove default error
@@ -52,28 +60,46 @@ const HomeAdmin = ({ stateList }) => {
     onLoad();
   }, [stateList]);
 
-  const updateUsState = e => {
+  const updateUsState = async e => {
     setSelectedState(e.value);
-    // Call for list of years/coresets here
+
+    // Get list of all state forms
+    let forms;
+    try {
+      forms = await obtainAvailableForms({
+        stateId: e.value
+      });
+    } catch (e) {
+      forms = [];
+    }
+
+    // Build Accordion items and set to local state
+    setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
-      <h1 className="page-header">Home Admin User Page</h1>
-      <div className="padding-left-9 margin-left-9 list-display-container">
-        <ul>
-          <li className="user-view-edit">
-            <Link to="/users" className="text-bold">
-              View / Edit Users
-            </Link>
-          </li>
-          <li className="user-add">
-            <Link to="/users/add" className="text-bold">
-              Create User
-            </Link>
-          </li>
-        </ul>
-      </div>
+      {role === "admin" ? (
+        <>
+          <h1 className="page-header">Home Admin User Page</h1>
+          <div className="padding-left-9 margin-left-9 list-display-container">
+            <ul>
+              <li className="user-view-edit">
+                <Link to="/users" className="text-bold">
+                  View / Edit Users
+                </Link>
+              </li>
+              <li className="user-add">
+                <Link to="/users/add" className="text-bold">
+                  Create User
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </>
+      ) : (
+        <h1 className="page-header">Home Business User Page</h1>
+      )}
       <div className="state-coreset-container">
         <div className="state-selector">
           <h3>Select Your State</h3>
@@ -98,7 +124,20 @@ const HomeAdmin = ({ stateList }) => {
         </div>
 
         <div className="year-coreset-selector">
-          <h1>Here is where the coresets should show</h1>
+          {accordionItems && accordionItems.length !== 0 ? (
+            <>
+              <p className="instructions">
+                Welcome to SEDS! Please select a Federal Fiscal Year and quarter
+                below to view available reports.
+              </p>
+
+              <div className="quarterly-report-list">
+                <Accordion bordered={true} items={accordionItems} />
+              </div>
+            </>
+          ) : (
+            "There are no forms available for the selected state"
+          )}
         </div>
       </div>
     </div>

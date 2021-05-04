@@ -1,5 +1,6 @@
 import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
+import "./Footer.scss";
 
 const Footer = () => {
   return (
