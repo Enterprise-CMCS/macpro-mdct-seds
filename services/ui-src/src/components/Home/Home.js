@@ -18,6 +18,8 @@ const Home = ({ user }) => {
   const renderLander = () => {
     let content;
 
+    // console.log("USER ATTRIBUTES??", user.attributes);
+
     switch (user.attributes["app-role"]) {
       case "state":
         content = <HomeState />;
