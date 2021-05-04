@@ -1,7 +1,7 @@
 export const tabs = ["0000", "0001", "0105", "0612"];
 
 export const statusData = {
-  status_modified_by: "seed",
+  status_modified_by: "Timothy Griesemer",
   status_date: "2021-03-02T12:46:35.838Z",
   year: 2021,
   state_comments: [

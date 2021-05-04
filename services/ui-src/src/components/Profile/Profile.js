@@ -94,7 +94,7 @@ export default function Profile({ user }) {
   }
 
   return (
-    <div className="Profile">
+    <div className="Profile react-transition fade-in">
       <GridContainer className="container">
         <Grid row>
           <Grid col={12}>
