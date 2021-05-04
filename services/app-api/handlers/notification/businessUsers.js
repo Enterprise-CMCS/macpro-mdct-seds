@@ -56,6 +56,7 @@ async function getBusinessUsersEmail() {
 async function getUncertifiedStates() {
   // house the list of states from the state forms
   let UncertifiedstateList = [];
+  const newDate = new Date().getFullYear()
 
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
@@ -94,7 +95,7 @@ async function businessOwnersTemplate() {
 
   const recipient = {
     TO: sendToEmail,
-    SUBJECT: "FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
+    SUBJECT: "FFY SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
     This is an automated message to notify you that the states listed below have
@@ -125,3 +126,6 @@ async function businessOwnersTemplate() {
     Source: recipient.FROM
   };
 }
+
+
+// create a function to determine the quarter somehow based the date.

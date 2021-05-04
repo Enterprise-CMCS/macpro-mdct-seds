@@ -19,7 +19,6 @@ export const main = handler(async (event, context) => {
       context.succeed(event);
     }
   });
-
   return { message: "sucess, email sent" };
 });
 

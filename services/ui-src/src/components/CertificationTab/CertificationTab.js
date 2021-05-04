@@ -12,13 +12,12 @@ import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 // import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
-import { stateUsersEmail, businessUsersEmail } from "../../libs/api";
+// import { stateUsersEmail, businessUsersEmail } from "../../libs/api";
 
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
-  notApplicable,
   lastModified,
   lastModifiedBy,
   isFinal,
@@ -34,6 +33,7 @@ const CertificationTab = ({
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
   const submitProvisional = async () => {
+    // await stateUsersEmail();
     await certifyAndSubmitProvisional();
     saveForm();
     setprovisionalButtonStatus(true);
@@ -47,8 +47,6 @@ const CertificationTab = ({
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       uncertify();
-      await stateUsersEmail();
-      await businessUsersEmail();
       // await sendEmailtoBo();
       saveForm();
       setprovisionalButtonStatus(false);
