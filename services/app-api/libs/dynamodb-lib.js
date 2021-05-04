@@ -14,6 +14,8 @@ if (endpoint) {
   dyanmoConfig["region"] = "us-east-1";
 }
 
+const database = new AWS.DynamoDB();
+
 const client = new AWS.DynamoDB.DocumentClient(dyanmoConfig);
 
 atomicCounter.config.update(dyanmoConfig);
@@ -25,6 +27,7 @@ export default {
   update: (params) => client.update(params).promise(),
   delete: (params) => client.delete(params).promise(),
   scan: (params) => client.scan(params).promise(),
+  listTables: (params) => database.listTables(params).promise(),
   increment: (params) =>
     atomicCounter.increment(params, { tableName: atomicTableName }),
 };
