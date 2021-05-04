@@ -24,4 +24,3 @@ export const main = handler(async (event, context) => {
 
   return result.Items;
 });
-b;
