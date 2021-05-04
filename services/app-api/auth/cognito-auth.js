@@ -112,6 +112,9 @@ export const getCurrentUserInfo = async (event) => {
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
+  console.log("!!!!!!!!!This is the identity!!!!!!:\n\n");
+  console.log(event.requestContext.identity);
+
   console.log("\n\n!!!!user is: ");
   console.log(user);
 
