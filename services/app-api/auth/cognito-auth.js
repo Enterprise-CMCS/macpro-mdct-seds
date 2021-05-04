@@ -54,6 +54,9 @@ const userAttrDict = (cognitoUser) => {
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
+  console.log("\n\n@@@@@@auth provider is:");
+  console.log(authProvider);
+
   switch (authProvider) {
     case "offlineContext_cognitoAuthenticationProvider":
       userObject = localUser;
