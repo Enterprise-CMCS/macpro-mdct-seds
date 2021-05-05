@@ -68,7 +68,7 @@ export const main = handler(async (event, context) => {
       states: data.states ?? [],
       userId: newUserId.toString(),
       username: data.username,
-      sub: data.sub,
+      usernameSub: data.sub,
       lastLogin: data.lastLogin ? data.lastLogin : "",
     },
   };
