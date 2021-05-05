@@ -18,22 +18,18 @@ export const parseAuthProvider = (authProvider) => {
     const userPoolId = userPoolIdParts[userPoolIdParts.length - 1];
     const userPoolUserId = parts[parts.length - 1];
 
-    const userInfoObject = {
+    return {
       status: "success",
       userId: userPoolUserId,
       poolId: userPoolId,
     };
-
-    return userInfoObject;
   } catch (e) {
-    const errorObject = {
+    return {
       status: "error",
       errorMessage:
         "Error (parseAuthProvider): parseAuth doesnt have enough parts",
       detailedErrorMessage: e,
     };
-
-    return errorObject;
   }
 };
 
@@ -53,8 +49,8 @@ const userAttrDict = (cognitoUser) => {
 
 // userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
 export const userFromCognitoAuthProvider = async (authProvider) => {
-  let userObject = {},
-    cognito;
+  let userObject = {};
+  let cognito;
 
   console.log("\n\n@@@@@@auth provider is:");
   console.log(authProvider);
