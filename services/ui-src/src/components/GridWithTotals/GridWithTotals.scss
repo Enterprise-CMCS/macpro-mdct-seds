@@ -11,8 +11,16 @@ $mdct-white: #fff;
 }
 
 .grid-with-totals {
-  table{
-    width:95%;
+  table {
+    tr th:first-child {
+      width: 20%;
+      min-width: 20%;
+      word-break: break-all;
+    }
+    tr th:last-child {
+      width: 5%;
+    }
+    width: 95%;
   }
   th {
     font-weight: bold;

@@ -170,9 +170,11 @@ const GridWithTotals = props => {
                       />
                     ) : (
                       <span className="usa-input rid-column synthesized">
-                        {Number.parseFloat(
-                          gridData[rowIndex][columnIndex]
-                        ).toFixed(currentPrecision)}
+                        {gridData[rowIndex][columnIndex] >= 0
+                          ? Number.parseFloat(
+                              gridData[rowIndex][columnIndex]
+                            ).toFixed(currentPrecision)
+                          : ""}
                       </span>
                     )}
                   </td>
@@ -198,7 +200,9 @@ const GridWithTotals = props => {
                     />
                   ) : (
                     <span className="usa-input grid-column synthesized ">
-                      {Number.parseFloat(column).toFixed(currentPrecision)}
+                      {column >= 0
+                        ? Number.parseFloat(column).toFixed(currentPrecision)
+                        : ""}
                     </span>
                   )}
                 </td>
@@ -208,9 +212,11 @@ const GridWithTotals = props => {
             return formattedCell;
           })}
           <td className="total-column">
-            {Number.parseFloat(gridRowTotals[rowIndex]).toFixed(
-              currentPrecision
-            )}
+            {gridRowTotals[rowIndex] > 0
+              ? Number.parseFloat(gridRowTotals[rowIndex]).toFixed(
+                  currentPrecision
+                )
+              : 0}
           </td>
         </tr>
       );
@@ -231,7 +237,9 @@ const GridWithTotals = props => {
     } else {
       column = (
         <td className="total-column">
-          {Number.parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)}
+          {gridColumnTotals[i] > 0
+            ? Number.parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+            : 0}
         </td>
       );
     }
@@ -250,7 +258,9 @@ const GridWithTotals = props => {
           <tr className="total-row">
             {totalsRow}
             <td className="total-column">
-              {Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
+              {gridTotalOfTotals > 0
+                ? Number.parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                : 0}
             </td>
           </tr>
         </tbody>
