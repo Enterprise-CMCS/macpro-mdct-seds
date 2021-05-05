@@ -479,7 +479,7 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
@@ -531,7 +531,7 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
@@ -583,7 +583,7 @@ const fullStoreMock = {
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",

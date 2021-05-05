@@ -11,6 +11,9 @@ $mdct-white: #fff;
 }
 
 .grid-with-totals {
+  table {
+    width: 95%;
+  }
   th {
     font-weight: bold;
     background: $mdct-gray !important;
@@ -29,5 +32,10 @@ $mdct-white: #fff;
   .total-column {
     background: $mdct-light-blue;
     font-weight: bold;
+  }
+  .synthesized {
+    border: none;
+    position: relative;
+    background-color: white;
   }
 }

@@ -442,7 +442,7 @@ const currentFormMock_21E = {
         row_total: true,
         column_total: true,
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         label:
           "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
@@ -494,7 +494,7 @@ const currentFormMock_21E = {
         row_total: true,
         column_total: true,
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         label:
           "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
@@ -546,7 +546,7 @@ const currentFormMock_21E = {
         row_total: true,
         column_total: true,
         context_data: {
-          show_if_quarter_in: "4"
+          show_if_quarter_in: ["4"]
         },
         label:
           "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",

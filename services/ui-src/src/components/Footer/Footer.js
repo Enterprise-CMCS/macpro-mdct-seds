@@ -66,7 +66,7 @@ const Footer = () => {
                 &amp; Medicaid Services
               </div>
               <div className="address">
-                2500 Security Boulevard Baltimore, MD 21244
+                7500 Security Boulevard Baltimore, MD 21244
               </div>
             </div>
           </Grid>
