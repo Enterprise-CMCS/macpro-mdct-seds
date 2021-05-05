@@ -10,6 +10,7 @@ export async function ascertainUserPresence(user) {
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
+    sub: user.attributes.sub,
     role: user.attributes["app-role"],
     lastLogin: new Date().toISOString()
   };
