@@ -1,7 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-
-// var aws = require("aws-sdk");
+var AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
@@ -55,7 +54,7 @@ async function getBusinessUsersEmail() {
 async function getUncertifiedStates() {
   // house the list of states from the state forms
   let UncertifiedstateList = [];
-  const newDate = new Date().getFullYear()
+  // const newDate = new Date().getFullYear();
 
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
