@@ -68,10 +68,16 @@ export default function Login() {
   //If the environment is not PROD and is not VAL, the developer login will be shown
   let development = true;
   //if (window.location.hostname !== "mdctseds.cms.gov" && window.location.hostname !== "mdctsedsval.cms.gov") {
-  if (window._env_.STAGE !== "production" && window._env_.STAGE !== "prod" && window._env_.STAGE !== "val" && window._env_.STAGE !== "impl") {
+  if (
+    window._env_.STAGE !== "production" &&
+    window._env_.STAGE !== "prod" &&
+    window._env_.STAGE !== "val" &&
+    window._env_.STAGE !== "impl"
+  ) {
     development = false;
   }
-console.log("stage: ", window._env_.STAGE);
+
+  console.log("stage: ", window._env_.STAGE);
 
   return (
     <div
@@ -89,36 +95,40 @@ console.log("stage: ", window._env_.STAGE);
           <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
         </LoaderButton>
       </div>
-      <form onSubmit={handleSubmit} className="developer-login text-center" hidden={development}>
+      <form
+        onSubmit={handleSubmit}
+        className="developer-login text-center"
+        hidden={development}
+      >
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
-              autoFocus
-              type="email"
-              value={fields.email}
-              onChange={handleFieldChange}
-              className="form-input"
+            autoFocus
+            type="email"
+            value={fields.email}
+            onChange={handleFieldChange}
+            className="form-input"
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
           <ControlLabel>Password</ControlLabel>
           <FormControl
-              type="password"
-              value={fields.password}
-              onChange={handleFieldChange}
-              className="form-input"
+            type="password"
+            value={fields.password}
+            onChange={handleFieldChange}
+            className="form-input"
           />
         </FormGroup>
         <div className="padding-y-9">
           <LoaderButton
-              block
-              type="submit"
-              bsSize="large"
-              isLoading={isLoading}
-              disabled={!validateForm()}
+            block
+            type="submit"
+            bsSize="large"
+            isLoading={isLoading}
+            disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2"/>
+            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
           </LoaderButton>
         </div>
       </form>

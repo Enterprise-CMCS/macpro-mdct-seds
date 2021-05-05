@@ -28,7 +28,12 @@ describe("Test LoaderButton.js", () => {
     expect(getByTestId("OktaLogin")).toBeVisible();
   });
   //These options are only available on development branches
-  if (window._env_.STAGE !== "production" && window._env_.STAGE !== "prod" && window._env_.STAGE !== "val" && window._env_.STAGE !== "impl") {
+  if (
+    window._env_.STAGE !== "production" &&
+    window._env_.STAGE !== "prod" &&
+    window._env_.STAGE !== "val" &&
+    window._env_.STAGE !== "impl"
+  ) {
     test("Check for Email input box", () => {
       useContextMock.mockReturnValue(true);
       const { getByLabelText } = render(<Login />);
