@@ -88,7 +88,7 @@ async function getUncertifiedStates() {
 async function businessOwnersTemplate() {
   const sendToEmail = await getBusinessUsersEmail();
   const uncertifiedStates = await getUncertifiedStates();
-  const fromEmail = "eniola.olaniyan@cms.hhs.gov";
+  const fromEmail = "jgillis@collabralink.com";
   const recipient = {
     TO: sendToEmail,
     SUBJECT: "FFY SEDS Enrollment Data Overdue",

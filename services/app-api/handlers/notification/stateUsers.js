@@ -133,9 +133,10 @@ async function getUncertifiedStates() {
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
+  const fromEmail = "jgillis@collabralink.com";
 
   const recipient = {
-    TO: sendToEmail,
+    TO: stateUsersToEmail,
     SUBJECT: "Reminder: [State] FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
