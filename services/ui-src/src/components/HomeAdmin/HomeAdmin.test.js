@@ -11,10 +11,6 @@ describe("Tests for HomeAdmin.js", () => {
   let wrapper;
   let store;
 
-  const realUseState = React.useState;
-  const mockInitialState = "admin";
-  // Mock useState before rendering your component to set initial state values
-
   beforeEach(() => {
     store = mockStore(fullStoreMock);
 
