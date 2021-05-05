@@ -171,9 +171,9 @@ const GridWithTotals = props => {
                     ) : (
                       <span className="usa-input rid-column synthesized">
                         {gridData[rowIndex][columnIndex] >= 0
-                          ? parseFloat(
-                              gridData[rowIndex][columnIndex]
-                            ).toFixed(currentPrecision)
+                          ? parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                              currentPrecision
+                            )
                           : ""}
                       </span>
                     )}
@@ -213,9 +213,7 @@ const GridWithTotals = props => {
           })}
           <td className="total-column">
             {gridRowTotals[rowIndex] > 0
-              ? parseFloat(gridRowTotals[rowIndex]).toFixed(
-                  currentPrecision
-                )
+              ? parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
               : 0}
           </td>
         </tr>
