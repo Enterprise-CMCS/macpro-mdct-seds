@@ -32,7 +32,6 @@ const CertificationTab = ({
 
   const submitProvisional = async () => {
     await certifyAndSubmitProvisional();
-    certifyAndSubmitProvisional();
     saveForm();
     setprovisionalButtonStatus(true);
   };
@@ -44,7 +43,7 @@ const CertificationTab = ({
   };
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
-      uncertify();
+      await uncertify();
       saveForm();
       await sendEmailtoBo();
       setprovisionalButtonStatus(false);
