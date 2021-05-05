@@ -54,6 +54,9 @@ const userAttrDict = (cognitoUser) => {
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
+  console.log("\n\n@@@@@@auth provider is:");
+  console.log(authProvider);
+
   switch (authProvider) {
     case "offlineContext_cognitoAuthenticationProvider":
       userObject = localUser;
@@ -61,6 +64,9 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 
     default:
       const userInfo = parseAuthProvider(authProvider);
+
+      console.log("\n\n~~~~User info from COGNITO:");
+      console.log(userInfo);
 
       // calling a dependency so we have to try
       try {
@@ -86,12 +92,18 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
           role: "STATE_USER",
         };
       } catch (e) {
-        const errorObject = {
-          status: "error",
-          errorMessage:
-            "Error (userFromCognitoAuthProvider): cannot retrieve user info",
-          detailedErrorMessage: e,
-        };
+        let errorObject;
+
+        try {
+          // *** retrieve user from the datab
+        } catch (e1) {
+          errorObject = {
+            status: "error",
+            errorMessage:
+              "Error (userFromCognitoAuthProvider): cannot retrieve user info",
+            detailedErrorMessage: e,
+          };
+        }
 
         return errorObject;
       }
@@ -106,18 +118,36 @@ export const getCurrentUserInfo = async (event) => {
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
-  const body = JSON.stringify({
-    email: user.email,
-  });
+  console.log("!!!!!!!!!This is the identity!!!!!!:\n\n");
+  console.log(event.requestContext.identity);
+
+  console.log("\n\n!!!!user is: ");
+  console.log(user);
+
+  const email =
+    user.email !== undefined
+      ? user.email
+      : user["UserAttributes"].find((record) => record["Name"] === "email")
+          .Value;
+
+  console.log("\n\n????found this:");
+  console.log(email);
+
+  let body;
+
+  if (email !== undefined)
+    body = JSON.stringify({
+      email: email,
+    });
 
   const currentUser = await obtainUserByEmail({
     body: body,
   });
 
-  const userObject = {
+  console.log(currentUser);
+
+  return {
     status: "success",
     data: JSON.parse(currentUser.body)["Items"][0],
   };
-
-  return userObject;
 };
