@@ -18,6 +18,7 @@ custom:
       - impl
       - val
       - prod
+
   dynamodb:
     stages:
       - local
