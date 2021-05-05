@@ -23,7 +23,7 @@ export async function ascertainUserPresence(user) {
   } else {
     let updateItem = existingUser["Items"];
     updateItem.map(async userInfo => {
-      userInfo.sub = user.sub;
+      userInfo.sub = user.attributes.sub;
       console.log("\n\n##### updating with this:");
       console.log(userInfo);
       await updateUser(userInfo);
