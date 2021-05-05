@@ -15,11 +15,17 @@ export async function ascertainUserPresence(user) {
     lastLogin: new Date().toISOString()
   };
 
+  console.log("\n\n*****figured out user object: ");
+  console.log(userObject);
+
   if (existingUser === false) {
     await createUser(userObject);
   } else {
     let updateItem = existingUser["Items"];
     updateItem.map(async userInfo => {
+      userInfo.sub = user.sub;
+      console.log("\n\n##### updating with this:");
+      console.log(userInfo);
       await updateUser(userInfo);
     });
   }
