@@ -84,61 +84,7 @@ custom:
       table: ${self:custom.stage}-auth-user-roles
       sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
-resources:
-  Conditions:
-    CreatePermissionsBoundary:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.iamPermissionsBoundaryPolicy}
-  Resources:
-    LambdaDataLoadRole:
-      Type: "AWS::IAM::Role"
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service: "lambda.amazonaws.com"
-              Action: "sts:AssumeRole"
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
-        Policies:
-          - PolicyName: "LambdaDataLoadPolicy"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: "Allow"
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "arn:aws:logs:*:*:*"
-                - Effect: "Allow"
-                  Action:
-                    - dynamodb:DescribeStream
-                    - dynamodb:GetRecords
-                    - dynamodb:GetShardIterator
-                    - dynamodb:ListStreams
-                  Resource: ${self:custom.tableStreamArn}
-                - Effect: "Allow"
-                  Action:
-                    - dynamodb:GetItem
-                    - dynamodb:PutItem
-                    - dynamodb:BatchGetItem
-                    - dynamodb:BatchWriteItem
-                  Resource: "arn:aws:dynamodb:*:*:table/testLoad"
-                - Effect: "Allow"
-                  Action:
-                    - s3:GetObject
-                    - s3:PutObject
-                  Resource: "arn:aws:s3::*:*"
-  # scripts:
-  #   hooks:
-  #     deploy:finalize: |
-  #       sls --stage ${self:custom.stage} dynamodb:seed
+  scripts:
+    hooks:
+      deploy:finalize: |
+        sls --stage ${self:custom.stage} dynamodb:seed
