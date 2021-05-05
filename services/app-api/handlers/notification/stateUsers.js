@@ -2,8 +2,6 @@ import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
 var ses = new AWS.SES({ region: "us-east-1" });
 
-// var aws = require("aws-sdk");
-
 /**
  * Handler responsible for sending notification to state users At the end of each Quarter.
  * At the end of each Quarter, as a State User, I want to know if my state has NOT certified its data yet.
@@ -35,7 +33,7 @@ async function getUncertifiedStates() {
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
     ExpressionAttributeValues: {
-      ":status": "Not Started",
+      ":status": "In Progress",
     },
     FilterExpression: "#Unceritifiedstatus = :status",
   };
@@ -59,6 +57,7 @@ async function getUncertifiedStates() {
   return filteredStateList;
 };
 
+// get all state users in our system by role
 async function getStateUsers() {
   const stateUsersObj = [];
   const params = {
@@ -84,6 +83,7 @@ async function getStateUsers() {
   return stateUsersObj;
 }
 
+// returns a list of state users emails whose state isnt fully certified 
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getStateUsers();
   const uncertifiedStateList = await getUncertifiedStates();
@@ -96,24 +96,53 @@ async function certifiedStateUsersEmail() {
   return stateUsersToEmail;
 }
 
-async function stateUsersTemplate() {
-  const stateUsersToEmail = await certifiedStateUsersEmail();
-  console.log(stateUsersToEmail, "Email of state users whose state isnt certified yet");
-  if (stateUsersToEmail.Count === 0) {
-    throw new Error("No state user email to send reminder to");
+// returns a list of all certified states
+async function getUncertifiedStates() {
+  // house the list of states from the state forms
+  let UncertifiedstateList = [];
+  const params = {
+    TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
+    ExpressionAttributeValues: {
+      ":status": "Not Started",
+    },
+    FilterExpression: "#Unceritifiedstatus = :status",
+  };
+  // data returned from the database which contains the database Items
+  const result = await dynamoDb.scan(params);
+  if (result.Count === 0) {
+    return [{
+      message: "At this time, There are no states which is currrently status: In Progress"
+    }];
   }
-  // const UncerteriedStateList = await getUncertifiedStates();
-  const fromEmail = "eniola.olaniyan@cms.hhs.gov";
+  // List of the state forms that are "In Progress"
+  const payload = result.Items;
+  payload.map(stateInfo => {
+    // pulled the state from each state forms and pushed into array
+    UncertifiedstateList.push(stateInfo.program_code)
+  });
+  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) {
+    // filter the state list so we dont have duplicates
+    return index === self.indexOf(elem);
+  });
+  return filteredStateList;
+};
+
+// creates a template for stateUsers
+async function stateUsersTemplate() {
+  // Email of state users whose state isnt certified yet
+  const stateUsersToEmail = await certifiedStateUsersEmail();
 
   const recipient = {
-    TO: stateUsersToEmail,
-    SUBJECT: "Reminder: SEDS Enrollment Data Overdue",
+    TO: sendToEmail,
+    SUBJECT: "Reminder: [State] FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
-    Dear State User,
+    Hello [State],
 
-    We are reaching out to check on the status of your state for the current quarter 
-    for the child enrollment data submission in the Statistical Enrollment Data System (SEDS).
+    We are reaching out to check on the status of [State]'s FFY[Fiscal Year]
+    Q[Quarter] child enrollment data submission in the Statistical Enrollment Data System (SEDS).
 
     FFY[Fiscal Year] Q[Quarter] reporting of enrollment data to the SEDS was
     due on [DUE DATE]. Our records indicate that [State] has not yet submitted
@@ -140,7 +169,7 @@ async function stateUsersTemplate() {
     `,
   };
   return {
-    Destination: { ToAddresses: recipient.TO}, // All Active Users With the “state” Role Assigned to the State
+    Destination: { ToAddresses: recipient.TO},
     Message: {
       Body: {
         Text: {
@@ -154,3 +183,6 @@ async function stateUsersTemplate() {
     Source: recipient.FROM
   };
 }
+
+
+

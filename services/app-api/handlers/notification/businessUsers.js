@@ -11,20 +11,19 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
-  console.log(email);
-  // let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-  // .sendEmail(email)
-  // .promise();
-  // try {
-  //   const data = await sendPromise;
-  //   console.log(data.MessageId);
-  // } catch (err) {
-  //   console.error(err, err.stack);
-  // }
-  // return {
-  //   status: "sucess",
-  //   message: "quartly Businness owners email sent"
-  // };
+  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  .sendEmail(email)
+  .promise();
+  try {
+    const data = await sendPromise;
+    console.log(data.MessageId);
+  } catch (err) {
+    console.error(err, err.stack);
+  }
+  return {
+    status: "sucess",
+    message: "quartly Businness owners email sent"
+  };
 });
 
 // obtains all businessUsers emails
@@ -63,7 +62,7 @@ async function getUncertifiedStates() {
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
     ExpressionAttributeValues: {
-      ":status": "Not Started",
+      ":status": "In Progress",
     },
     FilterExpression: "#Unceritifiedstatus = :status",
   };
@@ -90,9 +89,7 @@ async function getUncertifiedStates() {
 async function businessOwnersTemplate() {
   const sendToEmail = await getBusinessUsersEmail();
   const uncertifiedStates = await getUncertifiedStates();
-
   const fromEmail = "eniola.olaniyan@cms.hhs.gov";
-
   const recipient = {
     TO: sendToEmail,
     SUBJECT: "FFY SEDS Enrollment Data Overdue",

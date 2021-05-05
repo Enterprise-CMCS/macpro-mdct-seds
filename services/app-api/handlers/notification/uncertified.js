@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
   const email = await unCetifiedTemplate(data);
   ses.sendEmail(email, function (err, data) {
     if (err) {
-      console.log(err);
+      console.log("cannot send email through SES locally", err);
       context.fail(err);
     } else {
       console.log(data);
@@ -21,10 +21,11 @@ export const main = handler(async (event, context) => {
   });
   return {
     status: "success",
-    message: "sucess, email sent"
+    message: "email sent"
   };
 });
 
+// logic to retrieve all business users emails
 async function getBusinessUsersEmail() {
   const businessOwnersEmails = [];
   const params = {
@@ -48,6 +49,7 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
+// Email template for business users
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   if (sendToEmail.Count === 0) {
@@ -61,7 +63,7 @@ async function unCetifiedTemplate(payload) {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.state} [State Name] has uncertified the following SEDS report as of DateTimeOfAction]:
+          This is an automated message to notify you that ${payload.state} has uncertified the following SEDS report as of DateTimeOfAction]:
           [Report Number] for FFY [Fiscal Year] Quarter [Quarter Number]
           Please follow up with the state’s representatives if you have any questions.
           -MDCT SEDS`,

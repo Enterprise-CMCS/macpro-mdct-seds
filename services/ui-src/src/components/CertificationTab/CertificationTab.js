@@ -11,9 +11,7 @@ import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-// import { sendUncertifyEmail, obtainUserByEmail, stateUsersEmail, businessUsersEmail } from "../../libs/api";
 import { sendUncertifyEmail, obtainUserByEmail } from "../../libs/api";
-
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
@@ -33,8 +31,8 @@ const CertificationTab = ({
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
   const submitProvisional = async () => {
-    // await stateUsersEmail();
     await certifyAndSubmitProvisional();
+    certifyAndSubmitProvisional();
     saveForm();
     setprovisionalButtonStatus(true);
   };
@@ -47,8 +45,8 @@ const CertificationTab = ({
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       uncertify();
-      await sendEmailtoBo();
       saveForm();
+      await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
     }
@@ -58,20 +56,24 @@ const CertificationTab = ({
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
     var datetime = new Date().getTime();
-    const currentUser = await obtainUserByEmail({
-      email: userEmail,
-    });
-    let userObj = currentUser["Items"];
-    userObj.map(async userInfo => {
-      if (userInfo.role === "state") {
-        let emailObj = {
-          states: userInfo.states,
-          date: datetime,
-          username: userInfo.username
+    try {
+      const currentUser = await obtainUserByEmail({
+        email: userEmail,
+      });
+      let userObj = currentUser["Items"];
+      userObj.map(async userInfo => {
+        if (userInfo.role === "state") {
+          let emailObj = {
+            states: userInfo.states,
+            date: datetime,
+            username: userInfo.username
+          }
+          await sendUncertifyEmail(emailObj);
         }
-        await sendUncertifyEmail(emailObj);
-      }
-    });
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   let certifyText;

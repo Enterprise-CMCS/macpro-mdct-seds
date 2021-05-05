@@ -139,13 +139,3 @@ export const sendUncertifyEmail = data => {
   opts.body = data;
   return API.post("mdct-seds", `/notification/uncertified`, opts);
 };
-// export const stateUsersEmail = data => {
-//   const opts = requestOptions();
-//   opts.body = data;
-//   return API.post("mdct-seds", `/notification/stateUsersEmail`, opts);
-// };
-// export const businessUsersEmail = data => {
-//   const opts = requestOptions();
-//   opts.body = data;
-//   return API.post("mdct-seds", `/notification/businessUsersEmail`, opts);
-// };
