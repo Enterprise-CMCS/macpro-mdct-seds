@@ -92,12 +92,18 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
           role: "STATE_USER",
         };
       } catch (e) {
-        const errorObject = {
-          status: "error",
-          errorMessage:
-            "Error (userFromCognitoAuthProvider): cannot retrieve user info",
-          detailedErrorMessage: e,
-        };
+        let errorObject;
+
+        try {
+          // *** retrieve user from the datab
+        } catch (e1) {
+          errorObject = {
+            status: "error",
+            errorMessage:
+              "Error (userFromCognitoAuthProvider): cannot retrieve user info",
+            detailedErrorMessage: e,
+          };
+        }
 
         return errorObject;
       }
