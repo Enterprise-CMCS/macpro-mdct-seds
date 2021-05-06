@@ -50,7 +50,7 @@ const userAttrDict = (cognitoUser) => {
 // userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
-  let cognito;
+  const cognito = new CognitoIdentityServiceProvider();
 
   console.log("\n\n@@@@@@auth provider is:");
   console.log(authProvider);
@@ -68,7 +68,6 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 
       // calling a dependency so we have to try
       try {
-        cognito = new CognitoIdentityServiceProvider();
         const userResponse = await cognito
           .adminGetUser({
             Username: userInfo.userId,
@@ -129,9 +128,8 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
               "Error (userFromCognitoAuthProvider): cannot retrieve user info",
             detailedErrorMessage: e,
           };
+          return errorObject;
         }
-
-        return errorObject;
       }
       break;
   }
