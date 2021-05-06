@@ -1,87 +1,135 @@
 import { API } from "aws-amplify";
-import config from "../config";
-import { getLocalUserInfo } from "./user";
 
-function requestOptions() {
-  const localLogin = config.LOCAL_LOGIN === "true";
+/*************************** HELPER FUNCTIONS ***************************/
+const requestOptions = () => {
+  return {};
+};
 
-  if (localLogin) {
-    // serverless offline passes the value of the cognito-identity-id into our lambdas as
-    // requestContext.identity.cognitoIdentityId. This lets us set a user locally without involving Cognito.
-    const currentUser = getLocalUserInfo();
-    const options = {
-      headers: { "cognito-identity-id": currentUser.username }
-    };
-    return options;
-  } else {
-    return {};
-  }
-}
-
-export function listAmendments() {
-  const opts = requestOptions();
-  return API.get("amendments", "/amendments", opts);
-}
-
-export function getAmendment(id) {
-  const opts = requestOptions();
-  return API.get("amendments", `/amendments/${id}`, opts);
-}
-
-export function createAmendment(body) {
-  const opts = requestOptions();
-  opts.body = body;
-  return API.post("amendments", "/amendments", opts);
-}
-
-export function updateAmendment(id, body) {
-  const opts = requestOptions();
-  opts.body = body;
-  return API.put("amendments", `/amendments/${id}`, opts);
-}
-
-export function deleteAmendment(id) {
-  const opts = requestOptions();
-  return API.del("amendments", `/amendments/${id}`, opts);
-}
-
-export function listUsers() {
-  const opts = requestOptions();
-  return API.get("amendments", `/users`, opts);
-}
-
-export function activationUsers(data) {
+/*************************** EXPORT API ***************************/
+// *** export to excel
+export const exportToExcel = async data => {
   const opts = requestOptions();
   opts.body = data;
-  return API.put("amendments", `/users/activation/${data.username}`, opts);
-}
 
-export function getUser(data) {
+  console.log(opts.body);
+
+  return API.post("mdct-seds", "/export/export-to-excel", opts);
+};
+
+/*************************** LOAD DATA API ***************************/
+// *** load data
+export const loadData = async data => {
   const opts = requestOptions();
   opts.body = data;
-  return API.get("amendments", `/users/${data.userId}`, opts);
-}
 
-export function updateUser(data) {
+  console.log(opts.body);
+
+  return API.post("mdct-seds", "/load-data/upload", opts);
+};
+
+export const getTableNames = () => {
+  const opts = requestOptions();
+
+  return API.get("mdct-seds", "/load-data/get-table-names", opts);
+};
+
+/*************************** USER API ***************************/
+// *** list all Users
+export const listUsers = () => {
+  const opts = requestOptions();
+
+  return API.get("mdct-seds", `/users`, opts);
+};
+
+// *** activate / deactivate user
+export const activateDeactivateUser = data => {
   const opts = requestOptions();
   opts.body = data;
-  return API.post("amendments", `/users/update/${data.userId}`, opts);
-}
 
-export function getStateForms(stateId, specifiedYear, quarter) {
+  return API.post("mdct-seds", `/users/activation/${data.username}`, opts);
+};
+
+// *** get user information by user id
+export const getUserById = data => {
   const opts = requestOptions();
+
+  return API.get("mdct-seds", `/users/${data.userId}`, opts);
+};
+
+// *** get user information by username
+export const obtainUserByUsername = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/get`, opts);
+};
+
+// *** get user information by username
+export const obtainUserByEmail = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/get/email`, opts);
+};
+
+// *** update user information
+export const updateUser = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/update/${data.userId}`, opts);
+};
+
+// *** create user
+export const createUser = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/add`, opts);
+};
+
+/*************************** FORMS API ***************************/
+// *** get forms associated with a specified state for specified year and quarter
+export const getStateForms = (stateId, specifiedYear, quarter) => {
+  const opts = requestOptions();
+
   return API.get(
-    "amendments",
+    "mdct-seds",
     `/forms/${stateId}/${specifiedYear}/${quarter}`,
     opts
   );
-}
+};
 
-export function getSingleForm(state, specifiedYear, quarter, form) {
+// *** get single form associated with a specified state, year and quarter
+export const getSingleForm = (state, specifiedYear, quarter, form) => {
   const opts = requestOptions();
+
   return API.get(
-    "amendments",
+    "mdct-seds",
     `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
     opts
   );
-}
+};
+
+// *** get form types
+export const getFormTypes = _ => {
+  const opts = requestOptions();
+
+  return API.get("mdct-seds", "/form-types", opts);
+};
+
+// *** get form years and quarters
+export const obtainAvailableForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/forms/obtainAvailableForms`, opts);
+};
+
+// *** save single form
+export const saveSingleForm = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/single-form/save", opts);
+};

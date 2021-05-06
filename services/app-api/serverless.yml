@@ -11,12 +11,22 @@ plugins:
   - serverless-plugin-warmup
   - serverless-plugin-scripts
   - serverless-offline
-
+  - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  serverlessTerminationProtection:
+    stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
+      - master
+      - val
+      - production
+      - develop
+      - main
+      - impl
+      - val
+      - prod
   infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
   AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
   AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
@@ -101,53 +111,35 @@ provider:
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
 
 functions:
-  create:
-    handler: handlers/create.main
+  loadData:
+    handler: handlers/load-data/post/uploadData.main
     role: LambdaApiRole
     events:
       - http:
-          path: amendments
+          path: load-data/upload
           method: post
           cors: true
           authorizer: aws_iam
-  get:
-    handler: handlers/get.main
+  getTableNames:
+    handler: handlers/load-data/get/getTableNames.main
     role: LambdaApiRole
     events:
       - http:
-          path: amendments/{id}
+          path: load-data/get-table-names
           method: get
           cors: true
           authorizer: aws_iam
-  list:
-    handler: handlers/list.main
+  exportToExcel:
+    handler: export/exportToExcel.main
     role: LambdaApiRole
     events:
       - http:
-          path: amendments
-          method: get
+          path: export/export-to-excel
+          method: post
           cors: true
           authorizer: aws_iam
-  update:
-    handler: handlers/update.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments/{id}
-          method: put
-          cors: true
-          authorizer: aws_iam
-  delete:
-    handler: handlers/delete.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: amendments/{id}
-          method: delete
-          cors: true
-          authorizer: aws_iam
-  getUser:
-    handler: handlers/users/get.main
+  getUserById:
+    handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
     events:
       - http:
@@ -156,7 +148,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getUsers:
-    handler: handlers/users/list.main
+    handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
     events:
       - http:
@@ -164,8 +156,44 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  obtainUserByUsername:
+    handler: handlers/users/post/obtainUserByUsername.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/get
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainUsernameBySub:
+    handler: handlers/users/post/obtainUsernameBySub.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/sub
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainUserByEmail:
+    handler: handlers/users/post/obtainUserByEmail.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/get/email
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainUserStamp:
+    handler: handlers/users/get/getUsername.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/get/username
+          method: post
+          cors: true
+          authorizer: aws_iam
   createUser:
-    handler: handlers/users/create.main
+    handler: handlers/users/post/createUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -174,7 +202,7 @@ functions:
           cors: true
           authorizer: aws_iam
   deleteUser:
-    handler: handlers/users/delete.main
+    handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -182,17 +210,17 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  activationUser:
-    handler: handlers/users/activation.main
+  activateDeactivateUser:
+    handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
     events:
       - http:
           path: users/activation/{username}
-          method: put
+          method: post
           cors: true
           authorizer: aws_iam
   updateUser:
-    handler: handlers/users/update.main
+    handler: handlers/users/post/updateUser.main
     role: LambdaApiRole
     events:
       - http:
@@ -216,6 +244,33 @@ functions:
       - http:
           path: forms/{stateId}/{specifiedYear}/{quarter}
           method: get
+          cors: true
+          authorizer: aws_iam
+  obtainAvailableForms:
+    handler: handlers/forms/post/obtainAvailableForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: forms/obtainAvailableForms
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getFormTypes:
+    handler: handlers/forms/get/getFormTypes.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-types
+          method: get
+          cors: true
+          authorizer: aws_iam
+  saveForm:
+    handler: handlers/forms/post/saveForm.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: single-form/save
+          method: post
           cors: true
           authorizer: aws_iam
 
@@ -265,6 +320,7 @@ resources:
                     - dynamodb:PutItem
                     - dynamodb:UpdateItem
                     - dynamodb:DeleteItem
+                    - dynamodb:ListTables
                   Resource:
                     - ${self:custom.AgeRangesTableArn}
                     - ${self:custom.FormAnswersTableArn}
@@ -282,6 +338,10 @@ resources:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
+                - Effect: "Allow"
+                  Action:
+                    - cognito-idp:AdminGetUser
+                  Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:

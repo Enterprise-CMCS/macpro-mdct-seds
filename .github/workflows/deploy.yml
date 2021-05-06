@@ -56,25 +56,27 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-      - name: Combine yarn.lock files to single file
-        run: find services -maxdepth 3 -name yarn.lock | xargs cat yarn.lock > combined-yarn-lock.txt
-      - name: cache dependencies
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: |
-            services/database/node_modules
-            services/uploads/node_modules
-            services/app-api/node_modules
-            services/stream-functions/node_modules
-            services/ui-auth/node_modules
-            services/ui/node_modules
-            services/ui-src/node_modules
-            node_modules
-            tests/nightwatch/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('combined-yarn-lock.txt') }}
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Jest setup
+        working-directory: services/ui-src
+        # run: yarn add jest
+        run: yarn install
+      - name: unit test & publish coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: 405733a088d24c8ce617d4a0079cdb7c387ff13b20d6ed1bcf4c5eb8e81c413f
+        with:
+          debug: true
+          workingDirectory: ${{github.workspace}}/services/ui-src
+          coverageCommand: npm run-script coverage
+          coverageLocations: |
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.

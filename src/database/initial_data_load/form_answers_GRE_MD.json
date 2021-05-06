@@ -1,8 +1,10 @@
 [
   {
-    "answer_entry": "MD-2021-1-GRE-01",
+    "answer_entry": "MD-2021-1-GRE-0018-01",
     "state_form": "MD-2021-1-GRE",
     "question": "2021-GRE-01",
+    "age_range": "All Ages",
+    "rangeId": "0018",
     "rows": [
       {
         "col1": "",
@@ -37,15 +39,17 @@
         "col6": null
       }
     ],
-    "last_modified": "02/23/2021",
+    "last_modified": "2021-10-01T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "02/23/2021",
+    "created_date": "2021-10-01T12:46:35.838Z",
     "created_by": "seed"
   },
   {
-    "answer_entry": "MD-2021-1-GRE-02",
+    "answer_entry": "MD-2021-1-GRE-0018-02",
     "state_form": "MD-2021-1-GRE",
     "question": "2021-GRE-02",
+    "age_range": "All Ages",
+    "rangeId": "0018",
     "rows": [
       {
         "col1": "",
@@ -208,15 +212,17 @@
         "col6": null
       }
     ],
-    "last_modified": "02/23/2021",
+    "last_modified": "2021-10-01T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "02/23/2021",
+    "created_date": "2021-10-01T12:46:35.838Z",
     "created_by": "seed"
   },
   {
-    "answer_entry": "MD-2021-1-GRE-03",
+    "answer_entry": "MD-2021-1-GRE-0018-03",
     "state_form": "MD-2021-1-GRE",
     "question": "2021-GRE-03",
+    "age_range": "All Ages",
+    "rangeId": "0018",
     "rows": [
       {
         "col1": "",
@@ -283,9 +289,9 @@
         "col6": null
       }
     ],
-    "last_modified": "02/23/2021",
+    "last_modified": "2021-10-01T12:46:35.838Z",
     "last_modified_by": "seed",
-    "created_date": "02/23/2021",
+    "created_date": "2021-10-01T12:46:35.838Z",
     "created_by": "seed"
   }
 ]

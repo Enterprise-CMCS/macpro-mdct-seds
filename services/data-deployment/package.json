@@ -1,0 +1,12 @@
+{
+  "name": "data-deployment",
+  "description": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "serverless-dynamodb-seed": "^0.3.0",
+    "serverless-plugin-scripts": "^1.0.2"
+  },
+  "devDependencies": {
+    "serverless-stack-termination-protection": "^1.0.4"
+  }
+}

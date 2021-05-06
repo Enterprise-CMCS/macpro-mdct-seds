@@ -1,0 +1,90 @@
+service: data-deployment
+
+frameworkVersion: "2"
+
+plugins:
+  - serverless-plugin-scripts
+  - serverless-dynamodb-seed
+  - serverless-stack-termination-protection
+
+provider:
+  name: aws
+  region: us-east-1
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  serverlessTerminationProtection:
+    stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
+      - master
+      - val
+      - production
+      - develop
+      - main
+      - impl
+      - val
+      - prod
+  seed:
+    forms:
+      table: ${self:custom.stage}-forms
+      sources: [../../src/database/initial_data_load/forms.json]
+    age-ranges:
+      table: ${self:custom.stage}-age-ranges
+      sources: [../../src/database/initial_data_load/age_ranges.json]
+    status:
+      table: ${self:custom.stage}-status
+      sources: [../../src/database/initial_data_load/status.json]
+    states:
+      table: ${self:custom.stage}-states
+      sources: [../../src/database/initial_data_load/states.json]
+    state-forms:
+      table: ${self:custom.stage}-state-forms
+      sources: [../../src/database/initial_data_load/state_forms.json]
+    form-questions:
+      table: ${self:custom.stage}-form-questions
+      sources:
+        [
+          ../../src/database/initial_data_load/21E.json,
+          ../../src/database/initial_data_load/21E_2020.json,
+          ../../src/database/initial_data_load/64_21E.json,
+          ../../src/database/initial_data_load/GenderRaceEthnicity.json,
+          ../../src/database/initial_data_load/21PW.json,
+          ../../src/database/initial_data_load/21PW_2020.json,
+          ../../src/database/initial_data_load/64EC.json,
+        ]
+    form-answers:
+      table: ${self:custom.stage}-form-answers
+      sources:
+        [
+          ../../src/database/initial_data_load/form_answers_21E_AL.json,
+          ../../src/database/initial_data_load/form_answers_21E_MD.json,
+          ../../src/database/initial_data_load/form_answers_21E_PA.json,
+          ../../src/database/initial_data_load/form_answers_64EC_AL.json,
+          ../../src/database/initial_data_load/form_answers_64EC_MD.json,
+          ../../src/database/initial_data_load/form_answers_64EC_PA.json,
+          ../../src/database/initial_data_load/form_answers_64_21E_AL.json,
+          ../../src/database/initial_data_load/form_answers_64_21E_MD.json,
+          ../../src/database/initial_data_load/form_answers_64_21E_PA.json,
+          ../../src/database/initial_data_load/form_answers_GRE_AL.json,
+          ../../src/database/initial_data_load/form_answers_GRE_MD.json,
+          ../../src/database/initial_data_load/form_answers_GRE_PA.json,
+          ../../src/database/initial_data_load/form_answers_21PW_PA.json,
+          ../../src/database/initial_data_load/form_answers_21PW_MD.json,
+          ../../src/database/initial_data_load/form_answers_21PW_AL.json,
+          ../../src/database/initial_data_load/form_answers_21PW_PA_Q4.json,
+          ../../src/database/initial_data_load/form_answers_21PW_PA_Q3.json,
+          ../../src/database/initial_data_load/form_answers_21E_AL_Q4.json,
+        ]
+    auth-user:
+      table: ${self:custom.stage}-auth-user
+      sources: [../../src/database/initial_data_load/auth_user.json]
+    auth-user-roles:
+      table: ${self:custom.stage}-auth-user-roles
+      sources: [../../src/database/initial_data_load/auth_user_roles.json]
+
+scripts:
+  hooks:
+    deploy:finalize: |
+      sls --stage ${self:custom.stage} dynamodb:seed

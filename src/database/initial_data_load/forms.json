@@ -14,8 +14,8 @@
   {
     "form_id": "3",
     "form": "64.21E",
-    "form_name": "Number of Children Served in Medicaid Expansion Program",
-    "form_text": "Form 64.21E collects data on children enrolled in the Medicaid Expansion Program."
+    "form_name": "Number of Children Served in Medicaid CHIP Expansion Program",
+    "form_text": "Form 64.21E collects data on children enrolled in the Medicaid CHIP Expansion Program."
   },
   {
     "form_id": "4",
@@ -28,5 +28,11 @@
     "form": "GRE",
     "form_name": "Gender, Race & Ethnicity",
     "form_text": "The Gender, Race & Ethnicity Form collects data on the number of children in each Gender, Race, and Ethnicity."
+  },
+  {
+    "form_id": "6",
+    "form": "21PW",
+    "form_name": "Number of Pregnant Women Served",
+    "form_text": "Children's Health Insurance Program Number of Pregnant Women served"
   }
 ]
