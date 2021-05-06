@@ -25,7 +25,11 @@ module.exports = {
   test_settings: {
     default: {
       disable_error_log: false,
-      launch_url: "https://nightwatchjs.org",
+      launch_url: process.env.APPLICATION_ENDPOINT,
+      globals: {
+        user: `${process.env.TEST_USERS}`,
+        pass: `${process.env.TEST_USER_PASSWORD}`,
+    },
 
       screenshots: {
         enabled: false,
