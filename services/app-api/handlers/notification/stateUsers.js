@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+var AWS = require("aws-sdk");
 var ses = new AWS.SES({ region: "us-east-1" });
 
 /**
@@ -25,23 +26,34 @@ export const main = handler(async (event, context) => {
   };
 });
 
+let date = {
+  year: new Date().getFullYear(),
+  quarter: new Date().getMonth(),
+};
+
 async function getUncertifiedStates() {
   // house the list of states from the state forms
   let UncertifiedstateList = [];
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
+    ExpressionAttributeNames: {
+      "#Unceritifiedstatus": "status",
+      "#theYear": "year",
+      "#theQuarter": "quarter"
+    },
     ExpressionAttributeValues: {
       ":status": "In Progress",
+      ":year": date.year,
+      ":quarter": date.quarter,
     },
-    FilterExpression: "#Unceritifiedstatus = :status",
+    FilterExpression: "#Unceritifiedstatus = :status and #theYear = :year and #theQuarter = :quarter",
   };
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
   if (result.Count === 0) {
     return [{
-      message: "At this time, There are no states which is currrently status: In Progress"
+      message: "At this time, There are no states which is currrently status: In Progress in this current quarter"
     }];
   }
   // List of the state forms that are "In Progress"
@@ -83,7 +95,7 @@ async function getStateUsers() {
   return stateUsersObj;
 }
 
-// returns a list of state users emails whose state isnt fully certified 
+// returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getStateUsers();
   const uncertifiedStateList = await getUncertifiedStates();
@@ -96,57 +108,26 @@ async function certifiedStateUsersEmail() {
   return stateUsersToEmail;
 }
 
-// returns a list of all certified states
-async function getUncertifiedStates() {
-  // house the list of states from the state forms
-  let UncertifiedstateList = [];
-  const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
-    ExpressionAttributeValues: {
-      ":status": "Not Started",
-    },
-    FilterExpression: "#Unceritifiedstatus = :status",
-  };
-  // data returned from the database which contains the database Items
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return [{
-      message: "At this time, There are no states which is currrently status: In Progress"
-    }];
-  }
-  // List of the state forms that are "In Progress"
-  const payload = result.Items;
-  payload.map(stateInfo => {
-    // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code)
-  });
-  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) {
-    // filter the state list so we dont have duplicates
-    return index === self.indexOf(elem);
-  });
-  return filteredStateList;
-};
 
 // creates a template for stateUsers
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
   const fromEmail = "jgillis@collabralink.com";
+  let todayDate = new Date().toISOString().split('T')[0];
 
   const recipient = {
     TO: stateUsersToEmail,
-    SUBJECT: "Reminder: [State] FFY[Fiscal Year] Q[Quarter] SEDS Enrollment Data Overdue",
+    SUBJECT: `Reminder: [State] FFY[${date.year}] Q[${date.quarter}] SEDS Enrollment Data Overdue`,
     FROM: fromEmail,
     MESSAGE: `
-    Hello [State],
+    Hello State user,
 
-    We are reaching out to check on the status of [State]'s FFY[Fiscal Year]
-    Q[Quarter] child enrollment data submission in the Statistical Enrollment Data System (SEDS).
+    We are reaching out to check on the status of your state's FFY[${date.year}]
+    Q[${date.quarter}] child enrollment data submission in the Statistical Enrollment Data System (SEDS).
 
-    FFY[Fiscal Year] Q[Quarter] reporting of enrollment data to the SEDS was
-    due on [DUE DATE]. Our records indicate that [State] has not yet submitted
+    FFY[${date.year}] Q[${date.quarter}] reporting of enrollment data to the SEDS was
+    due on [${todayDate}]. Our records indicate that [State] has not yet submitted
     the required enrollment data to SEDS at this time. Please let us know when
     we can expect your submission.
 
@@ -184,6 +165,3 @@ async function stateUsersTemplate() {
     Source: recipient.FROM
   };
 }
-
-
-

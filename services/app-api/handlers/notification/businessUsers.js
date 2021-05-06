@@ -25,6 +25,11 @@ export const main = handler(async (event, context) => {
   };
 });
 
+let date = {
+  year: new Date().getFullYear(),
+  quarter: new Date().getMonth(),
+};
+
 // obtains all businessUsers emails
 async function getBusinessUsersEmail() {
   const businessOwnersEmails = [];
@@ -54,22 +59,26 @@ async function getBusinessUsersEmail() {
 async function getUncertifiedStates() {
   // house the list of states from the state forms
   let UncertifiedstateList = [];
-  // const newDate = new Date().getFullYear();
-
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {"#Unceritifiedstatus": "status"},
+    ExpressionAttributeNames: {
+      "#Unceritifiedstatus": "status",
+      "#theYear": "year",
+      "#theQuarter": "quarter"
+    },
     ExpressionAttributeValues: {
       ":status": "In Progress",
+      ":year": date.year,
+      ":quarter": date.quarter,
     },
-    FilterExpression: "#Unceritifiedstatus = :status",
+    FilterExpression: "#Unceritifiedstatus = :status and #theYear = :year and #theQuarter = :quarter",
   };
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
   if (result.Count === 0) {
     return [{
-      message: "At this time, There are no states which is currrently status: In Progress"
+      message: "At this time, There are no states which is currrently status: In Progress in this current quarter"
     }];
   }
   // List of the state forms that are "In Progress"
@@ -83,11 +92,12 @@ async function getUncertifiedStates() {
     return index === self.indexOf(elem);
   });
   return filteredStateList;
-}
+};
 
 async function businessOwnersTemplate() {
   const sendToEmail = await getBusinessUsersEmail();
   const uncertifiedStates = await getUncertifiedStates();
+  const todayDate = new Date().toISOString().split('T')[0];
   const fromEmail = "jgillis@collabralink.com";
   const recipient = {
     TO: sendToEmail,
@@ -95,8 +105,8 @@ async function businessOwnersTemplate() {
     FROM: fromEmail,
     MESSAGE: `
     This is an automated message to notify you that the states listed below have
-    not certified their SEDS data for FFY[Fiscal Year] Q[Quarter] as of
-    [DateTimeOfAction]: {${uncertifiedStates}}
+    not certified their SEDS data for FFY[${date.year}] Q[${date.quarter}] as of
+    [${todayDate}]: {${uncertifiedStates}}
 
     Please follow up with the state’s representatives if you have any questions.
 
@@ -122,6 +132,3 @@ async function businessOwnersTemplate() {
     Source: recipient.FROM
   };
 }
-
-
-// create a function to determine the quarter somehow based the date.
