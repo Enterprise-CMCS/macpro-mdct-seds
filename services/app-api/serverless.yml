@@ -50,6 +50,19 @@ custom:
   AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
   AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
   AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+  tableStreamArn: ${cf:app-api-${self:custom.stage}.AmendmentsTableStreamArn}
+  spaIdTableName: ${cf:app-api-${self:custom.stage}.SpaIdTableName}
+  spaIdTableArn: ${cf:app-api-${self:custom.stage}.SpaIdTableArn}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
+  dataSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/a/id~true, ssm:/configuration/default/vpc/subnets/data/a/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/b/id~true, ssm:/configuration/default/vpc/subnets/data/b/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/c/id~true, ssm:/configuration/default/vpc/subnets/data/c/id~true}
+    privateSubnets:
+      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
+      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
+      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
   warmupEnabled:
     production: true
     development: false
@@ -264,6 +277,22 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  sourceDynamoToMsk:
+    handler: handlers/kafka/post/postKafkaData.handler
+    events:
+      - stream:
+          arn: ${self:custom.tableStreamArn} # need to define what this is
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+    role: LambdaWarmupRole-O2FKEB8FCJEQ #correct format?
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
+    maximumRetryAttempts: 2
+    vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup # what value goes here?
+      subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
 
 resources:
   Conditions:
