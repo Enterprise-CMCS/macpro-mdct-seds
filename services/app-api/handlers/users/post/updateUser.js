@@ -22,12 +22,13 @@ export const main = handler(async (event, context) => {
       userId: JSON.parse(currentUser.body)["Items"][0].userId,
     },
     UpdateExpression:
-      "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin",
+      "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
     ExpressionAttributeValues: {
       ":role": data.role,
       ":states": data.states ?? "",
       ":isActive": data.isActive ?? "inactive",
       ":lastLogin": data.lastLogin,
+      ":usernameSub": data.sub,
     },
     ExpressionAttributeNames: {
       "#r": "role",
@@ -36,6 +37,5 @@ export const main = handler(async (event, context) => {
     ReturnValues: "ALL_NEW",
   };
 
-  const result = await dynamoDb.update(params);
-  return result;
+  return await dynamoDb.update(params);
 });

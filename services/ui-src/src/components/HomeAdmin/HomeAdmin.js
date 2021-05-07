@@ -100,7 +100,7 @@ const HomeAdmin = ({ stateList }) => {
       ) : (
         <h1 className="page-header">Home Business User Page</h1>
       )}
-      <div className="state-coreset-container">
+      <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
           <h3>Select Your State</h3>
           {stateError ? (
