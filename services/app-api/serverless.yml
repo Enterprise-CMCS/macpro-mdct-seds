@@ -50,10 +50,10 @@ custom:
   AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
   AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
   AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
-  tableStreamArn: ${cf:app-api-${self:custom.stage}.AmendmentsTableStreamArn}
-  spaIdTableName: ${cf:app-api-${self:custom.stage}.SpaIdTableName}
-  spaIdTableArn: ${cf:app-api-${self:custom.stage}.SpaIdTableArn}
-  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
+  #tableStreamArn: ${cf:app-api-${self:custom.stage}.AmendmentsTableStreamArn}
+  #spaIdTableName: ${cf:app-api-${self:custom.stage}.SpaIdTableName}
+  #spaIdTableArn: ${cf:app-api-${self:custom.stage}.SpaIdTableArn}
+  #bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/a/id~true, ssm:/configuration/default/vpc/subnets/data/a/id~true}
