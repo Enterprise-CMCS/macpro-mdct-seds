@@ -144,8 +144,6 @@ functions:
     role: LambdaWarmupRole #correct format?
     maximumRetryAttempts: 2
     vpc:
-      securityGroupIds:
-        - Ref: sg-08421398a393d2719 # what value goes here?
       subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
@@ -359,6 +357,11 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
+    cmscloudvpn:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security Group for streaming functions.  Egress all is set by default.
+        VpcId: vpc-0d0660b2ee6cb7f10
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
