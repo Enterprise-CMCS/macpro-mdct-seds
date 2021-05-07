@@ -59,10 +59,10 @@ custom:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/a/id~true, ssm:/configuration/default/vpc/subnets/data/a/id~true}
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/b/id~true, ssm:/configuration/default/vpc/subnets/data/b/id~true}
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/data/c/id~true, ssm:/configuration/default/vpc/subnets/data/c/id~true}
-    privateSubnets:
-      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
-      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
-      - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
+  privateSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
   warmupEnabled:
     production: true
     development: false
