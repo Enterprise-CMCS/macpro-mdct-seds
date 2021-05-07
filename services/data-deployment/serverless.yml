@@ -56,9 +56,9 @@ custom:
           ../../src/database/initial_data_load/form_answers_AL.json,
           ../../src/database/initial_data_load/form_answers_MD.json,
           ../../src/database/initial_data_load/form_answers_PA.json,
-          ../../src/database/initial_data_load/form_answers_21PW_PA_Q4.json,
-          ../../src/database/initial_data_load/form_answers_21PW_PA_Q3.json,
-          ../../src/database/initial_data_load/form_answers_21E_AL_Q4.json,
+          ../../src/database/initial_data_load/form_answers_AL_2020.json,
+          ../../src/database/initial_data_load/form_answers_MD_2020.json,
+          ../../src/database/initial_data_load/form_answers_PA_2020.json,
         ]
     auth-user:
       table: ${self:custom.stage}-auth-user
