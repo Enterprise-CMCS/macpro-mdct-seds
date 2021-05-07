@@ -154,9 +154,9 @@ const Users = () => {
         selector: "states",
         sortable: true,
         cell: user => {
-          return user.states ? (
-            <span>{user.states.sort().join(", ")}</span>
-          ) : null;
+          const userStates =
+            user.states && user.states !== "null" ? user.states : [];
+          return <span>{userStates.sort().join(", ")}</span>;
         }
       },
       {

@@ -44,8 +44,10 @@ const EditUser = ({ stateList }) => {
     }
     // Sort states alphabetically and place in array
     let theStates = [];
-    if (user.data.states) {
-      theStates = user.data.states.sort();
+    const userStates =
+      user.data.states && user.data.states !== "null" ? user.data.states : [];
+    if (userStates) {
+      theStates = userStates.sort();
     }
 
     // Set states to array of objects
