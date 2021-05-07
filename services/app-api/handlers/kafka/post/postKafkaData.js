@@ -30,7 +30,7 @@ exports.handler = async  (event) => {
             }
           }
         ],
-      })
+      });
       console.log(record.eventID);
       console.log(record.eventName);
       console.log('DynamoDB Record: %j', record.dynamodb);
@@ -48,4 +48,4 @@ exports.handler = async  (event) => {
   //   }
   // });
   return `Successfully processed ${event.Records.length} records.`;
-}
+};
