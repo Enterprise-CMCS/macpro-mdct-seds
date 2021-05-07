@@ -55,21 +55,14 @@ const compileSimpleArrayStates = complexArray => {
  */
 
 const compileStatesForDropdown = (stateList, userStates) => {
-  const selectedStates = [];
+  let selectedStates = [];
 
   // Create single array of objects with label and value of userStates
   // This is the format for dropdowns in this project
   if (userStates.length > 0) {
-    for (const singleState in userStates) {
-      for (const state in stateList) {
-        if (stateList[state].value === userStates[singleState]) {
-          selectedStates.push({
-            label: stateList[state].label,
-            value: stateList[state].value
-          });
-        }
-      }
-    }
+    selectedStates = stateList.filter(state =>
+      userStates.includes(state.value)
+    );
   }
   return selectedStates;
 };
