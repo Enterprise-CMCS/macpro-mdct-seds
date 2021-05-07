@@ -1,29 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Accordion, Button, Alert } from "@trussworks/react-uswds";
+import { Accordion } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Dropdown from "react-dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
-import {
-  obtainUserByEmail,
-  obtainAvailableForms,
-  getUserById,
-  updateUser
-} from "../../libs/api";
-
+import { Route, Redirect, useLocation } from "react-router-dom";
+import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
 
-const HomeState = ({ stateList }) => {
+const HomeState = () => {
   // Set up local state
   const [state, setState] = useState();
   const [formData, setFormData] = useState();
-
   const [user, setUser] = useState();
-  const [selectedState, setSelectedState] = useState("");
-  const [saveAlert, setSaveAlert] = useState(false);
-  const [saveFailed, setSaveFailed] = useState(false);
   const [accordionItems, setAccordionItems] = useState([]);
 
   // Get User data
@@ -73,7 +59,7 @@ const HomeState = ({ stateList }) => {
   };
 
   useEffect(() => {
-    loadUserData().then(createAccordion()).then();
+    loadUserData().then(createAccordion()).then(); // TODO: Then statements
   }, []);
 
   const createAccordion = () => {
@@ -147,52 +133,9 @@ const HomeState = ({ stateList }) => {
     setAccordionItems(tempAccordion);
   };
 
-  const addUserState = event => {
-    // Update state for dropdown
-    setSelectedState(event);
-
-    // Update user data to save
-    let tempUser = { ...user, states: event.value };
-    setUser(tempUser);
-  };
-
-  const saveUpdatedUser = async data => {
-    if (
-      selectedState !== null &&
-      selectedState !== undefined &&
-      selectedState !== ""
-    ) {
-      const confirm = window.confirm(
-        `You have selected ${selectedState.label}, is this correct?`
-      );
-
-      if (confirm) {
-        await updateUser(data).then(() => {
-          loadUserData().then(createAccordion()).then();
-        });
-      } else {
-        return;
-      }
-    } else {
-      alert(`Please select a state`);
-    }
-  };
-
   return (
     <div className="page-home-state">
-      {saveAlert ? (
-        <Alert type="success" heading="Update success:">
-          {`State user "${user.username}" has been assigned to ${selectedState.label}`}
-        </Alert>
-      ) : null}
-
-      {saveFailed ? (
-        <Alert type="error" heading="Update failed:">
-          {`There was an error assigning ${user.username} to a state`}
-        </Alert>
-      ) : null}
-
-      {accordionItems.length !== 0 ? (
+      {user && state && user.states.length !== 0 ? (
         <>
           <p className="instructions">
             Welcome to SEDS! Please select a Federal Fiscal Year and quarter
@@ -204,83 +147,10 @@ const HomeState = ({ stateList }) => {
           </div>
         </>
       ) : (
-        <>
-          <h1>This account is not associated with any states</h1>
-
-          <h3>Please select your state below:</h3>
-
-          <Dropdown
-            options={stateList}
-            onChange={event => addUserState(event)}
-            value={selectedState ? selectedState : ""}
-            placeholder="Select a state"
-            autosize={false}
-            className="state-select-list"
-          />
-          <div className="action-buttons">
-            <Button
-              type="button"
-              className="form-button"
-              onClick={async () => {
-                await saveUpdatedUser(user);
-              }}
-            >
-              Update User
-              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
-            </Button>
-          </div>
-        </>
+        <Redirect to={`/register-state`} />
       )}
     </div>
   );
 };
 
-HomeState.propTypes = {
-  stateList: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-  stateList: state.global.states.map(element => {
-    return { label: element.state_name, value: element.state_id };
-  })
-});
-
-export default connect(mapStateToProps)(HomeState);
-
-//OBJECT FROM obtainUserByEmail {
-//   "firstName": "Alexis",
-//   "lastLogin": "2021-02-22T15:28:50.919Z",
-//   "lastName": "Woodbury",
-//   "password": "",
-//   "role": "state",
-//   "dateJoined": "2021-02-22T15:20:59.081Z",
-//   "isSuperUser": true,
-//   "isActive": true,
-//   "userId": "0",
-//   "email": "awoodbury@collabralink.com",
-//   "states": "AK",
-//   "username": "WAQF"
-// }
-
-// OBJECT FROM getUserById ??
-
-// FORM SUB:
-// let forms = [];
-// try {
-//   // Get list of all state forms
-//   forms = await obtainAvailableForms({
-//     stateId: currentUserInfo.Items[0].states[0]
-//   });
-//   setSaveAlert(true);
-//   // After 5 seconds, remove the alert
-//   setTimeout(() => {
-//     setSaveAlert(false);
-//   }, 5000);
-// } catch (error) {
-//   console.log("ERROR OBTAINING AVAILABLE FORMS \n\n\n", error);
-//   setSaveFailed(true);
-//   // After 5 seconds, remove the alert
-//   setTimeout(() => {
-//     setSaveFailed(false);
-//   }, 5000);
-// }
+export default HomeState;
