@@ -1,5 +1,5 @@
 import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import {getUsersEmailByRole, getUncertifiedStates} from "../shared/sharedFunctions";
 var AWS = require("aws-sdk");
 
 /**
@@ -25,77 +25,9 @@ export const main = handler(async (event, context) => {
   };
 });
 
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
-
-// obtains all businessUsers emails
-async function getBusinessUsersEmail() {
-  const businessOwnersEmails = [];
-  const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: { "#r": "role" },
-    ExpressionAttributeValues: { ":role": "business" },
-    FilterExpression: "#r = :role",
-  };
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return false;
-  }
-  const payload = result["Items"];
-  payload.map((userInfo) => {
-    if (userInfo.email) {
-      businessOwnersEmails.push(userInfo.email);
-    }
-  });
-  return businessOwnersEmails;
-}
-
-// retrieve all states have NOT submitted their data yet
-// (in other words - all states with ‘in progress’ reports for the prior quarter)
-async function getUncertifiedStates() {
-  // house the list of states from the state forms
-  let UncertifiedstateList = [];
-  const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
-      "#theYear": "year",
-      "#theQuarter": "quarter"
-    },
-    ExpressionAttributeValues: {
-      ":status": "In Progress",
-      ":year": date.year,
-      ":quarter": date.quarter,
-    },
-    FilterExpression: "#Unceritifiedstatus = :status and #theYear = :year and #theQuarter = :quarter",
-  };
-  // data returned from the database which contains the database Items
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return [{
-      message: "At this time, There are no states which is currrently status: In Progress in this current quarter"
-    }];
-  }
-  // List of the state forms that are "In Progress"
-  const payload = result.Items;
-  payload.map(stateInfo => {
-    // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code);
-  });
-  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) {
-    // filter the state list so we dont have duplicates
-    return index === self.indexOf(elem);
-  });
-  return filteredStateList;
-};
-
 async function businessOwnersTemplate() {
-  const sendToEmail = await getBusinessUsersEmail();
+  const sendToEmailArry = await getUsersEmailByRole("business");
+  const sendToEmail = sendToEmailArry.map(e => e.email);
   const uncertifiedStates = await getUncertifiedStates();
   const todayDate = new Date().toISOString().split('T')[0];
   const fromEmail = "jgillis@collabralink.com";

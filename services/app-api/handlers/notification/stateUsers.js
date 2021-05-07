@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import {getUsersEmailByRole, getUncertifiedStates} from "../shared/sharedFunctions";
+
 var AWS = require("aws-sdk");
 var ses = new AWS.SES({ region: "us-east-1" });
 
@@ -31,73 +32,10 @@ let date = {
   quarter: new Date().getMonth(),
 };
 
-async function getUncertifiedStates() {
-  // house the list of states from the state forms
-  let UncertifiedstateList = [];
-  const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
-      "#theYear": "year",
-      "#theQuarter": "quarter"
-    },
-    ExpressionAttributeValues: {
-      ":status": "In Progress",
-      ":year": date.year,
-      ":quarter": date.quarter,
-    },
-    FilterExpression: "#Unceritifiedstatus = :status and #theYear = :year and #theQuarter = :quarter",
-  };
-  // data returned from the database which contains the database Items
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return [{
-      message: "At this time, There are no states which is currrently status: In Progress in this current quarter"
-    }];
-  }
-  // List of the state forms that are "In Progress"
-  const payload = result.Items;
-  payload.map(stateInfo => {
-    // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code);
-  });
-  let filteredStateList = UncertifiedstateList.filter(function(elem, index, self) {
-    // filter the state list so we dont have duplicates
-    return index === self.indexOf(elem);
-  });
-  return filteredStateList;
-};
-
-// get all state users in our system by role
-async function getStateUsers() {
-  const stateUsersObj = [];
-  const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: { "#r": "role" },
-    ExpressionAttributeValues: { ":role": "state" },
-    FilterExpression: "#r = :role",
-  };
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return false;
-  }
-  const payload = result["Items"];
-  payload.map((userInfo) => {
-    const obj = {
-      state: userInfo.states,
-      email: userInfo.email
-    };
-    stateUsersObj.push(obj);
-  });
-  return stateUsersObj;
-}
 
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
-  const allStateEmails = await getStateUsers();
+  const allStateEmails = await getUsersEmailByRole("state");
   const uncertifiedStateList = await getUncertifiedStates();
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {
