@@ -145,7 +145,7 @@ functions:
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
-        - Ref: sg-0be3be16a7471bb2d # what value goes here?
+        - Ref: 0be3be16a7471bb2d # what value goes here?
       subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
