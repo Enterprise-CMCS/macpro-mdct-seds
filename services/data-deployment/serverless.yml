@@ -41,7 +41,11 @@ custom:
       sources: [../../src/database/initial_data_load/states.json]
     state-forms:
       table: ${self:custom.stage}-state-forms
-      sources: [../../src/database/initial_data_load/state_forms.json]
+      sources:
+      [
+          ../../src/database/initial_data_load/state_forms.json,
+          ../../src/database/initial_data_load/state_forms_2020.json,
+      ]
     form-questions:
       table: ${self:custom.stage}-form-questions
       sources:
