@@ -57,7 +57,7 @@ const CertificationTab = ({
     var datetime = new Date().getTime();
     try {
       const currentUser = await obtainUserByEmail({
-        email: userEmail,
+        email: userEmail
       });
       let userObj = currentUser["Items"];
       userObj.map(async userInfo => {
@@ -66,14 +66,14 @@ const CertificationTab = ({
             states: userInfo.states,
             date: datetime,
             username: userInfo.username
-          }
+          };
           await sendUncertifyEmail(emailObj);
         }
       });
     } catch (err) {
       throw new Error(err);
     }
-  }
+  };
 
   let certifyText;
   if (isFinal) {

@@ -25,6 +25,11 @@ export const main = handler(async (event, context) => {
   };
 });
 
+let date = {
+  year: new Date().getFullYear(),
+  quarter: new Date().getMonth(),
+};
+
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
   const sendToEmail = sendToEmailArry.map(e => e.email);
