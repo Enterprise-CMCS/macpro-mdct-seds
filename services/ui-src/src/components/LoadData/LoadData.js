@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import { loadData, getTableNames } from "../../libs/api";
+import { loadData } from "../../libs/api";
 
-import { Alert, ComboBox } from "@trussworks/react-uswds";
+import { Alert, TextInput } from "@trussworks/react-uswds";
 
 import { FormGroup, FileInput, Table, Button } from "@trussworks/react-uswds";
 
@@ -13,24 +13,7 @@ import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
 const LoadData = () => {
   const [fileToUpload, setFileToUpload] = useState(null);
   const [targetTable, setTargetTable] = useState("");
-  const [tableNames, setTableNames] = useState([]);
   const [displayMessage, setDisplayMessage] = useState(false);
-
-  const loadTableNames = async () => {
-    const tableNames = await getTableNames();
-    setTableNames(tableNames);
-  };
-
-  const handleAutocomplete = event => {
-    setTargetTable(event);
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      await loadTableNames();
-    }
-    fetchData().then();
-  }, []);
 
   const uploadFile = async () => {
     const formData = new FormData();
@@ -89,11 +72,10 @@ const LoadData = () => {
               <tr>
                 <th>Select Target Table:</th>
                 <td>
-                  <ComboBox
+                  <TextInput
                     id="txtTargetTable"
                     name="txtTargetTable"
-                    options={tableNames}
-                    onChange={event => handleAutocomplete(event)}
+                    onChange={event => setTargetTable(event.target.value)}
                   />
                 </td>
               </tr>

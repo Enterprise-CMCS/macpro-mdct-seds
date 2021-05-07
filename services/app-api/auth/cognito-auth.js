@@ -2,6 +2,7 @@ import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";
 import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
+import { main as obtainUsernameBySub } from "../handlers/users/post/obtainUsernameBySub";
 
 export const parseAuthProvider = (authProvider) => {
   // *** cognito authentication provider example:
@@ -70,10 +71,19 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 
       // calling a dependency so we have to try
       try {
+        // *** retrieve user from the database
+        const body = JSON.stringify({
+          usernameSub: userInfo.userId,
+        });
+
+        const currentUser = await obtainUsernameBySub({
+          body: body,
+        });
+
         const cognito = new CognitoIdentityServiceProvider();
         const userResponse = await cognito
           .adminGetUser({
-            Username: userInfo.userId,
+            Username: JSON.parse(currentUser.body)["Items"][0].Username,
             UserPoolId: userInfo.poolId,
           })
           .promise();
@@ -92,12 +102,18 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
           role: "STATE_USER",
         };
       } catch (e) {
-        const errorObject = {
-          status: "error",
-          errorMessage:
-            "Error (userFromCognitoAuthProvider): cannot retrieve user info",
-          detailedErrorMessage: e,
-        };
+        let errorObject;
+
+        try {
+          // *** retrieve user from the database
+        } catch (e1) {
+          errorObject = {
+            status: "error",
+            errorMessage:
+              "Error (userFromCognitoAuthProvider): cannot retrieve user info",
+            detailedErrorMessage: e,
+          };
+        }
 
         return errorObject;
       }
@@ -111,6 +127,9 @@ export const getCurrentUserInfo = async (event) => {
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
+
+  console.log("!!!!!!!!!This is the identity!!!!!!:\n\n");
+  console.log(event.requestContext.identity);
 
   console.log("\n\n!!!!user is: ");
   console.log(user);

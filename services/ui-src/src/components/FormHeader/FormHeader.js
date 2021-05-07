@@ -107,9 +107,9 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
 
         {showFPL ? (
           <div className="form-max-fpl">
+            <p>What is the upper income eligibility limit for this program?</p>
             <p>
-              What is the highest percentage of FPL that received benefits from
-              your state?
+              <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
             <div className="fpl-input">
               <TextInput
