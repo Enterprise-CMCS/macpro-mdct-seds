@@ -137,13 +137,13 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
-          arn: ${self:custom.tableStreamArn} # need to define what this is
+          # arn: ${self:custom.tableStreamArn} # need to define what this is
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
     role: LambdaWarmupRole #correct format?
-    environment:
-      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
+    #environment:
+      #BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
@@ -361,6 +361,11 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
+    LambdaSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security Group for streaming functions.  Egress all is set by default.
+        VpcId: ${self:custom.vpcId}
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
