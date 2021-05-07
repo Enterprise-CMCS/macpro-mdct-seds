@@ -133,6 +133,22 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  postKafkaData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    events:
+      - stream:
+          arn: ${self:custom.tableStreamArn} # need to define what this is
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+    role: LambdaWarmupRole #correct format?
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
+    maximumRetryAttempts: 2
+    vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup # what value goes here?
+      subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
     role: LambdaApiRole
@@ -277,23 +293,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  sourceDynamoToMsk:
-    handler: handlers/kafka/post/postKafkaData.handler
-    events:
-      - stream:
-          arn: ${self:custom.tableStreamArn} # need to define what this is
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-          enabled: true
-    role: LambdaWarmupRole-O2FKEB8FCJEQ #correct format?
-    environment:
-      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
-    maximumRetryAttempts: 2
-    vpc:
-      securityGroupIds:
-        - Ref: LambdaSecurityGroup # what value goes here?
-      subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
-
 resources:
   Conditions:
     CreatePermissionsBoundary:
