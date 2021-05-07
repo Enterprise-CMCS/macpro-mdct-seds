@@ -137,13 +137,11 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
-          # arn: ${self:custom.tableStreamArn} # need to define what this is
+          arn: arn:aws:dynamodb:us-east-1:760820259496:table/feature-kafka-trigger-state-forms          # need to define what this is
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
     role: LambdaWarmupRole #correct format?
-    #environment:
-      #BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls} # the strings Doug provided?
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
