@@ -145,7 +145,7 @@ functions:
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
-        - Ref: LambdaSecurityGroup # what value goes here?
+        - Ref: sg-0be3be16a7471bb2d # what value goes here?
       subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
@@ -359,7 +359,7 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
-    LambdaSecurityGroup:
+    default:
       Type: AWS::EC2::SecurityGroup
       Properties:
         GroupDescription: Security Group for streaming functions.  Egress all is set by default.
