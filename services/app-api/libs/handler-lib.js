@@ -20,6 +20,7 @@ export default function handler(lambda) {
     }
 
     // Return HTTP response
+
     return {
       statusCode,
       body: JSON.stringify(body),
