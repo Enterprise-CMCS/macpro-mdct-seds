@@ -26,7 +26,7 @@ const HomeAdmin = ({ stateList }) => {
       let currentUserInfo;
       try {
         // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken;
+        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
         console.log(AuthUserInfo, "user Email");
 
         currentUserInfo = await obtainUserByEmail({
