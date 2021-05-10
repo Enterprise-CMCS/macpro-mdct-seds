@@ -163,6 +163,10 @@ const EditUser = ({ stateList }) => {
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
     data.states = statesToSend;
+
+    console.log("updating data: ");
+    console.log(data);
+
     await updateUser(data).then(() => {
       alert(`User with username: "${data.username}" has been updated`);
       window.location.reload(false);
