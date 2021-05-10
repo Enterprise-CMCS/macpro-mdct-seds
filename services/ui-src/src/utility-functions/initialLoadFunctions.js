@@ -15,9 +15,6 @@ export async function ascertainUserPresence(user) {
     lastLogin: new Date().toISOString()
   };
 
-  console.log("\n\n*****figured out user object: ");
-  console.log(userObject);
-
   if (existingUser === false) {
     await createUser(userObject);
   } else {
@@ -34,8 +31,6 @@ export async function ascertainUserPresence(user) {
 export const determineRole = specRole => {
   const roleArray = ["admin", "business", "state"];
   let role;
-
-  console.log("determining role");
 
   if (roleArray.includes(specRole)) {
     role = specRole;
@@ -58,9 +53,6 @@ export const determineRole = specRole => {
       role = "state";
     }
   }
-
-  console.log("!!!!!!role determined: ");
-  console.log(role);
 
   return role;
 };
