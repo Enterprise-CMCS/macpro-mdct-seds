@@ -23,14 +23,14 @@ exports.handler = async (event) => {
   // const producer = kafka.producer({ groupId: "" + Date.now() });
   const producer = kafka.producer(); // removed groupId because "working code in
   await producer.connect();
-
+  console.log("EVENT INFO HERE",event)
   if (event.Records) {
     for (const record of event.Records) {
       await producer.send({
         topic: "aws.mdct.seds.cdc.state-forms",
         messages: [
           {
-            key: "key2",
+            key: "key3",
             value: JSON.stringify(record.dynamodb, null, 2),
             partition: 0
             // headers: {
@@ -46,14 +46,14 @@ exports.handler = async (event) => {
     }
   }
 
-  // const consumer = kafka.consumer();
-  // await consumer.connect();
-  //
-  // await consumer.subscribe({ topic: "state-forms", fromBeginning: true });
-  // await consumer.run({
-  //   eachMessage: async (data) => {
-  //     console.log(data);
-  //   }
-  // });
+  const consumer = kafka.consumer();
+  await consumer.connect();
+
+  await consumer.subscribe({ topic: "aws.mdct.seds.cdc.state-forms", fromBeginning: true });
+  await consumer.run({
+    eachMessage: async (data) => {
+      console.log(data);
+    }
+  });
   return `Successfully processed ${event.Records.length} records.`;
 };
