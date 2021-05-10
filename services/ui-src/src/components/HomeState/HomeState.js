@@ -22,15 +22,15 @@ const HomeState = () => {
     console.log("User Email: ", email);
 
 
-    let email;
+    // let email;
 
-    console.log(AuthUserInfo);
+    // console.log(AuthUserInfo);
 
-    if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-      email = AuthUserInfo.attributes.email;
-    } else {
-      email = AuthUserInfo.signInUserSession.idToken.payload.email;
-    }
+    // if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
+    //   email = AuthUserInfo.payload.email;
+    // } else {
+    //   email = AuthUserInfo.signInUserSession.idToken.payload.email;
+    // }
 
     console.log("Retrieved email: -----");
     console.log(email);
