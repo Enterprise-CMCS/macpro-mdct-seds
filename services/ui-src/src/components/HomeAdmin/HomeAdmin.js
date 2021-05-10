@@ -33,7 +33,7 @@ const HomeAdmin = ({ stateList }) => {
       } catch (e) {
         onError(e);
       }
-      
+
       if (currentUserInfo["Items"]) {
         const userRole = currentUserInfo["Items"][0].role;
         let userStates = currentUserInfo["Items"][0].states;
