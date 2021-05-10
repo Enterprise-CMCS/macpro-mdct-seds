@@ -2080,6 +2080,396 @@
     "created_by": "seed"
   },
   {
+    "state_form": "KS-2021-3-21E",
+    "form_name": "Number of Children Served in Separate CHIP Program",
+    "state_id": "KS",
+    "form_id": "1",
+    "form": "21E",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KS-2021-3-21PW",
+    "state_id": "KS",
+    "form_id": "6",
+    "form": "21PW",
+    "form_name": "Number of Pregnant Women Served",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-03-02T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-03-02T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-03-02T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KS-2021-3-64.21E",
+    "state_id": "KS",
+    "form_id": "3",
+    "form": "64.21E",
+    "form_name": "Number of Children Served in Medicaid CHIP Expansion Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KS-2021-3-64.EC",
+    "state_id": "KS",
+    "form_id": "2",
+    "form": "64.EC",
+    "form_name": "Number of Children Served in Medicaid Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KS-2021-3-GRE",
+    "state_id": "KS",
+    "form_id": "5",
+    "form": "GRE",
+    "form_name": "Gender, Race & Ethnicity",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KY-2021-3-21E",
+    "form_name": "Number of Children Served in Separate CHIP Program",
+    "state_id": "KY",
+    "form_id": "1",
+    "form": "21E",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KY-2021-3-21PW",
+    "state_id": "KY",
+    "form_id": "6",
+    "form": "21PW",
+    "form_name": "Number of Pregnant Women Served",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-03-02T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-03-02T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-03-02T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KY-2021-3-64.21E",
+    "state_id": "KY",
+    "form_id": "3",
+    "form": "64.21E",
+    "form_name": "Number of Children Served in Medicaid CHIP Expansion Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KY-2021-3-64.EC",
+    "state_id": "KY",
+    "form_id": "2",
+    "form": "64.EC",
+    "form_name": "Number of Children Served in Medicaid Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "KY-2021-3-GRE",
+    "state_id": "KY",
+    "form_id": "5",
+    "form": "GRE",
+    "form_name": "Gender, Race & Ethnicity",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "LA-2021-3-21E",
+    "form_name": "Number of Children Served in Separate CHIP Program",
+    "state_id": "LA",
+    "form_id": "1",
+    "form": "21E",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "LA-2021-3-21PW",
+    "state_id": "LA",
+    "form_id": "6",
+    "form": "21PW",
+    "form_name": "Number of Pregnant Women Served",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-03-02T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-03-02T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-03-02T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "LA-2021-3-64.21E",
+    "state_id": "LA",
+    "form_id": "3",
+    "form": "64.21E",
+    "form_name": "Number of Children Served in Medicaid CHIP Expansion Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "LA-2021-3-64.EC",
+    "state_id": "LA",
+    "form_id": "2",
+    "form": "64.EC",
+    "form_name": "Number of Children Served in Medicaid Program",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
+    "state_form": "LA-2021-3-GRE",
+    "state_id": "LA",
+    "form_id": "5",
+    "form": "GRE",
+    "form_name": "Gender, Race & Ethnicity",
+    "program_code": "All",
+    "year": 2021,
+    "quarter": 3,
+    "validation_percent": 0.03,
+    "status": "Not Started",
+    "status_id": 1,
+    "status_modified_by": "seed",
+    "status_date": "2021-04-14T12:46:35.838Z",
+    "not_applicable": false,
+    "state_comments": [
+      {
+        "type": "text_multiline",
+        "entry": ""
+      }
+    ],
+    "last_modified": "2021-04-14T12:46:35.838Z",
+    "last_modified_by": "seed",
+    "created_date": "2021-04-14T12:46:35.838Z",
+    "created_by": "seed"
+  },
+  {
     "state_form": "MD-2021-3-21E",
     "form_name": "Number of Children Served in Separate CHIP Program",
     "state_id": "MD",
