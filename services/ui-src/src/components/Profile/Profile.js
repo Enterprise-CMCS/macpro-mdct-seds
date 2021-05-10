@@ -6,7 +6,7 @@ import "./Profile.scss";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { obtainUserByEmail } from "../../libs/api";
+import { obtainUserByEmail, obtainUserByUsername } from "../../libs/api";
 
 export default function Profile({ user }) {
   const history = useHistory();
@@ -29,9 +29,22 @@ export default function Profile({ user }) {
       try {
         const AuthUserInfo = await Auth.currentAuthenticatedUser();
         console.log("This i sthe current user: ", AuthUserInfo);
-        
-        const currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.attributes.email
+
+        Auth.currentSession()
+          .then(data => {
+            let idToken = data.getIdToken();
+            console.log(idToken);
+            console.log("This is the current user Token: ", idToken);
+            
+            console.dir(idToken);
+          })
+          .catch(err => console.log(err));
+
+        // const currentUserInfo = await obtainUserByEmail({
+        //   email: AuthUserInfo.attributes.email
+        // });
+        const currentUserInfo = await obtainUserByUsername({
+          username: AuthUserInfo.username
         });
         let userObj = currentUserInfo["Items"];
         for (const userInfo of userObj) {
