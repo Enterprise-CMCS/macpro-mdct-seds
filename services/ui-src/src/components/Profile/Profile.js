@@ -28,6 +28,8 @@ export default function Profile({ user }) {
     const onLoad = async () => {
       try {
         const AuthUserInfo = await Auth.currentAuthenticatedUser();
+        console.log("This i sthe current user: ", AuthUserInfo);
+        
         const currentUserInfo = await obtainUserByEmail({
           email: AuthUserInfo.attributes.email
         });
