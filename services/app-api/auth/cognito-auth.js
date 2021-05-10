@@ -66,24 +66,34 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
     default:
       const userInfo = parseAuthProvider(authProvider);
 
+      console.log("\n\n$$$$$user info");
+      console.log(userInfo);
+      const body = JSON.stringify({
+        usernameSub: userInfo.userId,
+      });
+
+      // *** retrieve user from db
+      const currentUser = await obtainUsernameBySub({
+        body: body,
+      });
+
+      console.log("%%%current user is: ");
+      console.log(currentUser);
+
+      const username = JSON.parse(currentUser.body)["Items"][0].usernameSub;
+
+      console.log("&&&&&&&&&&&&&&&&&&&Obtained username");
+      console.log(username);
+
       console.log("\n\n~~~~User info from COGNITO:");
       console.log(userInfo);
 
       // calling a dependency so we have to try
       try {
-        // *** retrieve user from the database
-        const body = JSON.stringify({
-          usernameSub: userInfo.userId,
-        });
-
-        const currentUser = await obtainUsernameBySub({
-          body: body,
-        });
-
         const cognito = new CognitoIdentityServiceProvider();
         const userResponse = await cognito
           .adminGetUser({
-            Username: JSON.parse(currentUser.body)["Items"][0].Username,
+            Username: username,
             UserPoolId: userInfo.poolId,
           })
           .promise();
@@ -102,23 +112,19 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
           role: "STATE_USER",
         };
       } catch (e) {
-        let errorObject;
-
-        try {
-          // *** retrieve user from the database
-        } catch (e1) {
-          errorObject = {
-            status: "error",
-            errorMessage:
-              "Error (userFromCognitoAuthProvider): cannot retrieve user info",
-            detailedErrorMessage: e,
-          };
-        }
-
-        return errorObject;
+        userObject = {
+          status: "error",
+          errorMessage:
+            "Error (userFromCognitoAuthProvider): cannot retrieve user info",
+          detailedErrorMessage: e,
+        };
       }
       break;
   }
+
+  console.log("\n\n\n@@@@@returning: ");
+
+  console.log(userObject);
 
   return userObject;
 };

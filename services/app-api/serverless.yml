@@ -264,6 +264,41 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  uncertified:
+    handler: handlers/notification/uncertified.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: notification/uncertified
+          method: post
+          cors: true
+          authorzier: aws_iam
+  stateUsersEmail:
+    handler: handlers/notification/stateUsers.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: notification/stateUsersEmail
+          method: post
+          cors: true
+          authorzier: aws_iam
+      - schedule:
+          # name: seds-quarterly-scheduled-event
+          # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
+          enabled: false
+          rate: cron(0 0 1 */3 ? *)
+  businessUsersEmail:
+    handler: handlers/notification/businessUsers.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: notification/businessUsersEmail
+          method: post
+          cors: true
+          authorzier: aws_iam
+      - schedule:
+          enabled: false
+          rate: cron(0 0 1 */3 ? *)
   saveForm:
     handler: handlers/forms/post/saveForm.main
     role: LambdaApiRole
@@ -342,6 +377,15 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - ses:SendEmail
+                    - ses:SendRawEmail
+                  Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: "*"
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -372,6 +416,7 @@ resources:
                 - Effect: "Allow"
                   Action:
                     - lambda:InvokeFunction
+                    - lambda:InvokeAsync
                   Resource: "*"
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
