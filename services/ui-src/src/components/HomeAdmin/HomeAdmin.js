@@ -34,6 +34,11 @@ const HomeAdmin = ({ stateList }) => {
         onError(e);
       }
 
+      console.log(Auth);
+
+      console.log("retrieved: ");
+      console.log(currentUserInfo);
+
       if (currentUserInfo["Items"]) {
         const userRole = currentUserInfo["Items"][0].role;
         let userStates = currentUserInfo["Items"][0].states;
