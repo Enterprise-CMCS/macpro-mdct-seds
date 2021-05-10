@@ -137,12 +137,16 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
-          arn: arn:aws:dynamodb:us-east-1:760820259496:table/feature-kafka-trigger-state-forms          # need to define what this is
+          arn: arn:aws:dynamodb:us-east-1:760820259496:table/feature-kafka-trigger-state-forms
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
-    role: LambdaWarmupRole #correct format?
+    role: LambdaWarmupRole
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094
     maximumRetryAttempts: 2
+    securityGroupIds:
+      - Ref: LambdaSecurityGroup
     vpc:
       subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
   getTableNames:
@@ -357,7 +361,7 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
-    cmscloudvpn:
+    kafkaSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
         GroupDescription: Security Group for streaming functions.  Egress all is set by default.
