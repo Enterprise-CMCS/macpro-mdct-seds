@@ -6,7 +6,7 @@ import "./Profile.scss";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { obtainUserByEmail, obtainUserByUsername } from "../../libs/api";
+import { obtainUserByEmail } from "../../libs/api";
 
 export default function Profile({ user }) {
   const history = useHistory();
