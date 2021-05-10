@@ -37,6 +37,8 @@ export default function Profile({ user }) {
         const currentUserInfo = await obtainUserByEmail({
           email: payload.email
         });
+
+        
         let userObj = currentUserInfo["Items"];
         for (const userInfo of userObj) {
           setEmail(userInfo.email);
