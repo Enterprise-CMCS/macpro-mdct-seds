@@ -21,8 +21,6 @@ export async function ascertainUserPresence(user) {
     let updateItem = existingUser["Items"];
     updateItem.map(async userInfo => {
       userInfo.sub = user.attributes.sub;
-      console.log("\n\n##### updating with this:");
-      console.log(userInfo);
       await updateUser(userInfo);
     });
   }
@@ -35,8 +33,6 @@ export const determineRole = specRole => {
   if (roleArray.includes(specRole)) {
     role = specRole;
   }
-
-  console.log(specRole);
 
   if (specRole) {
     if (
