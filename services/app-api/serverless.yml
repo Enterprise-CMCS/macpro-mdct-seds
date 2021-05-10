@@ -141,13 +141,13 @@ functions:
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
-    role: LambdaWarmupRole
+    role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094
     maximumRetryAttempts: 2
-    securityGroupIds:
-      - Ref: LambdaSecurityGroup
     vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup
       subnetIds: ${self:custom.privateSubnets}
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
@@ -357,6 +357,7 @@ resources:
                     - dynamodb:DescribeStream
                     - dynamodb:GetRecords
                     - dynamodb:GetShardIterator
+                    - dynamodb:ListShards
                     - dynamodb:ListStreams
                   Resource:
                     #- ${self:custom.AgeRangesTableStreamArn}
