@@ -36,18 +36,15 @@ function App() {
         user.attributes["custom:ismemberof"]
       );
 
-      console.log("role figured out");
+      await ascertainUserPresence(user);
+
+      console.log("done ascertaining presence");
       console.log(user);
       setUser(user);
-      console.log("user set");
       setIsAuthenticated(true);
-      console.log("user is authenticated set");
-      setIsAuthenticating(false);
-      console.log("user is authenticatING set");
-
       setIsAuthorized(true);
-      console.log("testing user presence");
-      await ascertainUserPresence(user);
+      setIsAuthenticating(false);
+      console.log("ROUTES should now be processed");
     } catch (error) {
       setIsAuthenticating(false);
     }
