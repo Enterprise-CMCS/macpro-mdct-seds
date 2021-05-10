@@ -27,12 +27,15 @@ export default function Profile({ user }) {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
         console.log("This i sthe current user: ", AuthUserInfo);
 
+        Auth.currentSession()
+          .then(data => {
+            let idToken = data.getIdToken();
+            let payload = idToken.payload;
 
         const currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.attributes.email
+          email: payload.email
         });
         let userObj = currentUserInfo["Items"];
         for (const userInfo of userObj) {
@@ -44,6 +47,13 @@ export default function Profile({ user }) {
             setStates(formatStates(userInfo.states));
           }
         }
+            console.log("This is the current user Token: ", idToken);
+            
+            console.dir(idToken);
+          })
+          .catch(err => console.log(err));
+
+
       } catch (e) {
         onError(e);
       }
