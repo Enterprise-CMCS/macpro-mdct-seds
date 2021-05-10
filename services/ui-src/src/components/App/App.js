@@ -32,9 +32,9 @@ function App() {
       console.log("attributes created: ");
       console.log(user);
 
-      // user.attributes["app-role"] = determineRole(
-      //   user.attributes["custom:ismemberof"]
-      // );
+      user.attributes["app-role"] = determineRole(
+        user.attributes["custom:ismemberof"]
+      );
       user.attributes["app-role"] = "state";
 
       console.log("role figured out");

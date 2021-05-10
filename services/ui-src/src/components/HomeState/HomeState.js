@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Accordion } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useHistory } from "react-router-dom";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
 
 const HomeState = () => {
   // Set up local state
   const [state, setState] = useState();
-  const [formData, setFormData] = useState();
-  const [user, setUser] = useState();
+  const [formData, setFormData] = useState([]);
+  const [user, setUser] = useState({});
   const [accordionItems, setAccordionItems] = useState([]);
+  let history = useHistory();
 
   // Get User data
   const loadUserData = async () => {
@@ -56,14 +57,25 @@ const HomeState = () => {
     });
 
     setFormData(forms);
+
+    return currentUserInfo.Items[0].states[0];
   };
 
-  useEffect(() => {
-    loadUserData().then(createAccordion()).then(); // TODO: Then statements
+  useEffect(async () => {
+    const result = await loadUserData().then();
+
+    if (result && result !== "null") {
+      createAccordion();
+    } else {
+      history.push("/register-state");
+    }
   }, []);
 
   const createAccordion = () => {
-    // Create an array of unique years
+    // Create an array of unique years'
+    let B = formData;
+    let A = 0;
+
     let uniqueYears;
     if (formData) {
       uniqueYears = Array.from(new Set(formData.map(a => a.year))).map(year => {
@@ -135,20 +147,14 @@ const HomeState = () => {
 
   return (
     <div className="page-home-state">
-      {user && state && user.states.length !== 0 ? (
-        <>
-          <p className="instructions">
-            Welcome to SEDS! Please select a Federal Fiscal Year and quarter
-            below to view available reports.
-          </p>
-
-          <div className="quarterly-report-list">
-            <Accordion bordered={true} items={accordionItems} />
-          </div>
-        </>
-      ) : (
-        <Redirect to={`/register-state`} />
-      )}
+      <p className="instructions">
+        Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
+        to view available reports.
+      </p>
+      {console.log("FORM DATA \n\n\n", formData)}
+      <div className="quarterly-report-list">
+        <Accordion bordered={true} items={accordionItems} />
+      </div>
     </div>
   );
 };

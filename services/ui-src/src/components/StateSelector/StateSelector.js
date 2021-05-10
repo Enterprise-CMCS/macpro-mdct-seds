@@ -76,7 +76,7 @@ const StateSelector = ({ stateList }) => {
 
   return (
     <div className="page-home-state">
-      {user && state && user.states.length !== 0 ? (
+      {user && state && user.states.length > 0 && user.states !== "null" ? (
         <h2> You have a state already</h2>
       ) : (
         <>
@@ -123,44 +123,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(StateSelector);
 
 // TAKE INTO ACCOUNT STATES WITH NO FORMS
-
-//OBJECT FROM obtainUserByEmail {
-//   "firstName": "Alexis",
-//   "lastLogin": "2021-02-22T15:28:50.919Z",
-//   "lastName": "Woodbury",
-//   "password": "",
-//   "role": "state",
-//   "dateJoined": "2021-02-22T15:20:59.081Z",
-//   "isSuperUser": true,
-//   "isActive": true,
-//   "userId": "0",
-//   "email": "awoodbury@collabralink.com",
-//   "states": "AK",
-//   "username": "WAQF"
-// }
-
-// OBJECT FROM getUserById ??
-
-// FORM SUB:
-// let forms = [];
-// try {
-//   // Get list of all state forms
-//   forms = await obtainAvailableForms({
-//     stateId: currentUserInfo.Items[0].states[0]
-//   });
-//   setSaveAlert(true);
-//   // After 5 seconds, remove the alert
-//   setTimeout(() => {
-//     setSaveAlert(false);
-//   }, 5000);
-// } catch (error) {
-//   console.log("ERROR OBTAINING AVAILABLE FORMS \n\n\n", error);
-//   setSaveFailed(true);
-//   // After 5 seconds, remove the alert
-//   setTimeout(() => {
-//     setSaveFailed(false);
-//   }, 5000);
-// }
 
 // TODO:
 // New component, use redirect component to take users to it and back to the homestate
