@@ -27,7 +27,7 @@ export default function Profile({ user }) {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        let AuthUserInfo = (await Auth.currentSession()).getIdToken;
+        let AuthUserInfo = (await Auth.currentSession()).getIdToken();
         const currentUserInfo = await obtainUserByEmail({
           email: AuthUserInfo.payload.email
         });
