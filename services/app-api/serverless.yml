@@ -147,7 +147,7 @@ functions:
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
-        - Ref: LambdaSecurityGroup
+        - Ref: KafkaSecurityGroup
       subnetIds: ${self:custom.privateSubnets}
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
@@ -380,11 +380,11 @@ resources:
                   Action:
                     - cognito-idp:AdminGetUser
                   Resource: "*"
-    kafkaSecurityGroup:
+    KafkaSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
         GroupDescription: Security Group for streaming functions.  Egress all is set by default.
-        VpcId: vpc-0d0660b2ee6cb7f10
+        VpcId: ${self:custom.vpcId}
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:
