@@ -148,7 +148,7 @@ functions:
     securityGroupIds:
       - Ref: LambdaSecurityGroup
     vpc:
-      subnetIds: ${self:custom.privateSubnets} # Doug is checking which subnets I should use
+      subnetIds: ${self:custom.privateSubnets}
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
     role: LambdaApiRole
@@ -352,6 +352,24 @@ resources:
                     - ${self:custom.AuthUserRolesTableArn}
                     - ${self:custom.AuthJobCodesTableArn}
                     - ${self:custom.AuthUserStatesTableArn}
+                - Effect: "Allow"
+                  Action:
+                    - dynamodb:DescribeStream
+                    - dynamodb:GetRecords
+                    - dynamodb:GetShardIterator
+                    - dynamodb:ListStreams
+                  Resource:
+                    #- ${self:custom.AgeRangesTableStreamArn}
+                    #- ${self:custom.FormAnswersTableArn}
+                    #- ${self:custom.FormQuestionsTableArn}
+                    #- ${self:custom.FormsTableArn}
+                    - ${self:custom.StateFormsTableStreamArn}
+                    #- ${self:custom.StatesTableArn}
+                    #- ${self:custom.StatusTableArn}
+                    #- ${self:custom.AuthUserTableArn}
+                    #- ${self:custom.AuthUserRolesTableArn}
+                    #- ${self:custom.AuthJobCodesTableArn}
+                    #- ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
                   Action:
                     - logs:CreateLogStream
