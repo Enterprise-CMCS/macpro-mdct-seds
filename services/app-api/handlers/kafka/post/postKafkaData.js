@@ -27,7 +27,7 @@ exports.handler = async (event) => {
   if (event.Records) {
     for (const record of event.Records) {
       await producer.send({
-        topic: "state-forms",
+        topic: "aws.mdct.seds.cdc.state-forms",
         messages: [
           {
             key: "key2",
