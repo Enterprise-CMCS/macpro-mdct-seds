@@ -26,27 +26,27 @@ exports.handler = async (event) => {
   console.log("EVENT INFO HERE", event);
   if (event.Records) {
     for (const record of event.Records) {
-      await producer.send({
-        topic: "aws.mdct.seds.cdc.state-forms",
-        messages: [
-          {
-            key: "key3",
-            value: JSON.stringify(record.dynamodb, null, 2),
-            partition: 0,
-            // headers: {
-            //   "correlation-id": "2bfb68bb-893a-423b-a7fa-7b568cad5b67",
-            //   "system-id": "dev-test",
-            // },
-          },
-        ],
-      });
-      console.log(record.eventID);
-      console.log(record.eventName);
+      // await producer.send({
+      //   topic: "aws.mdct.seds.cdc.state-forms",
+      //   messages: [
+      //     {
+      //       key: "key3",
+      //       value: JSON.stringify(record.dynamodb, null, 2),
+      //       partition: 0,
+      //       // headers: {
+      //       //   "correlation-id": "2bfb68bb-893a-423b-a7fa-7b568cad5b67",
+      //       //   "system-id": "dev-test",
+      //       // },
+      //     },
+      //   ],
+      // });
+      console.log("EVENT ID",record.eventID);
+      console.log("EVENT NAME",record.eventName);
       console.log("DynamoDB Record: %j", record.dynamodb);
     }
   }
 
-  const consumer = kafka.consumer();
+  const consumer = kafka.consumer({ groupId: "test1"});
   await consumer.connect();
 
   await consumer.subscribe({
@@ -55,7 +55,7 @@ exports.handler = async (event) => {
   });
   await consumer.run({
     eachMessage: async (data) => {
-      console.log(data);
+      console.log("CONSUMER DATA HERE",data);
     },
   });
   return `Successfully processed ${event.Records.length} records.`;
