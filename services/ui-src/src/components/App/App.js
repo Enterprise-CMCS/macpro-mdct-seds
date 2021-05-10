@@ -21,10 +21,6 @@ function App() {
   async function onLoad() {
     console.log("inside onLoad function");
     try {
-      let userTest = await Auth.currentSession();
-      console.log(userTest, "yeet");
-
-      
       let user = await Auth.currentAuthenticatedUser();
 
       console.log("got user");
