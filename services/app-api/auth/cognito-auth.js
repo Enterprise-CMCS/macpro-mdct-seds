@@ -73,7 +73,9 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
       });
 
       // *** retrieve user from db
-      const currentUser = await obtainUsernameBySub(body);
+      const currentUser = await obtainUsernameBySub({
+        body: body,
+      });
 
       console.log("%%%current user is: ");
       console.log(currentUser);
