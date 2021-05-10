@@ -53,7 +53,7 @@ custom:
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn}
   #spaIdTableName: ${cf:app-api-${self:custom.stage}.SpaIdTableName}
   #spaIdTableArn: ${cf:app-api-${self:custom.stage}.SpaIdTableArn}
-  #bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
@@ -143,7 +143,7 @@ functions:
           enabled: true
     role: LambdaApiRole
     environment:
-      BOOTSTRAP_BROKER_STRING_TLS: b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:

@@ -2,6 +2,8 @@ exports.handler = async (event) => {
   const { Kafka } = require("kafkajs");
   // const kafka = new Kafka({ brokers: ["localhost:9092"] });
 
+  // Process.env.StateFormsTableStreamArn
+  // brokers take an array so I need to split env string so that it becomes an array
   const kafka = new Kafka({
     clientId: "dynamodb",
     brokers: [
@@ -30,10 +32,11 @@ exports.handler = async (event) => {
           {
             key: "key2",
             value: JSON.stringify(record.dynamodb, null, 2),
-            headers: {
-              "correlation-id": "2bfb68bb-893a-423b-a7fa-7b568cad5b67",
-              "system-id": "dev-test",
-            },
+            partition: 0
+            // headers: {
+            //   "correlation-id": "2bfb68bb-893a-423b-a7fa-7b568cad5b67",
+            //   "system-id": "dev-test",
+            // },
           },
         ],
       });
