@@ -15,6 +15,7 @@ const HomeState = () => {
 
   // Get User data
   const loadUserData = async () => {
+    let x = 0;
     // Get user data via email from amplify
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
 
@@ -24,6 +25,8 @@ const HomeState = () => {
     let email;
 
     console.log(AuthUserInfo);
+
+    let y = 0;
 
     if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
       email = AuthUserInfo.attributes.email;
@@ -38,11 +41,20 @@ const HomeState = () => {
       email: email
     });
 
+    let yy = 0;
+
+    console.log("SHOW ME THE USER", currentUserInfo.Items[0]);
+
     // Get list of all state forms
     const forms = await obtainAvailableForms({
       stateId: currentUserInfo.Items[0].states[0]
     });
 
+    let yyy = 0;
+
+    let holdForms = sortFormsByYearAndQuarter(forms);
+    let holdState = currentUserInfo.Items[0].states[0];
+    let z = 0;
     // Sort forms descending by year and then quarter and return them along with user state
     return {
       forms: sortFormsByYearAndQuarter(forms),
@@ -52,8 +64,18 @@ const HomeState = () => {
 
   useEffect(() => {
     (async () => {
+      let a = 0;
       const { forms, stateString } = await loadUserData();
+
+      let b = 0;
       if (stateString !== "null" && forms && forms !== []) {
+        let c = 0;
+        console.log(
+          "FORMS AND STATE STRING??? \n\n\n",
+          forms,
+          "\n\n",
+          stateString
+        );
         setAccordionItems(
           buildSortedAccordionByYearQuarter(forms, stateString)
         );
@@ -61,6 +83,7 @@ const HomeState = () => {
         history.push("/register-state");
       }
     })();
+    console.log("HELLO HELLPO HELLO");
   }, []);
 
   return (

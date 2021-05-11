@@ -26,6 +26,7 @@ function App() {
       // user.attributes["app-role"] = determineRole(
       //   user.attributes["custom:ismemberof"]
       // );
+      // user.attributes["app-role"] = "admin";
       user.attributes["app-role"] = "state";
       await ascertainUserPresence(user);
       setUser(user);
