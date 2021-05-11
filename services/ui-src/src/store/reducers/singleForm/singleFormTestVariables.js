@@ -29,7 +29,7 @@ export const statusData = {
 
 export const answers = [
   {
-    age_range: "Ages 6 - 12",
+    ageRange: "Ages 6 - 12",
     rangeId: "0612",
     question: "2021-21E-03",
     state_form: "AL-2021-1-21E",
@@ -74,7 +74,7 @@ export const answers = [
     answer_entry: "AL-2021-1-21E-0612-03"
   },
   {
-    age_range: "Ages 1 - 5",
+    ageRange: "Ages 1 - 5",
     rangeId: "0105",
     question: "2021-21E-08",
     state_form: "AL-2021-1-21E",
@@ -119,7 +119,7 @@ export const answers = [
     answer_entry: "AL-2021-1-21E-0105-08"
   },
   {
-    age_range: "Ages 6 - 12",
+    ageRange: "Ages 6 - 12",
     rangeId: "0612",
     question: "2021-21E-09",
     state_form: "AL-2021-1-21E",

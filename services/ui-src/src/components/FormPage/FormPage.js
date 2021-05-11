@@ -112,7 +112,18 @@ const FormPage = ({ getForm, statusData }) => {
           lastModified={last_modified}
         />
       </div>
-      {redirectToPDF ? <Redirect to="/printPDF" /> : null}
+      {redirectToPDF ? (
+        <Redirect
+          to={{
+            pathname: "/printPDF",
+            state: {
+              form: formattedFormName,
+              year: year,
+              stateName: formattedStateName
+            }
+          }}
+        />
+      ) : null}
     </div>
   );
 };

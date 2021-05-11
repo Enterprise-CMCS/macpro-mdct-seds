@@ -28,7 +28,7 @@
         "row_total": true,
         "column_total": true,
         "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -76,7 +76,7 @@
         "row_total": true,
         "column_total": true,
         "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -124,7 +124,7 @@
         "row_total": true,
         "column_total": true,
         "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -172,7 +172,7 @@
         "row_total": true,
         "column_total": true,
         "label": "What is the number of member-months of enrollment for &&&VARIABLE&&& in the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -221,7 +221,7 @@
         "column_total": true,
         "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
         "readonly": true,
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -404,7 +404,7 @@
         "row_total": true,
         "column_total": true,
         "label": "What is the number of children, pregnant women or waiver adults &&&VARIABLE&&& enrolled at the end of the quarter?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -455,7 +455,7 @@
           "show_if_quarter_in": ["4"]
         },
         "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -506,7 +506,7 @@
           "show_if_quarter_in": ["4"]
         },
         "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",
@@ -557,7 +557,7 @@
           "show_if_quarter_in": ["4"]
         },
         "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
-        "age_range": "Under Age 0",
+        "ageRange": "Under Age 0",
         "rows": [
           {
             "col1": "",

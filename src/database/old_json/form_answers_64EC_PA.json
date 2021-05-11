@@ -3,7 +3,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-01",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-01",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -48,7 +48,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-02",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-02",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -93,7 +93,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-03",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-03",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -138,7 +138,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-04",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-04",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -183,7 +183,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-05",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-05",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -363,7 +363,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-06",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-06",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
@@ -408,7 +408,7 @@
     "answer_entry": "PA-2021-1-64.EC-1920-07",
     "state_form": "PA-2021-1-64.EC",
     "question": "2021-64.EC-07",
-    "age_range": "Ages 19 - 20",
+    "ageRange": "Ages 19 - 20",
     "rangeId": "1920",
     "rows": [
       {
