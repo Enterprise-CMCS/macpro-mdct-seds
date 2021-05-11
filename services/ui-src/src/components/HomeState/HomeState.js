@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { Route, Redirect, useHistory } from "react-router-dom";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
+import {
+  sortFormsByYearAndQuarter,
+  buildSortedAccordionByYearQuarter
+} from "../../utility-functions/sortingFunctions";
 
 const HomeState = () => {
   // Set up local state
@@ -43,30 +47,15 @@ const HomeState = () => {
       stateId: currentUserInfo.Items[0].states[0]
     });
 
-    // Sort forms descending by year and then quarter
-    forms.sort(function (a, b) {
-      if (a.year === b.year) {
-        return a.quarter - b.quarter;
-      } else if (a.year < b.year) {
-        return 1;
-      } else if (a.year > b.year) {
-        return -1;
-      }
-      return false;
-    });
-
-    return forms;
-
-    // setFormData(forms);
-
-    // return currentUserInfo.Items[0].states[0]; // "MD"
+    // Sort forms descending by year and then quarter and return them
+    return sortFormsByYearAndQuarter(forms);
   };
 
   useEffect(async () => {
     const result = await loadUserData();
-
+    console.log("HELLO??????", result);
     let A = 0;
-    if (result && result !== "null") {
+    if (result && result !== []) {
       createAccordion(result);
     } else {
       history.push("/register-state");
@@ -74,73 +63,8 @@ const HomeState = () => {
   }, []);
 
   const createAccordion = formData => {
-    let uniqueYears;
-    if (formData) {
-      uniqueYears = Array.from(new Set(formData.map(a => a.year))).map(year => {
-        return formData.find(a => a.year === year);
-      });
-    }
-
-    let tempAccordion = [];
-
-    // Loop through years to build quarters
-    for (const year in uniqueYears) {
-      let quarters = [];
-
-      // Loop through all formData and get quarters if year matches
-      for (const form in formData) {
-        // If years match, add quarter to array
-        if (formData[form].year === uniqueYears[year].year) {
-          quarters.push(formData[form]);
-        }
-      }
-
-      // Remove duplicate quarters
-      let uniqueQuarters;
-      if (quarters) {
-        uniqueQuarters = Array.from(new Set(quarters.map(a => a.quarter))).map(
-          quarter => {
-            return quarters.find(a => a.quarter === quarter);
-          }
-        );
-      }
-
-      // Build output for each accordion item
-      let quartersOutput = (
-        <ul className="quarterly-items">
-          {uniqueQuarters.map(element => {
-            return (
-              <li key={`${element.quarter}`}>
-                <Link
-                  to={`/forms/${state}/${uniqueYears[year].year}/${element.quarter}`}
-                >
-                  Quarter {`${element.quarter}`}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      );
-
-      // If current year, set expanded to true
-      let expanded = false;
-      let currentDate = new Date();
-      if (uniqueYears[year].year === currentDate.getFullYear()) {
-        expanded = true;
-      }
-
-      // Build single item
-      let item = {
-        id: uniqueYears[year].year,
-        description: "Quarters for " + uniqueYears[year].year,
-        title: uniqueYears[year].year,
-        content: quartersOutput,
-        expanded: expanded
-      };
-
-      tempAccordion.push(item);
-    }
-    setAccordionItems(tempAccordion);
+    let p = 1;
+    setAccordionItems(buildSortedAccordionByYearQuarter(formData, state));
   };
 
   return (
@@ -149,7 +73,7 @@ const HomeState = () => {
         Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
         to view available reports.
       </p>
-      {/* {console.log("FORM DATA \n\n\n", formData)} */}
+
       <div className="quarterly-report-list">
         <Accordion bordered={true} items={accordionItems} />
       </div>

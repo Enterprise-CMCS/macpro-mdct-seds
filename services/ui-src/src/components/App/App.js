@@ -19,42 +19,24 @@ function App() {
   const [user, setUser] = useState();
 
   async function onLoad() {
-    console.log("inside onLoad function");
     try {
       let user = await Auth.currentAuthenticatedUser();
-
-      console.log("got user");
-      console.log(user);
-
       // *** make sure attributes exist and are in standard format
       user.attributes = user.signInUserSession.idToken.payload;
-
-      console.log("attributes created: ");
-      console.log(user);
-
-      user.attributes["app-role"] = determineRole(
-        user.attributes["custom:ismemberof"]
-      );
+      // user.attributes["app-role"] = determineRole(
+      //   user.attributes["custom:ismemberof"]
+      // );
       user.attributes["app-role"] = "state";
-
-      console.log("role figured out");
-      console.log(user);
-      setUser(user);
-      console.log("user set");
-      setIsAuthenticated(true);
-      console.log("user is authenticated set");
-      setIsAuthenticating(false);
-      console.log("user is authenticatING set");
-
-      setIsAuthorized(true);
-      console.log("testing user presence");
       await ascertainUserPresence(user);
+      setUser(user);
+      setIsAuthenticated(true);
+      setIsAuthorized(true);
+      setIsAuthenticating(false);
     } catch (error) {
       setIsAuthenticating(false);
     }
   }
   useEffect(() => {
-    console.log("running onload");
     onLoad().then();
   }, [isAuthenticated]);
 

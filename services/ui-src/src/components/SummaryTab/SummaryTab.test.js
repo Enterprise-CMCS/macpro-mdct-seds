@@ -64,8 +64,8 @@ describe("Test SummaryTab.js", () => {
         .find("td")
         .at(0)
         .children()
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/2/);
 
     expect(
@@ -75,8 +75,8 @@ describe("Test SummaryTab.js", () => {
         .find("td")
         .at(1)
         .children()
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/4/);
 
     expect(
@@ -86,8 +86,8 @@ describe("Test SummaryTab.js", () => {
         .find("td")
         .at(2)
         .children()
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/6/);
 
     expect(
@@ -97,8 +97,8 @@ describe("Test SummaryTab.js", () => {
         .find("td")
         .at(3)
         .children()
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/8/);
     expect(
       wrapper
@@ -107,8 +107,8 @@ describe("Test SummaryTab.js", () => {
         .find("td")
         .at(4)
         .children()
-        .find("input")
-        .instance().value
+        .find("span")
+        .text()
     ).toMatch(/10/);
   });
   test("Check for Summary Notes component", () => {

@@ -1,9 +1,10 @@
 import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
+import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footer" data-testid="Footer">
+    <div className="footer position-relative z-bottom" data-testid="Footer">
       <GridContainer className="container">
         <Grid row>
           <Grid col={6} tablet={{ col: true }}>

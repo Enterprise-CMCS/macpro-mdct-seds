@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../libs/contextLib";
 import "./Home.scss";
 import HomeState from "../HomeState/HomeState";
-import HomeBus from "../HomeBus/HomeBus";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
@@ -25,8 +24,6 @@ const Home = ({ user }) => {
         content = <HomeState />;
         break;
       case "business":
-        content = <HomeBus />;
-        break;
       case "admin":
         content = <HomeAdmin />;
         break;
