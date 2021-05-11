@@ -18,6 +18,7 @@ const HomeState = () => {
   const loadUserData = async () => {
     // Get user information
     let currentUserInfo;
+    let x = 0;
     try {
       // Get user information
       const AuthUserInfo = (await Auth.currentSession()).getIdToken();
@@ -28,18 +29,29 @@ const HomeState = () => {
       onError(e);
     }
 
+    let y = 0;
+    let forms = [];
+    let stateString = "";
+
     if (currentUserInfo["Items"]) {
       // Get list of all state forms
-      const forms = await obtainAvailableForms({
-        stateId: currentUserInfo["Items"][0].states[0]
-      });
-
-      // Sort forms descending by year and then quarter and return them along with user state
-      return {
-        forms: sortFormsByYearAndQuarter(forms),
-        stateString: currentUserInfo["Items"][0].states[0]
-      };
+      try {
+        const availableForms = await obtainAvailableForms({
+          stateId: currentUserInfo["Items"][0].states[0]
+        });
+        forms = sortFormsByYearAndQuarter(forms);
+        stateString = currentUserInfo["Items"][0].states[0];
+      } catch (error) {
+        console.log("NEEDLE IN THE HAYSTACK", error);
+      }
     }
+
+    let yyy = 0;
+    return {
+      // Sort forms descending by year and then quarter and return them along with user state
+      forms: forms === [] ? [] : sortFormsByYearAndQuarter(forms),
+      stateString: stateString === "" ? "" : stateString
+    };
   };
 
   useEffect(() => {
@@ -47,21 +59,24 @@ const HomeState = () => {
       let a = 0;
       const { forms, stateString } = await loadUserData();
 
+      console.log(
+        "FORMS AND STATE STRING??? \n\n\n",
+        forms,
+        "\n\n\n",
+        stateString
+      );
+
       let b = 0;
-      if (stateString !== "null" && forms && forms !== []) {
+      if (stateString !== "") {
         let c = 0;
-        console.log(
-          "FORMS AND STATE STRING??? \n\n\n",
-          forms,
-          "\n\n",
-          stateString
-        );
         setAccordionItems(
           buildSortedAccordionByYearQuarter(forms, stateString)
         );
       } else {
+        let d = 0;
         history.push("/register-state");
       }
+      let gg = 0;
     })();
     console.log("HELLO HELLPO HELLO");
   }, []);

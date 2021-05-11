@@ -8,35 +8,36 @@ import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { obtainUserByEmail, updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { onError } from "../../libs/errorLib";
 
 const StateSelector = ({ stateList }) => {
   let history = useHistory();
 
   // Set up local state
-  const [state, setState] = useState();
+  const [state, setState] = useState([]);
 
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
   // Get User data
   const loadUserData = async () => {
-    // Get user data via email from amplify
-    const AuthUserInfo = await Auth.currentAuthenticatedUser();
+    let currentUserInfo;
 
-    let email;
-    if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-      email = AuthUserInfo.attributes.email;
-    } else {
-      email = AuthUserInfo.signInUserSession.idToken.payload.email;
+    try {
+      // Get user information
+      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+      currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.payload.email
+      });
+    } catch (e) {
+      onError(e);
     }
-
-    const currentUserInfo = await obtainUserByEmail({
-      email: email
-    });
-
     // Save to local state
-    setState(currentUserInfo.Items[0].states[0]);
-    setUser(currentUserInfo.Items[0]);
+
+    if (currentUserInfo["Items"]) {
+      setState(currentUserInfo["Items"][0].states[0]);
+      setUser(currentUserInfo["Items"][0]);
+    }
   };
 
   useEffect(() => {
@@ -46,15 +47,11 @@ const StateSelector = ({ stateList }) => {
   }, []);
 
   const addUserState = event => {
-    // Update state for dropdown
     setSelectedState(event);
-
-    // Update user data to save
-    let tempUser = { ...user, states: [event.value] };
-    setUser(tempUser);
+    setUser({ ...user, states: [event.value] });
   };
 
-  const saveUpdatedUser = async data => {
+  const saveUpdatedUser = async () => {
     if (
       selectedState !== null &&
       selectedState !== undefined &&
@@ -65,8 +62,13 @@ const StateSelector = ({ stateList }) => {
       );
 
       if (confirm) {
-        await updateUser(data);
-        history.push("/");
+        try {
+          await updateUser(user);
+          console.log("USER UPDATED!!!!");
+          history.push("/");
+        } catch (error) {
+          console.log("ERROR IN STATE SELECTOR:", error);
+        }
       } else {
         return;
       }
@@ -106,8 +108,8 @@ const StateSelector = ({ stateList }) => {
             <Button
               type="button"
               className="form-button"
-              onClick={async () => {
-                await saveUpdatedUser(user);
+              onClick={() => {
+                saveUpdatedUser();
               }}
             >
               Update User
