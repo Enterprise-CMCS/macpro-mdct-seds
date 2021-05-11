@@ -118,6 +118,12 @@ provider:
   versionFunctions: true
 
 resources:
+  Conditions:
+    CreatePermissionsBoundary:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
     LambdaConfigureSecurityGroup:
       Type: AWS::EC2::SecurityGroup
