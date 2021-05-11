@@ -7,14 +7,15 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
+import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { sendUncertifyEmail, obtainUserByEmail } from "../../libs/api";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
-  notApplicable,
   lastModified,
   lastModifiedBy,
   isFinal,
@@ -44,8 +45,33 @@ const CertificationTab = ({
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       await uncertify();
       saveForm();
+      await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
+    }
+  };
+
+  const sendEmailtoBo = async () => {
+    const authUser = await Auth.currentSession();
+    const userEmail = authUser.idToken.payload.email;
+    var datetime = new Date().getTime();
+    try {
+      const currentUser = await obtainUserByEmail({
+        email: userEmail
+      });
+      let userObj = currentUser["Items"];
+      userObj.map(async userInfo => {
+        if (userInfo.role === "state") {
+          let emailObj = {
+            states: userInfo.states,
+            date: datetime,
+            username: userInfo.username
+          };
+          await sendUncertifyEmail(emailObj);
+        }
+      });
+    } catch (err) {
+      throw new Error(err);
     }
   };
 

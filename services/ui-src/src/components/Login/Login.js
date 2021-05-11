@@ -64,6 +64,21 @@ export default function Login() {
     }
   }
 
+  //This variable will be used to set the hidden property of the developer-login form
+  //If the environment is not PROD and is not VAL, the developer login will be shown
+  let development = true;
+  //if (window.location.hostname !== "mdctseds.cms.gov" && window.location.hostname !== "mdctsedsval.cms.gov") {
+  if (
+    window._env_.STAGE !== "production" &&
+    window._env_.STAGE !== "prod" &&
+    window._env_.STAGE !== "val" &&
+    window._env_.STAGE !== "impl"
+  ) {
+    development = false;
+  }
+
+  console.log("stage: ", window._env_.STAGE);
+
   return (
     <div
       className="login-wrapper react-transition flip-in-y text-center"
@@ -80,7 +95,11 @@ export default function Login() {
           <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
         </LoaderButton>
       </div>
-      <form onSubmit={handleSubmit} className="text-center">
+      <form
+        onSubmit={handleSubmit}
+        className="developer-login text-center"
+        hidden={development}
+      >
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl

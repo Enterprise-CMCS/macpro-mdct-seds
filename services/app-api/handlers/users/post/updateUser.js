@@ -7,6 +7,9 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
 
+  console.log("got data: ");
+  console.log(data);
+
   const body = JSON.stringify({
     email: data.email,
   });
@@ -28,7 +31,7 @@ export const main = handler(async (event, context) => {
       ":states": data.states ?? "",
       ":isActive": data.isActive ?? "inactive",
       ":lastLogin": data.lastLogin,
-      ":usernameSub": data.sub,
+      ":usernameSub": data.usernameSub,
     },
     ExpressionAttributeNames: {
       "#r": "role",
