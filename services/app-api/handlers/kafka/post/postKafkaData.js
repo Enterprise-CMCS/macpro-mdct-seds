@@ -59,14 +59,14 @@ try{
     eachMessage: async ({ topic, partition, message }) => {
       console.log("partition HERE", partition);
       const messageAsJson = JSON.parse(message.value.toString());
-      console.log("MESSAGE AS JSON HERE", messageAsJson)
+      console.log("MESSAGE AS JSON HERE", messageAsJson);
       console.log("topic HERE", topic);
     },
   });
   console.log("POST MESSAGES LIST");
 }
   catch (e){
-    console.log("ERROR HERE", e)
+    console.log("ERROR HERE", e);
   }
   return `Successfully processed ${event.Records.length} records.`;
 };
