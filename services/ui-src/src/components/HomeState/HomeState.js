@@ -15,17 +15,21 @@ const HomeState = () => {
   // Get User data
   const loadUserData = async () => {
     // Get user data via email from amplify
-    const AuthUserInfo = await Auth.currentAuthenticatedUser();
+    const AuthUserInfo = (await Auth.currentSession()).getIdToken;
+    let email = AuthUserInfo.payload.email;
 
-    let email;
+    console.log(AuthUserInfo, "yetttt");
+    console.log("User Email: ", email);
 
-    console.log(AuthUserInfo);
+    // let email;
 
-    if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-      email = AuthUserInfo.attributes.email;
-    } else {
-      email = AuthUserInfo.signInUserSession.idToken.payload.email;
-    }
+    // console.log(AuthUserInfo);
+
+    // if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
+    //   email = AuthUserInfo.payload.email;
+    // } else {
+    //   email = AuthUserInfo.signInUserSession.idToken.payload.email;
+    // }
 
     console.log("Retrieved email: -----");
     console.log(email);

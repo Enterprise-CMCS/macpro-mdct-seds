@@ -80,7 +80,7 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
       console.log("%%%current user is: ");
       console.log(currentUser);
 
-      const username = JSON.parse(currentUser.body)["Items"][0].usernameSub;
+      const username = JSON.parse(currentUser.body)["Items"][0].username;
 
       console.log("&&&&&&&&&&&&&&&&&&&Obtained username");
       console.log(username);

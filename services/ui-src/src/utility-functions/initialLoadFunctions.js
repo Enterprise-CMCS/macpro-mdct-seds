@@ -15,17 +15,12 @@ export async function ascertainUserPresence(user) {
     lastLogin: new Date().toISOString()
   };
 
-  console.log("\n\n*****figured out user object: ");
-  console.log(userObject);
-
   if (existingUser === false) {
     await createUser(userObject);
   } else {
     let updateItem = existingUser["Items"];
     updateItem.map(async userInfo => {
       userInfo.sub = user.attributes.sub;
-      console.log("\n\n##### updating with this:");
-      console.log(userInfo);
       await updateUser(userInfo);
     });
   }
@@ -35,13 +30,9 @@ export const determineRole = specRole => {
   const roleArray = ["admin", "business", "state"];
   let role;
 
-  console.log("determining role");
-
   if (roleArray.includes(specRole)) {
     role = specRole;
   }
-
-  console.log(specRole);
 
   if (specRole) {
     if (
@@ -58,9 +49,6 @@ export const determineRole = specRole => {
       role = "state";
     }
   }
-
-  console.log("!!!!!!role determined: ");
-  console.log(role);
 
   return role;
 };
