@@ -48,15 +48,17 @@ exports.handler = async (event) => {
 
   const consumer = kafka.consumer({ groupId: "test1"});
   await consumer.connect();
-
+  console.log("POST CONNECT")
   await consumer.subscribe({
     topic: "aws.mdct.seds.cdc.state-forms",
     fromBeginning: true,
   });
+  console.log("POST SUBSCRIBE")
   await consumer.run({
     eachMessage: async (data) => {
       console.log("CONSUMER DATA HERE",data);
     },
   });
+  console.log("POST MESSAGES LIST")
   return `Successfully processed ${event.Records.length} records.`;
 };
