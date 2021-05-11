@@ -15,6 +15,7 @@ import Quarterly from "../Quarterly/Quarterly";
 import UserAdd from "../AddUser/AddUser";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormPage from "../FormPage/FormPage";
+import LoadData from "../LoadData/LoadData";
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
@@ -57,14 +58,17 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
       </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/PrintPDF">
-            <PrintPDF />
-        </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/PrintPDF">
+        <PrintPDF />
+      </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
       {user.attributes["app-role"] === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/load-data">
+            <LoadData />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/users/add">
             <UserAdd />

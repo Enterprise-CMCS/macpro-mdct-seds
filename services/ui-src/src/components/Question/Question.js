@@ -4,9 +4,15 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
-import "./Question.scss"
+import "./Question.scss";
 
-const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
+const QuestionComponent = ({
+  questionData,
+  rangeID,
+  answerData,
+  disabled,
+  synthesized
+}) => {
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
@@ -48,6 +54,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
               questionID={answer_entry}
               gridData={sortedRows}
               disabled={disabled}
+              synthesized={synthesized ? synthesized : false}
             />
           );
           break;
@@ -80,7 +87,8 @@ QuestionComponent.propTypes = {
   questionData: PropTypes.object.isRequired,
   rangeID: PropTypes.string.isRequired,
   answerData: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  synthesized: PropTypes.bool.isRequired
 };
 
 export default QuestionComponent;

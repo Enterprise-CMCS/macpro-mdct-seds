@@ -7,9 +7,11 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
+import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { sendUncertifyEmail, obtainUserByEmail } from "../../libs/api";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
@@ -30,23 +32,48 @@ const CertificationTab = ({
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
 
-  const submitProvisional = () => {
-    certifyAndSubmitProvisional();
-    setprovisionalButtonStatus(true);
+  const submitProvisional = async () => {
+    await certifyAndSubmitProvisional();
     saveForm();
+    setprovisionalButtonStatus(true);
   };
-  const submitFinal = () => {
-    certifyAndSubmitFinal();
+  const submitFinal = async () => {
+    await certifyAndSubmitFinal();
+    saveForm();
     setprovisionalButtonStatus(true);
     setfinalButtonStatus(true);
-    saveForm();
   };
-  const submitUncertify = () => {
+  const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
-      uncertify();
+      await uncertify();
+      saveForm();
+      await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
-      saveForm();
+    }
+  };
+
+  const sendEmailtoBo = async () => {
+    const authUser = await Auth.currentSession();
+    const userEmail = authUser.idToken.payload.email;
+    var datetime = new Date().getTime();
+    try {
+      const currentUser = await obtainUserByEmail({
+        email: userEmail
+      });
+      let userObj = currentUser["Items"];
+      userObj.map(async userInfo => {
+        if (userInfo.role === "state") {
+          let emailObj = {
+            states: userInfo.states,
+            date: datetime,
+            username: userInfo.username
+          };
+          await sendUncertifyEmail(emailObj);
+        }
+      });
+    } catch (err) {
+      throw new Error(err);
     }
   };
 
@@ -107,12 +134,14 @@ const CertificationTab = ({
           compliance with Title XXI of the Social Security Act (Section 2109(a)
           and Section 2108(e)).
         </p>
-        <div data-testid="statusText">
-          <p>
-            This report was updated to <b>{status}</b> on{" "}
-            <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
-          </p>
-        </div>
+        {isFinal || isProvisional ? (
+          <div data-testid="statusText">
+            <p>
+              This report was updated to <b>{status}</b> on{" "}
+              <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
+            </p>
+          </div>
+        ) : null}
       </div>
       <div className="certify-btn ">
         <Button

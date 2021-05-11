@@ -5,15 +5,35 @@ const requestOptions = () => {
   return {};
 };
 
-/*************************** USER API ***************************/
+/*************************** EXPORT API ***************************/
 // *** export to excel
 export const exportToExcel = async data => {
   const opts = requestOptions();
   opts.body = data;
 
+  console.log(opts.body);
+
   return API.post("mdct-seds", "/export/export-to-excel", opts);
 };
 
+/*************************** LOAD DATA API ***************************/
+// *** load data
+export const loadData = async data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  console.log(opts.body);
+
+  return API.post("mdct-seds", "/load-data/upload", opts);
+};
+
+export const getTableNames = () => {
+  const opts = requestOptions();
+
+  return API.get("mdct-seds", "/load-data/get-table-names", opts);
+};
+
+/*************************** USER API ***************************/
 // *** list all Users
 export const listUsers = () => {
   const opts = requestOptions();
@@ -112,4 +132,10 @@ export const saveSingleForm = data => {
   opts.body = data;
 
   return API.post("mdct-seds", "/single-form/save", opts);
+};
+// **
+export const sendUncertifyEmail = data => {
+  const opts = requestOptions();
+  opts.body = data;
+  return API.post("mdct-seds", `/notification/uncertified`, opts);
 };

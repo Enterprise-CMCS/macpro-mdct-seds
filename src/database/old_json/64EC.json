@@ -1,12 +1,11 @@
 [
   {
-    "question": "2021-64.21E-01",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-01",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
     "rows": [
       {
@@ -42,19 +41,18 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-02",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-02",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
@@ -90,19 +88,18 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-03",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-03",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
@@ -138,20 +135,19 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-04",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-04",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
-    "label": "What is the number of member-months of enrollment for &&&VARIABLE&&& in the quarter?",
+    "rowTotal": true,
+    "columnTotal": true,
+    "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
     "rows": [
       {
         "col1": "",
@@ -186,20 +182,19 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-05",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-05",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
-    "label": "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
+    "rowTotal": true,
+    "columnTotal": true,
+    "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
     "rows": [
@@ -216,8 +211,8 @@
         "col2": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[1].col2",
-              "$..[?(@.question=='2021-64.21E-01')].rows[1].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -226,8 +221,8 @@
         "col3": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[1].col3",
-              "$..[?(@.question=='2021-64.21E-01')].rows[1].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -236,8 +231,8 @@
         "col4": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[1].col4",
-              "$..[?(@.question=='2021-64.21E-01')].rows[1].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -246,8 +241,8 @@
         "col5": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[1].col5",
-              "$..[?(@.question=='2021-64.21E-01')].rows[1].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -256,8 +251,8 @@
         "col6": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[1].col6",
-              "$..[?(@.question=='2021-64.21E-01')].rows[1].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[1].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[1].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -269,8 +264,8 @@
         "col2": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[2].col2",
-              "$..[?(@.question=='2021-64.21E-01')].rows[2].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -279,8 +274,8 @@
         "col3": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[2].col3",
-              "$..[?(@.question=='2021-64.21E-01')].rows[2].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -289,8 +284,8 @@
         "col4": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[2].col4",
-              "$..[?(@.question=='2021-64.21E-01')].rows[2].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -299,8 +294,8 @@
         "col5": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[2].col5",
-              "$..[?(@.question=='2021-64.21E-01')].rows[2].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -309,8 +304,8 @@
         "col6": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[2].col6",
-              "$..[?(@.question=='2021-64.21E-01')].rows[2].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[2].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[2].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -322,8 +317,8 @@
         "col2": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[3].col2",
-              "$..[?(@.question=='2021-64.21E-01')].rows[3].col2"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col2",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col2"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -332,8 +327,8 @@
         "col3": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[3].col3",
-              "$..[?(@.question=='2021-64.21E-01')].rows[3].col3"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col3",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col3"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -342,8 +337,8 @@
         "col4": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[3].col4",
-              "$..[?(@.question=='2021-64.21E-01')].rows[3].col4"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col4",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col4"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -352,8 +347,8 @@
         "col5": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[3].col5",
-              "$..[?(@.question=='2021-64.21E-01')].rows[3].col5"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col5",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col5"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -362,8 +357,8 @@
         "col6": [
           {
             "targets": [
-              "$..[?(@.question=='2021-64.21E-04')].rows[3].col6",
-              "$..[?(@.question=='2021-64.21E-01')].rows[3].col6"
+              "$..[?(@.question=='2021-64.EC-04')].rows[3].col6",
+              "$..[?(@.question=='2021-64.EC-01')].rows[3].col6"
             ],
             "actions": ["formula"],
             "formula": "<0> / <1>"
@@ -371,20 +366,19 @@
         ]
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-06",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-06",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
-    "label": "What is the number of children, pregnant women or waiver adults &&&VARIABLE&&& enrolled at the end of the quarter?",
+    "rowTotal": true,
+    "columnTotal": true,
+    "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
     "rows": [
       {
         "col1": "",
@@ -419,21 +413,20 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-07",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-07",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
     "rows": [
@@ -470,21 +463,20 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-08",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-08",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
     "rows": [
@@ -521,21 +513,20 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   },
   {
-    "question": "2021-64.21E-09",
-    "form_id": "3",
-    "form": "64.21E",
+    "question": "2021-64.EC-09",
+    "form": "64.EC",
     "year": 2021,
     "type": "datagridwithtotals",
-    "row_total": true,
-    "column_total": true,
+    "rowTotal": true,
+    "columnTotal": true,
     "context_data": {
-      "show_if_quarter_in": "4"
+      "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
     "rows": [
@@ -572,9 +563,9 @@
         "col6": null
       }
     ],
-    "last_modified": "2021-01-15T12:46:35.838Z",
-    "last_modified_by": "seed",
-    "created_date": "2021-01-15T12:46:35.838Z",
-    "created_by": "seed"
+    "lastModified": "2021-01-15T12:46:35.838Z",
+    "lastModifiedBY": "seed",
+    "createdDate": "2021-01-15T12:46:35.838Z",
+    "createdBY": "seed"
   }
 ]

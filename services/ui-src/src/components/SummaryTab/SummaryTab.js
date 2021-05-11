@@ -5,8 +5,13 @@ import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
+import { useLocation } from "react-router-dom";
 
 const SummaryTab = ({ questions, answers }) => {
+  // Get current quarter from URL
+  const location = useLocation();
+  const quarter = location.pathname.split("/")[4];
+
   return (
     <div className="summary-tab react-transition fade-in">
       <div className="age-range-description padding-y-2">
@@ -14,6 +19,15 @@ const SummaryTab = ({ questions, answers }) => {
       </div>
 
       {questions.map((singleQuestion, idx) => {
+        // Remove any questions that are hidden in this quarter
+        if (
+          singleQuestion.context_data &&
+          !singleQuestion.context_data.show_if_quarter_in
+            .toString()
+            .includes(quarter)
+        ) {
+          return false;
+        }
         // Initialize newRows
         let newRows = [];
 
@@ -82,6 +96,7 @@ const SummaryTab = ({ questions, answers }) => {
             questionData={singleQuestion}
             answerData={questionAnswer}
             disabled={true}
+            synthesized={true}
           />
         );
       })}

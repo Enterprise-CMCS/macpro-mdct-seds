@@ -9,13 +9,13 @@ import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
 import "./FormPage.scss";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFilePdf} from "@fortawesome/free-solid-svg-icons";
-import {Button} from "@trussworks/react-uswds";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@trussworks/react-uswds";
 
 const FormPage = ({ getForm, statusData }) => {
   const [saveAlert, setSaveAlert] = useState(false);
-  const { last_modified,save_error } = statusData;
+  const { last_modified, save_error } = statusData;
   const [redirectToPDF, setRedirectToPDF] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
@@ -27,8 +27,8 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   const redirectToPDFClicked = () => {
-      setRedirectToPDF(true)
-}
+    setRedirectToPDF(true);
+  };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
@@ -91,14 +91,14 @@ const FormPage = ({ getForm, statusData }) => {
           state={formattedStateName}
         />
       </div>
-        <Button
-            className="margin-left-3 action-button"
-            primary="true"
-            onClick={redirectToPDFClicked}
-        >
-            PDF
-            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-        </Button>
+      <Button
+        className="margin-left-3 action-button"
+        primary="true"
+        onClick={redirectToPDFClicked}
+      >
+        PDF
+        <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+      </Button>
       <NotApplicable />
       <div className="tab-container margin-x-5 margin-y-3">
         <TabContainer quarter={quarter} />
@@ -112,9 +112,7 @@ const FormPage = ({ getForm, statusData }) => {
           lastModified={last_modified}
         />
       </div>
-        {redirectToPDF ? (
-            <Redirect to='/printPDF'  />
-        ): null}
+      {redirectToPDF ? <Redirect to="/printPDF" /> : null}
     </div>
   );
 };

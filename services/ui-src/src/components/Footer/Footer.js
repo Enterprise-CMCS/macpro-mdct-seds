@@ -1,9 +1,10 @@
 import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
+import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footer" data-testid="Footer">
+    <div className="footer position-relative z-bottom" data-testid="Footer">
       <GridContainer className="container">
         <Grid row>
           <Grid col={6} tablet={{ col: true }}>
@@ -66,7 +67,7 @@ const Footer = () => {
                 &amp; Medicaid Services
               </div>
               <div className="address">
-                2500 Security Boulevard Baltimore, MD 21244
+                7500 Security Boulevard Baltimore, MD 21244
               </div>
             </div>
           </Grid>
