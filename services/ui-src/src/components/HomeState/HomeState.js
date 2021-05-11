@@ -7,6 +7,7 @@ import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
+import { onError } from "../../libs/errorLib";
 
 const HomeState = () => {
   // Set up local state
@@ -15,51 +16,30 @@ const HomeState = () => {
 
   // Get User data
   const loadUserData = async () => {
-    let x = 0;
-    // Get user data via email from amplify
-    const AuthUserInfo = await Auth.currentAuthenticatedUser();
-
-    // const AuthUserInfo = (await Auth.currentSession()).getIdToken;
-    // let email = AuthUserInfo.payload.email;
-
-    let email;
-
-    console.log(AuthUserInfo);
-
-    let y = 0;
-
-    if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-      email = AuthUserInfo.attributes.email;
-    } else {
-      email = AuthUserInfo.signInUserSession.idToken.payload.email;
+    // Get user information
+    let currentUserInfo;
+    try {
+      // Get user information
+      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+      currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.payload.email
+      });
+    } catch (e) {
+      onError(e);
     }
 
-    console.log("Retrieved email: -----");
-    console.log(email);
+    if (currentUserInfo["Items"]) {
+      // Get list of all state forms
+      const forms = await obtainAvailableForms({
+        stateId: currentUserInfo["Items"][0].states[0]
+      });
 
-    const currentUserInfo = await obtainUserByEmail({
-      email: email
-    });
-
-    let yy = 0;
-
-    console.log("SHOW ME THE USER", currentUserInfo.Items[0]);
-
-    // Get list of all state forms
-    const forms = await obtainAvailableForms({
-      stateId: currentUserInfo.Items[0].states[0]
-    });
-
-    let yyy = 0;
-
-    let holdForms = sortFormsByYearAndQuarter(forms);
-    let holdState = currentUserInfo.Items[0].states[0];
-    let z = 0;
-    // Sort forms descending by year and then quarter and return them along with user state
-    return {
-      forms: sortFormsByYearAndQuarter(forms),
-      stateString: currentUserInfo.Items[0].states[0]
-    };
+      // Sort forms descending by year and then quarter and return them along with user state
+      return {
+        forms: sortFormsByYearAndQuarter(forms),
+        stateString: currentUserInfo["Items"][0].states[0]
+      };
+    }
   };
 
   useEffect(() => {
