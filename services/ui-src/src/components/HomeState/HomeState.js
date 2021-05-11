@@ -8,7 +8,6 @@ import { Auth } from "aws-amplify";
 const HomeState = () => {
   // Set up local state
   const [state, setState] = useState();
-  const [formData, setFormData] = useState([]);
   const [user, setUser] = useState({});
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
@@ -56,26 +55,25 @@ const HomeState = () => {
       return false;
     });
 
-    setFormData(forms);
+    return forms;
 
-    return currentUserInfo.Items[0].states[0];
+    // setFormData(forms);
+
+    // return currentUserInfo.Items[0].states[0]; // "MD"
   };
 
   useEffect(async () => {
-    const result = await loadUserData().then();
+    const result = await loadUserData();
 
+    let A = 0;
     if (result && result !== "null") {
-      createAccordion();
+      createAccordion(result);
     } else {
       history.push("/register-state");
     }
   }, []);
 
-  const createAccordion = () => {
-    // Create an array of unique years'
-    let B = formData;
-    let A = 0;
-
+  const createAccordion = formData => {
     let uniqueYears;
     if (formData) {
       uniqueYears = Array.from(new Set(formData.map(a => a.year))).map(year => {
@@ -151,7 +149,7 @@ const HomeState = () => {
         Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
         to view available reports.
       </p>
-      {console.log("FORM DATA \n\n\n", formData)}
+      {/* {console.log("FORM DATA \n\n\n", formData)} */}
       <div className="quarterly-report-list">
         <Accordion bordered={true} items={accordionItems} />
       </div>
