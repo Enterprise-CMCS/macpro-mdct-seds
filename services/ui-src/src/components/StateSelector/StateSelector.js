@@ -6,10 +6,12 @@ import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { obtainUserByEmail, updateUser } from "../../libs/api";
-
+import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 
 const StateSelector = ({ stateList }) => {
+  let history = useHistory();
+
   // Set up local state
   const [state, setState] = useState();
 
@@ -28,8 +30,6 @@ const StateSelector = ({ stateList }) => {
       email = AuthUserInfo.signInUserSession.idToken.payload.email;
     }
 
-    console.log("Retrieved email: ----- \n\n\n\n", email);
-
     const currentUserInfo = await obtainUserByEmail({
       email: email
     });
@@ -40,7 +40,9 @@ const StateSelector = ({ stateList }) => {
   };
 
   useEffect(() => {
-    loadUserData().then();
+    (async () => {
+      await loadUserData().then();
+    })();
   }, []);
 
   const addUserState = event => {
@@ -63,9 +65,8 @@ const StateSelector = ({ stateList }) => {
       );
 
       if (confirm) {
-        await updateUser(data).then(() => {
-          loadUserData().then();
-        });
+        await updateUser(data);
+        history.push("/");
       } else {
         return;
       }
@@ -77,7 +78,16 @@ const StateSelector = ({ stateList }) => {
   return (
     <div className="page-home-state">
       {user && state && user.states.length > 0 && user.states !== "null" ? (
-        <h2> You have a state already</h2>
+        <>
+          <h2>
+            {" "}
+            {`This account has already been associated with a state: ${user.states[0]}`}
+          </h2>
+          <p>
+            If you feel this is an error, please contact the helpdesk{" "}
+            <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
+          </p>
+        </>
       ) : (
         <>
           <h1>This account is not associated with any states</h1>
