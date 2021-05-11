@@ -6,6 +6,7 @@ import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
+import { onError } from "../../libs/errorLib";
 
 const HomeState = () => {
   // Set up local state
@@ -14,40 +15,30 @@ const HomeState = () => {
 
   // Get User data
   const loadUserData = async () => {
-    // Get user data via email from amplify
-    const AuthUserInfo = (await Auth.currentSession()).getIdToken;
-    let email = AuthUserInfo.payload.email;
+    // Get user information
+    let currentUserInfo;
+    try {
+      // Get user information
+      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+      currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.payload.email
+      });
+    } catch (e) {
+      onError(e);
+    }
 
-    console.log(AuthUserInfo, "yetttt");
-    console.log("User Email: ", email);
+    if (currentUserInfo["Items"]) {
+      // Save to local state
+      setState(currentUserInfo["Items"][0].states[0]);
 
-    // let email;
+      // Get list of all state forms
+      const forms = await obtainAvailableForms({
+        stateId: currentUserInfo["Items"][0].states[0]
+      });
 
-    // console.log(AuthUserInfo);
-
-    // if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-    //   email = AuthUserInfo.payload.email;
-    // } else {
-    //   email = AuthUserInfo.signInUserSession.idToken.payload.email;
-    // }
-
-    console.log("Retrieved email: -----");
-    console.log(email);
-
-    const currentUserInfo = await obtainUserByEmail({
-      email: email
-    });
-
-    // Save to local state
-    setState(currentUserInfo.Items[0].states[0]);
-
-    // Get list of all state forms
-    const forms = await obtainAvailableForms({
-      stateId: currentUserInfo.Items[0].states[0]
-    });
-
-    // Sort forms by Year and Quarter and set to local state
-    setFormData(sortFormsByYearAndQuarter(forms));
+      // Sort forms by Year and Quarter and set to local state
+      setFormData(sortFormsByYearAndQuarter(forms));
+    }
   };
   useEffect(() => {
     loadUserData().then();

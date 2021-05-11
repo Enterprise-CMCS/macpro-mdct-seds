@@ -15,7 +15,11 @@ const QuestionComponent = ({
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
-  const { rows, answer_entry } = answerData;
+  const { rows, answer_entry } = answerData || {};
+
+  if (!rows) {
+    return null;
+  }
 
   const questionNumber = parseInt(question.split("-").slice(-1));
   const questionType = type;
