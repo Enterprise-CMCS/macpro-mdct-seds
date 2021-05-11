@@ -18,6 +18,9 @@ const HomeState = () => {
     // Get user data via email from amplify
     const AuthUserInfo = await Auth.currentAuthenticatedUser();
 
+    // const AuthUserInfo = (await Auth.currentSession()).getIdToken;
+    // let email = AuthUserInfo.payload.email;
+
     let email;
 
     console.log(AuthUserInfo);
@@ -47,13 +50,17 @@ const HomeState = () => {
     };
   };
 
-  useEffect(async () => {
-    const { forms, stateString } = await loadUserData();
-    if (stateString !== "null" && forms && forms !== []) {
-      setAccordionItems(buildSortedAccordionByYearQuarter(forms, stateString));
-    } else {
-      history.push("/register-state");
-    }
+  useEffect(() => {
+    (async () => {
+      const { forms, stateString } = await loadUserData();
+      if (stateString !== "null" && forms && forms !== []) {
+        setAccordionItems(
+          buildSortedAccordionByYearQuarter(forms, stateString)
+        );
+      } else {
+        history.push("/register-state");
+      }
+    })();
   }, []);
 
   return (
