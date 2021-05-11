@@ -5,9 +5,18 @@ frameworkVersion: "2"
 plugins:
   - serverless-dynamodb-local
   - serverless-stack-termination-protection
+  - serverless-disable-functions
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
+  privateSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -18,7 +27,14 @@ custom:
       - impl
       - val
       - prod
-
+  backupsEnabled:
+    master: true #these should match the branch names
+    val: true
+    prod: true
+  scripts:
+    hooks:
+      deploy:finalize: |
+        serverless invoke --stage ${self:custom.stage} --function backupDynamo
   dynamodb:
     stages:
       - local
@@ -78,6 +94,22 @@ custom:
             sources: [../../src/database/initial_data_load/auth_user.json]
           - table: ${self:custom.stage}-auth-user-roles
             sources: [../../src/database/initial_data_load/auth_user_roles.json]
+  functions:
+    backupDynamo:
+      handler: handlers/backupDynamo.handler
+      enabled: ${self:custom.backupsEnabled.${self:custom.stage}, "false"}
+      role: LambdaConfigureRole
+      environment:
+        branchName: ${self:custom.stage}
+        backupRetention: ${self:custom.stage}/dynamo/backup/retention
+      maximumRetryAttempts: 2
+      timeout: 120
+      vpc:
+        securityGroupIds:
+          - Ref: LambdaConfigureSecurityGroup
+        subnetIds: ${self:custom.privateSubnets}
+      events:
+        - schedule: cron(0 1 ? * MON-FRI *)
 
 provider:
   name: aws
@@ -87,6 +119,36 @@ provider:
 
 resources:
   Resources:
+    LambdaConfigureSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security Group for configuring the connector.
+        VpcId: ${self:custom.vpcId}
+    LambdaConfigureRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "lambda.amazonaws.com"
+              Action: "sts:AssumeRole"
+        Path: ${self:custom.iamPath}
+        PermissionsBoundary:
+          Fn::If:
+            - CreatePermissionsBoundary
+            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+            - Ref: AWS::NoValue
+        Policies:
+          - PolicyName: "RDSRolePolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - rds-db:connect
+                  Resource: "arn:aws:rds-db:*:dbuser:*/*"
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
       Properties:
