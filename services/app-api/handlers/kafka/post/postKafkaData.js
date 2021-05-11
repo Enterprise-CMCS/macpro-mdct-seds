@@ -40,25 +40,25 @@ exports.handler = async (event) => {
       //     },
       //   ],
       // });
-      console.log("EVENT ID",record.eventID);
-      console.log("EVENT NAME",record.eventName);
+      console.log("EVENT ID", record.eventID);
+      console.log("EVENT NAME", record.eventName);
       console.log("DynamoDB Record: %j", record.dynamodb);
     }
   }
 
-  const consumer = kafka.consumer({ groupId: "test1"});
+  const consumer = kafka.consumer({ groupId: "test1" });
   await consumer.connect();
-  console.log("POST CONNECT")
+  console.log("POST CONNECT");
   await consumer.subscribe({
     topic: "aws.mdct.seds.cdc.state-forms",
     fromBeginning: true,
   });
-  console.log("POST SUBSCRIBE")
+  console.log("POST SUBSCRIBE");
   await consumer.run({
     eachMessage: async (data) => {
-      console.log("CONSUMER DATA HERE",data);
+      console.log("CONSUMER DATA HERE", data);
     },
   });
-  console.log("POST MESSAGES LIST")
+  console.log("POST MESSAGES LIST");
   return `Successfully processed ${event.Records.length} records.`;
 };
