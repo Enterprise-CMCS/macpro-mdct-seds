@@ -57,7 +57,7 @@ const HomeAdmin = ({ stateList }) => {
       }
     };
 
-    onLoad();
+    onLoad().then();
   }, [stateList]);
 
   const updateUsState = async e => {
