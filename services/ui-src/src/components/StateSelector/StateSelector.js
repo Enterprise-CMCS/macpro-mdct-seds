@@ -121,8 +121,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(StateSelector);
-
-// TAKE INTO ACCOUNT STATES WITH NO FORMS
-
-// TODO:
-// New component, use redirect component to take users to it and back to the homestate

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion } from "@trussworks/react-uswds";
-import { Link } from "react-router-dom";
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
 import {
@@ -11,8 +10,6 @@ import {
 
 const HomeState = () => {
   // Set up local state
-  const [state, setState] = useState();
-  const [user, setUser] = useState({});
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
 
@@ -38,34 +35,26 @@ const HomeState = () => {
       email: email
     });
 
-    // Save to local state
-    setState(currentUserInfo.Items[0].states[0]);
-    setUser(currentUserInfo.Items[0]);
-
     // Get list of all state forms
     const forms = await obtainAvailableForms({
       stateId: currentUserInfo.Items[0].states[0]
     });
 
-    // Sort forms descending by year and then quarter and return them
-    return sortFormsByYearAndQuarter(forms);
+    // Sort forms descending by year and then quarter and return them along with user state
+    return {
+      forms: sortFormsByYearAndQuarter(forms),
+      stateString: currentUserInfo.Items[0].states[0]
+    };
   };
 
   useEffect(async () => {
-    const result = await loadUserData();
-    console.log("HELLO??????", result);
-    let A = 0;
-    if (result && result !== []) {
-      createAccordion(result);
+    const { forms, stateString } = await loadUserData();
+    if (stateString !== "null" && forms && forms !== []) {
+      setAccordionItems(buildSortedAccordionByYearQuarter(forms, stateString));
     } else {
       history.push("/register-state");
     }
   }, []);
-
-  const createAccordion = formData => {
-    let p = 1;
-    setAccordionItems(buildSortedAccordionByYearQuarter(formData, state));
-  };
 
   return (
     <div className="page-home-state">
