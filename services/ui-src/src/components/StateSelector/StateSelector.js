@@ -76,7 +76,7 @@ const StateSelector = ({ stateList }) => {
   };
 
   return (
-    <div className="page-home-state">
+    <div className="page-state-selector">
       {user && state && user.states.length > 0 && user.states !== "null" ? (
         <>
           <h2>
