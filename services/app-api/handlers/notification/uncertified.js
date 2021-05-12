@@ -26,6 +26,11 @@ export const main = handler(async (event, context) => {
   };
 });
 
+let date = {
+  year: new Date().getFullYear(),
+  quarter: new Date().getMonth(),
+};
+
 // logic to retrieve all business users emails
 async function getBusinessUsersEmail() {
   const businessOwnersEmails = [];
@@ -53,6 +58,7 @@ async function getBusinessUsersEmail() {
 // Email template for business users
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
+  const todayDate = new Date().toISOString().split("T")[0];
   console.log("send to email: ", sendToEmail);
 
   if (sendToEmail.Count === 0) {
@@ -66,14 +72,15 @@ async function unCetifiedTemplate(payload) {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.state} has uncertified the following SEDS report as of DateTimeOfAction]:
-          [Report Number] for FFY [Fiscal Year] Quarter [Quarter Number]
+          This is an automated message to notify you that ${payload.state} has
+          uncertified the following SEDS report as of [${todayDate}]:
+          [Report Number] for FFY [${date.year}] Quarter [${date.quarter}]
           Please follow up with the state’s representatives if you have any questions.
           -MDCT SEDS`,
         },
       },
       Subject: {
-        Data: `Uncerteried quartly form`,
+        Data: `SEDS Uncertify Notice - [${date.year}]`,
       },
     },
     Source: "jgillis@collabralink.com",
