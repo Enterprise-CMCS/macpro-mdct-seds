@@ -9,7 +9,6 @@ var AWS = require("aws-sdk");
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   console.log(data, "data");
-
   const email = await unCetifiedTemplate(data);
   console.log(email, "Email before sent");
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
