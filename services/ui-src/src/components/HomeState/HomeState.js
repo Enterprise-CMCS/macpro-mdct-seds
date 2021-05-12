@@ -63,7 +63,7 @@ const HomeState = () => {
         history.push("/register-state");
       }
     })();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="page-home-state">

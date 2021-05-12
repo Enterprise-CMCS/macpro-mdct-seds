@@ -1,10 +1,9 @@
 import React from "react";
 import StateSelector from "./StateSelector";
-import { mount, shallow } from "enzyme";
+import { shallow } from "enzyme";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import Dropdown from "react-dropdown";
-import { BrowserRouter } from "react-router-dom";
 
 // The props this component requires in order to render
 const defaultProps = {
