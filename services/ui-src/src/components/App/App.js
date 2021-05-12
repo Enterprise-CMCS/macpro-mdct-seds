@@ -33,7 +33,7 @@ function App() {
       setIsAuthenticated(true);
       setIsAuthorized(true);
       setIsAuthenticating(false);
-      
+
       console.log("ROUTES should now be processed");
     } catch (error) {
       setIsAuthenticating(false);

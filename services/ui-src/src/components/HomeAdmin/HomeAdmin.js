@@ -32,7 +32,7 @@ const HomeAdmin = ({ stateList }) => {
         currentUserInfo = await obtainUserByEmail({
           email: AuthUserInfo.payload.email
         });
-        console.log(currentUserInfo, "This is the currrent user info")
+        console.log(currentUserInfo, "This is the currrent user info");
       } catch (e) {
         onError(e);
       }

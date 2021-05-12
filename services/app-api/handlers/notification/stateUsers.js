@@ -1,5 +1,8 @@
 import handler from "./../../libs/handler-lib";
-import {getUsersEmailByRole, getUncertifiedStates} from "../shared/sharedFunctions";
+import {
+  getUsersEmailByRole,
+  getUncertifiedStates,
+} from "../shared/sharedFunctions";
 
 var AWS = require("aws-sdk");
 var ses = new AWS.SES({ region: "us-east-1" });
@@ -10,7 +13,6 @@ var ses = new AWS.SES({ region: "us-east-1" });
  */
 
 export const main = handler(async (event, context) => {
-
   const email = await stateUsersTemplate();
   ses.sendEmail(email, function (err, data) {
     if (err) {
@@ -23,7 +25,7 @@ export const main = handler(async (event, context) => {
   });
   return {
     status: "success",
-    message: "quartly Businness owners email sent"
+    message: "quartly Businness owners email sent",
   };
 });
 
@@ -31,7 +33,6 @@ let date = {
   year: new Date().getFullYear(),
   quarter: new Date().getMonth(),
 };
-
 
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
@@ -46,13 +47,12 @@ async function certifiedStateUsersEmail() {
   return stateUsersToEmail;
 }
 
-
 // creates a template for stateUsers
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
   const fromEmail = "jgillis@collabralink.com";
-  let todayDate = new Date().toISOString().split('T')[0];
+  let todayDate = new Date().toISOString().split("T")[0];
 
   const recipient = {
     TO: stateUsersToEmail,
@@ -89,17 +89,17 @@ async function stateUsersTemplate() {
     `,
   };
   return {
-    Destination: { ToAddresses: recipient.TO},
+    Destination: { ToAddresses: recipient.TO },
     Message: {
       Body: {
         Text: {
-          Data: recipient.MESSAGE
+          Data: recipient.MESSAGE,
         },
       },
       Subject: {
-        Data: recipient.SUBJECT
+        Data: recipient.SUBJECT,
       },
     },
-    Source: recipient.FROM
+    Source: recipient.FROM,
   };
 }

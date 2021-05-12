@@ -1,5 +1,8 @@
 import handler from "./../../libs/handler-lib";
-import {getUsersEmailByRole, getUncertifiedStates} from "../shared/sharedFunctions";
+import {
+  getUsersEmailByRole,
+  getUncertifiedStates,
+} from "../shared/sharedFunctions";
 var AWS = require("aws-sdk");
 
 /**
@@ -11,8 +14,8 @@ var AWS = require("aws-sdk");
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-  .sendEmail(email)
-  .promise();
+    .sendEmail(email)
+    .promise();
   try {
     const data = await sendPromise;
     console.log(data.MessageId);
@@ -21,7 +24,7 @@ export const main = handler(async (event, context) => {
   }
   return {
     status: "sucess",
-    message: "quartly Businness owners email sent"
+    message: "quartly Businness owners email sent",
   };
 });
 
@@ -32,9 +35,9 @@ let date = {
 
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
-  const sendToEmail = sendToEmailArry.map(e => e.email);
+  const sendToEmail = sendToEmailArry.map((e) => e.email);
   const uncertifiedStates = await getUncertifiedStates();
-  const todayDate = new Date().toISOString().split('T')[0];
+  const todayDate = new Date().toISOString().split("T")[0];
   const fromEmail = "jgillis@collabralink.com";
   const recipient = {
     TO: sendToEmail,
@@ -54,18 +57,18 @@ async function businessOwnersTemplate() {
   };
   return {
     Destination: {
-      ToAddresses: recipient.TO
+      ToAddresses: recipient.TO,
     },
     Message: {
       Body: {
         Text: {
-          Data: recipient.MESSAGE
+          Data: recipient.MESSAGE,
         },
       },
       Subject: {
-        Data: recipient.SUBJECT
+        Data: recipient.SUBJECT,
       },
     },
-    Source: recipient.FROM
+    Source: recipient.FROM,
   };
 }
