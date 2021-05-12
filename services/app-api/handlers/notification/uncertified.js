@@ -1,4 +1,3 @@
-var AWS = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
 var AWS = require("aws-sdk");
@@ -11,7 +10,6 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
   console.log(email, "Email before sent");
-  
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   .sendEmail(email)
   .promise();
