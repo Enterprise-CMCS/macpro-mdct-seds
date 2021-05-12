@@ -3,7 +3,7 @@
     "answer_entry": "PA-2021-1-21E-0000-01",
     "state_form": "PA-2021-1-21E",
     "question": "2021-21E-01",
-    "age_range": "Under Age 0",
+    "ageRange": "Under Age 0",
     "rangeId": "0000",
     "rows": [
       {
@@ -48,7 +48,7 @@
     "answer_entry": "PA-2021-1-21E-0000-02",
     "state_form": "PA-2021-1-21E",
     "question": "2021-21E-02",
-    "age_range": "Under Age 0",
+    "ageRange": "Under Age 0",
     "rangeId": "0000",
     "rows": [
       {
