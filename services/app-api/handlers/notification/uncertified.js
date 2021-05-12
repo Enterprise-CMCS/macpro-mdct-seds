@@ -82,7 +82,7 @@ async function unCetifiedTemplate(payload) {
         },
       },
       Subject: {
-        Data: `SEDS Uncertify Notice - [${date.year}]`,
+        Data: `SEDS Uncertify Notice - [${todayDate}]`,
       },
     },
     Source: "jgillis@collabralink.com",
