@@ -23,11 +23,9 @@ function App() {
       let user = await Auth.currentAuthenticatedUser();
       // *** make sure attributes exist and are in standard format
       user.attributes = user.signInUserSession.idToken.payload;
-      // user.attributes["app-role"] = determineRole(
-      //   user.attributes["custom:ismemberof"]
-      // );
-      // user.attributes["app-role"] = "admin";
-      user.attributes["app-role"] = "state";
+      user.attributes["app-role"] = determineRole(
+        user.attributes["custom:ismemberof"]
+      );
       await ascertainUserPresence(user);
       setUser(user);
       setIsAuthenticated(true);
