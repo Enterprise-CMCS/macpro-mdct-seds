@@ -10,6 +10,7 @@ var ses = new AWS.SES({ region: "us-east-1" });
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
+  console.log(email, "Email before sent");
   ses.sendEmail(email, function (err, data) {
     if (err) {
       console.log("cannot send email through SES locally", err);
@@ -52,6 +53,8 @@ async function getBusinessUsersEmail() {
 // Email template for business users
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
+  console.log("send to email: ", sendToEmail);
+  
   if (sendToEmail.Count === 0) {
     throw new Error("No Business users found.");
   }
