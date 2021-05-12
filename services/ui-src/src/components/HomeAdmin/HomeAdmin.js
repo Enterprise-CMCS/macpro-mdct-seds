@@ -27,20 +27,12 @@ const HomeAdmin = ({ stateList }) => {
       try {
         // Get user information
         const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        console.log(AuthUserInfo, "user Email");
-
         currentUserInfo = await obtainUserByEmail({
           email: AuthUserInfo.payload.email
         });
-        console.log(currentUserInfo, "This is the currrent user info")
       } catch (e) {
         onError(e);
       }
-
-      console.log(Auth);
-
-      console.log("retrieved: ");
-      console.log(currentUserInfo);
 
       if (currentUserInfo["Items"]) {
         const userRole = currentUserInfo["Items"][0].role;
@@ -65,7 +57,7 @@ const HomeAdmin = ({ stateList }) => {
       }
     };
 
-    onLoad();
+    onLoad().then();
   }, [stateList]);
 
   const updateUsState = async e => {

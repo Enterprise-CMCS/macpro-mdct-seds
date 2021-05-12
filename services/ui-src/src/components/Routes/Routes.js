@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Signup from "../Signup/Signup";
 import Profile from "../Profile/Profile";
+import PrintPDF from "../Print/PrintPDF";
 import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
 import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
 import Users from "../Users/Users";
@@ -56,6 +57,9 @@ export default function Routes({ user, isAuthorized }) {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/PrintPDF">
+        <PrintPDF />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
       {user.attributes["app-role"] === "admin" ? (

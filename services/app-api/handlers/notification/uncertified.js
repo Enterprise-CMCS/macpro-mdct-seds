@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
   });
   return {
     status: "success",
-    message: "email sent"
+    message: "email sent",
   };
 });
 

@@ -16,6 +16,7 @@ import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
+  notApplicable,
   lastModified,
   lastModifiedBy,
   isFinal,
@@ -23,7 +24,8 @@ const CertificationTab = ({
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
   uncertify,
-  saveForm
+  saveForm,
+  disabled
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
