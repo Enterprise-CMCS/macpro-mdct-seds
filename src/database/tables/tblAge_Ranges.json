@@ -2,11 +2,11 @@
   "TableName": "age_ranges",
   "KeySchema": [
     {
-      "AttributeName": "age_range",
+      "AttributeName": "ageRange",
       "KeyType": "HASH"
     },
     {
-      "AttributeName": "age_range",
+      "AttributeName": "ageRange",
       "KeyType": "RANGE"
     }
   ],
@@ -16,7 +16,7 @@
       "AttributeType": "N"
     },
     {
-      "AttributeName": "age_range",
+      "AttributeName": "ageRange",
       "AttributeType": "S"
     }
   ],

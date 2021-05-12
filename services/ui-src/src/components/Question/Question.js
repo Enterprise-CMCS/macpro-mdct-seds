@@ -15,7 +15,11 @@ const QuestionComponent = ({
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
-  const { rows, answer_entry } = answerData;
+  const { rows, answer_entry } = answerData || {};
+
+  if (!rows) {
+    return null;
+  }
 
   const questionNumber = parseInt(question.split("-").slice(-1));
   const questionType = type;
@@ -98,5 +102,6 @@ const questionVariables = {
   "0001": "between the ages of 0 and 1",
   "0105": "between the ages of 1 and 5",
   "0612": "between the ages of 6 and 12",
-  1318: "between the ages of 13 and 18"
+  1318: "between the ages of 13 and 18",
+  1920: "between the ages of 19 and 20"
 };
