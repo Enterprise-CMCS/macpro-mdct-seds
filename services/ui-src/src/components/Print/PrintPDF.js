@@ -67,8 +67,7 @@ const PrintPDF = ({
       unit: "px",
       format: "letter",
       userUnit: "px",
-      orientation: "portrait",
-      pageBreak: { mode: "avoid-all", after: ".tempQuestionClass" }
+      orientation: "portrait"
     });
 
     pdf
