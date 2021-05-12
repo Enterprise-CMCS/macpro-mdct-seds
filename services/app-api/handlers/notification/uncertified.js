@@ -15,7 +15,8 @@ export const main = handler(async (event, context) => {
   .promise();
   try {
     const data = await sendPromise;
-    console.log(data.MessageId);
+    console.log(data, "data: promise");
+    console.log(data.MessageId, "data.MessageId");
   } catch (err) {
     console.error(err, err.stack);
   }
