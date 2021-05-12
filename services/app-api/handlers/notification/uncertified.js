@@ -1,7 +1,7 @@
 var AWS = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-var ses = new AWS.SES({ region: "us-east-1" });
+var AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to business users,
@@ -11,18 +11,19 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
   console.log(email, "Email before sent");
-  ses.sendEmail(email, function (err, data) {
-    if (err) {
-      console.log("cannot send email through SES locally", err);
-      context.fail(err);
-    } else {
-      console.log(data);
-      context.succeed(event);
-    }
-  });
+  
+  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  .sendEmail(email)
+  .promise();
+  try {
+    const data = await sendPromise;
+    console.log(data.MessageId);
+  } catch (err) {
+    console.error(err, err.stack);
+  }
   return {
-    status: "success",
-    message: "email sent",
+    status: "sucess",
+    message: "quartly Businness owners email sent",
   };
 });
 
