@@ -54,13 +54,13 @@ async function getBusinessUsersEmail() {
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   console.log("send to email: ", sendToEmail);
-  
+
   if (sendToEmail.Count === 0) {
     throw new Error("No Business users found.");
   }
   return {
     Destination: {
-      ToAddresses: sendToEmail || [],
+      ToAddresses: sendToEmail,
     },
     Message: {
       Body: {
