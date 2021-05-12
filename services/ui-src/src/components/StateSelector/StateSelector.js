@@ -15,7 +15,6 @@ const StateSelector = ({ stateList }) => {
 
   // Set up local state
   const [state, setState] = useState([]);
-
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
@@ -33,7 +32,6 @@ const StateSelector = ({ stateList }) => {
       onError(e);
     }
     // Save to local state
-
     if (currentUserInfo["Items"]) {
       setState(currentUserInfo["Items"][0].states[0]);
       setUser(currentUserInfo["Items"][0]);
@@ -64,10 +62,9 @@ const StateSelector = ({ stateList }) => {
       if (confirm) {
         try {
           await updateUser(user);
-          console.log("USER UPDATED!!!!");
           history.push("/");
         } catch (error) {
-          console.log("ERROR IN STATE SELECTOR:", error);
+          console.log("Error in state selector:", error);
         }
       } else {
         return;

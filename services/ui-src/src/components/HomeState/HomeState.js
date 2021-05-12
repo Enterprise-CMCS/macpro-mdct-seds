@@ -10,7 +10,6 @@ import {
 import { onError } from "../../libs/errorLib";
 
 const HomeState = () => {
-  // Set up local state
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
 
