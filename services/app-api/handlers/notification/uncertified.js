@@ -57,6 +57,11 @@ async function getBusinessUsersEmail() {
 }
 
 // Email template for business users
+/*
+* TODOS
+* report number = form name (21E)
+* change source to "MDCT SEDS"
+**/
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
@@ -73,17 +78,19 @@ async function unCetifiedTemplate(payload) {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.states} has
-          uncertified the following SEDS report as of [${todayDate}]:
-          [Report Number] for FFY [${date.year}] Quarter [${date.quarter}]
+          This is an automated message to notify you that ${payload.states} has uncertified the following SEDS report as of ${todayDate}:
+          
+          Report Number for FFY ${date.year} Quarter ${date.quarter} 
+
           Please follow up with the state’s representatives if you have any questions.
-          -MDCT SEDS`,
+
+          -MDCT SEDS TEAM`,
         },
       },
       Subject: {
-        Data: `SEDS Uncertify Notice - [${todayDate}]`,
+        Data: `SEDS Uncertify Notice - ${payload.states} - ${todayDate}`,
       },
     },
-    Source: "jgillis@collabralink.com",
+    Source: "mcdt@cms.hhs.gov",
   };
 }
