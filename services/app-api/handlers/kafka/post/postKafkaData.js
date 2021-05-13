@@ -23,50 +23,68 @@ exports.handler = async (event) => {
   // const producer = kafka.producer({ groupId: "" + Date.now() });
   const producer = kafka.producer(); // removed groupId because "working code in
   await producer.connect();
+  const streamARN = event.eventSourceARN.toString();
+  let topicName = "aws.mdct.seds.cdc.";
+
+  if (streamARN.contains("age-ranges")) {
+    topicName = tableName + "age-ranges";
+  } else if (streamARN.contains("auth-user")) {
+    topicName = tableName + "auth-user";
+  } else if (streamARN.contains("auth-user-job-codes")) {
+    topicName = tableName + "auth-user-job-codes";
+  } else if (streamARN.contains("form-answers")) {
+    topicName = tableName + "form-answers";
+  } else if (streamARN.contains("form")) {
+    topicName = tableName + "form";
+  } else if (streamARN.contains("state-form")) {
+    topicName = tableName + "state-form";
+  } else if (streamARN.contains("states")) {
+    topicName = tableName + "states";
+  } else if (streamARN.contains("status")) {
+    topicName = tableName + "status";
+  }
+
   console.log("EVENT INFO HERE", event);
+  console.log("topic Name HERE", topicName);
   if (event.Records) {
     for (const record of event.Records) {
       await producer.send({
-        topic: "aws.mdct.seds.cdc.state-forms",
+        topic: topicName,
         messages: [
           {
             key: "key4",
             value: JSON.stringify(record.dynamodb, null, 2),
             partition: 0,
-            // headers: {
-            //   "correlation-id": "2bfb68bb-893a-423b-a7fa-7b568cad5b67",
-            //   "system-id": "dev-test",
-            // },
           },
         ],
       });
-      console.log("FULL RECORD",record.dynamodb.newImage);
-      console.log("EVENT ID", record.eventID);
+      console.log("FULL new  image RECORD", record.dynamodb.newImage);
+      console.log("full record info", record);
       console.log("EVENT NAME", record.eventName);
       console.log("DynamoDB Record: %j", record.dynamodb);
     }
   }
-try{
-  const consumer = kafka.consumer({ groupId: "test2" });
-  await consumer.connect();
-  console.log("POST CONNECT");
-  await consumer.subscribe({
-    topic: "aws.mdct.seds.cdc.state-forms",
-    fromBeginning: false,
-  });
-  console.log("POST SUBSCRIBE");
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-      console.log("partition HERE", partition);
-      const messageAsJson = JSON.parse(message.value.toString());
-      console.log("MESSAGE AS JSON HERE", messageAsJson);
-      console.log("topic HERE", topic);
-    },
-  });
-  console.log("POST MESSAGES LIST");
-}
-  catch (e){
-    console.log("ERROR HERE", e);
-  }
+  // try{
+  //   const consumer = kafka.consumer({ groupId: "test2" });
+  //   await consumer.connect();
+  //   console.log("POST CONNECT");
+  //   await consumer.subscribe({
+  //     topic: "aws.mdct.seds.cdc.state-forms",
+  //     fromBeginning: false,
+  //   });
+  //   console.log("POST SUBSCRIBE");
+  //   await consumer.run({
+  //     eachMessage: async ({ topic, partition, message }) => {
+  //       console.log("partition HERE", partition);
+  //       const messageAsJson = JSON.parse(message.value.toString());
+  //       console.log("MESSAGE AS JSON HERE", messageAsJson);
+  //       console.log("topic HERE", topic);
+  //     },
+  //   });
+  //   console.log("POST MESSAGES LIST");
+  // }
+  //   catch (e){
+  //     console.log("ERROR HERE", e);
+  //   }
   return `Successfully processed ${event.Records.length} records.`;
 };
