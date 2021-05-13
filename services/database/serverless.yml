@@ -43,6 +43,7 @@ custom:
             sources:
               [
                 ../../src/database/initial_data_load/state_forms.json,
+                ../../src/database/initial_data_load/state_forms_2021Q1.json,
                 ../../src/database/initial_data_load/state_forms_2020.json,
               ]
           - table: ${self:custom.stage}-form-questions
@@ -57,6 +58,9 @@ custom:
                 ../../src/database/initial_data_load/form_answers_AL.json,
                 ../../src/database/initial_data_load/form_answers_MD.json,
                 ../../src/database/initial_data_load/form_answers_PA.json,
+                ../../src/database/initial_data_load/form_answers_AL_2021Q1.json,
+                ../../src/database/initial_data_load/form_answers_MD_2021Q1.json,
+                ../../src/database/initial_data_load/form_answers_PA_2021Q1.json,
                 ../../src/database/initial_data_load/form_answers_AL_2020.json,
                 ../../src/database/initial_data_load/form_answers_MD_2020.json,
                 ../../src/database/initial_data_load/form_answers_PA_2020.json,

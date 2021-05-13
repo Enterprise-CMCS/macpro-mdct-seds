@@ -29,10 +29,8 @@ describe("Test LoaderButton.js", () => {
   });
   //These options are only available on development branches
   if (
-    window._env_.STAGE !== "production" &&
-    window._env_.STAGE !== "prod" &&
-    window._env_.STAGE !== "val" &&
-    window._env_.STAGE !== "impl"
+    window.location.hostname !== "mdctseds.cms.gov" &&
+    window.location.hostname !== "mdctsedsval.cms.gov"
   ) {
     test("Check for Email input box", () => {
       useContextMock.mockReturnValue(true);

@@ -36,12 +36,12 @@ const TabContainer = ({
       <TabList>
         {currentTabs.map((tab, idx) => {
           const rangeDetails = tabDetails.find(
-            element => tab === element.range_id
+            element => tab === element.rangeId
           );
 
           // Custom tab label from age range ID
           const tabLabel = rangeDetails
-            ? rangeDetails.age_range
+            ? rangeDetails.ageRange
             : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
           return <Tab key={idx}>{tabLabel}</Tab>;
         })}
@@ -54,13 +54,13 @@ const TabContainer = ({
         const tabAnswers = answers.filter(element => element.rangeId === tab);
 
         const ageRangeDetails = tabDetails.find(
-          element => tab === element.range_id
+          element => tab === element.rangeId
         );
         return (
           <TabPanel key={idx} className="react-transition fade-in">
             {ageRangeDetails ? (
               <div className="age-range-description padding-y-2">
-                <h3>{ageRangeDetails.age_description}:</h3>
+                <h3>{ageRangeDetails.ageDescription}:</h3>
               </div>
             ) : null}
 

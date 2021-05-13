@@ -595,7 +595,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-01",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-01",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -640,7 +640,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-02",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-02",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -685,7 +685,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-03",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-03",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -730,7 +730,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-04",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-04",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -775,7 +775,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-05",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-05",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -955,7 +955,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-06",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-06",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -1000,7 +1000,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-07",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-07",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -1045,7 +1045,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-08",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-08",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -1090,7 +1090,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0000-09",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-09",
-        age_range: "Under Age 0",
+        ageRange: "Under Age 0",
         rangeId: "0000",
         rows: [
           {
@@ -1135,7 +1135,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0001-01",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-01",
-        age_range: "Ages 0 - 1",
+        ageRange: "Ages 0 - 1",
         rangeId: "0001",
         rows: [
           {
@@ -1180,7 +1180,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0001-02",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-02",
-        age_range: "Ages 0 - 1",
+        ageRange: "Ages 0 - 1",
         rangeId: "0001",
         rows: [
           {
@@ -1225,7 +1225,7 @@ const currentFormMock_21E = {
         answer_entry: "AL-2021-1-21E-0001-03",
         state_form: "AL-2021-1-21E",
         question: "2021-21E-03",
-        age_range: "Ages 0 - 1",
+        ageRange: "Ages 0 - 1",
         rangeId: "0001",
         rows: [
           {

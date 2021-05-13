@@ -1,84 +1,80 @@
 import React, { useState, useEffect } from "react";
 import { Accordion } from "@trussworks/react-uswds";
+import { useHistory } from "react-router-dom";
 import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
 import { Auth } from "aws-amplify";
 import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
+import { onError } from "../../libs/errorLib";
 
 const HomeState = () => {
-  // Set up local state
-  const [state, setState] = useState();
-  const [formData, setFormData] = useState();
+  const [accordionItems, setAccordionItems] = useState([]);
+  let history = useHistory();
 
   // Get User data
   const loadUserData = async () => {
-    // Get user data via email from amplify
-    const AuthUserInfo = (await Auth.currentSession()).getIdToken;
-    let email = AuthUserInfo.payload.email;
+    // Get user information
+    let currentUserInfo;
 
-    console.log(AuthUserInfo, "yetttt");
-    console.log("User Email: ", email);
+    try {
+      // Get user information
+      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+      currentUserInfo = await obtainUserByEmail({
+        email: AuthUserInfo.payload.email
+      });
+    } catch (e) {
+      onError(e);
+    }
 
-    // let email;
+    let forms = [];
+    let stateString = "";
 
-    // console.log(AuthUserInfo);
+    if (currentUserInfo["Items"]) {
+      // Get list of all state forms
+      try {
+        const availableForms = await obtainAvailableForms({
+          stateId: currentUserInfo["Items"][0].states[0]
+        });
+        forms = sortFormsByYearAndQuarter(availableForms);
+        stateString = currentUserInfo["Items"][0].states[0];
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-    // if (AuthUserInfo.attributes && AuthUserInfo.attributes.email) {
-    //   email = AuthUserInfo.payload.email;
-    // } else {
-    //   email = AuthUserInfo.signInUserSession.idToken.payload.email;
-    // }
-
-    console.log("Retrieved email: -----");
-    console.log(email);
-
-    const currentUserInfo = await obtainUserByEmail({
-      email: email
-    });
-
-    // Save to local state
-    setState(currentUserInfo.Items[0].states[0]);
-
-    // Get list of all state forms
-    const forms = await obtainAvailableForms({
-      stateId: currentUserInfo.Items[0].states[0]
-    });
-
-    // Sort forms by Year and Quarter and set to local state
-    setFormData(sortFormsByYearAndQuarter(forms));
+    return {
+      // Sort forms descending by year and then quarter and return them along with user state
+      forms: forms.legnth === 0 ? [] : forms,
+      stateString: stateString === "" ? "" : stateString
+    };
   };
-  useEffect(() => {
-    loadUserData().then();
-  }, []);
 
-  // Create an array of unique years
-  let accordionItems = buildSortedAccordionByYearQuarter(formData, state);
+  useEffect(() => {
+    (async () => {
+      const { forms, stateString } = await loadUserData();
+
+      if (stateString !== "") {
+        setAccordionItems(
+          buildSortedAccordionByYearQuarter(forms, stateString)
+        );
+      } else {
+        history.push("/register-state");
+      }
+    })();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="page-home-state">
-      {accordionItems.length !== 0 ? (
-        <>
-          <p className="instructions">
-            Welcome to SEDS! Please select a Federal Fiscal Year and quarter
-            below to view available reports.
-          </p>
+      <p className="instructions">
+        Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
+        to view available reports.
+      </p>
 
-          <div className="quarterly-report-list">
-            <Accordion bordered={true} items={accordionItems} />
-          </div>
-        </>
-      ) : (
-        <>
-          <h1>Insufficient Privileges</h1>
-          <p>This account is not associated with any states.</p>
-          <p>
-            If you feel this is an error, please contact the helpdesk{" "}
-            <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
-          </p>
-        </>
-      )}
+      <div className="quarterly-report-list">
+        <Accordion bordered={true} items={accordionItems} />
+      </div>
     </div>
   );
 };

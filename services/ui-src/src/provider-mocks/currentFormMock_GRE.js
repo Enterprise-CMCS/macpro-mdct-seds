@@ -311,7 +311,7 @@ const currentFormMock_GRE = {
         answer_entry: "AL-2021-1-GRE-0018-01",
         state_form: "AL-2021-1-GRE",
         question: "2021-GRE-01",
-        age_range: "All Ages",
+        ageRange: "All Ages",
         rangeId: "0018",
         rows: [
           {
@@ -356,7 +356,7 @@ const currentFormMock_GRE = {
         answer_entry: "AL-2021-1-GRE-0018-02",
         state_form: "AL-2021-1-GRE",
         question: "2021-GRE-02",
-        age_range: "All Ages",
+        ageRange: "All Ages",
         rangeId: "0018",
         rows: [
           {
@@ -529,7 +529,7 @@ const currentFormMock_GRE = {
         answer_entry: "AL-2021-1-GRE-0018-03",
         state_form: "AL-2021-1-GRE",
         question: "2021-GRE-03",
-        age_range: "All Ages",
+        ageRange: "All Ages",
         rangeId: "0018",
         rows: [
           {
