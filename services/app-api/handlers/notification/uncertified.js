@@ -1,7 +1,6 @@
-var AWS = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-var ses = new AWS.SES({ region: "us-east-1" });
+var AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to business users,
@@ -9,21 +8,29 @@ var ses = new AWS.SES({ region: "us-east-1" });
  */
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
+  console.log(data, "data");
   const email = await unCetifiedTemplate(data);
-  ses.sendEmail(email, function (err, data) {
-    if (err) {
-      console.log("cannot send email through SES locally", err);
-      context.fail(err);
-    } else {
-      console.log(data);
-      context.succeed(event);
-    }
-  });
+  console.log(email, "Email before sent");
+  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  .sendEmail(email)
+  .promise();
+  try {
+    const data = await sendPromise;
+    console.log(data, "data: promise");
+    console.log(data.MessageId, "data.MessageId");
+  } catch (err) {
+    console.error(err, err.stack);
+  }
   return {
-    status: "success",
-    message: "email sent",
+    status: "sucess",
+    message: "quartly Businness owners email sent",
   };
 });
+
+let date = {
+  year: new Date().getFullYear(),
+  quarter: new Date().getMonth(),
+};
 
 // logic to retrieve all business users emails
 async function getBusinessUsersEmail() {
@@ -52,25 +59,29 @@ async function getBusinessUsersEmail() {
 // Email template for business users
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
+  const todayDate = new Date().toISOString().split("T")[0];
+  console.log("send to email: ", sendToEmail);
+
   if (sendToEmail.Count === 0) {
     throw new Error("No Business users found.");
   }
   return {
     Destination: {
-      ToAddresses: sendToEmail || [],
+      ToAddresses: sendToEmail,
     },
     Message: {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.state} has uncertified the following SEDS report as of DateTimeOfAction]:
-          [Report Number] for FFY [Fiscal Year] Quarter [Quarter Number]
+          This is an automated message to notify you that ${payload.states} has
+          uncertified the following SEDS report as of [${todayDate}]:
+          [Report Number] for FFY [${date.year}] Quarter [${date.quarter}]
           Please follow up with the state’s representatives if you have any questions.
           -MDCT SEDS`,
         },
       },
       Subject: {
-        Data: `Uncerteried quartly form`,
+        Data: `SEDS Uncertify Notice - [${todayDate}]`,
       },
     },
     Source: "jgillis@collabralink.com",
