@@ -199,7 +199,6 @@ functions:
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
-
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
