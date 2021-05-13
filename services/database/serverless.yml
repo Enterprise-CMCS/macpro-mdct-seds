@@ -56,6 +56,8 @@ custom:
             sources:
               [
                 ../../src/database/initial_data_load/form_answers_AL.json,
+                ../../src/database/initial_data_load/form_answers_AK.json,
+                ../../src/database/initial_data_load/form_answers_AZ.json,
                 ../../src/database/initial_data_load/form_answers_MD.json,
                 ../../src/database/initial_data_load/form_answers_PA.json,
                 ../../src/database/initial_data_load/form_answers_AL_2021Q1.json,
