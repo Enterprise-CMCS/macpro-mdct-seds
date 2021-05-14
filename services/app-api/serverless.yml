@@ -415,24 +415,24 @@ resources:
                   Resource:
                     - ${self:custom.AgeRangesTableStreamArn}
                     - ${self:custom.FormAnswersTableArn}
-                    - ${self:custom.FormAnswersStreamArn}
+                    - ${self:custom.FormAnswersTableStreamArn}
                     - ${self:custom.FormQuestionsTableArn}
-                    - ${self:custom.FormQuestionsStreamArn}
+                    - ${self:custom.FormQuestionsTableStreamArn}
                     - ${self:custom.FormsTableArn}
-                    - ${self:custom.FormsStreamArn}
+                    - ${self:custom.FormsTableStreamArn}
                     - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatesTableArn}
-                    - ${self:custom.StatesStreamArn}
+                    - ${self:custom.StatesTableStreamArn}
                     - ${self:custom.StatusTableArn}
-                    - ${self:custom.StatusStreamArn}
+                    - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableArn}
-                    - ${self:custom.AuthUserStreamArn}
+                    - ${self:custom.AuthUserTableStreamArn}
                     - ${self:custom.AuthUserRolesTableArn}
-                    - ${self:custom.AuthUserRolesStreamArn}
+                    - ${self:custom.AuthUserRolesTableStreamArn}
                     - ${self:custom.AuthJobCodesTableArn}
-                    - ${self:custom.AuthJobCodesStreamArn}
+                    - ${self:custom.AuthJobCodesTableStreamArn}
                     - ${self:custom.AuthUserStatesTableArn}
-                    - ${self:custom.AuthUserStatesStreamArn}
+                    - ${self:custom.AuthUserStatesTableStreamArn}
                 - Effect: "Allow"
                   Action:
                     - logs:CreateLogStream
