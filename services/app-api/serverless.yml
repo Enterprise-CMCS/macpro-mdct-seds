@@ -145,7 +145,7 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
-          arn: ${self:custom.AgeRangesTableStreamArn}
+          arn: ${self:custom.StateFormsTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
@@ -186,11 +186,6 @@ functions:
           enabled: true
       - stream:
           arn: ${self:custom.AuthUserStatesTableStreamArn}
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          arn: ${self:custom.StateFormsTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
