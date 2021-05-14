@@ -145,7 +145,7 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
-          arn: ${self:custom.StateFormsTableStreamArn}
+          arn: ${self:custom.FormAnswersTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
