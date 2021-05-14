@@ -417,7 +417,7 @@ resources:
                     - ${self:custom.FormAnswersTableStreamArn}
                     - ${self:custom.FormQuestionsTableStreamArn}
                     - ${self:custom.FormsTableStreamArn}
-                    - ${self:custom.StatesTableStreamArn}
+                    - ${self:custom.StateTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
                     - ${self:custom.AuthUserRolesTableStreamArn}
