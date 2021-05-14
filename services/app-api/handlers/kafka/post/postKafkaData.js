@@ -27,21 +27,21 @@ exports.handler = async (event) => {
   console.log("streamARN",streamARN);
   let topicName = "aws.mdct.seds.cdc.";
 
-  if (streamARN.contains("age-ranges")) {
+  if (streamARN.includes("age-ranges")) {
     topicName = topicName + "age-ranges";
-  } else if (streamARN.contains("auth-user")) {
+  } else if (streamARN.includes("auth-user")) {
     topicName = topicName + "auth-user";
-  } else if (streamARN.contains("auth-user-job-codes")) {
+  } else if (streamARN.includes("auth-user-job-codes")) {
     topicName = topicName + "auth-user-job-codes";
-  } else if (streamARN.contains("form-answers")) {
+  } else if (streamARN.includes("form-answers")) {
     topicName = topicName + "form-answers";
-  } else if (streamARN.contains("form")) {
+  } else if (streamARN.includes("form")) {
     topicName = topicName + "form";
-  } else if (streamARN.contains("state-form")) {
+  } else if (streamARN.includes("state-form")) {
     topicName = topicName + "state-form";
-  } else if (streamARN.contains("states")) {
+  } else if (streamARN.includes("states")) {
     topicName = topicName + "states";
-  } else if (streamARN.contains("status")) {
+  } else if (streamARN.includes("status")) {
     topicName = topicName + "status";
   }
 
