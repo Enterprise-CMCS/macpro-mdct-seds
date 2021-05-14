@@ -23,6 +23,7 @@ exports.handler = async (event) => {
   // const producer = kafka.producer({ groupId: "" + Date.now() });
   const producer = kafka.producer(); // removed groupId because "working code in
   await producer.connect();
+  console.log("event at 0",event[0])
   const streamARN = String(event[0].eventSourceARN.toString());
   console.log("streamARN",streamARN);
   let topicName = "aws.mdct.seds.cdc.";
