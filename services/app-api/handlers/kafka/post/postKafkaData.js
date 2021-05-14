@@ -23,7 +23,7 @@ exports.handler = async (event) => {
   // const producer = kafka.producer({ groupId: "" + Date.now() });
   const producer = kafka.producer(); // removed groupId because "working code in
   await producer.connect();
-  const streamARN = event.eventSourceARN.toString();
+  const streamARN = event.toString();
   let topicName = "aws.mdct.seds.cdc.";
 
   if (streamARN.contains("age-ranges")) {
