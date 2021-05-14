@@ -414,25 +414,25 @@ resources:
                     - dynamodb:ListStreams
                   Resource:
                     - ${self:custom.AgeRangesTableStreamArn}
-                    #- ${self:custom.FormAnswersTableArn}
                     - ${self:custom.FormAnswersTableStreamArn}
-                    #- ${self:custom.FormQuestionsTableArn}
                     - ${self:custom.FormQuestionsTableStreamArn}
-                    # - ${self:custom.FormsTableArn}
                     - ${self:custom.FormsTableStreamArn}
-                    - ${self:custom.StateFormsTableStreamArn}
-                    #- ${self:custom.StatesTableArn}
                     - ${self:custom.StatesTableStreamArn}
-                    #- ${self:custom.StatusTableArn}
                     - ${self:custom.StatusTableStreamArn}
-                    #- ${self:custom.AuthUserTableArn}
                     - ${self:custom.AuthUserTableStreamArn}
-                    #- ${self:custom.AuthUserRolesTableArn}
                     - ${self:custom.AuthUserRolesTableStreamArn}
-                    #- ${self:custom.AuthJobCodesTableArn}
                     - ${self:custom.AuthJobCodesTableStreamArn}
-                    #- ${self:custom.AuthUserStatesTableArn}
                     - ${self:custom.AuthUserStatesTableStreamArn}
+                    #- ${self:custom.AuthUserTableArn}
+                    #- ${self:custom.StatusTableArn}
+                    #- ${self:custom.AuthUserRolesTableArn}
+                    #- ${self:custom.StateFormsTableStreamArn}
+                    #- ${self:custom.StatesTableArn}
+                    # - ${self:custom.FormsTableArn}
+                    #- ${self:custom.FormQuestionsTableArn}
+                    #- ${self:custom.FormAnswersTableArn}
+                    #- ${self:custom.AuthUserStatesTableArn}
+                    #- ${self:custom.AuthJobCodesTableArn}
                 - Effect: "Allow"
                   Action:
                     - logs:CreateLogStream
