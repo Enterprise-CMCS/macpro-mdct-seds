@@ -145,7 +145,52 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
+          arn: ${self:custom.StateFormsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
           arn: ${self:custom.FormAnswersTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.FormQuestionsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.FormsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.StateTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.StatusTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.AuthUserTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.AuthJobCodesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.AuthUserStatesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          arn: ${self:custom.AuthUserRolesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
@@ -368,17 +413,17 @@ resources:
                     - dynamodb:ListShards
                     - dynamodb:ListStreams
                   Resource:
-                    #- ${self:custom.AgeRangesTableStreamArn}
-                    #- ${self:custom.FormAnswersTableArn}
-                    #- ${self:custom.FormQuestionsTableArn}
-                    #- ${self:custom.FormsTableArn}
+                    - ${self:custom.AgeRangesTableStreamArn}
+                    - ${self:custom.FormAnswersTableArn}
+                    - ${self:custom.FormQuestionsTableArn}
+                    - ${self:custom.FormsTableArn}
                     - ${self:custom.StateFormsTableStreamArn}
-                    #- ${self:custom.StatesTableArn}
-                    #- ${self:custom.StatusTableArn}
-                    #- ${self:custom.AuthUserTableArn}
-                    #- ${self:custom.AuthUserRolesTableArn}
-                    #- ${self:custom.AuthJobCodesTableArn}
-                    #- ${self:custom.AuthUserStatesTableArn}
+                    - ${self:custom.StatesTableArn}
+                    - ${self:custom.StatusTableArn}
+                    - ${self:custom.AuthUserTableArn}
+                    - ${self:custom.AuthUserRolesTableArn}
+                    - ${self:custom.AuthJobCodesTableArn}
+                    - ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
                   Action:
                     - logs:CreateLogStream
