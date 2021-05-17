@@ -1,31 +1,24 @@
 exports.handler = async (event) => {
   const { Kafka } = require("kafkajs");
-  // const kafka = new Kafka({ brokers: ["localhost:9092"] });
 
-  // Process.env.StateFormsTableStreamArn
-  // brokers take an array so I need to split env string so that it becomes an array
+  const brokers = process.env.BOOTSTRAP_BROKER_STRING_TLS.split(",")
   const kafka = new Kafka({
     clientId: "dynamodb",
     brokers: [
-      "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-      "b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-      "b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
+      brokers[0],
+      brokers[1],
+      brokers[2],
     ],
     ssl: {
       rejectUnauthorized: false,
     },
   });
-  // If you specify the same group id and run this process multiple times, KafkaJS
-  // won't get the events. That's because Kafka assumes that, if you specify a
-  // group id, a consumer in that group id should only read each message at most once.
 
-  // const consumer = kafka.consumer({ groupId: "" + Date.now() });
-  // const producer = kafka.producer({ groupId: "" + Date.now() });
-  const producer = kafka.producer(); // removed groupId because "working code in
+
+  const producer = kafka.producer();
   await producer.connect();
-  console.log("event at 0",event.Records[0]);
+
   const streamARN = String(event.Records[0].eventSourceARN.toString());
-  console.log("streamARN",streamARN);
   let topicName = "aws.mdct.seds.cdc.";
 
   if (streamARN.includes("age-ranges")) {
@@ -47,7 +40,7 @@ exports.handler = async (event) => {
   }
 
   console.log("EVENT INFO HERE", event);
-  console.log("topic Name HERE", topicName);
+
   if (event.Records) {
     for (const record of event.Records) {
       await producer.send({

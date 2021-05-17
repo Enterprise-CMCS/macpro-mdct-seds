@@ -61,7 +61,7 @@ custom:
   AuthUserStatesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn}
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn}
   AuthUserRolesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn}
-  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls~true, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls~true}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
