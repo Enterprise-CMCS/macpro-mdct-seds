@@ -29,8 +29,8 @@ exports.handler = async (event) => {
     topicName = topicName + "form-answers";
   } else if (streamARN.includes("form-questions")) {
     topicName = topicName + "form-questions";
-  } else if (streamARN.includes("form")) {
-    topicName = topicName + "form";
+  } else if (streamARN.includes("forms")) {
+    topicName = topicName + "forms";
   } else if (streamARN.includes("state-forms")) {
     topicName = topicName + "state-forms";
   } else if (streamARN.includes("states")) {
@@ -53,9 +53,7 @@ exports.handler = async (event) => {
           },
         ],
       });
-      console.log("FULL new  image RECORD", record.dynamodb.newImage);
-      console.log("full record info", record);
-      console.log("EVENT NAME", record.eventName);
+
       console.log("DynamoDB Record: %j", record.dynamodb);
     }
   }
