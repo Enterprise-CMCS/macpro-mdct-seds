@@ -433,7 +433,7 @@ resources:
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
                     #- ${self:custom.StatesTableArn}
-                    # - ${self:custom.FormsTableArn}
+                    #- ${self:custom.FormsTableArn}
                     #- ${self:custom.FormQuestionsTableArn}
                     #- ${self:custom.FormAnswersTableArn}
                     #- ${self:custom.AuthUserStatesTableArn}
