@@ -1,14 +1,11 @@
 exports.handler = async (event) => {
   const { Kafka } = require("kafkajs");
 
-  const brokers = process.env.BOOTSTRAP_BROKER_STRING_TLS.split(",");
   console.log("brokers",brokers)
   const kafka = new Kafka({
     clientId: "dynamodb",
     brokers: [
-      brokers[0],
-      brokers[1],
-      brokers[2],
+      process.env.BOOTSTRAP_BROKER_STRING_TLS.split(",")
     ],
     ssl: {
       rejectUnauthorized: false,
