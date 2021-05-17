@@ -4,9 +4,7 @@ exports.handler = async (event) => {
   console.log("brokers",brokers)
   const kafka = new Kafka({
     clientId: "dynamodb",
-    brokers: [
-      process.env.BOOTSTRAP_BROKER_STRING_TLS.split(",")
-    ],
+    brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
     ssl: {
       rejectUnauthorized: false,
     },
