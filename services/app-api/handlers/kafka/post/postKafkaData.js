@@ -38,8 +38,8 @@ exports.handler = async (event) => {
     topicName = topicName + "form-answers";
   } else if (streamARN.includes("form")) {
     topicName = topicName + "form";
-  } else if (streamARN.includes("state-form")) {
-    topicName = topicName + "state-form";
+  } else if (streamARN.includes("state-forms")) {
+    topicName = topicName + "state-forms";
   } else if (streamARN.includes("states")) {
     topicName = topicName + "states";
   } else if (streamARN.includes("status")) {

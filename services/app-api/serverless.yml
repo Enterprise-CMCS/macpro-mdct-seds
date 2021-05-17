@@ -423,12 +423,13 @@ resources:
                     - ${self:custom.FormQuestionsTableStreamArn}
                     - ${self:custom.FormsTableStreamArn}
                     - ${self:custom.StateTableStreamArn}
+                    - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
                     - ${self:custom.AuthUserRolesTableStreamArn}
                     - ${self:custom.AuthJobCodesTableStreamArn}
                     - ${self:custom.AuthUserStatesTableStreamArn}
-                    - ${self:custom.StateFormsTableStreamArn}
+
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
