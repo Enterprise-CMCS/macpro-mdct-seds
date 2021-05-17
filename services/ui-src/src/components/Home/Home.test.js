@@ -1,34 +1,27 @@
 import React from "react";
 import Home from "./Home";
-import { render } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-
+import { shallow } from "enzyme";
 let realUseContext;
 let useContextMock;
 
-// *** set up mocks
-beforeEach(() => {
-  realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
-});
+describe("Test Home.js", () => {
+  beforeEach(() => {
+    realUseContext = React.useContext;
+    useContextMock = React.useContext = jest.fn();
+  });
 
-// *** garbage clean up (mocks)
-afterEach(() => {
-  React.useContext = realUseContext;
-});
+  // *** garbage clean up (mocks)
+  afterEach(() => {
+    React.useContext = realUseContext;
+  });
 
-describe("Test ExportToPdf.js", () => {
-  test("Check the main element, with classname Home, exists", () => {
+  test("Check the main div, with classname app, exists", () => {
     useContextMock.mockReturnValue(true);
+    const mockUser = {
+      attributes: { "app-role": "admin" }
+    };
 
-    const mockUser = { attributes: { "app-role": "admin" } };
-
-    const { getByTestId } = render(
-      <BrowserRouter>
-        <Home user={mockUser} />
-      </BrowserRouter>
-    );
-
-    expect(getByTestId("Home")).toBeVisible();
+    const wrapper = shallow(<Home user={mockUser} />);
+    expect(wrapper.find(".Home").length).toBe(1);
   });
 });

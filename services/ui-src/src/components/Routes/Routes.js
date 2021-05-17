@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Signup from "../Signup/Signup";
 import Profile from "../Profile/Profile";
+import PrintPDF from "../Print/PrintPDF";
 import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
 import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
 import Users from "../Users/Users";
@@ -15,6 +16,7 @@ import UserAdd from "../AddUser/AddUser";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormPage from "../FormPage/FormPage";
 import LoadData from "../LoadData/LoadData";
+import StateSelector from "../StateSelector/StateSelector";
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
@@ -56,6 +58,12 @@ export default function Routes({ user, isAuthorized }) {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/register-state">
+        <StateSelector />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/PrintPDF">
+        <PrintPDF />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
       {user.attributes["app-role"] === "admin" ? (
