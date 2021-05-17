@@ -194,6 +194,11 @@ functions:
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
+      - stream:
+          arn: ${self:custom.AgeRangesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
@@ -423,10 +428,10 @@ resources:
                     - ${self:custom.AuthUserRolesTableStreamArn}
                     - ${self:custom.AuthJobCodesTableStreamArn}
                     - ${self:custom.AuthUserStatesTableStreamArn}
+                    - ${self:custom.StateFormsTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
-                    #- ${self:custom.StateFormsTableStreamArn}
                     #- ${self:custom.StatesTableArn}
                     # - ${self:custom.FormsTableArn}
                     #- ${self:custom.FormQuestionsTableArn}

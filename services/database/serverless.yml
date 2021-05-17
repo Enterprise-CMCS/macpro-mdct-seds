@@ -292,11 +292,11 @@ resources:
     AuthJobCodesTableStreamArn:
       Value: !GetAtt AuthJobCodesTable.StreamArn
     AuthUserStatesTableName:
-      Value: !Ref AuthJobCodesTable
+      Value: !Ref AuthUserStatesTable
     AuthUserStatesTableArn:
-      Value: !GetAtt AuthJobCodesTable.Arn
+      Value: !GetAtt AuthUserStatesTable.Arn
     AuthUserStatesTableStreamArn:
-      Value: !GetAtt AuthJobCodesTable.StreamArn
+      Value: !GetAtt AuthUserStatesTable.StreamArn
 
     Region:
       Value: !Sub ${AWS::Region}
