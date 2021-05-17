@@ -15,8 +15,8 @@ export const main = handler(async (event, context) => {
   const answerParams = {
     TableName: process.env.FormAnswersTableName,
     IndexName: "state-form-index",
-    //Select: "ALL_ATTRIBUTES",
-    /*ExpressionAttributeNames: {
+    /*Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeNames: {
       "#answer_entry": "answer_entry"
     },*/
     ExpressionAttributeValues: {
@@ -24,21 +24,6 @@ export const main = handler(async (event, context) => {
     },
     KeyConditionExpression: "state_form = :answerFormID"
   };
-
-  /*const scanTable = async (params) => {
-    const scanResults = [];
-    let items = [];
-    do{
-      items =  await dynamoDb.scan(params).promise();
-      items.Items.forEach((item) = scanResults.push(item));
-      params.ExclusiveStartKey  = items.LastEvaluatedKey;
-    }while(typeof items.LastEvaluatedKey !== "undefined");
-
-    return scanResults;
-  };*/
-
-  //const answersResult = scanTable(answerParams);
-  const answersResult = await dynamoDb.query(answerParams);
 
   const questionParams = {
     TableName: process.env.FormQuestionsTableName,
@@ -53,6 +38,7 @@ export const main = handler(async (event, context) => {
   };
 
   //const answersResult = await dynamoDb.scan(answerParams);
+  const answersResult = await dynamoDb.query(answerParams);
   const questionsResult = await dynamoDb.scan(questionParams);
 
   if (answersResult.Count === 0) {
