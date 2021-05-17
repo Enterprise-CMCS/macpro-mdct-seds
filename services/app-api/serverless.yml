@@ -150,6 +150,11 @@ functions:
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          arn: ${self:custom.StateFormsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
           arn: ${self:custom.FormQuestionsTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
