@@ -7,12 +7,11 @@ exports.handler = async (event) => {
       "b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
       "b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094"
     ],
-    // process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+    // process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","), THIS DOES NOT WORK FOR state-forms topic/table
     ssl: {
       rejectUnauthorized: false,
     },
   });
-
 
   const producer = kafka.producer();
   await producer.connect();
@@ -62,27 +61,6 @@ exports.handler = async (event) => {
       console.log("DynamoDB Record: %j", record.dynamodb);
     }
   }
-  // try{
-  //   const consumer = kafka.consumer({ groupId: "test2" });
-  //   await consumer.connect();
-  //   console.log("POST CONNECT");
-  //   await consumer.subscribe({
-  //     topic: "aws.mdct.seds.cdc.state-forms",
-  //     fromBeginning: false,
-  //   });
-  //   console.log("POST SUBSCRIBE");
-  //   await consumer.run({
-  //     eachMessage: async ({ topic, partition, message }) => {
-  //       console.log("partition HERE", partition);
-  //       const messageAsJson = JSON.parse(message.value.toString());
-  //       console.log("MESSAGE AS JSON HERE", messageAsJson);
-  //       console.log("topic HERE", topic);
-  //     },
-  //   });
-  //   console.log("POST MESSAGES LIST");
-  // }
-  //   catch (e){
-  //     console.log("ERROR HERE", e);
-  //   }
+
   return `Successfully processed ${event.Records.length} records.`;
 };
