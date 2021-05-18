@@ -44,8 +44,10 @@ const EditUser = ({ stateList }) => {
     }
     // Sort states alphabetically and place in array
     let theStates = [];
-    if (user.data.states) {
-      theStates = user.data.states.sort();
+    const userStates =
+      user.data.states && user.data.states !== "null" ? user.data.states : [];
+    if (userStates) {
+      theStates = userStates.sort();
     }
 
     // Set states to array of objects
@@ -161,6 +163,10 @@ const EditUser = ({ stateList }) => {
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
     data.states = statesToSend;
+
+    console.log("updating data: ");
+    console.log(data);
+
     await updateUser(data).then(() => {
       alert(`User with username: "${data.username}" has been updated`);
       window.location.reload(false);

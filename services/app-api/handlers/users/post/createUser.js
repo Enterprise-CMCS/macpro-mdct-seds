@@ -67,8 +67,8 @@ export const main = handler(async (event, context) => {
       role: data.role,
       states: data.states ?? [],
       userId: newUserId.toString(),
-      //username: data.username,
-      username: data.sub,
+      username: data.username,
+      usernameSub: data.sub,
       lastLogin: data.lastLogin ? data.lastLogin : "",
     },
   };

@@ -5,11 +5,21 @@ import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
+const QuestionComponent = ({
+  questionData,
+  rangeID,
+  answerData,
+  disabled,
+  synthesized
+}) => {
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
-  const { rows, answer_entry } = answerData;
+  const { rows, answer_entry } = answerData || {};
+
+  if (!rows) {
+    return null;
+  }
 
   const questionNumber = parseInt(question.split("-").slice(-1));
   const questionType = type;
@@ -47,7 +57,7 @@ const QuestionComponent = ({ questionData, rangeID, answerData, disabled }) => {
               questionID={answer_entry}
               gridData={sortedRows}
               disabled={disabled}
-              synthesized={false}
+              synthesized={synthesized ? synthesized : false}
             />
           );
           break;
@@ -80,7 +90,8 @@ QuestionComponent.propTypes = {
   questionData: PropTypes.object.isRequired,
   rangeID: PropTypes.string.isRequired,
   answerData: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  synthesized: PropTypes.bool.isRequired
 };
 
 export default QuestionComponent;
@@ -91,5 +102,6 @@ const questionVariables = {
   "0001": "between the ages of 0 and 1",
   "0105": "between the ages of 1 and 5",
   "0612": "between the ages of 6 and 12",
-  1318: "between the ages of 13 and 18"
+  1318: "between the ages of 13 and 18",
+  1920: "between the ages of 19 and 20"
 };

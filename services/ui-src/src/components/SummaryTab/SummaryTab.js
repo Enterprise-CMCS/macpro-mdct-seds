@@ -96,6 +96,7 @@ const SummaryTab = ({ questions, answers }) => {
             questionData={singleQuestion}
             answerData={questionAnswer}
             disabled={true}
+            synthesized={true}
           />
         );
       })}

@@ -40,39 +40,30 @@ custom:
           - table: ${self:custom.stage}-states
             sources: [../../src/database/initial_data_load/states.json]
           - table: ${self:custom.stage}-state-forms
-            sources: [../../src/database/initial_data_load/state_forms.json]
+            sources:
+              [
+                ../../src/database/initial_data_load/state_forms.json,
+                ../../src/database/initial_data_load/state_forms_2021Q1.json,
+                ../../src/database/initial_data_load/state_forms_2020.json,
+              ]
           - table: ${self:custom.stage}-form-questions
             sources:
               [
-                ../../src/database/initial_data_load/21E.json,
-                ../../src/database/initial_data_load/21E_2020.json,
-                ../../src/database/initial_data_load/64_21E.json,
-                ../../src/database/initial_data_load/GenderRaceEthnicity.json,
-                ../../src/database/initial_data_load/21PW.json,
-                ../../src/database/initial_data_load/21PW_2020.json,
-                ../../src/database/initial_data_load/64EC.json,
+                ../../src/database/initial_data_load/form_questions_2021.json,
+                ../../src/database/initial_data_load/form_questions_2020.json,
               ]
           - table: ${self:custom.stage}-form-answers
             sources:
               [
-                ../../src/database/initial_data_load/form_answers_21E_AL.json,
-                ../../src/database/initial_data_load/form_answers_21E_MD.json,
-                ../../src/database/initial_data_load/form_answers_21E_PA.json,
-                ../../src/database/initial_data_load/form_answers_64EC_AL.json,
-                ../../src/database/initial_data_load/form_answers_64EC_MD.json,
-                ../../src/database/initial_data_load/form_answers_64EC_PA.json,
-                ../../src/database/initial_data_load/form_answers_64_21E_AL.json,
-                ../../src/database/initial_data_load/form_answers_64_21E_MD.json,
-                ../../src/database/initial_data_load/form_answers_64_21E_PA.json,
-                ../../src/database/initial_data_load/form_answers_GRE_AL.json,
-                ../../src/database/initial_data_load/form_answers_GRE_MD.json,
-                ../../src/database/initial_data_load/form_answers_GRE_PA.json,
-                ../../src/database/initial_data_load/form_answers_21PW_PA.json,
-                ../../src/database/initial_data_load/form_answers_21PW_MD.json,
-                ../../src/database/initial_data_load/form_answers_21PW_AL.json,
-                ../../src/database/initial_data_load/form_answers_21PW_PA_Q4.json,
-                ../../src/database/initial_data_load/form_answers_21PW_PA_Q3.json,
-                ../../src/database/initial_data_load/form_answers_21E_AL_Q4.json,
+                ../../src/database/initial_data_load/form_answers_AL.json,
+                ../../src/database/initial_data_load/form_answers_MD.json,
+                ../../src/database/initial_data_load/form_answers_PA.json,
+                ../../src/database/initial_data_load/form_answers_AL_2021Q1.json,
+                ../../src/database/initial_data_load/form_answers_MD_2021Q1.json,
+                ../../src/database/initial_data_load/form_answers_PA_2021Q1.json,
+                ../../src/database/initial_data_load/form_answers_AL_2020.json,
+                ../../src/database/initial_data_load/form_answers_MD_2020.json,
+                ../../src/database/initial_data_load/form_answers_PA_2020.json,
               ]
           - table: ${self:custom.stage}-auth-user
             sources: [../../src/database/initial_data_load/auth_user.json]

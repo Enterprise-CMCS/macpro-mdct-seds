@@ -170,9 +170,11 @@ const GridWithTotals = props => {
                       />
                     ) : (
                       <span className="usa-input rid-column synthesized">
-                        {parseFloat(gridData[rowIndex][columnIndex]).toFixed(
-                          currentPrecision
-                        )}
+                        {gridData[rowIndex][columnIndex] >= 0
+                          ? parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                              currentPrecision
+                            )
+                          : ""}
                       </span>
                     )}
                   </td>
@@ -198,7 +200,9 @@ const GridWithTotals = props => {
                     />
                   ) : (
                     <span className="usa-input grid-column synthesized ">
-                      {parseFloat(column).toFixed(currentPrecision)}
+                      {column >= 0
+                        ? parseFloat(column).toFixed(currentPrecision)
+                        : ""}
                     </span>
                   )}
                 </td>
@@ -208,7 +212,9 @@ const GridWithTotals = props => {
             return formattedCell;
           })}
           <td className="total-column">
-            {parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)}
+            {gridRowTotals[rowIndex] > 0
+              ? parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+              : 0}
           </td>
         </tr>
       );
@@ -229,7 +235,9 @@ const GridWithTotals = props => {
     } else {
       column = (
         <td className="total-column">
-          {parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)}
+          {gridColumnTotals[i] > 0
+            ? parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+            : 0}
         </td>
       );
     }
@@ -248,7 +256,9 @@ const GridWithTotals = props => {
           <tr className="total-row">
             {totalsRow}
             <td className="total-column">
-              {parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
+              {gridTotalOfTotals > 0
+                ? parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                : 0}
             </td>
           </tr>
         </tbody>

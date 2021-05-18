@@ -6,19 +6,19 @@
   "items": {
     "type": "object",
     "properties": {
-      "age_range": {
+      "ageRange": {
         "type": "string",
         "description": "StartAge - EndAge"
       },
-      "age_description": {
+      "ageDescription": {
         "type": "string",
         "description": "Description of age range"
       },
-      "range_id": {
+      "rangeId": {
         "type": "string",
         "description": "Unique ID for each age range"
       }
     },
-    "required": ["age_range", "age_description", "range_id"]
+    "required": ["ageRange", "ageDescription", "rangeId"]
   }
 }

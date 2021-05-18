@@ -7,6 +7,9 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
 
+  console.log("got data: ");
+  console.log(data);
+
   const body = JSON.stringify({
     email: data.email,
   });
@@ -22,13 +25,13 @@ export const main = handler(async (event, context) => {
       userId: JSON.parse(currentUser.body)["Items"][0].userId,
     },
     UpdateExpression:
-      "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, username = :username",
+      "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
     ExpressionAttributeValues: {
       ":role": data.role,
       ":states": data.states ?? "",
       ":isActive": data.isActive ?? "inactive",
       ":lastLogin": data.lastLogin,
-      ":username": data.sub,
+      ":usernameSub": data.usernameSub ?? null,
     },
     ExpressionAttributeNames: {
       "#r": "role",
