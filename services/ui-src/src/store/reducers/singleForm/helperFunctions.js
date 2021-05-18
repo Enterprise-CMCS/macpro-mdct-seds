@@ -118,7 +118,7 @@ const insertFPL = (answers, fpl) => {
     } else {
       //  "col6": "% of FPL 301"
       const spaceBeforeFPL = rowHeader.lastIndexOf(" ");
-      newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} ${fpl}`;
+      newHeader = `${rowHeader.slice(0, spaceBeforeFPL)} 301-${fpl}`;
     }
     singleAnswer.rows[0]["col6"] = newHeader;
     return singleAnswer;
