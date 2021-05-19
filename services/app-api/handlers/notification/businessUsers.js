@@ -45,8 +45,10 @@ async function businessOwnersTemplate() {
     FROM: fromEmail,
     MESSAGE: `
     This is an automated message to notify you that the states listed below have
-    not certified their SEDS data for FFY[${date.year}] Q[${date.quarter}] as of
-    [${todayDate}]: {${uncertifiedStates}}
+
+    not certified their SEDS data for FFY${date.year} Q${date.quarter} as of
+
+    ${todayDate}: {${uncertifiedStates}}
 
     Please follow up with the state’s representatives if you have any questions.
 
