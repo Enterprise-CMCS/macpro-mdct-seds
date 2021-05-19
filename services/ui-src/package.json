@@ -1,6 +1,10 @@
 {
   "name": "ui-src",
   "description": "",
+  "resolutions": {
+    "**/**/lodash": "^4.17.12",
+    "minimist": "^1.2.5"
+  },
   "version": "1.0.0",
   "dependencies": {
     "@babel/parser": "^7.13.13",
