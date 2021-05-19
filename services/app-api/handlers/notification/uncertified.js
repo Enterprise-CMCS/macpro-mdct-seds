@@ -8,9 +8,7 @@ var AWS = require("aws-sdk");
  */
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
-  console.log(data, "data");
   const email = await unCetifiedTemplate(data);
-  console.log(email, "Email before sent");
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
   .sendEmail(email)
   .promise();
@@ -26,11 +24,6 @@ export const main = handler(async (event, context) => {
     message: "quartly Businness owners email sent",
   };
 });
-
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
 
 // logic to retrieve all business users emails
 async function getBusinessUsersEmail() {
@@ -56,16 +49,9 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-// Email template for business users
-/*
-* TODOS
-* report number = form name (21E)
-* change source to "MDCT SEDS"
-**/
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
-  console.log("send to email: ", sendToEmail);
 
   if (sendToEmail.Count === 0) {
     throw new Error("No Business users found.");
@@ -78,9 +64,9 @@ async function unCetifiedTemplate(payload) {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.states} has uncertified the following SEDS report as of ${todayDate}:
+          This is an automated message to notify you that ${payload.formInfo.state_id} has uncertified the following SEDS report as of ${todayDate}:
           
-          Report Number for FFY ${date.year} Quarter ${date.quarter} 
+          ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
 
           Please follow up with the state’s representatives if you have any questions.
 
@@ -88,9 +74,9 @@ async function unCetifiedTemplate(payload) {
         },
       },
       Subject: {
-        Data: `SEDS Uncertify Notice - ${payload.states} - ${todayDate}`,
+        Data: `SEDS Uncertify Notice - ${payload.formInfo.state_id} - ${todayDate}`,
       },
     },
-    Source: "mcdt@cms.hhs.gov",
+    Source: "MDCT SEDS",
   };
 }
