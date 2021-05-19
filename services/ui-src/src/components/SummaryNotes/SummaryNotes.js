@@ -7,7 +7,11 @@ import { saveSummaryNotes } from "../../store/actions/statusData";
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
   let currentSummaryNotes;
+  let isFinalStatus = false;
 
+  if (statusData.status_id === 4 || statusData.status_id === 5) {
+    isFinalStatus = true;
+  }
   // Summary tab will load before statusData is populated and this prevents an error
   if (statusData.state_comments !== undefined) {
     currentSummaryNotes = statusData.state_comments[0].entry;
@@ -35,7 +39,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
         type="text"
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
-        disabled={false}
+        disabled={isFinalStatus}
         className=" margin-left-3 width-widescreen"
       />
     </>
