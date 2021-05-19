@@ -77,6 +77,6 @@ async function unCetifiedTemplate(payload) {
         Data: `SEDS Uncertify Notice - ${payload.formInfo.state_id} - ${todayDate}`,
       },
     },
-    Source: "MDCT SEDS",
+    Source: "mdct@cms.hhs.gov",
   };
 }
