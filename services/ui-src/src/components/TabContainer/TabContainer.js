@@ -7,9 +7,8 @@ import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 
-
 import "./TabContainer.scss";
-import {API} from "aws-amplify";
+import { API } from "aws-amplify";
 
 const TabContainer = ({
   tabDetails,
@@ -25,9 +24,14 @@ const TabContainer = ({
   useEffect(() => {
     const establishStatus = async () => {
       const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      const userRole = data.role
+      const userRole = data.role;
       let statusBoolean = false;
-      if (notApplicable === true || statusId === 4 || statusId === 5 || userRole === "admin") {
+      if (
+        notApplicable === true ||
+        statusId === 4 ||
+        statusId === 5 ||
+        userRole === "admin"
+      ) {
         statusBoolean = true;
       }
       setDisabledStatus(statusBoolean);

@@ -7,7 +7,7 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
-import {API, Auth} from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
@@ -32,19 +32,20 @@ const CertificationTab = ({
     isFinal === true ? true : isProvisional
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
-  const [viewProvisionalAndFinalCertify, setViewProvisionalAndFinalCertify] = useState(true)
+  const [
+    viewProvisionalAndFinalCertify,
+    setViewProvisionalAndFinalCertify
+  ] = useState(true);
   useEffect(() => {
-
     const viewProvisionalAndFinal = async () => {
       const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      const userRole = data.role
-      if(userRole === "admin")
-      {
-        setViewProvisionalAndFinalCertify(false)
+      const userRole = data.role;
+      if (userRole === "admin") {
+        setViewProvisionalAndFinalCertify(false);
       }
-    }
+    };
     viewProvisionalAndFinal();
-  },[])
+  }, []);
 
   const submitProvisional = async () => {
     await certifyAndSubmitProvisional();
@@ -155,24 +156,24 @@ const CertificationTab = ({
           </div>
         ) : null}
       </div>
-      {viewProvisionalAndFinalCertify ?
-      <div className="certify-btn ">
-        <Button
-          onClick={() => submitProvisional()}
-          type="button"
-          disabled={provisionalButtonStatus}
-        >
-          {"Certify & Submit Provisional Data"}
-        </Button>
-        <Button
-          onClick={() => submitFinal()}
-          type="button"
-          disabled={finalButtonStatus}
-        >
-          {"Certify & Submit Final Data"}
-        </Button>
-      </div>
-          : null }
+      {viewProvisionalAndFinalCertify ? (
+        <div className="certify-btn ">
+          <Button
+            onClick={() => submitProvisional()}
+            type="button"
+            disabled={provisionalButtonStatus}
+          >
+            {"Certify & Submit Provisional Data"}
+          </Button>
+          <Button
+            onClick={() => submitFinal()}
+            type="button"
+            disabled={finalButtonStatus}
+          >
+            {"Certify & Submit Final Data"}
+          </Button>
+        </div>
+      ) : null}
       {isFinal ? (
         <div className="certify-btn uncertify">
           <Button onClick={() => submitUncertify()} type="button">
