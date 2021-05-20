@@ -10,8 +10,8 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-  .sendEmail(email)
-  .promise();
+    .sendEmail(email)
+    .promise();
   try {
     const data = await sendPromise;
     console.log(data, "data: promise");
