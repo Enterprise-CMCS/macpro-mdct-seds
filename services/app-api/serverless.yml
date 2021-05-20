@@ -485,6 +485,12 @@ resources:
                     #- ${self:custom.AuthJobCodesTableArn}
                 - Effect: "Allow"
                   Action:
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                  Resource:
+                    - arn:aws:dynamodb:*:*:table/${self:custom.FormAnswersTableName}/index/*
+                - Effect: "Allow"
+                  Action:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
