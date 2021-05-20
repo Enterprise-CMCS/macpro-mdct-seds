@@ -108,9 +108,6 @@ custom:
           ../../src/database/initial_data_load/form_answers_WV.json,
           ../../src/database/initial_data_load/form_answers_WI.json,
           ../../src/database/initial_data_load/form_answers_WY.json,
-          ../../src/database/initial_data_load/form_answers_AL_2020.json,
-          ../../src/database/initial_data_load/form_answers_MD_2020.json,
-          ../../src/database/initial_data_load/form_answers_PA_2020.json,
         ]
     auth-user:
       table: ${self:custom.stage}-auth-user
