@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
 import "./FormPage.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@trussworks/react-uswds";
 
 const FormPage = ({ getForm, statusData }) => {
   const [saveAlert, setSaveAlert] = useState(false);
   const { last_modified, save_error } = statusData;
+  const [redirectToPDF, setRedirectToPDF] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -22,6 +26,9 @@ const FormPage = ({ getForm, statusData }) => {
   const quarterInt = Number.parseInt(quarter).toString();
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
+  const redirectToPDFClicked = () => {
+    setRedirectToPDF(true);
+  };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +91,14 @@ const FormPage = ({ getForm, statusData }) => {
           state={formattedStateName}
         />
       </div>
+      <Button
+        className="margin-left-3 action-button"
+        primary="true"
+        onClick={redirectToPDFClicked}
+      >
+        PDF
+        <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+      </Button>
       <NotApplicable />
       <div className="tab-container margin-x-5 margin-y-3">
         <TabContainer quarter={quarter} />
@@ -97,6 +112,18 @@ const FormPage = ({ getForm, statusData }) => {
           lastModified={last_modified}
         />
       </div>
+      {redirectToPDF ? (
+        <Redirect
+          to={{
+            pathname: "/printPDF",
+            state: {
+              form: formattedFormName,
+              year: year,
+              stateName: formattedStateName
+            }
+          }}
+        />
+      ) : null}
     </div>
   );
 };

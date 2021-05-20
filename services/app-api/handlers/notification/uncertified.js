@@ -1,7 +1,6 @@
-var AWS = require("aws-sdk");
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-var ses = new AWS.SES({ region: "us-east-1" });
+var AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to business users,
@@ -10,18 +9,19 @@ var ses = new AWS.SES({ region: "us-east-1" });
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
-  ses.sendEmail(email, function (err, data) {
-    if (err) {
-      console.log("cannot send email through SES locally", err);
-      context.fail(err);
-    } else {
-      console.log(data);
-      context.succeed(event);
-    }
-  });
+  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  .sendEmail(email)
+  .promise();
+  try {
+    const data = await sendPromise;
+    console.log(data, "data: promise");
+    console.log(data.MessageId, "data.MessageId");
+  } catch (err) {
+    console.error(err, err.stack);
+  }
   return {
-    status: "success",
-    message: "email sent"
+    status: "sucess",
+    message: "quartly Businness owners email sent",
   };
 });
 
@@ -49,30 +49,34 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-// Email template for business users
 async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
+  const todayDate = new Date().toISOString().split("T")[0];
+
   if (sendToEmail.Count === 0) {
     throw new Error("No Business users found.");
   }
   return {
     Destination: {
-      ToAddresses: sendToEmail || [],
+      ToAddresses: sendToEmail,
     },
     Message: {
       Body: {
         Text: {
           Data: `
-          This is an automated message to notify you that ${payload.state} has uncertified the following SEDS report as of DateTimeOfAction]:
-          [Report Number] for FFY [Fiscal Year] Quarter [Quarter Number]
+          This is an automated message to notify you that ${payload.formInfo.state_id} has uncertified the following SEDS report as of ${todayDate}:
+          
+          ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
+
           Please follow up with the state’s representatives if you have any questions.
-          -MDCT SEDS`,
+
+          -MDCT SEDS TEAM`,
         },
       },
       Subject: {
-        Data: `Uncerteried quartly form`,
+        Data: `SEDS Uncertify Notice - ${payload.formInfo.state_id} - ${todayDate}`,
       },
     },
-    Source: "jgillis@collabralink.com",
+    Source: "mdct@cms.hhs.gov",
   };
 }

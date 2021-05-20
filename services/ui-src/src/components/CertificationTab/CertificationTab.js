@@ -16,6 +16,8 @@ import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
   status,
+  formStatus,
+  notApplicable,
   lastModified,
   lastModifiedBy,
   isFinal,
@@ -23,7 +25,8 @@ const CertificationTab = ({
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
   uncertify,
-  saveForm
+  saveForm,
+  disabled
 }) => {
   const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
     isFinal === true ? true : isProvisional
@@ -54,7 +57,6 @@ const CertificationTab = ({
   const sendEmailtoBo = async () => {
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
-    var datetime = new Date().getTime();
     try {
       const currentUser = await obtainUserByEmail({
         email: userEmail
@@ -63,8 +65,7 @@ const CertificationTab = ({
       userObj.map(async userInfo => {
         if (userInfo.role === "state") {
           let emailObj = {
-            states: userInfo.states,
-            date: datetime,
+            formInfo: formStatus,
             username: userInfo.username
           };
           await sendUncertifyEmail(emailObj);
@@ -189,6 +190,7 @@ CertificationTab.propTypes = {
 };
 
 const mapState = state => ({
+  formStatus: state.currentForm.statusData,
   status: state.currentForm.statusData.status,
   notApplicable: state.currentForm.statusData.not_applicable,
   lastModified: state.currentForm.statusData.status_date,
