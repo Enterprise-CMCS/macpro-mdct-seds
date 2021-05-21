@@ -88,8 +88,9 @@ module.exports={
         browser.pause(timeout * 8);
         browser.click("xpath", tests_data.pdf.selector);
         browser.click("xpath", tests_data.print.selector);
-        browser.click("xpath", tests_data.back.selector).waitForElementPresent('body');
         browser.pause(timeout * 5);
+        browser.click("xpath", tests_data.back.selector).waitForElementPresent('body');
+        browser.pause(timeout * 6);
 
         //64.EC pdf
         browser.click(tests_data.ec.selector).waitForElementPresent('button');
