@@ -1,0 +1,17 @@
+{
+    "name": "nightwatch",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "test": "node nightwatch.js -c nightwatch.conf.js",
+      "smoke": "yarn run test --tag smoke"
+    },
+    "devDependencies": {
+      "chromedriver": ">=88.0.0",
+      "dotenv": "^8.2.0",
+      "nightwatch": "^1.5.1",
+      "yargs": "^16.1.1"
+    }
+    
+  }
