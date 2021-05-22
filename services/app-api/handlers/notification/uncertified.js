@@ -10,8 +10,8 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-  .sendEmail(email)
-  .promise();
+    .sendEmail(email)
+    .promise();
   try {
     const data = await sendPromise;
     console.log(data, "data: promise");
@@ -66,7 +66,7 @@ async function unCetifiedTemplate(payload) {
           Data: `
           This is an automated message to notify you that ${payload.formInfo.state_id} has uncertified the following SEDS report as of ${todayDate}:
           
-          ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
+          form ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
 
           Please follow up with the state’s representatives if you have any questions.
 
