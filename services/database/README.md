@@ -48,3 +48,12 @@ The best practice is:
 4. Add the new json file to the serverless.yml files in services > database and services > data-deployment
 5. Remove the load of the most recent year's form_questions_XXXX.json file (optional)
 6. Archive the most recent year's form_questions_XXXX.json file (optional)
+
+## Quarterly Answer Updates
+
+Each federal fiscal quarter, a new set of answers will need to be created for each state/form/age range combination. 
+A blank template is available in form-answers-template.json in src > database > initial_data_load.
+
+If the answer format from form-questions.rows changes, this template will need to be updated.
+
+To use the template for a state, you simply need to change the "XX" to be the state abbreviation.
