@@ -2,17 +2,11 @@ exports.handler = async (event) => {
   const { Kafka } = require("kafkajs");
   const kafka = new Kafka({
     clientId: "dynamodb",
-    // brokers:[
-    //   "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-    //   "b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-    //   "b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094"
-    // ],
     brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
     retry: {
       initialRetryTime: 300,
       retries: 8,
     },
-    // process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","), THIS DOES NOT WORK FOR state-forms topic/table
     ssl: {
       rejectUnauthorized: false,
     },
@@ -62,7 +56,6 @@ exports.handler = async (event) => {
             },
           ],
         });
-
         console.log("DynamoDB Record: %j", record.dynamodb);
       }
     }
