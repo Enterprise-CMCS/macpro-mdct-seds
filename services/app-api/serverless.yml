@@ -272,7 +272,7 @@ functions:
           path: notification/uncertified
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
@@ -281,7 +281,7 @@ functions:
           path: notification/stateUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           # name: seds-quarterly-scheduled-event
           # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
@@ -295,7 +295,7 @@ functions:
           path: notification/businessUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           enabled: false
           rate: cron(0 0 1 */3 ? *)
