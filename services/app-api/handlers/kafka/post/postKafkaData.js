@@ -49,22 +49,27 @@ exports.handler = async (event) => {
   }
 
   console.log("EVENT INFO HERE", event);
+  try{
+      if (event.Records) {
+        for (const record of event.Records) {
+          await producer.send({
+            topic: topicName,
+            messages: [
+              {
+                key: "key4",
+                value: JSON.stringify(record.dynamodb, null, 2),
+                partition: 0,
+              },
+            ],
+          });
 
-  if (event.Records) {
-    for (const record of event.Records) {
-      await producer.send({
-        topic: topicName,
-        messages: [
-          {
-            key: "key4",
-            value: JSON.stringify(record.dynamodb, null, 2),
-            partition: 0,
-          },
-        ],
-      });
-
-      console.log("DynamoDB Record: %j", record.dynamodb);
-    }
+          console.log("DynamoDB Record: %j", record.dynamodb);
+        }
+      }
+  }
+  catch (e)
+  {
+    console.log("error:",e);
   }
 
   return `Successfully processed ${event.Records.length} records.`;

@@ -145,56 +145,67 @@ functions:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
       - stream:
+          type: dynamodb
           arn: ${self:custom.FormAnswersTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.StateFormsTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.FormQuestionsTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.FormsTableStreamArn}
           startingPosition: LATEST
-          maximumRetryAttempts: 8
+          maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.StateTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.StatusTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.AuthUserTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.AuthJobCodesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.AuthUserStatesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.AuthUserRolesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
+          type: dynamodb
           arn: ${self:custom.AgeRangesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
@@ -202,7 +213,7 @@ functions:
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-    maximumRetryAttempts: 2
+    maximumRetryAttempts: 5
     vpc:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
@@ -359,7 +370,7 @@ functions:
           path: notification/uncertified
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
@@ -368,7 +379,7 @@ functions:
           path: notification/stateUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           # name: seds-quarterly-scheduled-event
           # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
@@ -382,7 +393,7 @@ functions:
           path: notification/businessUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           enabled: false
           rate: cron(0 0 1 */3 ? *)
