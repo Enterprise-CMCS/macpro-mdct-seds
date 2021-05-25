@@ -30,8 +30,8 @@ const roleFromCognito = async () => {
   const { data } = await API.post("mdct-seds", "/users/get/username", {});
   return data.role;
 };
-export const determineRole =  async specRole => {
-  const tempRole = await roleFromCognito()
+export const determineRole = async specRole => {
+  const tempRole = await roleFromCognito();
   const roleArray = ["admin", "business", "state"];
   let role;
 
