@@ -13,7 +13,6 @@ plugins:
   - serverless-offline
   - serverless-stack-termination-protection
 custom:
-  gitVariablesTagsWhitelist: ["GIT_BRANCH"]
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
@@ -34,7 +33,7 @@ custom:
   AgeRangesTableStreamArn: ${cf:database-${git.branch}.AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
   FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
   FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
-  FormAnswersTableStreamArn: ${cf:database-${git.branch}.FormAnswersTableStreamArn}
+  FormAnswersTableStreamArn: ${cf:database-${git.branch}.FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
   FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
   FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
   FormQuestionsTableStreamArn: ${cf:database-${git.branch}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
@@ -43,7 +42,7 @@ custom:
   FormsTableStreamArn: ${cf:database-${git.branch}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
-  StateTableStreamArn: ${cf:database-${git.branch}.StateTableStreamArn,cf:database-master.StateTableStreamArn}
+  StateTableStreamArn: ${cf:database-${git.branch}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
   StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
   StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
   StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
