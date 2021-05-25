@@ -6,7 +6,7 @@ export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
 
   const data = JSON.parse(event.body);
-  console.log("testington",process.env.gitBranch);
+
   console.log("got data: ");
   console.log(data);
 
