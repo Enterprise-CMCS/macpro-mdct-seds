@@ -24,7 +24,7 @@ function App() {
       // *** make sure attributes exist and are in standard format
       user.attributes = user.signInUserSession.idToken.payload;
 
-      user.attributes["app-role"] = determineRole(
+      user.attributes["app-role"] = await determineRole(
         user.attributes["custom:ismemberof"]
       );
 
@@ -34,7 +34,7 @@ function App() {
       setIsAuthorized(true);
       setIsAuthenticating(false);
     } catch (error) {
-      console.log("auth error", error);
+      console.log("auth user error", error);
       setIsAuthenticating(false);
     }
   }

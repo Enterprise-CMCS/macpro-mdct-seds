@@ -28,17 +28,14 @@ export async function ascertainUserPresence(user) {
 }
 const roleFromCognito = async () => {
   const { data } = await API.post("mdct-seds", "/users/get/username", {});
-  console.log("got user from tony's pull", data);
   return data.role;
 };
-export const determineRole = async specRole => {
-  const tempRole = await roleFromCognito();
-  console.log("got temp role", tempRole);
+export const determineRole =  async specRole => {
+  const tempRole = await roleFromCognito()
   const roleArray = ["admin", "business", "state"];
   let role;
 
   if (tempRole && roleArray.includes(tempRole)) {
-    console.log("in switch with temprole");
     switch (tempRole) {
       case "state":
         role = "state";
@@ -52,9 +49,7 @@ export const determineRole = async specRole => {
       default:
         break;
     }
-    console.log("new pull role", role);
   } else if (specRole) {
-    console.log("look for job codes");
     if (
       specRole.includes("CHIP_D_USER_GROUP_ADMIN") ||
       specRole.includes("CHIP_V_USER_GROUP_ADMIN") ||
@@ -69,6 +64,5 @@ export const determineRole = async specRole => {
       role = "state";
     }
   }
-  console.log("ROLE VALUE HERE", role);
   return role;
 };
