@@ -30,7 +30,8 @@ const TabContainer = ({
         notApplicable === true ||
         statusId === 4 ||
         statusId === 5 ||
-        userRole === "admin"
+        userRole === "admin" ||
+        userRole === "business"
       ) {
         statusBoolean = true;
       }

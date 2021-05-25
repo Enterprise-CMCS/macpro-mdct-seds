@@ -40,7 +40,7 @@ const CertificationTab = ({
     const viewProvisionalAndFinal = async () => {
       const { data } = await API.post("mdct-seds", "/users/get/username", {});
       const userRole = data.role;
-      if (userRole === "admin") {
+      if (userRole === "admin" || userRole === "business") {
         setViewProvisionalAndFinalCertify(false);
       }
     };
