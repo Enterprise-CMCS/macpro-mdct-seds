@@ -124,7 +124,7 @@ const mapState = state => ({
   notApplicable: state.currentForm.statusData.not_applicable,
   status: state.currentForm.statusData.status || "",
   statusId: state.currentForm.statusData.status_id || "",
-  statusTypes: state.global.status
+  statusTypes: state.global.statuses
 });
 
 const mapDispatch = {

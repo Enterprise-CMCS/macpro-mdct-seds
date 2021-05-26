@@ -264,6 +264,33 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  getAgeRanges:
+    handler: handlers/age-ranges/get/getAgeRanges.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: age-ranges
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getStates:
+    handler: handlers/states/get/getStates.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: states
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getStatuses:
+    handler: handlers/statuses/get/getStatuses.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: statuses
+          method: get
+          cors: true
+          authorizer: aws_iam
   uncertified:
     handler: handlers/notification/uncertified.main
     role: LambdaApiRole

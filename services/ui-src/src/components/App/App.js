@@ -11,8 +11,15 @@ import {
   ascertainUserPresence,
   determineRole
 } from "../../utility-functions/initialLoadFunctions";
+import { saveForm } from "../../store/reducers/singleForm/singleForm";
+import { connect } from "react-redux";
+import {
+  fetchAgeRanges,
+  fetchStates,
+  fetchStatuses
+} from "../../store/reducers/global";
 
-function App() {
+function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -35,8 +42,15 @@ function App() {
       setIsAuthenticating(false);
     }
   }
+
+  async function loadRedux() {
+    fetchAgeRanges();
+    fetchStates();
+    fetchStatuses();
+  }
+
   useEffect(() => {
-    onLoad().then();
+    onLoad().then(isAuthenticated ? loadRedux : null);
   }, [isAuthenticated]);
 
   return (
@@ -56,4 +70,10 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = {
+  fetchAgeRanges: fetchAgeRanges,
+  fetchStates: fetchStates,
+  fetchStatuses: fetchStatuses
+};
+
+export default connect(null, mapDispatchToProps)(App);

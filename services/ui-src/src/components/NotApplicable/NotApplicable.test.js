@@ -11,7 +11,7 @@ const defaultProps = {
   notApplicable: false,
   status: "In Progress",
   statusId: 2,
-  statusTypes: [fullStoreMock.global.status],
+  statusTypes: [fullStoreMock.global.statuses],
   updatedApplicableStatus: function () {},
   resetData: function () {}
 };
