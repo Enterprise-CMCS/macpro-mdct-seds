@@ -2,17 +2,11 @@ exports.handler = async (event) => {
   const { Kafka } = require("kafkajs");
   const kafka = new Kafka({
     clientId: "dynamodb",
-    // brokers:[
-    //   "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-    //   "b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-    //   "b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094"
-    // ],
-    brokers:process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+    brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
     retry: {
       initialRetryTime: 300,
-      retries: 8
+      retries: 8,
     },
-    // process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","), THIS DOES NOT WORK FOR state-forms topic/table
     ssl: {
       rejectUnauthorized: false,
     },
@@ -49,22 +43,24 @@ exports.handler = async (event) => {
   }
 
   console.log("EVENT INFO HERE", event);
-
-  if (event.Records) {
-    for (const record of event.Records) {
-      await producer.send({
-        topic: topicName,
-        messages: [
-          {
-            key: "key4",
-            value: JSON.stringify(record.dynamodb, null, 2),
-            partition: 0,
-          },
-        ],
-      });
-
-      console.log("DynamoDB Record: %j", record.dynamodb);
+  try {
+    if (event.Records) {
+      for (const record of event.Records) {
+        await producer.send({
+          topic: topicName,
+          messages: [
+            {
+              key: "key4",
+              value: JSON.stringify(record.dynamodb, null, 2),
+              partition: 0,
+            },
+          ],
+        });
+        console.log("DynamoDB Record: %j", record.dynamodb);
+      }
     }
+  } catch (e) {
+    console.log("error:", e);
   }
 
   return `Successfully processed ${event.Records.length} records.`;
