@@ -34,10 +34,10 @@ module.exports={
     },
 
 
-    "Click on Quarter3": function(browser){
+    "Click on Quarter4": function(browser){
         const tests_data={
-            quarter3:{
-                selector: "//*[@id='2020']/ul/li/a",
+            quarter4:{
+                selector: "/html/body/div/div/div[2]/div/div/div/div/div[2]/ul/li[4]/a",
              },
              plus:{
                  selector: "/html/body/div/div/div[2]/div/div/div/div/h2[2]/button",
@@ -46,7 +46,7 @@ module.exports={
         };
         browser.click("xpath", tests_data.plus.selector); 
         browser.pause(timeout * 3);
-        browser.click("xpath", tests_data.quarter3.selector);  //.waitForElementPresent('body');
+        browser.click("xpath", tests_data.quarter4.selector);  //.waitForElementPresent('body');
         browser.pause(timeout * 5);
         
     },
