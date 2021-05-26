@@ -66,7 +66,7 @@ async function unCetifiedTemplate(payload) {
           Data: `
           This is an automated message to notify you that ${payload.formInfo.state_id} has uncertified the following SEDS report as of ${todayDate}:
           
-          form ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
+          Form ${payload.formInfo.form} for FFY ${payload.formInfo.year} Quarter ${payload.formInfo.quarter} 
 
           Please follow up with the state’s representatives if you have any questions.
 
