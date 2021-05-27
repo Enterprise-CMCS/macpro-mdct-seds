@@ -12,7 +12,10 @@ plugins:
   - serverless-plugin-scripts
   - serverless-offline
   - serverless-stack-termination-protection
+  - serverless-plugin-git-variables
 custom:
+  exportGitVariables: true
+  gitBranch: ${git:branch}
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
@@ -30,26 +33,47 @@ custom:
   infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
   AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
   AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
+  AgeRangesTableStreamArn: ${cf:database-${self:custom.gitBranch}.AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
   FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
   FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
+  FormAnswersTableStreamArn: ${cf:database-${self:custom.gitBranch}.FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
   FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
   FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
+  FormQuestionsTableStreamArn: ${cf:database-${self:custom.gitBranch}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
   FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
   FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
+  FormsTableStreamArn: ${cf:database-${self:custom.gitBranch}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
+  StateTableStreamArn: ${cf:database-${self:custom.gitBranch}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
   StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
   StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
   StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
   StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
+  StatusTableStreamArn: ${cf:database-${self:custom.gitBranch}.StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
   AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
+  AuthUserTableStreamArn: ${cf:database-${self:custom.gitBranch}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
   AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
   AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
   AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
   AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+  AuthJobCodesTableStreamArn: ${cf:database-${self:custom.gitBranch}.AuthJobCodesTableStreamArn, cf:database-master.AuthJobCodesTableStreamArn}
   AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
   AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+  AuthUserStatesTableStreamArn: ${cf:database-${self:custom.gitBranch}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
+  StateFormsTableStreamArn: ${cf:database-${self:custom.gitBranch}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
+  AuthUserRolesTableStreamArn: ${cf:database-${self:custom.gitBranch}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
+  dataSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/b/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/c/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/c/id~true}
+  privateSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
   warmupEnabled:
     production: true
     development: false
@@ -120,6 +144,83 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  postKafkaData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.FormAnswersTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.StateFormsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.FormQuestionsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.FormsTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.StateTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.StatusTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthJobCodesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserStatesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserRolesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AgeRangesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+    role: LambdaApiRole
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+    maximumRetryAttempts: 2
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
   getTableNames:
     handler: handlers/load-data/get/getTableNames.main
     role: LambdaApiRole
@@ -299,7 +400,7 @@ functions:
           path: notification/uncertified
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
@@ -308,7 +409,7 @@ functions:
           path: notification/stateUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           # name: seds-quarterly-scheduled-event
           # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
@@ -322,7 +423,7 @@ functions:
           path: notification/businessUsersEmail
           method: post
           cors: true
-          authorzier: aws_iam
+          authorizer: aws_iam
       - schedule:
           enabled: false
           rate: cron(0 0 1 */3 ? *)
@@ -337,6 +438,9 @@ functions:
           authorizer: aws_iam
 
 resources:
+  Description: ${self:service} ${git:branch}:${git:sha1}
+    https://github.com/jacob-meacham/serverless-plugin-git-variables
+    ${git:message}
   Conditions:
     CreatePermissionsBoundary:
       Fn::Not:
@@ -397,6 +501,40 @@ resources:
                     - ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
                   Action:
+                    - dynamodb:DescribeStream
+                    - dynamodb:GetRecords
+                    - dynamodb:GetShardIterator
+                    - dynamodb:ListShards
+                    - dynamodb:ListStreams
+                  Resource:
+                    - ${self:custom.AgeRangesTableStreamArn}
+                    - ${self:custom.FormAnswersTableStreamArn}
+                    - ${self:custom.FormQuestionsTableStreamArn}
+                    - ${self:custom.FormsTableStreamArn}
+                    - ${self:custom.StateTableStreamArn}
+                    - ${self:custom.StateFormsTableStreamArn}
+                    - ${self:custom.StatusTableStreamArn}
+                    - ${self:custom.AuthUserTableStreamArn}
+                    - ${self:custom.AuthUserRolesTableStreamArn}
+                    - ${self:custom.AuthJobCodesTableStreamArn}
+                    - ${self:custom.AuthUserStatesTableStreamArn}
+                    #- ${self:custom.AuthUserTableArn}
+                    #- ${self:custom.StatusTableArn}
+                    #- ${self:custom.AuthUserRolesTableArn}
+                    #- ${self:custom.StatesTableArn}
+                    #- ${self:custom.FormsTableArn}
+                    #- ${self:custom.FormQuestionsTableArn}
+                    #- ${self:custom.FormAnswersTableArn}
+                    #- ${self:custom.AuthUserStatesTableArn}
+                    #- ${self:custom.AuthJobCodesTableArn}
+                - Effect: "Allow"
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                  Resource:
+                    - arn:aws:dynamodb:*:*:table/${self:custom.FormAnswersTableName}/index/*
+                - Effect: "Allow"
+                  Action:
                     - logs:CreateLogStream
                     - logs:CreateLogGroup
                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
@@ -413,6 +551,11 @@ resources:
                   Action:
                     - lambda:InvokeFunction
                   Resource: "*"
+    KafkaSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security Group for streaming functions.  Egress all is set by default.
+        VpcId: ${self:custom.vpcId}
     LambdaWarmupRole:
       Type: "AWS::IAM::Role"
       Properties:

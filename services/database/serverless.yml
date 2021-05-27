@@ -273,7 +273,7 @@ resources:
       Value: !Ref StatesTable
     StatesTableArn:
       Value: !GetAtt StatesTable.Arn
-    StateTableStreaArn:
+    StateTableStreamArn:
       Value: !GetAtt StatesTable.StreamArn
     StatusTableName:
       Value: !Ref StatusTable
