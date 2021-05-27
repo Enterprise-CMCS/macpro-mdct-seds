@@ -11,7 +11,6 @@ import {
   ascertainUserPresence,
   determineRole
 } from "../../utility-functions/initialLoadFunctions";
-import { saveForm } from "../../store/reducers/singleForm/singleForm";
 import { connect } from "react-redux";
 import {
   fetchAgeRanges,
@@ -52,7 +51,7 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   }
 
   useEffect(() => {
-    onLoad().then(isAuthenticated ? loadRedux : null);
+    onLoad().then(loadRedux);
   }, [isAuthenticated]);
 
   return (
