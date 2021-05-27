@@ -38,7 +38,7 @@ async function businessOwnersTemplate() {
   const sendToEmail = sendToEmailArry.map((e) => e.email);
   const uncertifiedStates = await getUncertifiedStates();
   const todayDate = new Date().toISOString().split("T")[0];
-  const fromEmail = "jgillis@collabralink.com";
+  const fromEmail = "mdct@cms.hhs.gov";
   const recipient = {
     TO: sendToEmail,
     SUBJECT: "FFY SEDS Enrollment Data Overdue",
