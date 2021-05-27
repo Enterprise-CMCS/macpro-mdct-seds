@@ -24,6 +24,7 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
+  const [reduxReady, setReduxReady] = useState(false);
 
   async function onLoad() {
     try {
@@ -44,9 +45,10 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   }
 
   async function loadRedux() {
-    fetchAgeRanges();
-    fetchStates();
-    fetchStatuses();
+    await fetchAgeRanges();
+    await fetchStates();
+    await fetchStatuses();
+    setReduxReady(true);
   }
 
   useEffect(() => {
@@ -55,7 +57,7 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
 
   return (
     <div className="App react-transition fade-in">
-      {!isAuthenticating && (
+      {!isAuthenticating && reduxReady && (
         <>
           <Header user={user} displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
