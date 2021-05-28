@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import moment from "moment-timezone";
 
 const sortQuestionColumns = columnArray => {
   let sortedColumns = columnArray.map(singleRow =>
@@ -13,9 +14,12 @@ const sortQuestionColumns = columnArray => {
 const dateFormatter = dateString => {
   let returnString = "Date not supplied";
 
-  if (dateString !== "" && dateString !== null && dateString !== undefined) {
-    // datestring will be saved as ISO string, ie: 2011-10-05T14:48:00.000Z
-    const splitDate = dateString.split("T");
+  if (dateString) {
+    // datestring will be saved as ISO string, ie: 2021-10-05T14:48:00.000Z
+
+    let estDate = moment.tz(dateString, "America/New_York").format();
+
+    const splitDate = estDate.split("T");
     const date = splitDate[0].split("-");
     const time = splitDate[1].split(":");
     const minutes = time[1];
@@ -33,7 +37,7 @@ const dateFormatter = dateString => {
       hour = parsedHour;
     }
 
-    returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm}`;
+    returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm} EST`;
   }
   return returnString;
 };
