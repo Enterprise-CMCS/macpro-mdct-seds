@@ -1,0 +1,84 @@
+import React, { useState } from "react";
+import { Alert, Button } from "@trussworks/react-uswds";
+import Dropdown from "react-dropdown";
+import { generateQuarterlyForms } from "../../libs/api";
+
+const GenerateForms = () => {
+  const [selectedYear, setSelectedYear] = useState();
+  const [selectedQuarter, setSelectedQuarter] = useState();
+  const [alert, setAlert] = useState();
+
+  const currentYear = new Date().getFullYear();
+  const nextYear = new Date().getFullYear() + 1;
+  const yearSelections = [
+    { label: currentYear, value: currentYear },
+    { label: nextYear, value: nextYear }
+  ];
+  const quarterSelections = [
+    { label: "Q1", value: 1 },
+    { label: "Q2", value: 2 },
+    { label: "Q3", value: 3 },
+    { label: "Q4", value: 4 }
+  ];
+
+  const generateForms = () => {
+    if (!selectedYear || !selectedQuarter) {
+      alert("Please select a Year and Quarter");
+      return;
+    }
+    if (
+      window.confirm(
+        `Are you sure you want to generate forms for ${selectedYear.value} Quarter ${selectedQuarter.value}. This action cannot be undone.`
+      )
+    ) {
+      // send year and quarter to lambda which will create the table rows
+      const data = { year: selectedYear, quarter: selectedQuarter };
+      const response = generateQuarterlyForms(data);
+      setAlert(response.message);
+    }
+  };
+  return (
+    <div className="generate-forms-container">
+      {alert && alert.status === 200 ? (
+        <Alert type="success">{alert.message}</Alert>
+      ) : null}
+      {alert && alert.status === 500 ? (
+        <Alert type="error">{alert.message}</Alert>
+      ) : null}
+
+      <p className="margin-bottom-3">
+        Create new forms for each state by filling out the form below. Please
+        select the year and quarter you wish to create form template for.
+      </p>
+      <p>Select the Year</p>
+      <Dropdown
+        options={yearSelections}
+        onChange={e => setSelectedYear(e)}
+        value={selectedYear ?? ""}
+        placeholder="Select a Year"
+        autosize={false}
+        className="margin-bottom-3"
+      />
+      <p>Select the Quarter</p>
+      <Dropdown
+        options={quarterSelections}
+        onChange={e => setSelectedQuarter(e)}
+        value={selectedQuarter ?? ""}
+        placeholder="Select a Quarter"
+        autosize={false}
+        className="margin-bottom-2"
+      />
+
+      <Button
+        type="button"
+        data-testid="generateFormsButton"
+        onClick={() => generateForms()}
+        className="margin-bottom-5"
+      >
+        Generate Forms
+      </Button>
+    </div>
+  );
+};
+
+export default GenerateForms;
