@@ -10,7 +10,6 @@ const mockStore = configureMockStore([]);
 
 describe("Test FormFooter.js - Mount", () => {
   let wrapper;
-
   let store;
 
   beforeEach(() => {
