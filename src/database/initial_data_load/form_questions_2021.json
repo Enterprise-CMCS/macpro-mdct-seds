@@ -13,7 +13,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -68,7 +68,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -123,7 +123,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -178,7 +178,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -235,7 +235,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -425,7 +425,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -483,7 +483,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -541,7 +541,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -599,7 +599,7 @@
       {"key": "0001", "label": "Ages 0 - 1"},
       {"key": "0001", "label": "Ages 1 - 5"},
       {"key": "0001", "label": "Ages 6 - 12"},
-      {"key": "0001", "label": "Ages 13 - 18"},
+      {"key": "0001", "label": "Ages 13 - 18"}
     ],
     "rows": [
       {
@@ -1258,7 +1258,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1312,7 +1312,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1366,7 +1366,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1420,7 +1420,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1476,7 +1476,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1665,7 +1665,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1722,7 +1722,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1779,7 +1779,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1836,7 +1836,7 @@
       {"key": "0001", "label": "Birth through age 12 months"},
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
-      {"key": "1318", "label": "Age 13 years through age 18 years"},
+      {"key": "1318", "label": "Age 13 years through age 18 years"}
     ],
     "rows": [
       {
@@ -1890,7 +1890,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -1944,7 +1944,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -1998,7 +1998,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2052,7 +2052,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2108,7 +2108,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2297,7 +2297,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2354,7 +2354,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2411,7 +2411,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2468,7 +2468,7 @@
       {"key": "0105", "label": "Age 1 year through age 5 years"},
       {"key": "0612", "label": "Age 6 years through age 12 years"},
       {"key": "1318", "label": "Age 13 years through age 18 years"},
-      {"key": "1920", "label": "Age 19 years through age 20 years"},
+      {"key": "1920", "label": "Age 19 years through age 20 years"}
     ],
     "rows": [
       {
@@ -2519,7 +2519,7 @@
     "column_total": true,
     "label": "What is the number of enrollees by gender?",
     "age_ranges": [
-      {"key": "0018", "label": "Conception through age 18 years"},
+      {"key": "0018", "label": "Conception through age 18 years"}
     ],
     "rows": [
       {
@@ -2570,7 +2570,7 @@
     "column_total": true,
     "label": "What is the number of enrollees by race?",
     "age_ranges": [
-      {"key": "0018", "label": "Conception through age 18 years"},
+      {"key": "0018", "label": "Conception through age 18 years"}
     ],
     "rows": [
       {
@@ -2749,7 +2749,7 @@
     "column_total": true,
     "label": "What is the number of enrollees by ethnicity?",
     "age_ranges": [
-      {"key": "0018", "label": "Conception through age 18 years"},
+      {"key": "0018", "label": "Conception through age 18 years"}
     ],
     "rows": [
       {
