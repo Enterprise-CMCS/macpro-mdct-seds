@@ -16,27 +16,31 @@ const dateFormatter = dateString => {
 
   if (dateString) {
     // datestring will be saved as ISO string, ie: 2021-10-05T14:48:00.000Z
-    let estDate = moment.tz(dateString, "America/New_York").format();
+    try {
+      let estDate = moment.tz(dateString, "America/New_York").format();
 
-    const splitDate = estDate.split("T");
-    const date = splitDate[0].split("-");
-    const time = splitDate[1].split(":");
-    const minutes = time[1];
-    const seconds = time[2].slice(0, 2);
+      const splitDate = estDate.split("T");
+      const date = splitDate[0].split("-");
+      const time = splitDate[1].split(":");
+      const minutes = time[1];
+      const seconds = time[2].slice(0, 2);
 
-    let amOrPm;
-    let parsedHour = parseInt(time[0]);
-    let hour;
+      let amOrPm;
+      let parsedHour = parseInt(time[0]);
+      let hour;
 
-    if (parsedHour > 12) {
-      amOrPm = "pm";
-      hour = parsedHour - 12;
-    } else {
-      amOrPm = "am";
-      hour = parsedHour;
+      if (parsedHour > 12) {
+        amOrPm = "pm";
+        hour = parsedHour - 12;
+      } else {
+        amOrPm = "am";
+        hour = parsedHour;
+      }
+
+      returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm} EST`;
+    } catch (error) {
+      returnString = `${dateString} GMT`;
     }
-
-    returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm} EST`;
   }
   return returnString;
 };
