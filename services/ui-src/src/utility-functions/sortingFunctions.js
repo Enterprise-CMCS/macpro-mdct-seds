@@ -16,7 +16,6 @@ const dateFormatter = dateString => {
 
   if (dateString) {
     // datestring will be saved as ISO string, ie: 2021-10-05T14:48:00.000Z
-
     let estDate = moment.tz(dateString, "America/New_York").format();
 
     const splitDate = estDate.split("T");

@@ -13,7 +13,6 @@ import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
   const handleClick = () => {
     let zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    console.log("GET IN THE ZONE", zone);
     saveForm();
   };
 
