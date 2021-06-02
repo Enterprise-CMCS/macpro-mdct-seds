@@ -54,7 +54,7 @@ const deleteBackup = async (tableName) => {
   var i = 0;
 
   // Check backup retention from ssm parameter, default is 14 days
-  var days = parseInt(process.env.backupRetention);
+  var days = parseFloat(process.env.backupRetention);
   if (!days) days = 14;
 
   // Get upper bound date
