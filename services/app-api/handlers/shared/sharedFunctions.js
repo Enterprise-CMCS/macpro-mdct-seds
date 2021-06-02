@@ -117,3 +117,18 @@ export async function getFormDescriptions() {
 
   return formDescription.Items;
 }
+
+export async function getFormResultByStateString(stateFormString) {
+  const params = {
+    TableName:
+      process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+    ExpressionAttributeValues: {
+      ":state_form": stateFormString,
+    },
+    FilterExpression: "state_form = :state_form",
+  };
+
+  const result = await dynamoDb.scan(params);
+
+  return result.Items;
+}

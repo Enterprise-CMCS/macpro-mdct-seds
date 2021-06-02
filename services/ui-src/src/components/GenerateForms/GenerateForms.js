@@ -12,10 +12,14 @@ const GenerateForms = () => {
 
   const currentYear = new Date().getFullYear();
   const nextYear = new Date().getFullYear() + 1;
+
+  // Build array for year dropdown
   const yearSelections = [
     { label: currentYear, value: currentYear },
     { label: nextYear, value: nextYear }
   ];
+
+  // Build array for quarter dropdown
   const quarterSelections = [
     { label: "Q1", value: 1 },
     { label: "Q2", value: 2 },
@@ -23,6 +27,7 @@ const GenerateForms = () => {
     { label: "Q4", value: 4 }
   ];
 
+  // Handle click event and trigger
   const generateForms = async () => {
     if (!selectedYear || !selectedQuarter) {
       alert("Please select a Year and Quarter");
@@ -52,15 +57,19 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert && alert.status === 200 ? (
-        <Alert type="success">{alert.message}</Alert>
+        <Alert className="margin-bottom-3" type="success">
+          {alert.message}
+        </Alert>
       ) : null}
-      {alert && alert.status === 500 ? (
-        <Alert type="error">{alert.message}</Alert>
+      {alert && (alert.status === 500 || alert.status === 409) ? (
+        <Alert className="margin-bottom-3" type="error">
+          {alert.message}
+        </Alert>
       ) : null}
 
       <p className="margin-bottom-3">
         Create new forms for each state by filling out the form below. Please
-        select the year and quarter you wish to create form template for.
+        select the year and quarter you wish to create form template from.
       </p>
       <p>Select the Year</p>
       <Dropdown

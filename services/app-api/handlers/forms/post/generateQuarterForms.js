@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import {
   getFormDescriptions,
+  getFormResultByStateString,
   getQuestionsByYear,
   getStatesList,
 } from "../../shared/sharedFunctions";
@@ -22,6 +23,19 @@ export const main = handler(async (event, context) => {
 
   const specifiedYear = data.year.value;
   const specifiedQuarter = data.quarter.value;
+
+  // Quick check to see if form answers already exist
+  // Use Alabama form 21E as a basic check
+  const stateFormString = `AL-${specifiedYear}-${specifiedQuarter}-21E`;
+  let currentForms = await getFormResultByStateString(stateFormString);
+
+  // if length > 0 send error response
+  if (currentForms.length > 0) {
+    return {
+      status: 409,
+      message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
+    };
+  }
 
   // Pull list of questions
   let allQuestions = await getQuestionsByYear(specifiedYear);
@@ -58,7 +72,7 @@ export const main = handler(async (event, context) => {
           form_id: allFormDescriptions[form].form_id,
           last_modified_by: "seed",
           status_modified_by: "seed",
-          created_by: "seed",
+          created_by: "zzzz",
           validation_percent: "0.03",
           status_id: 2,
           form: allFormDescriptions[form].form,
@@ -117,7 +131,7 @@ export const main = handler(async (event, context) => {
             created_date: new Date().toISOString(),
             rows: allQuestions[question].rows,
             last_modified: new Date().toISOString(),
-            created_by: "seed",
+            created_by: "zzzz",
           },
         };
         try {
