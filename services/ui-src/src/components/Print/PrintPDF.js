@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import { renderToString } from "react-dom/server";
 import { jsPDF } from "jspdf";
@@ -22,81 +22,9 @@ const PrintPDF = ({
   year,
   stateName
 }) => {
-  const handleExport = async (
-    format,
-    fileName,
-    pdfContent = null,
-    pdfContentType = "react-component"
-  ) => {
-    let pdf, pdfToExport;
-    // *** do additional processing depending on content type
-    switch (pdfContentType) {
-      // *** if element is a react component, render it to html string
-      case "react-component":
-        pdfToExport = renderToString(pdfContent);
-        break;
-
-      // *** for content to be extracted from html selectors ...
-      case "html-selector":
-        // * ... temporarily add class to DOM prior to initiating render to pdf
-        // * this will enable overrides from scss
-        //document.querySelector(pdfContent).classList.add("export-to-pdf");
-
-        // * store content to render to pdf
-        pdfToExport = document.querySelector(pdfContent);
-        // * remove temporarily added class from DOM
-        // setTimeout(() => {
-        //   document
-        //     .querySelector(pdfContent)
-        //     //.classList.remove("export-to-pdf");
-        // }, 1000);
-
-        break;
-
-      case "html":
-        pdfToExport = pdfContent;
-        break;
-
-      default:
-        // *** no default behavior is currently specified
-        break;
-    }
-    // setTimeout(() => {// added timeout to avoid svg loading issue
-    // *** initiate pdf render
-    pdf = new jsPDF({
-      unit: "px",
-      format: "letter",
-      userUnit: "px",
-      orientation: "portrait"
-    });
-
-    pdf
-      .html(pdfToExport, {
-        html2canvas: { scale: 0.25 }
-      })
-      .then(() => {
-        // pdf.autoTable({ html: '.usa-table' }) //supposed to help with page breaks
-        //For above to work, you need to run npm install jspdf-autotable
-        // pdf.setFont('helvetica')
-
-        const pageCount = pdf.internal.getNumberOfPages();
-        pdf.setTextColor(0, 0, 0);
-        pdf.setFontSize(8);
-        for (let i = 1; i <= pageCount; i++) {
-          console.log("page count", pageCount, "here", i);
-          pdf.setPage(i);
-          pdf.text(
-            "Page " + String(i) + " of " + String(pageCount),
-            pdf.internal.pageSize.width - 5,
-            pdf.internal.pageSize.height - 5,
-            {
-              align: "right"
-            }
-          );
-        }
-        pdf.save(fileName);
-      });
-    // }, 1000);
+  const handlePrint = async (event, filename) => {
+    event.preventDefault();
+    window.print();
   };
   return (
     <>
@@ -119,19 +47,17 @@ const PrintPDF = ({
       <Button
         className="margin-left-3 action-button"
         primary="true"
-        onClick={async () =>
-          await handleExport(
-            "pdf",
+        onClick={e =>
+          handlePrint(
+            e,
             `${stateName}_${year}_${quarter}_${form}_${new Date()
               .toISOString()
-              .substring(0, 10)}.pdf`,
-            ".testClass",
-            "html-selector"
+              .substring(0, 10)}.pdf`
           )
         }
       >
         Print
-        <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+        <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
       </Button>
 
       <div id="TheDiv" className="tab-container-main padding-x-5 testClass">
@@ -217,3 +143,7 @@ const mapState = state => ({
 });
 
 export default connect(mapState)(PrintPDF);
+
+// HOW TO SOLVE ROUTE PROBLEM
+
+// HOW TO STYLE PRINT VIEW
