@@ -31,11 +31,6 @@
     min-width: 100%;
   }
 
-  .ds-c-choice:checked + label:before {
-    background-color: grey;
-    -webkit-print-color-adjust: exact;
-  }
-
   .ds-c-tabs__panel {
     border: none;
     display: block;

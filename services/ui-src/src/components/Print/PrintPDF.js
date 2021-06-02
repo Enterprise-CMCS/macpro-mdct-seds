@@ -11,7 +11,8 @@ import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 
 import "./PrintPDF.scss";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+
 const PrintPDF = ({
   tabDetails,
   questions,
@@ -30,18 +31,24 @@ const PrintPDF = ({
     <>
       <div row className="form-header upper-form-nav">
         <div className="breadcrumbs">
-          <Link to="/">
+          <NavLink className="breadcrumb" to="/">
             {" "}
             Enrollment Data Home {">"}
             {"   "}
-          </Link>
-          <Link to={`/forms/${stateName}/${year}/${quarter}`}>
+          </NavLink>
+          <NavLink
+            className="breadcrumb"
+            to={`/forms/${stateName}/${year}/${quarter}`}
+          >
             {`${stateName} Q${quarter} ${year} > `}
-          </Link>
-          <Link to={`/forms/${stateName}/${year}/${quarter}/${form}`}>
+          </NavLink>
+          <NavLink
+            className="breadcrumb"
+            to={`/forms/${stateName}/${year}/${quarter}/${form}`}
+          >
             {" "}
             {` Form ${form}`}{" "}
-          </Link>
+          </NavLink>
         </div>
       </div>
       <Button
@@ -145,5 +152,10 @@ const mapState = state => ({
 export default connect(mapState)(PrintPDF);
 
 // HOW TO SOLVE ROUTE PROBLEM
+//  - print page needs to call its own data, form page gets data only for itself
 
 // HOW TO STYLE PRINT VIEW
+
+// FINGER STRINGS:
+// Add in save before navigating away
+// Turn links into navlinks
