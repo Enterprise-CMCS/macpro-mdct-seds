@@ -17,7 +17,6 @@ export const main = handler(async (event, context) => {
 
   const specifiedYear = data.year.value;
   const specifiedQuarter = data.quarter.value;
-  console.log("Specified Year", specifiedQuarter);
 
   // Pull list of questions
   const questionParams = {
@@ -46,10 +45,58 @@ export const main = handler(async (event, context) => {
   const stateResult = await dynamoDb.scan(stateParams);
 
   let allStates = stateResult.Items;
-  // return allStates;
+
+  // Pull list of form descriptions
+  const formDescriptionParams = {
+    TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
+  };
+
+  const formDescription = await dynamoDb.scan(formDescriptionParams);
+  const allFormDescriptions = formDescription.Items;
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
+    // Loop through each form description and create form status record
+    for (const form in allFormDescriptions) {
+      // Setup params for insert
+      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
+
+      const insertFormParams = {
+        TableName:
+          process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+        Item: {
+          state_form: stateFormString,
+          status_date: new Date().toISOString(),
+          year: specifiedYear,
+          state_comments: [{ type: "text_multiline", entry: "" }],
+          form_id: allFormDescriptions[form].form_id,
+          last_modified_by: "seed",
+          status_modified_by: "seed",
+          created_by: "seed",
+          validation_percent: "0.03",
+          status_id: 2,
+          form: allFormDescriptions[form].form,
+          program_code: "All",
+          state_id: allStates[state].state_id,
+          not_applicable: false,
+          created_date: new Date().toISOString(),
+          form_name: allFormDescriptions[form].label,
+          last_modified: new Date().toISOString(),
+          quarter: specifiedQuarter,
+          status: "In Progress",
+        },
+      };
+      try {
+        const result = await dynamoDb.put(insertFormParams);
+        message = JSON.stringify(result);
+      } catch (e) {
+        return {
+          status: 200,
+          message: "A failure occurred while adding new entries",
+        };
+      }
+    }
+
     // Loop through each question
     for (const question in allQuestions) {
       // Get age range array
