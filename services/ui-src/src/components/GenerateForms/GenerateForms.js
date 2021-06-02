@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Alert, Button } from "@trussworks/react-uswds";
 import Dropdown from "react-dropdown";
 import { generateQuarterlyForms } from "../../libs/api";
+import "./GenerateForms.scss";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState();
   const [selectedQuarter, setSelectedQuarter] = useState();
   const [alert, setAlert] = useState();
+  const [loading, setLoading] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const nextYear = new Date().getFullYear() + 1;
@@ -21,7 +23,7 @@ const GenerateForms = () => {
     { label: "Q4", value: 4 }
   ];
 
-  const generateForms = () => {
+  const generateForms = async () => {
     if (!selectedYear || !selectedQuarter) {
       alert("Please select a Year and Quarter");
       return;
@@ -33,12 +35,22 @@ const GenerateForms = () => {
     ) {
       // send year and quarter to lambda which will create the table rows
       const data = { year: selectedYear, quarter: selectedQuarter };
-      const response = generateQuarterlyForms(data);
-      setAlert(response.message);
+      setLoading(true);
+      const response = await generateQuarterlyForms(data);
+      setLoading(false);
+      setAlert(response);
     }
   };
   return (
     <div className="generate-forms-container">
+      {loading ? (
+        <div className="loader">
+          <div className="loader-content">
+            <div className="loader-icon"></div>Generating new forms
+            <br /> Please Wait...
+          </div>
+        </div>
+      ) : null}
       {alert && alert.status === 200 ? (
         <Alert type="success">{alert.message}</Alert>
       ) : null}
