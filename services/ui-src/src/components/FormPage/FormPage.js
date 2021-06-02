@@ -29,9 +29,8 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   const redirectToPDF = async () => {
-    await saveForm().then(() => {
-      history.push(`/print/${state}/${year}/${quarter}/${formName}`);
-    });
+    await saveForm();
+    history.push(`/print/${state}/${year}/${quarter}/${formName}`);
   };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {

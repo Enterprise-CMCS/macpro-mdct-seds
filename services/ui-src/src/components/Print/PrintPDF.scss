@@ -1,5 +1,12 @@
+.form-status {
+  padding-left: 45px;
+}
+
 @media print {
   textarea {
+    display: none !important;
+  }
+  .print-button {
     display: none !important;
   }
   .action-buttons,
@@ -14,19 +21,6 @@
     display: none;
   }
 
-  .print-only,
-  .print-helper {
-    display: block;
-  }
-
-  .print-helper {
-    margin: 1.2rem 0;
-  }
-
-  .screen-only {
-    display: none;
-  }
-
   .content {
     min-width: 100%;
   }
@@ -36,36 +30,16 @@
     display: block;
   }
 
-  .section-content {
-    .ds-c-tabs__panel[aria-hidden="true"] {
-      display: block !important;
-      border-top: 8px solid grey;
-    }
-    .ds-c-tabs__item[aria-selected="false"] {
-      display: none;
-    }
-
-    .ds-c-tabs {
-      display: none;
-    }
-
-    div[hidden] {
-      display: block;
-    }
-  }
-
   .fill-form {
     display: none;
   }
 
-  .question-container {
+  .question-component {
     display: block;
   }
 
-  .ly_header {
-    margin-bottom: 64px;
-  }
-  .question {
-    break-inside: avoid;
+  .grid-with-totals {
+    max-width: 80%;
+    max-height: 10%;
   }
 }

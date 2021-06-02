@@ -3,29 +3,49 @@ import { faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import { renderToString } from "react-dom/server";
 import { jsPDF } from "jspdf";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
+import { getFormData } from "../../store/reducers/singleForm/singleForm";
 
 import "./PrintPDF.scss";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const PrintPDF = ({
   tabDetails,
   questions,
   answers,
   currentTabs,
-  quarter,
-  form,
-  year,
-  stateName
+  getForm,
+  statusId,
+  statusTypes
 }) => {
+  const { state, year, quarter, formName } = useParams();
+
+  // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
+  const formattedStateName = state.toUpperCase();
+  const quarterInt = Number.parseInt(quarter).toString();
+  const form = formName.toUpperCase().replace("-", ".");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getForm(formattedStateName, year, quarterInt, form);
+    };
+    fetchData();
+  }, [getForm, formattedStateName, year, quarterInt, form]);
+
   const handlePrint = async (event, filename) => {
     event.preventDefault();
     window.print();
+  };
+
+  const findStatus = id => {
+    let foundStatus = statusTypes.find(element => element.status_id === id);
+    let textStatus = foundStatus ? foundStatus.status : "N/A";
+    return textStatus;
   };
   return (
     <>
@@ -38,26 +58,27 @@ const PrintPDF = ({
           </NavLink>
           <NavLink
             className="breadcrumb"
-            to={`/forms/${stateName}/${year}/${quarter}`}
+            to={`/forms/${formattedStateName}/${year}/${quarter}`}
           >
-            {`${stateName} Q${quarter} ${year} > `}
+            {`${formattedStateName} Q${quarter} ${year} > `}
           </NavLink>
           <NavLink
             className="breadcrumb"
-            to={`/forms/${stateName}/${year}/${quarter}/${form}`}
+            to={`/forms/${formattedStateName}/${year}/${quarter}/${form}`}
           >
             {" "}
             {` Form ${form}`}{" "}
           </NavLink>
         </div>
       </div>
+      <h2 className="form-status"> {`FORM STATUS: ${findStatus(statusId)}`}</h2>
       <Button
-        className="margin-left-3 action-button"
+        className="margin-left-5 action-button print-button"
         primary="true"
         onClick={e =>
           handlePrint(
             e,
-            `${stateName}_${year}_${quarter}_${form}_${new Date()
+            `${formattedStateName}_${year}_${quarter}_${form}_${new Date()
               .toISOString()
               .substring(0, 10)}.pdf`
           )
@@ -128,12 +149,9 @@ PrintPDF.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  notApplicable: PropTypes.bool.isRequired,
   statusId: PropTypes.number.isRequired,
   form: PropTypes.string.isRequired,
-  stateName: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
-  quarter: PropTypes.number.isRequired
+  year: PropTypes.number.isRequired
 };
 
 const mapState = state => ({
@@ -141,21 +159,17 @@ const mapState = state => ({
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
-  notApplicable: state.currentForm.statusData.not_applicable || false,
   statusId: state.currentForm.statusData.status_id || "",
-  year: state.currentForm.statusData.year,
-  form: state.currentForm.statusData.form,
-  stateName: state.currentForm.statusData.state_id,
-  quarter: state.currentForm.statusData.quarter
+  statusTypes: state.global.status
 });
 
-export default connect(mapState)(PrintPDF);
+const mapDispatch = {
+  getForm: getFormData ?? {}
+};
 
-// HOW TO SOLVE ROUTE PROBLEM
-//  - print page needs to call its own data, form page gets data only for itself
+export default connect(mapState, mapDispatch)(PrintPDF);
 
 // HOW TO STYLE PRINT VIEW
 
 // FINGER STRINGS:
-// Add in save before navigating away
-// Turn links into navlinks
+// Cant confirm save because the form isnt currently editable
