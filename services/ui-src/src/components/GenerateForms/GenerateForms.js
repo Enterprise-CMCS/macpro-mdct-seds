@@ -35,12 +35,12 @@ const GenerateForms = () => {
     }
     if (
       window.confirm(
-        `Are you sure you want to generate forms for ${selectedYear.value} Quarter ${selectedQuarter.value}. This action cannot be undone.`
+        `Are you sure you want to generate forms for Quarter ${selectedQuarter.value} of ${selectedYear.value}. This action cannot be undone.`
       )
     ) {
       // send year and quarter to lambda which will create the table rows
-      const data = { year: selectedYear, quarter: selectedQuarter };
       setLoading(true);
+      const data = { year: selectedYear, quarter: selectedQuarter };
       const response = await generateQuarterlyForms(data);
       setLoading(false);
       setAlert(response);
