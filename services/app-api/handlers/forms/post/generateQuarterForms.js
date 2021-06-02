@@ -1,7 +1,13 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import {
+  getFormDescriptions,
+  getQuestionsByYear,
+  getStatesList,
+} from "../../shared/sharedFunctions";
+
 /**
- * Generates initial form data for all states given a year and quarter
+ * Generates initial form data and statuses for all states given a year and quarter
  */
 
 export const main = handler(async (event, context) => {
@@ -11,7 +17,6 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  let message;
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
@@ -19,40 +24,21 @@ export const main = handler(async (event, context) => {
   const specifiedQuarter = data.quarter.value;
 
   // Pull list of questions
-  const questionParams = {
-    TableName:
-      process.env.FORM_QUESTIONS_TABLE_NAME ??
-      process.env.FormQuestionsTableName,
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ExpressionAttributeValues: {
-      ":specifiedYear": parseInt(specifiedYear),
-    },
-    FilterExpression: "#theYear = :specifiedYear",
-  };
+  let allQuestions = await getQuestionsByYear(specifiedYear);
 
-  const questionResult = await dynamoDb.scan(questionParams);
-
-  let allQuestions = questionResult.Items;
-  // return allQuestions;
+  // If questions not found, return failure message
+  if (allQuestions.length === 0) {
+    return {
+      status: 500,
+      message: `Could not find template for generating forms for ${specifiedYear}`,
+    };
+  }
 
   // Pull list of states
-  const stateParams = {
-    TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
-  };
-
-  const stateResult = await dynamoDb.scan(stateParams);
-
-  let allStates = stateResult.Items;
+  let allStates = await getStatesList();
 
   // Pull list of form descriptions
-  const formDescriptionParams = {
-    TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
-  };
-
-  const formDescription = await dynamoDb.scan(formDescriptionParams);
-  const allFormDescriptions = formDescription.Items;
+  const allFormDescriptions = await getFormDescriptions();
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
@@ -87,11 +73,10 @@ export const main = handler(async (event, context) => {
         },
       };
       try {
-        const result = await dynamoDb.put(insertFormParams);
-        message = JSON.stringify(result);
+        await dynamoDb.put(insertFormParams);
       } catch (e) {
         return {
-          status: 200,
+          status: 500,
           message: "A failure occurred while adding new entries",
         };
       }
@@ -132,15 +117,14 @@ export const main = handler(async (event, context) => {
             created_date: new Date().toISOString(),
             rows: allQuestions[question].rows,
             last_modified: new Date().toISOString(),
-            created_by: "zzzz",
+            created_by: "seed",
           },
         };
         try {
-          const result = await dynamoDb.put(insertParams);
-          message = JSON.stringify(result);
+          await dynamoDb.put(insertParams);
         } catch (e) {
           return {
-            status: 200,
+            status: 500,
             message: "A failure occurred while adding new entries",
           };
         }
@@ -148,9 +132,8 @@ export const main = handler(async (event, context) => {
     }
   }
 
-  // if (result.Count === 0) {
-  //   return { status: 500, message: "Forms successfully created" };
-  // }
-  // Return success message
-  return { status: 200, message };
+  return {
+    status: 200,
+    message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
+  };
 });

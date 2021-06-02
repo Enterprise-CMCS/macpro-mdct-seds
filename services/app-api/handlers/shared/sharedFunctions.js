@@ -78,3 +78,42 @@ export async function getUncertifiedStates() {
   });
   return filteredStateList;
 }
+
+export async function getQuestionsByYear(specifiedYear) {
+  const questionParams = {
+    TableName:
+      process.env.FORM_QUESTIONS_TABLE_NAME ??
+      process.env.FormQuestionsTableName,
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ExpressionAttributeValues: {
+      ":specifiedYear": parseInt(specifiedYear),
+    },
+    FilterExpression: "#theYear = :specifiedYear",
+  };
+
+  const questionResult = await dynamoDb.scan(questionParams);
+
+  return questionResult.Items;
+}
+
+export async function getStatesList() {
+  const stateParams = {
+    TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
+  };
+
+  const stateResult = await dynamoDb.scan(stateParams);
+
+  return stateResult.Items;
+}
+
+export async function getFormDescriptions() {
+  const formDescriptionParams = {
+    TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
+  };
+
+  const formDescription = await dynamoDb.scan(formDescriptionParams);
+
+  return formDescription.Items;
+}
