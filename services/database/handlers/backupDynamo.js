@@ -12,12 +12,16 @@ const backupDynamo = async () => {
   var tableList = [];
   var i = 0;
   while (true) {
-    const response = await ddb.listTables(params).promise();
-    tableList = tableList.concat(response.TableNames);
-    if (response.LastEvaluatedTableName === undefined) {
-      break;
-    } else {
-      params.ExclusiveStartTableName = response.LastEvaluatedTableName;
+    try {
+      const response = await ddb.listTables(params).promise();
+      tableList = tableList.concat(response.TableNames);
+      if (response.LastEvaluatedTableName === undefined) {
+        break;
+      } else {
+        params.ExclusiveStartTableName = response.LastEvaluatedTableName;
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
   for (i = 0; i < tableList.length; i++) {
@@ -28,7 +32,6 @@ const backupDynamo = async () => {
       deleteBackup(tableList[i]);
     }
   }
-  return tableList;
 };
 
 const createBackup = async (tableName) => {
