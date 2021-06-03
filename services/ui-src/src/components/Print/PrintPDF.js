@@ -70,7 +70,7 @@ const PrintPDF = ({
         primary="true"
         onClick={e => handlePrint(e)}
       >
-        Print
+        Print / PDF
         <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
       </Button>
 
