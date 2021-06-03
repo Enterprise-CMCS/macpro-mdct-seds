@@ -10,7 +10,6 @@ import { Auth } from "aws-amplify";
 import { obtainUserByEmail } from "../../libs/api";
 
 import "./TabContainer.scss";
-import { API } from "aws-amplify";
 
 const TabContainer = ({
   tabDetails,
