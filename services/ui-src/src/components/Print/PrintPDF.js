@@ -4,8 +4,6 @@ import { Button } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
-import SummaryTab from "../SummaryTab/SummaryTab";
-import SummaryNotes from "../SummaryNotes/SummaryNotes";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
