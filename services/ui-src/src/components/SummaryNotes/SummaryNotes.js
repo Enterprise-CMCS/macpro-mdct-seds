@@ -6,7 +6,6 @@ import { saveSummaryNotes } from "../../store/actions/statusData";
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail } from "../../libs/api";
 
-
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
   const [userRole, setUserRole] = useState();
@@ -22,13 +21,15 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   // Set the initial state of the summary notes
   useEffect(() => {
     const disableNotes = async () => {
-      const currentUser =  (await Auth.currentSession()).getIdToken();
-      const {payload: {email}} = currentUser;
-      const existingUser = await obtainUserByEmail({email});
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
       const userdata = existingUser["Items"];
       userdata.map(async userInfo => {
         setUserRole(userInfo.role);
-      })      
+      });
     };
     disableNotes();
     setSummaryNotes(currentSummaryNotes);

@@ -9,7 +9,6 @@ import QuestionComponent from "../Question/Question";
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail } from "../../libs/api";
 
-
 import "./TabContainer.scss";
 import { API } from "aws-amplify";
 
@@ -29,13 +28,15 @@ const TabContainer = ({
       let userRole;
       let statusBoolean = false;
 
-      const currentUser =  (await Auth.currentSession()).getIdToken();
-      const {payload: {email}} = currentUser;
-      const existingUser = await obtainUserByEmail({email});
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
       const userdata = existingUser["Items"];
       userdata.map(async userInfo => {
-        userRole = userInfo.role
-      })
+        userRole = userInfo.role;
+      });
       if (
         notApplicable === true ||
         statusId === 4 ||
