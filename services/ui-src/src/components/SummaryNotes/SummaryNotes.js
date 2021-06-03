@@ -37,9 +37,8 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
     statusData.status_id === 5
   ) {
     disabledNotes = true;
-    console.log("disabledNotes", disabledNotes);
   }
-  console.log("DN2", disabledNotes);
+
   return (
     <>
       <label htmlFor="summaryNotesInput">
