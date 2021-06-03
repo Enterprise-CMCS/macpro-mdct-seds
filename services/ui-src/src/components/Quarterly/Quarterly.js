@@ -97,7 +97,7 @@ const Quarterly = () => {
         const formId = getFormSegment(row.form);
         return (
           <Link
-            to={`/forms/${state}/${year}/${quarter}/${formId}/print`}
+            to={`/print/${state}/${year}/${quarter}/${formId}`}
             className="font-heading-2xl padding-left-5"
           >
             <FontAwesomeIcon icon={faFilePdf} />

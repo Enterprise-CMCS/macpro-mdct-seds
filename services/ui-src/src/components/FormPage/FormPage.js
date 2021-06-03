@@ -29,8 +29,13 @@ const FormPage = ({ getForm, statusData }) => {
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
   const redirectToPDF = async () => {
-    await saveForm();
-    history.push(`/print/${state}/${year}/${quarter}/${formName}`);
+    if (
+      window.confirm(
+        "You may have unsaved changes. If unsure, click cancel and save the form before proceeding"
+      )
+    ) {
+      history.push(`/print/${state}/${year}/${quarter}/${formName}`);
+    }
   };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
@@ -94,11 +99,7 @@ const FormPage = ({ getForm, statusData }) => {
           state={formattedStateName}
         />
       </div>
-      <Button
-        className="margin-left-3 action-button"
-        primary="true"
-        onClick={redirectToPDF}
-      >
+      <Button className="action-button" primary="true" onClick={redirectToPDF}>
         Print view / PDF
         <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
       </Button>

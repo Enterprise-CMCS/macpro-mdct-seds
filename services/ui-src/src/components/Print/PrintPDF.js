@@ -3,7 +3,7 @@ import { faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import { renderToString } from "react-dom/server";
 import { jsPDF } from "jspdf";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
 import SummaryTab from "../SummaryTab/SummaryTab";
@@ -14,15 +14,9 @@ import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 
-const PrintPDF = ({
-  tabDetails,
-  questions,
-  answers,
-  currentTabs,
-  getForm,
-  statusId,
-  statusTypes
-}) => {
+const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
+  const [loading, setLoading] = useState(true);
+
   const { state, year, quarter, formName } = useParams();
 
   // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
@@ -33,6 +27,7 @@ const PrintPDF = ({
   useEffect(() => {
     const fetchData = async () => {
       await getForm(formattedStateName, year, quarterInt, form);
+      setLoading(false);
     };
     fetchData();
   }, [getForm, formattedStateName, year, quarterInt, form]);
@@ -42,13 +37,8 @@ const PrintPDF = ({
     window.print();
   };
 
-  const findStatus = id => {
-    let foundStatus = statusTypes.find(element => element.status_id === id);
-    let textStatus = foundStatus ? foundStatus.status : "N/A";
-    return textStatus;
-  };
   return (
-    <>
+    <div className="print-page">
       <div row className="form-header upper-form-nav">
         <div className="breadcrumbs">
           <NavLink className="breadcrumb" to="/">
@@ -71,7 +61,7 @@ const PrintPDF = ({
           </NavLink>
         </div>
       </div>
-      <h2 className="form-status"> {`FORM STATUS: ${findStatus(statusId)}`}</h2>
+
       <Button
         className="margin-left-5 action-button print-button"
         primary="true"
@@ -140,7 +130,16 @@ const PrintPDF = ({
 
         <SummaryTab />
       </div>
-    </>
+
+      {loading ? (
+        <div className="loader">
+          <div className="loader-content">
+            <div className="loader-icon"></div>Generating print view
+            <br /> Please Wait...
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 
@@ -158,9 +157,7 @@ const mapState = state => ({
   currentTabs: state.currentForm.tabs,
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
-  answers: state.currentForm.answers,
-  statusId: state.currentForm.statusData.status_id || "",
-  statusTypes: state.global.status
+  answers: state.currentForm.answers
 });
 
 const mapDispatch = {

@@ -2,44 +2,42 @@
   padding-left: 45px;
 }
 
-@media print {
-  textarea {
-    display: none !important;
+.loader {
+  background: rgba(255, 255, 255, 0.85);
+  bottom: 0;
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+.loader-content {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 4px;
+  left: calc(50% - 120px);
+  padding: 1.2rem;
+  position: absolute;
+  text-align: center;
+  top: calc(50% - 80px);
+}
+.loader-icon {
+  animation: spin 2s linear infinite;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #3366cc;
+  height: 40px;
+  margin-left: calc(50% - 16px);
+  width: 40px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  .print-button {
-    display: none !important;
-  }
-  .action-buttons,
-  .ds-c-alert,
-  .footer,
-  .header,
-  .nav-buttons,
-  .print-all-btn,
-  .print-directions,
-  .screen-only,
-  .sidebar {
-    display: none;
-  }
-
-  .content {
-    min-width: 100%;
-  }
-
-  .ds-c-tabs__panel {
-    border: none;
-    display: block;
-  }
-
-  .fill-form {
-    display: none;
-  }
-
-  .question-component {
-    display: block;
-  }
-
-  .grid-with-totals {
-    max-width: 80%;
-    max-height: 10%;
+  100% {
+    transform: rotate(360deg);
   }
 }

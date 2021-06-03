@@ -99,7 +99,7 @@ const TabContainer = ({
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
-                    disabled={disabledStatus}
+                    disabled={false}
                   />
                 );
               }
