@@ -1,24 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStateForms } from "../../libs/api.js";
+import { getStateForms, obtainUserByEmail } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
+import { Auth } from "aws-amplify";
+import { onError } from "../../libs/errorLib";
+import Unauthorized from "../Unauthorized/Unauthorized";
 
 const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
-  const [stateFormsList, setStateFormsList] = React.useState();
+  const [stateFormsList, setStateFormsList] = useState();
+  const [hasAccess, setHasAccess] = useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getStateForms(state, year, quarter);
-      setStateFormsList(data);
+      // Get user information
+      let currentUserInfo;
+
+      try {
+        // Get user information
+        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+        currentUserInfo = await obtainUserByEmail({
+          email: AuthUserInfo.payload.email
+        });
+      } catch (e) {
+        onError(e);
+      }
+
+      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
+
+      if (userStates.includes(state)) {
+        const data = await getStateForms(state, year, quarter);
+        console.log("zzzData", data);
+        setStateFormsList(data);
+        setHasAccess(true);
+      } else {
+        setHasAccess(false);
+      }
     }
 
     fetchData();
@@ -115,29 +140,36 @@ const Quarterly = () => {
       </div>
       <h1 className="page-header">{title}</h1>
       <div className="quarterly-report-listing">
-        <Card>
-          {stateFormsList ? (
-            <DataTable
-              className="grid-display-table react-transition fade-in"
-              sortIcon={
-                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
-              }
-              highlightOnHover
-              title={
-                <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                  Start, complete, and print this quarter's CHIP Enrollment Data
-                  Reports.
-                </p>
-              }
-              selectableRows={false}
-              responsive={true}
-              columns={columns}
-              data={stateFormsList}
-            />
-          ) : (
-            <Preloader />
-          )}
-        </Card>
+        {hasAccess ? (
+          <Card>
+            {stateFormsList ? (
+              <DataTable
+                className="grid-display-table react-transition fade-in"
+                sortIcon={
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    className="margin-left-2"
+                  />
+                }
+                highlightOnHover
+                title={
+                  <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                    Start, complete, and print this quarter's CHIP Enrollment
+                    Data Reports.
+                  </p>
+                }
+                selectableRows={false}
+                responsive={true}
+                columns={columns}
+                data={stateFormsList}
+              />
+            ) : (
+              <Preloader />
+            )}
+          </Card>
+        ) : (
+          <Unauthorized />
+        )}
       </div>
     </div>
   );

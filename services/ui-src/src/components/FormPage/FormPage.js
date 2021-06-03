@@ -12,11 +12,16 @@ import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
+import { Auth } from "aws-amplify";
+import { getStateForms, obtainUserByEmail } from "../../libs/api";
+import { onError } from "../../libs/errorLib";
+import Unauthorized from "../Unauthorized/Unauthorized";
 
 const FormPage = ({ getForm, statusData }) => {
   const [saveAlert, setSaveAlert] = useState(false);
   const { last_modified, save_error } = statusData;
   const [redirectToPDF, setRedirectToPDF] = useState(false);
+  const [hasAccess, setHasAccess] = useState();
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -32,7 +37,28 @@ const FormPage = ({ getForm, statusData }) => {
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
-      await getForm(formattedStateName, year, quarterInt, formattedFormName);
+      // Get user information
+      let currentUserInfo;
+
+      try {
+        // Get user information
+        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+        currentUserInfo = await obtainUserByEmail({
+          email: AuthUserInfo.payload.email
+        });
+      } catch (e) {
+        onError(e);
+      }
+
+      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
+
+      if (userStates.includes(state)) {
+        const data = await getStateForms(state, year, quarter);
+        await getForm(formattedStateName, year, quarterInt, formattedFormName);
+        setHasAccess(true);
+      } else {
+        setHasAccess(false);
+      }
     };
     fetchData();
   }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
@@ -83,47 +109,53 @@ const FormPage = ({ getForm, statusData }) => {
         </div>
       ) : null}
 
-      <div className="margin-x-5 margin-bottom-3">
-        <FormHeader
-          quarter={quarterInt}
-          form={formattedFormName}
-          year={year}
-          state={formattedStateName}
-        />
-      </div>
-      <Button
-        className="margin-left-3 action-button"
-        primary="true"
-        onClick={redirectToPDFClicked}
-      >
-        PDF
-        <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-      </Button>
-      <NotApplicable />
-      <div className="tab-container margin-x-5 margin-y-3">
-        <TabContainer quarter={quarter} />
-      </div>
+      {hasAccess ? (
+        <>
+          <div className="margin-x-5 margin-bottom-3">
+            <FormHeader
+              quarter={quarterInt}
+              form={formattedFormName}
+              year={year}
+              state={formattedStateName}
+            />
+          </div>
+          <Button
+            className="margin-left-3 action-button"
+            primary="true"
+            onClick={redirectToPDFClicked}
+          >
+            PDF
+            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+          </Button>
+          <NotApplicable />
+          <div className="tab-container margin-x-5 margin-y-3">
+            <TabContainer quarter={quarter} />
+          </div>
 
-      <div className="margin-top-2" data-testid="form-footer">
-        <FormFooter
-          state={formattedStateName}
-          year={year}
-          quarter={quarterInt}
-          lastModified={last_modified}
-        />
-      </div>
-      {redirectToPDF ? (
-        <Redirect
-          to={{
-            pathname: "/printPDF",
-            state: {
-              form: formattedFormName,
-              year: year,
-              stateName: formattedStateName
-            }
-          }}
-        />
-      ) : null}
+          <div className="margin-top-2" data-testid="form-footer">
+            <FormFooter
+              state={formattedStateName}
+              year={year}
+              quarter={quarterInt}
+              lastModified={last_modified}
+            />
+          </div>
+          {redirectToPDF ? (
+            <Redirect
+              to={{
+                pathname: "/printPDF",
+                state: {
+                  form: formattedFormName,
+                  year: year,
+                  stateName: formattedStateName
+                }
+              }}
+            />
+          ) : null}
+        </>
+      ) : (
+        <Unauthorized />
+      )}
     </div>
   );
 };
