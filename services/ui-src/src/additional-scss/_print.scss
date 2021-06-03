@@ -12,6 +12,7 @@
   }
 
   .usa-banner,
+  .footer,
   .navigation {
     display: none;
   }
@@ -40,9 +41,10 @@
   .app-title {
     display: block;
     font-size: 1.6rem;
-    margin-left: 0;
-    padding-left: 0;
+    margin: 0 0 0 0;
+    padding: 0 3.5rem 0 0;
   }
+
   .print-only {
     display: block;
   }

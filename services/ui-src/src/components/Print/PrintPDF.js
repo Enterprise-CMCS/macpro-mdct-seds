@@ -5,14 +5,21 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
 import SummaryTab from "../SummaryTab/SummaryTab";
+import SummaryNotes from "../SummaryNotes/SummaryNotes";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
-
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 
-const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
+const PrintPDF = ({
+  tabDetails,
+  questions,
+  answers,
+  currentTabs,
+  getForm,
+  statusData
+}) => {
   const [loading, setLoading] = useState(true);
 
   const { state, year, quarter, formName } = useParams();
@@ -69,6 +76,8 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
         <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
       </Button>
 
+      <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
+
       <div id="TheDiv" className="tab-container-main padding-x-5 testClass">
         {currentTabs.map((tab, idx) => {
           // Filter out just the answer objects that belong in this tab
@@ -118,8 +127,20 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
             </>
           );
         })}
-
-        <SummaryTab />
+        <div className="summary-notes">
+          <strong className="summary-label">
+            Add any notes here to accompany the form submission:
+          </strong>
+          <div className="summary-text">
+            {statusData.state_comments &&
+            statusData.state_comments[0].entry.length ? (
+              <div>{`${statusData.state_comments[0].entry}`}</div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
       </div>
 
       {loading ? (
@@ -139,14 +160,16 @@ PrintPDF.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  getForm: PropTypes.func.isRequired
+  getForm: PropTypes.func.isRequired,
+  statusData: PropTypes.object.isRequired
 };
 
 const mapState = state => ({
   currentTabs: state.currentForm.tabs,
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
-  answers: state.currentForm.answers
+  answers: state.currentForm.answers,
+  statusData: state.currentForm.statusData
 });
 
 const mapDispatch = {

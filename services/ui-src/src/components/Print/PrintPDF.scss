@@ -2,6 +2,24 @@
   padding-left: 45px;
 }
 
+.form-name {
+  text-align: center;
+}
+
+.summary-notes {
+  padding: 3rem 0;
+  display: block;
+  border-top: 1px solid black;
+}
+
+.summary-text {
+  border: 1px solid black;
+  width: 100%;
+  min-height: 6rem;
+  margin: 1rem auto 0 auto;
+  padding: 1.2rem;
+}
+
 .loader {
   background: rgba(255, 255, 255, 0.85);
   bottom: 0;
