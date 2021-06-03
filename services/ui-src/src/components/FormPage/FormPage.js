@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams, Redirect, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
@@ -12,7 +12,6 @@ import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
-import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const FormPage = ({ getForm, statusData }) => {
   let history = useHistory();

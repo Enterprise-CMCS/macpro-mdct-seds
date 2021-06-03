@@ -1,8 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
+import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
-import { renderToString } from "react-dom/server";
-import { jsPDF } from "jspdf";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
@@ -32,7 +30,7 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
     fetchData();
   }, [getForm, formattedStateName, year, quarterInt, form]);
 
-  const handlePrint = async (event, filename) => {
+  const handlePrint = async event => {
     event.preventDefault();
     window.print();
   };
@@ -65,14 +63,7 @@ const PrintPDF = ({ tabDetails, questions, answers, currentTabs, getForm }) => {
       <Button
         className="margin-left-5 action-button print-button"
         primary="true"
-        onClick={e =>
-          handlePrint(
-            e,
-            `${formattedStateName}_${year}_${quarter}_${form}_${new Date()
-              .toISOString()
-              .substring(0, 10)}.pdf`
-          )
-        }
+        onClick={e => handlePrint(e)}
       >
         Print
         <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
@@ -148,9 +139,7 @@ PrintPDF.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  statusId: PropTypes.number.isRequired,
-  form: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired
+  getForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
@@ -165,8 +154,3 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(PrintPDF);
-
-// HOW TO STYLE PRINT VIEW
-
-// FINGER STRINGS:
-// Cant confirm save because the form isnt currently editable
