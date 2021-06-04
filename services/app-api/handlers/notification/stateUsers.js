@@ -14,6 +14,8 @@ var ses = new AWS.SES({ region: "us-east-1" });
 
 export const main = handler(async (event, context) => {
   const email = await stateUsersTemplate();
+  console.log("emailTemplate: ", email);
+  
   ses.sendEmail(email, function (err, data) {
     if (err) {
       console.log(err);
@@ -53,6 +55,8 @@ async function stateUsersTemplate() {
   const stateUsersToEmail = await certifiedStateUsersEmail();
   const fromEmail = "mdct@cms.hhs.gov";
   let todayDate = new Date().toISOString().split("T")[0];
+
+  console.log("stateUsersToEmail: ", stateUsersToEmail)
 
   const recipient = {
     TO: stateUsersToEmail,
