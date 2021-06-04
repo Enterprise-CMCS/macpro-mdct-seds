@@ -26,7 +26,10 @@ const QuestionComponent = ({
 
   // Turn the age range into a grammatically correct variable in the label
   const ageVariable = questionVariables[rangeID];
-  const labelWithAgeVariable = label.replace("&&&VARIABLE&&&", ageVariable);
+  const labelWithAgeVariable = label.replace(
+    "&&&VARIABLE&&&",
+    ageVariable ?? ""
+  );
 
   // The array of rows is unordered by default. GridWithTotals requires it being ordered
   const sortedRows = sortQuestionColumns(rows);
