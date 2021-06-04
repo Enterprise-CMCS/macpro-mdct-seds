@@ -72,7 +72,7 @@ describe("Quarterly tests", () => {
   });
   test("Check that the status of each form is correct", () => {
     expect(wrapper.find("#row-0").find("button").at(0).text()).toMatch(
-      "Not Started"
+      "In Progress"
     );
     expect(wrapper.find("#row-1").find("button").at(0).text()).toMatch(
       "In Progress"
