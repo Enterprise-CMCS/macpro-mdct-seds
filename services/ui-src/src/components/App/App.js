@@ -23,18 +23,15 @@ function App() {
       let user = await Auth.currentAuthenticatedUser();
       // *** make sure attributes exist and are in standard format
       user.attributes = user.signInUserSession.idToken.payload;
-
       user.attributes["app-role"] = await determineRole(
         user.attributes["custom:ismemberof"]
       );
-
       await ascertainUserPresence(user);
       setUser(user);
       setIsAuthenticated(true);
       setIsAuthorized(true);
       setIsAuthenticating(false);
     } catch (error) {
-      console.log("auth user error", error);
       setIsAuthenticating(false);
     }
   }

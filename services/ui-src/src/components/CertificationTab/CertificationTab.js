@@ -38,8 +38,17 @@ const CertificationTab = ({
   ] = useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
-      const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      const userRole = data.role;
+      let userRole;
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
+      const userdata = existingUser["Items"];
+      userdata.map(async userInfo => {
+        userRole = userInfo.role;
+      });
+
       if (userRole === "admin" || userRole === "business") {
         setViewProvisionalAndFinalCertify(false);
       }
