@@ -5,6 +5,8 @@ let date = {
   quarter: new Date().getMonth(),
 };
 
+console.log("date: ", date);
+
 export async function getUsersEmailByRole(role) {
   const UsersObj = [];
   const params = {
