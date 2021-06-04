@@ -54,6 +54,9 @@ export async function getUncertifiedStates() {
   };
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
+
+  console.log("uncretified forms", result);
+  
   if (result.Count === 0) {
     return [
       {
