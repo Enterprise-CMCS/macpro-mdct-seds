@@ -17,7 +17,6 @@ export const main = handler(async (event, context) => {
     return `Please enter a username`;
   }
 
-  console.log("zzzData", data);
   // Stringify body contents to match api type
   const body = JSON.stringify({
     username: data.username,

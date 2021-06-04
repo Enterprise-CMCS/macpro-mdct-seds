@@ -13,8 +13,8 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
-  const [stateFormsList, setStateFormsList] = useState();
-  const [hasAccess, setHasAccess] = useState();
+  const [stateFormsList, setStateFormsList] = React.useState();
+  const [hasAccess, setHasAccess] = React.useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
@@ -38,7 +38,6 @@ const Quarterly = () => {
 
       if (userStates.includes(state)) {
         const data = await getStateForms(state, year, quarter);
-        console.log("zzzData", data);
         setStateFormsList(data);
         setHasAccess(true);
       } else {
