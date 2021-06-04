@@ -43,4 +43,10 @@ describe("Test FormFooter.js - Mount", () => {
   test("Check for last modified button", () => {
     expect(wrapper.find({ "data-testid": "lastModified" }).length).toBe(2);
   });
+
+  test("Check for correct time and date", () => {
+    expect(wrapper.find(`[data-testid="lastModified"]`).at(0).text()).toBe(
+      " Last saved: 04-14-2021 at 8:46:35 am EST "
+    );
+  });
 });

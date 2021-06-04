@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -87,8 +88,10 @@ const Quarterly = () => {
 
     {
       name: "Last Updated",
-      selector: "last_modified",
-      sortable: true
+      sortable: true,
+      selector: function setDate(row) {
+        return `${dateFormatter(row.last_modified)}`;
+      }
     },
     {
       name: "Print",
