@@ -116,6 +116,28 @@ export function listUsers() {
   const opts = requestOptions();
   return API.get("amendments", `/users`, opts);
 }
+```
+
+### Adding New Forms (quarterly)
+1. If necessary, create a new form template, for the year, in ROOT/src/database/initial_data_load/
+   1. Example: `form_questions_2022.json`
+2. Add the new form to seed >form-questions->sources in ROOT/services/data-deployment/serverless.yml
+   1. Example: 
+     ``` form-questions:
+      table: ${self:custom.stage}-form-questions
+      sources:
+      [
+      ../../src/database/initial_data_load/form_questions_2022.json,
+      ../../src/database/initial_data_load/form_questions_2021.json,
+      ../../src/database/initial_data_load/form_questions_2020.json,
+      ../../src/database/initial_data_load/form_questions_2019.json,
+      ]
+   ```
+   
+3. Log in to the site as an Administrator
+4. Select `Generate Quarterly Forms`
+5. Select the Year and Quarter you wish to generate forms for
+6. Select Generate forms button
 
 ### Running the nightwatch test suite
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import moment from "moment-timezone";
 
 const sortQuestionColumns = columnArray => {
   let sortedColumns = columnArray.map(singleRow =>
@@ -13,27 +14,33 @@ const sortQuestionColumns = columnArray => {
 const dateFormatter = dateString => {
   let returnString = "Date not supplied";
 
-  if (dateString !== "" && dateString !== null && dateString !== undefined) {
-    // datestring will be saved as ISO string, ie: 2011-10-05T14:48:00.000Z
-    const splitDate = dateString.split("T");
-    const date = splitDate[0].split("-");
-    const time = splitDate[1].split(":");
-    const minutes = time[1];
-    const seconds = time[2].slice(0, 2);
+  if (dateString) {
+    // datestring will be saved as ISO string, ie: 2021-10-05T14:48:00.000Z
+    try {
+      let estDate = moment.tz(dateString, "America/New_York").format();
 
-    let amOrPm;
-    let parsedHour = parseInt(time[0]);
-    let hour;
+      const splitDate = estDate.split("T");
+      const date = splitDate[0].split("-");
+      const time = splitDate[1].split(":");
+      const minutes = time[1];
+      const seconds = time[2].slice(0, 2);
 
-    if (parsedHour > 12) {
-      amOrPm = "pm";
-      hour = parsedHour - 12;
-    } else {
-      amOrPm = "am";
-      hour = parsedHour;
+      let amOrPm;
+      let parsedHour = parseInt(time[0]);
+      let hour;
+
+      if (parsedHour > 12) {
+        amOrPm = "pm";
+        hour = parsedHour - 12;
+      } else {
+        amOrPm = "am";
+        hour = parsedHour;
+      }
+
+      returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm} EST`;
+    } catch (error) {
+      returnString = `${dateString} GMT`;
     }
-
-    returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm}`;
   }
   return returnString;
 };

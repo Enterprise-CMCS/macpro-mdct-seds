@@ -6,9 +6,10 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
+import { Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../libs/api";
 
 import "./TabContainer.scss";
-import { API } from "aws-amplify";
 
 const TabContainer = ({
   tabDetails,
@@ -23,9 +24,18 @@ const TabContainer = ({
 
   useEffect(() => {
     const establishStatus = async () => {
-      const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      const userRole = data.role;
+      let userRole;
       let statusBoolean = false;
+
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
+      const userdata = existingUser["Items"];
+      userdata.map(async userInfo => {
+        userRole = userInfo.role;
+      });
       if (
         notApplicable === true ||
         statusId === 4 ||

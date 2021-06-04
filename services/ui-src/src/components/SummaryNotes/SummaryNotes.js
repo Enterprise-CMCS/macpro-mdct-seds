@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
 import { saveSummaryNotes } from "../../store/actions/statusData";
-import { API } from "aws-amplify";
+import { Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../libs/api";
 
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
@@ -20,8 +21,15 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   // Set the initial state of the summary notes
   useEffect(() => {
     const disableNotes = async () => {
-      const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      setUserRole(data.role);
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
+      const userdata = existingUser["Items"];
+      userdata.map(async userInfo => {
+        setUserRole(userInfo.role);
+      });
     };
     disableNotes();
     setSummaryNotes(currentSummaryNotes);
@@ -37,9 +45,8 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
     statusData.status_id === 5
   ) {
     disabledNotes = true;
-    console.log("disabledNotes", disabledNotes);
   }
-  console.log("DN2", disabledNotes);
+
   return (
     <>
       <label htmlFor="summaryNotesInput">

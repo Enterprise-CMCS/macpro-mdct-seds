@@ -26,6 +26,7 @@ function App() {
       user.attributes["app-role"] = determineRole(
         user.attributes["custom:ismemberof"]
       );
+
       await ascertainUserPresence(user);
       setUser(user);
       setIsAuthenticated(true);

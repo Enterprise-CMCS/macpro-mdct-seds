@@ -19,11 +19,6 @@ describe("Test StatusButton.js", () => {
     expect(getByTestId("StatusButton")).toBeVisible();
   });
 
-  test("Check the Not Started status renders", () => {
-    const { getByTestId } = render(<StatusButton type="notstarted" />);
-    expect(getByTestId("StatusButton")).toBeVisible();
-  });
-
   test("Check the Provisional status renders", () => {
     const { getByTestId } = render(<StatusButton type="provisional" />);
     expect(getByTestId("StatusButton")).toBeVisible();

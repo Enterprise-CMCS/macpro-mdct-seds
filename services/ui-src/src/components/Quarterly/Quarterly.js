@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,7 @@ import Preloader from "../Preloader/Preloader";
 import { Auth } from "aws-amplify";
 import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -111,8 +112,10 @@ const Quarterly = () => {
 
     {
       name: "Last Updated",
-      selector: "last_modified",
-      sortable: true
+      sortable: true,
+      selector: function setDate(row) {
+        return `${dateFormatter(row.last_modified)}`;
+      }
     },
     {
       name: "Print",
@@ -121,7 +124,7 @@ const Quarterly = () => {
         const formId = getFormSegment(row.form);
         return (
           <Link
-            to={`/forms/${state}/${year}/${quarter}/${formId}/print`}
+            to={`/print/${state}/${year}/${quarter}/${formId}`}
             className="font-heading-2xl padding-left-5"
           >
             <FontAwesomeIcon icon={faFilePdf} />

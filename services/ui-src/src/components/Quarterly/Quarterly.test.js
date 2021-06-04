@@ -71,7 +71,7 @@ describe("Quarterly tests", () => {
 
   test("Check that the status of each form is correct", () => {
     expect(wrapper.find("#row-0").find("button").at(0).text()).toMatch(
-      "Not Started"
+      "In Progress"
     );
     expect(wrapper.find("#row-1").find("button").at(0).text()).toMatch(
       "In Progress"
@@ -89,19 +89,19 @@ describe("Quarterly tests", () => {
 
   test("Check that the status dates are correct", () => {
     expect(wrapper.find("#row-0").find("div").at(6).text()).toMatch(
-      "04-08-2021"
+      "04-07-2021 at 8:00:00 pm EST"
     );
     expect(wrapper.find("#row-1").find("div").at(6).text()).toMatch(
-      "04-07-2021"
+      "04-06-2021 at 8:00:00 pm EST"
     );
     expect(wrapper.find("#row-2").find("div").at(6).text()).toMatch(
-      "04-06-2021"
+      "04-05-2021 at 8:00:00 pm EST"
     );
     expect(wrapper.find("#row-3").find("div").at(6).text()).toMatch(
-      "04-05-2021"
+      "04-04-2021 at 8:00:00 pm EST"
     );
     expect(wrapper.find("#row-4").find("div").at(6).text()).toMatch(
-      "04-04-2021"
+      "04-03-2021 at 8:00:00 pm EST"
     );
   });
 });

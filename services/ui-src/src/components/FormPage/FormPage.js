@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
@@ -18,9 +18,10 @@ import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
 const FormPage = ({ getForm, statusData }) => {
+  let history = useHistory();
+
   const [saveAlert, setSaveAlert] = useState(false);
   const { last_modified, save_error } = statusData;
-  const [redirectToPDF, setRedirectToPDF] = useState(false);
   const [hasAccess, setHasAccess] = useState();
 
   // Extract state, year, quarter and formName from URL segments
@@ -31,8 +32,14 @@ const FormPage = ({ getForm, statusData }) => {
   const quarterInt = Number.parseInt(quarter).toString();
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
-  const redirectToPDFClicked = () => {
-    setRedirectToPDF(true);
+  const redirectToPDF = async () => {
+    if (
+      window.confirm(
+        "You may have unsaved changes. If unsure, click cancel and save the form before proceeding"
+      )
+    ) {
+      history.push(`/print/${state}/${year}/${quarter}/${formName}`);
+    }
   };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
@@ -120,11 +127,11 @@ const FormPage = ({ getForm, statusData }) => {
             />
           </div>
           <Button
-            className="margin-left-3 action-button"
+            className="action-button"
             primary="true"
-            onClick={redirectToPDFClicked}
+            onClick={redirectToPDF}
           >
-            PDF
+            Print view / PDF
             <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
           </Button>
           <NotApplicable />
@@ -140,18 +147,6 @@ const FormPage = ({ getForm, statusData }) => {
               lastModified={last_modified}
             />
           </div>
-          {redirectToPDF ? (
-            <Redirect
-              to={{
-                pathname: "/printPDF",
-                state: {
-                  form: formattedFormName,
-                  year: year,
-                  stateName: formattedStateName
-                }
-              }}
-            />
-          ) : null}
         </>
       ) : (
         <Unauthorized />
