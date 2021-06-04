@@ -1,5 +1,5 @@
 import { createUser, obtainUserByEmail, updateUser } from "../libs/api";
-import { API } from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 export async function ascertainUserPresence(user) {
   const existingUser = await obtainUserByEmail({
@@ -26,20 +26,27 @@ export async function ascertainUserPresence(user) {
     });
   }
 }
-const roleFromCognito = async () => {
-  const { data } = await API.post("mdct-seds", "/users/get/username", {});
-  return data.role;
-
-  
+const checkRoleFromStore = async () => {
+  let userRole;
+  const currentUser = (await Auth.currentSession()).getIdToken();
+  const {
+    payload: { email }
+  } = currentUser;
+  const existingUser = await obtainUserByEmail({ email });
+  const userdata = existingUser["Items"];
+  userdata.map(async userInfo => {
+    userRole = userInfo.role;
+  });
+  return userRole;
 };
 
 export const determineRole = async specRole => {
-  const tempRole = await roleFromCognito();
+  const userStoreRole = await checkRoleFromStore();
   const roleArray = ["admin", "business", "state"];
   let role;
 
-  if (tempRole && roleArray.includes(tempRole)) {
-    switch (tempRole) {
+  if (userStoreRole && roleArray.includes(userStoreRole)) {
+    switch (userStoreRole) {
       case "state":
         role = "state";
         break;
