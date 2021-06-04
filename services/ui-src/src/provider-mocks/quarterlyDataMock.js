@@ -23,7 +23,7 @@ const quarterlyDataMock = [
     last_modified: "04-08-2021",
     quarter: 1,
     status_id: 1,
-    status: "Not Started"
+    status: "In Progress"
   },
   {
     status_modified_by: "seed",

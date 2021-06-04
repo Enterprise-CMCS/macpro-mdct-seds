@@ -374,6 +374,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  generateQuarterForms:
+    handler: handlers/forms/post/generateQuarterForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: generate-forms
+          method: post
+          cors: true
+          authorizer: aws_iam
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
