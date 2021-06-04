@@ -62,7 +62,7 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/register-state">
         <StateSelector />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/PrintPDF">
+      <AuthenticatedRoute exact path="/print/:state/:year/:quarter/:formName">
         <PrintPDF />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
