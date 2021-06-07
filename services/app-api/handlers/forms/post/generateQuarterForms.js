@@ -153,8 +153,9 @@ export const main = handler(async (event, context) => {
           process.env.FORM_ANSWERS_TABLE_NAME
         );
         console.log("FormAnswersTableName", process.env.FormAnswersTableName);
+
         try {
-          await dynamoDb.put(insertParams);
+          // await dynamoDb.put(insertParams);
         } catch (e) {
           throw e;
           // return {
