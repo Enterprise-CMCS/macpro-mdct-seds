@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
@@ -20,9 +20,9 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 const FormPage = ({ getForm, statusData }) => {
   let history = useHistory();
 
-  const [saveAlert, setSaveAlert] = useState(false);
+  const [saveAlert, setSaveAlert] = React.useState(false);
+  const [hasAccess, setHasAccess] = React.useState("");
   const { last_modified, save_error } = statusData;
-  const [hasAccess, setHasAccess] = useState("");
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
