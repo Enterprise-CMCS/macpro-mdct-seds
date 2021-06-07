@@ -15,15 +15,15 @@ var ses = new AWS.SES({ region: "us-east-1" });
 export const main = handler(async (event, context) => {
   const email = await stateUsersTemplate();
   console.log("emailTemplate: ", email);
-  // ses.sendEmail(email, function (err, data) {
-  //   if (err) {
-  //     console.log(err);
-  //     context.fail(err);
-  //   } else {
-  //     console.log(data);
-  //     context.succeed(event);
-  //   }
-  // });
+  ses.sendEmail(email, function (err, data) {
+    if (err) {
+      console.log(err);
+      context.fail(err);
+    } else {
+      console.log(data);
+      context.succeed(event);
+    }
+  });
   return {
     status: "success",
     message: "quartly Businness owners email sent",
