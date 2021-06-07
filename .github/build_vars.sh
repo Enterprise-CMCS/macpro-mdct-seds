@@ -6,6 +6,7 @@ var_list=(
   'AWS_DEFAULT_REGION'
   'OKTA_METADATA_URL'
   'STAGE_PREFIX'
+  'SEED_DATABASE'
 )
 
 set_value() {
