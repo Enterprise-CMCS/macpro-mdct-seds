@@ -9,10 +9,8 @@ import QuestionComponent from "../Question/Question";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../libs/api";
-import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const PrintPDF = ({
   tabDetails,
@@ -35,17 +33,7 @@ const PrintPDF = ({
   useEffect(() => {
     const fetchData = async () => {
       // Get user information
-      let currentUserInfo;
-
-      try {
-        // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
-      } catch (e) {
-        onError(e);
-      }
+      const currentUserInfo = await getUserInfo();
 
       let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
 

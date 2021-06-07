@@ -12,10 +12,8 @@ import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
-import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../libs/api";
-import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormPage = ({ getForm, statusData }) => {
   let history = useHistory();
@@ -45,17 +43,7 @@ const FormPage = ({ getForm, statusData }) => {
   useEffect(() => {
     const fetchData = async () => {
       // Get user information
-      let currentUserInfo;
-
-      try {
-        // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
-      } catch (e) {
-        onError(e);
-      }
+      const currentUserInfo = await getUserInfo();
 
       let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
 

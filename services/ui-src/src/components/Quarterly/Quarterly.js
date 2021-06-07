@@ -3,13 +3,12 @@ import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStateForms, obtainUserByEmail } from "../../libs/api.js";
+import { getStateForms } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
-import { Auth } from "aws-amplify";
-import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -23,17 +22,7 @@ const Quarterly = () => {
   useEffect(() => {
     async function fetchData() {
       // Get user information
-      let currentUserInfo;
-
-      try {
-        // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
-      } catch (e) {
-        onError(e);
-      }
+      const currentUserInfo = await getUserInfo();
 
       let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
 

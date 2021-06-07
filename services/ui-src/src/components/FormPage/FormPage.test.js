@@ -4,7 +4,6 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import FormPage from "./FormPage";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import FormHeader from "../FormHeader/FormHeader";
-import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
 
 // The props this component requires in order to render
 const defaultProps = {
