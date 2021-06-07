@@ -51,10 +51,9 @@ export async function getUncertifiedStates() {
       // ":year": date.year,
       // ":quarter": date.quarter,
     },
-    FilterExpression:
-    "#Unceritifiedstatus = :status",
+    FilterExpression: "#Unceritifiedstatus = :status",
 
-      // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
@@ -99,7 +98,15 @@ export async function getQuestionsByYear(specifiedYear) {
     FilterExpression: "#theYear = :specifiedYear",
   };
 
-  const questionResult = await dynamoDb.scan(questionParams);
+  let questionResult;
+
+  try {
+    questionResult = await dynamoDb.scan(questionParams);
+    console.log("getQuestionsByYear result", questionResult);
+  } catch (e) {
+    console.log("getQuestionsByYear failed");
+    throw e;
+  }
 
   return questionResult.Items;
 }
@@ -108,8 +115,17 @@ export async function getStatesList() {
   const stateParams = {
     TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
   };
+  console.log("process.env.StatesTableName", process.env.StatesTableName);
+  console.log("process.env.STATES_TABLE_NAME", process.env.STATES_TABLE_NAME);
+  let stateResult;
 
-  const stateResult = await dynamoDb.scan(stateParams);
+  try {
+    stateResult = await dynamoDb.scan(stateParams);
+    console.log("getStatesList", stateResult);
+  } catch (e) {
+    console.log("getStatesList failed");
+    throw e;
+  }
 
   return stateResult.Items;
 }
@@ -118,8 +134,17 @@ export async function getFormDescriptions() {
   const formDescriptionParams = {
     TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
   };
+  console.log("process.env.FORMS_TABLE_NAME", process.env.FORMS_TABLE_NAME);
+  console.log("process.env.FormsTableName", process.env.FormsTableName);
 
-  const formDescription = await dynamoDb.scan(formDescriptionParams);
+  let formDescription;
+  try {
+    formDescription = await dynamoDb.scan(formDescriptionParams);
+    console.log("getFormDescriptions", getFormDescriptions);
+  } catch (e) {
+    console.log("getFormDescription failed");
+    throw e;
+  }
 
   return formDescription.Items;
 }
