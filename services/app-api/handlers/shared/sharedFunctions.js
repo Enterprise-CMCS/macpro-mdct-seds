@@ -26,7 +26,11 @@ export async function getUsersEmailByRole(role) {
 }
 
 
-
+function getQuarter() {
+  d = new Date();
+  var m = Math.floor(d.getMonth()/3) + 2;
+  return m > 4? m - 4 : m;
+}
 
 
 // retrieve all states have NOT submitted their data yet
@@ -36,7 +40,7 @@ export async function getUncertifiedStates() {
   const year =  new Date().getFullYear();
 
   // house the list of states from the state forms
-  
+
   let UncertifiedstateList = [];
   const params = {
     TableName:
