@@ -59,23 +59,23 @@ async function stateUsersTemplate() {
 
   const recipient = {
     TO: stateUsersToEmail,
-    SUBJECT: `Reminder: [State] FFY${date.year} Q${date.quarter} SEDS Enrollment Data Overdue`,
+    SUBJECT: `Reminder: [State] FFY${year} Q${quarter} SEDS Enrollment Data Overdue`,
     FROM: fromEmail,
     MESSAGE: `
     Hello State user,
 
-    We are reaching out to check on the status of your state's FFY${date.year}
-    Q${date.quarter} child enrollment data submission in the Statistical Enrollment Data System (SEDS).
+    We are reaching out to check on the status of your state's FFY${year}
+    Q${quarter} child enrollment data submission in the Statistical Enrollment Data System (SEDS).
 
-    FFY${date.year} Q${date.quarter} reporting of enrollment data to the SEDS was
+    FFY${year} Q${quarter} reporting of enrollment data to the SEDS was
     due on ${todayDate}. Our records indicate that [State] has not yet submitted
     the required enrollment data to SEDS at this time. Please let us know when
     we can expect your submission.
 
     If your state has any other outstanding Quarter(s) of data, please submit
-    that information along with your FFY${date.year} Q${date.quarter} data.
+    that information along with your FFY${year} Q${quarter} data.
 
-    If your state allows retroactive eligibility, you may certify the FFY${date.year} Q${date.quarter}
+    If your state allows retroactive eligibility, you may certify the FFY${year} Q${quarter}
     enrollment reports as preliminary in the system. When you have the final enrollment data, you may 
     update and certify the final reports thirty (30) days after the end of the next quarter 
     (with next quarter's preliminary report). The final reports should include information about children whose eligibility 
