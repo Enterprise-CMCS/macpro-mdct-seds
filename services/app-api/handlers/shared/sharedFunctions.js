@@ -48,11 +48,11 @@ export async function getUncertifiedStates() {
     },
     ExpressionAttributeValues: {
       ":status": "In Progress",
-      // ":year": date.year,
+      ":year": date.year,
       // ":quarter": date.quarter,
     },
     FilterExpression:
-    "#Unceritifiedstatus = :status",
+    "#Unceritifiedstatus = :status AND #theYear = :year",
 
       // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };

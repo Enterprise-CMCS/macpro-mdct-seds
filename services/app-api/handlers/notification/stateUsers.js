@@ -38,14 +38,11 @@ let date = {
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
-  console.log("state users email: ", allStateEmails);
-
   const uncertifiedStateList = await getUncertifiedStates();
   console.log("uncertified states: ",uncertifiedStateList);
 
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {
-    console.log("allStateemail: ", e);
     if (uncertifiedStateList.includes(e.state[0])) {
       stateUsersToEmail.push(e.email);
     }
