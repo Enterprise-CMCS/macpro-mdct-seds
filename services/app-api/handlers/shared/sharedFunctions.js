@@ -25,8 +25,6 @@ export async function getUsersEmailByRole(role) {
   return UsersObj;
 }
 
-
-
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
 export async function getUncertifiedStates(year, quarter) {
