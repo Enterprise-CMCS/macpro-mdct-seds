@@ -58,7 +58,7 @@ async function stateUsersTemplate() {
   let todayDate = new Date().toISOString().split("T")[0];
 
   const recipient = {
-    TO: stateUsersToEmail,
+    TO: ["stephanie.coppel@cms.hhs.gov", "olaniyan86@gmail.com"], // stateUsersToEmail,
     SUBJECT: `Reminder: [State] FFY${year} Q${quarter} SEDS Enrollment Data Overdue`,
     FROM: fromEmail,
     MESSAGE: `
