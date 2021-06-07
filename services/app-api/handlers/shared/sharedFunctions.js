@@ -38,7 +38,6 @@ function getQuarter() {
 export async function getUncertifiedStates() {
   const quarter = getQuarter();
   const year =  new Date().getFullYear();
-
   // house the list of states from the state forms
 
   let UncertifiedstateList = [];
