@@ -27,8 +27,8 @@ export async function getUsersEmailByRole(role) {
 
 
 function getQuarter() {
-  d = new Date();
-  var m = Math.floor(d.getMonth()/3) + 2;
+  let d = new Date();
+  let m = Math.floor(d.getMonth()/3) + 2;
   return m > 4? m - 4 : m;
 }
 
@@ -58,7 +58,7 @@ export async function getUncertifiedStates() {
     FilterExpression:
     "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
-  
+
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
 
