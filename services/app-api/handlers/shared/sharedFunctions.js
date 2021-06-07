@@ -5,6 +5,8 @@ let date = {
   quarter: new Date().getMonth(),
 };
 
+console.log("date: ", date);
+
 export async function getUsersEmailByRole(role) {
   const UsersObj = [];
   const params = {
@@ -41,19 +43,23 @@ export async function getUncertifiedStates() {
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#Unceritifiedstatus": "status",
-      "#theYear": "year",
-      "#theQuarter": "quarter",
+      // "#theYear": "year",
+      // "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
       ":status": "In Progress",
-      ":year": date.year,
-      ":quarter": date.quarter,
+      // ":year": date.year,
+      // ":quarter": date.quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    "#Unceritifiedstatus = :status",
+
+      // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
+
+  console.log("uncretified forms", result);
   if (result.Count === 0) {
     return [
       {

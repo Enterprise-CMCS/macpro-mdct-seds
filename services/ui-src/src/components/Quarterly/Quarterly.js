@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
+import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -87,8 +88,10 @@ const Quarterly = () => {
 
     {
       name: "Last Updated",
-      selector: "last_modified",
-      sortable: true
+      sortable: true,
+      selector: function setDate(row) {
+        return `${dateFormatter(row.last_modified)}`;
+      }
     },
     {
       name: "Print",
@@ -97,7 +100,7 @@ const Quarterly = () => {
         const formId = getFormSegment(row.form);
         return (
           <Link
-            to={`/forms/${state}/${year}/${quarter}/${formId}/print`}
+            to={`/print/${state}/${year}/${quarter}/${formId}`}
             className="font-heading-2xl padding-left-5"
           >
             <FontAwesomeIcon icon={faFilePdf} />

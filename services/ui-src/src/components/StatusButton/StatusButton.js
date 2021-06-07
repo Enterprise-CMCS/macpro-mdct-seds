@@ -14,10 +14,6 @@ const StatusButton = ({ type = "inprogress" }) => {
       classValue = "status-final";
       buttonValue = "Final Data Submitted";
       break;
-    case "notstarted":
-      classValue = "status-notstarted";
-      buttonValue = "Not Started";
-      break;
     case "provisional":
       classValue = "status-provisional";
       buttonValue = "Provisional Data Submitted";

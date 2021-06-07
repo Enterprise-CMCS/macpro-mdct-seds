@@ -3317,7 +3317,7 @@ const currentFormMock_21E = {
       last_modified: "01-15-2021",
       quarter: 1,
       status_id: 1,
-      status: "Not Started"
+      status: "In Progress"
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   }

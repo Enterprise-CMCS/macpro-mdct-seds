@@ -14,6 +14,7 @@ var ses = new AWS.SES({ region: "us-east-1" });
 
 export const main = handler(async (event, context) => {
   const email = await stateUsersTemplate();
+  console.log("emailTemplate: ", email);
   ses.sendEmail(email, function (err, data) {
     if (err) {
       console.log(err);
@@ -37,9 +38,14 @@ let date = {
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
+  console.log("state users email: ", allStateEmails);
+
   const uncertifiedStateList = await getUncertifiedStates();
+  console.log("uncertified states: ",uncertifiedStateList);
+
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {
+    console.log("allStateemail: ", e);
     if (uncertifiedStateList.includes(e.state[0])) {
       stateUsersToEmail.push(e.email);
     }
@@ -56,35 +62,32 @@ async function stateUsersTemplate() {
 
   const recipient = {
     TO: stateUsersToEmail,
-    SUBJECT: `Reminder: [State] FFY[${date.year}] Q[${date.quarter}] SEDS Enrollment Data Overdue`,
+    SUBJECT: `Reminder: [State] FFY${date.year} Q${date.quarter} SEDS Enrollment Data Overdue`,
     FROM: fromEmail,
     MESSAGE: `
     Hello State user,
 
-    We are reaching out to check on the status of your state's FFY[${date.year}]
-    Q[${date.quarter}] child enrollment data submission in the Statistical Enrollment Data System (SEDS).
+    We are reaching out to check on the status of your state's FFY${date.year}
+    Q${date.quarter} child enrollment data submission in the Statistical Enrollment Data System (SEDS).
 
-    FFY[${date.year}] Q[${date.quarter}] reporting of enrollment data to the SEDS was
-    due on [${todayDate}]. Our records indicate that [State] has not yet submitted
+    FFY${date.year} Q${date.quarter} reporting of enrollment data to the SEDS was
+    due on ${todayDate}. Our records indicate that [State] has not yet submitted
     the required enrollment data to SEDS at this time. Please let us know when
     we can expect your submission.
 
     If your state has any other outstanding Quarter(s) of data, please submit
-    that information along with your FFY[Fiscal Year] Q[Quarter] data.
+    that information along with your FFY${date.year} Q${date.quarter} data.
 
-    If your state allows retroactive eligibility, the initial enrollment reports will be
-    considered preliminary and your state will have the opportunity to submit final reports
-    thirty (30) days after the end of the next quarter (with next quarter’s preliminary report).
-    The final reports should include information about children whose eligibility was
-    retroactive to the earlier quarter.
+    If your state allows retroactive eligibility, you may certify the FFY${date.year} Q${date.quarter}
+    enrollment reports as preliminary in the system. When you have the final enrollment data, you may 
+    update and certify the final reports thirty (30) days after the end of the next quarter 
+    (with next quarter's preliminary report). The final reports should include information about children whose eligibility 
+    was retroactive to the earlier quarter.
 
     If you have any questions,
-    please send an email to: MDCTHelp@cms.hss.gov
+    please send an email to: MDCT_Help@cms.hhs.gov
 
-    Thank you in advance for your prompt response to this message.
-
-    Regards,
-    CMS SEDS TA Team.
+    CMS SEDS TEAM
 
     `,
   };
