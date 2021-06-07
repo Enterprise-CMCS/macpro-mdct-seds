@@ -118,13 +118,13 @@ export const main = handler(async (event, context) => {
       // Loop through each age range and insert row
       for (const range in ageRanges) {
         // Get reusable values
-        const currentState = allStates[state].state_id;
-        const currentForm = allQuestions[question].question.split("-")[1];
-        const currentAgeRangeId = ageRanges[range].key;
+        // const currentState = allStates[state].state_id;
+        // const currentForm = allQuestions[question].question.split("-")[1];
+        // const currentAgeRangeId = ageRanges[range].key;
         // const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        // const currentQuestionNumber = allQuestions[question].question.split(
+        //   "-"
+        // )[2];
 
         // const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         // const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
