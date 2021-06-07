@@ -148,13 +148,19 @@ export const main = handler(async (event, context) => {
             created_by: "seed",
           },
         };
+        console.log(
+          "FORM_ANSWERS_TABLE_NAME",
+          process.env.FORM_ANSWERS_TABLE_NAME
+        );
+        console.log("FormAnswersTableName", process.env.FormAnswersTableName);
         try {
           await dynamoDb.put(insertParams);
         } catch (e) {
-          return {
-            status: 500,
-            message: "A failure occurred while adding new entries",
-          };
+          throw e;
+          // return {
+          //   status: 500,
+          //   message: "A failure occurred while adding new entries",
+          // };
         }
       }
     }
