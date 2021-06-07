@@ -62,7 +62,6 @@ export async function getUncertifiedStates() {
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
 
-  console.log("uncretified forms", result);
   if (result.Count === 0) {
     return [
       {
@@ -75,7 +74,7 @@ export async function getUncertifiedStates() {
   const payload = result.Items;
   payload.map((stateInfo) => {
     // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code);
+    UncertifiedstateList.push(stateInfo.state_id);
   });
   let filteredStateList = UncertifiedstateList.filter(function (
     elem,
