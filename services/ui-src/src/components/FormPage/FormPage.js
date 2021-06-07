@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import { Auth } from "aws-amplify";
-import { getStateForms, obtainUserByEmail } from "../../libs/api";
+import { obtainUserByEmail } from "../../libs/api";
 import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
@@ -70,7 +70,7 @@ const FormPage = ({ getForm, statusData }) => {
       }
     };
     fetchData();
-  }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
+  }, [getForm, formattedStateName, year, quarterInt, formattedFormName, state]);
 
   useEffect(() => {
     // Get current time

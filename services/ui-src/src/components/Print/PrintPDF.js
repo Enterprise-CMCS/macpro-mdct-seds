@@ -10,7 +10,7 @@ import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import { getStateForms, obtainUserByEmail } from "../../libs/api";
+import { obtainUserByEmail } from "../../libs/api";
 import { onError } from "../../libs/errorLib";
 import Unauthorized from "../Unauthorized/Unauthorized";
 
@@ -62,7 +62,7 @@ const PrintPDF = ({
     };
 
     fetchData();
-  }, [getForm, formattedStateName, year, quarterInt, form]);
+  }, [getForm, formattedStateName, year, quarterInt, form, state]);
 
   const handlePrint = async event => {
     event.preventDefault();
