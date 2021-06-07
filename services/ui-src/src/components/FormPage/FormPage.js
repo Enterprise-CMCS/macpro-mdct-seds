@@ -22,7 +22,7 @@ const FormPage = ({ getForm, statusData }) => {
 
   const [saveAlert, setSaveAlert] = useState(false);
   const { last_modified, save_error } = statusData;
-  const [hasAccess, setHasAccess] = useState();
+  const [hasAccess, setHasAccess] = useState("");
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -59,8 +59,10 @@ const FormPage = ({ getForm, statusData }) => {
 
       let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
 
-      if (userStates.includes(state)) {
-        const data = await getStateForms(state, year, quarter);
+      if (
+        userStates.includes(state) ||
+        currentUserInfo.Items[0].role === "admin"
+      ) {
         await getForm(formattedStateName, year, quarterInt, formattedFormName);
         setHasAccess(true);
       } else {
@@ -115,8 +117,7 @@ const FormPage = ({ getForm, statusData }) => {
           </Alert>
         </div>
       ) : null}
-
-      {hasAccess ? (
+      {hasAccess === true ? (
         <>
           <div className="margin-x-5 margin-bottom-3">
             <FormHeader
@@ -148,9 +149,8 @@ const FormPage = ({ getForm, statusData }) => {
             />
           </div>
         </>
-      ) : (
-        <Unauthorized />
-      )}
+      ) : null}
+      {hasAccess === false ? <Unauthorized /> : null}
     </div>
   );
 };

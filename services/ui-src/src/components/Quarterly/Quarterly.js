@@ -15,7 +15,7 @@ const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
   const [stateFormsList, setStateFormsList] = React.useState();
-  const [hasAccess, setHasAccess] = React.useState();
+  const [hasAccess, setHasAccess] = React.useState("");
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
@@ -37,7 +37,10 @@ const Quarterly = () => {
 
       let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
 
-      if (userStates.includes(state)) {
+      if (
+        userStates.includes(state) ||
+        currentUserInfo.Items[0].role === "admin"
+      ) {
         const data = await getStateForms(state, year, quarter);
         setStateFormsList(data);
         setHasAccess(true);
@@ -142,7 +145,7 @@ const Quarterly = () => {
       </div>
       <h1 className="page-header">{title}</h1>
       <div className="quarterly-report-listing">
-        {hasAccess ? (
+        {hasAccess === true ? (
           <Card>
             {stateFormsList ? (
               <DataTable
@@ -169,9 +172,9 @@ const Quarterly = () => {
               <Preloader />
             )}
           </Card>
-        ) : (
-          <Unauthorized />
-        )}
+        ) : null}
+
+        {hasAccess === false ? <Unauthorized /> : null}
       </div>
     </div>
   );
