@@ -131,28 +131,23 @@ export const main = handler(async (event, context) => {
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
         // Setup params for insert
-        const insertParams = {
-          TableName:
-            process.env.FORM_ANSWERS_TABLE_NAME ??
-            process.env.FormAnswersTableName,
-          Item: {
-            answer_entry: answerEntry,
-            age_range: currentAgeRangeLabel,
-            rangeId: currentAgeRangeId,
-            question: questionID,
-            state_form: stateFormID,
-            last_modified_by: "seed",
-            created_date: new Date().toISOString(),
-            rows: allQuestions[question].rows,
-            last_modified: new Date().toISOString(),
-            created_by: "seed",
-          },
-        };
-        console.log(
-          "FORM_ANSWERS_TABLE_NAME",
-          process.env.FORM_ANSWERS_TABLE_NAME
-        );
-        console.log("FormAnswersTableName", process.env.FormAnswersTableName);
+        // const insertParams = {
+        //   TableName:
+        //     process.env.FORM_ANSWERS_TABLE_NAME ??
+        //     process.env.FormAnswersTableName,
+        //   Item: {
+        //     answer_entry: answerEntry,
+        //     age_range: currentAgeRangeLabel,
+        //     rangeId: currentAgeRangeId,
+        //     question: questionID,
+        //     state_form: stateFormID,
+        //     last_modified_by: "seed",
+        //     created_date: new Date().toISOString(),
+        //     rows: allQuestions[question].rows,
+        //     last_modified: new Date().toISOString(),
+        //     created_by: "seed",
+        //   },
+        // };
 
         try {
           // await dynamoDb.put(insertParams);
