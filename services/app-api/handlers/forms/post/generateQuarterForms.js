@@ -51,8 +51,22 @@ export const main = handler(async (event, context) => {
   // Pull list of states
   let allStates = await getStatesList();
 
+  if (allStates.length === 0) {
+    return {
+      status: 500,
+      message: `Could not retrieve state list.`,
+    };
+  }
+
   // Pull list of form descriptions
   const allFormDescriptions = await getFormDescriptions();
+
+  if (allFormDescriptions.length === 0) {
+    return {
+      status: 500,
+      message: `Could not retrieve form descriptions.`,
+    };
+  }
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
