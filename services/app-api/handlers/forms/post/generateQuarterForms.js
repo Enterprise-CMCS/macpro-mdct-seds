@@ -71,45 +71,44 @@ export const main = handler(async (event, context) => {
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
     // Loop through each form description and create form status record
-    for (const form in allFormDescriptions) {
-      // Setup params for insert
-      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
-
-      const insertFormParams = {
-        TableName:
-          process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-        Item: {
-          state_form: stateFormString,
-          status_date: new Date().toISOString(),
-          year: specifiedYear,
-          state_comments: [{ type: "text_multiline", entry: "" }],
-          form_id: allFormDescriptions[form].form_id,
-          last_modified_by: "seed",
-          status_modified_by: "seed",
-          created_by: "seed",
-          validation_percent: "0.03",
-          status_id: 2,
-          form: allFormDescriptions[form].form,
-          program_code: "All",
-          state_id: allStates[state].state_id,
-          not_applicable: false,
-          created_date: new Date().toISOString(),
-          form_name: allFormDescriptions[form].label,
-          last_modified: new Date().toISOString(),
-          quarter: specifiedQuarter,
-          status: "In Progress",
-        },
-      };
-      try {
-        await dynamoDb.put(insertFormParams);
-      } catch (e) {
-        return {
-          status: 500,
-          message: "A failure occurred while adding new entries",
-        };
-      }
-    }
-
+    // for (const form in allFormDescriptions) {
+    //   // Setup params for insert
+    //   const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
+    //
+    //   const insertFormParams = {
+    //     TableName:
+    //       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    //     Item: {
+    //       state_form: stateFormString,
+    //       status_date: new Date().toISOString(),
+    //       year: specifiedYear,
+    //       state_comments: [{ type: "text_multiline", entry: "" }],
+    //       form_id: allFormDescriptions[form].form_id,
+    //       last_modified_by: "seed",
+    //       status_modified_by: "seed",
+    //       created_by: "seed",
+    //       validation_percent: "0.03",
+    //       status_id: 2,
+    //       form: allFormDescriptions[form].form,
+    //       program_code: "All",
+    //       state_id: allStates[state].state_id,
+    //       not_applicable: false,
+    //       created_date: new Date().toISOString(),
+    //       form_name: allFormDescriptions[form].label,
+    //       last_modified: new Date().toISOString(),
+    //       quarter: specifiedQuarter,
+    //       status: "In Progress",
+    //     },
+    //   };
+    //   try {
+    //     await dynamoDb.put(insertFormParams);
+    //   } catch (e) {
+    //     return {
+    //       status: 500,
+    //       message: "A failure occurred while adding new entries",
+    //     };
+    //   }
+    // }
     // Loop through each question
     // for (const question in allQuestions) {
     //   // Get age range array
