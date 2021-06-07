@@ -1,5 +1,5 @@
 import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
+// import dynamoDb from "../../../libs/dynamodb-lib";
 import {
   getFormDescriptions,
   getFormResultByStateString,
@@ -70,6 +70,7 @@ export const main = handler(async (event, context) => {
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
+    console.log(state);
     // Loop through each form description and create form status record
     // for (const form in allFormDescriptions) {
     //   // Setup params for insert
