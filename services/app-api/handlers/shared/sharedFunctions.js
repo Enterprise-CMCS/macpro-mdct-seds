@@ -1,12 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
-
-console.log("date: ", date);
-
 export async function getUsersEmailByRole(role) {
   const UsersObj = [];
   const params = {
@@ -32,6 +25,11 @@ export async function getUsersEmailByRole(role) {
   return UsersObj;
 }
 
+const quarter = getQuarter();
+const year =  new Date().getFullYear(),
+
+
+
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
 export async function getUncertifiedStates() {
@@ -43,19 +41,18 @@ export async function getUncertifiedStates() {
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#Unceritifiedstatus": "status",
-      // "#theYear": "year",
-      // "#theQuarter": "quarter",
+      "#theYear": "year",
+      "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
       ":status": "In Progress",
-      ":year": date.year,
-      // ":quarter": date.quarter,
+      ":year": year,
+      ":quarter": quarter,
     },
     FilterExpression:
-    "#Unceritifiedstatus = :status AND #theYear = :year",
-
-      // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
+  
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
 
