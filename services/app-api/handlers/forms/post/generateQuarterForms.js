@@ -101,7 +101,7 @@ export const main = handler(async (event, context) => {
         },
       };
       try {
-        await dynamoDb.post(insertFormParams);
+        await dynamoDb.put(insertFormParams);
         return {
           status: 200,
           message: "State Form addition successful",
