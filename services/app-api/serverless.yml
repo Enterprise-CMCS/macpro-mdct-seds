@@ -383,7 +383,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-    timeout: 200
+    timeout: 800
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
