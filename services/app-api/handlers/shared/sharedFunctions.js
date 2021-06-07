@@ -26,18 +26,10 @@ export async function getUsersEmailByRole(role) {
 }
 
 
-function getQuarter() {
-  let d = new Date();
-  let m = Math.floor(d.getMonth()/3) + 2;
-  return m > 4? m - 4 : m;
-}
-
 
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
-export async function getUncertifiedStates() {
-  const quarter = getQuarter();
-  const year =  new Date().getFullYear();
+export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
 
   let UncertifiedstateList = [];
