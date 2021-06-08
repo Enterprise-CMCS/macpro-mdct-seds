@@ -7,7 +7,7 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
-import { API, Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
@@ -70,29 +70,23 @@ const CertificationTab = ({
   const currentUserRole = async () => {
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
-    try {
-      const currentUser = await obtainUserByEmail({
-        email: userEmail
-      });
-      let userObj = currentUser["Items"];
-      userObj.map(async userInfo => {
-        return userInfo.role;
-      });
-    } catch (e) {
-      throw e;
-    }
+    const currentUser = await obtainUserByEmail({
+      email: userEmail
+    });
+
+    let userObj = currentUser["Items"];
+    userObj.map(async userInfo => {
+      return userInfo.role;
+    });
   };
 
   const sendEmailtoBo = async () => {
-    try {
-      let userRole = await currentUserRole();
-      if (userRole === "state") {
-        let emailObj = {
-          formInfo: formStatus
-        };
-      }
-    } catch (e) {
-      throw e;
+    let userRole = await currentUserRole();
+    if (userRole === "state") {
+      let emailObj = {
+        formInfo: formStatus
+      };
+      await sendUncertifyEmail(emailObj);
     }
   };
 
