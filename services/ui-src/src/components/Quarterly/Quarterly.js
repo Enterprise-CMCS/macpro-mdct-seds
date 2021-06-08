@@ -6,20 +6,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStateForms } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
+import Unauthorized from "../Unauthorized/Unauthorized";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
   const [stateFormsList, setStateFormsList] = React.useState();
+  const [hasAccess, setHasAccess] = React.useState("");
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getStateForms(state, year, quarter);
-      setStateFormsList(data);
+      // Get user information
+      const currentUserInfo = await getUserInfo();
+
+      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
+
+      if (
+        userStates.includes(state) ||
+        currentUserInfo.Items[0].role === "admin"
+      ) {
+        const data = await getStateForms(state, year, quarter);
+        setStateFormsList(data);
+        setHasAccess(true);
+      } else {
+        setHasAccess(false);
+      }
     }
 
     fetchData();
@@ -118,29 +134,36 @@ const Quarterly = () => {
       </div>
       <h1 className="page-header">{title}</h1>
       <div className="quarterly-report-listing">
-        <Card>
-          {stateFormsList ? (
-            <DataTable
-              className="grid-display-table react-transition fade-in"
-              sortIcon={
-                <FontAwesomeIcon icon={faArrowDown} className="margin-left-2" />
-              }
-              highlightOnHover
-              title={
-                <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                  Start, complete, and print this quarter's CHIP Enrollment Data
-                  Reports.
-                </p>
-              }
-              selectableRows={false}
-              responsive={true}
-              columns={columns}
-              data={stateFormsList}
-            />
-          ) : (
-            <Preloader />
-          )}
-        </Card>
+        {hasAccess === true ? (
+          <Card>
+            {stateFormsList ? (
+              <DataTable
+                className="grid-display-table react-transition fade-in"
+                sortIcon={
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    className="margin-left-2"
+                  />
+                }
+                highlightOnHover
+                title={
+                  <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                    Start, complete, and print this quarter's CHIP Enrollment
+                    Data Reports.
+                  </p>
+                }
+                selectableRows={false}
+                responsive={true}
+                columns={columns}
+                data={stateFormsList}
+              />
+            ) : (
+              <Preloader />
+            )}
+          </Card>
+        ) : null}
+
+        {hasAccess === false ? <Unauthorized /> : null}
       </div>
     </div>
   );
