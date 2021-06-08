@@ -38,8 +38,7 @@ const CertificationTab = ({
   ] = useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
-      const { data } = await API.post("mdct-seds", "/users/get/username", {});
-      const userRole = data.role;
+      const userRole = await currentUserRole();
       if (userRole === "admin") {
         setViewProvisionalAndFinalCertify(false);
       }
@@ -68,7 +67,7 @@ const CertificationTab = ({
     }
   };
 
-  const sendEmailtoBo = async () => {
+  const currentUserRole = async () => {
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
     try {
@@ -77,20 +76,28 @@ const CertificationTab = ({
       });
       let userObj = currentUser["Items"];
       userObj.map(async userInfo => {
-        if (userInfo.role === "state") {
-          let emailObj = {
-            formInfo: formStatus,
-            username: userInfo.username
-          };
-          await sendUncertifyEmail(emailObj);
-        }
+        return userInfo.role;
       });
-    } catch (err) {
-      throw new Error(err);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  const sendEmailtoBo = async () => {
+    try {
+      let userRole = await currentUserRole();
+      if (userRole === "state") {
+        let emailObj = {
+          formInfo: formStatus,
+        };
+      }
+    } catch(e) {
+      throw e;
     }
   };
 
   let certifyText;
+  
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">

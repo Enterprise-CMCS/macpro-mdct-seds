@@ -67,18 +67,18 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
 };
 
 SummaryNotes.propTypes = {
-  statusData: PropTypes.object.isRequired
+  statusData: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData
+  statusData: state.currentForm.statusData,
+  saveSummaryNotes: state.currentForm.statusData.state_comments
 });
-const mapDispatch = dispatch => {
-  return {
-    saveSummaryNotes: summaryNotes => {
-      dispatch(saveSummaryNotes(summaryNotes));
-    }
-  };
+
+const mapDispatch = {
+  saveSummaryNotes
 };
+
+
 
 export default connect(mapState, mapDispatch)(SummaryNotes);
