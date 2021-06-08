@@ -27,6 +27,7 @@ export default {
   update: (params) => client.update(params).promise(),
   delete: (params) => client.delete(params).promise(),
   scan: (params) => client.scan(params).promise(),
+  batchWrite: (params) => client.batchWrite(params).promise(),
   listTables: (params) => database.listTables(params).promise(),
   increment: (params) =>
     atomicCounter.increment(params, { tableName: atomicTableName }),

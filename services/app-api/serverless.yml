@@ -471,6 +471,7 @@ resources:
                     - dynamodb:UpdateItem
                     - dynamodb:DeleteItem
                     - dynamodb:ListTables
+                    - dynamodb:BatchWriteItem
                   Resource:
                     - ${self:custom.AgeRangesTableArn}
                     - ${self:custom.FormAnswersTableArn}
