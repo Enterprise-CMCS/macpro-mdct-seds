@@ -18,6 +18,19 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  const processItemsCallback = function (err, data) {
+    if (err) {
+      console.log("There was an error in processing query data.");
+    } else {
+      let params = {};
+      params.RequestItems = data.UnprocessedItems;
+
+      if (Object.keys(params.RequestItems).length != 0) {
+        dynamoDb.batchWriteItem(params, processItemsCallback);
+      }
+    }
+  };
+
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
@@ -127,10 +140,7 @@ export const main = handler(async (event, context) => {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
       },
     };
-    let formDescriptionResults = await dynamoDb.batchWrite(batchRequest);
-    unprocessedStateForms.push(
-      formDescriptionResults.UnprocessedItems.PutRequest
-    );
+    dynamoDb.batchWrite(batchRequest, processItemsCallback);
   }
 
   // Add All StateForm Descriptions
@@ -199,8 +209,7 @@ export const main = handler(async (event, context) => {
       },
     };
 
-    let formAnswersResults = await dynamoDb.batchWrite(batchRequest);
-    console.log("formAnswersResults", formAnswersResults);
+    dynamoDb.batchWrite(batchRequest, processItemsCallback);
   }
 
   return {
