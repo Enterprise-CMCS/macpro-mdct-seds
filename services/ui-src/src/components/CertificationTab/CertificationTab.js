@@ -81,23 +81,23 @@ const CertificationTab = ({
     } catch (e) {
       throw e;
     }
-  }
+  };
 
   const sendEmailtoBo = async () => {
     try {
       let userRole = await currentUserRole();
       if (userRole === "state") {
         let emailObj = {
-          formInfo: formStatus,
+          formInfo: formStatus
         };
       }
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   };
 
   let certifyText;
-  
+
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">

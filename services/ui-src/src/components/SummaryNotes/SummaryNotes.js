@@ -67,7 +67,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
 };
 
 SummaryNotes.propTypes = {
-  statusData: PropTypes.object.isRequired,
+  statusData: PropTypes.object.isRequired
 };
 
 const mapState = state => ({
@@ -78,7 +78,5 @@ const mapState = state => ({
 const mapDispatch = {
   saveSummaryNotes
 };
-
-
 
 export default connect(mapState, mapDispatch)(SummaryNotes);
