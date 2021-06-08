@@ -83,7 +83,6 @@ export const main = handler(async (event, context) => {
 
   // Add All StateForm Descriptions
   const putRequestsStateForms = [];
-  const unprocessedStateForms = [];
 
   // Loop through all states
   for (const state in allStates) {
