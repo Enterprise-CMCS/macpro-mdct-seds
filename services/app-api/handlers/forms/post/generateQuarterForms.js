@@ -70,6 +70,7 @@ export const main = handler(async (event, context) => {
 
   // Add All StateForm Descriptions
   const putRequestsStateForms = [];
+  const unprocessedStateForms = [];
 
   // Loop through all states
   for (const state in allStates) {
@@ -129,6 +130,8 @@ export const main = handler(async (event, context) => {
     dynamoDb.batchWrite(batchRequest, (err, data) => {
       if (err) {
         console.log("Error", err);
+      } else {
+        unprocessedStateForms.push(data.unprocessedItems);
       }
     });
   }
