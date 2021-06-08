@@ -127,13 +127,10 @@ export const main = handler(async (event, context) => {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
       },
     };
-    dynamoDb.batchWrite(batchRequest, (err, data) => {
-      if (err) {
-        console.log("Error", err);
-      } else {
-        unprocessedStateForms.push(data.unprocessedItems);
-      }
-    });
+    let formDescriptionResults = await dynamoDb.batchWrite(batchRequest);
+    unprocessedStateForms.push(
+      formDescriptionResults.UnprocessedItems.PutRequest
+    );
   }
 
   // Add All StateForm Descriptions
@@ -201,11 +198,9 @@ export const main = handler(async (event, context) => {
         [formAnswersTableName]: batchArrayFormAnswers[i],
       },
     };
-    dynamoDb.batchWrite(batchRequest, (err, data) => {
-      if (err) {
-        console.log("Error", err);
-      }
-    });
+
+    let formAnswersResults = await dynamoDb.batchWrite(batchRequest);
+    console.log("formAnswersResults", formAnswersResults);
   }
 
   return {
