@@ -18,6 +18,7 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  // Loop through unprocessed items until the list is empty
   const processItemsCallback = function (err, data) {
     if (err) {
       console.log("There was an error in processing query data.");
