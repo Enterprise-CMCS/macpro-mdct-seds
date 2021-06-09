@@ -1,12 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
-
-console.log("date: ", date);
-
 export async function getUsersEmailByRole(role) {
   const UsersObj = [];
   const params = {
@@ -34,8 +27,9 @@ export async function getUsersEmailByRole(role) {
 
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
-export async function getUncertifiedStates() {
+export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
+
   let UncertifiedstateList = [];
   const params = {
     TableName:
@@ -43,22 +37,21 @@ export async function getUncertifiedStates() {
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#Unceritifiedstatus": "status",
-      // "#theYear": "year",
-      // "#theQuarter": "quarter",
+      "#theYear": "year",
+      "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
       ":status": "In Progress",
-      // ":year": date.year,
-      // ":quarter": date.quarter,
+      ":year": year,
+      ":quarter": quarter,
     },
-    FilterExpression: "#Unceritifiedstatus = :status",
-
-    // "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    FilterExpression:
+    "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
+
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
 
-  console.log("uncretified forms", result);
   if (result.Count === 0) {
     return [
       {
@@ -71,7 +64,7 @@ export async function getUncertifiedStates() {
   const payload = result.Items;
   payload.map((stateInfo) => {
     // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code);
+    UncertifiedstateList.push(stateInfo.state_id);
   });
   let filteredStateList = UncertifiedstateList.filter(function (
     elem,
@@ -115,8 +108,7 @@ export async function getStatesList() {
   const stateParams = {
     TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
   };
-  console.log("process.env.StatesTableName", process.env.StatesTableName);
-  console.log("process.env.STATES_TABLE_NAME", process.env.STATES_TABLE_NAME);
+
   let stateResult;
 
   try {
@@ -134,8 +126,6 @@ export async function getFormDescriptions() {
   const formDescriptionParams = {
     TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
   };
-  console.log("process.env.FORMS_TABLE_NAME", process.env.FORMS_TABLE_NAME);
-  console.log("process.env.FormsTableName", process.env.FormsTableName);
 
   let formDescription;
   try {

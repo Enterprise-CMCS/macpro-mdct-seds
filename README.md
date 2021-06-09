@@ -119,21 +119,21 @@ export function listUsers() {
 ```
 
 ### Adding New Forms (quarterly)
+
 1. If necessary, create a new form template, for the year, in ROOT/src/database/initial_data_load/
    1. Example: `form_questions_2022.json`
 2. Add the new form to seed >form-questions->sources in ROOT/services/data-deployment/serverless.yml
-   1. Example: 
-     ``` form-questions:
-      table: ${self:custom.stage}-form-questions
-      sources:
-      [
-      ../../src/database/initial_data_load/form_questions_2022.json,
-      ../../src/database/initial_data_load/form_questions_2021.json,
-      ../../src/database/initial_data_load/form_questions_2020.json,
-      ../../src/database/initial_data_load/form_questions_2019.json,
-      ]
+   1. Example:
+   ```form-questions:
+    table: ${self:custom.stage}-form-questions
+    sources:
+    [
+    ../../src/database/initial_data_load/form_questions_2022.json,
+    ../../src/database/initial_data_load/form_questions_2021.json,
+    ../../src/database/initial_data_load/form_questions_2020.json,
+    ../../src/database/initial_data_load/form_questions_2019.json,
+    ]
    ```
-   
 3. Log in to the site as an Administrator
 4. Select `Generate Quarterly Forms`
 5. Select the Year and Quarter you wish to generate forms for
@@ -193,7 +193,7 @@ brew install yarn
 
 ./dev local
 
-````
+```
 
 ## Dependencies
 
@@ -229,7 +229,7 @@ in the public domain within the United States.
 
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
-````
+```
 
 ### Contributors
 
