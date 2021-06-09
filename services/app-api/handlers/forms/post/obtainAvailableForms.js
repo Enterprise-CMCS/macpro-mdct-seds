@@ -23,6 +23,7 @@ export const main = handler(async (event, context) => {
       ":stateId": data.stateId,
     },
     FilterExpression: "state_id = :stateId",
+    ConsistentRead: true,
   };
   const result = await dynamoDb.scan(params);
   if (result.Count === 0) {

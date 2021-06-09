@@ -383,6 +383,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+    timeout: 800
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
@@ -469,6 +470,7 @@ resources:
                     - dynamodb:UpdateItem
                     - dynamodb:DeleteItem
                     - dynamodb:ListTables
+                    - dynamodb:BatchWriteItem
                   Resource:
                     - ${self:custom.AgeRangesTableArn}
                     - ${self:custom.FormAnswersTableArn}

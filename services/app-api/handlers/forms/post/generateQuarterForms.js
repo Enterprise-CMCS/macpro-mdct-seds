@@ -18,6 +18,19 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  // Loop through unprocessed items until the list is empty
+  const processItemsCallback = function (err, data) {
+    if (err) {
+      console.log("There was an error in processing query data.");
+    } else {
+      let params = { RequestItems: data.UnprocessedItems };
+
+      if (Object.keys(params.RequestItems).length != 0) {
+        dynamoDb.batchWriteItem(params, processItemsCallback);
+      }
+    }
+  };
+
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
@@ -41,7 +54,7 @@ export const main = handler(async (event, context) => {
   let allQuestions = await getQuestionsByYear(specifiedYear);
 
   // If questions not found, return failure message
-  if (allQuestions.length === 0) {
+  if (!allQuestions.length) {
     return {
       status: 500,
       message: `Could not find template for generating forms for ${specifiedYear}`,
@@ -51,51 +64,89 @@ export const main = handler(async (event, context) => {
   // Pull list of states
   let allStates = await getStatesList();
 
+  if (!allStates.length) {
+    return {
+      status: 500,
+      message: `Could not retrieve state list.`,
+    };
+  }
+
   // Pull list of form descriptions
   const allFormDescriptions = await getFormDescriptions();
 
-  // Loop through all states, then all questions to return a new record with correct state info
+  if (!allFormDescriptions.length) {
+    return {
+      status: 500,
+      message: `Could not retrieve form descriptions.`,
+    };
+  }
+
+  // Add All StateForm Descriptions
+  const putRequestsStateForms = [];
+
+  // Loop through all states
   for (const state in allStates) {
-    // Loop through each form description and create form status record
+    // Loop through form descriptions for each state
     for (const form in allFormDescriptions) {
-      // Setup params for insert
+      // Build lengthy strings
       const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
 
-      const insertFormParams = {
-        TableName:
-          process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-        Item: {
-          state_form: stateFormString,
-          status_date: new Date().toISOString(),
-          year: specifiedYear,
-          state_comments: [{ type: "text_multiline", entry: "" }],
-          form_id: allFormDescriptions[form].form_id,
-          last_modified_by: "seed",
-          status_modified_by: "seed",
-          created_by: "seed",
-          validation_percent: "0.03",
-          status_id: 2,
-          form: allFormDescriptions[form].form,
-          program_code: "All",
-          state_id: allStates[state].state_id,
-          not_applicable: false,
-          created_date: new Date().toISOString(),
-          form_name: allFormDescriptions[form].label,
-          last_modified: new Date().toISOString(),
-          quarter: specifiedQuarter,
-          status: "In Progress",
+      // Add item to array for batching later
+      putRequestsStateForms.push({
+        PutRequest: {
+          Item: {
+            state_form: stateFormString,
+            status_date: new Date().toISOString(),
+            year: specifiedYear,
+            state_comments: [{ type: "text_multiline", entry: "" }],
+            form_id: allFormDescriptions[form].form_id,
+            last_modified_by: "seed",
+            status_modified_by: "seed",
+            created_by: "seed",
+            validation_percent: "0.03",
+            status_id: 2,
+            form: allFormDescriptions[form].form,
+            program_code: "All",
+            state_id: allStates[state].state_id,
+            not_applicable: false,
+            created_date: new Date().toISOString(),
+            form_name: allFormDescriptions[form].label,
+            last_modified: new Date().toISOString(),
+            quarter: specifiedQuarter,
+            status: "In Progress",
+          },
         },
-      };
-      try {
-        await dynamoDb.put(insertFormParams);
-      } catch (e) {
-        return {
-          status: 500,
-          message: "A failure occurred while adding new entries",
-        };
-      }
+      });
     }
+  }
+  // Begin batching by groups of 25
+  const batchArrayFormDescriptions = [];
+  const batchSize = 25;
+  for (let i = 0; i < putRequestsStateForms.length; i += batchSize) {
+    batchArrayFormDescriptions.push(
+      putRequestsStateForms.slice(i, i + batchSize)
+    );
+  }
 
+  // Get tableName
+  const formDescriptionTableName =
+    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
+
+  // Loop through batches and write to DB
+  for (let i in batchArrayFormDescriptions) {
+    const batchRequest = {
+      RequestItems: {
+        [formDescriptionTableName]: batchArrayFormDescriptions[i],
+      },
+    };
+    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
+  }
+
+  // Add All StateForm Descriptions
+  const putRequestsFormAnswers = [];
+
+  // Loop through all states, then all questions to return a new record with correct state info
+  for (const state in allStates) {
     // Loop through each question
     for (const question in allQuestions) {
       // Get age range array
@@ -116,34 +167,48 @@ export const main = handler(async (event, context) => {
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // Setup params for insert
-        const insertParams = {
-          TableName:
-            process.env.FORM_ANSWERS_TABLE_NAME ??
-            process.env.FormAnswersTableName,
-          Item: {
-            answer_entry: answerEntry,
-            age_range: currentAgeRangeLabel,
-            rangeId: currentAgeRangeId,
-            question: questionID,
-            state_form: stateFormID,
-            last_modified_by: "seed",
-            created_date: new Date().toISOString(),
-            rows: allQuestions[question].rows,
-            last_modified: new Date().toISOString(),
-            created_by: "seed",
+        putRequestsFormAnswers.push({
+          PutRequest: {
+            Item: {
+              answer_entry: answerEntry,
+              age_range: currentAgeRangeLabel,
+              rangeId: currentAgeRangeId,
+              question: questionID,
+              state_form: stateFormID,
+              last_modified_by: "seed",
+              created_date: new Date().toISOString(),
+              rows: allQuestions[question].rows,
+              last_modified: new Date().toISOString(),
+              created_by: "seed",
+            },
           },
-        };
-        try {
-          await dynamoDb.put(insertParams);
-        } catch (e) {
-          return {
-            status: 500,
-            message: "A failure occurred while adding new entries",
-          };
-        }
+        });
       }
     }
+  }
+
+  // Begin batching by groups of 25
+  const batchArrayFormAnswers = [];
+  const batchSizeFA = 25;
+  for (let i = 0; i < putRequestsFormAnswers.length; i += batchSizeFA) {
+    batchArrayFormAnswers.push(
+      putRequestsFormAnswers.slice(i, i + batchSizeFA)
+    );
+  }
+
+  // Get tableName
+  const formAnswersTableName =
+    process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName;
+
+  // Loop through batches and write to DB
+  for (let i in batchArrayFormAnswers) {
+    const batchRequest = {
+      RequestItems: {
+        [formAnswersTableName]: batchArrayFormAnswers[i],
+      },
+    };
+
+    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
   }
 
   return {
