@@ -19,7 +19,6 @@ const HomeAdmin = ({ stateList, user }) => {
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
   const [accordionItems, setAccordionItems] = useState("");
-  const [role, setRole] = useState();
 
   useEffect(() => {
     const onLoad = async () => {
@@ -35,14 +34,13 @@ const HomeAdmin = ({ stateList, user }) => {
       }
 
       if (currentUserInfo["Items"]) {
-        const userRole = user.attributes["app-role"];
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates;
 
         setRole(userRole);
 
         // If using all states, create a simple array of states for use in compileStatesForDropdown
-        if (userRole === "admin") {
+        if (user.attributes["app-role"] === "admin") {
           userStates = compileSimpleArrayStates(stateList);
         }
 
