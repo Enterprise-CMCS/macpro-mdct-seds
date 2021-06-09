@@ -73,10 +73,10 @@ const HomeAdmin = ({ stateList, user }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
-
+  let role = user.attributes["app-role"]
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
-      {user.attributes["app-role"] === "admin" ? (
+      {role === "admin" ? (
         <>
           <h1 className="page-header">Home Admin User Page</h1>
           <div className="padding-left-9 margin-left-9 list-display-container">
