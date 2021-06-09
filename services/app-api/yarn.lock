@@ -7877,6 +7877,11 @@ serverless-offline@^6.8.0:
     velocityjs "^2.0.3"
     ws "^7.4.2"
 
+serverless-plugin-git-variables@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/serverless-plugin-git-variables/-/serverless-plugin-git-variables-5.1.0.tgz#668aceed366d647ac0143c4a8bc4782b7536df12"
+  integrity sha512-72HcfC6KIpsiPimJrdAknvtYEfERgm1+f6TPj3mvA5Dd+2xDFoi6bItyRwqqepoCshL77AFfzpmlxYn58Ez0rw==
+
 serverless-plugin-scripts@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/serverless-plugin-scripts/-/serverless-plugin-scripts-1.0.2.tgz#21808c3cfd0a1a84e48c0660b0f6f370b5665486"
