@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
 import { saveSummaryNotes } from "../../store/actions/statusData";
+import { Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../libs/api";
 
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
-  let currentSummaryNotes;
-  let isFinalStatus = false;
+  const [userRole, setUserRole] = useState();
 
-  if (statusData.status_id === 4 || statusData.status_id === 5) {
-    isFinalStatus = true;
-  }
+  let currentSummaryNotes;
+  let disabledNotes = false;
+
   // Summary tab will load before statusData is populated and this prevents an error
   if (statusData.state_comments !== undefined) {
     currentSummaryNotes = statusData.state_comments[0].entry;
@@ -19,13 +20,32 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
 
   // Set the initial state of the summary notes
   useEffect(() => {
+    const disableNotes = async () => {
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
+      const userdata = existingUser["Items"];
+      userdata.map(async userInfo => {
+        setUserRole(userInfo.role);
+      });
+    };
+    disableNotes();
     setSummaryNotes(currentSummaryNotes);
-  }, [currentSummaryNotes]);
+  }, [currentSummaryNotes, statusData]);
 
   // Update summary notes object locally and in redux
   const updateTempSummaryNotes = e => {
     setSummaryNotes(e.target.value);
   };
+  if (
+    userRole === "admin" ||
+    statusData.status_id === 4 ||
+    statusData.status_id === 5
+  ) {
+    disabledNotes = true;
+  }
 
   return (
     <>
@@ -39,7 +59,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
         type="text"
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
-        disabled={isFinalStatus}
+        disabled={disabledNotes}
         className=" margin-left-3 width-widescreen"
       />
     </>
@@ -51,14 +71,12 @@ SummaryNotes.propTypes = {
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData
+  statusData: state.currentForm.statusData,
+  saveSummaryNotes: state.currentForm.statusData.state_comments
 });
-const mapDispatch = dispatch => {
-  return {
-    saveSummaryNotes: summaryNotes => {
-      dispatch(saveSummaryNotes(summaryNotes));
-    }
-  };
+
+const mapDispatch = {
+  saveSummaryNotes
 };
 
 export default connect(mapState, mapDispatch)(SummaryNotes);

@@ -28,17 +28,20 @@ export const main = handler(async (event, context) => {
   };
 });
 
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
+function getQuarter() {
+  let d = new Date();
+  let m = Math.floor(d.getMonth()/3) + 2;
+  return m > 4? m - 4 : m;
+}
+const quarter = getQuarter();
+const year =  new Date().getFullYear();
 
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
   const sendToEmail = sendToEmailArry.map((e) => e.email);
-  const uncertifiedStates = await getUncertifiedStates();
+  const uncertifiedStates = await getUncertifiedStates(year, quarter);
   const todayDate = new Date().toISOString().split("T")[0];
-  const fromEmail = "jgillis@collabralink.com";
+  const fromEmail = "mdct@cms.hhs.gov";
   const recipient = {
     TO: sendToEmail,
     SUBJECT: "FFY SEDS Enrollment Data Overdue",
@@ -46,7 +49,7 @@ async function businessOwnersTemplate() {
     MESSAGE: `
     This is an automated message to notify you that the states listed below have
 
-    not certified their SEDS data for FFY${date.year} Q${date.quarter} as of
+    not certified their SEDS data for FFY${year} Q${quarter} as of
 
     ${todayDate}: {${uncertifiedStates}}
 

@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
     ExpressionAttributeValues: {
       ":answerFormID": answerFormID,
     },
-    KeyConditionExpression: "state_form = :answerFormID"
+    KeyConditionExpression: "state_form = :answerFormID",
   };
 
   const questionParams = {

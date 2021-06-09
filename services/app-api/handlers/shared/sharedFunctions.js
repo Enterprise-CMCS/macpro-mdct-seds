@@ -1,10 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
-let date = {
-  year: new Date().getFullYear(),
-  quarter: new Date().getMonth(),
-};
-
 export async function getUsersEmailByRole(role) {
   const UsersObj = [];
   const params = {
@@ -32,8 +27,9 @@ export async function getUsersEmailByRole(role) {
 
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
-export async function getUncertifiedStates() {
+export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
+
   let UncertifiedstateList = [];
   const params = {
     TableName:
@@ -46,14 +42,16 @@ export async function getUncertifiedStates() {
     },
     ExpressionAttributeValues: {
       ":status": "In Progress",
-      ":year": date.year,
-      ":quarter": date.quarter,
+      ":year": year,
+      ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
+
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
+
   if (result.Count === 0) {
     return [
       {
@@ -66,7 +64,7 @@ export async function getUncertifiedStates() {
   const payload = result.Items;
   payload.map((stateInfo) => {
     // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.program_code);
+    UncertifiedstateList.push(stateInfo.state_id);
   });
   let filteredStateList = UncertifiedstateList.filter(function (
     elem,
@@ -77,4 +75,58 @@ export async function getUncertifiedStates() {
     return index === self.indexOf(elem);
   });
   return filteredStateList;
+}
+
+export async function getQuestionsByYear(specifiedYear) {
+  const questionParams = {
+    TableName:
+      process.env.FORM_QUESTIONS_TABLE_NAME ??
+      process.env.FormQuestionsTableName,
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ExpressionAttributeValues: {
+      ":specifiedYear": parseInt(specifiedYear),
+    },
+    FilterExpression: "#theYear = :specifiedYear",
+  };
+
+  const questionResult = await dynamoDb.scan(questionParams);
+
+  return questionResult.Items;
+}
+
+export async function getStatesList() {
+  const stateParams = {
+    TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
+  };
+
+  const stateResult = await dynamoDb.scan(stateParams);
+
+  return stateResult.Items;
+}
+
+export async function getFormDescriptions() {
+  const formDescriptionParams = {
+    TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
+  };
+
+  const formDescription = await dynamoDb.scan(formDescriptionParams);
+
+  return formDescription.Items;
+}
+
+export async function getFormResultByStateString(stateFormString) {
+  const params = {
+    TableName:
+      process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+    ExpressionAttributeValues: {
+      ":state_form": stateFormString,
+    },
+    FilterExpression: "state_form = :state_form",
+  };
+
+  const result = await dynamoDb.scan(params);
+
+  return result.Items;
 }

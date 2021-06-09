@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
@@ -12,11 +12,15 @@ import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
+import Unauthorized from "../Unauthorized/Unauthorized";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormPage = ({ getForm, statusData }) => {
-  const [saveAlert, setSaveAlert] = useState(false);
+  let history = useHistory();
+
+  const [saveAlert, setSaveAlert] = React.useState(false);
+  const [hasAccess, setHasAccess] = React.useState("");
   const { last_modified, save_error } = statusData;
-  const [redirectToPDF, setRedirectToPDF] = useState(false);
 
   // Extract state, year, quarter and formName from URL segments
   const { state, year, quarter, formName } = useParams();
@@ -26,16 +30,35 @@ const FormPage = ({ getForm, statusData }) => {
   const quarterInt = Number.parseInt(quarter).toString();
   const formattedFormName = formName.toUpperCase().replace("-", ".");
 
-  const redirectToPDFClicked = () => {
-    setRedirectToPDF(true);
+  const redirectToPDF = async () => {
+    if (
+      window.confirm(
+        "You may have unsaved changes. If unsure, click cancel and save the form before proceeding"
+      )
+    ) {
+      history.push(`/print/${state}/${year}/${quarter}/${formName}`);
+    }
   };
   // Call the API and set questions, answers and status data in redux based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
-      await getForm(formattedStateName, year, quarterInt, formattedFormName);
+      // Get user information
+      const currentUserInfo = await getUserInfo();
+
+      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
+
+      if (
+        userStates.includes(state) ||
+        currentUserInfo.Items[0].role === "admin"
+      ) {
+        await getForm(formattedStateName, year, quarterInt, formattedFormName);
+        setHasAccess(true);
+      } else {
+        setHasAccess(false);
+      }
     };
     fetchData();
-  }, [getForm, formattedStateName, year, quarterInt, formattedFormName]);
+  }, [getForm, formattedStateName, year, quarterInt, formattedFormName, state]);
 
   useEffect(() => {
     // Get current time
@@ -82,48 +105,40 @@ const FormPage = ({ getForm, statusData }) => {
           </Alert>
         </div>
       ) : null}
+      {hasAccess === true ? (
+        <>
+          <div className="margin-x-5 margin-bottom-3">
+            <FormHeader
+              quarter={quarterInt}
+              form={formattedFormName}
+              year={year}
+              state={formattedStateName}
+            />
+          </div>
+          <Button
+            className="action-button"
+            primary="true"
+            onClick={redirectToPDF}
+          >
+            Print view / PDF
+            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+          </Button>
+          <NotApplicable />
+          <div className="tab-container margin-x-5 margin-y-3">
+            <TabContainer quarter={quarter} />
+          </div>
 
-      <div className="margin-x-5 margin-bottom-3">
-        <FormHeader
-          quarter={quarterInt}
-          form={formattedFormName}
-          year={year}
-          state={formattedStateName}
-        />
-      </div>
-      <Button
-        className="margin-left-3 action-button"
-        primary="true"
-        onClick={redirectToPDFClicked}
-      >
-        PDF
-        <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
-      </Button>
-      <NotApplicable />
-      <div className="tab-container margin-x-5 margin-y-3">
-        <TabContainer quarter={quarter} />
-      </div>
-
-      <div className="margin-top-2" data-testid="form-footer">
-        <FormFooter
-          state={formattedStateName}
-          year={year}
-          quarter={quarterInt}
-          lastModified={last_modified}
-        />
-      </div>
-      {redirectToPDF ? (
-        <Redirect
-          to={{
-            pathname: "/printPDF",
-            state: {
-              form: formattedFormName,
-              year: year,
-              stateName: formattedStateName
-            }
-          }}
-        />
+          <div className="margin-top-2" data-testid="form-footer">
+            <FormFooter
+              state={formattedStateName}
+              year={year}
+              quarter={quarterInt}
+              lastModified={last_modified}
+            />
+          </div>
+        </>
       ) : null}
+      {hasAccess === false ? <Unauthorized /> : null}
     </div>
   );
 };

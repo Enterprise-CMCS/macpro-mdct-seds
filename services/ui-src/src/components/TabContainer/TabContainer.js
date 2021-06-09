@@ -6,6 +6,8 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
+import { Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../libs/api";
 
 import "./TabContainer.scss";
 
@@ -21,9 +23,25 @@ const TabContainer = ({
   const [disabledStatus, setDisabledStatus] = useState();
 
   useEffect(() => {
-    const establishStatus = () => {
+    const establishStatus = async () => {
+      let userRole;
       let statusBoolean = false;
-      if (notApplicable === true || statusId === 4 || statusId === 5) {
+
+      const currentUser = (await Auth.currentSession()).getIdToken();
+      const {
+        payload: { email }
+      } = currentUser;
+      const existingUser = await obtainUserByEmail({ email });
+      const userdata = existingUser["Items"];
+      userdata.map(async userInfo => {
+        userRole = userInfo.role;
+      });
+      if (
+        notApplicable === true ||
+        statusId === 4 ||
+        statusId === 5 ||
+        userRole === "admin"
+      ) {
         statusBoolean = true;
       }
       setDisabledStatus(statusBoolean);

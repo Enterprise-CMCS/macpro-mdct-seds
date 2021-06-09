@@ -41,11 +41,11 @@ describe("Test CertificationTab.js", () => {
     expect(wrapper.find({ "data-testid": "statusText" })).toEqual({});
 
     expect(wrapper2.find({ "data-testid": "statusText" }).text()).toMatch(
-      "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 at 12:46:35 am by Tim Griesemer"
+      "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Tim Griesemer"
     );
 
     expect(wrapper3.find({ "data-testid": "statusText" }).text()).toMatch(
-      "This report was updated to Final Data Certified and Submitted on 01-15-2021 at 12:46:35 am by Timothy Griesemer"
+      "This report was updated to Final Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Timothy Griesemer"
     );
   });
   test("Check button prop disabled for all three statuses", () => {

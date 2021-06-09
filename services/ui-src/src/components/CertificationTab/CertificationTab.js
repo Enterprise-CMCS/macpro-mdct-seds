@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@trussworks/react-uswds";
@@ -32,6 +32,19 @@ const CertificationTab = ({
     isFinal === true ? true : isProvisional
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
+  const [
+    viewProvisionalAndFinalCertify,
+    setViewProvisionalAndFinalCertify
+  ] = useState(true);
+  useEffect(() => {
+    const viewProvisionalAndFinal = async () => {
+      const userRole = await currentUserRole();
+      if (userRole === "admin") {
+        setViewProvisionalAndFinalCertify(false);
+      }
+    };
+    viewProvisionalAndFinal();
+  }, []);
 
   const submitProvisional = async () => {
     await certifyAndSubmitProvisional();
@@ -54,29 +67,31 @@ const CertificationTab = ({
     }
   };
 
-  const sendEmailtoBo = async () => {
+  const currentUserRole = async () => {
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
-    try {
-      const currentUser = await obtainUserByEmail({
-        email: userEmail
-      });
-      let userObj = currentUser["Items"];
-      userObj.map(async userInfo => {
-        if (userInfo.role === "state") {
-          let emailObj = {
-            formInfo: formStatus,
-            username: userInfo.username
-          };
-          await sendUncertifyEmail(emailObj);
-        }
-      });
-    } catch (err) {
-      throw new Error(err);
+    const currentUser = await obtainUserByEmail({
+      email: userEmail
+    });
+
+    let userObj = currentUser["Items"];
+    userObj.map(async userInfo => {
+      return userInfo.role;
+    });
+  };
+
+  const sendEmailtoBo = async () => {
+    let userRole = await currentUserRole();
+    if (userRole === "state") {
+      let emailObj = {
+        formInfo: formStatus
+      };
+      await sendUncertifyEmail(emailObj);
     }
   };
 
   let certifyText;
+
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">
@@ -142,22 +157,24 @@ const CertificationTab = ({
           </div>
         ) : null}
       </div>
-      <div className="certify-btn ">
-        <Button
-          onClick={() => submitProvisional()}
-          type="button"
-          disabled={provisionalButtonStatus}
-        >
-          {"Certify & Submit Provisional Data"}
-        </Button>
-        <Button
-          onClick={() => submitFinal()}
-          type="button"
-          disabled={finalButtonStatus}
-        >
-          {"Certify & Submit Final Data"}
-        </Button>
-      </div>
+      {viewProvisionalAndFinalCertify ? (
+        <div className="certify-btn ">
+          <Button
+            onClick={() => submitProvisional()}
+            type="button"
+            disabled={provisionalButtonStatus}
+          >
+            {"Certify & Submit Provisional Data"}
+          </Button>
+          <Button
+            onClick={() => submitFinal()}
+            type="button"
+            disabled={finalButtonStatus}
+          >
+            {"Certify & Submit Final Data"}
+          </Button>
+        </div>
+      ) : null}
       {isFinal ? (
         <div className="certify-btn uncertify">
           <Button onClick={() => submitUncertify()} type="button">
