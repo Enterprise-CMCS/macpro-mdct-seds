@@ -140,7 +140,7 @@ export const main = handler(async (event, context) => {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
       },
     };
-    dynamoDb.batchWrite(batchRequest, processItemsCallback);
+    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
   }
 
   // Add All StateForm Descriptions
@@ -209,7 +209,7 @@ export const main = handler(async (event, context) => {
       },
     };
 
-    dynamoDb.batchWrite(batchRequest, processItemsCallback);
+    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
   }
 
   return {
