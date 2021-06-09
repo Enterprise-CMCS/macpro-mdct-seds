@@ -14,7 +14,7 @@ import {
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
 
-const HomeAdmin = ({ stateList }) => {
+const HomeAdmin = ({ stateList, user }) => {
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
@@ -35,7 +35,7 @@ const HomeAdmin = ({ stateList }) => {
       }
 
       if (currentUserInfo["Items"]) {
-        const userRole = currentUserInfo["Items"][0].role;
+        const userRole = user.attributes["app-role"];
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates;
 
@@ -76,6 +76,8 @@ const HomeAdmin = ({ stateList }) => {
     // Build Accordion items and set to local state
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
+
+  console.log("yeeeeeeeet", role);
 
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
