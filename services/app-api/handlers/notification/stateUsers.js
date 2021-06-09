@@ -57,6 +57,7 @@ async function certifiedStateUsersEmail() {
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
+  console.log("stateUsersToEmail", stateUsersToEmail);
   const fromEmail = "mdct@cms.hhs.gov";
   let todayDate = new Date().toISOString().split("T")[0];
 
