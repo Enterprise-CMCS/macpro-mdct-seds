@@ -30,7 +30,7 @@ const NotApplicable = ({
     const booleanToInteger = notApplicable ? 1 : 0;
     setApplicableStatus(booleanToInteger);
 
-    if (statusId === 4) {
+    if (statusId === 3) {
       setDisableSlider(true);
     }
   }, [notApplicable, status, statusId, updatedApplicableStatus]);
@@ -46,17 +46,18 @@ const NotApplicable = ({
         return;
       }
     }
-    const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
-    const invertedStatus = statusId === 5 ? 2 : 5;
 
-    const newStatusString = statusTypes.find(
+    const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
+    const invertedStatus = statusId === 4 ? 1 : 4;
+
+    const newStatusObject = statusTypes.find(
       element => element.status_id === invertedStatus
     );
 
     setApplicableStatus(applicableStatus === 0 ? 1 : 0);
     await updatedApplicableThunk(
       invertIntegerToBoolean,
-      newStatusString.status,
+      newStatusObject.status,
       invertedStatus
     );
     saveForm();
