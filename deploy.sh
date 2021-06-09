@@ -29,7 +29,7 @@ deploy() {
   service=$1
   pushd services/$service
   install_deps
-  serverless deploy  --stage $stage
+  SLS_DEBUG=* serverless deploy  --stage $stage
   popd
 }
 

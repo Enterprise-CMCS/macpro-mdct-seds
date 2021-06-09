@@ -91,7 +91,15 @@ export async function getQuestionsByYear(specifiedYear) {
     FilterExpression: "#theYear = :specifiedYear",
   };
 
-  const questionResult = await dynamoDb.scan(questionParams);
+  let questionResult;
+
+  try {
+    questionResult = await dynamoDb.scan(questionParams);
+    console.log("getQuestionsByYear result", questionResult);
+  } catch (e) {
+    console.log("getQuestionsByYear failed");
+    throw e;
+  }
 
   return questionResult.Items;
 }
@@ -101,7 +109,15 @@ export async function getStatesList() {
     TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
   };
 
-  const stateResult = await dynamoDb.scan(stateParams);
+  let stateResult;
+
+  try {
+    stateResult = await dynamoDb.scan(stateParams);
+    console.log("getStatesList", stateResult);
+  } catch (e) {
+    console.log("getStatesList failed");
+    throw e;
+  }
 
   return stateResult.Items;
 }
@@ -111,7 +127,14 @@ export async function getFormDescriptions() {
     TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
   };
 
-  const formDescription = await dynamoDb.scan(formDescriptionParams);
+  let formDescription;
+  try {
+    formDescription = await dynamoDb.scan(formDescriptionParams);
+    console.log("getFormDescriptions", getFormDescriptions);
+  } catch (e) {
+    console.log("getFormDescription failed");
+    throw e;
+  }
 
   return formDescription.Items;
 }
