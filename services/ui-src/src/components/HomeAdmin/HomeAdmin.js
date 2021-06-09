@@ -54,7 +54,7 @@ const HomeAdmin = ({ stateList, user }) => {
     };
 
     onLoad().then();
-  }, [stateList]);
+  });
 
   const updateUsState = async e => {
     setSelectedState(e.value);
