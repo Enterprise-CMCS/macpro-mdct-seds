@@ -24,7 +24,7 @@ export const statusData = {
   last_modified: "04-09-2021",
   quarter: 1,
   status_id: 1,
-  status: "Not Started"
+  status: "In Progress"
 };
 
 export const answers = [

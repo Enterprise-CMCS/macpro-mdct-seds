@@ -8,6 +8,13 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -56,6 +63,13 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -104,6 +118,13 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -152,6 +173,13 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -202,6 +230,13 @@
     "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -385,6 +420,13 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -436,6 +478,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -487,6 +536,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -538,6 +594,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0000", "label": "Under Age 0" },
+      { "key": "0001", "label": "Ages 0 - 1" },
+      { "key": "0105", "label": "Ages 1 - 5" },
+      { "key": "0612", "label": "Ages 6 - 12" },
+      { "key": "1318", "label": "Ages 13 - 18" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -586,6 +649,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of pregnant women ever enrolled during the quarter?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -634,6 +700,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of new enrollees in the quarter?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -682,6 +751,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of disenrollees in the quarter?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -730,6 +802,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of member-months of enrollment for pregnant women in the quarter?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -780,6 +855,9 @@
     "label": "What is the average number of months of enrollment for pregnant women ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -963,6 +1041,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of pregnant women enrolled at the end of the quarter?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1014,6 +1095,9 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of pregnant women ever enrolled during the year?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1065,6 +1149,9 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees during the year?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1116,6 +1203,9 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees during the year?",
+    "age_ranges": [
+      { "key": "1964", "label": "Age 19 years through age 64 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1164,6 +1254,12 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1212,6 +1308,12 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1260,6 +1362,12 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1308,6 +1416,12 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1358,6 +1472,12 @@
     "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1541,6 +1661,12 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1592,6 +1718,12 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1643,6 +1775,12 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1694,6 +1832,12 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1741,6 +1885,13 @@
     "rowTotal": true,
     "columnTotal": true,
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1788,6 +1939,13 @@
     "rowTotal": true,
     "columnTotal": true,
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1835,6 +1993,13 @@
     "rowTotal": true,
     "columnTotal": true,
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1882,6 +2047,13 @@
     "rowTotal": true,
     "columnTotal": true,
     "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -1931,6 +2103,13 @@
     "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
     "readonly": true,
     "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2113,6 +2292,13 @@
     "rowTotal": true,
     "columnTotal": true,
     "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2163,6 +2349,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2213,6 +2406,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2263,6 +2463,13 @@
       "show_if_quarter_in": ["4"]
     },
     "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+    "age_ranges": [
+      { "key": "0001", "label": "Birth through age 12 months" },
+      { "key": "0105", "label": "Age 1 year through age 5 years" },
+      { "key": "0612", "label": "Age 6 years through age 12 years" },
+      { "key": "1318", "label": "Age 13 years through age 18 years" },
+      { "key": "1920", "label": "Age 19 years through age 20 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2311,6 +2518,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of enrollees by gender?",
+    "age_ranges": [
+      { "key": "0018", "label": "Conception through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2359,6 +2569,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of enrollees by race?",
+    "age_ranges": [
+      { "key": "0018", "label": "Conception through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",
@@ -2535,6 +2748,9 @@
     "row_total": true,
     "column_total": true,
     "label": "What is the number of enrollees by ethnicity?",
+    "age_ranges": [
+      { "key": "0018", "label": "Conception through age 18 years" }
+    ],
     "rows": [
       {
         "col1": "",

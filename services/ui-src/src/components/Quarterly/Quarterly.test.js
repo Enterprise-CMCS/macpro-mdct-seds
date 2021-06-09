@@ -20,14 +20,11 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("Quarterly tests", () => {
-  // Cache original functionality
-  const realUseState = React.useState;
-  // Stub the initial state
-  const mockInitialState = quarterlyDataMock;
   // Mock useState before rendering your component to set initial state values
   jest
     .spyOn(React, "useState")
-    .mockImplementationOnce(() => realUseState(mockInitialState));
+    .mockReturnValueOnce([quarterlyDataMock, {}])
+    .mockReturnValueOnce([true, {}]);
 
   wrapper = mount(
     <Provider store={store}>
@@ -53,6 +50,7 @@ describe("Quarterly tests", () => {
     expect(wrapper.find("#row-3").find("a").at(0).text()).toMatch("21E");
     expect(wrapper.find("#row-4").find("a").at(0).text()).toMatch("64.EC");
   });
+
   test("Check that the form names contain the correct text", () => {
     expect(wrapper.find("#row-0").find("p").at(0).text()).toMatch(
       "Gender, Race & Ethnicity"
@@ -70,9 +68,10 @@ describe("Quarterly tests", () => {
       "Number of Children Served in Medicaid Program"
     );
   });
+
   test("Check that the status of each form is correct", () => {
     expect(wrapper.find("#row-0").find("button").at(0).text()).toMatch(
-      "Not Started"
+      "In Progress"
     );
     expect(wrapper.find("#row-1").find("button").at(0).text()).toMatch(
       "In Progress"
@@ -87,6 +86,7 @@ describe("Quarterly tests", () => {
       "Final Data Certified and Submitted"
     );
   });
+
   test("Check that the status dates are correct", () => {
     expect(wrapper.find("#row-0").find("div").at(6).text()).toMatch(
       "04-07-2021 at 8:00:00 pm EST"

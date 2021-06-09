@@ -38,18 +38,8 @@ const CertificationTab = ({
   ] = useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
-      let userRole;
-      const currentUser = (await Auth.currentSession()).getIdToken();
-      const {
-        payload: { email }
-      } = currentUser;
-      const existingUser = await obtainUserByEmail({ email });
-      const userdata = existingUser["Items"];
-      userdata.map(async userInfo => {
-        userRole = userInfo.role;
-      });
-
-      if (userRole === "admin" || userRole === "business") {
+      const userRole = await currentUserRole();
+      if (userRole === "admin") {
         setViewProvisionalAndFinalCertify(false);
       }
     };
@@ -77,29 +67,34 @@ const CertificationTab = ({
     }
   };
 
-  const sendEmailtoBo = async () => {
+  const currentUserRole = async () => {
     const authUser = await Auth.currentSession();
     const userEmail = authUser.idToken.payload.email;
-    try {
-      const currentUser = await obtainUserByEmail({
-        email: userEmail
-      });
-      let userObj = currentUser["Items"];
-      userObj.map(async userInfo => {
-        if (userInfo.role === "state") {
-          let emailObj = {
-            formInfo: formStatus,
-            username: userInfo.username
-          };
-          await sendUncertifyEmail(emailObj);
-        }
-      });
-    } catch (err) {
-      throw new Error(err);
+    const currentUser = await obtainUserByEmail({
+      email: userEmail
+    });
+    let userRole;
+
+    let userObj = currentUser["Items"];
+    userObj.map(async userInfo => {
+      userRole =  userInfo.role;
+    });
+
+    return userRole;
+  };
+
+  const sendEmailtoBo = async () => {
+    let userRole = await currentUserRole();
+    if (userRole === "state") {
+      let emailObj = {
+        formInfo: formStatus
+      };
+      await sendUncertifyEmail(emailObj);
     }
   };
 
   let certifyText;
+
   if (isFinal) {
     certifyText = (
       <div data-testid="certificationText" className="padding-y-2">

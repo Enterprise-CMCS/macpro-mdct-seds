@@ -61,7 +61,7 @@ export const main = handler(async (event, context) => {
       state_form: answers[0].state_form,
     },
     UpdateExpression:
-      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable",
+      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable, state_comments = :state_comments",
     ExpressionAttributeValues: {
       ":last_modified_by": statusData.last_modified_by,
       ":last_modified": statusData.last_modified,
@@ -70,6 +70,7 @@ export const main = handler(async (event, context) => {
       ":status": statusData.status,
       ":status_id": statusData.status_id,
       ":not_applicable": statusData.not_applicable,
+      ":state_comments": statusData.state_comments,
     },
     ExpressionAttributeNames: {
       "#s": "status",
