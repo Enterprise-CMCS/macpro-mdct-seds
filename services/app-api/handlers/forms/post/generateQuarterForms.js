@@ -23,8 +23,7 @@ export const main = handler(async (event, context) => {
     if (err) {
       console.log("There was an error in processing query data.");
     } else {
-      let params = {};
-      params.RequestItems = data.UnprocessedItems;
+      let params = { RequestItems: data.UnprocessedItems };
 
       if (Object.keys(params.RequestItems).length != 0) {
         dynamoDb.batchWriteItem(params, processItemsCallback);
@@ -55,7 +54,7 @@ export const main = handler(async (event, context) => {
   let allQuestions = await getQuestionsByYear(specifiedYear);
 
   // If questions not found, return failure message
-  if (allQuestions.length === 0) {
+  if (!allQuestions.length) {
     return {
       status: 500,
       message: `Could not find template for generating forms for ${specifiedYear}`,
@@ -65,7 +64,7 @@ export const main = handler(async (event, context) => {
   // Pull list of states
   let allStates = await getStatesList();
 
-  if (allStates.length === 0) {
+  if (!allStates.length) {
     return {
       status: 500,
       message: `Could not retrieve state list.`,
@@ -75,7 +74,7 @@ export const main = handler(async (event, context) => {
   // Pull list of form descriptions
   const allFormDescriptions = await getFormDescriptions();
 
-  if (allFormDescriptions.length === 0) {
+  if (!allFormDescriptions.length) {
     return {
       status: 500,
       message: `Could not retrieve form descriptions.`,
