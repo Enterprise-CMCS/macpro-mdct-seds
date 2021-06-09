@@ -28,6 +28,6 @@ describe("Tests for HomeAdmin.js", () => {
   });
 
   test("Ensure links are visible", () => {
-    expect(wrapper.containsMatchingElement(<Link />));
+    expect(getByTestId("HomeAdmin")).toBeVisible();
   });
 });
