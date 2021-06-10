@@ -73,7 +73,7 @@ const HomeAdmin = ({ stateList, user }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
-  let role = user.attributes["app-role"]
+  let role = user.attributes["app-role"];
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (

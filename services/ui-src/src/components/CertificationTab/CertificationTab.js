@@ -77,7 +77,7 @@ const CertificationTab = ({
 
     let userObj = currentUser["Items"];
     userObj.map(async userInfo => {
-      userRole =  userInfo.role;
+      userRole = userInfo.role;
     });
 
     return userRole;
