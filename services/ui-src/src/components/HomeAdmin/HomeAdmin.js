@@ -13,6 +13,7 @@ import {
 } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const HomeAdmin = ({ stateList, user }) => {
   const [selectedState, setSelectedState] = useState();
@@ -22,16 +23,8 @@ const HomeAdmin = ({ stateList, user }) => {
 
   useEffect(() => {
     const onLoad = async () => {
-      let currentUserInfo;
-      try {
-        // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
-      } catch (e) {
-        onError(e);
-      }
+      let currentUserInfo = await getUserInfo();
+      let a;
 
       if (currentUserInfo["Items"]) {
         let userStates = currentUserInfo["Items"][0].states;
