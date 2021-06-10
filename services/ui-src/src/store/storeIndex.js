@@ -1,16 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import quarterStatuses from "./reducers/quarterStatuses";
-import userData from "./reducers/userData";
-import currentForm from "./reducers/singleForm";
+import currentForm from "./reducers/singleForm/singleForm";
 import global from "./reducers/global";
 
 // Consolidate reducers
 export const reducers = combineReducers({
-  quarterStatuses,
   currentForm,
-  userData,
   global
 });
 

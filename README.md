@@ -1,12 +1,12 @@
+[cms-mdct-seds](https://github.com/CMSgov/cms-mdct-seds) [![Maintainability](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/maintainability)](https://codeclimate.com/repos/605895776f390e01b500ea17/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/test_coverage)](https://codeclimate.com/repos/605895776f390e01b500ea17/test_coverage)
+
 # MACPro Data Collection Tool: CHIP Statistical Enrollment Data System
 
 Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framwork. Is it based on:
 
-[macpro-quickstart-serverless](https://github.com/CMSgov/macpro-quickstart-serverless) ![Build](https://github.com/CMSgov/macpro-quickstart-serverless/workflows/Build/badge.svg?branch=master)[![latest release](https://img.shields.io/github/release/cmsgov/macpro-quickstart-serverless.svg)](https://github.com/cmsgov/macpro-quickstart-serverless/releases/latest)
-
 ## Architecture
 
-![Architecture Diagram](./.images/architecture.png?raw=true)
+![Architecture Diagram](./.images/architecture.svg?raw=true)
 
 ## Git Policies, Activities and Notes
 
@@ -102,7 +102,12 @@ functions:
 ```
 
 2. Create handler in `{ROOT}/services/app-api/handlers`
-   1. Note: For Table name use process.env vars located in `{ROOT}/.env`
+   1. Note: For Table name use custom vars located in `{ROOT}/services/app-api/serverless.yml`
+   2. Conventions:
+      1. Each file in the handler directory should contain a single function called 'main'
+      2. The handlers are organized by API, each with their own folder. Within those folders should be separate files for each HTTP verb.
+         For instance: There might be `users` folder in handlers, (`app-api/handlers/users`). Within that `users`folder would be individual files each corresponding with an HTTP verb so that the inside of `users` might look like `get.js` `create.js` `update.js` `delete.js`, etc.
+         The intention of this structure is that each of the verbs within a folder corresponds to the same data set in the database.
 3. Add wrapper function in `{ROOT}/services/ui-src/src/lib/api.js`
    example:
 
@@ -111,6 +116,28 @@ export function listUsers() {
   const opts = requestOptions();
   return API.get("amendments", `/users`, opts);
 }
+```
+
+### Adding New Forms (quarterly)
+
+1. If necessary, create a new form template, for the year, in ROOT/src/database/initial_data_load/
+   1. Example: `form_questions_2022.json`
+2. Add the new form to seed >form-questions->sources in ROOT/services/data-deployment/serverless.yml
+   1. Example:
+   ```form-questions:
+    table: ${self:custom.stage}-form-questions
+    sources:
+    [
+    ../../src/database/initial_data_load/form_questions_2022.json,
+    ../../src/database/initial_data_load/form_questions_2021.json,
+    ../../src/database/initial_data_load/form_questions_2020.json,
+    ../../src/database/initial_data_load/form_questions_2019.json,
+    ]
+   ```
+3. Log in to the site as an Administrator
+4. Select `Generate Quarterly Forms`
+5. Select the Year and Quarter you wish to generate forms for
+6. Select Generate forms button
 
 ### Running the nightwatch test suite
 
@@ -166,7 +193,7 @@ brew install yarn
 
 ./dev local
 
-````
+```
 
 ## Dependencies
 
@@ -202,7 +229,7 @@ in the public domain within the United States.
 
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
-````
+```
 
 ### Contributors
 

@@ -13,8 +13,12 @@
       "status_description": {
         "type": "string",
         "description": "Description of what it means for a form to be in this status"
+      },
+      "status_id": {
+        "type": "integer",
+        "description": "Status ID"
       }
     },
-    "required": ["status", "status_description"]
+    "required": ["status", "status_description", "status_id"]
   }
 }

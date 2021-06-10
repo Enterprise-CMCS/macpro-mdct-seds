@@ -11,9 +11,25 @@ $mdct-white: #fff;
 }
 
 .grid-with-totals {
+  table {
+    tr th:first-child {
+      width: 20%;
+      min-width: 20%;
+      word-break: break-all;
+    }
+    tr th:last-child {
+      width: 5%;
+    }
+    width: 95%;
+  }
   th {
     font-weight: bold;
     background: $mdct-gray !important;
+
+    span {
+      display: block;
+      width: 70px;
+    }
   }
 
   .total-header-cell {
@@ -24,5 +40,10 @@ $mdct-white: #fff;
   .total-column {
     background: $mdct-light-blue;
     font-weight: bold;
+  }
+  .synthesized {
+    border: none;
+    position: relative;
+    background-color: white;
   }
 }

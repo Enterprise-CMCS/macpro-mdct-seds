@@ -1,6 +1,10 @@
 {
   "name": "macpro-quickstart-serverless",
   "type": "module",
+  "resolutions": {
+    "**/**/lodash": "^4.17.12",
+    "minimist": "^1.2.5"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +12,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
+    "smoke": "npm run test --tag smoke"
   },
   "repository": {
     "type": "git",
@@ -24,12 +29,16 @@
     "@types/dotenv": "^8.2.0",
     "@types/node": "^14.14.6",
     "@types/yargs": "^15.0.10",
-    "chromedriver": "^88.0.0",
+    "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
     "nightwatch": "^1.5.1",
     "prettier": "2.2.1",
     "serverless": "^2.7.0",
     "typescript": "^4.0.5",
     "yargs": "^16.1.1"
+  },
+  "dependencies": {
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "jsonpath": "^1.1.0"
   }
 }

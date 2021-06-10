@@ -1,0 +1,57 @@
+/**
+  * Contains Print media query AND print page
+ */
+
+@media print {
+  textarea {
+    display: none !important;
+  }
+
+  input.usa-input {
+    border: 0px none;
+  }
+
+  .usa-banner,
+  .footer,
+  .navigation {
+    display: none;
+  }
+
+  .logo {
+    text-align: center;
+  }
+
+  .question-component {
+    padding-top: 0;
+    break-inside: avoid;
+    border-top: none;
+  }
+
+  .tab-container-main {
+    padding: 0;
+  }
+
+  .age-range-description {
+    page-break-before: always;
+  }
+  .age-range-description:first-of-type {
+    page-break-before: avoid;
+  }
+
+  .app-title {
+    display: block;
+    font-size: 1.6rem;
+    margin: 0 0 0 0;
+    padding: 0 3.5rem 0 0;
+  }
+
+  .print-only {
+    display: block;
+  }
+  .breadcrumb {
+    display: none !important;
+  }
+  .print-button {
+    display: none !important;
+  }
+}

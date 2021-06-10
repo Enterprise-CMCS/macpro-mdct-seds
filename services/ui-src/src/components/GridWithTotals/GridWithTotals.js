@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
+import { connect } from "react-redux";
 import "./GridWithTotals.scss";
+import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -12,16 +15,28 @@ const GridWithTotals = props => {
 
   const [gridTotalOfTotals, updateGridTotalOfTotals] = useState();
 
+  const currentPrecision = props.precision;
+
+  const synthesized = props.synthesized;
+
+  useEffect(() => {
+    updateGridData(translateInitialData(props.gridData));
+    updateTotals();
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
-    gridCopy[row][column] = parseFloat(event.target.value);
+    gridCopy[row][column] = parseFloat(
+      event.target.value.replace(/[^0-9]/g, "")
+    );
 
     updateGridData(gridCopy);
     updateTotals();
+    props.setAnswer(gridCopy, props.questionID);
   };
 
   const updateTotals = () => {
@@ -110,12 +125,18 @@ const GridWithTotals = props => {
     }
   }
 
-  const headerCols = headerColArray.map(header => {
-    return <th scope="col">{header}</th>;
+  let nextHeaderIndex;
+  const headerCols = headerColArray.map((header, headerIndex) => {
+    nextHeaderIndex = headerIndex;
+    return (
+      <th scope="col" key={headerIndex}>
+        <span>{header}</span>
+      </th>
+    );
   });
 
   headerCols.push(
-    <th scope="col" className="total-header-cell">
+    <th scope="col" className="total-header-cell" key={nextHeaderIndex + 1}>
       Totals
     </th>
   );
@@ -123,42 +144,78 @@ const GridWithTotals = props => {
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
       return (
-        <tr>
+        <tr key={rowIndex}>
           {row.map((column, columnIndex) => {
             let formattedCell;
 
             if (columnIndex === 2) {
               formattedCell = (
-                <React.Fragment>
+                <React.Fragment key={columnIndex}>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
+                    {!synthesized ? (
+                      <TextInput
+                        type="number"
+                        className="grid-column"
+                        onChange={event =>
+                          updateGrid(rowIndex, columnIndex, event)
+                        }
+                        defaultValue={parseFloat(column).toFixed(
+                          currentPrecision
+                        )}
+                        value={parseFloat(
+                          gridData[rowIndex][columnIndex]
+                        ).toFixed(currentPrecision)}
+                        disabled={props.disabled}
+                      />
+                    ) : (
+                      <span className="usa-input rid-column synthesized">
+                        {gridData[rowIndex][columnIndex] >= 0
+                          ? parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                              currentPrecision
+                            )
+                          : ""}
+                      </span>
+                    )}
+                  </td>
+                </React.Fragment>
+              );
+            } else {
+              formattedCell = (
+                <td key={columnIndex}>
+                  {!synthesized ? (
                     <TextInput
                       type="number"
                       className="grid-column"
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={column}
+                      defaultValue={parseFloat(column).toFixed(
+                        currentPrecision
+                      )}
+                      value={parseFloat(
+                        gridData[rowIndex][columnIndex]
+                      ).toFixed(currentPrecision)}
+                      disabled={props.disabled}
                     />
-                  </td>
-                </React.Fragment>
-              );
-            } else {
-              formattedCell = (
-                <td>
-                  <TextInput
-                    type="number"
-                    className="grid-column"
-                    onChange={event => updateGrid(rowIndex, columnIndex, event)}
-                    defaultValue={column}
-                  />
+                  ) : (
+                    <span className="usa-input grid-column synthesized ">
+                      {column >= 0
+                        ? parseFloat(column).toFixed(currentPrecision)
+                        : ""}
+                    </span>
+                  )}
                 </td>
               );
             }
 
             return formattedCell;
           })}
-          <td className="total-column">{gridRowTotals[rowIndex]}</td>
+          <td className="total-column">
+            {gridRowTotals[rowIndex] > 0
+              ? parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+              : 0}
+          </td>
         </tr>
       );
     }
@@ -171,32 +228,38 @@ const GridWithTotals = props => {
 
     if (i === 0) {
       column = (
-        <th scope="row" className="total-header-cell">
+        <th scope="row" className="total-header-cell" key={i}>
           Totals:
         </th>
       );
     } else {
-      column = <td className="total-column">{gridColumnTotals[i]}</td>;
+      column = (
+        <td className="total-column">
+          {gridColumnTotals[i] > 0
+            ? parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+            : 0}
+        </td>
+      );
     }
 
     return column;
   });
 
   return (
-    <div className="grid-with-totals">
-      <Table
-        bordered={true}
-        caption="This is an example of a table with totals"
-        fullWidth={true}
-      >
+    <div className="grid-with-totals" id={`"${props.questionID}"`}>
+      <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>{headerCols}</tr>
         </thead>
         <tbody>
           {tableData}
-          <tr>
+          <tr className="total-row">
             {totalsRow}
-            <td className="total-column">{gridTotalOfTotals}</td>
+            <td className="total-column">
+              {gridTotalOfTotals > 0
+                ? parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                : 0}
+            </td>
           </tr>
         </tbody>
       </Table>
@@ -230,4 +293,16 @@ const translateInitialData = gridDataObject => {
   return translatedData;
 };
 
-export default GridWithTotals;
+GridWithTotals.propTypes = {
+  gridData: PropTypes.array.isRequired,
+  questionID: PropTypes.string.isRequired,
+  setAnswer: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  synthesized: PropTypes.bool.isRequired
+};
+
+const mapDispatch = {
+  setAnswer: gotAnswer ?? {}
+};
+
+export default connect(null, mapDispatch)(GridWithTotals);
