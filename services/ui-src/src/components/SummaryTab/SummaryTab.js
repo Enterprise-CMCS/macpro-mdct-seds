@@ -14,7 +14,7 @@ const SummaryTab = ({ questions, answers }) => {
 
   // Checks for non-numeric chars in a string
   function containsNonNumeric(value) {
-    return /[^$,\.\d]/.test(value);
+    return /[^$,.\d]/.test(value);
   }
 
   return (
