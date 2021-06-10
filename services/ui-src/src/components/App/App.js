@@ -23,7 +23,7 @@ function App() {
       const user = (await Auth.currentSession()).getIdToken();
       // *** make sure attributes exist and are in standard format
       user.attributes = user.payload;
-      let b;
+
       user.attributes["app-role"] = await determineRole(
         user.attributes["custom:ismemberof"]
       );

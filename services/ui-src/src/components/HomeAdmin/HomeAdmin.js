@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "react-dropdown";
-import { Auth } from "aws-amplify";
-import { obtainAvailableForms, obtainUserByEmail } from "../../libs/api";
-import { onError } from "../../libs/errorLib";
+import { obtainAvailableForms } from "../../libs/api";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -24,7 +22,6 @@ const HomeAdmin = ({ stateList, user }) => {
   useEffect(() => {
     const onLoad = async () => {
       let currentUserInfo = await getUserInfo();
-      let a;
 
       if (currentUserInfo["Items"]) {
         let userStates = currentUserInfo["Items"][0].states;
@@ -47,7 +44,8 @@ const HomeAdmin = ({ stateList, user }) => {
     };
 
     onLoad().then();
-  });
+    /* eslint-disable */
+  }, []);
 
   const updateUsState = async e => {
     setSelectedState(e.value);
