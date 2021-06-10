@@ -23,7 +23,7 @@ const Home = ({ user }) => {
         break;
       case "business":
       case "admin":
-        content = <HomeAdmin />;
+        content = <HomeAdmin user={user} />;
         break;
       default:
         content = <Unauthorized />;
