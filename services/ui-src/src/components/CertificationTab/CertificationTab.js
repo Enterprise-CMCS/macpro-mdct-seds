@@ -73,11 +73,14 @@ const CertificationTab = ({
     const currentUser = await obtainUserByEmail({
       email: userEmail
     });
+    let userRole;
 
     let userObj = currentUser["Items"];
     userObj.map(async userInfo => {
-      return userInfo.role;
+      userRole = userInfo.role;
     });
+
+    return userRole;
   };
 
   const sendEmailtoBo = async () => {
