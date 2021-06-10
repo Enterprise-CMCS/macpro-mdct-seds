@@ -11,5 +11,8 @@
   "devDependencies": {
     "serverless-s3-local": "^0.6.7",
     "serverless-stack-termination-protection": "^1.0.4"
+  },
+  "dependencies": {
+    "serverless-plugin-git-variables": "^5.1.0"
   }
 }

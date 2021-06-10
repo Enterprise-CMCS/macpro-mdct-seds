@@ -14,12 +14,11 @@ import {
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
 
-const HomeAdmin = ({ stateList }) => {
+const HomeAdmin = ({ stateList, user }) => {
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
   const [accordionItems, setAccordionItems] = useState("");
-  const [role, setRole] = useState();
 
   useEffect(() => {
     const onLoad = async () => {
@@ -35,14 +34,11 @@ const HomeAdmin = ({ stateList }) => {
       }
 
       if (currentUserInfo["Items"]) {
-        const userRole = currentUserInfo["Items"][0].role;
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates;
 
-        setRole(userRole);
-
         // If using all states, create a simple array of states for use in compileStatesForDropdown
-        if (userRole === "admin") {
+        if (user.attributes["app-role"] === "admin") {
           userStates = compileSimpleArrayStates(stateList);
         }
 
@@ -58,7 +54,7 @@ const HomeAdmin = ({ stateList }) => {
     };
 
     onLoad().then();
-  }, [stateList]);
+  });
 
   const updateUsState = async e => {
     setSelectedState(e.value);
@@ -77,6 +73,7 @@ const HomeAdmin = ({ stateList }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
+  let role = user.attributes["app-role"];
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
