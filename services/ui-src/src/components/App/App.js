@@ -29,6 +29,7 @@ function App() {
       );
 
       await ascertainUserPresence(user);
+
       setUser(user);
       setIsAuthenticated(true);
       setIsAuthorized(true);
