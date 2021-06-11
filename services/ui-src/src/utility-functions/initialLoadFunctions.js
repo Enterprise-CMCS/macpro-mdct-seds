@@ -56,7 +56,7 @@ export const determineRole = async specRole => {
 
   if (userStoreRole && roleArray.includes(userStoreRole)) {
     role = userStoreRole;
-  } else if (specRole) {
+  } else {
     if (
       specRole.includes("CHIP_D_USER_GROUP_ADMIN") ||
       specRole.includes("CHIP_V_USER_GROUP_ADMIN") ||
@@ -71,6 +71,5 @@ export const determineRole = async specRole => {
       role = "state";
     }
   }
-
   return role;
 };
