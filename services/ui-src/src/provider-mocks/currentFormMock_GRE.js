@@ -625,7 +625,7 @@ const currentFormMock_GRE = {
       form_name: "Gender, Race & Ethnicity",
       last_modified: "01-15-2021",
       quarter: 1,
-      status: "Not Started"
+      status: "In Progress"
     },
     tabs: ["0018"]
   }

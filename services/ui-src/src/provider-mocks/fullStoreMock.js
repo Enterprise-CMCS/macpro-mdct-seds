@@ -3316,7 +3316,7 @@ const fullStoreMock = {
       last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
       status_id: 1,
-      status: "Not Started"
+      status: "In Progress"
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   },
@@ -3558,7 +3558,7 @@ const fullStoreMock = {
     status: [
       {
         status_id: 1,
-        status: "Not Started",
+        status: "In Progress",
         status_description: "The State has not saved any data to the form yet."
       },
       {

@@ -33,6 +33,11 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("FormPage component- shallow render includes classNames", () => {
+  jest
+    .spyOn(React, "useState")
+    .mockReturnValueOnce([true, {}])
+    .mockReturnValueOnce([true, {}]);
+
   const wrapper = shallowSetup(fullStoreMock);
   test("Should include a form-header attribute", () => {
     expect(wrapper.find(`[data-testid="FormPage"]`).length).toBe(1);
@@ -48,6 +53,10 @@ describe("FormPage component- shallow render includes classNames", () => {
 });
 
 describe("FormPage component- props", () => {
+  jest
+    .spyOn(React, "useState")
+    .mockReturnValueOnce([true, {}])
+    .mockReturnValueOnce([true, {}]);
   // creating a true shallow wrapper so that the props are accessible
   const tempStore = storeFactory(fullStoreMock);
   const wrapper = shallow(<FormPage store={tempStore} {...defaultProps} />);
@@ -61,6 +70,10 @@ describe("FormPage component- props", () => {
 });
 
 describe("FormPage component- Child Components", () => {
+  jest
+    .spyOn(React, "useState")
+    .mockReturnValueOnce([true, {}])
+    .mockReturnValueOnce([true, {}]);
   let state = "AL";
   let year = "2021";
   let quarter = "1";

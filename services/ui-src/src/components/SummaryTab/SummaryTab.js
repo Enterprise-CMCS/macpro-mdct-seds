@@ -12,6 +12,11 @@ const SummaryTab = ({ questions, answers }) => {
   const location = useLocation();
   const quarter = location.pathname.split("/")[4];
 
+  // Checks for non-numeric chars in a string
+  function containsNonNumeric(value) {
+    return /[^$,.\d]/.test(value);
+  }
+
   return (
     <div className="summary-tab react-transition fade-in">
       <div className="age-range-description padding-y-2">
@@ -66,14 +71,16 @@ const SummaryTab = ({ questions, answers }) => {
                 currentColumn = currentColumn === null ? 0 : currentColumn;
 
                 // If not a number, copy it wholesale, else add together
-                if (isNaN(currentColumn)) {
+                if (containsNonNumeric(currentColumn)) {
                   newRows[rowKey][columnKey] = currentColumn;
                 } else if (currentColumn === "") {
                   // If empty string, return an empty string
                   newRows[rowKey][columnKey] = "";
                 } else {
                   // Add value to current value
-                  newRows[rowKey][columnKey] += parseFloat(currentColumn);
+                  newRows[rowKey][columnKey] =
+                    parseFloat(newRows[rowKey][columnKey]) +
+                    parseFloat(currentColumn);
                 }
               }
             }

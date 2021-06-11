@@ -154,6 +154,15 @@ export const saveSingleForm = data => {
 
   return API.post("mdct-seds", "/single-form/save", opts);
 };
+
+// *** generate quarterly forms
+export const generateQuarterlyForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/generate-forms", opts);
+};
+
 // **
 export const sendUncertifyEmail = data => {
   const opts = requestOptions();

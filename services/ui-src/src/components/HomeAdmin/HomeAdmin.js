@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "react-dropdown";
-import { Auth } from "aws-amplify";
-import { obtainAvailableForms, obtainUserByEmail } from "../../libs/api";
-import { onError } from "../../libs/errorLib";
+import { obtainAvailableForms } from "../../libs/api";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -13,36 +11,24 @@ import {
 } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
-const HomeAdmin = ({ stateList }) => {
+const HomeAdmin = ({ stateList, user }) => {
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
   const [accordionItems, setAccordionItems] = useState("");
-  const [role, setRole] = useState();
 
   useEffect(() => {
     const onLoad = async () => {
-      let currentUserInfo;
-      try {
-        // Get user information
-        const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
-      } catch (e) {
-        onError(e);
-      }
+      let currentUserInfo = await getUserInfo();
 
       if (currentUserInfo["Items"]) {
-        const userRole = currentUserInfo["Items"][0].role;
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates;
 
-        setRole(userRole);
-
         // If using all states, create a simple array of states for use in compileStatesForDropdown
-        if (userRole === "admin") {
+        if (user.attributes["app-role"] === "admin") {
           userStates = compileSimpleArrayStates(stateList);
         }
 
@@ -58,7 +44,8 @@ const HomeAdmin = ({ stateList }) => {
     };
 
     onLoad().then();
-  }, [stateList]);
+    /* eslint-disable */
+  }, []);
 
   const updateUsState = async e => {
     setSelectedState(e.value);
@@ -77,6 +64,7 @@ const HomeAdmin = ({ stateList }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
+  let role = user.attributes["app-role"];
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
@@ -92,6 +80,11 @@ const HomeAdmin = ({ stateList }) => {
               <li className="user-add">
                 <Link to="/users/add" className="text-bold">
                   Create User
+                </Link>
+              </li>
+              <li className="generate-forms">
+                <Link to="/generate-forms" className="text-bold">
+                  Generate Quarterly Forms
                 </Link>
               </li>
             </ul>
