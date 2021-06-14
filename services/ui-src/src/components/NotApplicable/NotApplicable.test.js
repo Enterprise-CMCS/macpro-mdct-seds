@@ -76,6 +76,10 @@ describe("NotApplicable component- props", () => {
     expect(typeof wrapper.props().children.props.status).toEqual("string");
   });
   test("Should include a statusTypes prop as an array", () => {
+    console.log(
+      "wrapper.props().children.props",
+      wrapper.props().children.props
+    );
     expect(Array.isArray(wrapper.props().children.props.statusTypes)).toEqual(
       true
     );
