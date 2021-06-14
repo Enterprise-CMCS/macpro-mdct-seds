@@ -10,7 +10,15 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 
-const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm, statusData }) => {
+const FormHeader = ({
+  quarter,
+  form,
+  year,
+  state,
+  updateFPL,
+  saveForm,
+  statusData
+}) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
@@ -28,8 +36,8 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm, statusDat
 
   useEffect(() => {
     // List of forms that do NOT show fpl
-    if (status_id == 4){
-      setDisabled(true)
+    if (status_id == 4) {
+      setDisabled(true);
     } else setDisabled(false);
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
