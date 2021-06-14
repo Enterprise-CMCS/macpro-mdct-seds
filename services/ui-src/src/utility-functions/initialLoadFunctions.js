@@ -7,7 +7,7 @@ export async function ascertainUserPresence(user) {
   });
 
   const userObject = {
-    username: user.username,
+    username: user.username ?? user.attributes.email,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
@@ -29,37 +29,34 @@ export async function ascertainUserPresence(user) {
 const checkRoleFromStore = async () => {
   let userRole;
   const currentUser = (await Auth.currentSession()).getIdToken();
+
   const {
     payload: { email }
   } = currentUser;
+
   const existingUser = await obtainUserByEmail({ email });
+
+  if (existingUser === false) {
+    return false;
+  }
   const userdata = existingUser["Items"];
+
   userdata.map(async userInfo => {
     userRole = userInfo.role;
   });
+
   return userRole;
 };
 
 export const determineRole = async specRole => {
   const userStoreRole = await checkRoleFromStore();
+
   const roleArray = ["admin", "business", "state"];
   let role;
 
   if (userStoreRole && roleArray.includes(userStoreRole)) {
-    switch (userStoreRole) {
-      case "state":
-        role = "state";
-        break;
-      case "business":
-        role = "business";
-        break;
-      case "admin":
-        role = "admin";
-        break;
-      default:
-        break;
-    }
-  } else if (specRole) {
+    role = userStoreRole;
+  } else {
     if (
       specRole.includes("CHIP_D_USER_GROUP_ADMIN") ||
       specRole.includes("CHIP_V_USER_GROUP_ADMIN") ||
