@@ -36,7 +36,7 @@ const FormHeader = ({
 
   useEffect(() => {
     // List of forms that do NOT show fpl
-    if (status_id == 4) {
+    if (status_id === 4) {
       setDisabled(true);
     } else setDisabled(false);
     const formsWithOutFPL = ["GRE"];
