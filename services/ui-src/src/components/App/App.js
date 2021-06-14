@@ -41,20 +41,18 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
       setIsAuthenticated(true);
       setIsAuthorized(true);
       setIsAuthenticating(false);
+      await fetchAgeRanges();
+      await fetchStates();
+      await fetchStatuses();
     } catch (error) {
       setIsAuthenticating(false);
     }
-  }
-
-  async function loadRedux() {
-    await fetchAgeRanges();
-    await fetchStates();
-    await fetchStatuses();
     setReduxReady(true);
   }
 
   useEffect(() => {
-    onLoad().then(loadRedux);
+    onLoad().then();
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [isAuthenticated]);
 
   return (
