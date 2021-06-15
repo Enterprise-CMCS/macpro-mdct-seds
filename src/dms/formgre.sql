@@ -10,19 +10,19 @@ SELECT cast(year([SubmissionDate]) as varchar) + '-GRE-' + case when left(a.[Lin
 	  ,'{"col1": "", "col2": "21E Enrolled", "col3": "64.21E Enrolled", "col4": "Total CHIP Enrolled", "col5": "64.EC Enrolled", "col6": "21PW Enrolled"},' as MdctHeader
 	  ,case when left('0' + a.[LineNumber],2) <> '05' then
       			'{"col1": "' + right(a.[LineNumber],1) + '. ' + l.[Description] + '", '
-      			+ '"col2": "' + cast(ISNULL(Column1, 0) as nvarchar) + '", '
-      			+ '"col3": "' + cast(ISNULL(Column2, 0) as nvarchar) + '", '
-      			+ '"col4": "' + cast(ISNULL(Column3, 0) as nvarchar) + '", '
-      			+ '"col5": "' + cast(ISNULL(Column4, 0) as nvarchar) + '", '
-      			+ '"col6": "' + cast(ISNULL(Column5, 0) as nvarchar) + '"} '
+      			+ '"col2": "' + cast(ISNULL([Enr21E], 0) as nvarchar) + '", '
+                + '"col3": "' + cast(ISNULL([Enr6421E], 0) as nvarchar) + '", '
+                + '"col4": "' + cast(ISNULL([EnrTotal], 0) as nvarchar) + '", '
+                + '"col5": "' + cast(ISNULL([Enr64EC], 0) as nvarchar) + '", '
+                + '"col6": "' + cast(ISNULL([Enr21PW], 0) as nvarchar) + '"} '
       		else
       			case when right(a.[LineNumber],1) = 'A' then
       				'{"col1": "' + right(a.[LineNumber],1) + '. ' + l.[Description] + '", '
-      				+ '"col2": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-04'')].rows[1].col2","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-01'')].rows[1].col2"]}], '
-      				+ '"col3": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-04'')].rows[1].col3","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-01'')].rows[1].col3"]}], '
-      				+ '"col4": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-04'')].rows[1].col4","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-01'')].rows[1].col4"]}], '
-      				+ '"col5": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-04'')].rows[1].col5","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-01'')].rows[1].col5"]}], '
-      				+ '"col6": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-04'')].rows[1].col6","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-21E-01'')].rows[1].col6"]}]} '
+      				+ '"col2": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[1].col2","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[1].col2"]}], '
+      				+ '"col3": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[1].col3","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[1].col3"]}], '
+      				+ '"col4": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[1].col4","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[1].col4"]}], '
+      				+ '"col5": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[1].col5","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[1].col5"]}], '
+      				+ '"col6": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[1].col6","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[1].col6"]}]} '
       			when right(a.[LineNumber],1) = 'B' then
       				'{"col1": "' + right(a.[LineNumber],1) + '. ' + l.[Description] + '", '
       				+ '"col2": [{"targets": ["$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-04'')].rows[2].col2","$..[?(@.question==''' + cast(year([SubmissionDate]) as varchar) + '-GRE-01'')].rows[2].col2"]}], '
