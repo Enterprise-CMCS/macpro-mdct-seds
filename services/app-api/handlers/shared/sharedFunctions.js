@@ -1,7 +1,6 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
 export async function getUsersEmailByRole(role) {
-  const UsersObj = [];
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -14,6 +13,7 @@ export async function getUsersEmailByRole(role) {
   if (result.Count === 0) {
     return [];
   }
+
   return result.Items.map((userInfo) => ({
     state: userInfo.states,
     email: userInfo.email,
@@ -24,8 +24,6 @@ export async function getUsersEmailByRole(role) {
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
 export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
-
-  let UncertifiedstateList = [];
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
