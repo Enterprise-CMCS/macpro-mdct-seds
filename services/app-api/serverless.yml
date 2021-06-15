@@ -52,7 +52,6 @@ custom:
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
   AuthUserTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
-  AuthUserRolesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
   dataSubnets:
@@ -116,12 +115,6 @@ provider:
     StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
     AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
     AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
-    AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
-    AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
-    AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
-    AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
-    AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
-    AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
 
 functions:
   loadData:
@@ -175,24 +168,6 @@ functions:
       - stream:
           type: dynamodb
           arn: ${self:custom.AuthUserTableStreamArn}
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.AuthJobCodesTableStreamArn}
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.AuthUserStatesTableStreamArn}
-          startingPosition: LATEST
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.AuthUserRolesTableStreamArn}
           startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
@@ -494,9 +469,6 @@ resources:
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
-                    - ${self:custom.AuthUserRolesTableArn}
-                    - ${self:custom.AuthJobCodesTableArn}
-                    - ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
                   Action:
                     - dynamodb:DescribeStream
@@ -513,9 +485,6 @@ resources:
                     - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
-                    - ${self:custom.AuthUserRolesTableStreamArn}
-                    - ${self:custom.AuthJobCodesTableStreamArn}
-                    - ${self:custom.AuthUserStatesTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
