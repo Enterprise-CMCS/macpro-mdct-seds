@@ -1,7 +1,7 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
 export async function getUsersEmailByRole(role) {
-  const users = [];
+  const UsersObj = [];
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -14,7 +14,6 @@ export async function getUsersEmailByRole(role) {
   if (result.Count === 0) {
     return [];
   }
-
   return result.Items.map((userInfo) => ({
     state: userInfo.states,
     email: userInfo.email,
@@ -26,6 +25,7 @@ export async function getUsersEmailByRole(role) {
 export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
 
+  let UncertifiedstateList = [];
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
@@ -55,9 +55,9 @@ export async function getUncertifiedStates(year, quarter) {
       },
     ];
   }
-  // List of the state forms that are "In Progress"
-  return result.Items.map((stateInfo) => stateInfo.program_code).filter(
-    (programCode, i, programCodes) => i === programCodes.indexOf(programCode)
+
+  return result.Items.map((stateInfo) => stateInfo.state_id).filter(
+    (stateId, i, stateIds) => i === stateIds.indexOf(stateId)
   );
 }
 
