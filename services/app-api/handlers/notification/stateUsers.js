@@ -26,23 +26,23 @@ export const main = handler(async (event, context) => {
   });
   return {
     status: "success",
-    message: "quartly Businness owners email sent",
+    message: "Quarterly State owners email sent",
   };
 });
 
 function getQuarter() {
   let d = new Date();
-  let m = Math.floor(d.getMonth()/3) + 2;
-  return m > 4? m - 4 : m;
+  let m = Math.floor(d.getMonth() / 3) + 2;
+  return m > 4 ? m - 4 : m;
 }
 const quarter = getQuarter();
-const year =  new Date().getFullYear();
+const year = new Date().getFullYear();
 
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
   const uncertifiedStateList = await getUncertifiedStates(year, quarter);
-  console.log("uncertified states: ",uncertifiedStateList);
+  console.log("uncertified states: ", uncertifiedStateList);
 
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {

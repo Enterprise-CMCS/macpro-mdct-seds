@@ -55,7 +55,7 @@ const HomeState = () => {
     (async () => {
       const { forms, stateString } = await loadUserData();
 
-      if (stateString !== "") {
+      if (stateString) {
         setAccordionItems(
           buildSortedAccordionByYearQuarter(forms, stateString)
         );
