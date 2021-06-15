@@ -1,4 +1,5 @@
 import { createUser, obtainUserByEmail, updateUser } from "../libs/api";
+import { Auth } from "aws-amplify";
 
 export async function ascertainUserPresence(user) {
   const existingUser = await obtainUserByEmail({
@@ -6,7 +7,7 @@ export async function ascertainUserPresence(user) {
   });
 
   const userObject = {
-    username: user.username,
+    username: user.username ?? user.attributes.email,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
@@ -25,16 +26,37 @@ export async function ascertainUserPresence(user) {
     });
   }
 }
+const checkRoleFromStore = async () => {
+  let userRole;
+  const currentUser = (await Auth.currentSession()).getIdToken();
 
-export const determineRole = specRole => {
+  const {
+    payload: { email }
+  } = currentUser;
+
+  const existingUser = await obtainUserByEmail({ email });
+
+  if (existingUser === false) {
+    return false;
+  }
+  const userdata = existingUser["Items"];
+
+  userdata.map(async userInfo => {
+    userRole = userInfo.role;
+  });
+
+  return userRole;
+};
+
+export const determineRole = async specRole => {
+  const userStoreRole = await checkRoleFromStore();
+
   const roleArray = ["admin", "business", "state"];
   let role;
 
-  if (roleArray.includes(specRole)) {
-    role = specRole;
-  }
-
-  if (specRole) {
+  if (userStoreRole && roleArray.includes(userStoreRole)) {
+    role = userStoreRole;
+  } else {
     if (
       specRole.includes("CHIP_D_USER_GROUP_ADMIN") ||
       specRole.includes("CHIP_V_USER_GROUP_ADMIN") ||
@@ -49,6 +71,5 @@ export const determineRole = specRole => {
       role = "state";
     }
   }
-
   return role;
 };
