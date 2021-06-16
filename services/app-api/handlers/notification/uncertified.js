@@ -51,10 +51,6 @@ async function getBusinessUsersEmail() {
 }
 
 async function unCetifiedTemplate(payload) {
-  console.log("zzzPayload", payload);
-  const temp = await getUncertifiedStates(2021, 3);
-  console.log("zzzTemp", temp);
-
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 
