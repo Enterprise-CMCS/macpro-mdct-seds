@@ -13,16 +13,14 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
   }, [gridData, allAnswers]);
 
   const updateSynthesizedGrid = () => {
-    const tabAnswers = allAnswers.filter(element => element.rangeId === range);
-    // Answer data === single question 5
-    // answerData.rows (see annex)
-
+    const tabAnswers = allAnswers.answers.filter(
+      element => element.rangeId === range
+    );
     let calculatedRows = gridData.map(singleRow => {
       const accumulator = {};
       if (singleRow["col1"] === "") {
         return singleRow;
       } else {
-        console.log("SINGLE ROW ?????????????", singleRow);
         Object.keys(singleRow).forEach(element => {
           if (element == "col1") {
             accumulator[element] = singleRow[element];
@@ -33,11 +31,10 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
             );
           }
         });
-        console.log("NEW OBJECT????", accumulator);
         return accumulator;
       }
     });
-    console.log("SYNTHESIZED GRID UPDATED!!!!!", questionID);
+    console.log("SYNTHESIZED GRID RECALCULATE!!!!!!");
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
@@ -52,7 +49,10 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
       // calculates the value based off of the formula <0> / <1>,
       // This formular is currently hard coded but should be made dynamic in case the formula is subject to change
       let quotient = operands[0] / operands[1];
-      returnValue = quotient ? quotient : 0;
+
+      if (quotient && quotient !== Infinity) {
+        returnValue = quotient ? quotient : 0;
+      }
     }
     return returnValue;
   };
@@ -74,7 +74,7 @@ SynthesizedGrid.propTypes = {
 };
 
 const mapState = state => ({
-  allAnswers: state.currentForm.answers
+  allAnswers: state.currentForm
 });
 
 export default connect(mapState)(SynthesizedGrid);

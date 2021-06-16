@@ -38,7 +38,9 @@ const GridWithTotals = props => {
     updateTotals();
     props.setAnswer(gridCopy, props.questionID);
 
-    props.updateSynthesizedValues();
+    if (synthesized) {
+      props.updateSynthesizedValues();
+    }
   };
 
   const updateTotals = () => {
@@ -159,7 +161,7 @@ const GridWithTotals = props => {
                       <TextInput
                         type="number"
                         className="grid-column"
-                        onChange={event =>
+                        onBlur={event =>
                           updateGrid(rowIndex, columnIndex, event)
                         }
                         defaultValue={parseFloat(column).toFixed(
@@ -189,9 +191,7 @@ const GridWithTotals = props => {
                     <TextInput
                       type="number"
                       className="grid-column"
-                      onChange={event =>
-                        updateGrid(rowIndex, columnIndex, event)
-                      }
+                      onBlur={event => updateGrid(rowIndex, columnIndex, event)}
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
