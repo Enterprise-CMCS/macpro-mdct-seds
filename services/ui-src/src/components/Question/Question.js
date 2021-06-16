@@ -12,7 +12,6 @@ const QuestionComponent = ({
   disabled,
   synthesized
 }) => {
-  useEffect(() => {});
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table

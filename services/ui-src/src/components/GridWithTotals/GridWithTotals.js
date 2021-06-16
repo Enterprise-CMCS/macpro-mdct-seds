@@ -37,6 +37,8 @@ const GridWithTotals = props => {
     updateGridData(gridCopy);
     updateTotals();
     props.setAnswer(gridCopy, props.questionID);
+
+    props.updateSynthesizedValues();
   };
 
   const updateTotals = () => {

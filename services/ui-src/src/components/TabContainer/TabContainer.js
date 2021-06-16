@@ -21,6 +21,8 @@ const TabContainer = ({
   statusId
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
+  const [sortedRows, setSortedRows] = useState([]);
+  useEffect(() => {});
 
   useEffect(() => {
     const establishStatus = async () => {

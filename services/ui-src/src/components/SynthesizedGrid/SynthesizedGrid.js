@@ -9,6 +9,10 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
   const [sortedRows, setSortedRows] = useState([]);
 
   useEffect(() => {
+    updateSynthesizedGrid();
+  }, [gridData, allAnswers]);
+
+  const updateSynthesizedGrid = () => {
     const tabAnswers = allAnswers.filter(element => element.rangeId === range);
     // Answer data === single question 5
     // answerData.rows (see annex)
@@ -29,14 +33,13 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
             );
           }
         });
-        let x = 0;
         console.log("NEW OBJECT????", accumulator);
         return accumulator;
       }
     });
     console.log("SYNTHESIZED GRID UPDATED!!!!!", questionID);
     setSortedRows(sortQuestionColumns(calculatedRows));
-  }, [gridData, allAnswers]);
+  };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
     let returnValue = 0;
@@ -50,7 +53,6 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
       // This formular is currently hard coded but should be made dynamic in case the formula is subject to change
       let quotient = operands[0] / operands[1];
       returnValue = quotient ? quotient : 0;
-      let a = 0;
     }
     return returnValue;
   };
@@ -62,12 +64,12 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
       precision={1}
       disabled={true}
       synthesized={true}
+      updateSynthesizedValues={updateSynthesizedGrid}
     />
   );
 };
 
 SynthesizedGrid.propTypes = {
-  answerData: PropTypes.object.isRequired,
   allAnswers: PropTypes.array.isRequired
 };
 
