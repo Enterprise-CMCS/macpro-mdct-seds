@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
@@ -12,6 +12,7 @@ const QuestionComponent = ({
   disabled,
   synthesized
 }) => {
+  useEffect(() => {});
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
@@ -46,7 +47,7 @@ const QuestionComponent = ({
           questionID={answer_entry}
           questionData={questionData}
           gridData={sortedRows}
-          answerData={answerData}
+          range={answerData.rangeId}
         />
       );
     }

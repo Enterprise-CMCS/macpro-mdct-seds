@@ -5,78 +5,65 @@ import { connect } from "react-redux";
 import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const SynthesizedGrid = props => {
-  const tempQuestionId = props.questionID;
-  const [synthGridData, setSynthGridData] = useState([]);
+const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
+  const [sortedRows, setSortedRows] = useState([]);
+
   useEffect(() => {
-    const { answerData, gridData, allAnswers } = props;
+    const tabAnswers = allAnswers.filter(element => element.rangeId === range);
+    // Answer data === single question 5
+    // answerData.rows (see annex)
 
-    let tempGridData = [];
-    const tabAnswers = allAnswers.filter(
-      element => element.rangeId === answerData.rangeId
-    );
-
-    answerData.rows.map((row, rowIndex) => {
-      // add header row
-      if (rowIndex === 0) {
-        tempGridData[rowIndex] = gridData[rowIndex];
+    let calculatedRows = gridData.map(singleRow => {
+      const accumulator = {};
+      if (singleRow["col1"] === "") {
+        return singleRow;
       } else {
-        let tempRowObject = {};
-        Object.entries(row).forEach(key => {
-          // get row header
-          if (key[0] === "col1") {
-            tempRowObject = Object.assign(tempRowObject, { [key[0]]: key[1] });
-          }
-          //calculate values for each column by row
-          else {
-            let tempCalculatedValue = calculateValue(key[1][0], tabAnswers);
-            tempRowObject = Object.assign(tempRowObject, {
-              [key[0]]: tempCalculatedValue
-            });
+        console.log("SINGLE ROW ?????????????", singleRow);
+        Object.keys(singleRow).forEach(element => {
+          if (element == "col1") {
+            accumulator[element] = singleRow[element];
+          } else {
+            accumulator[element] = calculateValue(
+              singleRow[element][0],
+              tabAnswers
+            );
           }
         });
-        tempGridData.push(tempRowObject);
+        let x = 0;
+        console.log("NEW OBJECT????", accumulator);
+        return accumulator;
       }
-      setSynthGridData(tempGridData);
-      return true;
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    console.log("SYNTHESIZED GRID UPDATED!!!!!", questionID);
+    setSortedRows(sortQuestionColumns(calculatedRows));
+  }, [gridData, allAnswers]);
 
-  const calculateValue = (incomingCalculation, tabAnswers) => {
-    if (
-      incomingCalculation.actions &&
-      incomingCalculation.actions[0] === "formula"
-    ) {
-      let tempCalculation = [];
-      let returnValue = {};
-      Object.entries(incomingCalculation.targets).forEach(key => {
-        // gets value for each target
-        tempCalculation[key[0]] = selectRowColumnValueFromArray(
-          tabAnswers,
-          key[1]
-        );
-      });
-      // calculates the value based off of the formula <0> / <1>
-      returnValue = tempCalculation[0] / tempCalculation[1];
-      return returnValue;
+  const calculateValue = (incomingFormula, tabAnswers) => {
+    let returnValue = 0;
+    // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
+    if (incomingFormula.actions && incomingFormula.actions[0] === "formula") {
+      const operands = incomingFormula.targets.map(target =>
+        selectRowColumnValueFromArray(tabAnswers, target)
+      );
+
+      // calculates the value based off of the formula <0> / <1>,
+      // This formular is currently hard coded but should be made dynamic in case the formula is subject to change
+      let quotient = operands[0] / operands[1];
+      returnValue = quotient ? quotient : 0;
+      let a = 0;
     }
+    return returnValue;
   };
 
-  const sortedRows = sortQuestionColumns(synthGridData);
-  let returnObject = [];
-
-  if (sortedRows.length > 0) {
-    returnObject = (
-      <GridWithTotals
-        questionID={tempQuestionId}
-        gridData={sortedRows}
-        precision={1}
-        disabled={true}
-        synthesized={true}
-      />
-    );
-  }
-  return returnObject;
+  return (
+    <GridWithTotals
+      questionID={questionID}
+      gridData={sortedRows}
+      precision={1}
+      disabled={true}
+      synthesized={true}
+    />
+  );
 };
 
 SynthesizedGrid.propTypes = {
