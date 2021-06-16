@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { getUncertifiedStates } from "../shared/sharedFunctions";
 var AWS = require("aws-sdk");
 
 /**
@@ -50,6 +51,10 @@ async function getBusinessUsersEmail() {
 }
 
 async function unCetifiedTemplate(payload) {
+  console.log("zzzPayload", payload);
+  const temp = await getUncertifiedStates(2021, 3);
+  console.log("zzzTemp", temp);
+
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 
