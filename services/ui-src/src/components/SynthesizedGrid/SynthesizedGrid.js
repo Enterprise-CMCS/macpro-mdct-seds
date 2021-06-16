@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import "./SynthesizedGrid.scss";
 import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
@@ -39,6 +40,7 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
   };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
+    console.log("INCOMING FORMULA", incomingFormula);
     let returnValue = null;
     // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
     if (incomingFormula.actions && incomingFormula.actions[0] === "formula") {
@@ -58,14 +60,20 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
   };
 
   return (
-    <GridWithTotals
-      questionID={questionID}
-      gridData={sortedRows}
-      precision={1}
-      disabled={true}
-      synthesized={true}
-      updateSynthesizedValues={updateSynthesizedGrid}
-    />
+    <>
+      <GridWithTotals
+        questionID={questionID}
+        gridData={sortedRows}
+        precision={2}
+        disabled={true}
+        synthesized={true}
+        updateSynthesizedValues={updateSynthesizedGrid}
+      />
+      <div className="disclaimer">
+        {" "}
+        Values will not appear until source data is provided
+      </div>
+    </>
   );
 };
 
