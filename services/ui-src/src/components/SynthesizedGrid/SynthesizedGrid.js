@@ -39,7 +39,7 @@ const SynthesizedGrid = ({ gridData, allAnswers, range, questionID }) => {
   };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
-    let returnValue = 0;
+    let returnValue = null;
     // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
     if (incomingFormula.actions && incomingFormula.actions[0] === "formula") {
       const operands = incomingFormula.targets.map(target =>

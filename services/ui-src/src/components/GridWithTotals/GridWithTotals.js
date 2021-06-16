@@ -28,15 +28,17 @@ const GridWithTotals = props => {
     updateTotals();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const updateGrid = (row, column, event) => {
+  const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
       event.target.value.replace(/[^0-9]/g, "")
     );
-
     updateGridData(gridCopy);
     updateTotals();
-    props.setAnswer(gridCopy, props.questionID);
+  };
+
+  const updateGridOnBlur = () => {
+    props.setAnswer(gridData, props.questionID);
 
     if (synthesized) {
       props.updateSynthesizedValues();
@@ -161,9 +163,10 @@ const GridWithTotals = props => {
                       <TextInput
                         type="number"
                         className="grid-column"
-                        onBlur={event =>
-                          updateGrid(rowIndex, columnIndex, event)
+                        onChange={event =>
+                          updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
+                        onBlur={updateGridOnBlur}
                         defaultValue={parseFloat(column).toFixed(
                           currentPrecision
                         )}
@@ -191,7 +194,10 @@ const GridWithTotals = props => {
                     <TextInput
                       type="number"
                       className="grid-column"
-                      onBlur={event => updateGrid(rowIndex, columnIndex, event)}
+                      onChange={event =>
+                        updateLocalStateOnChange(rowIndex, columnIndex, event)
+                      }
+                      onBlur={updateGridOnBlur}
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
