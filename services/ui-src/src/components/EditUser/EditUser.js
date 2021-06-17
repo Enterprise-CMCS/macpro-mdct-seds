@@ -32,6 +32,10 @@ const EditUser = ({ stateList }) => {
   const [selectedStates, setSelectedStates] = useState([]);
   /* eslint-disable no-unused-vars */
   const [statesToSend, setStatesToSend] = useState([]);
+
+  // Sort stateList
+  stateList.sort((a, b) => (a.value > b.value ? 1 : -1));
+
   // Get User data
   const loadUserData = async () => {
     // Retrive user data from datastore
@@ -61,6 +65,7 @@ const EditUser = ({ stateList }) => {
               stateName = stateList[state].label;
             }
           }
+
           return { label: stateName, value: e };
         })
       );

@@ -39,6 +39,12 @@ const HomeAdmin = ({ stateList, user }) => {
           setStateError(false);
         }
 
+        selectedStates.sort((a, b) => {
+          let stateA = a.label.toUpperCase();
+          let stateB = b.label.toUpperCase();
+          return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
+        });
+
         setAvailableStates(selectedStates);
       }
     };
@@ -101,7 +107,7 @@ const HomeAdmin = ({ stateList, user }) => {
               <p>This account is not associated with any states.</p>
               <p>
                 If you feel this is an error, please contact the helpdesk{" "}
-                <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
+                <a href="mailto:mdcthelp@cms.hhs.gov">MDCTHelp@cms.hhs.gov</a>
               </p>
             </>
           ) : (
