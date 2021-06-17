@@ -6,7 +6,6 @@ import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
-  let a;
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
@@ -41,7 +40,7 @@ const GridWithTotals = props => {
   const updateGridOnBlur = () => {
     props.setAnswer(gridData, props.questionID);
     updateTotals();
-    let b;
+
     if (synthesized) {
       props.updateSynthesizedValues();
     }
