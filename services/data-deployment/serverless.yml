@@ -113,9 +113,6 @@ custom:
     auth-user:
       table: ${self:custom.stage}-auth-user
       sources: [../../src/database/initial_data_load/auth_user.json]
-    auth-user-roles:
-      table: ${self:custom.stage}-auth-user-roles
-      sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
   scripts:
     hooks:
