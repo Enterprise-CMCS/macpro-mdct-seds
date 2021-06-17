@@ -10,20 +10,10 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 
-const FormHeader = ({
-  quarter,
-  form,
-  year,
-  state,
-  updateFPL,
-  saveForm,
-  statusData
-}) => {
+const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
   const [formDescription, setFormDescription] = useState({});
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const { status_id } = statusData;
 
   // Returns last three digits of maximum FPL range
   const getMaxFPL = answers => {
@@ -36,9 +26,6 @@ const FormHeader = ({
 
   useEffect(() => {
     // List of forms that do NOT show fpl
-    if (status_id === 4) {
-      setDisabled(true);
-    } else setDisabled(false);
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
       const data = await getFormTypes();
@@ -57,7 +44,7 @@ const FormHeader = ({
       }
     }
     fetchData();
-  }, [quarter, form, state, year, status_id]);
+  }, [quarter, form, state, year]);
 
   // Saves maximum FPL to the database
   const updateMaxFPL = async () => {
@@ -131,7 +118,6 @@ const FormHeader = ({
                 type="number"
                 onChange={e => validateFPL(e)}
                 value={maxFPL}
-                disabled={disabled}
               />
             </div>
             <div className="fpl-button">
@@ -159,13 +145,9 @@ FormHeader.propTypes = {
   saveForm: PropTypes.func.isRequired
 };
 
-const mapState = state => ({
-  statusData: state.currentForm.statusData
-});
-
 const mapDispatch = {
   updateFPL: updateFPL ?? {},
   saveForm: saveForm ?? {}
 };
 
-export default connect(mapState, mapDispatch)(FormHeader);
+export default connect(null, mapDispatch)(FormHeader);

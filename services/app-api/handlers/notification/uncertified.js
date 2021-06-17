@@ -20,8 +20,8 @@ export const main = handler(async (event, context) => {
     console.error(err, err.stack);
   }
   return {
-    status: "success",
-    message: "Quarterly business owners email sent",
+    status: "sucess",
+    message: "quartly Businness owners email sent",
   };
 });
 

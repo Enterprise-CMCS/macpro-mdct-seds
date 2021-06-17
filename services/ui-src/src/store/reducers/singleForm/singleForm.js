@@ -11,8 +11,6 @@ import {
   insertFPL
 } from "./helperFunctions";
 
-import { generateDateForDB } from "../../../utility-functions/transformFunctions";
-
 // ENDPOINTS
 import {
   getSingleForm,
@@ -78,7 +76,7 @@ export const updatedApplicableStatus = (
     username,
     status,
     statusId,
-    timeStamp: generateDateForDB(new Date())
+    timeStamp: new Date().toISOString()
   };
 };
 
@@ -122,7 +120,7 @@ export const clearFormData = (user = "cleared") => {
     const { data } = await API.post("mdct-seds", "/users/get/username", {});
     const username = data.username;
     const state = getState();
-    const timeStamp = generateDateForDB();
+    const timeStamp = new Date().toISOString();
     const answers = state.currentForm.answers;
     try {
       const emptyForm = await answers.map(singleQuestion => {
@@ -260,11 +258,11 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Final Data Certified and Submitted",
-          status_date: generateDateForDB(new Date()),
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
           status_id: 4,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(new Date())
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case CERTIFY_AND_SUBMIT_PROVISIONAL:
@@ -273,11 +271,11 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Provisional Data Certified and Submitted",
-          status_date: generateDateForDB(new Date()),
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
           status_id: 3,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(new Date())
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case SUMMARY_NOTES_SUCCESS:
@@ -297,8 +295,8 @@ export default (state = initialState, action) => {
           status_id: 2,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(),
-          status_date: generateDateForDB()
+          last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
+          status_date: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case SAVE_FORM:

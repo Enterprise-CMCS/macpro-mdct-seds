@@ -90,11 +90,11 @@ const FormPage = ({ getForm, statusData }) => {
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
             <a
-              href="mailto:mdcthelp@cms.hhs.gov"
+              href="mailto:sedshelp@cms.hhs.gov"
               rel="noopener noreferrer"
               target="_blank"
             >
-              MDCTHelp@cms.hhs.gov
+              SEDSHELP@cms.hhs.gov
             </a>
           </Alert>
         </div>

@@ -18,9 +18,6 @@ const StateSelector = ({ stateList }) => {
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
-  // Sort stateList
-  stateList.sort((a, b) => (a.value > b.value ? 1 : -1));
-
   // Get User data
   const loadUserData = async () => {
     let currentUserInfo;
@@ -87,7 +84,7 @@ const StateSelector = ({ stateList }) => {
           </h2>
           <p>
             If you feel this is an error, please contact the helpdesk{" "}
-            <a href="mailto:mdcthelp@cms.hhs.gov">MDCTHelp@cms.hhs.gov</a>
+            <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
           </p>
         </>
       ) : (

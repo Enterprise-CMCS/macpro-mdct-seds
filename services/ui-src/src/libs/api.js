@@ -111,27 +111,6 @@ export const getSingleForm = (state, specifiedYear, quarter, form) => {
   );
 };
 
-// *** get age ramges
-export const getAgeRanges = _ => {
-  const opts = requestOptions();
-
-  return API.get("mdct-seds", "/age-ranges", opts);
-};
-
-// *** get U.S. states listing
-export const getStates = _ => {
-  const opts = requestOptions();
-
-  return API.get("mdct-seds", "/states", opts);
-};
-
-// *** get form status types
-export const getStatuses = _ => {
-  const opts = requestOptions();
-
-  return API.get("mdct-seds", "/statuses", opts);
-};
-
 // *** get form types
 export const getFormTypes = _ => {
   const opts = requestOptions();
