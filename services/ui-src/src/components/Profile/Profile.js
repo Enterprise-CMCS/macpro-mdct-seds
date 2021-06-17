@@ -6,7 +6,6 @@ import "./Profile.scss";
 import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { obtainUserByEmail } from "../../libs/api";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 export default function Profile({ user }) {

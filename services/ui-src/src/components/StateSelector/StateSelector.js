@@ -5,10 +5,8 @@ import PropTypes from "prop-types";
 import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
-import { obtainUserByEmail, updateUser } from "../../libs/api";
+import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { onError } from "../../libs/errorLib";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const StateSelector = ({ stateList }) => {

@@ -6,8 +6,6 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
-import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../libs/api";
 
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";

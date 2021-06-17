@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Accordion } from "@trussworks/react-uswds";
 import { useHistory } from "react-router-dom";
-import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
-import { Auth } from "aws-amplify";
+import { obtainAvailableForms } from "../../libs/api";
 import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
-import { onError } from "../../libs/errorLib";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const HomeState = () => {

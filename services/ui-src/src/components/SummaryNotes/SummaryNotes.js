@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
 import { saveSummaryNotes } from "../../store/actions/statusData";
-import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../libs/api";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
