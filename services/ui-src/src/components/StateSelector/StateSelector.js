@@ -43,7 +43,7 @@ const StateSelector = ({ stateList }) => {
 
   useEffect(() => {
     (async () => {
-      await loadUserData().then();
+      await loadUserData();
     })();
   }, []);
 
