@@ -1,6 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to business users,
@@ -20,8 +20,8 @@ export const main = handler(async (event, context) => {
     console.error(err, err.stack);
   }
   return {
-    status: "sucess",
-    message: "quartly Businness owners email sent",
+    status: "success",
+    message: "Uncertified Business owners email sent",
   };
 });
 

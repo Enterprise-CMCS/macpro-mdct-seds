@@ -3,7 +3,7 @@ import {
   getUsersEmailByRole,
   getUncertifiedStates,
 } from "../shared/sharedFunctions";
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
@@ -23,18 +23,18 @@ export const main = handler(async (event, context) => {
     console.error(err, err.stack);
   }
   return {
-    status: "sucess",
-    message: "quartly Businness owners email sent",
+    status: "success",
+    message: "Quarterly Business owners email sent",
   };
 });
 
 function getQuarter() {
   let d = new Date();
-  let m = Math.floor(d.getMonth()/3) + 2;
-  return m > 4? m - 4 : m;
+  let m = Math.floor(d.getMonth() / 3) + 2;
+  return m > 4 ? m - 4 : m;
 }
 const quarter = getQuarter();
-const year =  new Date().getFullYear();
+const year = new Date().getFullYear();
 
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
