@@ -1,5 +1,6 @@
 import { createUser, obtainUserByEmail, updateUser } from "../libs/api";
 import { Auth } from "aws-amplify";
+import { generateDateForDB } from "./transformFunctions";
 
 export async function ascertainUserPresence(user) {
   const existingUser = await obtainUserByEmail({
@@ -13,7 +14,7 @@ export async function ascertainUserPresence(user) {
     lastName: user.attributes.family_name,
     sub: user.attributes.sub,
     role: user.attributes["app-role"],
-    lastLogin: new Date().toISOString()
+    lastLogin: generateDateForDB()
   };
 
   if (existingUser === false) {
