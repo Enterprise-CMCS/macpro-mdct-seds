@@ -101,7 +101,7 @@ const HomeAdmin = ({ stateList, user }) => {
               <p>This account is not associated with any states.</p>
               <p>
                 If you feel this is an error, please contact the helpdesk{" "}
-                <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
+                <a href="mailto:mdcthelp@cms.hhs.gov">MDCTHelp@cms.hhs.gov</a>
               </p>
             </>
           ) : (
