@@ -26,7 +26,7 @@ export const main = handler(async (event, context) => {
   });
   return {
     status: "success",
-    message: "quartly Businness owners email sent",
+    message: "Quarterly State owners email sent",
   };
 });
 

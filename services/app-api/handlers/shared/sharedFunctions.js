@@ -1,7 +1,6 @@
 import dynamoDb from "../../libs/dynamodb-lib";
 
 export async function getUsersEmailByRole(role) {
-  const UsersObj = [];
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -14,23 +13,17 @@ export async function getUsersEmailByRole(role) {
   if (result.Count === 0) {
     return [];
   }
-  const payload = result["Items"];
-  payload.map((userInfo) => {
-    const obj = {
-      state: userInfo.states,
-      email: userInfo.email,
-    };
-    UsersObj.push(obj);
-  });
-  return UsersObj;
+
+  return result.Items.map((userInfo) => ({
+    state: userInfo.states,
+    email: userInfo.email,
+  }));
 }
 
 // retrieve all states have NOT submitted their data yet
 // (in other words - all states with ‘in progress’ reports for the prior quarter)
 export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
-
-  let UncertifiedstateList = [];
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
@@ -60,21 +53,10 @@ export async function getUncertifiedStates(year, quarter) {
       },
     ];
   }
-  // List of the state forms that are "In Progress"
-  const payload = result.Items;
-  payload.map((stateInfo) => {
-    // pulled the state from each state forms and pushed into array
-    UncertifiedstateList.push(stateInfo.state_id);
-  });
-  let filteredStateList = UncertifiedstateList.filter(function (
-    elem,
-    index,
-    self
-  ) {
-    // filter the state list so we dont have duplicates
-    return index === self.indexOf(elem);
-  });
-  return filteredStateList;
+
+  return result.Items.map((stateInfo) => stateInfo.state_id).filter(
+    (stateId, i, stateIds) => i === stateIds.indexOf(stateId)
+  );
 }
 
 export async function getQuestionsByYear(specifiedYear) {
