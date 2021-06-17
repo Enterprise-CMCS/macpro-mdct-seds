@@ -18,6 +18,9 @@ const StateSelector = ({ stateList }) => {
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
+  // Sort stateList
+  stateList.sort((a, b) => (a.value > b.value ? 1 : -1));
+
   // Get User data
   const loadUserData = async () => {
     let currentUserInfo;
