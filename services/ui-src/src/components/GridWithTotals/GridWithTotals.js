@@ -39,7 +39,7 @@ const GridWithTotals = props => {
 
   const updateGridOnBlur = () => {
     props.setAnswer(gridData, props.questionID);
-
+    updateTotals();
     if (synthesized) {
       props.updateSynthesizedValues();
     }
@@ -242,7 +242,7 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">
+        <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
             : 0}
@@ -305,7 +305,7 @@ GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   synthesized: PropTypes.bool.isRequired
 };
 

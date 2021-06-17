@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
@@ -44,7 +44,6 @@ const QuestionComponent = ({
       questionComponent = (
         <SynthesizedGrid
           questionID={answer_entry}
-          questionData={questionData}
           gridData={sortedRows}
           range={answerData.rangeId}
         />
@@ -93,8 +92,8 @@ QuestionComponent.propTypes = {
   questionData: PropTypes.object.isRequired,
   rangeID: PropTypes.string.isRequired,
   answerData: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  synthesized: PropTypes.bool.isRequired
+  disabled: PropTypes.bool,
+  synthesized: PropTypes.bool
 };
 
 export default QuestionComponent;
