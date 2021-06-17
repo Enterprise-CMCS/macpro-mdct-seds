@@ -10,8 +10,7 @@ const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
-  console.log("GRID DATA FROM LOCAL STATE!!!", gridData);
-  console.log("GRID DATA FROM LOCAL STATE!!!", props.gridData);
+
   const [gridColumnTotals, updateGridColumnTotals] = useState([]);
   const [gridRowTotals, updateGridRowTotals] = useState([]);
 
@@ -309,7 +308,7 @@ GridWithTotals.propTypes = {
   questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  synthesized: PropTypes.bool.isRequired
+  synthesized: PropTypes.bool
 };
 
 const mapDispatch = {
