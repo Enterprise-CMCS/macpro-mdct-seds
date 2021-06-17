@@ -6,10 +6,12 @@ import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
+  let a;
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
-
+  console.log("GRID DATA FROM LOCAL STATE!!!", gridData);
+  console.log("GRID DATA FROM LOCAL STATE!!!", props.gridData);
   const [gridColumnTotals, updateGridColumnTotals] = useState([]);
   const [gridRowTotals, updateGridRowTotals] = useState([]);
 
@@ -22,11 +24,11 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props, gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   updateTotals();
+  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -40,6 +42,7 @@ const GridWithTotals = props => {
   const updateGridOnBlur = () => {
     props.setAnswer(gridData, props.questionID);
     updateTotals();
+    let b;
     if (synthesized) {
       props.updateSynthesizedValues();
     }
