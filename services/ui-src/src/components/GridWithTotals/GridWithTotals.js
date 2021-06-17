@@ -24,11 +24,11 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props, gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // useEffect(() => {
-  //   updateTotals();
-  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    updateTotals();
+  }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
