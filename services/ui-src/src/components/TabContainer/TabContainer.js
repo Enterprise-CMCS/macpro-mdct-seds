@@ -10,6 +10,7 @@ import { Auth } from "aws-amplify";
 import { obtainUserByEmail } from "../../libs/api";
 
 import "./TabContainer.scss";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const TabContainer = ({
   tabDetails,
@@ -27,11 +28,8 @@ const TabContainer = ({
       let userRole;
       let statusBoolean = false;
 
-      const currentUser = (await Auth.currentSession()).getIdToken();
-      const {
-        payload: { email }
-      } = currentUser;
-      const existingUser = await obtainUserByEmail({ email });
+      let existingUser = await getUserInfo();
+
       const userdata = existingUser["Items"];
       userdata.map(async userInfo => {
         userRole = userInfo.role;

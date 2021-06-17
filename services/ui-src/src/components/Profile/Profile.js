@@ -7,6 +7,7 @@ import { Auth } from "aws-amplify";
 import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { obtainUserByEmail } from "../../libs/api";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 export default function Profile({ user }) {
   const history = useHistory();
@@ -27,10 +28,8 @@ export default function Profile({ user }) {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        let AuthUserInfo = (await Auth.currentSession()).getIdToken();
-        const currentUserInfo = await obtainUserByEmail({
-          email: AuthUserInfo.payload.email
-        });
+        let currentUserInfo = await getUserInfo();
+
         let userObj = currentUserInfo["Items"];
         for (const userInfo of userObj) {
           setEmail(userInfo.email);
