@@ -57,7 +57,8 @@ const SynthesizedGridSummary = ({
     });
 
     let b;
-    //  Map through the sorted rows for this specific question
+    //  Map through the sorted rows(obj) for this specific question
+    // For each row, build a new row object
     let calculatedRows = sortedGridData.map(singleRow => {
       // build a new object for each row
       const accumulator = {};
@@ -85,26 +86,48 @@ const SynthesizedGridSummary = ({
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
+  //   {
+  //     targets: [
+  //       "$..[?(@.question=='2021-64.21E-04')].rows[1].col6",
+  //       "$..[?(@.question=='2021-64.21E-01')].rows[1].col6"
+  //     ],
+  //     actions: ["formula"],
+  //     formula: "<0> / <1>"
+  //   }
+
+  // ALL WORK IN THIS METHOD WILL BE REPEATED FOR EACH TAB.
+  // LIMIT ITERATIONS AT THE COST OF SPACE
   const calculateValue = (incomingFormula, matchingQuestions) => {
     let returnValue = null;
 
-    // all question IDs are identical, they need to be sorted from the array
-    console.log("LOL \n\n\n\n\n\n", matchingQuestions);
+    // TO PICK UP ON MONDAY, ITERATING THROUGH EACH ID IN THE TARGETS,
+    // FIND Q4(TA) / Q1(TA)
+    // FIND Q4(TB) / Q1(TB)
+    // FIND Q4(TC) / Q1(TC)
+
+    // GO TAB BY TAB
+
+    // worth it to match the tabs together in an object????? YES. cuts down on iteration for EACH CELL
+    // GRAB AR 13-18 Q4 THEN GRAB AR 13-18 Q1
+
+    const operands = incomingFormula.targets.forEach(target => {
+      let value = selectRowColumnValueFromArray(matchingQuestions, target);
+    });
 
     // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
-    const operands = incomingFormula.targets.map(target =>
-      selectRowColumnValueFromArray(matchingQuestions, target)
-    );
-    // calculates the value based off of the formula <0> / <1>,
-    // This formula is currently hard coded
-    let quotient = operands[0] / operands[1];
+    // const operands = incomingFormula.targets.map(target =>
+    //   selectRowColumnValueFromArray(matchingQuestions, target)
+    // );
+    // // calculates the value based off of the formula <0> / <1>,
+    // // This formula is currently hard coded
+    // let quotient = operands[0] / operands[1];
 
-    // If the quotient is not a falsy value or infinity, return it. Otherwise, return null
-    if (quotient && quotient !== Infinity) {
-      returnValue = quotient ? quotient : 0;
-    }
-
-    return returnValue;
+    // // If the quotient is not a falsy value or infinity, return it. Otherwise, return null
+    // if (quotient && quotient !== Infinity) {
+    //   returnValue = quotient ? quotient : 0;
+    // }
+    return null;
+    // return returnValue;
   };
 
   return (

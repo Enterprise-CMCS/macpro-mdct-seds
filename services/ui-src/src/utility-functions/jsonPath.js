@@ -5,6 +5,16 @@ export const selectRowColumnValueFromArray = (array, id) => {
   const returnValue = foundValue !== null ? foundValue : 0;
   return returnValue;
 };
+
+export const selectMultipleRowColumnValueFromArray = (array, id) => {
+  let matchingQuestions = [];
+
+  matchingQuestions = [...matchingQuestions, ...jsonpath.query(array, id)[0]];
+
+  const foundValue = jsonpath.query(array, id)[0];
+  const returnValue = foundValue !== null ? foundValue : 0;
+  return returnValue;
+};
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
 const fullPathFromIDPath = originalPath => {
