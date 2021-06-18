@@ -127,6 +127,8 @@ const insertFPL = (answers, fpl) => {
   return updatedAnswers;
 };
 
+const getSums = () => {};
+
 export {
   sortQuestionsByNumber,
   extractAgeRanges,

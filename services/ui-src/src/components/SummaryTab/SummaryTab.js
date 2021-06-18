@@ -33,6 +33,12 @@ const SummaryTab = ({ questions, answers }) => {
         ) {
           return false;
         }
+
+        // if (singleQuestion.type === "datagridwithtotals") {
+        //   // Summary tab question 5 single question
+        //   // tabs (0001, 0105, 0612, 1318)
+        //   //
+        // } else {
         // Initialize newRows
         let newRows = [];
 
@@ -106,6 +112,7 @@ const SummaryTab = ({ questions, answers }) => {
             synthesized={true}
           />
         );
+        // }
       })}
       <SummaryNotes />
     </div>
