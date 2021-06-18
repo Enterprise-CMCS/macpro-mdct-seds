@@ -5,6 +5,7 @@ import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
+import SynthesizedGridSummary from "../SynthesizedGrid/SynthesizedGridSummary";
 import { useLocation } from "react-router-dom";
 
 const SummaryTab = ({ questions, answers }) => {
@@ -33,86 +34,90 @@ const SummaryTab = ({ questions, answers }) => {
         ) {
           return false;
         }
+        const questionNumber = singleQuestion.question.slice(-2);
+        if (questionNumber === "05") {
+          return (
+            <SynthesizedGridSummary
+              allAnswers={answers}
+              questionID={singleQuestion.question}
+              gridData={singleQuestion.rows}
+            />
+          );
+        } else {
+          // Initialize newRows
+          let newRows = [];
 
-        // if (singleQuestion.type === "datagridwithtotals") {
-        //   // Summary tab question 5 single question
-        //   // tabs (0001, 0105, 0612, 1318)
-        //   //
-        // } else {
-        // Initialize newRows
-        let newRows = [];
+          // Extract the question ID
+          const questionID = singleQuestion.question;
 
-        // Extract the question ID
-        const questionID = singleQuestion.question;
+          // Find all questions that match questionID
+          const jpexpr = `$..[?(@.question==='${questionID}')]`;
+          const allAnswersTemp = jsonpath.query(answers, jpexpr);
 
-        // Find all questions that match questionID
-        const jpexpr = `$..[?(@.question==='${questionID}')]`;
-        const allAnswersTemp = jsonpath.query(answers, jpexpr);
+          // Make a deep copy of answers to prevent overwriting data
+          let allAnswers = JSON.parse(JSON.stringify(allAnswersTemp));
 
-        // Make a deep copy of answers to prevent overwriting data
-        let allAnswers = JSON.parse(JSON.stringify(allAnswersTemp));
+          // Put all rows in one array (all answers for the current question)
+          // This is to decrease the complexity of later loops
+          let allTabs = allAnswers.map(a => a.rows);
 
-        // Put all rows in one array (all answers for the current question)
-        // This is to decrease the complexity of later loops
-        let allTabs = allAnswers.map(a => a.rows);
+          // Loop through all tabs array
+          for (let singleTab of allTabs) {
+            let row = singleTab;
 
-        // Loop through all tabs array
-        for (let singleTab of allTabs) {
-          let row = singleTab;
+            // Loop through all rows in the current tab (allTabs)
+            for (let rowKey in row) {
+              // Set to variable to avoid reference issues
+              let column = row[rowKey];
 
-          // Loop through all rows in the current tab (allTabs)
-          for (let rowKey in row) {
-            // Set to variable to avoid reference issues
-            let column = row[rowKey];
+              // If key doesn't exist, add entire row
+              if (!Object.prototype.hasOwnProperty.call(newRows, rowKey)) {
+                newRows.push(column);
+              } else {
+                // If exists, add values where applicable
+                for (let columnKey in column) {
+                  let currentColumn = column[columnKey];
 
-            // If key doesn't exist, add entire row
-            if (!Object.prototype.hasOwnProperty.call(newRows, rowKey)) {
-              newRows.push(column);
-            } else {
-              // If exists, add values where applicable
-              for (let columnKey in column) {
-                let currentColumn = column[columnKey];
+                  // If null change to zero
+                  currentColumn = currentColumn === null ? 0 : currentColumn;
 
-                // If null change to zero
-                currentColumn = currentColumn === null ? 0 : currentColumn;
-
-                // If not a number, copy it wholesale, else add together
-                if (containsNonNumeric(currentColumn)) {
-                  newRows[rowKey][columnKey] = currentColumn;
-                } else if (currentColumn === "") {
-                  // If empty string, return an empty string
-                  newRows[rowKey][columnKey] = "";
-                } else {
-                  // Add value to current value
-                  newRows[rowKey][columnKey] =
-                    parseFloat(newRows[rowKey][columnKey]) +
-                    parseFloat(currentColumn);
+                  // If not a number, copy it wholesale, else add together
+                  if (containsNonNumeric(currentColumn)) {
+                    newRows[rowKey][columnKey] = currentColumn;
+                  } else if (currentColumn === "") {
+                    // If empty string, return an empty string
+                    newRows[rowKey][columnKey] = "";
+                  } else {
+                    // Add value to current value
+                    newRows[rowKey][columnKey] =
+                      parseFloat(newRows[rowKey][columnKey]) +
+                      parseFloat(currentColumn);
+                  }
                 }
               }
             }
           }
+
+          // Find the first question that has the same QuestionID
+          // This is for a sample question that will have its rows replaced by newRows
+          const questionAnswer = questions.find(
+            element => element.question === questionID
+          );
+
+          // Set rows for the question
+          questionAnswer.rows = newRows;
+
+          return (
+            <QuestionComponent
+              key={idx}
+              rangeID={"summary"}
+              questionData={singleQuestion}
+              answerData={questionAnswer}
+              disabled={true}
+              synthesized={true}
+            />
+          );
         }
-
-        // Find the first question that has the same QuestionID
-        // This is for a sample question that will have its rows replaced by newRows
-        const questionAnswer = questions.find(
-          element => element.question === questionID
-        );
-
-        // Set rows for the question
-        questionAnswer.rows = newRows;
-
-        return (
-          <QuestionComponent
-            key={idx}
-            rangeID={"summary"}
-            questionData={singleQuestion}
-            answerData={questionAnswer}
-            disabled={true}
-            synthesized={true}
-          />
-        );
-        // }
       })}
       <SummaryNotes />
     </div>
