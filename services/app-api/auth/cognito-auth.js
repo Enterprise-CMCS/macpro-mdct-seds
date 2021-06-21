@@ -146,9 +146,6 @@ export const getCurrentUserInfo = async (event) => {
       : user["UserAttributes"].find((record) => record["Name"] === "email")
           .Value;
 
-  console.log("\n\n????found this:");
-  console.log(email);
-
   let body;
 
   if (email !== undefined)
