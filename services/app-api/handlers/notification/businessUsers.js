@@ -3,7 +3,7 @@ import {
   getUsersEmailByRole,
   getUncertifiedStates,
 } from "../shared/sharedFunctions";
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
@@ -23,8 +23,8 @@ export const main = handler(async (event, context) => {
     console.error(err, err.stack);
   }
   return {
-    status: "sucess",
-    message: "quartly Businness owners email sent",
+    status: "success",
+    message: "Quarterly Business owners email sent",
   };
 });
 
