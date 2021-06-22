@@ -185,12 +185,14 @@ export const getFormData = (state, year, quarter, formName) => {
 
 const getUsername = async () => {
   const currentUser = (await Auth.currentSession()).getIdToken();
-  const {payload: { email }} = currentUser;
+  const {
+    payload: { email }
+  } = currentUser;
   const existingUser = await obtainUserByEmail({ email });
   if (existingUser === false) return false;
-  const data = existingUser.Items.map((userInfo) => userInfo.username);
+  const data = existingUser.Items.map(userInfo => userInfo.username);
   return data[0];
-}
+};
 
 export const saveForm = () => {
   return async (dispatch, getState) => {
@@ -198,7 +200,7 @@ export const saveForm = () => {
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
     const username = await getUsername();
-    
+
     try {
       // Update Database
       await saveSingleForm({
