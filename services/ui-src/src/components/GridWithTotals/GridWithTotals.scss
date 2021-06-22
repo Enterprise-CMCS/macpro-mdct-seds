@@ -10,15 +10,6 @@ $mdct-white: #fff;
   text-align: center;
 }
 
-.grid-column {
-  /* Chrome, Safari, Edge, Opera */
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
-
 .grid-with-totals {
   table {
     tr th:first-child {
