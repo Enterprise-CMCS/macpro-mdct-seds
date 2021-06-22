@@ -5,7 +5,7 @@ import jsonpath from "jsonpath";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
-import SynthesizedGridSummary from "../SynthesizedGrid/SynthesizedGridSummary";
+import SynthesizedGridSummary from "../SynthesizedGridSummary/SynthesizedGridSummary";
 import { useLocation } from "react-router-dom";
 
 const SummaryTab = ({ questions, answers }) => {
@@ -41,7 +41,6 @@ const SummaryTab = ({ questions, answers }) => {
               allAnswers={answers}
               questionID={singleQuestion.question}
               gridData={singleQuestion.rows}
-              questionNumber={questionNumber}
               label={singleQuestion.label}
             />
           );
