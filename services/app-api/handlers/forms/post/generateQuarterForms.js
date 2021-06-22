@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
   // at top of file, or in some config file
   const retryFailLimit = 5;
 
-  // Batchw rite all items, rerun ij any UnprocessedItems are returned and it's under the retry limit
+  // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
     // Attempt first batch write
     const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch);
