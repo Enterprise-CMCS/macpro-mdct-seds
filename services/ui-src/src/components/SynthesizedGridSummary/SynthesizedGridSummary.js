@@ -4,8 +4,11 @@ import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
 import "./SynthesizedGridSummary.scss";
 import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
-import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
-import { gatherByAgeRange } from "../../utility-functions/sortingFunctions";
+import {
+  sortQuestionColumns,
+  gatherByQuestion,
+  reduceEntries
+} from "../../utility-functions/sortingFunctions";
 
 const SynthesizedGridSummary = ({
   allAnswers,
@@ -48,7 +51,7 @@ const SynthesizedGridSummary = ({
     });
 
     // Organize the asnwer objects into a nested object for easier access and fewer iterations in the future
-    const sortedAnswers = gatherByAgeRange(matchingQuestions);
+    const sortedAnswers = gatherByQuestion(matchingQuestions);
 
     //  Map through the sorted rows(obj) for this specific question
     // For each row, build a new row object
@@ -75,31 +78,59 @@ const SynthesizedGridSummary = ({
       }
     });
 
+    let b;
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
+  // {
+  //   targets: [
+  //     "$..[?(@.question=='2021-64.21E-04')].rows[1].col2",
+  //     "$..[?(@.question=='2021-64.21E-01')].rows[1].col2",
+  //   ],
+  //   actions: [
+  //     "formula",
+  //   ],
+  //   formula: "<0> / <1>",
+  // }
+
   const calculateValue = (incomingFormula, sortedAnswers) => {
     let returnValue = null;
-    let accumulator = 0;
 
-    // Map through each row object, copying keys and calculating values
-    Object.keys(sortedAnswers).forEach(range => {
-      const operands = incomingFormula.targets.map(target =>
-        selectRowColumnValueFromArray(sortedAnswers[range], target)
-      );
-      // calculates the value based off of the formula <0> / <1>,
-      let quotient = operands[0] / operands[1];
-      if (quotient && quotient !== Infinity) {
-        accumulator += quotient;
-      }
+    let a;
+    // map through all question 1s, map through all question 4s
+
+    const divisorAndDividend = incomingFormula.targets.map(target => {
+      const currentQuestion = target.split("'")[1].slice(-2); // question 4 or 1
+      const pertinentAnswers = sortedAnswers[currentQuestion]; // all of question 1s sorted by age range
+      let y;
+      let sum = reduceEntries(pertinentAnswers, target);
+      // const sum = Object.keys(pertinentAnswers).reduce(function (
+      //   accumulator,
+      //   singleAgeRange
+      // ) {
+      //   return (accumulator += selectRowColumnValueFromArray(
+      //     pertinentAnswers[singleAgeRange],
+      //     target
+      //   ));
+      // },
+      // 0);
+      return sum;
     });
 
-    // If the quotient is not a falsy value return it. Otherwise, return null
-    if (accumulator) {
-      returnValue = accumulator;
+    let x;
+
+    const divisor = divisorAndDividend[0];
+    const dividend = divisorAndDividend[1];
+    // const [divisor, dividend] = divisorAndDividend;
+
+    // calculates the value based off of the formula <0> / <1>,
+    const quotient = divisor / dividend;
+    if (quotient && quotient !== Infinity) {
+      returnValue = quotient;
     }
 
+    // If the quotient is not a falsy value return it. Otherwise, return null
     return returnValue;
   };
 

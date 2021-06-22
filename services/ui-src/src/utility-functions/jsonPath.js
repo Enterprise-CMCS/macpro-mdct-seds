@@ -6,6 +6,14 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
+export const selectRowColumnValueFromObject = (obj, id) => {
+  let n;
+  const foundValue = jsonpath.query(obj, id)[0];
+  const returnValue = foundValue !== null ? foundValue : 0;
+  let m;
+  return returnValue;
+};
+
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
 const fullPathFromIDPath = originalPath => {

@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import moment from "moment-timezone";
+import {
+  selectRowColumnValueFromArray,
+  selectRowColumnValueFromObject
+} from "./jsonPath";
 
 const sortQuestionColumns = columnArray => {
   let sortedColumns = columnArray.map(singleRow =>
@@ -171,7 +175,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   return accordionItems;
 };
 
-const gatherByAgeRange = answersArray => {
+const gatherByQuestion = answersArray => {
   // call back for a reduce method
   let accumulator = {};
 
@@ -179,32 +183,45 @@ const gatherByAgeRange = answersArray => {
     let ageRange = answer.rangeId;
     let questionNumber = answer.question.slice(-2);
 
-    if (accumulator[ageRange]) {
-      accumulator[ageRange][questionNumber] = answer;
+    if (accumulator[questionNumber]) {
+      accumulator[questionNumber][ageRange] = answer;
     } else {
-      accumulator[ageRange] = { [questionNumber]: answer };
+      accumulator[questionNumber] = { [ageRange]: answer };
     }
-    return accumulator;
   });
-
   return accumulator;
 };
-// const gatherByAgeRange = answersArray => {
-//   // call back for a reduce method
-//   const assembleByAge = (accumulator, answer) => {
-//     let ageRange = answer.rangeId;
 
-//     if (accumulator[ageRange]) {
-//       accumulator.push(answer)
-//     } else {
-//       accumulator[ageRange] = [...answer]
-//     }
-//     return accumulator;
-//   };
+const reduceEntries = (answersByAgeRange, targetID) => {
+  // call back for a reduce method
+  const findEntries = (accumulator, singleAgeRange) => {
+    // answer is one key(age range) in the appropriate question number's object
+    const foundEntry = selectRowColumnValueFromObject(
+      [answersByAgeRange[singleAgeRange]],
+      targetID
+    );
+    let g = 0;
+    return (accumulator += foundEntry);
+  };
 
-//   return answersArray.reduce(assembleByAge, {})
+  const sum = Object.keys(answersByAgeRange).reduce(findEntries, 0);
+  return sum;
+};
 
-// };
+// WANT
+// {
+//   04:{
+//       1318: {},
+//       0001: {},
+//        0105: {}
+//   },
+//   01:{
+//       1318: {},
+//       0001: {},
+//        0105: {}
+//   },
+
+// }
 
 export {
   sortQuestionColumns,
@@ -213,5 +230,6 @@ export {
   compileSimpleArrayStates,
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter,
-  gatherByAgeRange
+  gatherByQuestion,
+  reduceEntries
 };

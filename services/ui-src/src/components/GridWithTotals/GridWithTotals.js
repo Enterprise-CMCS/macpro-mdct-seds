@@ -162,6 +162,8 @@ const GridWithTotals = props => {
                   <td>
                     {!synthesized ? (
                       <TextInput
+                        // type="text"
+                        // inputmode="numeric"
                         type="number"
                         className="grid-column"
                         onChange={event =>
@@ -193,6 +195,8 @@ const GridWithTotals = props => {
                 <td key={columnIndex}>
                   {!synthesized ? (
                     <TextInput
+                      // type="text"
+                      // inputmode="numeric"
                       type="number"
                       className="grid-column"
                       onChange={event =>
