@@ -86,6 +86,9 @@ export default function Routes({ user, isAuthorized }) {
           </AuthenticatedRoute>
         </>
       ) : null}
+      <AuthenticatedRoute path="*">
+        <Redirect to="/" />
+      </AuthenticatedRoute>
       <UnauthenticatedRoute>
         <NotFound />
       </UnauthenticatedRoute>

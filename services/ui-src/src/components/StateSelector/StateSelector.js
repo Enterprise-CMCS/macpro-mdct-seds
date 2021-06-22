@@ -5,10 +5,9 @@ import PropTypes from "prop-types";
 import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
-import { obtainUserByEmail, updateUser } from "../../libs/api";
+import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { onError } from "../../libs/errorLib";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const StateSelector = ({ stateList }) => {
   let history = useHistory();
@@ -22,17 +21,8 @@ const StateSelector = ({ stateList }) => {
 
   // Get User data
   const loadUserData = async () => {
-    let currentUserInfo;
+    let currentUserInfo = await getUserInfo();
 
-    try {
-      // Get user information
-      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-      currentUserInfo = await obtainUserByEmail({
-        email: AuthUserInfo.payload.email
-      });
-    } catch (e) {
-      onError(e);
-    }
     // Save to local state
     if (currentUserInfo["Items"]) {
       setUser(currentUserInfo["Items"][0]);

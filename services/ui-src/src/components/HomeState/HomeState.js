@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Accordion } from "@trussworks/react-uswds";
 import { useHistory } from "react-router-dom";
-import { obtainUserByEmail, obtainAvailableForms } from "../../libs/api";
-import { Auth } from "aws-amplify";
+import { obtainAvailableForms } from "../../libs/api";
 import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
-import { onError } from "../../libs/errorLib";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const HomeState = () => {
   const [accordionItems, setAccordionItems] = useState([]);
@@ -16,17 +15,7 @@ const HomeState = () => {
   // Get User data
   const loadUserData = async () => {
     // Get user information
-    let currentUserInfo;
-
-    try {
-      // Get user information
-      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-      currentUserInfo = await obtainUserByEmail({
-        email: AuthUserInfo.payload.email
-      });
-    } catch (e) {
-      onError(e);
-    }
+    let currentUserInfo = await getUserInfo();
 
     let forms = [];
     let stateString = "";
