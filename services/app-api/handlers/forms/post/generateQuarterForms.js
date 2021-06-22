@@ -124,7 +124,7 @@ export const main = handler(async (event, context) => {
             state_id: allStates[state].state_id,
             not_applicable: false,
             created_date: new Date().toISOString(),
-            form_name: allFormDescriptions[form].label,
+            form_name: allFormDescriptions[form].form_name,
             last_modified: new Date().toISOString(),
             quarter: specifiedQuarter,
             status: "In Progress",
