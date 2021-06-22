@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import moment from "moment-timezone";
-import {
-  selectRowColumnValueFromArray,
-  selectRowColumnValueFromObject
-} from "./jsonPath";
+import { selectRowColumnValueFromArray } from "./jsonPath";
 
 const sortQuestionColumns = columnArray => {
   let sortedColumns = columnArray.map(singleRow =>
@@ -196,32 +193,15 @@ const reduceEntries = (answersByAgeRange, targetID) => {
   // call back for a reduce method
   const findEntries = (accumulator, singleAgeRange) => {
     // answer is one key(age range) in the appropriate question number's object
-    const foundEntry = selectRowColumnValueFromObject(
+    const foundEntry = selectRowColumnValueFromArray(
       [answersByAgeRange[singleAgeRange]],
       targetID
     );
-    let g = 0;
     return (accumulator += foundEntry);
   };
-
   const sum = Object.keys(answersByAgeRange).reduce(findEntries, 0);
   return sum;
 };
-
-// WANT
-// {
-//   04:{
-//       1318: {},
-//       0001: {},
-//        0105: {}
-//   },
-//   01:{
-//       1318: {},
-//       0001: {},
-//        0105: {}
-//   },
-
-// }
 
 export {
   sortQuestionColumns,

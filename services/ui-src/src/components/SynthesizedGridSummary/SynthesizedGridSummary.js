@@ -77,59 +77,40 @@ const SynthesizedGridSummary = ({
         return accumulator;
       }
     });
-
-    let b;
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
-  // {
-  //   targets: [
-  //     "$..[?(@.question=='2021-64.21E-04')].rows[1].col2",
-  //     "$..[?(@.question=='2021-64.21E-01')].rows[1].col2",
-  //   ],
-  //   actions: [
-  //     "formula",
-  //   ],
-  //   formula: "<0> / <1>",
-  // }
-
   const calculateValue = (incomingFormula, sortedAnswers) => {
     let returnValue = null;
 
-    let a;
     // map through all question 1s, map through all question 4s
-
     const divisorAndDividend = incomingFormula.targets.map(target => {
       const currentQuestion = target.split("'")[1].slice(-2); // question 4 or 1
-      const pertinentAnswers = sortedAnswers[currentQuestion]; // all of question 1s sorted by age range
-      let y;
-      let sum = reduceEntries(pertinentAnswers, target);
-      // const sum = Object.keys(pertinentAnswers).reduce(function (
-      //   accumulator,
-      //   singleAgeRange
-      // ) {
-      //   return (accumulator += selectRowColumnValueFromArray(
-      //     pertinentAnswers[singleAgeRange],
-      //     target
-      //   ));
-      // },
-      // 0);
+      const pertinentAnswers = sortedAnswers[currentQuestion]; // all answers to one question sorted by age range
+
+      // let sum = reduceEntries(pertinentAnswers, target); // DELETE AFTER DEMO
+      const sum = Object.keys(pertinentAnswers).reduce(function (
+        accumulator,
+        singleAgeRange
+      ) {
+        return (accumulator += selectRowColumnValueFromArray(
+          [pertinentAnswers[singleAgeRange]], // searched element must be an array
+          target
+        ));
+      },
+      0);
       return sum;
     });
 
-    let x;
-
-    const divisor = divisorAndDividend[0];
-    const dividend = divisorAndDividend[1];
-    // const [divisor, dividend] = divisorAndDividend;
+    const [divisor, dividend] = divisorAndDividend;
 
     // calculates the value based off of the formula <0> / <1>,
     const quotient = divisor / dividend;
+
     if (quotient && quotient !== Infinity) {
       returnValue = quotient;
     }
-
     // If the quotient is not a falsy value return it. Otherwise, return null
     return returnValue;
   };
