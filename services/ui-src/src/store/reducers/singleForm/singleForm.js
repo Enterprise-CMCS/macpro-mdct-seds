@@ -1,5 +1,5 @@
 // PACKAGES
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 
 // HELPER FUNCTIONS
 import {
@@ -188,18 +188,21 @@ export const saveForm = () => {
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
 
-    const { data } = await API.post("mdct-seds", "/users/get/username", {});
-    const username = data.username;
+    const currentUser = await Auth.currentAuthenticatedUser();
+    // const {payload: { username }} = currentUser;
+    console.log("payload: ", currentUser);
+    
+    
     try {
       // Update Database
       await saveSingleForm({
-        username: username,
+        // username: username,
         formAnswers: answers,
         statusData: statusData
       });
 
       // Update Last Saved in redux state
-      dispatch(updatedLastSaved(username));
+      // dispatch(updatedLastSaved(username));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });
