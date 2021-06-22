@@ -18,16 +18,30 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  // Loop through unprocessed items until the list is empty
-  const processItemsCallback = function (err, data) {
-    if (err) {
-      console.log("There was an error in processing query data.");
-    } else {
-      let params = { RequestItems: data.UnprocessedItems };
+  // at top of file, or in some config file
+  const retryFailLimit = 5;
+  const failureList = [];
 
-      if (Object.keys(params.RequestItems).length != 0) {
-        dynamoDb.batchWriteItem(params, processItemsCallback);
-      }
+  // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
+  const batchWriteAll = async (tryRetryBatch) => {
+    // Attempt first batch write
+    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+
+    // If there are any failures and under the retry limit
+    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
+      const retryBatch = {
+        noOfRetries: tryRetryBatch.noOfRetries + 1,
+        batch: UnprocessedItems,
+      };
+      return await batchWriteAll(retryBatch);
+    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
+      // exceeded failure limit
+      console.error(
+        `Tried batch ${
+          tryRetryBatch.noOfRetries
+        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+      );
+      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
     }
   };
 
@@ -139,7 +153,9 @@ export const main = handler(async (event, context) => {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
       },
     };
-    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
+
+    // Process this batch
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   // Add All StateForm Descriptions
@@ -208,7 +224,15 @@ export const main = handler(async (event, context) => {
       },
     };
 
-    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
+    // Process this batch
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+  }
+
+  if (failureList.length > 0) {
+    return {
+      status: 500,
+      message: `Failed to write all entries to database.`,
+    };
   }
 
   return {

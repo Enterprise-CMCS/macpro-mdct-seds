@@ -77,7 +77,6 @@ export async function getQuestionsByYear(specifiedYear) {
 
   try {
     questionResult = await dynamoDb.scan(questionParams);
-    console.log("getQuestionsByYear result", questionResult);
   } catch (e) {
     console.log("getQuestionsByYear failed");
     throw e;
@@ -95,7 +94,6 @@ export async function getStatesList() {
 
   try {
     stateResult = await dynamoDb.scan(stateParams);
-    console.log("getStatesList", stateResult);
   } catch (e) {
     console.log("getStatesList failed");
     throw e;
@@ -112,7 +110,6 @@ export async function getFormDescriptions() {
   let formDescription;
   try {
     formDescription = await dynamoDb.scan(formDescriptionParams);
-    console.log("getFormDescriptions", getFormDescriptions);
   } catch (e) {
     console.log("getFormDescription failed");
     throw e;
