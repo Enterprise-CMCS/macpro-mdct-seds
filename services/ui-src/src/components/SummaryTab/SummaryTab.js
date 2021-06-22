@@ -47,7 +47,6 @@ const SummaryTab = ({ questions, answers }) => {
             />
           );
         } else {
-
         // Initialize newRows
         let newRows = [];
 
@@ -81,7 +80,7 @@ const SummaryTab = ({ questions, answers }) => {
               // If exists, add values where applicable
               for (let columnKey in column) {
                 let currentColumn = column[columnKey];
-let g
+
                 // If null change to zero
                 currentColumn = currentColumn === null ? 0 : currentColumn;
 
@@ -97,7 +96,6 @@ let g
                     parseFloat(newRows[rowKey][columnKey]) +
                     parseFloat(currentColumn);
                 }
-                let x
               }
             }
           }
@@ -124,7 +122,6 @@ let g
         );
         }
       })}
-      
       <SummaryNotes />
     </div>
   );
