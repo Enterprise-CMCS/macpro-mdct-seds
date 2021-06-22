@@ -1,9 +1,9 @@
-const questionID = "2021-64.21E-05";
+const mockQuestionID = "2021-64.21E-05";
 
-const label =
+const mockLabel =
   "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?";
 
-const allAnswers = [
+const mockAllAnswers = [
   {
     age_range: "Ages 13 - 18",
     rangeId: "1318",
@@ -366,7 +366,7 @@ const allAnswers = [
   }
 ];
 
-const gridData = [
+const mockGridData = [
   {
     col6: "% of FPL 301-317",
     col4: "% of FPL 201-250",

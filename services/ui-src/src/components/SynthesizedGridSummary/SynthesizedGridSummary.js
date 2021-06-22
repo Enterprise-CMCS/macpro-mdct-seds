@@ -121,7 +121,7 @@ const SynthesizedGridSummary = ({
           synthesized={true}
           precision={1}
         />
-        <div className="disclaimer">
+        <div className="disclaimer" data-testid="synthesized-disclaimer">
           {" "}
           Values will not appear until source data is provided
         </div>
@@ -131,7 +131,7 @@ const SynthesizedGridSummary = ({
 };
 
 SynthesizedGridSummary.propTypes = {
-  allAnswers: PropTypes.object.isRequired,
+  allAnswers: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
   gridData: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired
