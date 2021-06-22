@@ -94,7 +94,7 @@ describe("Test SynthesizedGridSummary.js", () => {
         .at(0)
         .find("span")
         .text()
-    ).toBe("307.9");
+    ).toBe("44.4");
   });
 
   test("Synthesized Summary values should be correct across the board", () => {
@@ -107,7 +107,7 @@ describe("Test SynthesizedGridSummary.js", () => {
         .find("td")
         .at(5)
         .text()
-    ).toBe("749.8");
+    ).toBe("193.0");
   });
 
   test("Synthesized Summary values should be correct across the board", () => {
@@ -121,6 +121,6 @@ describe("Test SynthesizedGridSummary.js", () => {
         .at(2)
         .find("span")
         .text()
-    ).toBe("6.5");
+    ).toBe("3.4");
   });
 });
