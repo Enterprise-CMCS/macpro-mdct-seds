@@ -18,11 +18,32 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  // Batchwrite all items, rerun is any UnprocessedItems are returned
-  const batchWriteAll = async (batchRequest) => {
-    const { UnprocessedItems } = await dynamoDb.batchWrite(batchRequest);
-    if (UnprocessedItems.length) {
-      await batchWriteAll(UnprocessedItems);
+  // at top of file, or in some config file
+  const retryFailLimit = 5;
+
+  // Batchw rite all items, rerun ij any UnprocessedItems are returned and it's under the retry limit
+  const batchWriteAll = async (tryRetryBatch) => {
+    // Attempt first batch write
+    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch);
+
+    // If there are any failures and under the retry limit
+    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
+      const retryBatch = {
+        noOfRetries: tryRetryBatch.noOfRetries + 1,
+        batch: tryRetryBatch,
+      };
+      return await batchWriteAll(retryBatch);
+    } else if (tryRetryBatch.noOfRetries < retryFailLimit) {
+      // exceeded failure limit
+      console.error(
+        `Tried batch ${
+          tryRetryBatch.noOfRetries
+        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+      );
+      return {
+        status: 500,
+        message: `A failure occurred while writing data.`,
+      };
     }
   };
 
