@@ -21,6 +21,7 @@ const sortQuestionColumns = columnArray => {
 const sortRowArray = arrayOfRows => {
   let sortedRows = [];
   arrayOfRows.forEach(singleRow => {
+    let a
     const columnHeader = singleRow["col1"];
     if (columnHeader === "") {
       sortedRows[0] = singleRow;
