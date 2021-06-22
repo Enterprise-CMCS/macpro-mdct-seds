@@ -228,7 +228,7 @@ export const main = handler(async (event, context) => {
     await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
-  if (failureList > 0) {
+  if (failureList.length > 0) {
     return {
       status: 500,
       message: `Failed to write all entries to database.`,
