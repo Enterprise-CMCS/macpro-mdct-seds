@@ -41,6 +41,8 @@ const SummaryTab = ({ questions, answers }) => {
               allAnswers={answers}
               questionID={singleQuestion.question}
               gridData={singleQuestion.rows}
+              questionNumber={questionNumber}
+              label={singleQuestion.label}
             />
           );
         } else {

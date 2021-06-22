@@ -171,11 +171,47 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   return accordionItems;
 };
 
+const gatherByAgeRange = answersArray => {
+  // call back for a reduce method
+  let accumulator = {};
+
+  answersArray.forEach(answer => {
+    let ageRange = answer.rangeId;
+    let questionNumber = answer.question.slice(-2);
+
+    if (accumulator[ageRange]) {
+      accumulator[ageRange][questionNumber] = answer;
+    } else {
+      accumulator[ageRange] = { [questionNumber]: answer };
+    }
+    return accumulator;
+  });
+
+  return accumulator;
+};
+// const gatherByAgeRange = answersArray => {
+//   // call back for a reduce method
+//   const assembleByAge = (accumulator, answer) => {
+//     let ageRange = answer.rangeId;
+
+//     if (accumulator[ageRange]) {
+//       accumulator.push(answer)
+//     } else {
+//       accumulator[ageRange] = [...answer]
+//     }
+//     return accumulator;
+//   };
+
+//   return answersArray.reduce(assembleByAge, {})
+
+// };
+
 export {
   sortQuestionColumns,
   dateFormatter,
   compileStatesForDropdown,
   compileSimpleArrayStates,
   sortFormsByYearAndQuarter,
-  buildSortedAccordionByYearQuarter
+  buildSortedAccordionByYearQuarter,
+  gatherByAgeRange
 };

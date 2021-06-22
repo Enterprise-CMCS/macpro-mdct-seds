@@ -6,12 +6,14 @@ import jsonpath from "jsonpath";
 import "./SynthesizedGrid.scss";
 import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
+import { gatherByAgeRange } from "../../utility-functions/sortingFunctions";
 
 const SynthesizedGridSummary = ({
   allAnswers, // now answers, used to be all of current form
   questionID, // same
-  gridData // same
-  //   range
+  gridData, // same
+  questionNumber,
+  label
 }) => {
   const [sortedRows, setSortedRows] = useState([]);
 
@@ -46,17 +48,18 @@ const SynthesizedGridSummary = ({
 
     // Find all questions that match questionID and add them to one array
     let matchingQuestions = [];
-    let a;
+
     stripedIDs.forEach(searchID => {
       const jpexpr = `$..[?(@.question==='${searchID}')]`;
-
       matchingQuestions = [
         ...matchingQuestions,
         ...jsonpath.query(allAnswers, jpexpr)
       ];
     });
 
-    let b;
+    let x;
+    const sortedAnswers = gatherByAgeRange(matchingQuestions);
+
     //  Map through the sorted rows(obj) for this specific question
     // For each row, build a new row object
     let calculatedRows = sortedGridData.map(singleRow => {
@@ -74,7 +77,7 @@ const SynthesizedGridSummary = ({
           } else {
             accumulator[element] = calculateValue(
               singleRow[element][0],
-              matchingQuestions
+              sortedAnswers
             );
           }
         });
@@ -82,10 +85,12 @@ const SynthesizedGridSummary = ({
       }
     });
 
+    let a;
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
+  // incoming formula
   //   {
   //     targets: [
   //       "$..[?(@.question=='2021-64.21E-04')].rows[1].col6",
@@ -97,50 +102,57 @@ const SynthesizedGridSummary = ({
 
   // ALL WORK IN THIS METHOD WILL BE REPEATED FOR EACH TAB.
   // LIMIT ITERATIONS AT THE COST OF SPACE
-  const calculateValue = (incomingFormula, matchingQuestions) => {
+  const calculateValue = (incomingFormula, sortedAnswers) => {
     let returnValue = null;
 
-    // TO PICK UP ON MONDAY, ITERATING THROUGH EACH ID IN THE TARGETS,
-    // FIND Q4(TA) / Q1(TA)
-    // FIND Q4(TB) / Q1(TB)
-    // FIND Q4(TC) / Q1(TC)
+    // FIND Q4(T1) / Q1(T1)
+    // FIND Q4(T2) / Q1(T2)
+    // FIND Q4(T3) / Q1(T3)
 
     // GO TAB BY TAB
 
-    // worth it to match the tabs together in an object????? YES. cuts down on iteration for EACH CELL
-    // GRAB AR 13-18 Q4 THEN GRAB AR 13-18 Q1
-
-    const operands = incomingFormula.targets.forEach(target => {
-      let value = selectRowColumnValueFromArray(matchingQuestions, target);
+    let accumulator = 0;
+    // Map through each row object, copying keys and calculating values
+    Object.keys(sortedAnswers).forEach(range => {
+      const operands = incomingFormula.targets.map(target =>
+        selectRowColumnValueFromArray(sortedAnswers[range], target)
+      );
+      // calculates the value based off of the formula <0> / <1>,
+      let quotient = operands[0] / operands[1];
+      if (quotient && quotient !== Infinity) {
+        accumulator += quotient;
+      }
     });
 
-    // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
-    // const operands = incomingFormula.targets.map(target =>
-    //   selectRowColumnValueFromArray(matchingQuestions, target)
-    // );
-    // // calculates the value based off of the formula <0> / <1>,
-    // // This formula is currently hard coded
-    // let quotient = operands[0] / operands[1];
-
-    // // If the quotient is not a falsy value or infinity, return it. Otherwise, return null
-    // if (quotient && quotient !== Infinity) {
-    //   returnValue = quotient ? quotient : 0;
-    // }
-    return null;
-    // return returnValue;
+    // If the quotient is not a falsy value return it. Otherwise, return null
+    if (accumulator) {
+      returnValue = accumulator;
+    }
+    let x;
+    return returnValue;
   };
+
+  const labelWithAgeVariable = label.replace("&&&VARIABLE&&&", "of all ages");
+  const formattedQuestionNumber = parseInt(questionNumber.split("-").slice(-1));
 
   return (
     <>
-      <GridWithTotals
-        questionID={questionID}
-        gridData={sortedRows} // THE ROW TO UPDATE
-        disabled={true}
-        synthesized={true}
-        precision={1}
-        updateSynthesizedValues={updateSynthesizedGrid}
-      />
-      <div className="disclaimer"> WHAT A COOL PLACEHOLDER</div>
+      <div className="question-component padding-top-5 border-top-1px">
+        <b>
+          {formattedQuestionNumber}. {labelWithAgeVariable}
+        </b>
+        <GridWithTotals
+          questionID={`summary-synthesized-${questionID}`}
+          gridData={sortedRows}
+          disabled={true}
+          synthesized={true}
+          precision={1}
+        />
+        <div className="disclaimer">
+          {" "}
+          Values will not appear until source data is provided
+        </div>
+      </div>
     </>
   );
 };
