@@ -12,6 +12,29 @@ const sortQuestionColumns = columnArray => {
   return sortedColumns;
 };
 
+/**
+ * This function sorts the rows in the rows array
+ * @function sortRowArray
+ * @param {array} arrayOfRows - Rows array with column objects
+ * @returns {array} - Sorted rows with the header first
+ */
+const sortRowArray = arrayOfRows => {
+  let sortedRows = [];
+  arrayOfRows.forEach(singleRow => {
+    const columnHeader = singleRow["col1"];
+    if (columnHeader === "") {
+      sortedRows[0] = singleRow;
+    } else if (columnHeader[0] === "A") {
+      sortedRows[1] = singleRow;
+    } else if (columnHeader[0] === "B") {
+      sortedRows[2] = singleRow;
+    } else if (columnHeader[0] === "C") {
+      sortedRows[3] = singleRow;
+    }
+  });
+  return sortedRows;
+};
+
 const dateFormatter = dateString => {
   let returnString = "Date not supplied";
 
@@ -178,10 +201,17 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   return accordionItems;
 };
 
+/**
+ * This function sorts the answers for the target questions in SynthesizedGridSummary organized by question number
+ * @function gatherByQuestion
+ * @param {array} answersArray - An array of all questions needed for SGS
+ * @returns {object} - An object with the questions nested by question then age range, see example below
+ */
+
 const gatherByQuestion = answersArray => {
-  // call back for a reduce method
   let accumulator = {};
 
+  // call back for a reduce method
   answersArray.forEach(answer => {
     let ageRange = answer.rangeId;
     let questionNumber = answer.question.slice(-2);
@@ -193,20 +223,41 @@ const gatherByQuestion = answersArray => {
     }
   });
   return accumulator;
+  // example return:
+  // {
+  //   04:{
+  //       1318: {question},
+  //       0001: {question},
+  //       0105: {question}
+  //   },
+  //   01:{
+  //       1318: {question},
+  //       0001: {question},
+  //       0105: {question}
+  //   },
+  // }
 };
 
+/**
+ * This function returns all of the entries for a single target ID across all tabs/age ranges
+ * @function reduceEntries
+ * @param {object} answersByAgeRange - An object with all answers for a given question with the keys being the age range it belongs to
+ * @param {string} targetID - the ID of the target question, ie: "$..[?(@.question=='2021-64.21E-01')].rows[1].col2"
+ * @returns {number} - dividend or divisor
+ */
 const reduceEntries = (answersByAgeRange, targetID) => {
   // call back for a reduce method
   const findEntries = (accumulator, singleAgeRange) => {
-    // answer is one key(age range) in the appropriate question number's object
+    // singleAgeRange is one key(age range) ie: "1318"
+
+    // Find the target answer in a specific age range
     const foundEntry = selectRowColumnValueFromArray(
       [answersByAgeRange[singleAgeRange]],
       targetID
     );
-    return (accumulator += foundEntry);
+    return (accumulator += foundEntry); // add to the accumulator
   };
-  const sum = Object.keys(answersByAgeRange).reduce(findEntries, 0);
-  return sum;
+  return Object.keys(answersByAgeRange).reduce(findEntries, 0); // return the accumulated value
 };
 
 export {
@@ -217,5 +268,6 @@ export {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter,
   gatherByQuestion,
-  reduceEntries
+  reduceEntries,
+  sortRowArray
 };

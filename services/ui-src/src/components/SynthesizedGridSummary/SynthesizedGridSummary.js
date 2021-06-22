@@ -3,11 +3,12 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
 import "./SynthesizedGridSummary.scss";
-import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
+
 import {
   sortQuestionColumns,
   gatherByQuestion,
-  reduceEntries
+  reduceEntries,
+  sortRowArray
 } from "../../utility-functions/sortingFunctions";
 
 const SynthesizedGridSummary = ({
@@ -22,25 +23,24 @@ const SynthesizedGridSummary = ({
     updateSynthesizedGrid();
   }, [gridData, allAnswers]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // This function updates the grid based on the answers present in redux
   const updateSynthesizedGrid = () => {
-    // Make a deep copy of this single questions rows and confirm that they're sorted
-    const sortedGridData = sortQuestionColumns(
-      JSON.parse(JSON.stringify(gridData))
+    // Make a deep copy of this single question & sort
+    let sortedGridData = sortRowArray(
+      sortQuestionColumns(JSON.parse(JSON.stringify(gridData)))
     );
 
-    // All cells share the same target questions, find the target questions
+    // All cells share the same target questions, find the target question IDs
     const answersToFind = sortedGridData[1]["col2"][0]["targets"]
       ? sortedGridData[1]["col2"][0]["targets"]
       : sortedGridData[2]["col2"][0]["targets"];
 
+    //Get just the IDs without their rows or columns
     const stripedIDs = answersToFind.map(
       targetString => targetString.split("'")[1]
     );
 
-    // Find all questions that match questionID and add them to one array
+    // Find all questions that match the striped questionIDs
     let matchingQuestions = [];
-
     stripedIDs.forEach(searchID => {
       const jpexpr = `$..[?(@.question==='${searchID}')]`;
       matchingQuestions = [
@@ -49,20 +49,18 @@ const SynthesizedGridSummary = ({
       ];
     });
 
-    // Organize the asnwer objects into a nested object for easier access and fewer iterations in the future
+    // Organize matching questions array into nested object for easier access & fewer iterations
     const sortedAnswers = gatherByQuestion(matchingQuestions);
 
-    //  Map through the sorted rows(obj) for this specific question
-    // For each row, build a new row object
+    // Map through the sorted rows and create new rows with calculated values
     let calculatedRows = sortedGridData.map(singleRow => {
-      // build a new object for each row
+      // A new object for each row
       const accumulator = {};
-
       // The first row remains the same
       if (singleRow["col1"] === "") {
         return singleRow;
       } else {
-        // Map through each row object, copying keys and calculating values (ie: col1, col2)
+        // Build the new rows column by column
         Object.keys(singleRow).forEach(element => {
           if (element === "col1") {
             accumulator[element] = singleRow[element];
@@ -83,27 +81,15 @@ const SynthesizedGridSummary = ({
   const calculateValue = (incomingFormula, sortedAnswers) => {
     let returnValue = null;
 
-    // map through all question 1s, map through all question 4s
+    // map through the target array
     const divisorAndDividend = incomingFormula.targets.map(target => {
       const currentQuestion = target.split("'")[1].slice(-2); // question 4 or 1
       const pertinentAnswers = sortedAnswers[currentQuestion]; // all answers to one question sorted by age range
 
-      // let sum = reduceEntries(pertinentAnswers, target);
-      // DELETE AFTER DEMO, this can be done via helper function to look cleaner/clearer
-
-      const sum = Object.keys(pertinentAnswers).reduce(function (
-        accumulator,
-        singleAgeRange
-      ) {
-        return (accumulator += selectRowColumnValueFromArray(
-          [pertinentAnswers[singleAgeRange]], // searched element must be an array
-          target
-        ));
-      },
-      0);
-      return sum;
+      return reduceEntries(pertinentAnswers, target); // returns an array with two numbers (sums)
     });
 
+    // [sum of all target 1's, sum of all target 2's]
     const [divisor, dividend] = divisorAndDividend;
 
     // calculates the value based off of the formula <0> / <1>,
@@ -112,7 +98,6 @@ const SynthesizedGridSummary = ({
     if (quotient && quotient !== Infinity) {
       returnValue = quotient;
     }
-    // If the quotient is not a falsy value return it. Otherwise, return null
     return returnValue;
   };
 
