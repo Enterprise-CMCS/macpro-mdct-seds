@@ -141,6 +141,13 @@ const GridWithTotals = props => {
     </th>
   );
 
+  const addCommas = val => {
+    if (isNaN(val) === true) {
+      return "";
+    }
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
       return (
@@ -155,7 +162,6 @@ const GridWithTotals = props => {
                   <td>
                     {!synthesized ? (
                       <TextInput
-                        type="number"
                         className="grid-column"
                         onChange={event =>
                           updateGrid(rowIndex, columnIndex, event)
@@ -163,16 +169,20 @@ const GridWithTotals = props => {
                         defaultValue={parseFloat(column).toFixed(
                           currentPrecision
                         )}
-                        value={parseFloat(
-                          gridData[rowIndex][columnIndex]
-                        ).toFixed(currentPrecision)}
+                        value={addCommas(
+                          parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                            currentPrecision
+                          )
+                        )}
                         disabled={props.disabled}
                       />
                     ) : (
                       <span className="usa-input rid-column synthesized">
                         {gridData[rowIndex][columnIndex] >= 0
-                          ? parseFloat(gridData[rowIndex][columnIndex]).toFixed(
-                              currentPrecision
+                          ? addCommas(
+                              parseFloat(
+                                gridData[rowIndex][columnIndex]
+                              ).toFixed(currentPrecision)
                             )
                           : ""}
                       </span>
@@ -185,7 +195,6 @@ const GridWithTotals = props => {
                 <td key={columnIndex}>
                   {!synthesized ? (
                     <TextInput
-                      type="number"
                       className="grid-column"
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
@@ -193,15 +202,19 @@ const GridWithTotals = props => {
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
-                      value={parseFloat(
-                        gridData[rowIndex][columnIndex]
-                      ).toFixed(currentPrecision)}
+                      value={addCommas(
+                        parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                          currentPrecision
+                        )
+                      )}
                       disabled={props.disabled}
                     />
                   ) : (
                     <span className="usa-input grid-column synthesized ">
                       {column >= 0
-                        ? parseFloat(column).toFixed(currentPrecision)
+                        ? addCommas(
+                            parseFloat(column).toFixed(currentPrecision)
+                          )
                         : ""}
                     </span>
                   )}
@@ -213,7 +226,9 @@ const GridWithTotals = props => {
           })}
           <td className="total-column">
             {gridRowTotals[rowIndex] > 0
-              ? parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+              ? addCommas(
+                  parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+                )
               : 0}
           </td>
         </tr>
@@ -236,7 +251,9 @@ const GridWithTotals = props => {
       column = (
         <td className="total-column">
           {gridColumnTotals[i] > 0
-            ? parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+            ? addCommas(
+                parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+              )
             : 0}
         </td>
       );
@@ -257,7 +274,9 @@ const GridWithTotals = props => {
             {totalsRow}
             <td className="total-column">
               {gridTotalOfTotals > 0
-                ? parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                ? addCommas(
+                    parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                  )
                 : 0}
             </td>
           </tr>

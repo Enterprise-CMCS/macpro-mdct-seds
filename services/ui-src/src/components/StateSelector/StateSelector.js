@@ -5,10 +5,9 @@ import PropTypes from "prop-types";
 import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
-import { obtainUserByEmail, updateUser } from "../../libs/api";
+import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { onError } from "../../libs/errorLib";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const StateSelector = ({ stateList }) => {
   let history = useHistory();
@@ -18,19 +17,13 @@ const StateSelector = ({ stateList }) => {
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
+  // Sort stateList
+  stateList.sort((a, b) => (a.value > b.value ? 1 : -1));
+
   // Get User data
   const loadUserData = async () => {
-    let currentUserInfo;
+    let currentUserInfo = await getUserInfo();
 
-    try {
-      // Get user information
-      const AuthUserInfo = (await Auth.currentSession()).getIdToken();
-      currentUserInfo = await obtainUserByEmail({
-        email: AuthUserInfo.payload.email
-      });
-    } catch (e) {
-      onError(e);
-    }
     // Save to local state
     if (currentUserInfo["Items"]) {
       setState(currentUserInfo["Items"][0].states[0]);
@@ -40,7 +33,7 @@ const StateSelector = ({ stateList }) => {
 
   useEffect(() => {
     (async () => {
-      await loadUserData().then();
+      await loadUserData();
     })();
   }, []);
 

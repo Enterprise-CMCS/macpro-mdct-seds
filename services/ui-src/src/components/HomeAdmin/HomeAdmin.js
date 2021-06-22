@@ -39,6 +39,12 @@ const HomeAdmin = ({ stateList, user }) => {
           setStateError(false);
         }
 
+        selectedStates.sort((a, b) => {
+          let stateA = a.label.toUpperCase();
+          let stateB = b.label.toUpperCase();
+          return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
+        });
+
         setAvailableStates(selectedStates);
       }
     };

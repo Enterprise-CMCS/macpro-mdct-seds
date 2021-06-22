@@ -11,12 +11,19 @@ import {
   ascertainUserPresence,
   determineRole
 } from "../../utility-functions/initialLoadFunctions";
+import { connect } from "react-redux";
+import {
+  fetchAgeRanges,
+  fetchStates,
+  fetchStatuses
+} from "../../store/reducers/global";
 
-function App() {
+function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
+  const [reduxReady, setReduxReady] = useState(false);
 
   async function onLoad() {
     try {
@@ -34,17 +41,23 @@ function App() {
       setIsAuthenticated(true);
       setIsAuthorized(true);
       setIsAuthenticating(false);
+      await fetchAgeRanges();
+      await fetchStates();
+      await fetchStatuses();
     } catch (error) {
       setIsAuthenticating(false);
     }
+    setReduxReady(true);
   }
+
   useEffect(() => {
     onLoad().then();
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [isAuthenticated]);
 
   return (
     <div className="App react-transition fade-in">
-      {!isAuthenticating && (
+      {!isAuthenticating && reduxReady && (
         <>
           <Header user={user} displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
@@ -59,4 +72,10 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = {
+  fetchAgeRanges: fetchAgeRanges,
+  fetchStates: fetchStates,
+  fetchStatuses: fetchStatuses
+};
+
+export default connect(null, mapDispatchToProps)(App);

@@ -22,12 +22,6 @@ exports.handler = async (event) => {
     topicName = topicName + "age-ranges";
   } else if (streamARN.includes("auth-user")) {
     topicName = topicName + "auth-user";
-  } else if (streamARN.includes("auth-user-job-codes")) {
-    topicName = topicName + "auth-user-job-codes";
-  } else if (streamARN.includes("auth-user-states")) {
-    topicName = topicName + "auth-user-states";
-  } else if (streamARN.includes("auth-user-roles")) {
-    topicName = topicName + "auth-user-roles";
   } else if (streamARN.includes("form-answers")) {
     topicName = topicName + "form-answers";
   } else if (streamARN.includes("form-questions")) {
