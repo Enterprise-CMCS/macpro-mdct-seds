@@ -111,7 +111,10 @@ const SynthesizedGridSummary = ({
   return (
     <>
       <div className="question-component padding-top-5 border-top-1px">
-        <b>
+        <b
+          className="synthesized-summary-label"
+          data-testid="synthesized-summary-label"
+        >
           {formattedQuestionNumber}. {labelWithAgeVariable}
         </b>
         <GridWithTotals

@@ -1,5 +1,5 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import SynthesizedGridSummary from "./SynthesizedGridSummary";
 import {
   mockQuestionID,
@@ -38,6 +38,18 @@ describe("Test SynthesizedGridSummary.js", () => {
     expect(
       wrapper.find(`[data-testid="synthesized-disclaimer"]`).at(0).text()
     ).toBe(" Values will not appear until source data is provided");
+  });
+
+  test("Question label loads", () => {
+    expect(wrapper.find(".synthesized-summary-label").length).toBe(1);
+  });
+
+  test("Question label loads with the correct age variable for the summary tab", () => {
+    expect(
+      wrapper.find(`[data-testid="synthesized-summary-label"]`).at(0).text()
+    ).toBe(
+      "5. What is the average number of months of enrollment for children of all ages ever enrolled during the quarter?"
+    );
   });
 
   test("Check for all top headers", () => {
