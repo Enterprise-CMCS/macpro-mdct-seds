@@ -21,7 +21,6 @@ const sortQuestionColumns = columnArray => {
 const sortRowArray = arrayOfRows => {
   let sortedRows = [];
   arrayOfRows.forEach(singleRow => {
-    let a
     const columnHeader = singleRow["col1"];
     if (columnHeader === "") {
       sortedRows[0] = singleRow;
@@ -247,6 +246,8 @@ const gatherByQuestion = answersArray => {
  * @returns {number} - dividend or divisor
  */
 const reduceEntries = (answersByAgeRange, targetID) => {
+  /* eslint-disable no-param-reassign */
+
   // call back for a reduce method
   const findEntries = (accumulator, singleAgeRange) => {
     // singleAgeRange is one key(age range) ie: "1318"
@@ -259,6 +260,7 @@ const reduceEntries = (answersByAgeRange, targetID) => {
     return (accumulator += foundEntry); // add to the accumulator
   };
   return Object.keys(answersByAgeRange).reduce(findEntries, 0); // return the accumulated value
+  /* eslint-disable no-param-reassign */
 };
 
 export {

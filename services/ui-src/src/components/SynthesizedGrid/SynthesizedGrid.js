@@ -32,7 +32,6 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
       } else {
         // Map through each row object, copying keys and calculating values
         Object.keys(singleRow).forEach(element => {
-          let g
           if (element === "col1") {
             accumulator[element] = singleRow[element];
           } else {

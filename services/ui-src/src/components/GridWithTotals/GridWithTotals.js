@@ -323,10 +323,12 @@ const translateInitialData = gridDataObject => {
 
 GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
-  questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
+  questionID: PropTypes.string.isRequired,
+  updateSynthesizedValues: PropTypes.func,
   disabled: PropTypes.bool,
-  synthesized: PropTypes.bool
+  synthesized: PropTypes.bool,
+  precision: PropTypes.number
 };
 
 const mapDispatch = {

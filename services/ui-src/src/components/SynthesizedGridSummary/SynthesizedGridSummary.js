@@ -3,7 +3,6 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
 import "./SynthesizedGridSummary.scss";
-
 import {
   sortQuestionColumns,
   gatherByQuestion,
