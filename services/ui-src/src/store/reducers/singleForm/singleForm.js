@@ -1,5 +1,6 @@
 // PACKAGES
 import { API, Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../../libs/api";
 
 // HELPER FUNCTIONS
 import {
@@ -182,27 +183,32 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
+const getUsername = async () => {
+  const currentUser = (await Auth.currentSession()).getIdToken();
+  const {payload: { email }} = currentUser;
+  const existingUser = await obtainUserByEmail({ email });
+  if (existingUser === false) return false;
+  const data = existingUser.Items.map((userInfo) => userInfo.username);
+  return data[0];
+}
+
 export const saveForm = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
-
-    const currentUser = await Auth.currentAuthenticatedUser();
-    // const {payload: { username }} = currentUser;
-    console.log("payload: ", currentUser);
-    
+    const username = await getUsername();
     
     try {
       // Update Database
       await saveSingleForm({
-        // username: username,
+        username,
         formAnswers: answers,
         statusData: statusData
       });
 
       // Update Last Saved in redux state
-      // dispatch(updatedLastSaved(username));
+      dispatch(updatedLastSaved(username));
     } catch (error) {
       // If updating the form data fails, state will remain unchanged
       dispatch({ type: SAVE_FORM_FAILURE });
