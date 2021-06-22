@@ -24,16 +24,16 @@ export const main = handler(async (event, context) => {
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
     // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch);
+    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
 
     // If there are any failures and under the retry limit
     if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
       const retryBatch = {
         noOfRetries: tryRetryBatch.noOfRetries + 1,
-        batch: tryRetryBatch,
+        batch: UnprocessedItems,
       };
       return await batchWriteAll(retryBatch);
-    } else if (tryRetryBatch.noOfRetries < retryFailLimit) {
+    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
       // exceeded failure limit
       console.error(
         `Tried batch ${
@@ -157,7 +157,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    await batchWriteAll(batchRequest);
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   // Add All StateForm Descriptions
@@ -227,7 +227,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    await batchWriteAll(batchRequest);
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   return {
