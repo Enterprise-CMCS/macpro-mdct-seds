@@ -20,6 +20,7 @@ export const main = handler(async (event, context) => {
 
   // at top of file, or in some config file
   const retryFailLimit = 5;
+  const failureList = [];
 
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
@@ -40,10 +41,7 @@ export const main = handler(async (event, context) => {
           tryRetryBatch.noOfRetries
         } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
       );
-      return {
-        status: 500,
-        message: `A failure occurred while writing data.`,
-      };
+      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
     }
   };
 
@@ -228,6 +226,13 @@ export const main = handler(async (event, context) => {
 
     // Process this batch
     await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+  }
+
+  if (failureList > 0) {
+    return {
+      status: 500,
+      message: `Failed to write all entries to database.`,
+    };
   }
 
   return {
