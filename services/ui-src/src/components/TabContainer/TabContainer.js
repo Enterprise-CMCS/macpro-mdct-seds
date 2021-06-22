@@ -20,7 +20,6 @@ const TabContainer = ({
   statusId
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
-  useEffect(() => {});
 
   useEffect(() => {
     const establishStatus = async () => {
