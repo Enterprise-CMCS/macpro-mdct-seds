@@ -20,9 +20,9 @@ export const main = handler(async (event, context) => {
 
   // Batchwrite all items, rerun is any UnprocessedItems are returned
   const batchWriteAll = async (batchRequest) => {
-    const batch = await dynamoDb.batchWrite(batchRequest);
-    if (batch.UnprocessedItems.length) {
-      await batchWriteAll(batch.UnprocessedItems);
+    const { UnprocessedItems } = await dynamoDb.batchWrite(batchRequest);
+    if (UnprocessedItems.length) {
+      await batchWriteAll(UnprocessedItems);
     }
   };
 
