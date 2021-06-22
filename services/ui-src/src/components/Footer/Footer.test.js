@@ -53,9 +53,9 @@ describe("Test Footer.js", () => {
 
   test("Check for SEDS Help Desk email link", () => {
     const { getByText } = render(<Footer />);
-    expect(getByText("MDCTHelp@cms.hhs.gov")).toHaveAttribute(
+    expect(getByText("MDCT_Help@cms.hhs.gov")).toHaveAttribute(
       "href",
-      "mailto:mdcthelp@cms.hhs.gov"
+      "mailto:mdct_help@cms.hhs.gov"
     );
   });
 });
