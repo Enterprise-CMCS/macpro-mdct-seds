@@ -75,7 +75,7 @@ const StateSelector = ({ stateList }) => {
           </h2>
           <p>
             If you feel this is an error, please contact the helpdesk{" "}
-            <a href="mailto:mdcthelp@cms.hhs.gov">MDCTHelp@cms.hhs.gov</a>
+            <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
       ) : (

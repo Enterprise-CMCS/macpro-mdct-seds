@@ -38,6 +38,7 @@ const SummaryTab = ({ questions, answers }) => {
         if (questionNumber === "05") {
           return (
             <SynthesizedGridSummary
+              key={`synthesized-${questionNumber}`}
               allAnswers={answers}
               questionID={singleQuestion.question}
               gridData={singleQuestion.rows}
@@ -110,7 +111,7 @@ const SummaryTab = ({ questions, answers }) => {
 
           return (
             <QuestionComponent
-              key={idx}
+              key={`summary-${idx}`}
               rangeID={"summary"}
               questionData={singleQuestion}
               answerData={questionAnswer}

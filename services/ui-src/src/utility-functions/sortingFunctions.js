@@ -111,6 +111,9 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
     });
   }
 
+  // Sort by years descending
+  uniqueYears.sort((a, b) => (a.year > b.year ? -1 : 1));
+
   // Loop through years to build quarters
   for (const year in uniqueYears) {
     let quarters = [];
@@ -132,6 +135,9 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
         }
       );
     }
+
+    // Sort by quarters
+    uniqueQuarters.sort((a, b) => (a.quarter > b.quarter ? 1 : -1));
 
     // Build output for each accordion item
     let quartersOutput = (

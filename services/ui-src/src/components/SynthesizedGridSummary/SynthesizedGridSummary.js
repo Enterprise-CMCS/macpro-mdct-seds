@@ -23,7 +23,6 @@ const SynthesizedGridSummary = ({
   }, [gridData, allAnswers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the grid based on the answers present in redux
-
   const updateSynthesizedGrid = () => {
     // Make a deep copy of this single questions rows and confirm that they're sorted
     const sortedGridData = sortQuestionColumns(
@@ -89,7 +88,9 @@ const SynthesizedGridSummary = ({
       const currentQuestion = target.split("'")[1].slice(-2); // question 4 or 1
       const pertinentAnswers = sortedAnswers[currentQuestion]; // all answers to one question sorted by age range
 
-      // let sum = reduceEntries(pertinentAnswers, target); // DELETE AFTER DEMO
+      // let sum = reduceEntries(pertinentAnswers, target);
+      // DELETE AFTER DEMO, this can be done via helper function to look cleaner/clearer
+
       const sum = Object.keys(pertinentAnswers).reduce(function (
         accumulator,
         singleAgeRange
