@@ -18,7 +18,7 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  // Loop through unprocessed items until the list is empty
+  // Batchwrite all items, rerun is any UnprocessedItems are returned
   const batchWriteAll = async (batchRequest) => {
     const batch = await dynamoDb.batchWrite(batchRequest);
     if (batch.UnprocessedItems.length) {
@@ -38,12 +38,12 @@ export const main = handler(async (event, context) => {
   let currentForms = await getFormResultByStateString(stateFormString);
 
   // if length > 0 send error response
-  // if (currentForms.length > 0) {
-  //   return {
-  //     status: 409,
-  //     message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-  //   };
-  // }
+  if (currentForms.length > 0) {
+    return {
+      status: 409,
+      message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
+    };
+  }
 
   // Pull list of questions
   let allQuestions = await getQuestionsByYear(specifiedYear);
@@ -135,6 +135,7 @@ export const main = handler(async (event, context) => {
       },
     };
 
+    // Process this batch
     await batchWriteAll(batchRequest);
   }
 
@@ -204,6 +205,7 @@ export const main = handler(async (event, context) => {
       },
     };
 
+    // Process this batch
     await batchWriteAll(batchRequest);
   }
 
