@@ -374,6 +374,9 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+      - schedule:
+          enabled: false
+          rate: cron(0 0 1 */3 ? *)
     timeout: 800
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
@@ -385,8 +388,6 @@ functions:
           cors: true
           authorizer: aws_iam
       - schedule:
-          # name: seds-quarterly-scheduled-event
-          # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
           enabled: false
           rate: cron(0 0 1 */3 ? *)
   businessUsersEmail:
