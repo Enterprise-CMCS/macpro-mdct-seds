@@ -19,15 +19,10 @@ export const main = handler(async (event, context) => {
   }
 
   // Loop through unprocessed items until the list is empty
-  const processItemsCallback = function (err, data) {
-    if (err) {
-      console.log("There was an error in processing query data.");
-    } else {
-      let params = { RequestItems: data.UnprocessedItems };
-
-      if (Object.keys(params.RequestItems).length != 0) {
-        dynamoDb.batchWriteItem(params, processItemsCallback);
-      }
+  const batchWriteAll = async (batchRequest) => {
+    const batch = await dynamoDb.batchWrite(batchRequest);
+    if (batch.UnprocessedItems.length) {
+      await batchWriteAll(batch.UnprocessedItems);
     }
   };
 
@@ -43,12 +38,12 @@ export const main = handler(async (event, context) => {
   let currentForms = await getFormResultByStateString(stateFormString);
 
   // if length > 0 send error response
-  if (currentForms.length > 0) {
-    return {
-      status: 409,
-      message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-    };
-  }
+  // if (currentForms.length > 0) {
+  //   return {
+  //     status: 409,
+  //     message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
+  //   };
+  // }
 
   // Pull list of questions
   let allQuestions = await getQuestionsByYear(specifiedYear);
@@ -139,7 +134,8 @@ export const main = handler(async (event, context) => {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
       },
     };
-    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
+
+    await batchWriteAll(batchRequest);
   }
 
   // Add All StateForm Descriptions
@@ -208,7 +204,7 @@ export const main = handler(async (event, context) => {
       },
     };
 
-    await dynamoDb.batchWrite(batchRequest, processItemsCallback);
+    await batchWriteAll(batchRequest);
   }
 
   return {
