@@ -35,28 +35,29 @@ const SummaryTab = ({ questions, answers }) => {
           return false;
         }
 
-        const questionNumber = singleQuestion.question.slice(-2);
+        // Initialize newRows
+        let newRows = [];
+
+        // Extract the question ID
+        const questionID = singleQuestion.question;
+
+        // Find all questions that match questionID
+        const jpexpr = `$..[?(@.question==='${questionID}')]`;
+        const allAnswersTemp = jsonpath.query(answers, jpexpr);
+
+        const questionNumber = questionID.slice(-2);
         if (questionNumber === "05") {
+          const rowsForGridData = allAnswersTemp[0];
           return (
             <SynthesizedGridSummary
               key={`synthesized-${questionNumber}`}
               allAnswers={answers}
               questionID={singleQuestion.question}
-              gridData={singleQuestion.rows}
+              gridData={rowsForGridData.rows}
               label={singleQuestion.label}
             />
           );
         } else {
-          // Initialize newRows
-          let newRows = [];
-
-          // Extract the question ID
-          const questionID = singleQuestion.question;
-
-          // Find all questions that match questionID
-          const jpexpr = `$..[?(@.question==='${questionID}')]`;
-          const allAnswersTemp = jsonpath.query(answers, jpexpr);
-
           // Make a deep copy of answers to prevent overwriting data
           let allAnswers = JSON.parse(JSON.stringify(allAnswersTemp));
 

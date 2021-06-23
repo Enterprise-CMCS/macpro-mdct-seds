@@ -35,9 +35,6 @@ const Footer = () => {
                 aria-label="Footer navigation"
                 size="slim"
                 links={[
-                  <a className="usa-footer__primary-link" href="/contact">
-                    Contact
-                  </a>,
                   <a
                     className="usa-footer__primary-link"
                     href="https://www.cms.gov/"
