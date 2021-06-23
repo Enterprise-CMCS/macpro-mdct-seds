@@ -39,11 +39,6 @@ describe("Test Footer.js", () => {
     expect(image.src).toContain("/img/logo-mdct.png");
   });
 
-  test("Check for Contact link", () => {
-    const { getByText } = render(<Footer />);
-    expect(getByText("Contact")).toHaveAttribute("href", "/contact");
-  });
-
   test("Check for CMS Home Page link", () => {
     const { getByText } = render(<Footer />);
     expect(
