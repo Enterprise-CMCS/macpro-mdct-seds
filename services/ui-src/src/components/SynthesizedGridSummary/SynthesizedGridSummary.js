@@ -27,7 +27,7 @@ const SynthesizedGridSummary = ({
     let sortedGridData = sortRowArray(
       sortQuestionColumns(JSON.parse(JSON.stringify(gridData)))
     );
-
+    let y;
     // All cells share the same target questions, find the target question IDs
     const answersToFind = sortedGridData[1]["col2"][0]["targets"]
       ? sortedGridData[1]["col2"][0]["targets"]
