@@ -22,21 +22,28 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const updateGrid = (row, column, event) => {
+  const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
       event.target.value.replace(/[^0-9]/g, "")
     );
-
     updateGridData(gridCopy);
     updateTotals();
-    props.setAnswer(gridCopy, props.questionID);
+  };
+
+  const updateGridOnBlur = () => {
+    props.setAnswer(gridData, props.questionID);
+    updateTotals();
+
+    if (synthesized) {
+      props.updateSynthesizedValues();
+    }
   };
 
   const updateTotals = () => {
@@ -164,8 +171,9 @@ const GridWithTotals = props => {
                       <TextInput
                         className="grid-column"
                         onChange={event =>
-                          updateGrid(rowIndex, columnIndex, event)
+                          updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
+                        onBlur={updateGridOnBlur}
                         defaultValue={parseFloat(column).toFixed(
                           currentPrecision
                         )}
@@ -197,8 +205,9 @@ const GridWithTotals = props => {
                     <TextInput
                       className="grid-column"
                       onChange={event =>
-                        updateGrid(rowIndex, columnIndex, event)
+                        updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
+                      onBlur={updateGridOnBlur}
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
@@ -249,7 +258,7 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">
+        <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? addCommas(
                 parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
@@ -314,10 +323,12 @@ const translateInitialData = gridDataObject => {
 
 GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
-  questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  synthesized: PropTypes.bool.isRequired
+  questionID: PropTypes.string.isRequired,
+  updateSynthesizedValues: PropTypes.func,
+  disabled: PropTypes.bool,
+  synthesized: PropTypes.bool,
+  precision: PropTypes.number
 };
 
 const mapDispatch = {
