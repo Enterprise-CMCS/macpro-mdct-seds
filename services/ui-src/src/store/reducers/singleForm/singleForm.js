@@ -185,6 +185,7 @@ export const getFormData = (state, year, quarter, formName) => {
 
 const getUsername = async () => {
   const currentUser = (await Auth.currentSession()).getIdToken();
+  console.log("currentUser", currentUser);
   const {
     payload: { email }
   } = currentUser;
