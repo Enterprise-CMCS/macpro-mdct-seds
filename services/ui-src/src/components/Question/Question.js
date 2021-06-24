@@ -44,9 +44,8 @@ const QuestionComponent = ({
       questionComponent = (
         <SynthesizedGrid
           questionID={answer_entry}
-          questionData={questionData}
           gridData={sortedRows}
-          answerData={answerData}
+          range={answerData.rangeId}
         />
       );
     }
@@ -93,8 +92,8 @@ QuestionComponent.propTypes = {
   questionData: PropTypes.object.isRequired,
   rangeID: PropTypes.string.isRequired,
   answerData: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  synthesized: PropTypes.bool.isRequired
+  disabled: PropTypes.bool,
+  synthesized: PropTypes.bool
 };
 
 export default QuestionComponent;

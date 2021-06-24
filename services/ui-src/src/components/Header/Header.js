@@ -32,10 +32,7 @@ const Header = () => {
     }
   };
 
-  const menuItems = [
-    <Link to="/">Home</Link>,
-    <Link to="/contact">Contact</Link>
-  ];
+  const menuItems = [<Link to="/">Home</Link>];
 
   return (
     <div className="header" data-testid="Header">

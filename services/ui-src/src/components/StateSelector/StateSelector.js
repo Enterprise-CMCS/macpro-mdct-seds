@@ -13,7 +13,6 @@ const StateSelector = ({ stateList }) => {
   let history = useHistory();
 
   // Set up local state
-  const [state, setState] = useState([]);
   const [user, setUser] = useState();
   const [selectedState, setSelectedState] = useState("");
 
@@ -23,7 +22,6 @@ const StateSelector = ({ stateList }) => {
 
     // Save to local state
     if (currentUserInfo["Items"]) {
-      setState(currentUserInfo["Items"][0].states[0]);
       setUser(currentUserInfo["Items"][0]);
     }
   };
@@ -36,22 +34,19 @@ const StateSelector = ({ stateList }) => {
 
   const addUserState = event => {
     setSelectedState(event);
-    setUser({ ...user, states: [event.value] });
   };
 
   const saveUpdatedUser = async () => {
-    if (
-      selectedState !== null &&
-      selectedState !== undefined &&
-      selectedState !== ""
-    ) {
+    if (selectedState) {
       const confirm = window.confirm(
         `You have selected ${selectedState.label}, is this correct?`
       );
 
       if (confirm) {
         try {
-          await updateUser(user);
+          let userToPass = user;
+          userToPass.states = [selectedState.value];
+          await updateUser(userToPass);
           history.push("/");
         } catch (error) {
           console.log("Error in state selector:", error);
@@ -66,7 +61,10 @@ const StateSelector = ({ stateList }) => {
 
   return (
     <div className="page-state-selector">
-      {user && state && user.states.length > 0 && user.states !== "null" ? (
+      {user &&
+      user.states &&
+      user.states.length > 0 &&
+      user.states !== "null" ? (
         <>
           <h2>
             {" "}
@@ -74,7 +72,7 @@ const StateSelector = ({ stateList }) => {
           </h2>
           <p>
             If you feel this is an error, please contact the helpdesk{" "}
-            <a href="mailto:sedshelp@cms.hhs.gov">SEDSHelp@cms.hhs.gov</a>
+            <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
       ) : (

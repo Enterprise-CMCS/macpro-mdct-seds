@@ -35,9 +35,6 @@ const Footer = () => {
                 aria-label="Footer navigation"
                 size="slim"
                 links={[
-                  <a className="usa-footer__primary-link" href="/contact">
-                    Contact
-                  </a>,
                   <a
                     className="usa-footer__primary-link"
                     href="https://www.cms.gov/"
@@ -55,9 +52,9 @@ const Footer = () => {
                   Email{" "}
                   <a
                     data-test="attribute-email"
-                    href="mailto:sedshelp@cms.hhs.gov"
+                    href="mailto:mdct_help@cms.hhs.gov"
                   >
-                    SEDSHELP@cms.hhs.gov
+                    MDCT_Help@cms.hhs.gov
                   </a>{" "}
                   for help or feedback.
                 </p>

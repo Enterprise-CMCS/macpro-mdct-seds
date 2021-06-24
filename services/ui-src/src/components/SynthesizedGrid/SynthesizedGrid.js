@@ -2,90 +2,98 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import "./SynthesizedGrid.scss";
 import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const SynthesizedGrid = props => {
-  const tempQuestionId = props.questionID;
-  const [synthGridData, setSynthGridData] = useState([]);
-  useEffect(() => {
-    const { answerData, gridData, allAnswers } = props;
+const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
+  const [sortedRows, setSortedRows] = useState([]);
 
-    let tempGridData = [];
-    const tabAnswers = allAnswers.filter(
-      element => element.rangeId === answerData.rangeId
+  useEffect(() => {
+    updateSynthesizedGrid();
+  }, [gridData, enitreForm]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // This function updates the grid based on the answers present in redux
+  // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
+  const updateSynthesizedGrid = () => {
+    // Retrieve the answers specific to the current tab
+    const tabAnswers = enitreForm.answers.filter(
+      element => element.rangeId === range
     );
 
-    answerData.rows.map((row, rowIndex) => {
-      // add header row
-      if (rowIndex === 0) {
-        tempGridData[rowIndex] = gridData[rowIndex];
+    //  Map through the sorted rows for this specific question
+    let calculatedRows = gridData.map(singleRow => {
+      // build a new object for each row
+      const accumulator = {};
+
+      // The first row remains the same
+      if (singleRow["col1"] === "") {
+        return singleRow;
       } else {
-        let tempRowObject = {};
-        Object.entries(row).forEach(key => {
-          // get row header
-          if (key[0] === "col1") {
-            tempRowObject = Object.assign(tempRowObject, { [key[0]]: key[1] });
-          }
-          //calculate values for each column by row
-          else {
-            let tempCalculatedValue = calculateValue(key[1][0], tabAnswers);
-            tempRowObject = Object.assign(tempRowObject, {
-              [key[0]]: tempCalculatedValue
-            });
+        // Map through each row object, copying keys and calculating values
+        Object.keys(singleRow).forEach(element => {
+          if (element === "col1") {
+            accumulator[element] = singleRow[element];
+          } else {
+            accumulator[element] = calculateValue(
+              singleRow[element][0],
+              tabAnswers
+            );
           }
         });
-        tempGridData.push(tempRowObject);
+        return accumulator;
       }
-      setSynthGridData(tempGridData);
-      return true;
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const calculateValue = (incomingCalculation, tabAnswers) => {
-    if (
-      incomingCalculation.actions &&
-      incomingCalculation.actions[0] === "formula"
-    ) {
-      let tempCalculation = [];
-      let returnValue = {};
-      Object.entries(incomingCalculation.targets).forEach(key => {
-        // gets value for each target
-        tempCalculation[key[0]] = selectRowColumnValueFromArray(
-          tabAnswers,
-          key[1]
-        );
-      });
-      // calculates the value based off of the formula <0> / <1>
-      returnValue = tempCalculation[0] / tempCalculation[1];
-      return returnValue;
-    }
+    // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
+    setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
-  const sortedRows = sortQuestionColumns(synthGridData);
-  let returnObject = [];
+  const calculateValue = (incomingFormula, tabAnswers) => {
+    let returnValue = null;
+    // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
+    const operands = incomingFormula.targets.map(target =>
+      selectRowColumnValueFromArray(tabAnswers, target)
+    );
+    // calculates the value based off of the formula <0> / <1>,
+    // This formula is currently hard coded
+    let quotient = operands[0] / operands[1];
 
-  if (sortedRows.length > 0) {
-    returnObject = (
+    // If the quotient is not a falsy value or infinity, return it. Otherwise, return null
+    if (quotient && quotient !== Infinity) {
+      returnValue = quotient ? quotient : 0;
+    }
+
+    return returnValue;
+  };
+
+  return (
+    <>
       <GridWithTotals
-        questionID={tempQuestionId}
+        questionID={questionID}
         gridData={sortedRows}
-        precision={1}
         disabled={true}
         synthesized={true}
+        precision={1}
+        updateSynthesizedValues={updateSynthesizedGrid}
       />
-    );
-  }
-  return returnObject;
+      <div className="disclaimer">
+        {" "}
+        Values will not appear until source data is provided
+      </div>
+    </>
+  );
 };
 
 SynthesizedGrid.propTypes = {
-  answerData: PropTypes.object.isRequired,
-  allAnswers: PropTypes.array.isRequired
+  enitreForm: PropTypes.object.isRequired,
+  questionID: PropTypes.string.isRequired,
+  gridData: PropTypes.array.isRequired,
+  range: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
-  allAnswers: state.currentForm.answers
+  enitreForm: state.currentForm
 });
 
 export default connect(mapState)(SynthesizedGrid);

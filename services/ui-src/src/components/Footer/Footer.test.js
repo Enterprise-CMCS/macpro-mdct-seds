@@ -39,11 +39,6 @@ describe("Test Footer.js", () => {
     expect(image.src).toContain("/img/logo-mdct.png");
   });
 
-  test("Check for Contact link", () => {
-    const { getByText } = render(<Footer />);
-    expect(getByText("Contact")).toHaveAttribute("href", "/contact");
-  });
-
   test("Check for CMS Home Page link", () => {
     const { getByText } = render(<Footer />);
     expect(
@@ -53,9 +48,9 @@ describe("Test Footer.js", () => {
 
   test("Check for SEDS Help Desk email link", () => {
     const { getByText } = render(<Footer />);
-    expect(getByText("SEDSHELP@cms.hhs.gov")).toHaveAttribute(
+    expect(getByText("MDCT_Help@cms.hhs.gov")).toHaveAttribute(
       "href",
-      "mailto:sedshelp@cms.hhs.gov"
+      "mailto:mdct_help@cms.hhs.gov"
     );
   });
 });

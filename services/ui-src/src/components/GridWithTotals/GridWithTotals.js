@@ -22,21 +22,28 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const updateGrid = (row, column, event) => {
+  const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
       event.target.value.replace(/[^0-9]/g, "")
     );
-
     updateGridData(gridCopy);
     updateTotals();
-    props.setAnswer(gridCopy, props.questionID);
+  };
+
+  const updateGridOnBlur = () => {
+    props.setAnswer(gridData, props.questionID);
+    updateTotals();
+
+    if (synthesized) {
+      props.updateSynthesizedValues();
+    }
   };
 
   const updateTotals = () => {
@@ -141,6 +148,13 @@ const GridWithTotals = props => {
     </th>
   );
 
+  const addCommas = val => {
+    if (isNaN(val) === true) {
+      return "";
+    }
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
       return (
@@ -155,24 +169,28 @@ const GridWithTotals = props => {
                   <td>
                     {!synthesized ? (
                       <TextInput
-                        type="number"
                         className="grid-column"
                         onChange={event =>
-                          updateGrid(rowIndex, columnIndex, event)
+                          updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
+                        onBlur={updateGridOnBlur}
                         defaultValue={parseFloat(column).toFixed(
                           currentPrecision
                         )}
-                        value={parseFloat(
-                          gridData[rowIndex][columnIndex]
-                        ).toFixed(currentPrecision)}
+                        value={addCommas(
+                          parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                            currentPrecision
+                          )
+                        )}
                         disabled={props.disabled}
                       />
                     ) : (
                       <span className="usa-input rid-column synthesized">
                         {gridData[rowIndex][columnIndex] >= 0
-                          ? parseFloat(gridData[rowIndex][columnIndex]).toFixed(
-                              currentPrecision
+                          ? addCommas(
+                              parseFloat(
+                                gridData[rowIndex][columnIndex]
+                              ).toFixed(currentPrecision)
                             )
                           : ""}
                       </span>
@@ -185,23 +203,27 @@ const GridWithTotals = props => {
                 <td key={columnIndex}>
                   {!synthesized ? (
                     <TextInput
-                      type="number"
                       className="grid-column"
                       onChange={event =>
-                        updateGrid(rowIndex, columnIndex, event)
+                        updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
+                      onBlur={updateGridOnBlur}
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
-                      value={parseFloat(
-                        gridData[rowIndex][columnIndex]
-                      ).toFixed(currentPrecision)}
+                      value={addCommas(
+                        parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                          currentPrecision
+                        )
+                      )}
                       disabled={props.disabled}
                     />
                   ) : (
                     <span className="usa-input grid-column synthesized ">
                       {column >= 0
-                        ? parseFloat(column).toFixed(currentPrecision)
+                        ? addCommas(
+                            parseFloat(column).toFixed(currentPrecision)
+                          )
                         : ""}
                     </span>
                   )}
@@ -213,7 +235,9 @@ const GridWithTotals = props => {
           })}
           <td className="total-column">
             {gridRowTotals[rowIndex] > 0
-              ? parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+              ? addCommas(
+                  parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+                )
               : 0}
           </td>
         </tr>
@@ -234,9 +258,11 @@ const GridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">
+        <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
-            ? parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+            ? addCommas(
+                parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+              )
             : 0}
         </td>
       );
@@ -257,7 +283,9 @@ const GridWithTotals = props => {
             {totalsRow}
             <td className="total-column">
               {gridTotalOfTotals > 0
-                ? parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                ? addCommas(
+                    parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                  )
                 : 0}
             </td>
           </tr>
@@ -295,10 +323,12 @@ const translateInitialData = gridDataObject => {
 
 GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
-  questionID: PropTypes.string.isRequired,
   setAnswer: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  synthesized: PropTypes.bool.isRequired
+  questionID: PropTypes.string.isRequired,
+  updateSynthesizedValues: PropTypes.func,
+  disabled: PropTypes.bool,
+  synthesized: PropTypes.bool,
+  precision: PropTypes.number
 };
 
 const mapDispatch = {
