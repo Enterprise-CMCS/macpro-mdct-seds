@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import {getUsername} from "../reducers/singleForm";
+import {getUsername} from "../reducers/singleForm/singleForm";
 
 // ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
