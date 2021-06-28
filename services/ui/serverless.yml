@@ -27,9 +27,28 @@ custom:
   route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName~true, ""}
   cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn~true, ssm:/configuration/default/cloudfront/certificateArn~true, ""}
   cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName~true, ""}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  wafLoggingBucket: ${cf:ui-waflog-s3-bucket-${self:custom.stage}.WaflogsUploadBucketArn}  
+  webAclName: ${self:service}-${self:custom.stage}-webacl
+  firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
+  scripts:
+    hooks:
+      # Associate the WAF ACL with the Firehose Delivery Stream
+      deploy:finalize: |
+        wafAclArn=`aws wafv2 list-web-acls --scope CLOUDFRONT | jq -r '.WebACLs | .[] | select(.Name=="${self:custom.webAclName}") | .ARN'`
+        firehoseStreamArn=`aws firehose describe-delivery-stream --delivery-stream-name ${self:custom.firehoseStreamName} | jq -r '.DeliveryStreamDescription.DeliveryStreamARN'`
+        aws wafv2 put-logging-configuration \
+          --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
+          --region ${self:provider.region}
 
 resources:
   Conditions:
+    CreatePermissionsBoundary:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.iamPermissionsBoundaryPolicy}
     CreateDnsRecord:
       Fn::And:
         - Fn::Not:
@@ -73,12 +92,13 @@ resources:
     CloudFrontWebAcl:
       Type: AWS::WAFv2::WebACL
       Properties:
+        Name: ${self:custom.webAclName}
         DefaultAction:
           Block: {}
         Rules:
           - Action:
               Allow: {}
-            Name: ${self:custom.stage}-allow-usa-plus-territories
+            Name: ${self:custom.webAclName}-allow-usa-plus-territories
             Priority: 0
             Statement:
               GeoMatchStatement:
@@ -155,6 +175,75 @@ resources:
           HostedZoneId: Z2FDTNDATAQYW2
           EvaluateTargetHealth: false
         Type: A
+    ###############This code block enables logging on waf and sends all logs to s3.##################################
+    Firehose:
+      Type: AWS::KinesisFirehose::DeliveryStream
+      Properties:
+        DeliveryStreamName: !Join
+          - ""
+          - - aws-waf-logs-
+            - !Ref AWS::StackName
+        ExtendedS3DestinationConfiguration:
+          RoleARN: !GetAtt DeliveryRole.Arn
+          BucketARN: !Join
+            - ""
+            - - "${self:custom.wafLoggingBucket}"
+          Prefix: AWSLogs/WAF/${self:custom.stage}/
+          BufferingHints:
+            IntervalInSeconds: 300
+            SizeInMBs: 5
+          CompressionFormat: UNCOMPRESSED
+    DeliveryRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: ${self:custom.iamPath}
+        PermissionsBoundary:
+          Fn::If:
+            - CreatePermissionsBoundary
+            - Fn::Join:
+                - ""
+                - - "arn:aws:iam::"
+                  - Ref: AWS::AccountId
+                  - ":policy"
+                  - '${self:custom.iamPermissionsBoundaryPolicy, ""}'
+            - Ref: AWS::NoValue
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: ""
+              Effect: Allow
+              Principal:
+                Service: firehose.amazonaws.com
+              Action: "sts:AssumeRole"
+              Condition:
+                StringEquals:
+                  "sts:ExternalId": !Ref "AWS::AccountId"
+    DeliveryPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyName: "firehose_delivery_policy"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - "s3:AbortMultipartUpload"
+                - "s3:GetBucketLocation"
+                - "s3:GetObject"
+                - "s3:ListBucket"
+                - "s3:ListBucketMultipartUploads"
+                - "s3:PutObject"
+              Resource:
+                - !Join
+                  - ""
+                  - - "${self:custom.wafLoggingBucket}"
+                    - /*
+                - !Join
+                  - ""
+                  - - "${self:custom.wafLoggingBucket}"
+                    - /*
+        Roles:
+          - !Ref DeliveryRole
     ApplicationEndpointUrl:
       Type: AWS::SSM::Parameter
       Properties:
@@ -180,3 +269,7 @@ resources:
       Value: !Sub https://${CloudFrontDistribution.DomainName}
     ApplicationEndpointUrl:
       Value: !GetAtt ApplicationEndpointUrl.Value
+    FirehoseArn:
+      Value: !GetAtt Firehose.Arn
+    CloudFrontWebAclArn:
+      Value: !GetAtt CloudFrontWebAcl.Arn

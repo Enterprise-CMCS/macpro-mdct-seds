@@ -45,32 +45,61 @@
     />
     <style>
       .well {
-        margin: auto;
+        margin: 0 auto 0 auto;
         position: absolute;
-        top: 25%;
+        top: 100px;
         left: calc(50% - 600px);
         bottom: 0;
         right: 0;
-        width: 400px;
-        max-width: 400px;
-        white-space: nowrap;
+        width: 800px;
+        min-height: 300px;
+        height: 300px;
+      }
+      .new-browser {
+        display: none;
+      }
+      h1 {
+        margin: 0 0 1em 0;
+      }
+      @media all and (-ms-high-contrast:none) {
+        .new-browser {
+          display: block;
+        } 
       }
     </style>
   </head>
   <body>
     <div class="well">
-      <p>
-        Hello,
-      </p>
-      <p>
-        I have some unfortunate news. 🙁
-      </p>
+
+      <h1>
+        Some Unfortunate News 🙁
+      </h1>
+
       <p>
         The CHIP Statistical Enrollment Data Reports website is temporarily down.
       </p>
-      <p>
-        It will be back on July 1st.
-      </p>
+
+      <div class="new-browser">
+        Your browser (IE) is no longer supported.
+
+        <ul>
+          <li>
+            You will need to download one of the following supported browsers:
+            <ul>
+              <li>
+                <a target="_blank" href="https://www.google.com/chrome/?brand=YTUH&geo=US&gclid=Cj0KCQjw2tCGBhCLARIsABJGmZ5ff1hA69jTPkTiMnTGMTbqcXk-jC0zROMnjHmadb8-apg-nNDEhUUaAt3aEALw_wcB&gclsrc=aw.ds">Google Chrome</a>
+              </li>
+              <li>
+                <a target="_blank" href="https://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <br />
+      <br />
+
       <p>
         We apologize for any inconvenience.
       </p>
