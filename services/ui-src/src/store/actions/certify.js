@@ -1,4 +1,5 @@
-import { API } from "aws-amplify";
+import { getUsername } from "../reducers/singleForm/singleForm";
+
 // ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
 export const CERTIFY_AND_SUBMIT_PROVISIONAL = "CERTIFY_AND_SUBMIT_PROVISIONAL";
@@ -28,8 +29,7 @@ export const setUncertify = username => {
 
 // THUNK FUNCTIONS
 export const certifyAndSubmitFinal = () => async dispatch => {
-  const { data } = await API.post("mdct-seds", "/users/get/username", {});
-  const username = data.username;
+  const username = await getUsername();
   try {
     dispatch(setFinalCertify(username));
   } catch (error) {
@@ -38,8 +38,7 @@ export const certifyAndSubmitFinal = () => async dispatch => {
 };
 
 export const certifyAndSubmitProvisional = () => async dispatch => {
-  const { data } = await API.post("mdct-seds", "/users/get/username", {});
-  const username = data.username;
+  const username = await getUsername();
   try {
     dispatch(setProvisionalCertify(username));
   } catch (error) {
@@ -48,7 +47,6 @@ export const certifyAndSubmitProvisional = () => async dispatch => {
 };
 
 export const uncertify = () => async dispatch => {
-  const { data } = await API.post("mdct-seds", "/users/get/username", {});
-  const username = data.username;
+  const username = await getUsername();
   dispatch(setUncertify(username));
 };
