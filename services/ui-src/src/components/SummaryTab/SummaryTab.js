@@ -92,11 +92,8 @@ const SummaryTab = ({ questions, answers }) => {
                     // If empty string, return an empty string
                     newRows[rowKey][columnKey] = "";
                   } else {
-                    let currentValue = !isNaN(
-                      parseFloat(newRows[rowKey][columnKey])
-                    )
-                      ? parseFloat(newRows[rowKey][columnKey])
-                      : 0;
+                    let currentValue =
+                      parseFloat(newRows[rowKey][columnKey]) || 0;
                     // Add value to current value
                     newRows[rowKey][columnKey] =
                       currentValue + parseFloat(currentColumn);
