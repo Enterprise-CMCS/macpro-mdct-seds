@@ -10,8 +10,10 @@ services=(
   'uploads'
   'app-api'
   'stream-functions'
+  'ui-waflog-s3-bucket'
   'ui'
   'ui-auth'
+  'ui-waf-log-assoc'
   'ui-src'
 )
 
