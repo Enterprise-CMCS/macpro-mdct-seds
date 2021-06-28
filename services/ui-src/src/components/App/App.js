@@ -30,7 +30,7 @@ function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
       const user = (await Auth.currentSession()).getIdToken();
       // *** make sure attributes exist and are in standard format
       user.attributes = user.payload;
-      console.log('!!!!!!!!!!!!!!!', user);
+      console.log("!!!!!!!!!!!!!!!", user);
       user.attributes["app-role"] = await determineRole(
         user.attributes["custom:ismemberof"]
       );

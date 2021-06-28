@@ -1,5 +1,4 @@
-import { API } from "aws-amplify";
-import {getUsername} from "../reducers/singleForm/singleForm";
+import { getUsername } from "../reducers/singleForm/singleForm";
 
 // ACTION TYPES
 export const CERTIFY_AND_SUBMIT_FINAL = "CERTIFY_AND_SUBMIT_FINAL";
@@ -32,7 +31,7 @@ export const setUncertify = username => {
 export const certifyAndSubmitFinal = () => async dispatch => {
   const username = await getUsername();
   try {
-    dispatch(setFinalCertify(username)); 
+    dispatch(setFinalCertify(username));
   } catch (error) {
     dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
   }
