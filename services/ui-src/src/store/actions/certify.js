@@ -32,7 +32,7 @@ export const setUncertify = username => {
 export const certifyAndSubmitFinal = () => async dispatch => {
   const username = await getUsername();
   try {
-    dispatch(setFinalCertify(username));
+    dispatch(setFinalCertify(username)); 
   } catch (error) {
     dispatch({ type: CERTIFY_AND_SUBMIT_FAILURE });
   }
