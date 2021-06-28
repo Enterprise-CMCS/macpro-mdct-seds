@@ -2,6 +2,7 @@ import handler from "./../../libs/handler-lib";
 import {
   getUsersEmailByRole,
   getUncertifiedStates,
+  getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
 const AWS = require("aws-sdk");
 
@@ -39,7 +40,16 @@ const year = new Date().getFullYear();
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
   const sendToEmail = sendToEmailArry.map((e) => e.email);
-  const uncertifiedStates = await getUncertifiedStates(year, quarter);
+  const uncertifiedStates = await getUncertifiedStatesAndForms(year, quarter);
+
+  // Build string of all states and forms
+  let uncertifiedStatesList = "";
+  uncertifiedStates.map((item) => {
+    uncertifiedStatesList += `${item.state} -${item.form.map(
+      (form) => ` ${form}`
+    )}\n`;
+  });
+
   const todayDate = new Date().toISOString().split("T")[0];
   const fromEmail = "mdct@cms.hhs.gov";
   const recipient = {
@@ -51,7 +61,8 @@ async function businessOwnersTemplate() {
 
     not certified their SEDS data for FFY${year} Q${quarter} as of
 
-    ${todayDate}: {${uncertifiedStates}}
+    ${todayDate}
+    ${uncertifiedStatesList}
 
     Please follow up with the state’s representatives if you have any questions.
 
@@ -60,6 +71,7 @@ async function businessOwnersTemplate() {
 
     `,
   };
+
   return {
     Destination: {
       ToAddresses: recipient.TO,
