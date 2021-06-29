@@ -1,7 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import {
   getUsersEmailByRole,
-  getUncertifiedStates,
   getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
 const AWS = require("aws-sdk");
