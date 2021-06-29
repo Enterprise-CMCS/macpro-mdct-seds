@@ -56,19 +56,15 @@ async function businessOwnersTemplate() {
     SUBJECT: "FFY SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
-    This is an automated message to notify you that the states listed below have
+This is an automated message to notify you that the states listed below have not certified their SEDS data for FFY${year} Q${quarter} as of: ${todayDate}
 
-    not certified their SEDS data for FFY${year} Q${quarter} as of
+${uncertifiedStatesList}
 
-    ${todayDate}
-    ${uncertifiedStatesList}
+Please follow up with the state’s representatives if you have any questions.
 
-    Please follow up with the state’s representatives if you have any questions.
-
-    Regards,
-    MDCT SEDS.
-
-    `,
+Regards,
+MDCT SEDS.
+`,
   };
 
   return {
