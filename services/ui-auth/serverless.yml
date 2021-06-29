@@ -28,8 +28,8 @@ custom:
   sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress~true, ssm:/configuration/default/sesSourceEmailAddress~true, ""}
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
-  application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
-  okta_metadata_url: ${env:OKTA_METADATA_URL}
+  application_endpoint_url: ${ssm:/${self:custom.stage}/ui/application_endpoint}
+  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, env:OKTA_METADATA_URL}
 
 resources:
   Conditions:
@@ -88,7 +88,7 @@ resources:
           - profile
         CallbackURLs:
           - ${self:custom.application_endpoint_url}
-          - http://localhost:3000/
+          - https://localhost:3000/
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         ExplicitAuthFlows:
           - ADMIN_NO_SRP_AUTH
@@ -96,7 +96,7 @@ resources:
         GenerateSecret: false
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
-          - http://localhost:3000/
+          - https://localhost:3000/
         SupportedIdentityProviders:
           - Okta
         UserPoolId:

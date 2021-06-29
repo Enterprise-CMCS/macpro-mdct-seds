@@ -84,6 +84,9 @@ export default function Routes({ user, isAuthorized }) {
           <AuthenticatedRoute exact path="/generate-forms">
             <GenerateForms />
           </AuthenticatedRoute>
+          <AuthenticatedRoute path="*">
+            <Redirect to="/" />
+          </AuthenticatedRoute>
         </>
       ) : null}
       <AuthenticatedRoute path="*">

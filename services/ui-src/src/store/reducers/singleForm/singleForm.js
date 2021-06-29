@@ -1,5 +1,6 @@
 // PACKAGES
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
+import { obtainUserByEmail } from "../../../libs/api";
 
 // HELPER FUNCTIONS
 import {
@@ -182,18 +183,29 @@ export const getFormData = (state, year, quarter, formName) => {
   };
 };
 
+export const getUsername = async () => {
+  const currentUser = (await Auth.currentSession()).getIdToken();
+  console.log("currentUser", currentUser);
+  const {
+    payload: { email }
+  } = currentUser;
+  const existingUser = await obtainUserByEmail({ email });
+  if (existingUser === false) return false;
+  const data = existingUser.Items.map(userInfo => userInfo.username);
+  return data[0];
+};
+
 export const saveForm = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
+    const username = await getUsername();
 
-    const { data } = await API.post("mdct-seds", "/users/get/username", {});
-    const username = data.username;
     try {
       // Update Database
       await saveSingleForm({
-        username: username,
+        username,
         formAnswers: answers,
         statusData: statusData
       });
