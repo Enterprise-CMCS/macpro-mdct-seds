@@ -39,6 +39,17 @@ module.exports = {
     browser.end();
   },
 
+  "Click on year 2021": function (browser){
+
+    const tests_data = {
+        year21: {
+          selector: "button[data-testid='accordionButton_2021'] ",
+        },
+      };
+      browser.click(tests_data.year21.selector).waitForElementPresent("body");
+
+  },
+
   "Click on Quarter1": function (browser) {
     const tests_data = {
       quarter1: {
@@ -48,16 +59,16 @@ module.exports = {
     browser.click(tests_data.quarter1.selector).waitForElementPresent("body");
   },
 
-  "click on 64.21E": function (browser) {
+  "click on 21E": function (browser) {
     const tests_data = {
       pw: {
-        selector: "div[id=row-1] > div > a",
+        selector: "div[id=row-3] >div>a",
       },
     };
     browser.click(tests_data.pw.selector).waitForElementPresent("body");
   },
 
-  "Fill the 64.21E form, Update FPL changes, Save and Return to EnrollmentDataHome": function (
+  "Fill the 21E form, Update FPL changes, Save and Return to EnrollmentDataHome": function (
     browser
   ) {
     const tests_data = {
@@ -107,8 +118,6 @@ module.exports = {
         selector: "div[data-testid=grid] > a",
       },
       total1: {
-        //selector: "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]",
-        //selector: "//*[@id='AL-2021-1-64.EC-0000-01']/table/tbody/tr[4]/td[6]",
         selector:
           "/html/body/div/div/div[2]/div/div[3]/div/div[1]/div[2]/div/table/tbody/tr[4]/td[6]",
       },
@@ -151,6 +160,7 @@ module.exports = {
       }
     );
 
+    //browser.useXpath().verify.containsText( tests_data.total1.selector , total);
     browser.click(tests_data.save.selector);
 
     //Ages 0-1 :
@@ -243,6 +253,28 @@ module.exports = {
         });
       }
     );
+    //working
+    //     browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
+    //     for (var x = 0; x < link_array.value.length; x++){
+    //         let ele = link_array.value[x].ELEMENT;
+    //         browser.elementIdEnabled(ele, function(result) {
+    //             if(result.value == true){
+    //                 browser.elementIdClear(ele);
+    //                 browser.elementIdValue(ele, "5");
+    //             }
+    //         });
+    //     }
+    //   });
+
+    //browser.assert.elementPresent( tests_data.total1.selector);
+    //browser.verify.containsText("xpath", "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]");
+    //   browser.click("[id=react-tabs-0]");
+    //   browser.element("xpath", "/html/body/div/div/div[2]/div/div[3]/div/div[1]/div[2]/div/table/tbody/tr[4]/td[6]", function(elements) {
+    //     console.log("total-" , total);
+    //     browser.useXpath().verify.containsText( tests_data.total1.selector , total);
+    //     //console.log("elements-" , elements);
+    //   //console.log("elements-" , elements.value[0].ELEMENT);
+    // });
 
     browser.click(tests_data.save.selector);
     browser.click(tests_data.footer.selector);
