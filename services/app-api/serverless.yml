@@ -387,7 +387,7 @@ functions:
       - schedule:
           # name: seds-quarterly-scheduled-event
           # description: "responsible for trigger lambda to send notification to specific seds users quarterly"
-          enabled: false
+          enabled: true
           rate: cron(0 0 1 */3 ? *)
   businessUsersEmail:
     handler: handlers/notification/businessUsers.main
@@ -399,7 +399,7 @@ functions:
           cors: true
           authorizer: aws_iam
       - schedule:
-          enabled: false
+          enabled: true
           rate: cron(0 0 1 */3 ? *)
   saveForm:
     handler: handlers/forms/post/saveForm.main
