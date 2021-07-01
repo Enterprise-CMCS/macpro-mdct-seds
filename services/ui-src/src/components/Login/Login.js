@@ -17,6 +17,8 @@ export default function Login() {
     password: ""
   });
 
+  console.log("zzzLogin Page Loaded");
+
   const onLoad = async () => {
     if (Auth !== undefined && Auth !== null) {
       await Auth.signOut();
