@@ -35,8 +35,11 @@ export default function Login() {
     const authConfig = Auth.configure();
     const { domain, redirectSignIn, responseType } = authConfig.oauth;
     const clientId = authConfig.userPoolWebClientId;
+    console.log("zzzAuthConfig.oath", authConfig.oauth);
+    console.log("zzzRedirectSignIn", redirectSignIn);
     const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
-    window.location.assign(url);
+    console.log("zzzURL", url);
+    // window.location.assign(url);
   }
 
   async function handleSubmitOkta(event) {
@@ -86,7 +89,7 @@ export default function Login() {
           isLoading={isLoadingOkta}
           outline={true}
         >
-          Login with EUA ID
+          Login with EUA ID - test
           <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
         </LoaderButton>
       </div>
