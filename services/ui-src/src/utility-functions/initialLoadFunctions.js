@@ -6,7 +6,7 @@ export async function ascertainUserPresence(user) {
   const existingUser = await obtainUserByEmail({
     email: user.attributes.email
   });
-
+  console.log("zzzUserObject", userObject);
   const userObject = {
     username: user.username ?? user.attributes.email,
     email: user.attributes.email,
