@@ -202,3 +202,27 @@ export async function getFormResultByStateString(stateFormString) {
 
   return result.Items;
 }
+
+export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
+  const params = {
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ExpressionAttributeValues: {
+      ":year": specifiedYear,
+      ":quarter": specifiedQuarter,
+    },
+    FilterExpression: "#theYear = :year and quarter = :quarter",
+    ProjectionExpression: "state_form",
+  };
+
+  const result = await dynamoDb.scan(params);
+  let values = [];
+  if (result.length) {
+    values = Object.values(result);
+  }
+
+  return values;
+}

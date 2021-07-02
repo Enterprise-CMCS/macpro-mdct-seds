@@ -5,6 +5,7 @@ import {
   getFormResultByStateString,
   getQuestionsByYear,
   getStatesList,
+  findExistingStateForms,
 } from "../../shared/sharedFunctions";
 
 /**
@@ -51,18 +52,13 @@ export const main = handler(async (event, context) => {
   const specifiedYear = data.year.value;
   const specifiedQuarter = data.quarter.value;
 
-  // Quick check to see if form answers already exist for year and quarter
-  // Use Alabama form 21E as a basic check
-  const stateFormString = `AL-${specifiedYear}-${specifiedQuarter}-21E`;
-  let currentForms = await getFormResultByStateString(stateFormString);
-
-  // if length > 0 send error response
-  if (currentForms.length > 0) {
-    return {
-      status: 409,
-      message: `This process has been halted. Forms exists for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-    };
-  }
+  // SPLIT LOGIC FOR MISSING FORMS
+  const foundForms = await findExistingStateForms(
+    specifiedYear,
+    specifiedQuarter
+  );
+  console.log("FOUND FORMS FOUND FORMS", foundForms);
+  // write a handler that returns the state_forms for all found forms (for the SPECIFIC year and QUARTER)
 
   // Pull list of questions
   let allQuestions = await getQuestionsByYear(specifiedYear);
@@ -105,6 +101,7 @@ export const main = handler(async (event, context) => {
       // Build lengthy strings
       const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
 
+      // if (!foundForms.includes(stateFormString)) {
       // Add item to array for batching later
       putRequestsStateForms.push({
         PutRequest: {
@@ -131,6 +128,7 @@ export const main = handler(async (event, context) => {
           },
         },
       });
+      // }
     }
   }
   // Begin batching by groups of 25
@@ -182,6 +180,8 @@ export const main = handler(async (event, context) => {
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
+
+        // EXIST CHECK
 
         putRequestsFormAnswers.push({
           PutRequest: {

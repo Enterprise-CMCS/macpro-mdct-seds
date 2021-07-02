@@ -14,10 +14,11 @@ const GenerateForms = () => {
   const nextYear = new Date().getFullYear() + 1;
 
   // Build array for year dropdown
-  const yearSelections = [
-    { label: currentYear, value: currentYear },
-    { label: nextYear, value: nextYear }
-  ];
+  const yearSelections = [];
+
+  for (let i = 2019; i <= nextYear; i++) {
+    yearSelections.push({ label: i, value: i });
+  }
 
   // Build array for quarter dropdown
   const quarterSelections = [

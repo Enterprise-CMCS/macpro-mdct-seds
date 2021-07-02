@@ -163,6 +163,14 @@ export const generateQuarterlyForms = data => {
   return API.post("mdct-seds", "/generate-forms", opts);
 };
 
+// *** generate missing forms
+export const generateMissingForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/generate-missing-forms", opts);
+};
+
 // **
 export const sendUncertifyEmail = data => {
   const opts = requestOptions();

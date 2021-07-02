@@ -18,6 +18,7 @@ import FormPage from "../FormPage/FormPage";
 import LoadData from "../LoadData/LoadData";
 import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
+import GenerateMissingForms from "../GenerateMissingForms/GenerateMissingForms";
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
@@ -66,6 +67,9 @@ export default function Routes({ user, isAuthorized }) {
       <AuthenticatedRoute exact path="/print/:state/:year/:quarter/:formName">
         <PrintPDF />
       </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/generate-missing-forms">
+        <GenerateMissingForms />
+      </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
       {user.attributes["app-role"] === "admin" ? (
         <>
@@ -84,9 +88,9 @@ export default function Routes({ user, isAuthorized }) {
           <AuthenticatedRoute exact path="/generate-forms">
             <GenerateForms />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="*">
-            <Redirect to="/" />
-          </AuthenticatedRoute>
+          {/*<AuthenticatedRoute path="*">*/}
+          {/*  <Redirect to="/" />*/}
+          {/*</AuthenticatedRoute>*/}
         </>
       ) : null}
       <AuthenticatedRoute path="*">
