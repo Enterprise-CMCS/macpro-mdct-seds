@@ -219,10 +219,13 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
   };
 
   const result = await dynamoDb.scan(params);
-  let values = [];
-  if (result.length) {
-    values = Object.values(result);
-  }
 
+  let values = [];
+
+  if (result.Count !== 0) {
+    values = result.Items.map((id) => {
+      return id.state_form;
+    });
+  }
   return values;
 }

@@ -101,34 +101,34 @@ export const main = handler(async (event, context) => {
       // Build lengthy strings
       const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
 
-      // if (!foundForms.includes(stateFormString)) {
-      // Add item to array for batching later
-      putRequestsStateForms.push({
-        PutRequest: {
-          Item: {
-            state_form: stateFormString,
-            status_date: new Date().toISOString(),
-            year: specifiedYear,
-            state_comments: [{ type: "text_multiline", entry: "" }],
-            form_id: allFormDescriptions[form].form_id,
-            last_modified_by: "seed",
-            status_modified_by: "seed",
-            created_by: "seed",
-            validation_percent: "0.03",
-            status_id: 2,
-            form: allFormDescriptions[form].form,
-            program_code: "All",
-            state_id: allStates[state].state_id,
-            not_applicable: false,
-            created_date: new Date().toISOString(),
-            form_name: allFormDescriptions[form].form_name,
-            last_modified: new Date().toISOString(),
-            quarter: specifiedQuarter,
-            status: "In Progress",
+      if (!foundForms.includes(stateFormString)) {
+        // Add item to array for batching later
+        putRequestsStateForms.push({
+          PutRequest: {
+            Item: {
+              state_form: stateFormString,
+              status_date: new Date().toISOString(),
+              year: specifiedYear,
+              state_comments: [{ type: "text_multiline", entry: "" }],
+              form_id: allFormDescriptions[form].form_id,
+              last_modified_by: "seed",
+              status_modified_by: "seed",
+              created_by: "seed",
+              validation_percent: "0.03",
+              status_id: 2,
+              form: allFormDescriptions[form].form,
+              program_code: "All",
+              state_id: allStates[state].state_id,
+              not_applicable: false,
+              created_date: new Date().toISOString(),
+              form_name: allFormDescriptions[form].form_name,
+              last_modified: new Date().toISOString(),
+              quarter: specifiedQuarter,
+              status: "In Progress",
+            },
           },
-        },
-      });
-      // }
+        });
+      }
     }
   }
   // Begin batching by groups of 25
@@ -162,6 +162,14 @@ export const main = handler(async (event, context) => {
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
     // Loop through each question
+
+    // Build lengthy strings
+    // state - year - quarter - form
+    const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
+
+    // TO PICK UP ON TUESDAY:
+    // THE FORM ISNT AVAILABLE AT THIS LEVEL
+
     for (const question in allQuestions) {
       // Get age range array
       let ageRanges = allQuestions[question].age_ranges;
@@ -181,7 +189,16 @@ export const main = handler(async (event, context) => {
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // EXIST CHECK
+        // EXIST CHECK again, same as above
+
+        // above, we generated state-forms table entries.
+        // basically a state's status object for each unique form ie: "KY-2020-3-64.21E"
+
+        // THIS IS FOR THE FORM ANSWERS TABLE
+        // CREATING ENTRY FOR EACH QUESTION > AGE RANGE >      FORM > QUARTER > YEAR > STATE
+
+        // if (!foundForms.includes(stateFormString)) {
+        // Add item to array for batching later
 
         putRequestsFormAnswers.push({
           PutRequest: {
