@@ -8,7 +8,9 @@ export async function ascertainUserPresence(user) {
   });
   console.log("zzzUser", user);
   const userObject = {
-    username: user.attributes.identities[0].userId ?? user.attributes.email,
+    username: user.attributes.identities
+      ? user.attributes.identities[0].userId
+      : user.attributes.email,
     email: user.attributes.email,
     firstName: user.attributes.given_name,
     lastName: user.attributes.family_name,
