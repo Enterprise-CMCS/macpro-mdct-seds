@@ -374,6 +374,9 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+      - schedule:
+          enabled: false
+          rate: cron(0 0 1 */3 ? *)
     timeout: 800
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
