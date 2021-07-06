@@ -85,7 +85,7 @@ export default function Routes({ user, isAuthorized }) {
             <GenerateForms />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="*">
-            <Redirect to="/" />
+            {/* <Redirect to="/" /> */}
           </AuthenticatedRoute>
         </>
       ) : null}

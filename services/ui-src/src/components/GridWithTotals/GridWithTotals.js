@@ -169,7 +169,8 @@ const GridWithTotals = props => {
                   <td>
                     {!synthesized ? (
                       <TextInput
-                        className="grid-column"
+                      style={{width: "100%", padding: 0}}
+                      className="grid-column"
                         onChange={event =>
                           updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
@@ -203,7 +204,8 @@ const GridWithTotals = props => {
                 <td key={columnIndex}>
                   {!synthesized ? (
                     <TextInput
-                      className="grid-column"
+                    style={{width: "100%", padding: 0}}
+                    className="grid-column"
                       onChange={event =>
                         updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
