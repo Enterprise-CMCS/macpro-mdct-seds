@@ -62,6 +62,13 @@ const GenerateForms = () => {
           {alert.message}
         </Alert>
       ) : null}
+
+      {alert && alert.status === 204 ? (
+        <Alert className="margin-bottom-3" type="warning">
+          {alert.message}
+        </Alert>
+      ) : null}
+
       {alert && (alert.status === 500 || alert.status === 409) ? (
         <Alert className="margin-bottom-3" type="error">
           {alert.message}

@@ -2,7 +2,6 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import {
   getFormDescriptions,
-  getFormResultByStateString,
   getQuestionsByYear,
   getStatesList,
   findExistingStateForms,
@@ -13,6 +12,8 @@ import {
  */
 
 export const main = handler(async (event, context) => {
+  let noMissingForms = true;
+
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
@@ -102,6 +103,7 @@ export const main = handler(async (event, context) => {
       const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
 
       if (!foundForms.includes(stateFormString)) {
+        noMissingForms = false;
         // Add item to array for batching later
         putRequestsStateForms.push({
           PutRequest: {
@@ -140,6 +142,14 @@ export const main = handler(async (event, context) => {
     );
   }
 
+  ///// show stupid items
+  let showAlexisTheNewForms = batchArrayFormDescriptions.map((e) => {
+    return e.map((element) => {
+      return element.PutRequest.Item.state_form;
+    });
+  });
+  console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewForms);
+
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
@@ -163,13 +173,6 @@ export const main = handler(async (event, context) => {
   for (const state in allStates) {
     // Loop through each question
 
-    // Build lengthy strings
-    // state - year - quarter - form
-    const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
-
-    // TO PICK UP ON TUESDAY:
-    // THE FORM ISNT AVAILABLE AT THIS LEVEL
-
     for (const question in allQuestions) {
       // Get age range array
       let ageRanges = allQuestions[question].age_ranges;
@@ -189,33 +192,26 @@ export const main = handler(async (event, context) => {
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // EXIST CHECK again, same as above
-
-        // above, we generated state-forms table entries.
-        // basically a state's status object for each unique form ie: "KY-2020-3-64.21E"
-
-        // THIS IS FOR THE FORM ANSWERS TABLE
-        // CREATING ENTRY FOR EACH QUESTION > AGE RANGE >      FORM > QUARTER > YEAR > STATE
-
-        // if (!foundForms.includes(stateFormString)) {
-        // Add item to array for batching later
-
-        putRequestsFormAnswers.push({
-          PutRequest: {
-            Item: {
-              answer_entry: answerEntry,
-              age_range: currentAgeRangeLabel,
-              rangeId: currentAgeRangeId,
-              question: questionID,
-              state_form: stateFormID,
-              last_modified_by: "seed",
-              created_date: new Date().toISOString(),
-              rows: allQuestions[question].rows,
-              last_modified: new Date().toISOString(),
-              created_by: "seed",
+        // If the stateFormID was not in the list of foundForms, the form & questions have not been created
+        if (!foundForms.includes(stateFormID)) {
+          noMissingForms = false;
+          putRequestsFormAnswers.push({
+            PutRequest: {
+              Item: {
+                answer_entry: answerEntry,
+                age_range: currentAgeRangeLabel,
+                rangeId: currentAgeRangeId,
+                question: questionID,
+                state_form: stateFormID,
+                last_modified_by: "seed",
+                created_date: new Date().toISOString(),
+                rows: allQuestions[question].rows,
+                last_modified: new Date().toISOString(),
+                created_by: "seed",
+              },
             },
-          },
-        });
+          });
+        }
       }
     }
   }
@@ -227,6 +223,28 @@ export const main = handler(async (event, context) => {
     batchArrayFormAnswers.push(
       putRequestsFormAnswers.slice(i, i + batchSizeFA)
     );
+  }
+
+  const iBetThisWouldveWorked = batchArrayFormAnswers.length;
+
+  let showAlexisTheNewQuestions = batchArrayFormAnswers.map((e) => {
+    return e.map((element) => {
+      return element.PutRequest.Item.answer_entry;
+    });
+  });
+  console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewQuestions);
+
+  console.log(
+    "WELL OOPS-- zero means nothing to make, form Qs already exist",
+    iBetThisWouldveWorked
+  );
+  //  This will only be true if neither !foundForms.includes statements pass,
+  // Everything was found in the list, nothing is to be created
+  if (noMissingForms) {
+    return {
+      status: 204,
+      message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
+    };
   }
 
   // Get tableName
