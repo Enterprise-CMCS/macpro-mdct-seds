@@ -22,9 +22,9 @@ const GREGridWithTotals = props => {
       return 0;
     }
     // nulls sort after anything else
-    else if (typeof first == null) {
+    else if (typeof first == "null") {
       return 1;
-    } else if (typeof second == null) {
+    } else if (typeof second == "null") {
       return -1;
     }
 
