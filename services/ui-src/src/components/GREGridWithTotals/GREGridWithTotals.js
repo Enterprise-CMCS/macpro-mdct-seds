@@ -15,16 +15,20 @@ import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GREGridWithTotals = props => {
   function compare(a, b) {
-    const first = parseInt(a.col1.split(".")[0]);
-    const second = parseInt(b.col1.split(".")[0]);
+    const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
+    const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
 
-    if (first < second) {
+    if (first === second) {
+      return 0;
+    }
+    // nulls sort after anything else
+    else if (typeof first == null) {
+      return 1;
+    } else if (typeof second == null) {
       return -1;
     }
-    if (first > second) {
-      return 1;
-    }
-    return 0;
+
+    return first < second ? -1 : 1;
   }
 
   // Sort by label
