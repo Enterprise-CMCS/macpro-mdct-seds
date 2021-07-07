@@ -1,0 +1,136 @@
+Resources:
+  LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Path: ${self:custom.iamPath}
+      PermissionsBoundary:
+        Fn::If:
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: "LambdaApiRolePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:DescribeTable
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:ListTables
+                  - dynamodb:BatchWriteItem
+                Resource:
+                  - ${self:custom.AgeRangesTableArn}
+                  - ${self:custom.FormAnswersTableArn}
+                  - ${self:custom.FormQuestionsTableArn}
+                  - ${self:custom.FormsTableArn}
+                  - ${self:custom.StateFormsTableArn}
+                  - ${self:custom.StatesTableArn}
+                  - ${self:custom.StatusTableArn}
+                  - ${self:custom.AuthUserTableArn}
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:DescribeStream
+                  - dynamodb:GetRecords
+                  - dynamodb:GetShardIterator
+                  - dynamodb:ListShards
+                  - dynamodb:ListStreams
+                Resource:
+                  - ${self:custom.AgeRangesTableStreamArn}
+                  - ${self:custom.FormAnswersTableStreamArn}
+                  - ${self:custom.FormQuestionsTableStreamArn}
+                  - ${self:custom.FormsTableStreamArn}
+                  - ${self:custom.StateTableStreamArn}
+                  - ${self:custom.StateFormsTableStreamArn}
+                  - ${self:custom.StatusTableStreamArn}
+                  - ${self:custom.AuthUserTableStreamArn}
+                  #- ${self:custom.AuthUserTableArn}
+                  #- ${self:custom.StatusTableArn}
+                  #- ${self:custom.AuthUserRolesTableArn}
+                  #- ${self:custom.StatesTableArn}
+                  #- ${self:custom.FormsTableArn}
+                  #- ${self:custom.FormQuestionsTableArn}
+                  #- ${self:custom.FormAnswersTableArn}
+                  #- ${self:custom.AuthUserStatesTableArn}
+                  #- ${self:custom.AuthJobCodesTableArn}
+              - Effect: "Allow"
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource:
+                  - arn:aws:dynamodb:*:*:table/${self:custom.FormAnswersTableName}/index/*
+              - Effect: "Allow"
+                Action:
+                  - logs:CreateLogStream
+                  - logs:CreateLogGroup
+                Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
+              - Effect: "Allow"
+                Action:
+                  - cognito-idp:AdminGetUser
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - lambda:InvokeFunction
+                Resource: "*"
+  KafkaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for streaming functions.  Egress all is set by default.
+      VpcId: ${self:custom.vpcId}
+  LambdaWarmupRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Path: ${self:custom.iamPath}
+      PermissionsBoundary:
+        Fn::If:
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
+      Policies:
+        - PolicyName: "Warmup"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: "Allow"
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:InvokeAsync
+                Resource: "*"
