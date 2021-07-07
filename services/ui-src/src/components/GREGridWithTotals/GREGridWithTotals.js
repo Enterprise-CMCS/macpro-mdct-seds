@@ -22,9 +22,11 @@ const GREGridWithTotals = props => {
       return 0;
     }
     // nulls sort after anything else
-    else if (typeof first == "null") {
+    /* eslint-disable valid-typeof */
+    else if (typeof first == null) {
       return 1;
-    } else if (typeof second == "null") {
+      /* eslint-disable valid-typeof */
+    } else if (typeof second == null) {
       return -1;
     }
 
