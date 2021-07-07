@@ -45,10 +45,10 @@ Resources:
         SampledRequestsEnabled: true
         MetricName: ${self:custom.webAclName}
 
-  Outputs:
-    ApiGatewayRestApiName:
-      Value: !Ref ApiGatewayRestApi
-    ApiGatewayRestApiUrl:
-      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
-    Region:
-      Value: !Sub ${AWS::Region}
+Outputs:
+  ApiGatewayRestApiName:
+    Value: !Ref ApiGatewayRestApi
+  ApiGatewayRestApiUrl:
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
+  Region:
+    Value: !Sub ${AWS::Region}
