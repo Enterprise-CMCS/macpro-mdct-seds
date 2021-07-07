@@ -1,6 +1,8 @@
-Conditions:
-  CreatePermissionsBoundary:
-    Fn::Not:
-      - Fn::Equals:
-          - ""
-          - ${self:custom.iamPermissionsBoundaryPolicy}
+resources:
+  Description: ${self:service} ${self:custom.stage}
+  Conditions:
+    CreatePermissionsBoundary:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.iamPermissionsBoundaryPolicy}

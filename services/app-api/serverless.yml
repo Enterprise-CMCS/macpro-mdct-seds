@@ -418,7 +418,6 @@ functions:
           authorizer: aws_iam
 
 resources:
-  Description: ${self:service} ${self:custom.stage}
   - ${file(resources/base.yml)}
 
   # Roles
