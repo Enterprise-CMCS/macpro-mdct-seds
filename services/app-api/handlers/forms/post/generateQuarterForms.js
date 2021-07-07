@@ -58,7 +58,7 @@ export const main = handler(async (event, context) => {
     specifiedYear,
     specifiedQuarter
   );
-  console.log("FOUND FORMS FOUND FORMS", foundForms);
+  // console.log("FOUND FORMS FOUND FORMS", foundForms); ALEXIS
   // write a handler that returns the state_forms for all found forms (for the SPECIFIC year and QUARTER)
 
   // Pull list of questions
@@ -142,13 +142,13 @@ export const main = handler(async (event, context) => {
     );
   }
 
-  ///// show stupid items
-  let showAlexisTheNewForms = batchArrayFormDescriptions.map((e) => {
-    return e.map((element) => {
-      return element.PutRequest.Item.state_form;
-    });
-  });
-  console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewForms);
+  // ///// show stupid items ALEXIS
+  // let showAlexisTheNewForms = batchArrayFormDescriptions.map((e) => {
+  //   return e.map((element) => {
+  //     return element.PutRequest.Item.state_form;
+  //   });
+  // });
+  // console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewForms); ALEXIS
 
   // Get tableName
   const formDescriptionTableName =
@@ -225,19 +225,20 @@ export const main = handler(async (event, context) => {
     );
   }
 
-  const iBetThisWouldveWorked = batchArrayFormAnswers.length;
+  // ALEXIS
+  // const iBetThisWouldveWorked = batchArrayFormAnswers.length;
 
-  let showAlexisTheNewQuestions = batchArrayFormAnswers.map((e) => {
-    return e.map((element) => {
-      return element.PutRequest.Item.answer_entry;
-    });
-  });
-  console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewQuestions);
+  // let showAlexisTheNewQuestions = batchArrayFormAnswers.map((e) => {
+  //   return e.map((element) => {
+  //     return element.PutRequest.Item.answer_entry;
+  //   });
+  // });
+  // console.log("STATE ANSWERS \n\n\n\n", showAlexisTheNewQuestions);
 
-  console.log(
-    "WELL OOPS-- zero means nothing to make, form Qs already exist",
-    iBetThisWouldveWorked
-  );
+  // console.log(
+  //   "WELL OOPS-- zero means nothing to make, form Qs already exist",
+  //   iBetThisWouldveWorked
+  // );
   //  This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {

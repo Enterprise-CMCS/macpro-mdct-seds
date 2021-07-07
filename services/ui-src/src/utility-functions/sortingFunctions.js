@@ -19,6 +19,68 @@ const sortQuestionColumns = columnArray => {
  * @returns {array} - Sorted rows with the header first
  */
 const sortRowArray = arrayOfRows => {
+  let boogers = [
+    {
+      col1: "A. Fee-for-Service",
+      col6: null,
+      col4: null,
+      col5: null,
+      col2: null,
+      col3: null
+    },
+    {
+      col1: "",
+      col6: "% of FPL 301-317",
+      col4: "% of FPL 201-250",
+      col5: "% of FPL 251-300",
+      col2: "% of FPL 0-133",
+      col3: "% of FPL 134-200"
+    },
+    {
+      col1: "B. Managed Care Arrangements",
+      col6: null,
+      col4: null,
+      col5: null,
+      col2: null,
+      col3: null
+    },
+    {
+      col1: "DDDDINGOOOO",
+      col6: null,
+      col4: null,
+      col5: null,
+      col2: null,
+      col3: null
+    },
+    {
+      col1: "EAST SYYYYDE",
+      col6: null,
+      col4: null,
+      col5: null,
+      col2: null,
+      col3: null
+    },
+    {
+      col1: "C. Primary Care Case Management",
+      col6: null,
+      col4: null,
+      col5: null,
+      col2: null,
+      col3: null
+    }
+  ];
+
+  let sortY = boogers.sort((a, b) =>
+    a["col1"][0] > b["col1"][0] ? 1 : b["col1"][0] > a["col1"][0] ? -1 : 0
+  );
+  console.log("SORTEDD first \n\n\n?", sortY);
+
+  let popHeader = sortY.pop();
+
+  console.log("sorted after pop \n\n\n?", sortY);
+  console.log("popped thing\n\n\n?", popHeader);
+  // it puts the first column last, Ask Andrew if theres a way around that??
+
   let sortedRows = [];
   arrayOfRows.forEach(singleRow => {
     const columnHeader = singleRow["col1"];
