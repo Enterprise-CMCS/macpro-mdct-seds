@@ -184,13 +184,13 @@ const GREGridWithTotals = props => {
   let headerColArray = [];
   let headerCellArray = [];
 
-  for (const column in sortedGridData[0]) {
-    headerColArray.push(sortedGridData[0][column]);
+  for (const column in props.gridData[0]) {
+    headerColArray.push(props.gridData[0][column]);
   }
 
-  for (const row in sortedGridData) {
-    for (const column in sortedGridData[row]) {
-      headerCellArray.push(sortedGridData[row][column]);
+  for (const row in props.gridData) {
+    for (const column in props.gridData[row]) {
+      headerCellArray.push(props.gridData[row][column]);
       break;
     }
   }
