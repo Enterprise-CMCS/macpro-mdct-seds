@@ -14,10 +14,22 @@ import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
  * The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
 const GREGridWithTotals = props => {
+  function compare(a, b) {
+    const first = parseInt(a.col1.split(".")[0]);
+    const second = parseInt(b.col1.split(".")[0]);
+
+    if (first < second) {
+      return -1;
+    }
+    if (first > second) {
+      return 1;
+    }
+    return 0;
+  }
+
   // Sort by label
-  const sortedGridData = props.gridData.sort(function (a, b) {
-    return a.col1 - b.col1;
-  });
+  const sortedGridData = props.gridData.sort(compare);
+
   const [gridData, updateGridData] = useState(
     translateInitialData(sortedGridData)
   );
@@ -172,13 +184,13 @@ const GREGridWithTotals = props => {
   let headerColArray = [];
   let headerCellArray = [];
 
-  for (const column in props.gridData[0]) {
-    headerColArray.push(props.gridData[0][column]);
+  for (const column in sortedGridData[0]) {
+    headerColArray.push(sortedGridData[0][column]);
   }
 
-  for (const row in props.gridData) {
-    for (const column in props.gridData[row]) {
-      headerCellArray.push(props.gridData[row][column]);
+  for (const row in sortedGridData) {
+    for (const column in sortedGridData[row]) {
+      headerCellArray.push(sortedGridData[row][column]);
       break;
     }
   }
