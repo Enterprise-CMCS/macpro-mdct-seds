@@ -25,8 +25,9 @@ export const main = handler(async (event, context) => {
       userId: JSON.parse(currentUser.body)["Items"][0].userId,
     },
     UpdateExpression:
-      "SET #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
+      "SET username = :username, #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
     ExpressionAttributeValues: {
+      ":username": data.username,
       ":role": data.role,
       ":states": data.states ?? "",
       ":isActive": data.isActive ?? "inactive",

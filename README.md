@@ -140,6 +140,7 @@ export function listUsers() {
 6. Select Generate forms button
 
 ### Legacy SEDS import SQL Files
+
 SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
 found in ${ROOT}/src/dms.
 
