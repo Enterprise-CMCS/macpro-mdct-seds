@@ -27,7 +27,11 @@ const NotApplicable = ({
   const determineUserRole = async () => {
     const currentUser = await getUserInfo();
 
-    if (currentUser.Items && currentUser.Items[0].role === "admin") {
+    if (
+      currentUser.Items &&
+      (currentUser.Items[0].role === "admin" ||
+        currentUser.Items[0].role === "business")
+    ) {
       setDisableSlider(true);
     }
   };
