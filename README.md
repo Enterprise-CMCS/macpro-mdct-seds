@@ -139,6 +139,11 @@ export function listUsers() {
 5. Select the Year and Quarter you wish to generate forms for
 6. Select Generate forms button
 
+### Legacy SEDS import SQL Files
+
+SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
+found in ${ROOT}/src/dms.
+
 ### Running the nightwatch test suite
 
 1. Navigate to the front end

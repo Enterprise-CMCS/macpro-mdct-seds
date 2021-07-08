@@ -1,7 +1,7 @@
 import handler from "./../../libs/handler-lib";
 import {
   getUsersEmailByRole,
-  getUncertifiedStates,
+  getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
 const AWS = require("aws-sdk");
 
@@ -39,7 +39,16 @@ const year =  new Date().getFullYear();
 async function businessOwnersTemplate() {
   const sendToEmailArry = await getUsersEmailByRole("business");
   const sendToEmail = sendToEmailArry.map((e) => e.email);
-  const uncertifiedStates = await getUncertifiedStates(year, quarter);
+  const uncertifiedStates = await getUncertifiedStatesAndForms(year, quarter);
+
+  // Build string of all states and forms
+  let uncertifiedStatesList = "";
+  uncertifiedStates.map((item) => {
+    uncertifiedStatesList += `${item.state} -${item.form.map(
+      (form) => ` ${form}`
+    )}\n`;
+  });
+
   const todayDate = new Date().toISOString().split("T")[0];
   const fromEmail = "mdct@cms.hhs.gov";
   const recipient = {
@@ -47,19 +56,17 @@ async function businessOwnersTemplate() {
     SUBJECT: "FFY SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
-    This is an automated message to notify you that the states listed below have
+This is an automated message to notify you that the states listed below have not certified their SEDS data for FFY${year} Q${quarter} as of: ${todayDate}
 
-    not certified their SEDS data for FFY${year} Q${quarter} as of
+${uncertifiedStatesList}
 
-    ${todayDate}: {${uncertifiedStates}}
+Please follow up with the state’s representatives if you have any questions.
 
-    Please follow up with the state’s representatives if you have any questions.
-
-    Regards,
-    MDCT SEDS.
-
-    `,
+Regards,
+MDCT SEDS.
+`,
   };
+
   return {
     Destination: {
       ToAddresses: recipient.TO,

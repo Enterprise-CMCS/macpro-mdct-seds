@@ -31,6 +31,8 @@
 .main {
   max-width: 95%;
   margin: 2% 0 0 2.5%;
+  position: relative;
+  z-index: 3;
 
   .container {
     width: 100% !important;

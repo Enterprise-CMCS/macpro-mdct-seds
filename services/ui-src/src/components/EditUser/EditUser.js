@@ -25,6 +25,7 @@ const EditUser = ({ stateList }) => {
   let { id } = useParams();
 
   // Set up local state
+  const [username, setUsername] = useState();
   const [user, setUser] = useState();
   const [role, setRole] = useState();
   const [isActive, setIsActive] = useState();
@@ -41,6 +42,7 @@ const EditUser = ({ stateList }) => {
     if (user.status === "success") {
       setUser(user.data);
       setRole(user.data.role);
+      setUsername(user.data.username);
     }
     // Sort states alphabetically and place in array
     let theStates = [];
@@ -147,6 +149,8 @@ const EditUser = ({ stateList }) => {
       } else {
         setIsActive("False");
       }
+    } else if (field === "username") {
+      setUsername(e.target.value);
     } else {
       response = e.target.value;
     }
@@ -163,6 +167,7 @@ const EditUser = ({ stateList }) => {
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
     data.states = statesToSend;
+    data.username = username;
 
     console.log("updating data: ");
     console.log(data);
@@ -192,7 +197,6 @@ const EditUser = ({ stateList }) => {
                     value={user.username}
                     type="text"
                     onChange={e => updateLocalUser(e, "username")}
-                    disabled={true}
                     name="username"
                     className="form-input"
                   />
