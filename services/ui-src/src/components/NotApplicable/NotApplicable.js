@@ -9,6 +9,7 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 import "./NotApplicable.scss";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const NotApplicable = ({
   notApplicable,
@@ -23,12 +24,21 @@ const NotApplicable = ({
   const [applicableStatus, setApplicableStatus] = useState(1); // 0 or 1
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
+  const determineUserRole = async () => {
+    const currentUser = await getUserInfo();
+
+    if (currentUser.Items && currentUser.Items[0].role === "admin") {
+      setDisableSlider(true);
+    }
+  };
+
   // FALSE = the form APPLIES TO THIS STATE (0)
   // TRUE = the form is NOT APPLICABLE (1)
 
   useEffect(() => {
     const booleanToInteger = notApplicable ? 1 : 0;
     setApplicableStatus(booleanToInteger);
+    determineUserRole().then();
 
     if (statusId === 3) {
       setDisableSlider(true);
