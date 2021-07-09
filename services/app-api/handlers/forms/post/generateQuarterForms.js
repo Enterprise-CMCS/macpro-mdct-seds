@@ -50,27 +50,14 @@ export const main = handler(async (event, context) => {
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
-  const specifiedYear = data.year.value;
+  const specifiedYear = parseInt(data.year.value);
   const specifiedQuarter = data.quarter.value;
 
-  // SPLIT LOGIC FOR MISSING FORMS
   const foundForms = await findExistingStateForms(
     specifiedYear,
     specifiedQuarter
   );
-  // console.log("FOUND FORMS FOUND FORMS", foundForms); ALEXIS
-  // write a handler that returns the state_forms for all found forms (for the SPECIFIC year and QUARTER)
-
-  // Pull list of questions
-  let allQuestions = await getQuestionsByYear(specifiedYear);
-
-  // If questions not found, return failure message
-  if (!allQuestions.length) {
-    return {
-      status: 500,
-      message: `Could not find template for generating forms for ${specifiedYear}`,
-    };
-  }
+  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -142,13 +129,16 @@ export const main = handler(async (event, context) => {
     );
   }
 
-  // ///// show stupid items ALEXIS
-  // let showAlexisTheNewForms = batchArrayFormDescriptions.map((e) => {
-  //   return e.map((element) => {
-  //     return element.PutRequest.Item.state_form;
-  //   });
-  // });
-  // console.log("STATE FORMS TO MAKE \n\n\n\n", showAlexisTheNewForms); ALEXIS
+  // Generate a flat array of the state forms being added
+  let stateFormsBeingGenerated = batchArrayFormDescriptions
+    .map((e) => {
+      return e.map((element) => {
+        return element.PutRequest.Item.state_form;
+      });
+    })
+    .flat();
+
+  console.log("STATE FORMS TO MAKE \n\n", stateFormsBeingGenerated);
 
   // Get tableName
   const formDescriptionTableName =
@@ -166,15 +156,30 @@ export const main = handler(async (event, context) => {
     await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
+  // Pull list of questions
+  let allQuestions = await getQuestionsByYear(specifiedYear);
+
+  // If questions not found, return failure message
+  if (!allQuestions.length) {
+    return {
+      status: 500,
+      message: `Could not find template for generating forms for ${specifiedYear}`,
+    };
+  }
+
+  const questionTemplate2021 = getQuestionsByYear(2021);
+
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
     // Loop through each question
+    // console.log("Questions?????", allQuestions);
 
     for (const question in allQuestions) {
       // Get age range array
+
       let ageRanges = allQuestions[question].age_ranges;
 
       // Loop through each age range and insert row
@@ -187,13 +192,12 @@ export const main = handler(async (event, context) => {
         const currentQuestionNumber = allQuestions[question].question.split(
           "-"
         )[2];
-
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // If the stateFormID was not in the list of foundForms, the form & questions have not been created
-        if (!foundForms.includes(stateFormID)) {
+        // If the stateFormID is in the array of newly created forms, the questions/answers will be created
+        if (stateFormsBeingGenerated.includes(stateFormID)) {
           noMissingForms = false;
           putRequestsFormAnswers.push({
             PutRequest: {
@@ -225,21 +229,20 @@ export const main = handler(async (event, context) => {
     );
   }
 
-  // ALEXIS
-  // const iBetThisWouldveWorked = batchArrayFormAnswers.length;
+  let stateAnswersBeingGenerated = batchArrayFormAnswers
+    .map((e) => {
+      return e.map((element) => {
+        return element.PutRequest.Item.answer_entry;
+      });
+    })
+    .flat();
+  const numberOfAnswersToMake = stateAnswersBeingGenerated.length;
 
-  // let showAlexisTheNewQuestions = batchArrayFormAnswers.map((e) => {
-  //   return e.map((element) => {
-  //     return element.PutRequest.Item.answer_entry;
-  //   });
-  // });
-  // console.log("STATE ANSWERS \n\n\n\n", showAlexisTheNewQuestions);
+  console.log(`There are ${numberOfAnswersToMake} Answers to generate`);
+  console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
+  console.log("Just a peaksie", batchArrayFormAnswers[0][0].PutRequest.Item);
 
-  // console.log(
-  //   "WELL OOPS-- zero means nothing to make, form Qs already exist",
-  //   iBetThisWouldveWorked
-  // );
-  //  This will only be true if neither !foundForms.includes statements pass,
+  // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {
     return {

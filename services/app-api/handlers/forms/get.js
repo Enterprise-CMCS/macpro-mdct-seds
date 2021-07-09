@@ -10,7 +10,11 @@ export const main = handler(async (event, context) => {
   // Deconstruct variables from URL string
   const { state, specifiedYear, quarter, form } = event.pathParameters;
 
+  console.log("FORM FETCHING PARAMETERS", event.pathParameters);
+
   const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
+
+  // if (answerFormID === )
 
   const answerParams = {
     TableName: process.env.FormAnswersTableName,

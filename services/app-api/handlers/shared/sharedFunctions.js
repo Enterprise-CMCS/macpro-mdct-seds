@@ -130,6 +130,8 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
 }
 
 export async function getQuestionsByYear(specifiedYear) {
+  const parsedYear = parseInt(specifiedYear);
+
   const questionParams = {
     TableName:
       process.env.FORM_QUESTIONS_TABLE_NAME ??
@@ -138,7 +140,7 @@ export async function getQuestionsByYear(specifiedYear) {
       "#theYear": "year",
     },
     ExpressionAttributeValues: {
-      ":specifiedYear": parseInt(specifiedYear),
+      ":specifiedYear": parsedYear > 2021 ? parsedYear : 2021,
     },
     FilterExpression: "#theYear = :specifiedYear",
   };
