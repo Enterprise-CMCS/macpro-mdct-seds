@@ -52,6 +52,11 @@ custom:
                 ../../src/database/initial_data_load/form_questions_2021.json,
                 ../../src/database/initial_data_load/form_questions_2020.json,
               ]
+          - table: ${self:custom.stage}-form-templates
+            sources:
+              [
+              ../../src/database/initial_data_load/form_template_2019.json,
+              ]
           - table: ${self:custom.stage}-form-answers
             sources:
               [
@@ -171,6 +176,19 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: question
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    FormTemplatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stage}-form-templates
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: year
+            AttributeType: N
+        KeySchema:
+          - AttributeName: year
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormsTable:
