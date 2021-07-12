@@ -171,6 +171,22 @@ export const obtainFormTemplateYears = data => {
   return API.post("mdct-seds", "/form-templates/years", opts);
 };
 
+// *** get a form template by year
+export const obtainFormTemplate = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-template", opts);
+};
+
+// *** Create or update a form template based on year
+export const updateCreateFormTemplate = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-templates/add", opts);
+};
+
 // *** generate missing forms
 export const generateMissingForms = data => {
   const opts = requestOptions();
