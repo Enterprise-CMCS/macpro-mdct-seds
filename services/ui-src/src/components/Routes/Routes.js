@@ -19,7 +19,11 @@ import LoadData from "../LoadData/LoadData";
 import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
 import GenerateMissingForms from "../GenerateMissingForms/GenerateMissingForms";
+<<<<<<< HEAD
 import FormTemplates from "../FormTemplates/FormTemplates";
+=======
+import FormTemplate from "../FormTemplate/FormTemplate";
+>>>>>>> d4938ffaea7dfc4f26beac2c09ee38c72794cc1d
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
@@ -91,6 +95,9 @@ export default function Routes({ user, isAuthorized }) {
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/generate-forms">
             <GenerateForms />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/form-template">
+            <FormTemplate />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="*">
             {/* <Redirect to="/" /> */}
