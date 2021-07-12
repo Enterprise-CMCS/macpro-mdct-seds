@@ -163,6 +163,14 @@ export const generateQuarterlyForms = data => {
   return API.post("mdct-seds", "/generate-forms", opts);
 };
 
+// *** get form template years
+export const obtainFormTemplateYears = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-templates/years", opts);
+};
+
 // *** generate missing forms
 export const generateMissingForms = data => {
   const opts = requestOptions();

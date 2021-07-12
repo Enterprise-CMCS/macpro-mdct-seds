@@ -427,7 +427,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getFormTemplate:
-    handler: handlers/form-templates/post/getFormTemplate.main
+    handler: handlers/form-templates/post/obtainFormTemplate.main
     role: LambdaApiRole
     events:
       - http:
@@ -436,7 +436,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getFormTemplateYears:
-    handler: handlers/form-templates/post/getFormTemplateYears.main
+    handler: handlers/form-templates/post/obtainFormTemplateYears.main
     role: LambdaApiRole
     events:
       - http:

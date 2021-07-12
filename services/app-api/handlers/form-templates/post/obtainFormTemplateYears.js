@@ -24,5 +24,7 @@ export const main = handler(async (event, context) => {
     throw new Error("Form type query failed");
   }
 
-  return result.Items;
+  const resultsArray = result.Items.map((i) => i.year);
+
+  return resultsArray.sort();
 });
