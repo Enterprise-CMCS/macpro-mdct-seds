@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   obtainFormTemplate,
   obtainFormTemplateYears,
@@ -10,12 +10,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 const FormTemplates = () => {
-  const [formYears, setFormYears] = useState();
-  const [selectedYear, setSelectedYear] = useState();
-  const [inputYear, setInputYear] = useState();
-  const [currentTemplate, setCurrentTemplate] = useState(false);
-  const [showYearInput, setShowYearInput] = useState(false);
-  const [alert, setAlert] = useState(false);
+  const [formYears, setFormYears] = React.useState();
+  const [selectedYear, setSelectedYear] = React.useState();
+  const [inputYear, setInputYear] = React.useState();
+  const [currentTemplate, setCurrentTemplate] = React.useState(false);
+  const [showYearInput, setShowYearInput] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
 
   let nextYear = new Date(
     new Date().setFullYear(new Date().getFullYear() + 1)
