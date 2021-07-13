@@ -13,14 +13,17 @@ describe("Tests for FormTemplates.js", () => {
 
   jest
     .spyOn(React, "useState")
-    .mockReturnValueOnce([2019, 2020, 2021])
-    .mockReturnValueOnce(2021)
-    .mockReturnValueOnce(2021)
     .mockReturnValueOnce([
-      {
-        thjkhjktes: "sdf"
-      }
+      { label: "+ Create New Template", value: 0 },
+      { label: 2066, value: 2066 },
+      { label: 2022, value: 2022 },
+      { label: 2021, value: 2021 },
+      { label: 2019, value: 2019 },
+      { label: 2018, value: 2018 }
     ])
+    .mockReturnValueOnce({ label: 2066, value: 2066 })
+    .mockReturnValueOnce(2021)
+    .mockReturnValueOnce('[\n  {\n    "test": "value"\n  }\n]')
     .mockReturnValueOnce(false)
     .mockReturnValueOnce(false);
 
