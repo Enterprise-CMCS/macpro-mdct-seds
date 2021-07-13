@@ -16,7 +16,9 @@ export const main = handler(async (event, context) => {
       if (o && typeof o === "object") {
         return o;
       }
-    } catch (e) {}
+    } catch (e) {
+      return false;
+    }
 
     return false;
   };
@@ -49,5 +51,8 @@ export const main = handler(async (event, context) => {
 
   await dynamoDb.put(params);
 
-  return `Template updated for ${data.year}!`;
+  return {
+    status: 200,
+    message: `Template updated for ${data.year}!`,
+  };
 });

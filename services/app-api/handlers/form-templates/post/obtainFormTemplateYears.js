@@ -26,5 +26,5 @@ export const main = handler(async (event, context) => {
 
   const resultsArray = result.Items.map((i) => i.year);
 
-  return resultsArray.sort();
+  return resultsArray.sort((a, b) => b - a);
 });
