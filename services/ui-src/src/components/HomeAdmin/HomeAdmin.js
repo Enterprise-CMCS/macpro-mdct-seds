@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import { obtainAvailableForms } from "../../libs/api";
 import PropTypes from "prop-types";
@@ -19,13 +19,15 @@ const HomeAdmin = ({ stateList, user }) => {
   const [stateError, setStateError] = useState(true);
   const [accordionItems, setAccordionItems] = useState("");
 
+  let history = useHistory();
+
   useEffect(() => {
     const onLoad = async () => {
       let currentUserInfo = await getUserInfo();
 
       if (currentUserInfo["Items"]) {
         let userStates = currentUserInfo["Items"][0].states;
-        let selectedStates;
+        let selectedStates = false;
 
         // If using all states, create a simple array of states for use in compileStatesForDropdown
         if (user.attributes["app-role"] === "admin") {
@@ -39,11 +41,16 @@ const HomeAdmin = ({ stateList, user }) => {
           setStateError(false);
         }
 
-        selectedStates.sort((a, b) => {
-          let stateA = a.label.toUpperCase();
-          let stateB = b.label.toUpperCase();
-          return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
-        });
+        // Redirect to register-state if business user with no states
+        if (!selectedStates) {
+          history.push("/register-state");
+        } else {
+          selectedStates.sort((a, b) => {
+            let stateA = a.label.toUpperCase();
+            let stateB = b.label.toUpperCase();
+            return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
+          });
+        }
 
         setAvailableStates(selectedStates);
       }
