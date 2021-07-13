@@ -16,6 +16,17 @@ module.exports = {
     browser.end();
   },
 
+  "Click on year 2021": function (browser){
+
+    const tests_data = {
+        year21: {
+          selector: "button[data-testid='accordionButton_2021']",
+        },
+      };
+      browser.click(tests_data.year21.selector).waitForElementPresent("body");
+
+  },
+
   "Click on Quarter1": function (browser) {
     const tests_data = {
       quarter1: {
