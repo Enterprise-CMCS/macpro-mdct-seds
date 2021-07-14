@@ -3,40 +3,29 @@ const timeout = 1000;
 
 const mySelector = "//*[@data-testid='textInput']";
 
+const login = require('./OY2-9998-Login');
+
 module.exports = {
   "@tags": ["smoke", "year", "tag1"],
 
   before: function (browser) {
-    console.log("Setting up the browser instance...");
-    console.log("Opening the browser...");
-    browser
-      .maximizeWindow()
-      .url(browser.launch_url)
-      .waitForElementPresent("body");
-    // Login credentails are pulled from .env files, this file should not be tracked and
-    // must be stated in the .gitignore file
-    //Click on Login with EUA ID
-    browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-    const username = browser.globals.user;
-    const password = browser.globals.pass;
-    // Loing activities
-    //browser.useCss().click(".LoginWithOkta .LoaderButton");
-    browser
-      .useCss()
-      .setValue("input#okta-signin-username", username)
-      .pause(100);
-    browser
-      .useCss()
-      .setValue("input#okta-signin-password", password)
-      .pause(100);
-    browser.useCss().click("input#tandc");
-    browser.useCss().click("input#okta-signin-submit").pause(3000);
-    browser.waitForElementPresent("body");
+    login['Login with user'](browser);
   },
   after: function (browser) {
     console.log("Stopping test executions...");
     console.log("Closing down the browser instance...");
     browser.end();
+  },
+
+  "Click on year 2021": function (browser){
+
+    const tests_data = {
+        year21: {
+          selector: "button[data-testid='accordionButton_2021']",
+        },
+      };
+      browser.click(tests_data.year21.selector).waitForElementPresent("body");
+
   },
 
   "Click on Quarter1": function (browser) {
