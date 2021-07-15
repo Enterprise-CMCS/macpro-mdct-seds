@@ -231,3 +231,136 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
   }
   return values;
 }
+
+// This function is called when no answers are found in the question table matching the requested year
+export async function fetchOrCreateQuestions(specifiedYear, specifiedQuarter) {
+  let questions;
+  let error;
+
+  // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
+
+  // GET QUESTIONS FROM TEMPLATE
+  const questionParams = {
+    TableName:
+      process.env.FORM_TEMPLATES_TABLE_NAME ??
+      process.env.FormTemplatesTableName,
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ExpressionAttributeValues: {
+      ":year": parseInt(specifiedYear),
+    },
+    KeyConditionExpression: "#theYear = :year",
+  };
+
+  const questionResult = await dynamoDb.query(questionParams);
+  // return questionResult.Items;
+
+  console.log("WHAT ARE THE QUESTIONS PLEASE", questionResult.Items);
+
+  const questionTableName =
+    process.env.FORM_QUESTIONS_TABLE_NAME ?? process.env.FormQuestionsTableName;
+
+  if (questionResult.Count !== 0) {
+    // add questions to question table
+    // return questions
+    // DONE
+    return 1;
+  } else {
+    // these are the questions found in the template
+    let questionsForThisYear = questionResult.Items;
+
+    // const questionsFromTemplate = questionsForThisYear.map((questionFromTemplate) => {
+    //   return {
+    //     PutRequest: {
+    //       Item: {
+    //         ...questionFromTemplate,
+    //         year: specifiedYear,
+    //         created_date: new Date().toISOString(),
+    //         last_modified: new Date().toISOString(),
+    //       },
+    //     },
+    //   };
+    // })
+    // // There will be at most, 39 questions. The maximum for batchWrite is 25 so we'll proces one half at a time
+    // const mid = Math.floor(questionsFromTemplate.length/2)
+    // const firstBatch = questionsFromTemplate.slice(0, mid)
+    // const secondBatch = questionsFromTemplate.slice(mid)
+    // const splitQuestions = [firstBatch, secondBatch]
+
+    // splitQuestions.forEach((batch) => {
+    //   while ( i > 5){
+    //     const {UnprocessedItems }= await dynamoDb.batchWrite({
+    //       RequestItems: { [questionTableName]: batch }
+    //     });
+    //     i = (UnprocessedItems.length) ? (i-1) : (5)
+    //   }
+    // })
+
+    // create new form from template
+    // add questions to question table
+    // return questions
+    // Process this batch
+  }
+  // Dont trigger an error message, create the questions
+
+  // GET questions from the template and POST questions to questions table
+  // return questions (part of request?)
+
+  // Else if no template for year, grab year and POST new template
+  // from the new template, POST questions from the template to the questions table
+
+  // const params = {
+  //   TableName:
+  //     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+  //   ExpressionAttributeNames: {
+  //     "#theYear": "year",
+  //   },
+  //   ExpressionAttributeValues: {
+  //     ":year": specifiedYear,
+  //     ":quarter": specifiedQuarter,
+  //   },
+  //   FilterExpression: "#theYear = :year and quarter = :quarter",
+  //   ProjectionExpression: "state_form",
+  // };
+
+  // const result = await dynamoDb.scan(params);
+
+  let values = [];
+
+  // if (result.Count !== 0) {
+  //   values = result.Items.map((id) => {
+  //     return id.state_form;
+  //   });
+
+  // return error if there is one
+  return 1;
+}
+
+// if there are no questions for a specific year
+// trigger this function to grab the questions from the year's template (ENDPOINT)
+// if there are no questions in the template, create them (ENDPOINT)
+// grab the response? and return the questions
+
+// const failureList = [];
+// Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
+// const batchWriteAll = async (tryRetryBatch, upperLimit, failList) => {
+//   // Attempt first batch write
+//   const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+
+//   // If there are any failures and under the retry limit
+//   if (UnprocessedItems.length && upperLimit !== 0) {
+//     const retryBatch = {
+//       batch: UnprocessedItems,
+//     };
+//     return await batchWriteAll(retryBatch, upperLimit-1, list);
+//   } else if (upperLimit < 0 ) {
+//     // exceeded failure limit
+//     console.error(
+//       `Tried batch ${
+//         upperLimit
+//       } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+//     );
+//     failList.push({ failure: JSON.stringify(tryRetryBatch) });
+//   }
+// };

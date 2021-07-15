@@ -35,7 +35,6 @@ const GREGridWithTotals = props => {
 
   // Sort by label
   const sortedGridData = props.gridData.sort(compare);
-
   const [gridData, updateGridData] = useState(
     translateInitialData(sortedGridData)
   );

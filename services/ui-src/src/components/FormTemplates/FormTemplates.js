@@ -73,6 +73,8 @@ const FormTemplates = () => {
         value: i
       };
     });
+    console.log("YEAR ARRAY?? \n\n", yearsArray);
+
     yearsObjects.unshift(newTemplateObject);
     setFormYears(yearsObjects);
     setSelectedYear(yearsObjects[1]);
@@ -80,6 +82,7 @@ const FormTemplates = () => {
   };
 
   useEffect(() => {
+    console.log("USE EFFECT OR NAH?? \n\n\n\n");
     onLoad().then();
   }, []);
 

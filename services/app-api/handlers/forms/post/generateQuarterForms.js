@@ -5,6 +5,7 @@ import {
   getQuestionsByYear,
   getStatesList,
   findExistingStateForms,
+  fetchOrCreateQuestions,
 } from "../../shared/sharedFunctions";
 
 /**
@@ -140,6 +141,7 @@ export const main = handler(async (event, context) => {
 
   console.log("STATE FORMS TO MAKE \n\n", stateFormsBeingGenerated);
 
+  let alewoo = fetchOrCreateQuestions(2019, specifiedQuarter);
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
@@ -156,6 +158,11 @@ export const main = handler(async (event, context) => {
     await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
+  // -----------------------------------------------------------------
+
+  // ^^^^ How can we stop the first iteration if the form/question creation fails?
+  // maybe trigger batch creation afte fetchOrCreateQuestions is triggered??
+
   // Pull list of questions
   let allQuestions = await getQuestionsByYear(specifiedYear);
 
@@ -167,7 +174,10 @@ export const main = handler(async (event, context) => {
     };
   }
 
-  const questionTemplate2021 = getQuestionsByYear(2021);
+  // if there are no questions for the year, generate them
+  // assign THAT return value to allQuestions
+
+  // const questionTemplate2021 = getQuestionsByYear(2021);
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
@@ -282,3 +292,33 @@ export const main = handler(async (event, context) => {
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
 });
+
+// THIS HANDLER TAKES IN <<year & quarter>>
+
+// first iteration makes status objects
+
+// second iteration generates answers from questions, if questions not present, generates questions and answers
+
+// states
+
+// questions
+// no questions?
+// find template
+// generate questions for this year
+// generate questions for the quarter
+// proceed
+//
+
+// age ranges
+// create answer objects
+
+// routes to components:
+
+// "/form-templates"
+// <FormTemplates />
+
+// "/generate-forms"
+// <GenerateForms/>
+
+// what happens if any step in the second iteration fails
+//    -- the first iteration will have already created a status object

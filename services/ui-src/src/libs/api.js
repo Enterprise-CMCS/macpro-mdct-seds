@@ -184,15 +184,7 @@ export const updateCreateFormTemplate = data => {
   const opts = requestOptions();
   opts.body = data;
 
-  return API.post("mdct-seds", "/form-templates/add", opts);
-};
-
-// *** generate missing forms
-export const generateMissingForms = data => {
-  const opts = requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", "/generate-missing-forms", opts);
+  return API.post("mdct-seds", "/form-questions/add", opts);
 };
 
 // **
