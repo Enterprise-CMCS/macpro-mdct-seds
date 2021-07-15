@@ -14,11 +14,8 @@ import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
  * The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
 const GREGridWithTotals = props => {
-  // Sort by label
-  const sortedGridData = props.gridData;
-
   const [gridData, updateGridData] = useState(
-    translateInitialData(sortedGridData)
+    translateInitialData(props.gridData)
   );
 
   const [gridColumnTotals, updateGridColumnTotals] = useState([]);

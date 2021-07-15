@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
-import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
+import {
+  sortQuestionColumns,
+  sortByCol1
+} from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({
   questionData,
@@ -12,25 +15,6 @@ const QuestionComponent = ({
   disabled,
   synthesized
 }) => {
-  function sortByCol1(a, b) {
-    const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
-    const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
-
-    if (first === second) {
-      return 0;
-    }
-    // nulls sort after anything else
-    /* eslint-disable valid-typeof */
-    else if (typeof first == null) {
-      return 1;
-      /* eslint-disable valid-typeof */
-    } else if (typeof second == null) {
-      return -1;
-    }
-
-    return first < second ? -1 : 1;
-  }
-
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
