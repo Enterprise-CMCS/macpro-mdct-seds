@@ -12,9 +12,33 @@ const QuestionComponent = ({
   disabled,
   synthesized
 }) => {
+  function sortByCol1(a, b) {
+    const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
+    const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
+
+    if (first === second) {
+      return 0;
+    }
+    // nulls sort after anything else
+    /* eslint-disable valid-typeof */
+    else if (typeof first == null) {
+      return 1;
+      /* eslint-disable valid-typeof */
+    } else if (typeof second == null) {
+      return -1;
+    }
+
+    return first < second ? -1 : 1;
+  }
+
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
+
+  // If GRE form, sort the answers by col1 (row label)
+  if (answerData.question.split("-")[1] === "GRE") {
+    answerData.rows = answerData.rows.sort(sortByCol1);
+  }
   const { rows, answer_entry } = answerData || {};
 
   if (!rows) {
