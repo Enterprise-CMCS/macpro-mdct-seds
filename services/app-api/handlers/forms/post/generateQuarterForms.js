@@ -180,6 +180,9 @@ export const main = handler(async (event, context) => {
     for (const question in allQuestions) {
       // Get age range array
 
+      // if there are no questions,
+      // check templates
+
       let ageRanges = allQuestions[question].age_ranges;
 
       // Loop through each age range and insert row
