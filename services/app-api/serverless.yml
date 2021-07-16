@@ -316,6 +316,15 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  updateStateFormList:
+    handler: handlers/state-forms/post/updateStateForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: state-forms/update
+          method: post
+          cors: true
+          authorizer: aws_iam
   obtainAvailableForms:
     handler: handlers/forms/post/obtainAvailableForms.main
     role: LambdaApiRole
