@@ -2,85 +2,13 @@ const path = require("path");
 const timeout = 1000;
 
 const mySelector = "//*[@data-testid='textInput']";
+const login = require('./OY2-9998-Login');
 
 module.exports = {
   "@tags": ["smoke", "year", "tag1"],
 
-  // before: function(browser) {
-  //    browser.url(browser.launch_url).waitForElementPresent('body');
-
-  // },
-
-  // after: function(browser) {
-  //     browser.end();
-
-  // },
-
-  // "click on EUA login button": function(browser){
-  //     const tests_data={
-
-  //         login:{
-
-  //          selector:"div[data-testid='OktaLogin'] > button",
-  //         },
-  //     };
-  //     browser.click(tests_data.login.selector).waitForElementPresent('body');
-
-  // },
-
-  // "Enter Username and Password to login": function(browser){
-  //     const tests_data={
-  //         username: {
-  //             selector: "input[id=okta-signin-username]",
-  //         },
-  //         password: {
-  //            selector: "input[id=okta-signin-password]",
-  //        },
-  //        rememberme: {
-  //            selector: "input[id=tandc]",
-  //        },
-  //        signin:{
-  //            selector: "input[type=submit]",
-  //        },
-  //     };
-  //     browser.setValue(tests_data.username.selector,'MDCT_Test', function(){
-  //         browser.expect.element(tests_data.username.selector).value.to.equal('MDCT_Test');
-  //     });
-
-  //     browser.setValue(tests_data.password.selector,'January9!1', function(){
-  //         browser.click(tests_data.rememberme.selector);
-  //         browser.click(tests_data.signin.selector).waitForElementPresent('body');
-
-  //     });
-
-  // },
-
   before: function (browser) {
-    console.log("Setting up the browser instance...");
-    console.log("Opening the browser...");
-    browser
-      .maximizeWindow()
-      .url(browser.launch_url)
-      .waitForElementPresent("body");
-    // Login credentails are pulled from .env files, this file should not be tracked and
-    // must be stated in the .gitignore file
-    //Click on Login with EUA ID
-    browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-    const username = browser.globals.user;
-    const password = browser.globals.pass;
-    // Loing activities
-    //browser.useCss().click(".LoginWithOkta .LoaderButton");
-    browser
-      .useCss()
-      .setValue("input#okta-signin-username", username)
-      .pause(100);
-    browser
-      .useCss()
-      .setValue("input#okta-signin-password", password)
-      .pause(100);
-    browser.useCss().click("input#tandc");
-    browser.useCss().click("input#okta-signin-submit").pause(3000);
-    browser.waitForElementPresent("body");
+    login['Login with user'](browser);
   },
   after: function (browser) {
     console.log("Stopping test executions...");
@@ -88,6 +16,17 @@ module.exports = {
     browser.end();
   },
 
+  "Click on year 2021": function (browser){
+
+    const tests_data = {
+        year21: {
+          selector: "button[data-testid='accordionButton_2021']",
+        },
+      };
+      browser.click(tests_data.year21.selector).waitForElementPresent("body");
+
+  },
+  
   "Click on Quarter1": function (browser) {
     const tests_data = {
       quarter1: {

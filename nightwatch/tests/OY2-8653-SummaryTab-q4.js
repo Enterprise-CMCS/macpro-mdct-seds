@@ -2,36 +2,46 @@ const path = require("path");
 const timeout = 1000;
 
 const mySelector = "//*[@data-testid='textInput']";
+const login = require('./OY2-9998-Login');
 
 module.exports = {
   "@tags": ["smoke", "year", "tag1"],
 
+  // before: function (browser) {
+  //   console.log("Setting up the browser instance...");
+  //   console.log("Opening the browser...");
+  //   browser
+  //     .maximizeWindow()
+  //     .url(browser.launch_url)
+  //     .waitForElementPresent("body");
+  //   // Login credentails are pulled from .env files, this file should not be tracked and
+  //   // must be stated in the .gitignore file
+  //   //Click on Login with EUA ID
+  //   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
+  //   const username = browser.globals.user;
+  //   const password = browser.globals.pass;
+  //   // Loing activities
+  //   //browser.useCss().click(".LoginWithOkta .LoaderButton");
+  //   browser
+  //     .useCss()
+  //     .setValue("input#okta-signin-username", username)
+  //     .pause(100);
+  //   browser
+  //     .useCss()
+  //     .setValue("input#okta-signin-password", password)
+  //     .pause(100);
+  //   browser.useCss().click("input#tandc");
+  //   browser.useCss().click("input#okta-signin-submit").pause(3000);
+  //   browser.waitForElementPresent("body");
+  // },
+  // after: function (browser) {
+  //   console.log("Stopping test executions...");
+  //   console.log("Closing down the browser instance...");
+  //   browser.end();
+  // },
+
   before: function (browser) {
-    console.log("Setting up the browser instance...");
-    console.log("Opening the browser...");
-    browser
-      .maximizeWindow()
-      .url(browser.launch_url)
-      .waitForElementPresent("body");
-    // Login credentails are pulled from .env files, this file should not be tracked and
-    // must be stated in the .gitignore file
-    //Click on Login with EUA ID
-    browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-    const username = browser.globals.user;
-    const password = browser.globals.pass;
-    // Loing activities
-    //browser.useCss().click(".LoginWithOkta .LoaderButton");
-    browser
-      .useCss()
-      .setValue("input#okta-signin-username", username)
-      .pause(100);
-    browser
-      .useCss()
-      .setValue("input#okta-signin-password", password)
-      .pause(100);
-    browser.useCss().click("input#tandc");
-    browser.useCss().click("input#okta-signin-submit").pause(3000);
-    browser.waitForElementPresent("body");
+    login['Login with user'](browser);
   },
   after: function (browser) {
     console.log("Stopping test executions...");
@@ -39,25 +49,36 @@ module.exports = {
     browser.end();
   },
 
-  "Click on Quarter3": function (browser) {
+  "Click on year 2021": function (browser){
+
     const tests_data = {
-      quarter3: {
-        selector: "//*[@id='2021']/ul/li/a",
+        year21: {
+          selector: "button[data-testid='accordionButton_2021']",
+        },
+      };
+      browser.click(tests_data.year21.selector).waitForElementPresent("body");
+
+  },
+
+  "Click on Quarter4": function (browser) {
+    const tests_data = {
+      quarter4: {
+        selector: "/html/body/div/div/div[2]/div/div/div/div/div[2]/ul/li[4]/a",
       },
       plus: {
-        selector: "//*[@id='root']/div/div[2]/div/div/div/div/h2[1]/button",
+        selector: "/html/body/div/div/div[2]/div/div/div/div/h2[2]/button",
       },
     };
     browser.click("xpath", tests_data.plus.selector);
     browser.pause(timeout * 3);
-    browser.click("xpath", tests_data.quarter3.selector); //.waitForElementPresent('body');
+    browser.click("xpath", tests_data.quarter4.selector); //.waitForElementPresent('body');
     browser.pause(timeout * 5);
   },
 
   "click on 21PregnantWomen": function (browser) {
     const tests_data = {
       pw: {
-        selector: "div[id=row-3] > div > a",
+        selector: "div[id=row-0] > div > a",
       },
     };
     browser.click(tests_data.pw.selector).waitForElementPresent("body");
@@ -167,9 +188,26 @@ module.exports = {
         "6. What is the number of pregnant women enrolled at the end of the quarter?"
       );
     browser.pause(timeout * 3);
-    browser.useXpath().assert.not.elementPresent(tests_data.question7.selector);
-    browser.useXpath().assert.not.elementPresent(tests_data.question8.selector);
-    browser.useXpath().assert.not.elementPresent(tests_data.question9.selector);
+    browser
+      .useXpath()
+      .verify.containsText(
+        tests_data.question7.selector,
+        "7. What is the unduplicated number of pregnant women ever enrolled during the year?"
+      );
+    browser.pause(timeout * 3);
+    browser
+      .useXpath()
+      .verify.containsText(
+        tests_data.question8.selector,
+        "8. What is the unduplicated number of new enrollees during the year?"
+      );
+    browser.pause(timeout * 3);
+    browser
+      .useXpath()
+      .verify.containsText(
+        tests_data.question9.selector,
+        "9. What is the unduplicated number of disenrollees during the year?"
+      );
     browser.pause(timeout * 3);
   },
 };
