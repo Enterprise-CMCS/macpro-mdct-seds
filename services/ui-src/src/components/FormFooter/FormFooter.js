@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
@@ -9,11 +9,32 @@ import { dateFormatter } from "../../utility-functions/sortingFunctions";
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
+  const [saveDisabled, setSaveDisabled] = useState(false);
   const handleClick = () => {
     saveForm();
   };
+
+  const determineUserRole = async () => {
+    const currentUser = await getUserInfo();
+
+    if (
+      currentUser.Items &&
+      (currentUser.Items[0].role === "admin" ||
+        currentUser.Items[0].role === "business")
+    ) {
+      setSaveDisabled(true);
+    }
+  };
+
+  // FALSE = the form APPLIES TO THIS STATE (0)
+  // TRUE = the form is NOT APPLICABLE (1)
+
+  useEffect(() => {
+    determineUserRole().then();
+  }, []);
 
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
   return (
@@ -42,6 +63,7 @@ const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
                   primary="true"
                   onClick={() => handleClick()}
                   data-testid="saveButton"
+                  disabled={saveDisabled}
                 >
                   Save{" "}
                   <FontAwesomeIcon icon={faSave} className="margin-left-2" />
