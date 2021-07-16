@@ -14,30 +14,8 @@ import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
  * The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
 const GREGridWithTotals = props => {
-  function compare(a, b) {
-    const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
-    const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
-
-    if (first === second) {
-      return 0;
-    }
-    // nulls sort after anything else
-    /* eslint-disable valid-typeof */
-    else if (typeof first == null) {
-      return 1;
-      /* eslint-disable valid-typeof */
-    } else if (typeof second == null) {
-      return -1;
-    }
-
-    return first < second ? -1 : 1;
-  }
-
-  // Sort by label
-  const sortedGridData = props.gridData.sort(compare);
-
   const [gridData, updateGridData] = useState(
-    translateInitialData(sortedGridData)
+    translateInitialData(props.gridData)
   );
 
   const [gridColumnTotals, updateGridColumnTotals] = useState([]);

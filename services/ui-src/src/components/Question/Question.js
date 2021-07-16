@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
-import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
+import {
+  sortQuestionColumns,
+  sortByCol1
+} from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({
   questionData,
@@ -15,6 +18,11 @@ const QuestionComponent = ({
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
   // Get the rows from the answers table
+
+  // If GRE form, sort the answers by col1 (row label)
+  if (answerData.question.split("-")[1] === "GRE") {
+    answerData.rows = answerData.rows.sort(sortByCol1);
+  }
   const { rows, answer_entry } = answerData || {};
 
   if (!rows) {
