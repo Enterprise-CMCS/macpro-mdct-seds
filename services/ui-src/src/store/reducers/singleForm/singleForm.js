@@ -1,5 +1,5 @@
 // PACKAGES
-import { API, Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { obtainUserByEmail } from "../../../libs/api";
 
 // HELPER FUNCTIONS
