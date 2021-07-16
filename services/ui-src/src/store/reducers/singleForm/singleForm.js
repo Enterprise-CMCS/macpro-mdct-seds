@@ -97,10 +97,8 @@ export const updatedApplicableThunk = (
   status,
   statusId
 ) => async dispatch => {
-  await API.post("mdct-seds", "/users/get/username", {}).then(data => {
-    const username = data.data.username;
-    dispatch(updatedApplicableStatus(activeStatus, username, status, statusId));
-  });
+  const username = await getUsername();
+  dispatch(updatedApplicableStatus(activeStatus, username, status, statusId));
 };
 
 export const updateFPL = newFPL => {
@@ -120,8 +118,7 @@ export const updateFPL = newFPL => {
 
 export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
-    const { data } = await API.post("mdct-seds", "/users/get/username", {});
-    const username = data.username;
+    const username = await getUsername();
     const state = getState();
     const timeStamp = generateDateForDB();
     const answers = state.currentForm.answers;
