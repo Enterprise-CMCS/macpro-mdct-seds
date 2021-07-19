@@ -258,6 +258,31 @@ const reduceEntries = (answersByAgeRange, targetID) => {
   /* eslint-disable no-param-reassign */
 };
 
+/**
+ * To be used in sort() to sort by col1 (the question row label)
+ * @param a
+ * @param b
+ * @returns {number|number}
+ */
+const sortByCol1 = (a, b) => {
+  const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
+  const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
+
+  if (first === second) {
+    return 0;
+  }
+  // nulls sort after anything else
+  /* eslint-disable valid-typeof */
+  else if (typeof first == null) {
+    return 1;
+    /* eslint-disable valid-typeof */
+  } else if (typeof second == null) {
+    return -1;
+  }
+
+  return first < second ? -1 : 1;
+};
+
 export {
   sortQuestionColumns,
   dateFormatter,
@@ -267,5 +292,6 @@ export {
   buildSortedAccordionByYearQuarter,
   gatherByQuestion,
   reduceEntries,
-  sortRowArray
+  sortRowArray,
+  sortByCol1
 };
