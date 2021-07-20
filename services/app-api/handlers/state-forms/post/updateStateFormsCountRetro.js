@@ -8,6 +8,34 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
+  const failureList = [];
+  const retryFailLimit = 5;
+  const countsToWrite = [];
+
+  // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
+  const batchWriteAll = async (tryRetryBatch) => {
+    console.log("qqqqq");
+    // Attempt first batch write
+    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+
+    // If there are any failures and under the retry limit
+    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
+      const retryBatch = {
+        noOfRetries: tryRetryBatch.noOfRetries + 1,
+        batch: UnprocessedItems,
+      };
+      return await batchWriteAll(retryBatch);
+    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
+      // exceeded failure limit
+      console.error(
+        `Tried batch ${
+          tryRetryBatch.noOfRetries
+        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+      );
+      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
+    }
+  };
+
   // Pull all state forms for 21E and 64.21E
   const stateFormsParams = {
     TableName:
@@ -90,18 +118,38 @@ export const main = handler(async (event, context) => {
       };
     }
 
-    // Update State Forms to include new value
-    const updateParams = {
-      TableName:
-        process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
-      ConsistentRead: true,
-      Item: {
-        ...stateForms[i],
-        enrollmentCounts: countObject,
+    countsToWrite.push({
+      PutRequest: {
+        Item: {
+          ...stateForms[i],
+          enrollmentCounts: countObject,
+        },
+      },
+    });
+  }
+
+  // Begin batching by groups of 25
+  const batchArrayFormAnswers = [];
+  const batchSizeFA = 25;
+  for (let i = 0; i < countsToWrite.length; i += batchSizeFA) {
+    batchArrayFormAnswers.push(countsToWrite.slice(i, i + batchSizeFA));
+  }
+
+  // Get tableName
+  const formAnswersTableName =
+    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
+
+  // Loop through batches and write to DB
+  for (let i in batchArrayFormAnswers) {
+    const batchRequest = {
+      RequestItems: {
+        [formAnswersTableName]: batchArrayFormAnswers[i],
       },
     };
 
-    await dynamoDb.put(updateParams);
+    // Process this batch
+    const stuff = await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+    console.log("zzzStuff", stuff);
   }
 
   return {
