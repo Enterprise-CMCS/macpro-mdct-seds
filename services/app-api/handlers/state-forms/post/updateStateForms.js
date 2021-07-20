@@ -12,7 +12,6 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
 
   const stateFormId = `${data.state}-${data.year}-4-${data.form}`;
-  console.log("ZzzStateFormId", stateFormId);
 
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME,
@@ -33,13 +32,15 @@ export const main = handler(async (event, context) => {
   const record = result.Items[0];
   const putItem = record;
   if (record.form === "21E") {
-    record.separateChildCount = {
+    record.enrollmentCounts = {
+      type: "separate",
       year: data.year,
       count: data.totalEnrollment,
     };
   }
   if (record.form === "64.21E") {
-    record.expansionChildCount = {
+    record.enrollmentCounts = {
+      type: "expansion",
       year: data.year,
       count: data.totalEnrollment,
     };
@@ -50,12 +51,7 @@ export const main = handler(async (event, context) => {
     Item: putItem,
   };
 
-  const resultPut = await dynamoDb.put(paramsPut);
-
-  console.log("zzzResultPut");
-  // if (resultPut.Count === 0) {
-  //   throw new Error("Cannot find matching record");
-  // }
+  await dynamoDb.put(paramsPut);
 
   return {
     status: 200,

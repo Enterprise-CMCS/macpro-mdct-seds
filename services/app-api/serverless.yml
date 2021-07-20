@@ -325,6 +325,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  updateStateFormsCountRetro:
+    handler: handlers/state-forms/post/updateStateFormsCountRetro.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: state-forms/update-retro
+          method: post
+          cors: true
+          authorizer: aws_iam
   obtainAvailableForms:
     handler: handlers/forms/post/obtainAvailableForms.main
     role: LambdaApiRole
