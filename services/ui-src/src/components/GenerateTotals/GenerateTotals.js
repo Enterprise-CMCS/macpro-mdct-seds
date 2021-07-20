@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Button } from "@trussworks/react-uswds";
-import Dropdown from "react-dropdown";
-import {
-  generateEnrollmentTotals,
-  generateQuarterlyForms
-} from "../../libs/api";
+
+import { generateEnrollmentTotals } from "../../libs/api";
 import "./GenerateTotals.scss";
 
 const GenerateTotals = () => {
