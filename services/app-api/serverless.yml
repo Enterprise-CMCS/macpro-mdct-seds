@@ -330,7 +330,7 @@ functions:
     role: LambdaApiRole
     events:
       - http:
-          path: state-forms/update-retro
+          path: generate-enrollment-totals
           method: post
           cors: true
           authorizer: aws_iam

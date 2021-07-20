@@ -171,6 +171,14 @@ export const generateQuarterlyForms = data => {
   return API.post("mdct-seds", "/generate-forms", opts);
 };
 
+// *** generate enrollment totals
+export const generateEnrollmentTotals = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/generate-enrollment-totals", opts);
+};
+
 // **
 export const sendUncertifyEmail = data => {
   const opts = requestOptions();
