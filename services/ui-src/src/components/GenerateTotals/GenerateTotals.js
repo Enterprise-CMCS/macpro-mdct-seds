@@ -26,7 +26,7 @@ const GenerateTotals = () => {
       {loading ? (
         <div className="loader">
           <div className="loader-content">
-            <div className="loader-icon"></div>Generating new Enrollment Counts
+            <div className="loader-icon"></div>Generating New Enrollment Counts
             <br /> Please Wait...
           </div>
         </div>
