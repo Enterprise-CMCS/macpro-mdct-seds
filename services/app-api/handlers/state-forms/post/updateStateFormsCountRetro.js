@@ -10,7 +10,8 @@ export const main = handler(async (event, context) => {
 
   // Pull all state forms for 21E and 64.21E
   const stateFormsParams = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":form": "21E",
@@ -36,7 +37,9 @@ export const main = handler(async (event, context) => {
     for (const j in ageRanges) {
       const answerEntry = `${stateForms[i].state_form}-${ageRanges[j]}-07`;
       const questionParams = {
-        TableName: process.env.FormAnswersTableName,
+        TableName:
+          process.env.FORM_ANSWERS_TABLE_NAME ??
+          process.env.FormAnswersTableName,
         ExpressionAttributeValues: {
           ":answerEntry": answerEntry,
         },
@@ -89,7 +92,8 @@ export const main = handler(async (event, context) => {
 
     // Update State Forms to include new value
     const updateParams = {
-      TableName: process.env.STATE_FORMS_TABLE_NAME,
+      TableName:
+        process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
       ConsistentRead: true,
       Item: {
         ...stateForms[i],
