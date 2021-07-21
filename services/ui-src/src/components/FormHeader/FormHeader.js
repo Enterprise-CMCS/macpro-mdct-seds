@@ -9,6 +9,7 @@ import {
   updateFPL,
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
   const [formDescription, setFormDescription] = useState({});
@@ -22,6 +23,18 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
 
     // Strips out last three digits (ex. get 317 from `% of FPL 301-317`)
     return fplRange.substring(fplRange.length - 3);
+  };
+
+  const determineUserRole = async () => {
+    const currentUser = await getUserInfo();
+
+    if (
+      currentUser.Items &&
+      (currentUser.Items[0].role === "admin" ||
+        currentUser.Items[0].role === "business")
+    ) {
+      setDisabled(true);
+    }
   };
 
   useEffect(() => {
@@ -43,6 +56,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
         setShowFPL(true);
       }
     }
+    determineUserRole().then();
     fetchData();
   }, [quarter, form, state, year]);
 
@@ -125,6 +139,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
                 type="button"
                 className="max-fpl-btn"
                 onClick={updateMaxFPL}
+                disabled={disabled}
               >
                 Apply FPL Changes
               </Button>

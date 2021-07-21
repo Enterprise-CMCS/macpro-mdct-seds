@@ -100,6 +100,11 @@ const HomeAdmin = ({ stateList, user }) => {
                   Generate Quarterly Forms
                 </Link>
               </li>
+              <li className="generate-counts">
+                <Link to="/generate-counts" className="text-bold">
+                  Generate Total Enrollment Counts
+                </Link>
+              </li>
             </ul>
           </div>
         </>
