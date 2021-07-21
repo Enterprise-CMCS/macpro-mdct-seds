@@ -334,7 +334,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-    timeout: 1000
+    timeout: 900
   obtainAvailableForms:
     handler: handlers/forms/post/obtainAvailableForms.main
     role: LambdaApiRole
