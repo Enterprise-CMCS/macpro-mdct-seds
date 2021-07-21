@@ -50,14 +50,19 @@ export const main = handler(async (event, context) => {
 
   const stateFormsResult = await dynamoDb.scan(stateFormsParams);
 
+  // No results found
   if (stateFormsResult.Count === 0) {
-    throw new Error("Cannot find matching record");
+    return {
+      status: 404,
+      message: "No State Form results found",
+    };
   }
   // Loop through all state forms
   const stateForms = stateFormsResult.Items;
 
   const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
 
+  // Loop through all stateForms
   for (const i in stateForms) {
     const questionAccumulator = [];
     // Loop through each age range and add to questions array
@@ -81,7 +86,7 @@ export const main = handler(async (event, context) => {
       }
     }
 
-    // Calculate totals (add all columns together if they are numbers)
+    // Calculate totals (add all columns together only if they are numbers)
     const questionTotal = questionAccumulator.reduce(
       (accumulator, currentArr) => {
         let currentTotal = 0;
@@ -146,9 +151,8 @@ export const main = handler(async (event, context) => {
       },
     };
 
-    // Process this batch
-    const stuff = await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
-    console.log("zzzStuff", stuff);
+    // Process all batches
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   return {
