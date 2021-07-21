@@ -1,6 +1,6 @@
 // PACKAGES
 import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../../libs/api";
+import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
 
 // HELPER FUNCTIONS
 import {
@@ -197,12 +197,45 @@ export const saveForm = () => {
     const statusData = state.currentForm.statusData;
     const username = await getUsername();
 
+    // Get total number of enrollees from question 7, quarter 4
+    let total = 0;
+    if (
+      (statusData.form === "21E" || statusData.form === "64.21E") &&
+      statusData.quarter === 4
+    ) {
+      for (const i in answers) {
+        if (
+          answers[i].question === `${statusData.year}-${statusData.form}-07`
+        ) {
+          let temp;
+          const rows = answers[i].rows;
+          for (const j in rows) {
+            // Add all numeric col#'s together
+            temp = Object.keys(rows[j]).reduce(
+              (sum, key) => sum + (parseFloat(rows[j][key]) || 0),
+              0
+            );
+
+            // Add to running total
+            total += !Number.isNaN(temp) ? parseInt(temp) : 0;
+          }
+        }
+      }
+    }
+
     try {
       // Update Database
       await saveSingleForm({
         username,
         formAnswers: answers,
         statusData: statusData
+      });
+
+      await updateStateForm({
+        state: statusData.state_id,
+        form: statusData.form,
+        year: statusData.year,
+        totalEnrollment: total
       });
 
       // Update Last Saved in redux state
