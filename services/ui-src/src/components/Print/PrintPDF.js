@@ -138,7 +138,7 @@ const PrintPDF = ({
                       tempContextData = quarter;
                     }
 
-                    if (tempContextData === quarter) {
+                    if (parseInt(tempContextData) === parseInt(quarter)) {
                       returnComponent = (
                         <QuestionComponent
                           key={idx}
