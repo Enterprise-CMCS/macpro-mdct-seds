@@ -31,7 +31,7 @@ export const main = handler(async (event, context) => {
       message: `Please specify both a year and a template`,
     };
   }
-  console.log("zzzData.template", data.template[0]);
+
   if (!isJsonString(data.template[0])) {
     return {
       status: 400,

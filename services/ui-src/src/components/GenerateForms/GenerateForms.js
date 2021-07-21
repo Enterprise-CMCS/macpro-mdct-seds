@@ -41,7 +41,7 @@ const GenerateForms = () => {
     ) {
       // send year and quarter to lambda which will create the table rows
       setLoading(true);
-      const data = { year: selectedYear, quarter: selectedQuarter };
+      const data = { year: selectedYear.value, quarter: selectedQuarter.value };
       const response = await generateQuarterlyForms(data);
       setLoading(false);
       setAlert(response);

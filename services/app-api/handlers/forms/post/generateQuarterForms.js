@@ -52,14 +52,22 @@ export const main = handler(async (event, context) => {
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
-  const specifiedYear = parseInt(data.year.value);
-  const specifiedQuarter = data.quarter.value;
+  const specifiedYear = parseInt(data.year);
+  const specifiedQuarter = data.quarter;
 
+  console.log(`Year: ${specifiedYear} Quarter ${specifiedQuarter}`);
+
+  if (!specifiedQuarter || !specifiedYear) {
+    return {
+      status: 422,
+      message: "Please specify year and quarter",
+    };
+  }
   const foundForms = await findExistingStateForms(
     specifiedYear,
     specifiedQuarter
   );
-  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
+  // console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -142,7 +150,8 @@ export const main = handler(async (event, context) => {
 
   console.log("STATE FORMS TO MAKE \n\n", stateFormsBeingGenerated);
 
-  let alewoo = fetchOrCreateQuestions(2019, specifiedQuarter);
+  // let a = test();
+  let template = fetchOrCreateQuestions(specifiedYear, specifiedQuarter);
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
@@ -156,7 +165,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+    // await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   // -----------------------------------------------------------------
@@ -253,8 +262,8 @@ export const main = handler(async (event, context) => {
   const numberOfAnswersToMake = stateAnswersBeingGenerated.length;
 
   console.log(`There are ${numberOfAnswersToMake} Answers to generate`);
-  console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
-  console.log("Just a peaksie", batchArrayFormAnswers[0][0].PutRequest.Item);
+  // console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
+  // console.log("Just a peaksie", batchArrayFormAnswers[0][0].PutRequest.Item);
 
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
@@ -278,7 +287,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+    // await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   if (failureList.length > 0) {
