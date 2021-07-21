@@ -1,5 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib";
-import { updateCreateFormTemplate } from "../../../ui-src/src/libs/api"
+import { updateCreateFormTemplate } from "../../../ui-src/src/libs/api";
 
 export async function getUsersEmailByRole(role) {
   const params = {
@@ -236,8 +236,7 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
 // This function is called when no entries are found in the question table matching the requested year
 export async function fetchOrCreateQuestions(specifiedYear) {
   // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
-  let templateForQuestions;
-
+  console.log("questions being fetched");
   let parsedYear = parseInt(specifiedYear);
 
   // GET QUESTIONS FROM TEMPLATE
@@ -256,12 +255,12 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 
   let templateResult = await dynamoDb.query(templateParams);
 
-  let questionsForThisYear
+  let questionsForThisYear;
 
   if (templateResult.Count === 0) {
     console.log("\n\n\n NO TEMPLATE FOR GIVEN YEAR", parsedYear);
     // no template was found matching this current year
-    // trigger function to generate template & retrieve questions from template
+    // trigger a function to generate a template & retrieve questions from template
 
     const previousYear = parsedYear - 1;
 
@@ -292,37 +291,36 @@ export async function fetchOrCreateQuestions(specifiedYear) {
       previousYearTemplateResult.Items[0]["template"]
     );
 
-    let response 
     try {
-      response = await updateCreateFormTemplate({
-        year: specifiedYear,
-        template: JSON.parse(createdTemplateQuestions)
+      await updateCreateFormTemplate({
+        year: parsedYear,
+        template: JSON.parse(createdTemplateQuestions),
       });
-      questionsForThisYear = createdTemplateQuestions
+      questionsForThisYear = createdTemplateQuestions;
     } catch (e) {
-      console.error(`Failed to template for ${specifiedYear} to form-template table`)
+      console.error(
+        `Failed to template for ${specifiedYear} to form-template table`
+      );
       return {
         status: 400,
-        message:
-          "Please verify that the template contains valid JSON"
-      }
+        message: "Please verify that the template contains valid JSON",
+      };
     }
   } else {
     questionsForThisYear = templateResult.Items[0]["template"];
   }
-   
+
   // Add the questions that were created or found in an existing template to the questions table
   // these are the questions found in the template
-  
- let questionSuccess = await addToQuestionTable(questionsForThisYear)
 
- // Add the questions created/accessed from a template to the status object returned from this function
- questionSuccess.payload = questionsForThisYear
- return questionSuccess
+  let questionSuccess = await addToQuestionTable(questionsForThisYear);
+
+  // Add the questions created/accessed from a template to the status object returned from this function
+  questionSuccess.payload = questionsForThisYear;
+  return questionSuccess;
 }
 
-
-export function replaceFormYear(year, templateQuestions) {
+function replaceFormYear(year, templateQuestions) {
   let yearToReplace = `${year - 1}`;
   let currentYear = `${year}`;
 
@@ -330,15 +328,11 @@ export function replaceFormYear(year, templateQuestions) {
   let re = new RegExp("" + yearToReplace + "", "g");
 
   // Replace all instances of the previous year with the new year
-  return JSON.parse(
-    JSON.stringify(templateQuestions).replace(re, currentYear)
-  );
+  return JSON.parse(JSON.stringify(templateQuestions).replace(re, currentYear));
 }
 
-
-
-// This function is for adding questions to the question table
 export async function addToQuestionTable(questionsForThisYear, questionYear) {
+  // This function is for adding questions to the question table
   // By this point, questions have been found or created for a given year
 
   // Map through the found questions and create batch put requests for the questions table
@@ -379,13 +373,18 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
 
   // retry any failed entries
   if (failedItems.length) {
-let secondResult
+    let secondResult;
 
-    setTimeout(() => {
-      secondResult = await dynamoDb.batchWrite({
+    function delay(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    (async function postponeSecondBatch() {
+      await delay(2000);
+      await dynamoDb.batchWrite({
         RequestItems: { [questionTableName]: failedItems },
       });
-    }, 2000);
+    })();
 
     console.log("UNPROCESSED ITEMS \n\n", secondResult.UnprocessedItems);
     // if some still fail, add them to a list of items to be returned, return status 500

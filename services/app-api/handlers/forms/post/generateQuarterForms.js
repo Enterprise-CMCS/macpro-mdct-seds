@@ -6,7 +6,6 @@ import {
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
-  test,
 } from "../../shared/sharedFunctions";
 
 /**
@@ -55,8 +54,6 @@ export const main = handler(async (event, context) => {
   const specifiedYear = parseInt(data.year);
   const specifiedQuarter = data.quarter;
 
-  console.log(`Year: ${specifiedYear} Quarter ${specifiedQuarter}`);
-
   if (!specifiedQuarter || !specifiedYear) {
     return {
       status: 422,
@@ -67,7 +64,7 @@ export const main = handler(async (event, context) => {
     specifiedYear,
     specifiedQuarter
   );
-  // console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
+  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -150,8 +147,6 @@ export const main = handler(async (event, context) => {
 
   console.log("STATE FORMS TO MAKE \n\n", stateFormsBeingGenerated);
 
-  // let a = test();
-  let template = fetchOrCreateQuestions(specifiedYear, specifiedQuarter);
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
@@ -170,25 +165,32 @@ export const main = handler(async (event, context) => {
 
   // -----------------------------------------------------------------
 
-  // ^^^^ How can we stop the first iteration if the form/question creation fails?
-  // maybe trigger batch creation afte fetchOrCreateQuestions is triggered??
-
   // Pull list of questions
-  let allQuestions = await getQuestionsByYear(specifiedYear);
+  let allQuestions;
 
-  // If questions not found, return failure message
-  if (!allQuestions.length) {
-    return {
-      status: 500,
-      message: `Could not find template for generating forms for ${specifiedYear}`,
-    };
+  const questionsFromQuestionTable = await getQuestionsByYear(specifiedYear);
+
+  // If questions not found, fetch/create them from template table
+  if (!questionsFromQuestionTable.length) {
+    console.log("empty questions table");
+    let createdQuestions = await fetchOrCreateQuestions(
+      specifiedYear,
+      specifiedQuarter
+    );
+
+    if (createdQuestions.status !== 200) {
+      // Return error message without payload
+      const { status, message } = createdQuestions;
+      return { status, message };
+    }
+  } else {
+    console.log("populated questions table");
+    allQuestions = questionsFromQuestionTable;
   }
-
   // if there are no questions for the year, generate them
   // assign THAT return value to allQuestions
 
-  // const questionTemplate2021 = getQuestionsByYear(2021);
-
+  console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions);
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
 
@@ -332,3 +334,8 @@ export const main = handler(async (event, context) => {
 
 // what happens if any step in the second iteration fails
 //    -- the first iteration will have already created a status object
+
+// return {
+//   status: 500,
+//   message: `Could not find template for generating forms for ${specifiedYear}`,
+// };
