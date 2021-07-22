@@ -77,9 +77,9 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
 
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     console.log("zzzCalculatedRows", calculatedRows);
-    console.log("zzzCalculatedTotals", calculatedTotals[1]);
+    console.log("zzzCalculatedTotals", calculatedTotals[2]);
     setSortedRows(sortQuestionColumns(calculatedRows));
-    setSortedTotals(calculatedTotals);
+    setSortedTotals(calculatedTotals[2]);
   };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
@@ -103,6 +103,8 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
   const calculateTotalValue = (incomingFormula, tabAnswers, col) => {
     let returnValue = null;
 
+    console.log("zzzIncomingFormula", incomingFormula);
+    console.log("zzzTabAnswers", tabAnswers);
     // Use formula to loop through all matching columns in question and accumulate
     const questionTotal = incomingFormula.targets.map(target => {
       return selectColumnValuesFromArray(tabAnswers, target);
@@ -110,21 +112,22 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
 
     console.log("zzzQuestionTotal", questionTotal);
 
-    const selectRowColumnValueFromArray = (array, id) => {
-      const foundValue = jsonpath.query(array, id)[0];
-      const returnValue = foundValue !== null ? foundValue : 0;
-      return returnValue;
-    };
-
-    // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
-    const operands = incomingFormula.targets.map(target => {
-      return selectRowColumnValueFromArray(tabAnswers, target);
-    });
-    console.log("zzzOperands", operands);
-
-    // calculates the value based off of the formula <0> / <1>,
-    // This formula is currently hard coded
-    let quotient = operands[0] / operands[1];
+    let quotient = questionTotal[0] / questionTotal[1];
+    // const selectRowColumnValueFromArray = (array, id) => {
+    //   const foundValue = jsonpath.query(array, id)[0];
+    //   const returnValue = foundValue !== null ? foundValue : 0;
+    //   return returnValue;
+    // };
+    //
+    // // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
+    // const operands = incomingFormula.targets.map(target => {
+    //   return selectRowColumnValueFromArray(tabAnswers, target);
+    // });
+    // console.log("zzzOperands", operands);
+    //
+    // // calculates the value based off of the formula <0> / <1>,
+    // // This formula is currently hard coded
+    // let quotient = operands[0] / operands[1];
 
     // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
     if (quotient && quotient !== Infinity) {
