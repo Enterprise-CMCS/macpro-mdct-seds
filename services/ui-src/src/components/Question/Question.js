@@ -48,6 +48,7 @@ const QuestionComponent = ({
   if (sortedRows.length > 0 && questionNumber > 0) {
     // *** question 5 is special
     if (questionNumber === 5) {
+      console.log("zzzSortedRows", sortedRows);
       // *** and as such, will require a synthesized grid
       questionComponent = (
         <SynthesizedGrid

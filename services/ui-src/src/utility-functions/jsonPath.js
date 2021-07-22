@@ -6,6 +6,39 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
+// Get accumulated values of each column in rows array
+export const selectColumnValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const rowLength = array[0].rows.length;
+
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < rowLength; i++) {
+    const currentRow = id.split(".")[4];
+    if (id && currentRow !== "rows[1]") {
+      const newId =
+        id.split(".")[0] +
+        ".." +
+        id.split(".")[2] +
+        "." +
+        id.split(".")[3] +
+        `.rows[${i}].` +
+        id.split(".")[5];
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfColumns = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  return totalOfColumns;
+};
+
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
 const fullPathFromIDPath = originalPath => {

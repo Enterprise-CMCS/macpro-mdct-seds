@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import GridWithTotals from "./GridWithTotals";
+import GridWithTotals from "./GridWithAverages";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
