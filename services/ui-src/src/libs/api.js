@@ -100,6 +100,14 @@ export const getStateForms = (stateId, specifiedYear, quarter) => {
   );
 };
 
+// *** update forms associated with a specified state for specified year and quarter
+export const updateStateForm = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/state-forms/update`, opts);
+};
+
 // *** get single form associated with a specified state, year and quarter
 export const getSingleForm = (state, specifiedYear, quarter, form) => {
   const opts = requestOptions();
@@ -163,6 +171,7 @@ export const generateQuarterlyForms = data => {
   return API.post("mdct-seds", "/generate-forms", opts);
 };
 
+<<<<<<< HEAD
 // *** get form template years
 export const obtainFormTemplateYears = data => {
   const opts = requestOptions();
@@ -193,6 +202,14 @@ export const generateMissingForms = data => {
   opts.body = data;
 
   return API.post("mdct-seds", "/generate-missing-forms", opts);
+=======
+// *** generate enrollment totals
+export const generateEnrollmentTotals = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/generate-enrollment-totals", opts);
+>>>>>>> 400fb97951bde78e825b25f5b359a6169961fead
 };
 
 // **

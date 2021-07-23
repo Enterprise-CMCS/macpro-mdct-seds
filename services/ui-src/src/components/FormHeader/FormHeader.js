@@ -9,6 +9,7 @@ import {
   updateFPL,
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormHeader = ({
   quarter,
@@ -34,6 +35,18 @@ const FormHeader = ({
     return fplRange.substring(fplRange.length - 3);
   };
 
+  const determineUserRole = async () => {
+    const currentUser = await getUserInfo();
+
+    if (
+      currentUser.Items &&
+      (currentUser.Items[0].role === "admin" ||
+        currentUser.Items[0].role === "business")
+    ) {
+      setDisabled(true);
+    }
+  };
+
   useEffect(() => {
     // List of forms that do NOT show fpl
     if (status_id === 4) {
@@ -56,6 +69,7 @@ const FormHeader = ({
         setShowFPL(true);
       }
     }
+    determineUserRole().then();
     fetchData();
   }, [quarter, form, state, year, status_id]);
 
@@ -139,6 +153,7 @@ const FormHeader = ({
                 type="button"
                 className="max-fpl-btn"
                 onClick={updateMaxFPL}
+                disabled={disabled}
               >
                 Apply FPL Changes
               </Button>
