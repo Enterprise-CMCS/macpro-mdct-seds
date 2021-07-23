@@ -26,27 +26,27 @@ export const main = handler(async (event, context) => {
   const failureList = [];
 
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
-  const batchWriteAll = async (tryRetryBatch) => {
-    // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+  // const batchWriteAll = async (tryRetryBatch) => {
+  //   // Attempt first batch write
+  //   const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
 
-    // If there are any failures and under the retry limit
-    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
-      const retryBatch = {
-        noOfRetries: tryRetryBatch.noOfRetries + 1,
-        batch: UnprocessedItems,
-      };
-      return await batchWriteAll(retryBatch);
-    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
-      // exceeded failure limit
-      console.error(
-        `Tried batch ${
-          tryRetryBatch.noOfRetries
-        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
-      );
-      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
-    }
-  };
+  //   // If there are any failures and under the retry limit
+  //   if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
+  //     const retryBatch = {
+  //       noOfRetries: tryRetryBatch.noOfRetries + 1,
+  //       batch: UnprocessedItems,
+  //     };
+  //     return await batchWriteAll(retryBatch);
+  //   } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
+  //     // exceeded failure limit
+  //     console.error(
+  //       `Tried batch ${
+  //         tryRetryBatch.noOfRetries
+  //       } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+  //     );
+  //     failureList.push({ failure: JSON.stringify(tryRetryBatch) });
+  //   }
+  // };
 
   // Get year and quarter from request
   let data = JSON.parse(event.body);
@@ -64,7 +64,7 @@ export const main = handler(async (event, context) => {
     specifiedYear,
     specifiedQuarter
   );
-  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
+  // console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -190,8 +190,11 @@ export const main = handler(async (event, context) => {
   }
   // if there are no questions for the year, generate them
   // assign THAT return value to allQuestions
-
-  console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions[0]);
+  // console.log(
+  //   `suspicious, what is the length ${specifiedYear}`,
+  //   questionsFromQuestionTable[0]
+  // );
+  // console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions[0]);
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
 

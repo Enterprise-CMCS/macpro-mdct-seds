@@ -140,7 +140,8 @@ export async function getQuestionsByYear(specifiedYear) {
       "#theYear": "year",
     },
     ExpressionAttributeValues: {
-      ":specifiedYear": parsedYear > 2021 ? parsedYear : 2021,
+      ":specifiedYear": parsedYear,
+      // ":specifiedYear": parsedYear > 2021 ? parsedYear : 2021, // TEMPORARY
     },
     FilterExpression: "#theYear = :specifiedYear",
   };
@@ -286,19 +287,18 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     }
 
     const createdTemplateQuestions = replaceFormYear(
-      specifiedYear,
+      parsedYear,
       previousYearTemplateResult.Items[0]["template"]
     );
 
+    console.log("New questions???", createdTemplateQuestions[0]);
+
     try {
-      await createFormTemplate({
-        year: parsedYear,
-        template: createdTemplateQuestions,
-      });
+      await createFormTemplate(parsedYear, createdTemplateQuestions);
       questionsForThisYear = createdTemplateQuestions;
     } catch (e) {
       console.error(
-        `Failed to template for ${specifiedYear} to form-template table`
+        `Failed to add template for ${parsedYear} to form-template table`
       );
       return {
         status: 400,
@@ -312,7 +312,10 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   // Add the questions that were created or found in an existing template to the questions table
   // these are the questions found in the template
 
-  let questionSuccess = await addToQuestionTable(questionsForThisYear);
+  let questionSuccess = await addToQuestionTable(
+    questionsForThisYear,
+    parsedYear
+  );
 
   // Add the questions created/accessed from a template to the status object returned from this function
   questionSuccess.payload = questionsForThisYear;
@@ -366,31 +369,21 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
     });
     // If some questions fail to write, add them to a list of failures
     if (UnprocessedItems.length) {
-      failedItems.concat(UnprocessedItems);
+      failedItems.push(UnprocessedItems);
     }
   }
 
   // retry any failed entries
   if (failedItems.length) {
-    let secondResult;
+    const { UnprocessedItems } = await dynamoDb.batchWrite({
+      RequestItems: { [questionTableName]: failedItems },
+    });
 
-    function delay(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
-    (async function postponeSecondBatch() {
-      await delay(2000);
-      await dynamoDb.batchWrite({
-        RequestItems: { [questionTableName]: failedItems },
-      });
-    })();
-
-    console.log("UNPROCESSED ITEMS \n\n", secondResult.UnprocessedItems);
     // if some still fail, add them to a list of items to be returned, return status 500
-    if (secondResult.UnprocessedItems.length) {
+    if (UnprocessedItems.length) {
       console.error(
         `Failed to add all questions from template to question table. Failing batch: ${JSON.stringify(
-          secondResult.UnprocessedItems
+          UnprocessedItems
         )}`
       );
       return {
@@ -415,9 +408,7 @@ export async function createFormTemplate(year, questions) {
       ? unValidatedJSON
       : false;
 
-  // const data = JSON.parse(event.body);
-
-  if (!year || !template) {
+  if (!year || !questions) {
     return {
       status: 422,
       message: `Please specify both a year and a template`,
@@ -441,17 +432,17 @@ export async function createFormTemplate(year, questions) {
     },
   };
 
-  await dynamoDb.put(params, (error, result) => {
-    if (error) {
-      console.log("\n\n*** ERROR UPLOADING TEMPLATE: ");
-      console.log(error);
-    } else {
-      console.log("\n+++ TEMPLATE SUCCESSFULLY UPLOADED: ");
-      console.log(result);
-      return {
-        status: 200,
-        message: `Template updated for ${year}!`,
-      };
-    }
-  });
+  try {
+    await dynamoDb.put(params);
+    return {
+      status: 200,
+      message: `Template updated for ${year}!`,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      message: `Error adding form template to form-template table`,
+    };
+  }
 }

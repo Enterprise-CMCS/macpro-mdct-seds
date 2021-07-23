@@ -18,11 +18,8 @@ import FormPage from "../FormPage/FormPage";
 import LoadData from "../LoadData/LoadData";
 import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
-<<<<<<< HEAD
 import FormTemplates from "../FormTemplates/FormTemplates";
-=======
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
->>>>>>> 400fb97951bde78e825b25f5b359a6169961fead
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
