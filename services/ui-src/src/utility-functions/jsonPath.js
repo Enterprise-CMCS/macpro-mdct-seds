@@ -17,14 +17,30 @@ export const selectColumnValuesFromArray = (array, id) => {
   for (let i = 0; i < rowLength; i++) {
     const currentRow = id.split(".")[4];
     if (id && currentRow !== "rows[1]") {
-      const newId =
-        id.split(".")[0] +
-        ".." +
-        id.split(".")[2] +
-        "." +
-        id.split(".")[3] +
-        `.rows[${i}].` +
-        id.split(".")[5];
+      let newId;
+      // Check for additional period in id
+      if (id.includes("64.21E") || id.includes("64.EC")) {
+        newId =
+          id.split(".")[0] +
+          ".." +
+          id.split(".")[2] +
+          "." +
+          id.split(".")[3] +
+          "." +
+          id.split(".")[4] +
+          `.rows[${i}].` +
+          id.split(".")[6];
+      } else {
+        newId =
+          id.split(".")[0] +
+          ".." +
+          id.split(".")[2] +
+          "." +
+          id.split(".")[3] +
+          `.rows[${i}].` +
+          id.split(".")[5];
+      }
+
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
         let parsed = Number(arrayValue);
