@@ -141,7 +141,6 @@ export async function getQuestionsByYear(specifiedYear) {
     },
     ExpressionAttributeValues: {
       ":specifiedYear": parsedYear,
-      // ":specifiedYear": parsedYear > 2021 ? parsedYear : 2021, // TEMPORARY
     },
     FilterExpression: "#theYear = :specifiedYear",
   };
@@ -236,7 +235,7 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
 // This function is called when no entries are found in the question table matching the requested year
 export async function fetchOrCreateQuestions(specifiedYear) {
   // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
-  console.log("questions being fetched");
+  console.log("Questions being fetched from form-template");
   let parsedYear = parseInt(specifiedYear);
 
   // GET QUESTIONS FROM TEMPLATE
@@ -258,7 +257,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   let questionsForThisYear;
 
   if (templateResult.Count === 0) {
-    console.log("\n\n\n NO TEMPLATE FOR GIVEN YEAR", parsedYear);
+    console.log("\n\n\n NO TEMPLATE FOR GIVEN YEAR, CREATING ONE", parsedYear);
     // no template was found matching this current year
     // trigger a function to generate a template & retrieve questions from template
 
@@ -291,8 +290,6 @@ export async function fetchOrCreateQuestions(specifiedYear) {
       previousYearTemplateResult.Items[0]["template"]
     );
 
-    console.log("New questions???", createdTemplateQuestions[0]);
-
     try {
       await createFormTemplate(parsedYear, createdTemplateQuestions);
       questionsForThisYear = createdTemplateQuestions;
@@ -310,8 +307,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   }
 
   // Add the questions that were created or found in an existing template to the questions table
-  // these are the questions found in the template
-
+  // these are the questions found in the template table or created along with a new template
   let questionSuccess = await addToQuestionTable(
     questionsForThisYear,
     parsedYear
@@ -323,14 +319,24 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 }
 
 function replaceFormYear(year, templateQuestions) {
-  let yearToReplace = `${year - 1}`;
-  let currentYear = `${year}`;
+  const yearToReplace = `${year - 1}`;
+  const currentYear = `${year}`;
 
   // Build searchregex
-  let re = new RegExp("" + yearToReplace + "", "g");
+  const re = new RegExp("" + yearToReplace + "", "g");
 
   // Replace all instances of the previous year with the new year
-  return JSON.parse(JSON.stringify(templateQuestions).replace(re, currentYear));
+  const updatedYear = JSON.parse(
+    JSON.stringify(templateQuestions).replace(re, currentYear)
+  );
+  const updatedCreationDate = updatedYear.map((element) => {
+    return {
+      ...element,
+      created_date: new Date().toISOString(),
+      last_modified: new Date().toISOString(),
+    };
+  });
+  return updatedCreationDate;
 }
 
 export async function addToQuestionTable(questionsForThisYear, questionYear) {
@@ -382,9 +388,7 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
     // if some still fail, add them to a list of items to be returned, return status 500
     if (UnprocessedItems.length) {
       console.error(
-        `Failed to add all questions from template to question table. Failing batch: ${JSON.stringify(
-          UnprocessedItems
-        )}`
+        `Failed to add all questions from template to question table `
       );
       return {
         status: 500,

@@ -26,27 +26,27 @@ export const main = handler(async (event, context) => {
   const failureList = [];
 
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
-  // const batchWriteAll = async (tryRetryBatch) => {
-  //   // Attempt first batch write
-  //   const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+  const batchWriteAll = async (tryRetryBatch) => {
+    // Attempt first batch write
+    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
 
-  //   // If there are any failures and under the retry limit
-  //   if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
-  //     const retryBatch = {
-  //       noOfRetries: tryRetryBatch.noOfRetries + 1,
-  //       batch: UnprocessedItems,
-  //     };
-  //     return await batchWriteAll(retryBatch);
-  //   } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
-  //     // exceeded failure limit
-  //     console.error(
-  //       `Tried batch ${
-  //         tryRetryBatch.noOfRetries
-  //       } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
-  //     );
-  //     failureList.push({ failure: JSON.stringify(tryRetryBatch) });
-  //   }
-  // };
+    // If there are any failures and under the retry limit
+    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
+      const retryBatch = {
+        noOfRetries: tryRetryBatch.noOfRetries + 1,
+        batch: UnprocessedItems,
+      };
+      return await batchWriteAll(retryBatch);
+    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
+      // exceeded failure limit
+      console.error(
+        `Tried batch ${
+          tryRetryBatch.noOfRetries
+        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
+      );
+      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
+    }
+  };
 
   // Get year and quarter from request
   let data = JSON.parse(event.body);
@@ -64,7 +64,7 @@ export const main = handler(async (event, context) => {
     specifiedYear,
     specifiedQuarter
   );
-  // console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
+  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -160,7 +160,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    // await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   // -----------------------------------------------------------------
@@ -172,7 +172,8 @@ export const main = handler(async (event, context) => {
 
   // If questions not found, fetch/create them from template table
   if (!questionsFromQuestionTable.length) {
-    console.log("empty questions table");
+    // TODO: Is the length property apporpriately coming back as falsy when table is empty
+    console.log("There were no questions matching this year in form-questions");
     let createdQuestions = await fetchOrCreateQuestions(
       specifiedYear,
       specifiedQuarter
@@ -183,32 +184,24 @@ export const main = handler(async (event, context) => {
       const { status, message } = createdQuestions;
       return { status, message };
     }
-    allQuestions = createdQuestions;
+    allQuestions = createdQuestions.payload;
   } else {
-    console.log("populated questions table");
+    console.log("The form-questions table had entries for this year");
     allQuestions = questionsFromQuestionTable;
   }
   // if there are no questions for the year, generate them
   // assign THAT return value to allQuestions
-  // console.log(
-  //   `suspicious, what is the length ${specifiedYear}`,
-  //   questionsFromQuestionTable[0]
-  // );
-  // console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions[0]);
+  console.log("the final questions", allQuestions);
+
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
     // Loop through each question
-    // console.log("Questions?????", allQuestions);
 
     for (const question in allQuestions) {
       // Get age range array
-
-      // if there are no questions,
-      // check templates
-
       let ageRanges = allQuestions[question].age_ranges;
 
       // Loop through each age range and insert row
@@ -258,6 +251,7 @@ export const main = handler(async (event, context) => {
     );
   }
 
+  // only exists for console log
   let stateAnswersBeingGenerated = batchArrayFormAnswers
     .map((e) => {
       return e.map((element) => {
@@ -268,8 +262,7 @@ export const main = handler(async (event, context) => {
   const numberOfAnswersToMake = stateAnswersBeingGenerated.length;
 
   console.log(`There are ${numberOfAnswersToMake} Answers to generate`);
-  // console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
-  // console.log("Just a peaksie", batchArrayFormAnswers[0][0].PutRequest.Item);
+  console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
 
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
@@ -293,7 +286,7 @@ export const main = handler(async (event, context) => {
     };
 
     // Process this batch
-    // await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
   }
 
   if (failureList.length > 0) {
@@ -308,38 +301,3 @@ export const main = handler(async (event, context) => {
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
 });
-
-// THIS HANDLER TAKES IN <<year & quarter>>
-
-// first iteration makes status objects
-
-// second iteration generates answers from questions, if questions not present, generates questions and answers
-
-// states
-
-// questions
-// no questions?
-// find template
-// generate questions for this year
-// generate questions for the quarter
-// proceed
-//
-
-// age ranges
-// create answer objects
-
-// routes to components:
-
-// "/form-templates"
-// <FormTemplates />
-
-// "/generate-forms"
-// <GenerateForms/>
-
-// what happens if any step in the second iteration fails
-//    -- the first iteration will have already created a status object
-
-// return {
-//   status: 500,
-//   message: `Could not find template for generating forms for ${specifiedYear}`,
-// };
