@@ -9,19 +9,19 @@ import jsonpath, {
 } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
+const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
   const [sortedRows, setSortedRows] = useState([]);
   const [sortedTotals, setSortedTotals] = useState([]);
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, enitreForm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData, entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the grid based on the answers present in redux
   // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
   const updateSynthesizedGrid = () => {
     // Retrieve the answers specific to the current tab
-    const tabAnswers = enitreForm.answers.filter(
+    const tabAnswers = entireForm.answers.filter(
       element => element.rangeId === range
     );
 
@@ -99,6 +99,7 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
     return returnValue;
   };
 
+  // Add values together, then divide
   const calculateTotalValue = (incomingFormula, tabAnswers, col) => {
     let returnValue = null;
 
@@ -107,6 +108,7 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
       return selectColumnValuesFromArray(tabAnswers, target);
     });
 
+    // Use hard coded formula
     let quotient = questionTotal[0] / questionTotal[1];
 
     // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
@@ -137,14 +139,14 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
 };
 
 SynthesizedGrid.propTypes = {
-  enitreForm: PropTypes.object.isRequired,
+  entireForm: PropTypes.object.isRequired,
   questionID: PropTypes.string.isRequired,
   gridData: PropTypes.array.isRequired,
   range: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
-  enitreForm: state.currentForm
+  entireForm: state.currentForm
 });
 
 export default connect(mapState)(SynthesizedGrid);
