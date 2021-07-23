@@ -6,6 +6,10 @@ import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 
 const GridWithTotals = props => {
+  // const [gridData, updateGridData] = useState(
+  //   translateInitialData(props.gridData)
+  // );
+
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
@@ -59,6 +63,8 @@ const GridWithTotals = props => {
       columnTotalsArray[index] = 0;
     });
 
+    console.log("zzzgridColumnTotalsCopy line 66", gridColumnTotalsCopy);
+
     gridData.map((row, rowIndex) => {
       if (row !== undefined) {
         row.map((column, columnIndex) => {
@@ -78,14 +84,23 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] = 0;
           }
 
-          gridColumnTotalsCopy[gridColumnIndex] += currentValue;
-          totalOfTotals += currentValue;
+          if (props.totals) {
+            gridColumnTotalsCopy[gridColumnIndex] =
+              props.totals[gridColumnIndex];
+            totalOfTotals += props.totals[gridColumnIndex];
+          } else {
+            gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+            totalOfTotals += currentValue;
+          }
 
           return true;
         });
       }
       return true;
     });
+    {
+      console.log("zzzgridColumnTotalsCopy", gridColumnTotalsCopy);
+    }
 
     updateGridColumnTotals(gridColumnTotalsCopy);
     updateGridTotalOfTotals(totalOfTotals);
@@ -275,6 +290,8 @@ const GridWithTotals = props => {
 
   return (
     <div className="grid-with-totals" id={`"${props.questionID}"`}>
+      {/*{console.log("zzzProps.gridData", totalsRow)}*/}
+      {console.log("zzzProps.totals", props.totals)}
       <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>{headerCols}</tr>
