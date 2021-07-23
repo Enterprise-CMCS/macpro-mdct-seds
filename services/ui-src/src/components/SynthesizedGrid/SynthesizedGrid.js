@@ -3,7 +3,7 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./SynthesizedGrid.scss";
-import jsonpath, {
+import {
   selectRowColumnValueFromArray,
   selectColumnValuesFromArray
 } from "../../utility-functions/jsonPath";

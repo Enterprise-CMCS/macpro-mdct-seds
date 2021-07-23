@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 const mockStore = configureStore([]);
 
-describe("Test GridWithAverages.js", () => {
+describe("Test GridWithTotals.js", () => {
   let store;
   let wrapper;
   const gridDataItems = [
