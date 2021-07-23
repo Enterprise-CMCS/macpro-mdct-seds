@@ -106,7 +106,7 @@ describe("Test SynthesizedGrid.js", () => {
         .find("td")
         .at(0)
         .text()
-    ).toMatch(/78.9/);
+    ).toMatch(/11.3/);
     expect(
       wrapper
         .find("GridWithTotals")
