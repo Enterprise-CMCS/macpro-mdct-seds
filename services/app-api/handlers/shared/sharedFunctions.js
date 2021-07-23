@@ -1,5 +1,4 @@
 import dynamoDb from "../../libs/dynamodb-lib";
-import { updateCreateFormTemplate } from "../../../ui-src/src/libs/api";
 
 export async function getUsersEmailByRole(role) {
   const params = {
@@ -292,9 +291,9 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     );
 
     try {
-      await updateCreateFormTemplate({
+      await createFormTemplate({
         year: parsedYear,
-        template: JSON.parse(createdTemplateQuestions),
+        template: createdTemplateQuestions,
       });
       questionsForThisYear = createdTemplateQuestions;
     } catch (e) {
@@ -405,4 +404,54 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
     status: 200,
     message: `Questions added to form questions table from template`,
   };
+}
+
+export async function createFormTemplate(year, questions) {
+  // try to stringify and parse the incoming data to verify if valid json
+  let unValidatedJSON = JSON.parse(JSON.stringify(questions));
+
+  let validatedJSON =
+    unValidatedJSON && typeof unValidatedJSON === "object"
+      ? unValidatedJSON
+      : false;
+
+  // const data = JSON.parse(event.body);
+
+  if (!year || !template) {
+    return {
+      status: 422,
+      message: `Please specify both a year and a template`,
+    };
+  }
+
+  if (!unValidatedJSON) {
+    return {
+      status: 400,
+      message: `Invalid JSON. Please review your template.`,
+    };
+  }
+
+  const params = {
+    TableName:
+      process.env.FORM_TEMPLATES_TABLE_NAME ??
+      process.env.FormTemplatesTableName,
+    Item: {
+      year: parseInt(year),
+      template: validatedJSON,
+    },
+  };
+
+  await dynamoDb.put(params, (error, result) => {
+    if (error) {
+      console.log("\n\n*** ERROR UPLOADING TEMPLATE: ");
+      console.log(error);
+    } else {
+      console.log("\n+++ TEMPLATE SUCCESSFULLY UPLOADED: ");
+      console.log(result);
+      return {
+        status: 200,
+        message: `Template updated for ${year}!`,
+      };
+    }
+  });
 }

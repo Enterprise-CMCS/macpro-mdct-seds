@@ -183,6 +183,7 @@ export const main = handler(async (event, context) => {
       const { status, message } = createdQuestions;
       return { status, message };
     }
+    allQuestions = createdQuestions;
   } else {
     console.log("populated questions table");
     allQuestions = questionsFromQuestionTable;
@@ -190,7 +191,7 @@ export const main = handler(async (event, context) => {
   // if there are no questions for the year, generate them
   // assign THAT return value to allQuestions
 
-  console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions);
+  console.log("ALL QUESTIONS???? PLEASE??? \n\n\n", allQuestions[0]);
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
 
