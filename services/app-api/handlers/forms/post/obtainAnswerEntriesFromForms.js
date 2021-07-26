@@ -8,11 +8,9 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  // Get year and quarter from request
+  // Get stateForms and ageRanges from passed in data
   let data = JSON.parse(event.body);
-
   const stateForms = data.stateForms;
-  console.log("zzzstateForms", stateForms);
   const ageRanges = data.ageRanges;
 
   const countsToWrite = [];
