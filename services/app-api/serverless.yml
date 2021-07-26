@@ -343,6 +343,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+    timeout: 900
   updateStateFormsCountRetro:
     handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
