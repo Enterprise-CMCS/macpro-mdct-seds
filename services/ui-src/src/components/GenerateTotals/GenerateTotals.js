@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Alert, Button } from "@trussworks/react-uswds";
 
-import { generateEnrollmentTotals } from "../../libs/api";
+import {
+  generateEnrollmentTotals,
+  obtainStateForms,
+  obtainAnswerEntriesFromForms
+} from "../../libs/api";
 import "./GenerateTotals.scss";
 
 const GenerateTotals = () => {
@@ -14,8 +18,26 @@ const GenerateTotals = () => {
     );
 
     if (proceed) {
+      // Start loading icon
       setLoading(true);
-      const update = await generateEnrollmentTotals();
+
+      // Get state forms for 21E and 64.21E
+      const stateForms = await obtainStateForms({ forms: ["21E", "64.21E"] });
+
+      // All possible age ranges for 21E and 64.21E
+      const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
+
+      // Get answer entries from forms
+      const answerEntries = await obtainAnswerEntriesFromForms({
+        stateForms: stateForms.entries,
+        ageRanges
+      });
+
+      // Write new totals
+      const update = await generateEnrollmentTotals({
+        answerEntries: answerEntries.countsToWrite
+      });
+
       setLoading(false);
       setAlert(update);
     }

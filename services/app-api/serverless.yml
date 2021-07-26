@@ -325,8 +325,26 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  obtainStateForms:
+    handler: handlers/state-forms/post/obtainStateForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: state-forms/obtain
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainAnswerEntriesFromForms:
+    handler: handlers/forms/post/obtainAnswerEntriesFromForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-answers/obtain
+          method: post
+          cors: true
+          authorizer: aws_iam
   updateStateFormsCountRetro:
-    handler: handlers/state-forms/post/updateStateFormsCountRetro.main
+    handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
     events:
       - http:
