@@ -2,7 +2,7 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
 /**
- * Generates initial form data and statuses for all states given a year and quarter
+ * Generates enrollment data from answer entries array
  */
 
 export const main = handler(async (event, context) => {
@@ -51,7 +51,7 @@ export const main = handler(async (event, context) => {
 
   // Get tableName
   const formAnswersTableName =
-    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormTableName;
+    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormAnswers) {
