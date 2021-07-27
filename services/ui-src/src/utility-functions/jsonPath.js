@@ -6,12 +6,17 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
+export const selectRowValuesFromArray = (arr, id) => {
+  const rowLength = arr[0].rows.length;
+}
+
 // Get accumulated values of each column in rows array
 export const selectColumnValuesFromArray = (array, id) => {
   // Calculate number of rows
   const rowLength = array[0].rows.length;
 
   const valuesToAdd = [];
+  console.log(id);
 
   // Get all column values and add to array if a number
   for (let i = 0; i < rowLength; i++) {
