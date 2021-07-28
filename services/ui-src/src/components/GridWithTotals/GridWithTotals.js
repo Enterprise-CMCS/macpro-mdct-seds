@@ -89,8 +89,9 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] += currentValue;
             // totalOfTotals += currentValue;
           }
-          if (!synthesized) totalOfTotals += currentValue;
-          if (props.rowTotals) {
+          totalOfTotals += currentValue;
+
+          if (synthesized && props.rowTotals) {
             let sum = sumValues(props.rowTotals);
             let avg = sum / props.rowTotals.length;
             totalOfTotals = avg;
