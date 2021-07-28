@@ -16,11 +16,11 @@ export const selectRowValuesFromArray = (array, id) => {
     if (id && currentRow !== "rows[1]") {
       let newId;
       // Check for additional period in id
-        const parts = id.split(".");
-        // Replace the last value with our new column
-        parts[parts.length - 1] = `.col${i + 1}`;
-        // Piece it all back together
-        newId = parts.join(".");
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 1] = `.col${i + 1}`;
+      // Piece it all back together
+      newId = parts.join(".");
 
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
