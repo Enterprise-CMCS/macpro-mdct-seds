@@ -6,6 +6,71 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
+export const selectRowValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < 6; i++) {
+    const currentRow = id.split(".")[4];
+    if (id && currentRow !== "rows[1]") {
+      let newId;
+      // Check for additional period in id
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 1] = `.col${i + 1}`;
+      // Piece it all back together
+      newId = parts.join(".");
+
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfRows = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  return totalOfRows;
+};
+
+// Get accumulated values of each column in rows array
+export const selectColumnValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const rowLength = array[0].rows.length;
+
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < rowLength; i++) {
+    const currentRow = id.split(".")[4];
+    if (id && currentRow !== "rows[1]") {
+      let newId;
+      // Check for additional period in id
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 2] = `.rows[${i}]`;
+      // Piece it all back together
+      newId = parts.join(".");
+
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfColumns = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  // console.log(totalOfColumns)
+
+  return totalOfColumns;
+};
+
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
 const fullPathFromIDPath = originalPath => {

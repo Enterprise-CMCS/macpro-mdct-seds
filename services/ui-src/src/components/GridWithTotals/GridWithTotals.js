@@ -51,6 +51,8 @@ const GridWithTotals = props => {
     updateColumnTotals();
   };
 
+  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+
   const updateColumnTotals = () => {
     let gridColumnTotalsCopy = [...gridColumnTotals];
     let totalOfTotals = 0;
@@ -78,9 +80,22 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] = 0;
           }
 
-          gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+          // If average totals exist use them
+          if (props.totals) {
+            gridColumnTotalsCopy[gridColumnIndex] =
+              props.totals[gridColumnIndex];
+            // totalOfTotals += props.totals[gridColumnIndex];
+          } else {
+            gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+            // totalOfTotals += currentValue;
+          }
           totalOfTotals += currentValue;
 
+          if (synthesized && props.rowTotals) {
+            let sum = sumValues(props.rowTotals);
+            let avg = sum / props.rowTotals.length;
+            totalOfTotals = avg;
+          }
           return true;
         });
       }
@@ -104,12 +119,14 @@ const GridWithTotals = props => {
           if (isNaN(column) === false) {
             currentValue = parseFloat(column);
           }
-
           rowTotal += currentValue;
-
           return true;
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
+        if (synthesized && props.rowTotals) {
+          let newIndex = rowIndex - 2;
+          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
+        }
       }
 
       return true;
