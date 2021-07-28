@@ -6,9 +6,46 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
-export const selectRowValuesFromArray = (arr, id) => {
-  const rowLength = arr[0].rows.length;
-}
+export const selectRowValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const rowLength = array[0].rows.length;
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < 6; i++) {
+    const currentRow = id.split(".")[4];
+    if (id && currentRow !== "rows[1]") {
+      let newId;
+      // Check for additional period in id
+      if (id.includes("64.21E") || id.includes("64.EC")) {
+        // Create array of jsonPath parts
+        const parts = id.split(".");
+        // Replace the last value with our new column
+        parts[parts.length - 1] = `.col${i + 1}`;
+        // Piece it all back together
+        newId = parts.join(".");
+      } else {
+        // Create array of jsonPath parts
+        const parts = id.split(".");
+        // Replace the last value with our new column
+        parts[5] = `.col${i + 1}`;
+        // Piece it all back together
+        newId = parts.join(".");
+      }
+      
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfRows = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  return totalOfRows;
+};
 
 // Get accumulated values of each column in rows array
 export const selectColumnValuesFromArray = (array, id) => {
@@ -16,7 +53,6 @@ export const selectColumnValuesFromArray = (array, id) => {
   const rowLength = array[0].rows.length;
 
   const valuesToAdd = [];
-  console.log(id);
 
   // Get all column values and add to array if a number
   for (let i = 0; i < rowLength; i++) {
@@ -25,16 +61,11 @@ export const selectColumnValuesFromArray = (array, id) => {
       let newId;
       // Check for additional period in id
       if (id.includes("64.21E") || id.includes("64.EC")) {
-        newId =
-          id.split(".")[0] +
-          ".." +
-          id.split(".")[2] +
-          "." +
-          id.split(".")[3] +
-          "." +
-          id.split(".")[4] +
-          `.rows[${i}].` +
-          id.split(".")[6];
+        const parts = id.split(".");
+        // Replace the last value with our new column
+        parts[parts.length - 2] = `.rows[${i}]`;
+        // Piece it all back together
+        newId = parts.join(".");
       } else {
         newId =
           id.split(".")[0] +
@@ -46,6 +77,7 @@ export const selectColumnValuesFromArray = (array, id) => {
           id.split(".")[5];
       }
 
+
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
         let parsed = Number(arrayValue);
@@ -56,6 +88,8 @@ export const selectColumnValuesFromArray = (array, id) => {
   const totalOfColumns = valuesToAdd.reduce((acc, item) => {
     return acc + item;
   }, 0);
+
+  // console.log(totalOfColumns)
 
   return totalOfColumns;
 };

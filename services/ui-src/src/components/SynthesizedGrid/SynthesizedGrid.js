@@ -13,10 +13,11 @@ import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
   const [sortedRows, setSortedRows] = useState([]);
   const [sortedTotals, setSortedTotals] = useState([]);
+  const [sortedRowsTotals, setSortedRowsTotals] = useState([]);
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData, entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the grid based on the answers present in redux
   // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
@@ -25,6 +26,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     const tabAnswers = entireForm.answers.filter(
       element => element.rangeId === range
     );
+    let payload = [];
 
     //  Map through the sorted rows for this specific question
     let calculatedRows = gridData.map(singleRow => {
@@ -75,7 +77,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
       }
     });
 
-    let calculatedRowTotals = gridData.map(singleRow => {
+    gridData.map(singleRow => {
       // build a new object for each row
       const accumulator = {};
 
@@ -95,8 +97,9 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
             );
           }
         });
-        return accumulator;
       }
+      payload.push(accumulator.col2)
+      return accumulator;
     });
 
     // Convert to simple array
@@ -104,6 +107,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     setSortedRows(sortQuestionColumns(calculatedRows));
     setSortedTotals(totalsArray);
+    setSortedRowsTotals(payload)
   };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
@@ -147,22 +151,19 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
   // Add values together, then divide
   const calculateRowTotalValue = (incomingFormula, tabAnswers, col) => {
     let returnValue = null;
-
     // Use formula to loop through all matching columns in question and accumulate
     const questionTotal = incomingFormula.targets.map(target => {
       return selectRowValuesFromArray(tabAnswers, target);
     });
-    // console.log(questionTotal);
 
-    // // Use hard coded formula
-    // let quotient = questionTotal[0] / questionTotal[1];
+    // Use hard coded formula
+    let quotient = questionTotal[0] / questionTotal[1];
 
-    // // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
-    // if (quotient && quotient !== Infinity) {
-    //   returnValue = quotient ? quotient : 0;
-    // }
-
-    // return returnValue;
+    // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
+    if (quotient && quotient !== Infinity) {
+      returnValue = quotient ? quotient : 0;
+    }    
+    return returnValue;
   };
 
   return (
@@ -175,6 +176,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
         precision={1}
         updateSynthesizedValues={updateSynthesizedGrid}
         totals={sortedTotals}
+        rowTotals = {sortedRowsTotals}
       />
       <div className="disclaimer">
         {" "}
