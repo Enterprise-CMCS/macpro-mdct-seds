@@ -159,7 +159,7 @@ const PrintPDF = ({
                 Add any notes here to accompany the form submission:
               </strong>
               <div className="summary-text">
-                {!null || statusData.state_comments &&
+                {statusData.state_comments &&
                 statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
                 ) : (
