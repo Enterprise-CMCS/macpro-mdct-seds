@@ -307,15 +307,6 @@ export const main = handler(async (event, context) => {
     );
   }
 
-  // only exists for console log
-  let stateAnswersBeingGenerated = batchArrayFormAnswers
-    .map((e) => {
-      return e.map((element) => {
-        return element.PutRequest.Item.answer_entry;
-      });
-    })
-    .flat();
-
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {
