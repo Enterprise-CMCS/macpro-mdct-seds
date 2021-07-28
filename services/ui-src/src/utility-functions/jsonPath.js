@@ -32,7 +32,7 @@ export const selectRowValuesFromArray = (array, id) => {
         // Piece it all back together
         newId = parts.join(".");
       }
-      
+
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
         let parsed = Number(arrayValue);
@@ -76,7 +76,6 @@ export const selectColumnValuesFromArray = (array, id) => {
           `.rows[${i}].` +
           id.split(".")[5];
       }
-
 
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {

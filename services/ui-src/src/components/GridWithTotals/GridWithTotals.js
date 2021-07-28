@@ -89,11 +89,11 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] += currentValue;
             // totalOfTotals += currentValue;
           }
-          if(!synthesized) totalOfTotals += currentValue;
-          if(props.rowTotals) {
-            let sum = sumValues (props.rowTotals)
-            let avg = sum / props.rowTotals.length
-            totalOfTotals = avg
+          if (!synthesized) totalOfTotals += currentValue;
+          if (props.rowTotals) {
+            let sum = sumValues(props.rowTotals);
+            let avg = sum / props.rowTotals.length;
+            totalOfTotals = avg;
           }
           return true;
         });
@@ -123,8 +123,8 @@ const GridWithTotals = props => {
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
         if (synthesized && props.rowTotals) {
-          let newIndex = rowIndex - 2
-          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex]
+          let newIndex = rowIndex - 2;
+          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
         }
       }
 

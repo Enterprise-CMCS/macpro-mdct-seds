@@ -98,7 +98,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
           }
         });
       }
-      payload.push(accumulator.col2)
+      payload.push(accumulator.col2);
       return accumulator;
     });
 
@@ -107,7 +107,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
     setSortedRows(sortQuestionColumns(calculatedRows));
     setSortedTotals(totalsArray);
-    setSortedRowsTotals(payload)
+    setSortedRowsTotals(payload);
   };
 
   const calculateValue = (incomingFormula, tabAnswers) => {
@@ -162,7 +162,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
     if (quotient && quotient !== Infinity) {
       returnValue = quotient ? quotient : 0;
-    }    
+    }
     return returnValue;
   };
 
@@ -176,7 +176,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
         precision={1}
         updateSynthesizedValues={updateSynthesizedGrid}
         totals={sortedTotals}
-        rowTotals = {sortedRowsTotals}
+        rowTotals={sortedRowsTotals}
       />
       <div className="disclaimer">
         {" "}
