@@ -16,21 +16,11 @@ export const selectRowValuesFromArray = (array, id) => {
     if (id && currentRow !== "rows[1]") {
       let newId;
       // Check for additional period in id
-      if (id.includes("64.21E") || id.includes("64.EC")) {
-        // Create array of jsonPath parts
         const parts = id.split(".");
         // Replace the last value with our new column
         parts[parts.length - 1] = `.col${i + 1}`;
         // Piece it all back together
         newId = parts.join(".");
-      } else {
-        // Create array of jsonPath parts
-        const parts = id.split(".");
-        // Replace the last value with our new column
-        parts[5] = `.col${i + 1}`;
-        // Piece it all back together
-        newId = parts.join(".");
-      }
 
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
@@ -59,22 +49,11 @@ export const selectColumnValuesFromArray = (array, id) => {
     if (id && currentRow !== "rows[1]") {
       let newId;
       // Check for additional period in id
-      if (id.includes("64.21E") || id.includes("64.EC")) {
-        const parts = id.split(".");
-        // Replace the last value with our new column
-        parts[parts.length - 2] = `.rows[${i}]`;
-        // Piece it all back together
-        newId = parts.join(".");
-      } else {
-        newId =
-          id.split(".")[0] +
-          ".." +
-          id.split(".")[2] +
-          "." +
-          id.split(".")[3] +
-          `.rows[${i}].` +
-          id.split(".")[5];
-      }
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 2] = `.rows[${i}]`;
+      // Piece it all back together
+      newId = parts.join(".");
 
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
