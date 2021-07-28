@@ -132,13 +132,6 @@ const GridWithTotals = props => {
     });
 
     updateGridRowTotals(gridRowTotalsCopy);
-
-  //   console.log(synthesizedRowTotals);
-  //   // if(synthesized) updateGridRowTotals (synthesizedRowTotals);
-  //  if (!synthesized)updateGridRowTotals(gridRowTotalsCopy);
-  //  else if (synthesizedRowTotals) {
-  //   updateGridRowTotals (synthesizedRowTotals.splice(0, 6));
-  //  }
   };
 
   let headerColArray = [];
