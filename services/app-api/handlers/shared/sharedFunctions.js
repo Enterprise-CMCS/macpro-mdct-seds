@@ -235,7 +235,6 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
 // This function is called when no entries are found in the question table matching the requested year
 export async function fetchOrCreateQuestions(specifiedYear) {
   // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
-  console.log("Questions being fetched from form-template");
   let parsedYear = parseInt(specifiedYear);
 
   // GET QUESTIONS FROM TEMPLATE
@@ -257,7 +256,6 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   let questionsForThisYear;
 
   if (templateResult.Count === 0) {
-    console.log("\n\n\n NO TEMPLATE FOR GIVEN YEAR, CREATING ONE", parsedYear);
     // no template was found matching this current year
     // trigger a function to generate a template & retrieve questions from template
 
