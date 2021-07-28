@@ -450,3 +450,14 @@ export async function createFormTemplate(year, questions) {
     };
   }
 }
+
+// For the US Government fiscal year
+// Oct-Dec = 1
+// Jan-Mar = 2
+// Apr-Jun = 3
+// Jul-Sep = 4
+export const getQuarter = (d) => {
+  d = d || new Date();
+  const m = Math.floor(d.getMonth() / 3) + 2;
+  return m > 4 ? m - 4 : m;
+};

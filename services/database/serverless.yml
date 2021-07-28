@@ -54,7 +54,11 @@ custom:
               ]
           - table: ${self:custom.stage}-form-templates
             sources:
-              [../../src/database/initial_data_load/form_template_2019.json]
+              [
+                ../../src/database/initial_data_load/form_template_2019.json,
+                ../../src/database/initial_data_load/form_template_2020.json,
+                ../../src/database/initial_data_load/form_template_2021.json,
+              ]
           - table: ${self:custom.stage}-form-answers
             sources:
               [

@@ -6,6 +6,7 @@ import {
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
+  getQuarter,
 } from "../../shared/sharedFunctions";
 
 /**
@@ -48,18 +49,79 @@ export const main = handler(async (event, context) => {
     }
   };
 
+  const determineAgeRanges = (questionId) => {
+    const year = questionId.split("-")[0];
+    const form = questionId.split("-")[1];
+
+    let ageRanges;
+    if (
+      parseInt(year) === 2020 ||
+      parseInt(year) === 2019 ||
+      parseInt(year) === 2018
+    ) {
+      switch (form) {
+        case "GRE":
+          ageRanges = [
+            { key: "0018", label: "Conception through age 18 years" },
+          ];
+          break;
+        case "21PW":
+          ageRanges = [
+            { key: "1964", label: "Age 19 years through age 64 years" },
+          ];
+          break;
+        case "64-21E":
+          ageRanges = [
+            { key: "0001", label: "Birth through age 12 months" },
+            { key: "0105", label: "Age 1 year through age 5 years" },
+            { key: "0612", label: "Age 6 years through age 12 years" },
+            { key: "1318", label: "Age 13 years through age 18 years" },
+          ];
+          break;
+        case "21E":
+          ageRanges = [
+            { key: "0000", label: "Conception to birth" },
+            { key: "0001", label: "Birth through age 12 months" },
+            { key: "0105", label: "Age 1 year through age 5 years" },
+            { key: "0612", label: "Age 6 years through age 12 years" },
+            { key: "1318", label: "Age 13 years through age 18 years" },
+          ];
+          break;
+        case "64-EC":
+          ageRanges = [
+            { key: "0001", label: "Birth through age 12 months" },
+            { key: "0105", label: "Age 1 year through age 5 years" },
+            { key: "0612", label: "Age 6 years through age 12 years" },
+            { key: "1318", label: "Age 13 years through age 18 years" },
+            { key: "1920", label: "Age 19 years through age 20 years" },
+          ];
+          break;
+      }
+    }
+    return ageRanges;
+  };
+
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
-  const specifiedYear = parseInt(data.year);
-  const specifiedQuarter = data.quarter;
-
-  if (!specifiedQuarter || !specifiedYear) {
-    return {
-      status: 422,
-      message: "Please specify year and quarter",
-    };
+  const currentDate = new Date();
+  let specifiedYear;
+  let specifiedQuarter;
+  if (data) {
+    specifiedYear = parseInt(data.year);
+    specifiedQuarter = data.quarter;
   }
+  // If no year, use current year
+  if (!specifiedYear) {
+    specifiedYear = currentDate.getFullYear();
+  }
+
+  // If no quarter provided, determine what quarter it is
+  if (!specifiedQuarter) {
+    specifiedQuarter = getQuarter(currentDate);
+  }
+
+  return;
   const foundForms = await findExistingStateForms(
     specifiedYear,
     specifiedQuarter
@@ -202,8 +264,10 @@ export const main = handler(async (event, context) => {
 
     for (const question in allQuestions) {
       // Get age range array
-      let ageRanges = allQuestions[question].age_ranges;
-
+      let ageRanges =
+        allQuestions[question].age_ranges ??
+        determineAgeRanges(allQuestions[question].question);
+      console.log("zzzAgeRanges", ageRanges);
       // Loop through each age range and insert row
       for (const range in ageRanges) {
         // Get reusable values
@@ -217,7 +281,7 @@ export const main = handler(async (event, context) => {
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
-
+        console.log("zzzstateFormId", stateFormID);
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
         if (stateFormsBeingGenerated.includes(stateFormID)) {
           noMissingForms = false;
@@ -241,7 +305,7 @@ export const main = handler(async (event, context) => {
       }
     }
   }
-
+  console.log("zzzputRequestsFormAnswers", putRequestsFormAnswers);
   // Begin batching by groups of 25
   const batchArrayFormAnswers = [];
   const batchSizeFA = 25;
@@ -250,7 +314,7 @@ export const main = handler(async (event, context) => {
       putRequestsFormAnswers.slice(i, i + batchSizeFA)
     );
   }
-
+  console.log("zzzBatchArrayFormAnswers", batchArrayFormAnswers);
   // only exists for console log
   let stateAnswersBeingGenerated = batchArrayFormAnswers
     .map((e) => {
@@ -266,12 +330,12 @@ export const main = handler(async (event, context) => {
 
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
-  if (noMissingForms) {
-    return {
-      status: 204,
-      message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
-    };
-  }
+  // if (noMissingForms) {
+  //   return {
+  //     status: 204,
+  //     message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
+  //   };
+  // }
 
   // Get tableName
   const formAnswersTableName =

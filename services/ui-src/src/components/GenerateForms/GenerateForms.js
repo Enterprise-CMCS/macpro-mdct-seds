@@ -31,7 +31,7 @@ const GenerateForms = () => {
   // Handle click event and trigger
   const generateForms = async () => {
     if (!selectedYear || !selectedQuarter) {
-      alert("Please select a Year and Quarter");
+      window.alert("Please select a Year and Quarter");
       return;
     }
     if (
