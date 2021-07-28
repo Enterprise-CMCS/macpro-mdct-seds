@@ -82,7 +82,7 @@ const FormTemplates = () => {
 
   useEffect(() => {
     onLoad().then();
-  }, []);
+  }, [onLoad]);
 
   return (
     <>
