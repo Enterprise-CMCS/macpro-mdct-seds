@@ -82,7 +82,8 @@ const FormTemplates = () => {
 
   useEffect(() => {
     onLoad().then();
-  }, [onLoad]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
