@@ -315,7 +315,6 @@ export const main = handler(async (event, context) => {
       });
     })
     .flat();
-  const numberOfAnswersToMake = stateAnswersBeingGenerated.length;
 
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
