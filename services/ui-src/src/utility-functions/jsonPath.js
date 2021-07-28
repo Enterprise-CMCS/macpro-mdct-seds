@@ -8,7 +8,6 @@ export const selectRowColumnValueFromArray = (array, id) => {
 
 export const selectRowValuesFromArray = (array, id) => {
   // Calculate number of rows
-  const rowLength = array[0].rows.length;
   const valuesToAdd = [];
 
   // Get all column values and add to array if a number
