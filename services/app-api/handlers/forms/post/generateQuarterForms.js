@@ -101,6 +101,15 @@ export const main = handler(async (event, context) => {
     return ageRanges;
   };
 
+  // Get year, if none is specified, base on current month, the year is either this or next
+  const getSpecifiedYear = (currentDate) => {
+    // If the current Month is October or later, use Next year
+    if (currentDate.getMonth() >= 9) {
+      return currentDate.getFullYear() + 1;
+    }
+    return currentDate.getFullYear();
+  };
+
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
@@ -115,7 +124,7 @@ export const main = handler(async (event, context) => {
   }
   // If no year, use current year sent in data object
   if (!specifiedYear) {
-    specifiedYear = currentDate.getFullYear();
+    specifiedYear = getSpecifiedYear(currentDate);
   }
 
   // If no quarter provided in data object, determine what quarter it is
