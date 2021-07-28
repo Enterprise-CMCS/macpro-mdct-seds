@@ -10,7 +10,6 @@ const GenerateForms = () => {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
 
-  const currentYear = new Date().getFullYear();
   const nextYear = new Date().getFullYear() + 1;
 
   // Build array for year dropdown

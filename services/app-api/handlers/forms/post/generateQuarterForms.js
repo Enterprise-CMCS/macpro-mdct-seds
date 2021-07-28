@@ -107,26 +107,27 @@ export const main = handler(async (event, context) => {
   const currentDate = new Date();
   let specifiedYear;
   let specifiedQuarter;
+
+  // If a data object is sent use those values
   if (data) {
     specifiedYear = parseInt(data.year);
     specifiedQuarter = data.quarter;
   }
-  // If no year, use current year
+  // If no year, use current year sent in data object
   if (!specifiedYear) {
     specifiedYear = currentDate.getFullYear();
   }
 
-  // If no quarter provided, determine what quarter it is
+  // If no quarter provided in data object, determine what quarter it is
   if (!specifiedQuarter) {
     specifiedQuarter = getQuarter(currentDate);
   }
 
-  return;
+  // Search for existing stateForms
   const foundForms = await findExistingStateForms(
     specifiedYear,
     specifiedQuarter
   );
-  console.log("FORMS FOUND MATCHING THIS YEAR AND QUARTER", foundForms);
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -207,8 +208,6 @@ export const main = handler(async (event, context) => {
     })
     .flat();
 
-  console.log("STATE FORMS TO MAKE \n\n", stateFormsBeingGenerated);
-
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
@@ -234,8 +233,6 @@ export const main = handler(async (event, context) => {
 
   // If questions not found, fetch/create them from template table
   if (!questionsFromQuestionTable.length) {
-    // TODO: Is the length property apporpriately coming back as falsy when table is empty
-    console.log("There were no questions matching this year in form-questions");
     let createdQuestions = await fetchOrCreateQuestions(
       specifiedYear,
       specifiedQuarter
@@ -248,12 +245,8 @@ export const main = handler(async (event, context) => {
     }
     allQuestions = createdQuestions.payload;
   } else {
-    console.log("The form-questions table had entries for this year");
     allQuestions = questionsFromQuestionTable;
   }
-  // if there are no questions for the year, generate them
-  // assign THAT return value to allQuestions
-  console.log("the final questions", allQuestions);
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
@@ -267,7 +260,6 @@ export const main = handler(async (event, context) => {
       let ageRanges =
         allQuestions[question].age_ranges ??
         determineAgeRanges(allQuestions[question].question);
-      console.log("zzzAgeRanges", ageRanges);
       // Loop through each age range and insert row
       for (const range in ageRanges) {
         // Get reusable values
@@ -281,7 +273,7 @@ export const main = handler(async (event, context) => {
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
-        console.log("zzzstateFormId", stateFormID);
+
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
         if (stateFormsBeingGenerated.includes(stateFormID)) {
           noMissingForms = false;
@@ -305,7 +297,7 @@ export const main = handler(async (event, context) => {
       }
     }
   }
-  console.log("zzzputRequestsFormAnswers", putRequestsFormAnswers);
+
   // Begin batching by groups of 25
   const batchArrayFormAnswers = [];
   const batchSizeFA = 25;
@@ -314,7 +306,7 @@ export const main = handler(async (event, context) => {
       putRequestsFormAnswers.slice(i, i + batchSizeFA)
     );
   }
-  console.log("zzzBatchArrayFormAnswers", batchArrayFormAnswers);
+
   // only exists for console log
   let stateAnswersBeingGenerated = batchArrayFormAnswers
     .map((e) => {
@@ -325,17 +317,14 @@ export const main = handler(async (event, context) => {
     .flat();
   const numberOfAnswersToMake = stateAnswersBeingGenerated.length;
 
-  console.log(`There are ${numberOfAnswersToMake} Answers to generate`);
-  console.log("STATE ANSWERS TO MAKE \n\n", stateAnswersBeingGenerated);
-
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
-  // if (noMissingForms) {
-  //   return {
-  //     status: 204,
-  //     message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
-  //   };
-  // }
+  if (noMissingForms) {
+    return {
+      status: 204,
+      message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
+    };
+  }
 
   // Get tableName
   const formAnswersTableName =
