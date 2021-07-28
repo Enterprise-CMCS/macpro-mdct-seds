@@ -75,7 +75,7 @@ describe("Test SynthesizedGrid.js", () => {
         .find("td")
         .at(5)
         .text()
-    ).toMatch(/142/);
+    ).toMatch("21.0");
     expect(
       wrapper
         .find("GridWithTotals")
@@ -86,7 +86,7 @@ describe("Test SynthesizedGrid.js", () => {
         .at(2)
         .find("span")
         .text()
-    ).toMatch(/7.4/);
+    ).toMatch("7.4");
     expect(
       wrapper
         .find("GridWithTotals")
@@ -96,7 +96,7 @@ describe("Test SynthesizedGrid.js", () => {
         .find("td")
         .at(5)
         .text()
-    ).toMatch(/24.3/);
+    ).toMatch("4.6");
     expect(
       wrapper
         .find("GridWithTotals")
@@ -116,6 +116,6 @@ describe("Test SynthesizedGrid.js", () => {
         .find("td")
         .at(5)
         .text()
-    ).toMatch(/210.1/);
+    ).toMatch("11.4");
   });
 });
