@@ -40,6 +40,8 @@ custom:
   FormQuestionsTableStreamArn: ${cf:database-${self:custom.stage}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
   FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
   FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
+  FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
+  FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
   FormsTableStreamArn: ${cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
@@ -112,6 +114,8 @@ provider:
     FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
     FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
     FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
+    FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
+    FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
     StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
     StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
     StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
@@ -325,8 +329,27 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  updateStateFormsCountRetro:
-    handler: handlers/state-forms/post/updateStateFormsCountRetro.main
+  obtainStateForms:
+    handler: handlers/state-forms/post/obtainStateForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: state-forms/obtain
+          method: post
+          cors: true
+          authorizer: aws_iam
+  obtainAnswerEntriesFromForms:
+    handler: handlers/forms/post/obtainAnswerEntriesFromForms.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-answers/obtain
+          method: post
+          cors: true
+          authorizer: aws_iam
+    timeout: 900
+  generateEnrollmentTotals:
+    handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
     events:
       - http:
@@ -432,6 +455,33 @@ functions:
     events:
       - http:
           path: single-form/save
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getFormTemplate:
+    handler: handlers/form-templates/post/obtainFormTemplate.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-template
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getFormTemplateYears:
+    handler: handlers/form-templates/post/obtainFormTemplateYears.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-templates/years
+          method: post
+          cors: true
+          authorizer: aws_iam
+  updateCreateFormTemplate:
+    handler: handlers/form-templates/post/updateCreateFormTemplate.main
+    role: LambdaApiRole
+    events:
+      - http:
+          path: form-templates/add
           method: post
           cors: true
           authorizer: aws_iam
