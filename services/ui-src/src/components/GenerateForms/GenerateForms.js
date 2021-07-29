@@ -10,14 +10,14 @@ const GenerateForms = () => {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
 
-  const currentYear = new Date().getFullYear();
   const nextYear = new Date().getFullYear() + 1;
 
   // Build array for year dropdown
-  const yearSelections = [
-    { label: currentYear, value: currentYear },
-    { label: nextYear, value: nextYear }
-  ];
+  const yearSelections = [];
+
+  for (let i = 2019; i <= nextYear; i++) {
+    yearSelections.push({ label: i, value: i });
+  }
 
   // Build array for quarter dropdown
   const quarterSelections = [
@@ -30,7 +30,7 @@ const GenerateForms = () => {
   // Handle click event and trigger
   const generateForms = async () => {
     if (!selectedYear || !selectedQuarter) {
-      alert("Please select a Year and Quarter");
+      window.alert("Please select a Year and Quarter");
       return;
     }
     if (
@@ -40,7 +40,7 @@ const GenerateForms = () => {
     ) {
       // send year and quarter to lambda which will create the table rows
       setLoading(true);
-      const data = { year: selectedYear, quarter: selectedQuarter };
+      const data = { year: selectedYear.value, quarter: selectedQuarter.value };
       const response = await generateQuarterlyForms(data);
       setLoading(false);
       setAlert(response);
@@ -61,6 +61,13 @@ const GenerateForms = () => {
           {alert.message}
         </Alert>
       ) : null}
+
+      {alert && alert.status === 204 ? (
+        <Alert className="margin-bottom-3" type="warning">
+          {alert.message}
+        </Alert>
+      ) : null}
+
       {alert && (alert.status === 500 || alert.status === 409) ? (
         <Alert className="margin-bottom-3" type="error">
           {alert.message}

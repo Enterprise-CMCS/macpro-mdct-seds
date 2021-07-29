@@ -19,19 +19,14 @@ const sortQuestionColumns = columnArray => {
  * @returns {array} - Sorted rows with the header first
  */
 const sortRowArray = arrayOfRows => {
-  let sortedRows = [];
-  arrayOfRows.forEach(singleRow => {
-    const columnHeader = singleRow["col1"];
-    if (columnHeader === "") {
-      sortedRows[0] = singleRow;
-    } else if (columnHeader[0] === "A") {
-      sortedRows[1] = singleRow;
-    } else if (columnHeader[0] === "B") {
-      sortedRows[2] = singleRow;
-    } else if (columnHeader[0] === "C") {
-      sortedRows[3] = singleRow;
-    }
-  });
+  let deepCopy = JSON.parse(JSON.stringify(arrayOfRows));
+  const headerIdx = deepCopy.findIndex(element => element["col1"] === "");
+  let header = deepCopy.splice(headerIdx, 1)[0];
+  let sortedRows = deepCopy.sort((a, b) =>
+    a["col1"][0] > b["col1"][0] ? 1 : b["col1"][0] > a["col1"][0] ? -1 : 0
+  );
+
+  sortedRows.unshift(header);
   return sortedRows;
 };
 
