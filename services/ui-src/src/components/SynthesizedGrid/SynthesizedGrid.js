@@ -52,8 +52,6 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
       }
     });
 
-    console.log("payload: ", payload)
-
     //  Map through the sorted rows for this specific question
     let calculatedColunmTotals = gridData.map(singleRow => {
       // build a new object for each row
