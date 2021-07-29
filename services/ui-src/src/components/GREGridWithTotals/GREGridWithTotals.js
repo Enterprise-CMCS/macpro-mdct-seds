@@ -271,7 +271,6 @@ const GREGridWithTotals = props => {
               formattedCell = (
                 <td key={columnIndex}>
                   <TextInput
-                    type="number"
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
                     defaultValue={parseFloat(column).toFixed(currentPrecision)}
