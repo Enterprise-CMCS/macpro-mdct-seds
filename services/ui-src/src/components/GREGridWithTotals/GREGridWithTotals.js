@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import "./GREGridWithTotals.scss";
 
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
+import { addCommas } from "../../utility-functions/transformFunctions";
 
 /*This component is specifically designed to for the Gender/Race/Ethnicity form as of 2021.
  * It is based off of the GridWithTotals component.
@@ -238,7 +239,6 @@ const GREGridWithTotals = props => {
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     <TextInput
-                      type="number"
                       className="grid-column"
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
@@ -246,9 +246,11 @@ const GREGridWithTotals = props => {
                       defaultValue={parseFloat(column).toFixed(
                         currentPrecision
                       )}
-                      value={parseFloat(
-                        gridData[rowIndex][columnIndex]
-                      ).toFixed(currentPrecision)}
+                      value={addCommas(
+                        parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                          currentPrecision
+                        )
+                      )}
                       disabled={props.disabled}
                     />
                   </td>
@@ -258,8 +260,10 @@ const GREGridWithTotals = props => {
               // This is the Total CHIP Enrolled column
               formattedCell = (
                 <td key={columnIndex} className="total-column">
-                  {parseFloat(gridCHIPTotals[rowIndex]).toFixed(
-                    currentPrecision
+                  {addCommas(
+                    parseFloat(gridCHIPTotals[rowIndex]).toFixed(
+                      currentPrecision
+                    )
                   )}
                 </td>
               );
@@ -271,8 +275,10 @@ const GREGridWithTotals = props => {
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
                     defaultValue={parseFloat(column).toFixed(currentPrecision)}
-                    value={parseFloat(gridData[rowIndex][columnIndex]).toFixed(
-                      currentPrecision
+                    value={addCommas(
+                      parseFloat(gridData[rowIndex][columnIndex]).toFixed(
+                        currentPrecision
+                      )
                     )}
                     disabled={props.disabled}
                   />
@@ -283,7 +289,9 @@ const GREGridWithTotals = props => {
             return formattedCell;
           })}
           <td className="total-column">
-            {parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)}
+            {addCommas(
+              parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+            )}
           </td>
         </tr>
       );
@@ -304,17 +312,19 @@ const GREGridWithTotals = props => {
     } else if (i === 3) {
       column = (
         <td className="total-column">
-          {parseFloat(
-            gridCHIPTotals.reduce(function (s, v) {
-              return s + (v || 0);
-            }, 0)
-          ).toFixed(currentPrecision)}
+          {addCommas(
+            parseFloat(
+              gridCHIPTotals.reduce(function (s, v) {
+                return s + (v || 0);
+              }, 0)
+            ).toFixed(currentPrecision)
+          )}
         </td>
       );
     } else {
       column = (
         <td className="total-column">
-          {parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)}
+          {addCommas(parseFloat(gridColumnTotals[i]).toFixed(currentPrecision))}
         </td>
       );
     }
@@ -333,7 +343,9 @@ const GREGridWithTotals = props => {
           <tr className="total-row">
             {totalsRow}
             <td className="total-column">
-              {parseFloat(gridTotalOfTotals).toFixed(currentPrecision)}
+              {addCommas(
+                parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+              )}
             </td>
           </tr>
         </tbody>
