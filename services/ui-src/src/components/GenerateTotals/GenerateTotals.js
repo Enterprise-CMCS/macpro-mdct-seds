@@ -27,15 +27,22 @@ const GenerateTotals = () => {
       // All possible age ranges for 21E and 64.21E
       const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
 
-      // Get answer entries from forms
-      const answerEntries = await obtainAnswerEntriesFromForms({
-        stateForms: stateForms.entries,
-        ageRanges
-      });
+      let answerEntries = [];
+
+      // For each age range, get answer entries
+      for (const i in ageRanges) {
+        // Get answer entries from forms
+        const response = await obtainAnswerEntriesFromForms({
+          stateForms: stateForms.entries,
+          ageRange: ageRanges[i]
+        });
+
+        answerEntries = answerEntries.concat(response.countsToWrite);
+      }
 
       // Write new totals
       const update = await generateEnrollmentTotals({
-        answerEntries: answerEntries.countsToWrite
+        answerEntries: answerEntries
       });
 
       setLoading(false);
