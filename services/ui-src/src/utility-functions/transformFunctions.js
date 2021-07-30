@@ -3,7 +3,7 @@ export const generateDateForDB = (date = new Date()) => {
 };
 
 export const addCommas = val => {
-  if (isNaN(val) === true) {
+  if (isNaN(val)) {
     return "";
   }
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
