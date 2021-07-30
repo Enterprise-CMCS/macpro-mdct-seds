@@ -67,17 +67,22 @@ const FormTemplates = () => {
 
   const onLoad = async () => {
     let yearsArray = await obtainFormTemplateYears();
-    let yearsObjects = yearsArray.map(i => {
-      return {
-        label: i,
-        value: i
-      };
-    });
+    if (!yearsArray.length) {
+      setShowYearInput(true);
+      setInputYear(nextYear);
+    } else {
+      let yearsObjects = yearsArray.map(i => {
+        return {
+          label: i,
+          value: i
+        };
+      });
 
-    yearsObjects.unshift(newTemplateObject);
-    setFormYears(yearsObjects);
-    setSelectedYear(yearsObjects[1]);
-    await updateYear(yearsObjects[1].value);
+      yearsObjects.unshift(newTemplateObject);
+      setFormYears(yearsObjects);
+      setSelectedYear(yearsObjects[1]);
+      await updateYear(yearsObjects[1].value);
+    }
   };
 
   useEffect(() => {
@@ -139,7 +144,17 @@ const FormTemplates = () => {
               onChange={e => setCurrentTemplate(e.target.value)}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className="template-input margin-top-3">
+            <label htmlFor="templateInput">Enter or Modify Template</label>
+            <Textarea
+              id="templateInput"
+              name="templateInput"
+              type="text"
+              onChange={e => setCurrentTemplate(e.target.value)}
+            />
+          </div>
+        )}
 
         <Button
           primary="true"
