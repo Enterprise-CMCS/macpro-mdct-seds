@@ -160,8 +160,8 @@ const PrintPDF = ({
               </strong>
               <div className="summary-text">
                 {!null &&
-                (statusData.state_comments &&
-                  statusData.state_comments[0].entry.length) ? (
+                statusData.state_comments &&
+                statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
                 ) : (
                   ""
