@@ -14,16 +14,16 @@ export const selectRowValuesFromArray = (array, id) => {
   for (let i = 0; i < 6; i++) {
     let currentRow = id.split(".")[3];
     if (id.includes("64.21E") || id.includes("64.EC")) {
-      currentRow = id.split(".")[4]
+      currentRow = id.split(".")[4];
     }
     if (id && currentRow !== "rows[1]") {
       let newId;
       // Check for additional period in id
-        const parts = id.split(".");
-        // Replace the last value with our new column
-        parts[parts.length - 1] = `.col${i + 1}`;
-        // Piece it all back together
-        newId = parts.join(".");
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 1] = `.col${i + 1}`;
+      // Piece it all back together
+      newId = parts.join(".");
 
       const arrayValue = jsonpath.query(array, newId)[0];
       if (!isNaN(arrayValue)) {
@@ -50,7 +50,7 @@ export const selectColumnValuesFromArray = (array, id) => {
   for (let i = 0; i < rowLength; i++) {
     let currentRow = id.split(".")[3];
     if (id.includes("64.21E") || id.includes("64.EC")) {
-      currentRow = id.split(".")[4]
+      currentRow = id.split(".")[4];
     }
     if (id && currentRow !== "rows[1]") {
       let newId;
