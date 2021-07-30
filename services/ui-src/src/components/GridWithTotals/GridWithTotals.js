@@ -4,6 +4,7 @@ import { TextInput, Table } from "@trussworks/react-uswds";
 import { connect } from "react-redux";
 import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
+import { addCommas } from "../../utility-functions/transformFunctions";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -51,6 +52,8 @@ const GridWithTotals = props => {
     updateColumnTotals();
   };
 
+  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+
   const updateColumnTotals = () => {
     let gridColumnTotalsCopy = [...gridColumnTotals];
     let totalOfTotals = 0;
@@ -78,9 +81,22 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] = 0;
           }
 
-          gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+          // If average totals exist use them
+          if (props.totals) {
+            gridColumnTotalsCopy[gridColumnIndex] =
+              props.totals[gridColumnIndex];
+            // totalOfTotals += props.totals[gridColumnIndex];
+          } else {
+            gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+            // totalOfTotals += currentValue;
+          }
           totalOfTotals += currentValue;
 
+          if (synthesized && props.rowTotals) {
+            let sum = sumValues(props.rowTotals);
+            let avg = sum / props.rowTotals.length;
+            totalOfTotals = avg;
+          }
           return true;
         });
       }
@@ -104,12 +120,14 @@ const GridWithTotals = props => {
           if (isNaN(column) === false) {
             currentValue = parseFloat(column);
           }
-
           rowTotal += currentValue;
-
           return true;
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
+        if (synthesized && props.rowTotals) {
+          let newIndex = rowIndex - 2;
+          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
+        }
       }
 
       return true;
@@ -147,13 +165,6 @@ const GridWithTotals = props => {
       Totals
     </th>
   );
-
-  const addCommas = val => {
-    if (isNaN(val) === true) {
-      return "";
-    }
-    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
 
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
