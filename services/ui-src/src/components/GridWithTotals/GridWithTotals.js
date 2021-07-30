@@ -37,9 +37,6 @@ const GridWithTotals = props => {
     updateTotals();
   };
 
-
-
-
   const updateGridOnBlur = () => {
     if (props.questionID.includes("-01") || props.questionID.includes("-04")) {
       props.setAnswer(gridData, props.questionID);

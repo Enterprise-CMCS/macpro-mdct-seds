@@ -10,7 +10,12 @@ import {
 } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-export const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
+export const SynthesizedGrid = ({
+  entireForm,
+  questionID,
+  gridData,
+  range
+}) => {
   const [sortedRows, setSortedRows] = useState([]);
   const [sortedTotals, setSortedTotals] = useState([]);
   const [sortedRowsTotals, setSortedRowsTotals] = useState([]);
@@ -52,7 +57,7 @@ export const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => 
         return accumulator;
       }
     });
-    
+
     //  Map through the sorted rows for this specific question
     let calculatedColunmTotals = gridData.map(singleRow => {
       // build a new object for each row
