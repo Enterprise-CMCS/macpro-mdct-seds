@@ -124,7 +124,6 @@ const GridWithTotals = props => {
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
         if (synthesized && props.rowTotals) {
-          // console.log("ROWTOATALS: ", props.rowTotals)
           let newIndex = rowIndex - 2;
           gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
         }
