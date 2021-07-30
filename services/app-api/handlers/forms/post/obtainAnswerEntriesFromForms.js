@@ -11,31 +11,29 @@ export const main = handler(async (event, context) => {
   // Get stateForms and ageRanges from passed in data
   let data = JSON.parse(event.body);
   const stateForms = data.stateForms;
-  const ageRanges = data.ageRanges;
+  const ageRange = data.ageRange;
 
   const countsToWrite = [];
   // Loop through all stateForms
   for (const i in stateForms) {
     const questionAccumulator = [];
-    // Loop through each age range and add to questions array
-    for (const j in ageRanges) {
-      const answerEntry = `${stateForms[i].state_form}-${ageRanges[j]}-07`;
-      const questionParams = {
-        TableName:
-          process.env.FORM_ANSWERS_TABLE_NAME ??
-          process.env.FormAnswersTableName,
-        ExpressionAttributeValues: {
-          ":answerEntry": answerEntry,
-        },
-        KeyConditionExpression: "answer_entry = :answerEntry",
-      };
 
-      const questionResult = await dynamoDb.query(questionParams);
+    const answerEntry = `${stateForms[i].state_form}-${ageRange}-07`;
 
-      // Add just the rows, no other details are needed
-      for (const k in questionResult.Items) {
-        questionAccumulator.push(questionResult.Items[k].rows);
-      }
+    const questionParams = {
+      TableName:
+        process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+      ExpressionAttributeValues: {
+        ":answerEntry": answerEntry,
+      },
+      KeyConditionExpression: "answer_entry = :answerEntry",
+    };
+
+    const questionResult = await dynamoDb.query(questionParams);
+
+    // Add just the rows, no other details are needed
+    for (const k in questionResult.Items) {
+      questionAccumulator.push(questionResult.Items[k].rows);
     }
 
     // Calculate totals (add all columns together only if they are numbers)

@@ -18,6 +18,7 @@ import FormPage from "../FormPage/FormPage";
 import LoadData from "../LoadData/LoadData";
 import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
+import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
 
 export default function Routes({ user, isAuthorized }) {
@@ -75,6 +76,9 @@ export default function Routes({ user, isAuthorized }) {
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/load-data">
             <LoadData />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/form-templates">
+            <FormTemplates />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/users/add">
             <UserAdd />
