@@ -162,9 +162,7 @@ const PrintPDF = ({
                 {!null &&
                 statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </div>
             </div>
             <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
