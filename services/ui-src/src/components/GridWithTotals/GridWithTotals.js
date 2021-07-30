@@ -4,6 +4,7 @@ import { TextInput, Table } from "@trussworks/react-uswds";
 import { connect } from "react-redux";
 import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
+import { addCommas } from "../../utility-functions/transformFunctions";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -164,13 +165,6 @@ const GridWithTotals = props => {
       Totals
     </th>
   );
-
-  const addCommas = val => {
-    if (isNaN(val) === true) {
-      return "";
-    }
-    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
 
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
