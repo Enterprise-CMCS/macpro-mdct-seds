@@ -107,7 +107,7 @@ describe("Test SynthesizedGridSummary.js", () => {
         .find("td")
         .at(5)
         .text()
-    ).toBe("193.0");
+    ).toBe("0");
   });
 
   test("Synthesized Summary values should be correct across the board", () => {
