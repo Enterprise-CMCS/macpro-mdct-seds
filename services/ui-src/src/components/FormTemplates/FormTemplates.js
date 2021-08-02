@@ -138,7 +138,7 @@ const FormTemplates = () => {
           <Textarea
             id="templateInput"
             name="templateInput"
-            value={currentTemplate != false ? currentTemplate : ""}
+            value={currentTemplate ? currentTemplate : ""}
             type="text"
             onChange={e => setCurrentTemplate(e.target.value)}
           />
