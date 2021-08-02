@@ -133,29 +133,16 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        {currentTemplate !== false ? (
-          <div className="template-input margin-top-3">
-            <label for="templateInput">Enter or Modify Template</label>
-            <Textarea
-              id="templateInput"
-              name="templateInput"
-              value={currentTemplate}
-              type="text"
-              onChange={e => setCurrentTemplate(e.target.value)}
-            />
-          </div>
-        ) : (
-          <div className="template-input margin-top-3">
-            <label htmlFor="templateInput">Enter or Modify Template</label>
-            <Textarea
-              id="templateInput"
-              name="templateInput"
-              type="text"
-              onChange={e => setCurrentTemplate(e.target.value)}
-            />
-          </div>
-        )}
-
+        <div className="template-input margin-top-3">
+          <label for="templateInput">Enter or Modify Template</label>
+          <Textarea
+            id="templateInput"
+            name="templateInput"
+            value={currentTemplate != false ? currentTemplate : ""}
+            type="text"
+            onChange={e => setCurrentTemplate(e.target.value)}
+          />
+        </div>
         <Button
           primary="true"
           onClick={() => handleSave()}
