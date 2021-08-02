@@ -104,7 +104,7 @@ const FormTemplates = () => {
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="margin-top-3">
+          <div className="year-selection-container margin-top-3">
             <label for="year-select" className="margin-top-3">
               Select Year or Create New
             </label>

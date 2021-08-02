@@ -33,6 +33,14 @@ describe("Tests for FormTemplates.js - With Complete data", () => {
     expect(wrapper.find(".formTemplates").length).toBe(1);
   });
 
+  test("Ensure Form label exists - template input", () => {
+    expect(wrapper.find(".template-input label").length).toBe(1);
+  });
+
+  test("Ensure Form label exists - year selection", () => {
+    expect(wrapper.find(".year-selection-container label").length).toBe(1);
+  });
+
   test("Ensure Form Year Select List renders", () => {
     expect(wrapper.find(".year-select-list").length).toBe(1);
   });
