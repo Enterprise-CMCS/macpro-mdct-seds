@@ -15,9 +15,5 @@ export const main = handler(async (event, context) => {
 
   const result = await dynamoDb.scan(params);
 
-  if (result.Count === 0) {
-    return [];
-  }
-
   return result.Items;
 });
