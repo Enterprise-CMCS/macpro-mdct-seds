@@ -144,6 +144,7 @@ const FormTemplates = () => {
           />
         </div>
         <Button
+          id="save-button"
           primary="true"
           onClick={() => handleSave()}
           data-testid="saveButton"
