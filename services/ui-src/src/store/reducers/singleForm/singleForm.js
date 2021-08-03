@@ -237,6 +237,7 @@ export const saveForm = () => {
         state: statusData.state_id,
         form: statusData.form,
         year: statusData.year,
+        quarter: statusData.quarter,
         totalEnrollment: total
       });
 
