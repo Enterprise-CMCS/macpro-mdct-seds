@@ -23,11 +23,11 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    updateTotals();
-  }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   updateTotals();
+  // }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -39,11 +39,8 @@ const GridWithTotals = props => {
   };
 
   const updateGridOnBlur = () => {
-    props.setAnswer(gridData, props.questionID);
-    updateTotals();
-
-    if (synthesized) {
-      props.updateSynthesizedValues();
+    if (props.questionID.includes("-01") || props.questionID.includes("-04")) {
+      props.setAnswer(gridData, props.questionID);
     }
   };
 
