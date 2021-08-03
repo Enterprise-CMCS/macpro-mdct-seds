@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
-  const stateFormId = `${data.state}-${data.year}-4-${data.form}`;
+  const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
 
   const params = {
     TableName: process.env.STATE_FORMS_TABLE_NAME,
@@ -26,7 +26,7 @@ export const main = handler(async (event, context) => {
   const result = await dynamoDb.scan(params);
 
   if (result.Count === 0) {
-    throw new Error("Cannot find matching record");
+    return [];
   }
 
   const record = result.Items[0];
