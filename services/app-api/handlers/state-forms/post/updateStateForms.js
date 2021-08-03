@@ -48,7 +48,8 @@ export const main = handler(async (event, context) => {
   }
 
   const paramsPut = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Item: putItem,
   };
 
