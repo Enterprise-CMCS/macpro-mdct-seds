@@ -14,7 +14,8 @@ export const main = handler(async (event, context) => {
   const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
 
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE_NAME,
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":state_form": stateFormId,
