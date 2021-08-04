@@ -159,12 +159,9 @@ const PrintPDF = ({
                 Add any notes here to accompany the form submission:
               </strong>
               <div className="summary-text">
-                {statusData.state_comments &&
-                statusData.state_comments[0].entry.length ? (
+                {!null || statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </div>
             </div>
             <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

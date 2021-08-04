@@ -9,11 +9,22 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName: process.env.FormsTableName,
-    Select: "ALL_ATTRIBUTES",
+    TableName:
+      process.env.FORM_TEMPLATES_TABLE_NAME ??
+      process.env.FormTemplatesTableName,
+    ExpressionAttributeNames: {
+      "#theYear": "year",
+    },
+    ProjectionExpression: "#theYear",
   };
 
   const result = await dynamoDb.scan(params);
 
-  return result.Items;
+  if (result.Count === 0) {
+    return [];
+  }
+
+  const resultsArray = result.Items.map((i) => i.year);
+
+  return resultsArray.sort((a, b) => b - a);
 });

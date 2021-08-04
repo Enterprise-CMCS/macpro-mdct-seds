@@ -6,6 +6,75 @@ export const selectRowColumnValueFromArray = (array, id) => {
   return returnValue;
 };
 
+export const selectRowValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < 6; i++) {
+    let currentRow = id.split(".")[3];
+    if (id.includes("64.21E") || id.includes("64.EC")) {
+      currentRow = id.split(".")[4];
+    }
+    if (id && currentRow !== "rows[1]") {
+      let newId;
+      // Check for additional period in id
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 1] = `.col${i + 1}`;
+      // Piece it all back together
+      newId = parts.join(".");
+
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfRows = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  return totalOfRows;
+};
+
+// Get accumulated values of each column in rows array
+export const selectColumnValuesFromArray = (array, id) => {
+  // Calculate number of rows
+  const rowLength = array[0].rows.length;
+
+  const valuesToAdd = [];
+
+  // Get all column values and add to array if a number
+  for (let i = 0; i < rowLength; i++) {
+    let currentRow = id.split(".")[3];
+    if (id.includes("64.21E") || id.includes("64.EC")) {
+      currentRow = id.split(".")[4];
+    }
+    if (id && currentRow !== "rows[1]") {
+      let newId;
+      // Check for additional period in id
+      const parts = id.split(".");
+      // Replace the last value with our new column
+      parts[parts.length - 2] = `.rows[${i}]`;
+      // Piece it all back together
+      newId = parts.join(".");
+
+      const arrayValue = jsonpath.query(array, newId)[0];
+      if (!isNaN(arrayValue)) {
+        let parsed = Number(arrayValue);
+        valuesToAdd.push(parsed);
+      }
+    }
+  }
+  const totalOfColumns = valuesToAdd.reduce((acc, item) => {
+    return acc + item;
+  }, 0);
+
+  return totalOfColumns;
+};
+
 //ABOVE IS NEW FUNCTIONALITY FOR SEDS
 
 const fullPathFromIDPath = originalPath => {
@@ -56,10 +125,7 @@ const getExactPath = (data, path) => {
   // If we don't already have a matching exact path, we'll need to fetch it.
   if (!exact) {
     const pathShortCircuit = fullPathFromIDPath(path);
-    console.log("data in exact", data);
-    console.log("pathShortCircuit", pathShortCircuit);
     const paths = jsonpath.paths(data, pathShortCircuit);
-    console.log("paths", paths);
     if (paths.length > 0) {
       // If there are any matching paths, cache off the first one. The paths
       // we get back above are in array form, but we want to cache the string
