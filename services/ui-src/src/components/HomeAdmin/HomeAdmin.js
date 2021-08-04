@@ -95,6 +95,11 @@ const HomeAdmin = ({ stateList, user }) => {
                   Create User
                 </Link>
               </li>
+              <li className="form-templates">
+                <Link to="/form-templates" className="text-bold">
+                  Add/Edit Form Templates
+                </Link>
+              </li>
               <li className="generate-forms">
                 <Link to="/generate-forms" className="text-bold">
                   Generate Quarterly Forms
