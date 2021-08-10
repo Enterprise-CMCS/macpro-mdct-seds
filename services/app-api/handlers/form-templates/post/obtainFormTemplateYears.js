@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
   const result = await dynamoDb.scan(params);
 
   if (result.Count === 0) {
-    throw new Error("Form type query failed");
+    return [];
   }
 
   const resultsArray = result.Items.map((i) => i.year);
