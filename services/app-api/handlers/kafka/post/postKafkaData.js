@@ -13,32 +13,34 @@ const kafka = new Kafka({
   },
 });
 
+let topicName = "aws.mdct.seds.cdc";
+let version = "v0";
+const topic = (t) => `${topicName}.${t}.${version}`;
+
 exports.handler = async (event) => {
   const producer = kafka.producer();
   await producer.connect();
 
   const streamARN = String(event.Records[0].eventSourceARN.toString());
-  let topicName = "aws.mdct.seds.cdc.";
-  let version = ".v0";
 
   if (streamARN.includes("age-ranges")) {
-    topicName = topicName + "age-ranges" + version;
+    topicName = topic("age-ranges");
   } else if (streamARN.includes("auth-user")) {
-    topicName = topicName + "auth-user" + version;
+    topicName = topic("auth-user");
   } else if (streamARN.includes("form-answers")) {
-    topicName = topicName + "form-answers" + version;
+    topicName = topic("form-answers");
   } else if (streamARN.includes("form-questions")) {
-    topicName = topicName + "form-questions" + version;
+    topicName = topic("form-questions");
   } else if (streamARN.includes("form-templates")) {
-    topicName = topicName + "form-templates" + version;
+    topicName = topic("form-templates");
   } else if (streamARN.includes("forms")) {
-    topicName = topicName + "forms.v0";
+    topicName = topic("forms");
   } else if (streamARN.includes("state-forms")) {
-    topicName = topicName + "state-forms" + version;
+    topicName = topic("state-forms");
   } else if (streamARN.includes("states")) {
-    topicName = topicName + "states" + version;
+    topicName = topic("states");
   } else if (streamARN.includes("status")) {
-    topicName = topicName + "status" + version;
+    topicName = topic("status");
   }
 
   console.log("EVENT INFO HERE", event);
