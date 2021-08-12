@@ -43,7 +43,7 @@ custom:
   FormsTableStreamArn: ${cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
   FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
-  FormTemplatesTableStreamArn: ${cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
+  FormTemplatesTableStreamArn: ${cf:database-${self:custom.stage}.FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
   StateTableStreamArn: ${cf:database-${self:custom.stage}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
