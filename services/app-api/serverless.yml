@@ -569,6 +569,7 @@ resources:
                     - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
+                    - ${self:custom.FormTemplatesTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
