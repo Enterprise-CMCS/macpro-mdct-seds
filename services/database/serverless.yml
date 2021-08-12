@@ -299,7 +299,7 @@ resources:
       Value: !Ref FormTemplatesTable
     FormTemplatesTableArn:
       Value: !GetAtt FormTemplatesTable.Arn
-    FormTemplatesStreamArn:
+    FormTemplatesTableStreamArn:
       Value: !GetAtt FormTemplatesTable.StreamArn
     StatusTableName:
       Value: !Ref StatusTable
