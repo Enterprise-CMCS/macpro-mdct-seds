@@ -1,17 +1,17 @@
-exports.handler = async (event) => {
-  const { Kafka } = require("kafkajs");
-  const kafka = new Kafka({
-    clientId: "dynamodb",
-    brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
-    retry: {
-      initialRetryTime: 300,
-      retries: 8,
-    },
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
+const { Kafka } = require("kafkajs");
+const kafka = new Kafka({
+  clientId: "dynamodb",
+  brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+  retry: {
+    initialRetryTime: 300,
+    retries: 8,
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
+exports.handler = async (event) => {
   const producer = kafka.producer();
   await producer.connect();
 
