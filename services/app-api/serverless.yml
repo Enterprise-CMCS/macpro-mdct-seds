@@ -190,7 +190,7 @@ functions:
           enabled: true
       - stream:
           type: dynamodb
-          arn: ${self:custom.FormTemplatesTableArn}
+          arn: ${self:custom.FormTemplatesTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
