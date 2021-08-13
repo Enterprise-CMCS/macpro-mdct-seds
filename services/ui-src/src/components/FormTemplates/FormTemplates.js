@@ -67,17 +67,22 @@ const FormTemplates = () => {
 
   const onLoad = async () => {
     let yearsArray = await obtainFormTemplateYears();
-    let yearsObjects = yearsArray.map(i => {
-      return {
-        label: i,
-        value: i
-      };
-    });
+    if (!yearsArray.length) {
+      setShowYearInput(true);
+      setInputYear(nextYear);
+    } else {
+      let yearsObjects = yearsArray.map(i => {
+        return {
+          label: i,
+          value: i
+        };
+      });
 
-    yearsObjects.unshift(newTemplateObject);
-    setFormYears(yearsObjects);
-    setSelectedYear(yearsObjects[1]);
-    await updateYear(yearsObjects[1].value);
+      yearsObjects.unshift(newTemplateObject);
+      setFormYears(yearsObjects);
+      setSelectedYear(yearsObjects[1]);
+      await updateYear(yearsObjects[1].value);
+    }
   };
 
   useEffect(() => {
@@ -99,7 +104,7 @@ const FormTemplates = () => {
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="margin-top-3">
+          <div className="year-selection-container margin-top-3">
             <label for="year-select" className="margin-top-3">
               Select Year or Create New
             </label>
@@ -128,20 +133,18 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        {currentTemplate !== false ? (
-          <div className="template-input margin-top-3">
-            <label for="templateInput">Enter or Modify Template</label>
-            <Textarea
-              id="templateInput"
-              name="templateInput"
-              value={currentTemplate}
-              type="text"
-              onChange={e => setCurrentTemplate(e.target.value)}
-            />
-          </div>
-        ) : null}
-
+        <div className="template-input margin-top-3">
+          <label for="templateInput">Enter or Modify Template</label>
+          <Textarea
+            id="templateInput"
+            name="templateInput"
+            value={currentTemplate ? currentTemplate : ""}
+            type="text"
+            onChange={e => setCurrentTemplate(e.target.value)}
+          />
+        </div>
         <Button
+          id="save-button"
           primary="true"
           onClick={() => handleSave()}
           data-testid="saveButton"

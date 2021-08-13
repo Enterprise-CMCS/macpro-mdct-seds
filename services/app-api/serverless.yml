@@ -544,6 +544,7 @@ resources:
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
+                    - ${self:custom.FormTemplatesTableArn}
                 - Effect: "Allow"
                   Action:
                     - dynamodb:DescribeStream
