@@ -10,7 +10,12 @@ import {
 } from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
+export const SynthesizedGrid = ({
+  entireForm,
+  questionID,
+  gridData,
+  range
+}) => {
   const [sortedRows, setSortedRows] = useState([]);
   const [sortedTotals, setSortedTotals] = useState([]);
   const [sortedRowsTotals, setSortedRowsTotals] = useState([]);
@@ -26,6 +31,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     const tabAnswers = entireForm.answers.filter(
       element => element.rangeId === range
     );
+
     let payload = [];
 
     //  Map through the sorted rows for this specific question
@@ -56,6 +62,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     let calculatedColunmTotals = gridData.map(singleRow => {
       // build a new object for each row
       const accumulator = {};
+      const rowTotals = {};
 
       // The first row remains the same
       if (singleRow["col1"] === "") {
@@ -71,35 +78,16 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
               tabAnswers,
               element
             );
-          }
-        });
-        return accumulator;
-      }
-    });
-
-    gridData.map(singleRow => {
-      // build a new object for each row
-      const accumulator = {};
-
-      // The first row remains the same
-      if (singleRow["col1"] === "") {
-        return singleRow;
-      } else {
-        // Map through each row object, copying keys and calculating values
-        Object.keys(singleRow).forEach(element => {
-          if (element === "col1") {
-            accumulator[element] = "";
-          } else {
-            accumulator[element] = calculateRowTotalValue(
+            rowTotals[element] = calculateRowTotalValue(
               singleRow[element][0],
               tabAnswers,
               element
             );
           }
         });
+        payload.push(rowTotals.col2);
+        return accumulator;
       }
-      payload.push(accumulator.col2);
-      return accumulator;
     });
 
     // Convert to simple array
@@ -148,7 +136,7 @@ const SynthesizedGrid = ({ entireForm, questionID, gridData, range }) => {
     return returnValue;
   };
 
-  // Add values together, then divide
+  // // Add values together, then divide
   const calculateRowTotalValue = (incomingFormula, tabAnswers, col) => {
     let returnValue = null;
     // Use formula to loop through all matching columns in question and accumulate
