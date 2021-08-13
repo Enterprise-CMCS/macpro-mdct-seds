@@ -1,5 +1,5 @@
 import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
+import { recursiveScan } from "../shared/sharedFunctions";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -7,8 +7,6 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
-
-  console.log(process.env);
 
   const params = {
     TableName:
@@ -25,12 +23,10 @@ export const main = handler(async (event, context) => {
     FilterExpression:
       "state_id = :stateId and quarter = :quarter and #theYear = :specifiedYear",
   };
-  const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    throw new Error(
-      "No state form list found for this state, year, and quarter"
-    );
-  }
+
+  // Recursively call scan to get all results
+  const result = await recursiveScan(params);
+
   // Return the matching list of items in response body
-  return result.Items;
+  return result;
 });
