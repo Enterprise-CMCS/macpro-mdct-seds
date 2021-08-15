@@ -33,6 +33,7 @@ export const SynthesizedGrid = ({
   let q4arry = tabAnswers.filter(e => e.answer_entry.includes("-04"));
   q4arry.map(e => {
     answer_arr.push(e.rows);
+    return
   });
 
   useEffect(() => {
