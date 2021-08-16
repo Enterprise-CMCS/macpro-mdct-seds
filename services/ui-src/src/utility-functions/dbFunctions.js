@@ -4,15 +4,11 @@ import { getStateForms } from "../libs/api";
 // Init response array
 const returnItems = [];
 export const recursiveGetStateForms = async data => {
-  // If startKey has value, use it
-  // this is the LastEvaluatedKey from the previous scan
-  const startKey = data.startKey ?? false;
-
   let formData = {
     state: data.state,
     year: data.year,
     quarter: data.quarter,
-    startKey: startKey
+    startKey: data.startKey ?? false
   };
 
   // Pull data
@@ -32,9 +28,9 @@ export const recursiveGetStateForms = async data => {
   }
 
   if (response.LastEvaluatedKey !== undefined) {
-    const newData = data;
-    newData.startKey = response.LastEvaluatedKey;
-    return await recursiveGetStateForms(newData);
+    // Set startKey to lastevaluated, for recursion
+    data.startKey = response.LastEvaluatedKey;
+    return await recursiveGetStateForms(data);
   }
   return returnItems;
 };
