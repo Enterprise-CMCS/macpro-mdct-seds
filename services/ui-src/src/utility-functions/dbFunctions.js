@@ -6,18 +6,17 @@ const returnItems = [];
 export const recursiveGetStateForms = async data => {
   // If startKey has value, use it
   // this is the LastEvaluatedKey from the previous scan
-  let startKey = false;
-  if (data.startKey) {
-    startKey = data.startKey;
-  }
+  const startKey = data.startKey ?? false;
 
-  // Sewt
-  let response = await getStateForms({
+  let formData = {
     state: data.state,
     year: data.year,
     quarter: data.quarter,
     startKey: startKey
-  });
+  };
+
+  // Pull data
+  let response = await getStateForms(formData);
 
   // If already in array, don't add it
   // Check for (db) matching value of current item state_form
@@ -33,12 +32,9 @@ export const recursiveGetStateForms = async data => {
   }
 
   if (response.LastEvaluatedKey !== undefined) {
-    return await recursiveGetStateForms({
-      state: data.state,
-      year: data.year,
-      quarter: data.quarter,
-      startKey: response.LastEvaluatedKey
-    });
+    const newData = data;
+    newData.startKey = response.LastEvaluatedKey;
+    return await recursiveGetStateForms(newData);
   }
   return returnItems;
 };
