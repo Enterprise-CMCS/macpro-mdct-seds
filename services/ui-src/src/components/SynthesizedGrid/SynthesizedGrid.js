@@ -40,7 +40,6 @@ export const SynthesizedGrid = ({
     updateSynthesizedTotals();
   }, [answer_arr[0]]); // eslint-disable-line react-hooks/exhaustive-deps
 
-
   // This function updates the grid based on the answers present in redux
   // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
   const updateSynthesizedGrid = () => {
