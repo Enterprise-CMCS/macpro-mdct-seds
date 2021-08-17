@@ -320,12 +320,12 @@ functions:
           cors: true
           authorizer: aws_iam
   getStateFormList:
-    handler: handlers/forms/getFormsList.main
+    handler: handlers/forms/post/obtainFormsList.main
     role: LambdaApiRole
     events:
       - http:
-          path: forms/{stateId}/{specifiedYear}/{quarter}
-          method: get
+          path: forms/obtain-state-forms
+          method: post
           cors: true
           authorizer: aws_iam
   updateStateFormList:
