@@ -197,6 +197,7 @@ export const saveForm = () => {
     const state = getState();
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
+    state.currentForm.statusData.last_modified=generateDateForDB();
     const username = await getUsername();
 
     // Get total number of enrollees from question 7, quarter 4
