@@ -19,8 +19,7 @@ const topic = (t) => `${topicName}.${t}.${version}`;
 const stringify = (e) => JSON.stringify(e, null, 2);
 
 const producer = kafka.producer();
-await producer.connect();
-
+let connected = false;
 const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
 
 signalTraps.map((type) => {
@@ -32,6 +31,10 @@ signalTraps.map((type) => {
 });
 
 exports.handler = async (event) => {
+  if(!connected) {
+    await producer.connect();
+    connected = true;
+  }
   console.log("EVENT INFO HERE", stringify(event));
   try {
     if (event.Records) {
