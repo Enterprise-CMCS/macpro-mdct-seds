@@ -197,6 +197,7 @@ functions:
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
     maximumRetryAttempts: 2
     vpc:
       securityGroupIds:
