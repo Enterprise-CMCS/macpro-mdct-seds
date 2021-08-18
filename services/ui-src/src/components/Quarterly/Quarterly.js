@@ -3,12 +3,12 @@ import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStateForms } from "../../libs/api.js";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -30,7 +30,8 @@ const Quarterly = () => {
         userStates.includes(state) ||
         currentUserInfo.Items[0].role === "admin"
       ) {
-        const data = await getStateForms(state, year, quarter);
+        const data = await recursiveGetStateForms({ state, year, quarter });
+
         setStateFormsList(data);
         setHasAccess(true);
       } else {

@@ -293,12 +293,14 @@ resources:
       Value: !Ref StatesTable
     StatesTableArn:
       Value: !GetAtt StatesTable.Arn
+    StateTableStreamArn:
+      Value: !GetAtt StatesTable.StreamArn
     FormTemplatesTableName:
       Value: !Ref FormTemplatesTable
     FormTemplatesTableArn:
       Value: !GetAtt FormTemplatesTable.Arn
-    StateTableStreamArn:
-      Value: !GetAtt StatesTable.StreamArn
+    FormTemplatesTableStreamArn:
+      Value: !GetAtt FormTemplatesTable.StreamArn
     StatusTableName:
       Value: !Ref StatusTable
     StatusTableArn:
