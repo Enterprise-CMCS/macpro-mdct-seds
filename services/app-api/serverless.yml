@@ -199,6 +199,7 @@ functions:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
     maximumRetryAttempts: 2
+    timeout: 120
     vpc:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
