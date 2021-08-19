@@ -63,7 +63,7 @@ const createDynamoPayload = (record) => {
   };
   return {
     key: Object.values(dynamoRecord.Keys).join("#"),
-    message: stringify(dynamoRecord),
+    value: stringify(dynamoRecord),
   };
 };
 
@@ -80,19 +80,18 @@ exports.handler = async (event) => {
         String(record.eventSourceARN.toString())
       );
 
-      const { key, message } = createDynamoPayload(record);
+      const dynamoPayload = createDynamoPayload(record);
 
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
         outboundEvents[topicName] = {
-          key: key,
           topic: topicName,
           partition: 0,
           messages: [],
         };
 
       //add messages to messages array for corresponding topic
-      outboundEvents[topicName].messages.push(message);
+      outboundEvents[topicName].messages.push(dynamoPayload);
     }
 
     const batchConfiguration = Object.values(outboundEvents);
