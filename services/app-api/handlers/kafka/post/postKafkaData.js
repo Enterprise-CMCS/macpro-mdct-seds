@@ -17,6 +17,14 @@ let topicName = "aws.mdct.seds.cdc";
 let version = "v0";
 const topic = (t) => `${topicName}.${t}.${version}`;
 const stringify = (e) => JSON.stringify(e, null, 2);
+const buildKey = (keys) => {
+  let arr = [];
+  for(const typeKey of Object.values(keys)) {
+    //will always be one and only one
+    arr.push(Object.values(typeKey)[0]);
+  }
+  return arr;
+}
 
 const producer = kafka.producer();
 let connected = false;
@@ -62,13 +70,14 @@ exports.handler = async (event) => {
         }
 
         const dynamoRecord = AWS.DynamoDB.Converter.unmarshall(record.dynamodb);
-        const dynamoStringified = stringify(dynamoRecord);
+        console.log('UNMARSHALLED',stringify(dynamoRecord));
+        const dynamoStringified = stringify(AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage));
 
         await producer.send({
           topic: topicName,
           messages: [
             {
-              key: Object.values(dynamoRecord.Keys).join('#'),
+              key: buildKeys(record.dynamodb.Keys),
               value: dynamoStringified,
               partition: 0,
             },
