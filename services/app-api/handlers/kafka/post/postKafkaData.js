@@ -101,7 +101,6 @@ exports.handler = async (event) => {
     }
   } catch (e) {
     console.log("error:", e);
-    throw e;
   }
 
   return `Successfully processed ${event.Records.length} records.`;
