@@ -56,7 +56,7 @@ const determineTopicName = (streamARN) => {
 
 const createDynamoPayload = (record) => {
   const dynamodb = record.dynamodb;
-  const { eventId, eventName } = record;
+  const { eventID, eventName } = record;
   const dynamoRecord = {
     NewImage: unmarshall(dynamodb.NewImage),
     OldImage: unmarshall(dynamodb.OldImage),
