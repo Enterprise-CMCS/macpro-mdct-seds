@@ -24,7 +24,7 @@ const buildKey = (keys) => {
     arr.push(Object.values(typeKey)[0]);
   }
   return arr;
-}
+};
 
 const producer = kafka.producer();
 let connected = false;
@@ -77,7 +77,7 @@ exports.handler = async (event) => {
           topic: topicName,
           messages: [
             {
-              key: buildKeys(record.dynamodb.Keys),
+              key: buildKey(record.dynamodb.Keys),
               value: dynamoStringified,
               partition: 0,
             },
