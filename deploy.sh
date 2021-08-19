@@ -40,9 +40,9 @@ export PATH=$(pwd)/node_modules/.bin/:$PATH
 
 for i in "${services[@]}"
 do
-  if [[ "$i" == "data-deployment" ]] && [[ "$SEED_DATABASE" != 'true' ]]; then
-    continue
-  fi
+#  if [[ "$i" == "data-deployment" ]] && [[ "$SEED_DATABASE" != 'true' ]]; then
+#    continue
+#  fi
 	deploy $i
 done
 
