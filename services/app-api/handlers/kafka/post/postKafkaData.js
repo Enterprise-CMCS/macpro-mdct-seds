@@ -38,25 +38,27 @@ signalTraps.map((type) => {
 });
 
 const determineTopicName = (streamARN) => {
+  let topicName;
   if (streamARN.includes("age-ranges")) {
-    return topic("age-ranges");
+    topicName = topic("age-ranges");
   } else if (streamARN.includes("auth-user")) {
-    return topic("auth-user");
+    topicName = topic("auth-user");
   } else if (streamARN.includes("form-answers")) {
-    return topic("form-answers");
+    topicName = topic("form-answers");
   } else if (streamARN.includes("form-questions")) {
-    return topic("form-questions");
+    topicName = topic("form-questions");
   } else if (streamARN.includes("form-templates")) {
-    return topic("form-templates");
+    topicName = topic("form-templates");
   } else if (streamARN.includes("forms")) {
-    return topic("forms");
+    topicName = topic("forms");
   } else if (streamARN.includes("state-forms")) {
-    return topic("state-forms");
+    topicName = topic("state-forms");
   } else if (streamARN.includes("states")) {
-    return topic("states");
+    topicName = topic("states");
   } else if (streamARN.includes("status")) {
-    return topic("status");
+    topicName = topic("status");
   }
+  return topicName;
 };
 
 const createDynamoPayload = (record) => {
