@@ -1,39 +1,46 @@
-exports.handler = async (event) => {
-  const { Kafka } = require("kafkajs");
-  const kafka = new Kafka({
-    clientId: "dynamodb",
-    brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
-    retry: {
-      initialRetryTime: 300,
-      retries: 8,
-    },
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
+import AWS from "aws-sdk";
 
+const { Kafka } = require("kafkajs");
+const kafka = new Kafka({
+  clientId: "dynamodb",
+  brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+  retry: {
+    initialRetryTime: 300,
+    retries: 8,
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+let topicName = "aws.mdct.seds.cdc";
+let version = "v0";
+const topic = (t) => `${topicName}.${t}.${version}`;
+
+exports.handler = async (event) => {
   const producer = kafka.producer();
   await producer.connect();
 
   const streamARN = String(event.Records[0].eventSourceARN.toString());
-  let topicName = "aws.mdct.seds.cdc.";
 
   if (streamARN.includes("age-ranges")) {
-    topicName = topicName + "age-ranges";
+    topicName = topic("age-ranges");
   } else if (streamARN.includes("auth-user")) {
-    topicName = topicName + "auth-user";
+    topicName = topic("auth-user");
   } else if (streamARN.includes("form-answers")) {
-    topicName = topicName + "form-answers";
+    topicName = topic("form-answers");
   } else if (streamARN.includes("form-questions")) {
-    topicName = topicName + "form-questions";
+    topicName = topic("form-questions");
+  } else if (streamARN.includes("form-templates")) {
+    topicName = topic("form-templates");
   } else if (streamARN.includes("forms")) {
-    topicName = topicName + "forms";
+    topicName = topic("forms");
   } else if (streamARN.includes("state-forms")) {
-    topicName = topicName + "state-forms";
+    topicName = topic("state-forms");
   } else if (streamARN.includes("states")) {
-    topicName = topicName + "states";
+    topicName = topic("states");
   } else if (streamARN.includes("status")) {
-    topicName = topicName + "status";
+    topicName = topic("status");
   }
 
   console.log("EVENT INFO HERE", event);
@@ -45,7 +52,7 @@ exports.handler = async (event) => {
           messages: [
             {
               key: "key4",
-              value: JSON.stringify(record.dynamodb, null, 2),
+              value: AWS.DynamoDB.Converter.unmarshall(record.dynamodb),
               partition: 0,
             },
           ],

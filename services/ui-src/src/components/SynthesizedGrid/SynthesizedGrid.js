@@ -3,24 +3,46 @@ import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./SynthesizedGrid.scss";
-import { selectRowColumnValueFromArray } from "../../utility-functions/jsonPath";
+import {
+  selectRowColumnValueFromArray,
+  selectColumnValuesFromArray,
+  selectRowValuesFromArray
+} from "../../utility-functions/jsonPath";
 import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
 
-const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
+export const SynthesizedGrid = ({
+  entireForm,
+  questionID,
+  gridData,
+  range
+}) => {
   const [sortedRows, setSortedRows] = useState([]);
+  const [sortedTotals, setSortedTotals] = useState([]);
+  const [sortedRowsTotals, setSortedRowsTotals] = useState([]);
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, enitreForm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  let answer_arr = [];
+  // Retrieve the answers specific to the current tab
+  let tabAnswers = entireForm.answers.filter(
+    element => element.rangeId === range
+  );
+  // Retrieve question 4 answer data for the current tab
+  let q4arry = tabAnswers.filter(e => e.answer_entry.includes("-04"));
+  q4arry.map(e => {
+    answer_arr.push(e.rows);
+    return true;
+  });
+
+  useEffect(() => {
+    updateSynthesizedTotals();
+  }, [answer_arr[0]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the grid based on the answers present in redux
   // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
   const updateSynthesizedGrid = () => {
-    // Retrieve the answers specific to the current tab
-    const tabAnswers = enitreForm.answers.filter(
-      element => element.rangeId === range
-    );
-
     //  Map through the sorted rows for this specific question
     let calculatedRows = gridData.map(singleRow => {
       // build a new object for each row
@@ -49,12 +71,51 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
     setSortedRows(sortQuestionColumns(calculatedRows));
   };
 
+  const updateSynthesizedTotals = () => {
+    let payload = [];
+    let calculatedSynthesizedTotals = gridData.map(singleRow => {
+      // build a new object for each row
+      const accumulator = {};
+      const rowTotals = {};
+
+      // The first row remains the same
+      if (singleRow["col1"] === "") {
+        return singleRow;
+      } else {
+        // Map through each row object, copying keys and calculating values
+        Object.keys(singleRow).forEach(element => {
+          if (element === "col1") {
+            accumulator[element] = "";
+          } else {
+            accumulator[element] = calculateColumnTotalValue(
+              singleRow[element][0],
+              tabAnswers,
+              element
+            );
+            rowTotals[element] = calculateRowTotalValue(
+              singleRow[element][0],
+              tabAnswers,
+              element
+            );
+          }
+        });
+        payload.push(rowTotals.col2);
+        return accumulator;
+      }
+    });
+
+    // Convert to simple array
+    const totalsArray = Object.values(calculatedSynthesizedTotals[2]);
+    setSortedTotals(totalsArray);
+    setSortedRowsTotals(payload);
+  };
+
   const calculateValue = (incomingFormula, tabAnswers) => {
     let returnValue = null;
     // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
-    const operands = incomingFormula.targets.map(target =>
-      selectRowColumnValueFromArray(tabAnswers, target)
-    );
+    const operands = incomingFormula.targets.map(target => {
+      return selectRowColumnValueFromArray(tabAnswers, target);
+    });
     // calculates the value based off of the formula <0> / <1>,
     // This formula is currently hard coded
     let quotient = operands[0] / operands[1];
@@ -67,6 +128,44 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
     return returnValue;
   };
 
+  // Add values together, then divide
+  const calculateColumnTotalValue = (incomingFormula, tabAnswers, col) => {
+    let returnValue = null;
+
+    // Use formula to loop through all matching columns in question and accumulate
+    const questionTotal = incomingFormula.targets.map(target => {
+      return selectColumnValuesFromArray(tabAnswers, target);
+    });
+
+    // Use hard coded formula
+    let quotient = questionTotal[0] / questionTotal[1];
+
+    // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
+    if (quotient && quotient !== Infinity) {
+      returnValue = quotient ? quotient : 0;
+    }
+
+    return returnValue;
+  };
+
+  // // Add values together, then divide
+  const calculateRowTotalValue = (incomingFormula, tabAnswers, col) => {
+    let returnValue = null;
+    // Use formula to loop through all matching columns in question and accumulate
+    const questionTotal = incomingFormula.targets.map(target => {
+      return selectRowValuesFromArray(tabAnswers, target);
+    });
+
+    // Use hard coded formula
+    let quotient = questionTotal[0] / questionTotal[1];
+
+    // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
+    if (quotient && quotient !== Infinity) {
+      returnValue = quotient ? quotient : 0;
+    }
+    return returnValue;
+  };
+
   return (
     <>
       <GridWithTotals
@@ -76,6 +175,8 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
         synthesized={true}
         precision={1}
         updateSynthesizedValues={updateSynthesizedGrid}
+        totals={sortedTotals}
+        rowTotals={sortedRowsTotals}
       />
       <div className="disclaimer">
         {" "}
@@ -86,14 +187,14 @@ const SynthesizedGrid = ({ enitreForm, questionID, gridData, range }) => {
 };
 
 SynthesizedGrid.propTypes = {
-  enitreForm: PropTypes.object.isRequired,
+  entireForm: PropTypes.object.isRequired,
   questionID: PropTypes.string.isRequired,
   gridData: PropTypes.array.isRequired,
   range: PropTypes.string.isRequired
 };
 
 const mapState = state => ({
-  enitreForm: state.currentForm
+  entireForm: state.currentForm
 });
 
 export default connect(mapState)(SynthesizedGrid);

@@ -1,6 +1,6 @@
 // PACKAGES
 import { Auth } from "aws-amplify";
-import { obtainUserByEmail } from "../../../libs/api";
+import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
 
 // HELPER FUNCTIONS
 import {
@@ -15,11 +15,7 @@ import {
 import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
 // ENDPOINTS
-import {
-  getSingleForm,
-  getStateForms,
-  saveSingleForm
-} from "../../../libs/api.js";
+import { getSingleForm, saveSingleForm } from "../../../libs/api.js";
 import {
   CERTIFY_AND_SUBMIT_FINAL,
   CERTIFY_AND_SUBMIT_PROVISIONAL,
@@ -27,6 +23,7 @@ import {
 } from "../../actions/certify";
 
 import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
+import { recursiveGetStateForms } from "../../../utility-functions/dbFunctions";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
@@ -123,7 +120,7 @@ export const clearFormData = (user = "cleared") => {
     const timeStamp = generateDateForDB();
     const answers = state.currentForm.answers;
     try {
-      const emptyForm = await answers.map(singleQuestion => {
+      const emptyForm = answers.map(singleQuestion => {
         let deepCopy = JSON.parse(JSON.stringify(singleQuestion));
         const clearedRows = clearSingleQuestion(deepCopy.rows);
         deepCopy.rows = clearedRows;
@@ -151,7 +148,12 @@ export const getFormData = (state, year, quarter, formName) => {
       );
 
       // Call state forms endpoint for form status data
-      const stateFormsByQuarter = await getStateForms(state, year, quarter);
+      const stateFormsByQuarter = await recursiveGetStateForms({
+        state,
+        year,
+        quarter,
+        startKey: false
+      });
 
       // Sort questions by question number
       const sortedQuestions = [...questions].sort(sortQuestionsByNumber);
@@ -197,7 +199,34 @@ export const saveForm = () => {
     const state = getState();
     const answers = state.currentForm.answers;
     const statusData = state.currentForm.statusData;
+    state.currentForm.statusData.last_modified = generateDateForDB();
     const username = await getUsername();
+
+    // Get total number of enrollees from question 7, quarter 4
+    let total = 0;
+    if (
+      (statusData.form === "21E" || statusData.form === "64.21E") &&
+      statusData.quarter === 4
+    ) {
+      for (const i in answers) {
+        if (
+          answers[i].question === `${statusData.year}-${statusData.form}-07`
+        ) {
+          let temp;
+          const rows = answers[i].rows;
+          for (const j in rows) {
+            // Add all numeric col#'s together
+            temp = Object.keys(rows[j]).reduce(
+              (sum, key) => sum + (parseFloat(rows[j][key]) || 0),
+              0
+            );
+
+            // Add to running total
+            total += !Number.isNaN(temp) ? parseInt(temp) : 0;
+          }
+        }
+      }
+    }
 
     try {
       // Update Database
@@ -205,6 +234,14 @@ export const saveForm = () => {
         username,
         formAnswers: answers,
         statusData: statusData
+      });
+
+      await updateStateForm({
+        state: statusData.state_id,
+        form: statusData.form,
+        year: statusData.year,
+        quarter: statusData.quarter,
+        totalEnrollment: total
       });
 
       // Update Last Saved in redux state

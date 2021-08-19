@@ -90,14 +90,35 @@ export const createUser = data => {
 
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
-export const getStateForms = (stateId, specifiedYear, quarter) => {
+export const getStateForms = data => {
   const opts = requestOptions();
+  opts.body = data;
 
-  return API.get(
-    "mdct-seds",
-    `/forms/${stateId}/${specifiedYear}/${quarter}`,
-    opts
-  );
+  return API.post("mdct-seds", `/forms/obtain-state-forms`, opts);
+};
+
+// *** get state forms based on form(s) provided
+export const obtainStateForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/state-forms/obtain`, opts);
+};
+
+// *** get state forms based on form(s) provided
+export const obtainAnswerEntriesFromForms = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/form-answers/obtain`, opts);
+};
+
+// *** update forms associated with a specified state for specified year and quarter
+export const updateStateForm = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/state-forms/update`, opts);
 };
 
 // *** get single form associated with a specified state, year and quarter
@@ -161,6 +182,38 @@ export const generateQuarterlyForms = data => {
   opts.body = data;
 
   return API.post("mdct-seds", "/generate-forms", opts);
+};
+
+// *** get form template years
+export const obtainFormTemplateYears = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-templates/years", opts);
+};
+
+// *** get a form template by year
+export const obtainFormTemplate = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-template", opts);
+};
+
+// *** Create or update a form template based on year
+export const updateCreateFormTemplate = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/form-templates/add", opts);
+};
+
+// *** generate enrollment totals
+export const generateEnrollmentTotals = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", "/generate-enrollment-totals", opts);
 };
 
 // **

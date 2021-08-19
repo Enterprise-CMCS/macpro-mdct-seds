@@ -4,6 +4,7 @@ import { TextInput, Table } from "@trussworks/react-uswds";
 import { connect } from "react-redux";
 import "./GridWithTotals.scss";
 import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
+import { addCommas } from "../../utility-functions/transformFunctions";
 
 const GridWithTotals = props => {
   const [gridData, updateGridData] = useState(
@@ -22,11 +23,7 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    updateTotals();
-  }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -39,17 +36,14 @@ const GridWithTotals = props => {
 
   const updateGridOnBlur = () => {
     props.setAnswer(gridData, props.questionID);
-    updateTotals();
-
-    if (synthesized) {
-      props.updateSynthesizedValues();
-    }
   };
 
   const updateTotals = () => {
     updateRowTotals();
     updateColumnTotals();
   };
+
+  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
   const updateColumnTotals = () => {
     let gridColumnTotalsCopy = [...gridColumnTotals];
@@ -78,9 +72,22 @@ const GridWithTotals = props => {
             gridColumnTotalsCopy[gridColumnIndex] = 0;
           }
 
-          gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+          // If average totals exist use them
+          if (props.totals) {
+            gridColumnTotalsCopy[gridColumnIndex] =
+              props.totals[gridColumnIndex];
+            // totalOfTotals += props.totals[gridColumnIndex];
+          } else {
+            gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+            // totalOfTotals += currentValue;
+          }
           totalOfTotals += currentValue;
 
+          if (synthesized && props.rowTotals) {
+            let sum = sumValues(props.rowTotals);
+            let avg = sum / props.rowTotals.length;
+            totalOfTotals = avg;
+          }
           return true;
         });
       }
@@ -104,12 +111,14 @@ const GridWithTotals = props => {
           if (isNaN(column) === false) {
             currentValue = parseFloat(column);
           }
-
           rowTotal += currentValue;
-
           return true;
         });
         gridRowTotalsCopy[rowIndex] = rowTotal;
+        if (synthesized && props.rowTotals) {
+          let newIndex = rowIndex - 2;
+          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
+        }
       }
 
       return true;
@@ -147,13 +156,6 @@ const GridWithTotals = props => {
       Totals
     </th>
   );
-
-  const addCommas = val => {
-    if (isNaN(val) === true) {
-      return "";
-    }
-    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
 
   const tableData = gridData.map((row, rowIndex) => {
     if (row !== undefined) {
