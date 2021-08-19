@@ -13,9 +13,9 @@ const kafka = new Kafka({
   },
 });
 
-let topicName = "aws.mdct.seds.cdc";
+let topicPrefix = "aws.mdct.seds.cdc";
 let version = "v0";
-const topic = (t) => `${topicName}.${t}.${version}`;
+const topic = (t) => `${topicPrefix}.${t}.${version}`;
 const stringify = (e) => JSON.stringify(e, null, 2);
 
 const unmarshallOptions = {
@@ -48,7 +48,7 @@ exports.handler = async (event) => {
       let outboundEvents = {};
       for (const record of event.Records) {
         const streamARN = String(record.eventSourceARN.toString());
-
+        let topicName;
         if (streamARN.includes("age-ranges")) {
           topicName = topic("age-ranges");
         } else if (streamARN.includes("auth-user")) {
@@ -69,10 +69,6 @@ exports.handler = async (event) => {
           topicName = topic("status");
         }
 
-        //initialize "messages" array, keyed to topicName
-        if (!(outboundEvents[topicName] instanceof Array))
-          outboundEvents[topicName] = [];
-
         const dynamodb = record.dynamodb;
         const dynamoRecord = {
           NewImage: unmarshall(dynamodb.NewImage),
@@ -81,27 +77,23 @@ exports.handler = async (event) => {
         };
         const dynamoStringified = stringify(dynamoRecord);
 
+        //initialize "messages" array, keyed to topicName
+        if (!(outboundEvents[topicName] instanceof Object))
+          outboundEvents[topicName] = {
+            key: Object.values(dynamoRecord.Keys).join("#"),
+            topic: topicName,
+            partition: 0,
+            messages: [],
+          };
+
         //build map of messages
-        outboundEvents[topicName].push({
-          key: Object.values(dynamoRecord.Keys).join("#"),
-          value: dynamoStringified,
-          partition: 0,
-        });
+        outboundEvents[topicName].messages.push(dynamoStringified);
       }
 
-      //publish record batches for each topic
-      for (const [key, value] of Object.entries(outboundEvents)) {
-        console.log(
-          `Topic: ${key}, Key: ${value.key}, Partition: ${value.partition}`,
-          "DynamoDB Record: %j",
-          value
-        );
-        /*await producer.send({
-          topic: key,
-          messages: value,
-        });*/
-        console.log(`Successfully produced event batch for ${key}`);
-      }
+      const batchConfiguration = Object.values(outboundEvents);
+      console.log(`Batch configuration: ${batchConfiguration}`);
+
+      //await producer.sendBatch({ batchConfiguration });
     }
   } catch (e) {
     console.log("error:", e);
