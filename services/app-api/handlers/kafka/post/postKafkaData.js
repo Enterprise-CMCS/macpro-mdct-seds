@@ -44,6 +44,7 @@ exports.handler = async (event) => {
   console.log("Raw event", stringify(event));
   try {
     if (event.Records) {
+      let outboundEvents = {};
       for (const record of event.Records) {
         const streamARN = String(record.eventSourceARN.toString());
 
@@ -67,30 +68,40 @@ exports.handler = async (event) => {
           topicName = topic("status");
         }
 
+        //initialize "messages" array, keyed to topicName
+        if(!(outboundEvents[topicName] instanceof Array)) outboundEvents[topicName] = [];
+
         const dynamodb = record.dynamodb;
         const dynamoRecord = {
           NewImage: unmarshall(dynamodb.NewImage),
           OldImage: unmarshall(dynamodb.OldImage),
-          Keys: unmarshall(dynamodb.Keys)
+          Keys: unmarshall(dynamodb.Keys),
         };
         const dynamoStringified = stringify(dynamoRecord);
 
-        console.log("DynamoDB Record: %j", dynamoStringified);
-        await producer.send({
-          topic: topicName,
-          messages: [
-            {
-              key: Object.values(dynamoRecord.Keys).join('#'),
-              value: dynamoStringified,
-              partition: 0,
-            },
-          ],
-        });
-        console.log("Successfully produced event");
+        //build map of messages
+        outboundEvents[topicName].push({
+          {
+            key: Object.values(dynamoRecord.Keys).join('#'),
+            value: dynamoStringified,
+            partition: 0,
+          },
+        })
+      }
+
+      //publish record batches for each topic
+      for(const [key, value] of Object.entries(outboundEvents)) {
+        console.log(`Topic: ${key}, Key: ${value.key}, Partition: ${value.partition}`, "DynamoDB Record: %j", value);
+        /*await producer.send({
+          topic: key,
+          messages: value,
+        });*/
+        console.log(`Successfully produced event batch for ${key}`);
       }
     }
   } catch (e) {
     console.log("error:", e);
+    throw e;
   }
 
   return `Successfully processed ${event.Records.length} records.`;

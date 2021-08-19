@@ -200,6 +200,7 @@ functions:
       STAGE: ${self:custom.stage}
     maximumRetryAttempts: 2
     timeout: 120
+    memorySize: 2048
     vpc:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
