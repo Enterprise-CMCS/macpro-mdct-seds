@@ -13,8 +13,8 @@ const kafka = new Kafka({
   },
 });
 
-let topicPrefix = "aws.mdct.seds.cdc";
-let version = "v0";
+const topicPrefix = "aws.mdct.seds.cdc";
+const version = "v0";
 const topic = (t) => `${topicPrefix}.${t}.${version}`;
 const stringify = (e) => JSON.stringify(e, null, 2);
 
@@ -66,7 +66,10 @@ const createDynamoPayload = (record) => {
     OldImage: unmarshall(dynamodb.OldImage),
     Keys: unmarshall(dynamodb.Keys),
   };
-  return stringify(dynamoRecord);
+  return {
+    key: Object.values(dynamoRecord.Keys).join("#"),
+    message: stringify(dynamoRecord),
+  };
 };
 
 exports.handler = async (event) => {
@@ -82,19 +85,19 @@ exports.handler = async (event) => {
         String(record.eventSourceARN.toString())
       );
 
-      const dynamoStringified = createDynamoPayload(record);
+      const { key, message } = createDynamoPayload(record);
 
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
         outboundEvents[topicName] = {
-          key: Object.values(dynamoRecord.Keys).join("#"),
+          key: key,
           topic: topicName,
           partition: 0,
           messages: [],
         };
 
       //add messages to messages array for corresponding topic
-      outboundEvents[topicName].messages.push(dynamoStringified);
+      outboundEvents[topicName].messages.push(message);
     }
 
     const batchConfiguration = Object.values(outboundEvents);
