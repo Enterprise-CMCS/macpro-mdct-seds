@@ -20,9 +20,10 @@ const stringify = (e) => JSON.stringify(e, null, 2);
 
 const unmarshallOptions = {
   convertEmptyValues: true,
-  wrapNumbers: true
+  wrapNumbers: true,
 };
-const unmarshall = (r) => AWS.DynamoDB.Converter.unmarshall(r, unmarshallOptions);
+const unmarshall = (r) =>
+  AWS.DynamoDB.Converter.unmarshall(r, unmarshallOptions);
 
 const producer = kafka.producer();
 let connected = false;
@@ -37,7 +38,7 @@ signalTraps.map((type) => {
 });
 
 exports.handler = async (event) => {
-  if(!connected) {
+  if (!connected) {
     await producer.connect();
     connected = true;
   }
@@ -69,7 +70,8 @@ exports.handler = async (event) => {
         }
 
         //initialize "messages" array, keyed to topicName
-        if(!(outboundEvents[topicName] instanceof Array)) outboundEvents[topicName] = [];
+        if (!(outboundEvents[topicName] instanceof Array))
+          outboundEvents[topicName] = [];
 
         const dynamodb = record.dynamodb;
         const dynamoRecord = {
@@ -81,17 +83,19 @@ exports.handler = async (event) => {
 
         //build map of messages
         outboundEvents[topicName].push({
-          {
-            key: Object.values(dynamoRecord.Keys).join('#'),
-            value: dynamoStringified,
-            partition: 0,
-          },
-        })
+          key: Object.values(dynamoRecord.Keys).join("#"),
+          value: dynamoStringified,
+          partition: 0,
+        });
       }
 
       //publish record batches for each topic
-      for(const [key, value] of Object.entries(outboundEvents)) {
-        console.log(`Topic: ${key}, Key: ${value.key}, Partition: ${value.partition}`, "DynamoDB Record: %j", value);
+      for (const [key, value] of Object.entries(outboundEvents)) {
+        console.log(
+          `Topic: ${key}, Key: ${value.key}, Partition: ${value.partition}`,
+          "DynamoDB Record: %j",
+          value
+        );
         /*await producer.send({
           topic: key,
           messages: value,
