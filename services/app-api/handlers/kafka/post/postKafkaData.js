@@ -56,6 +56,7 @@ const determineTopicName = (streamARN) => {
 
 const createDynamoPayload = (record) => {
   const dynamodb = record.dynamodb;
+  const { eventId, eventName } = record;
   const dynamoRecord = {
     NewImage: unmarshall(dynamodb.NewImage),
     OldImage: unmarshall(dynamodb.OldImage),
@@ -64,6 +65,8 @@ const createDynamoPayload = (record) => {
   return {
     key: Object.values(dynamoRecord.Keys).join("#"),
     value: stringify(dynamoRecord),
+    partition: 0,
+    headers: { eventID: eventID, eventName: eventName },
   };
 };
 
@@ -86,7 +89,6 @@ exports.handler = async (event) => {
       if (!(outboundEvents[topicName] instanceof Object))
         outboundEvents[topicName] = {
           topic: topicName,
-          partition: 0,
           messages: [],
         };
 
@@ -94,10 +96,10 @@ exports.handler = async (event) => {
       outboundEvents[topicName].messages.push(dynamoPayload);
     }
 
-    const batchConfiguration = Object.values(outboundEvents);
-    console.log(`Batch configuration: ${stringify(batchConfiguration)}`);
+    const topicMessages = Object.values(outboundEvents);
+    console.log(`Batch configuration: ${stringify(topicMessages)}`);
 
-    await producer.sendBatch({ batchConfiguration });
+    await producer.sendBatch({ topicMessages });
   }
 
   console.log(`Successfully processed ${event.Records.length} records.`);
