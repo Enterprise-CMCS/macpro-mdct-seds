@@ -37,28 +37,21 @@ signalTraps.map((type) => {
   process.once(type, producer.disconnect);
 });
 
+const tables = [
+  "age-ranges",
+  "auth-user",
+  "form-answers",
+  "form-questions",
+  "form-templates",
+  "forms",
+  "state-forms",
+  "states",
+  "status",
+];
 const determineTopicName = (streamARN) => {
-  let topicName;
-  if (streamARN.includes("age-ranges")) {
-    topicName = topic("age-ranges");
-  } else if (streamARN.includes("auth-user")) {
-    topicName = topic("auth-user");
-  } else if (streamARN.includes("form-answers")) {
-    topicName = topic("form-answers");
-  } else if (streamARN.includes("form-questions")) {
-    topicName = topic("form-questions");
-  } else if (streamARN.includes("form-templates")) {
-    topicName = topic("form-templates");
-  } else if (streamARN.includes("forms")) {
-    topicName = topic("forms");
-  } else if (streamARN.includes("state-forms")) {
-    topicName = topic("state-forms");
-  } else if (streamARN.includes("states")) {
-    topicName = topic("states");
-  } else if (streamARN.includes("status")) {
-    topicName = topic("status");
+  for (const table of tables) {
+    if (streamARN.includes(table)) return topic(table);
   }
-  return topicName;
 };
 
 const createDynamoPayload = (record) => {
