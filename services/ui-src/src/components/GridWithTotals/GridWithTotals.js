@@ -25,10 +25,6 @@ const GridWithTotals = props => {
     updateTotals();
   }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // useEffect(() => {
-  //   updateTotals();
-  // }, [gridData]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
@@ -39,9 +35,7 @@ const GridWithTotals = props => {
   };
 
   const updateGridOnBlur = () => {
-    if (props.questionID.includes("-01") || props.questionID.includes("-04")) {
-      props.setAnswer(gridData, props.questionID);
-    }
+    props.setAnswer(gridData, props.questionID);
   };
 
   const updateTotals = () => {
