@@ -101,10 +101,10 @@ exports.handler = async (event) => {
     }
 
     const batchConfiguration = Object.values(outboundEvents);
-    console.log(`Batch configuration: ${batchConfiguration}`);
+    console.log(`Batch configuration: ${stringify(batchConfiguration)}`);
 
     //await producer.sendBatch({ batchConfiguration });
   }
 
-  return `Successfully processed ${event.Records.length} records.`;
+  console.log(`Successfully processed ${event.Records.length} records.`);
 };
