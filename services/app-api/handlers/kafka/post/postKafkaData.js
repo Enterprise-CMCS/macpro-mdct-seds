@@ -37,66 +37,70 @@ signalTraps.map((type) => {
   process.once(type, producer.disconnect);
 });
 
+const determineTopicName = (streamARN) => {
+  if (streamARN.includes("age-ranges")) {
+    return topic("age-ranges");
+  } else if (streamARN.includes("auth-user")) {
+    return topic("auth-user");
+  } else if (streamARN.includes("form-answers")) {
+    return topic("form-answers");
+  } else if (streamARN.includes("form-questions")) {
+    return topic("form-questions");
+  } else if (streamARN.includes("form-templates")) {
+    return topic("form-templates");
+  } else if (streamARN.includes("forms")) {
+    return topic("forms");
+  } else if (streamARN.includes("state-forms")) {
+    return topic("state-forms");
+  } else if (streamARN.includes("states")) {
+    return topic("states");
+  } else if (streamARN.includes("status")) {
+    return topic("status");
+  }
+};
+
+const createDynamoPayload = (record) => {
+  const dynamodb = record.dynamodb;
+  const dynamoRecord = {
+    NewImage: unmarshall(dynamodb.NewImage),
+    OldImage: unmarshall(dynamodb.OldImage),
+    Keys: unmarshall(dynamodb.Keys),
+  };
+  return stringify(dynamoRecord);
+};
+
 exports.handler = async (event) => {
   if (!connected) {
     await producer.connect();
     connected = true;
   }
   console.log("Raw event", stringify(event));
-  try {
-    if (event.Records) {
-      let outboundEvents = {};
-      for (const record of event.Records) {
-        const streamARN = String(record.eventSourceARN.toString());
-        let topicName;
-        if (streamARN.includes("age-ranges")) {
-          topicName = topic("age-ranges");
-        } else if (streamARN.includes("auth-user")) {
-          topicName = topic("auth-user");
-        } else if (streamARN.includes("form-answers")) {
-          topicName = topic("form-answers");
-        } else if (streamARN.includes("form-questions")) {
-          topicName = topic("form-questions");
-        } else if (streamARN.includes("form-templates")) {
-          topicName = topic("form-templates");
-        } else if (streamARN.includes("forms")) {
-          topicName = topic("forms");
-        } else if (streamARN.includes("state-forms")) {
-          topicName = topic("state-forms");
-        } else if (streamARN.includes("states")) {
-          topicName = topic("states");
-        } else if (streamARN.includes("status")) {
-          topicName = topic("status");
-        }
+  if (event.Records) {
+    let outboundEvents = {};
+    for (const record of event.Records) {
+      const topicName = determineTopicName(
+        String(record.eventSourceARN.toString())
+      );
 
-        const dynamodb = record.dynamodb;
-        const dynamoRecord = {
-          NewImage: unmarshall(dynamodb.NewImage),
-          OldImage: unmarshall(dynamodb.OldImage),
-          Keys: unmarshall(dynamodb.Keys),
+      const dynamoStringified = createDynamoPayload(record);
+
+      //initialize configuration object keyed to topic for quick lookup
+      if (!(outboundEvents[topicName] instanceof Object))
+        outboundEvents[topicName] = {
+          key: Object.values(dynamoRecord.Keys).join("#"),
+          topic: topicName,
+          partition: 0,
+          messages: [],
         };
-        const dynamoStringified = stringify(dynamoRecord);
 
-        //initialize "messages" array, keyed to topicName
-        if (!(outboundEvents[topicName] instanceof Object))
-          outboundEvents[topicName] = {
-            key: Object.values(dynamoRecord.Keys).join("#"),
-            topic: topicName,
-            partition: 0,
-            messages: [],
-          };
-
-        //build map of messages
-        outboundEvents[topicName].messages.push(dynamoStringified);
-      }
-
-      const batchConfiguration = Object.values(outboundEvents);
-      console.log(`Batch configuration: ${batchConfiguration}`);
-
-      //await producer.sendBatch({ batchConfiguration });
+      //add messages to messages array for corresponding topic
+      outboundEvents[topicName].messages.push(dynamoStringified);
     }
-  } catch (e) {
-    console.log("error:", e);
+
+    const batchConfiguration = Object.values(outboundEvents);
+    console.log(`Batch configuration: ${batchConfiguration}`);
+
+    //await producer.sendBatch({ batchConfiguration });
   }
 
   return `Successfully processed ${event.Records.length} records.`;
