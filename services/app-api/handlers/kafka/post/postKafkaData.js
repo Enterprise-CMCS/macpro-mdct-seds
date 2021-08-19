@@ -17,14 +17,12 @@ let topicName = "aws.mdct.seds.cdc";
 let version = "v0";
 const topic = (t) => `${topicName}.${t}.${version}`;
 const stringify = (e) => JSON.stringify(e, null, 2);
-const buildKey = (keys) => {
-  let arr = [];
-  for(const typeKey of Object.values(keys)) {
-    //will always be one and only one
-    arr.push(Object.values(typeKey)[0]);
-  }
-  return arr;
+
+const unmarshallOptions = {
+  convertEmptyValues: true,
+  wrapNumbers: true
 };
+const unmarshall = (r) => AWS.DynamoDB.Converter.unmarshall(r, unmarshallOptions);
 
 const producer = kafka.producer();
 let connected = false;
@@ -43,7 +41,7 @@ exports.handler = async (event) => {
     await producer.connect();
     connected = true;
   }
-  console.log("EVENT INFO HERE", stringify(event));
+  console.log("Raw event", stringify(event));
   try {
     if (event.Records) {
       for (const record of event.Records) {
@@ -69,21 +67,26 @@ exports.handler = async (event) => {
           topicName = topic("status");
         }
 
-        const dynamoRecord = AWS.DynamoDB.Converter.unmarshall(record.dynamodb);
-        console.log('UNMARSHALLED',stringify(dynamoRecord));
-        const dynamoStringified = stringify(AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage));
+        const dynamodb = record.dynamodb;
+        const dynamoRecord = {
+          NewImage: unmarshall(dynamodb.NewImage),
+          OldImage: unmarshall(dynamodb.OldImage),
+          Keys: unmarshall(dynamodb.Keys)
+        };
+        const dynamoStringified = stringify(dynamoRecord);
 
+        console.log("DynamoDB Record: %j", dynamoStringified);
         await producer.send({
           topic: topicName,
           messages: [
             {
-              key: buildKey(record.dynamodb.Keys),
+              key: Object.values(dynamoRecord.Keys).join('#'),
               value: dynamoStringified,
               partition: 0,
             },
           ],
         });
-        console.log("DynamoDB Record: %j", dynamoStringified);
+        console.log("Successfully produced event");
       }
     }
   } catch (e) {
