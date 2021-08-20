@@ -16,7 +16,10 @@ const kafka = new Kafka({
 const topicPrefix = "aws.mdct.seds.cdc";
 const version = "v0";
 const topic = (t) => `${topicPrefix}.${t}.${version}`;
-const stringify = (e) => JSON.stringify(e, null, 2);
+const stringify = (e, prettyPrint) => {
+  if (prettyPrint === true) return JSON.stringify(e);
+  return JSON.stringify(e, null, 2);
+};
 
 const unmarshallOptions = {
   convertEmptyValues: true,
@@ -75,7 +78,7 @@ exports.handler = async (event) => {
     await producer.connect();
     connected = true;
   }
-  console.log("Raw event", stringify(event));
+  console.log("Raw event", stringify(event, true));
   if (event.Records) {
     let outboundEvents = {};
     for (const record of event.Records) {
@@ -97,7 +100,7 @@ exports.handler = async (event) => {
     }
 
     const topicMessages = Object.values(outboundEvents);
-    console.log(`Batch configuration: ${stringify(topicMessages)}`);
+    console.log(`Batch configuration: ${stringify(topicMessages, true)}`);
 
     await producer.sendBatch({ topicMessages });
   }
