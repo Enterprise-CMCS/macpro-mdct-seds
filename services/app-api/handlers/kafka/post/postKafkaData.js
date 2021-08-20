@@ -17,8 +17,8 @@ const topicPrefix = "aws.mdct.seds.cdc";
 const version = "v0";
 const topic = (t) => `${topicPrefix}.${t}.${version}`;
 const stringify = (e, prettyPrint) => {
-  if (prettyPrint === true) return JSON.stringify(e);
-  return JSON.stringify(e, null, 2);
+  if (prettyPrint === true) return JSON.stringify(e, null, 2);
+  return JSON.stringify(e);
 };
 
 const unmarshallOptions = {
