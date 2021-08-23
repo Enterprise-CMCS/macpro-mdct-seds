@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 const { Kafka } = require("kafkajs");
 
-const STAGE = ${process.env.STAGE};
+const STAGE = process.env.STAGE;
 const kafka = new Kafka({
   clientId: `seds-${STAGE}`,
   brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
