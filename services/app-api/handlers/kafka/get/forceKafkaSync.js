@@ -99,26 +99,26 @@ export const main = handler(async (event, context) => {
      dynamoDb.listTables({},(l=>console.log(l)));
     // Todo: Check if all table has a trigger with postKafkaData as part of its name
 
-    // for (const tableName of tableNames) {
+    for (const tableName of tableNames) {
 
-    //     let startingKey;
+        let startingKey;
 
-    //     let keepSearching = true;
+        let keepSearching = true;
 
-    //     while (keepSearching == true) {
-    //         let items = [];
-    //         [startingKey, keepSearching, items] =
-    //             await scanTable(
-    //                 tableName,
-    //                 startingKey,
-    //                 keepSearching,
-    //             );
-    //             const count = items.length;
-    //             console.log('item count: ', count, ' last item: ', JSON.stringify(items(count-1)));
-    //         // addLastSynced(items);
-    //         // await batchWrite(tableName, items);
-    //     }
-    // }
+        while (keepSearching == true) {
+            let items = [];
+            [startingKey, keepSearching, items] =
+                await scanTable(
+                    tableName,
+                    startingKey,
+                    keepSearching,
+                );
+                const count = items.length;
+                console.log('item count: ', count, ' last item: ', JSON.stringify(items(count-1)));
+            // addLastSynced(items);
+            // await batchWrite(tableName, items);
+        }
+    }
     
     const addLastSynced = items => {
 
