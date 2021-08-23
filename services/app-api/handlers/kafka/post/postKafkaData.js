@@ -1,8 +1,9 @@
 import AWS from "aws-sdk";
-
 const { Kafka } = require("kafkajs");
+
+const STAGE = ${process.env.STAGE};
 const kafka = new Kafka({
-  clientId: `seds-${process.env.STAGE}`,
+  clientId: `seds-${STAGE}`,
   brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
   retry: {
     initialRetryTime: 300,
@@ -53,7 +54,7 @@ const tables = [
 ];
 const determineTopicName = (streamARN) => {
   for (const table of tables) {
-    if (streamARN.includes(table)) return topic(table);
+    if (streamARN.includes(`/${STAGE}-${table}/`)) return topic(table);
   }
 };
 
