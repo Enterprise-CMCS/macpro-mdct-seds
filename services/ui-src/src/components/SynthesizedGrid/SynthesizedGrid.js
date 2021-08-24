@@ -22,18 +22,27 @@ export const SynthesizedGrid = ({
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  let answer_arr = [];
+  // Retrieve the answers specific to the current tab
+  let tabAnswers = entireForm.answers.filter(
+    element => element.rangeId === range
+  );
+  // Retrieve question 4 answer data for the current tab
+  let q4arry = tabAnswers.filter(e => e.answer_entry.includes("-04"));
+  q4arry.map(e => {
+    answer_arr.push(e.rows);
+    return true;
+  });
+
+  useEffect(() => {
+    updateSynthesizedTotals();
+  }, [answer_arr[0]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the grid based on the answers present in redux
   // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
   const updateSynthesizedGrid = () => {
-    // Retrieve the answers specific to the current tab
-    const tabAnswers = entireForm.answers.filter(
-      element => element.rangeId === range
-    );
-
-    let payload = [];
-
     //  Map through the sorted rows for this specific question
     let calculatedRows = gridData.map(singleRow => {
       // build a new object for each row
@@ -58,8 +67,13 @@ export const SynthesizedGrid = ({
       }
     });
 
-    //  Map through the sorted rows for this specific question
-    let calculatedColunmTotals = gridData.map(singleRow => {
+    // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
+    setSortedRows(sortQuestionColumns(calculatedRows));
+  };
+
+  const updateSynthesizedTotals = () => {
+    let payload = [];
+    let calculatedSynthesizedTotals = gridData.map(singleRow => {
       // build a new object for each row
       const accumulator = {};
       const rowTotals = {};
@@ -91,9 +105,7 @@ export const SynthesizedGrid = ({
     });
 
     // Convert to simple array
-    const totalsArray = Object.values(calculatedColunmTotals[2]);
-    // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
-    setSortedRows(sortQuestionColumns(calculatedRows));
+    const totalsArray = Object.values(calculatedSynthesizedTotals[2]);
     setSortedTotals(totalsArray);
     setSortedRowsTotals(payload);
   };

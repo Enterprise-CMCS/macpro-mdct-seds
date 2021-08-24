@@ -40,9 +40,10 @@ custom:
   FormQuestionsTableStreamArn: ${cf:database-${self:custom.stage}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
   FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
   FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
+  FormsTableStreamArn: ${cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
   FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
-  FormsTableStreamArn: ${cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
+  FormTemplatesTableStreamArn: ${cf:database-${self:custom.stage}.FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
   StateTableStreamArn: ${cf:database-${self:custom.stage}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
@@ -139,6 +140,7 @@ provider:
     AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
     AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+    SteamVersion:  ".v0"
 
 functions:
   loadData:
@@ -156,43 +158,43 @@ functions:
       - stream:
           type: dynamodb
           arn: ${self:custom.FormAnswersTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.StateFormsTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.FormQuestionsTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.FormsTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.StateTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.StatusTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
           arn: ${self:custom.AuthUserTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
@@ -216,7 +218,13 @@ functions:
       - stream:
           type: dynamodb
           arn: ${self:custom.AgeRangesTableStreamArn}
-          startingPosition: LATEST
+          startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.FormTemplatesTableStreamArn}
+          startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
     role: LambdaApiRole
@@ -345,12 +353,12 @@ functions:
           cors: true
           authorizer: aws_iam
   getStateFormList:
-    handler: handlers/forms/getFormsList.main
+    handler: handlers/forms/post/obtainFormsList.main
     role: LambdaApiRole
     events:
       - http:
-          path: forms/{stateId}/{specifiedYear}/{quarter}
-          method: get
+          path: forms/obtain-state-forms
+          method: post
           cors: true
           authorizer: aws_iam
   updateStateFormList:
@@ -573,6 +581,7 @@ resources:
                     - ${self:custom.AuthUserRolesTableStreamArn}
                     - ${self:custom.AuthJobCodesTableStreamArn}
                     - ${self:custom.AuthUserStatesTableStreamArn}
+                    - ${self:custom.FormTemplatesTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
                     #- ${self:custom.AuthUserRolesTableArn}
