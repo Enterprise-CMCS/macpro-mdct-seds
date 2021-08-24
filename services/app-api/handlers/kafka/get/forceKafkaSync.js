@@ -101,6 +101,7 @@ export const main = handler(async (event, context) => {
             }
             catch (e) {
                 console.error(`BatchWrite failed with exception ${e}`);
+                throw e;
             }
         }
     }
