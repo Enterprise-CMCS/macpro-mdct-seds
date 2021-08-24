@@ -68,8 +68,6 @@ const batchWrite = async (tableName, items) => {
 };
 
 export const main = handler(async (event, context) => {
-    if (event.source === "serverless-plugin-warmup") return null;
-
     const syncDateTime = new Date().toISOString();
 
     for (const tableName of tableNames) {
@@ -93,7 +91,7 @@ export const main = handler(async (event, context) => {
                  console.error(`Database scan failed for the table ${tableName}
                      with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
                      Error: ${err}`);
-                continue;
+                throw err;
             }
 
             // Add lastSynced date time field

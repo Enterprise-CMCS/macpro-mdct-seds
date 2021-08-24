@@ -140,12 +140,6 @@ functions:
   ForceKafkaSync:
     handler: handlers/kafka/get/forceKafkaSync.main
     role: LambdaApiRole
-    events:
-      - http:
-          path: load-data/kafka-force-sync
-          method: get
-          cors: true
-          authorizer: aws_iam
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
