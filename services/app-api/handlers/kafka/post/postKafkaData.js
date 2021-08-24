@@ -1,63 +1,110 @@
+import AWS from "aws-sdk";
+const { Kafka } = require("kafkajs");
+
+const STAGE = process.env.STAGE;
+const kafka = new Kafka({
+  clientId: `seds-${STAGE}`,
+  brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+  retry: {
+    initialRetryTime: 300,
+    retries: 8,
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+const topicPrefix = "aws.mdct.seds.cdc";
+const version = "v0";
+const topic = (t) => `${topicPrefix}.${t}.${version}`;
+const stringify = (e, prettyPrint) => {
+  if (prettyPrint === true) return JSON.stringify(e, null, 2);
+  return JSON.stringify(e);
+};
+
+const unmarshallOptions = {
+  convertEmptyValues: true,
+  wrapNumbers: true,
+};
+const unmarshall = (r) =>
+  AWS.DynamoDB.Converter.unmarshall(r, unmarshallOptions);
+
+const producer = kafka.producer();
+let connected = false;
+const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
+
+signalTraps.map((type) => {
+  process.removeListener(type, producer.disconnect);
+});
+
+signalTraps.map((type) => {
+  process.once(type, producer.disconnect);
+});
+
+const tables = [
+  "age-ranges",
+  "auth-user",
+  "form-answers",
+  "form-questions",
+  "form-templates",
+  "forms",
+  "state-forms",
+  "states",
+  "status",
+];
+const determineTopicName = (streamARN) => {
+  for (const table of tables) {
+    if (streamARN.includes(`/${STAGE}-${table}/`)) return topic(table);
+  }
+};
+
+const createDynamoPayload = (record) => {
+  const dynamodb = record.dynamodb;
+  const { eventID, eventName } = record;
+  const dynamoRecord = {
+    NewImage: unmarshall(dynamodb.NewImage),
+    OldImage: unmarshall(dynamodb.OldImage),
+    Keys: unmarshall(dynamodb.Keys),
+  };
+  return {
+    key: Object.values(dynamoRecord.Keys).join("#"),
+    value: stringify(dynamoRecord),
+    partition: 0,
+    headers: { eventID: eventID, eventName: eventName },
+  };
+};
+
 exports.handler = async (event) => {
-  const { Kafka } = require("kafkajs");
-  const kafka = new Kafka({
-    clientId: "dynamodb",
-    brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
-    retry: {
-      initialRetryTime: 300,
-      retries: 8,
-    },
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-
-  const producer = kafka.producer();
-  await producer.connect();
-
-  const streamARN = String(event.Records[0].eventSourceARN.toString());
-  let topicName = "aws.mdct.seds.cdc.";
-
-  if (streamARN.includes("age-ranges")) {
-    topicName = topicName + "age-ranges";
-  } else if (streamARN.includes("auth-user")) {
-    topicName = topicName + "auth-user";
-  } else if (streamARN.includes("form-answers")) {
-    topicName = topicName + "form-answers";
-  } else if (streamARN.includes("form-questions")) {
-    topicName = topicName + "form-questions";
-  } else if (streamARN.includes("form-templates")) {
-    topicName = topicName + "form-templates";
-  } else if (streamARN.includes("forms")) {
-    topicName = topicName + "forms";
-  } else if (streamARN.includes("state-forms")) {
-    topicName = topicName + "state-forms";
-  } else if (streamARN.includes("states")) {
-    topicName = topicName + "states";
-  } else if (streamARN.includes("status")) {
-    topicName = topicName + "status";
+  if (!connected) {
+    await producer.connect();
+    connected = true;
   }
+  console.log("Raw event", stringify(event, true));
+  if (event.Records) {
+    let outboundEvents = {};
+    for (const record of event.Records) {
+      const topicName = determineTopicName(
+        String(record.eventSourceARN.toString())
+      );
 
-  console.log("EVENT INFO HERE", event);
-  try {
-    if (event.Records) {
-      for (const record of event.Records) {
-        await producer.send({
+      const dynamoPayload = createDynamoPayload(record);
+
+      //initialize configuration object keyed to topic for quick lookup
+      if (!(outboundEvents[topicName] instanceof Object))
+        outboundEvents[topicName] = {
           topic: topicName,
-          messages: [
-            {
-              key: "key4",
-              value: JSON.stringify(record.dynamodb, null, 2),
-              partition: 0,
-            },
-          ],
-        });
-        console.log("DynamoDB Record: %j", record.dynamodb);
-      }
+          messages: [],
+        };
+
+      //add messages to messages array for corresponding topic
+      outboundEvents[topicName].messages.push(dynamoPayload);
     }
-  } catch (e) {
-    console.log("error:", e);
+
+    const topicMessages = Object.values(outboundEvents);
+    console.log(`Batch configuration: ${stringify(topicMessages, true)}`);
+
+    await producer.sendBatch({ topicMessages });
   }
 
-  return `Successfully processed ${event.Records.length} records.`;
+  console.log(`Successfully processed ${event.Records.length} records.`);
 };
