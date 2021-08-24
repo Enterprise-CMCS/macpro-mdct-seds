@@ -2,6 +2,18 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import chunk from "lodash/chunk";
 
+const tableNames = [
+    process.env.AgeRangesTableName,
+    process.env.FormAnswersTableName,
+    process.env.FormQuestionsTableName,
+    process.env.FormsTableName,
+    process.env.FormTemplatesTableName,
+    process.env.StateFormsTableName,
+    process.env.StatesTableName,
+    process.env.StatusTableName,
+    process.env.AuthUserTableName,
+];
+
 const scanTable = async (
     tableName,
     startingKey,
@@ -56,24 +68,9 @@ const batchWrite = async (tableName, items) => {
     }
 };
 
-const getTableNames = () => {
-    let tableNames = [];
-    tableNames.push(process.env.AgeRangesTableName);
-    tableNames.push(process.env.FormAnswersTableName);
-    tableNames.push(process.env.FormQuestionsTableName);
-    tableNames.push(process.env.FormsTableName);
-    tableNames.push(process.env.FormTemplatesTableName);
-    tableNames.push(process.env.StateFormsTableName);
-    tableNames.push(process.env.StatesTableName);
-    tableNames.push(process.env.StatusTableName);
-    tableNames.push(process.env.AuthUserTableName);
-    return tableNames;
-};
-
 export const main = handler(async (event, context) => {
     if (event.source === "serverless-plugin-warmup") return null;
     const syncDateTime = new Date().toISOString();
-    const tableNames = getTableNames();
 
     for (const tableName of tableNames) {
         console.log(`Starting to scan table ${tableName}`);
@@ -81,7 +78,7 @@ export const main = handler(async (event, context) => {
 
         let keepSearching = true;
         // Looping to perform complete scan of tables due to 1 mb limit per iteration
-        while (keepSearching == true) {
+        while (keepSearching) {
 
             let data;
             try {
@@ -93,8 +90,8 @@ export const main = handler(async (event, context) => {
                     );
             }
             catch (err) {
-                // console.log(`Database scan failed for the table ${tableName}
-                // with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}`);
+                 console.error(`Database scan failed for the table ${tableName}
+                     with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}`);
                 continue;
             }
 
@@ -104,7 +101,7 @@ export const main = handler(async (event, context) => {
                 await batchWrite(tableName, updatedItems);
             }
             catch (e) {
-                console.log(`BatchWrite failed with exception ${e}`);
+                console.error(`BatchWrite failed with exception ${e}`);
             }
         }
     }
