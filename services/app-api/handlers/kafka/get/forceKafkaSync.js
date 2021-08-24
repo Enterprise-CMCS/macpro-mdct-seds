@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-// import chunk from "lodash/chunk";
+import chunk from "lodash/chunk";
 
 const scanTable = async (
     tableName,
@@ -20,60 +20,41 @@ const scanTable = async (
     }
 };
 
-// const batchWrite = async (tableName, items) => {
+const mergeLastSynced =
+    (items, syncDateTime) => items.map(item => ({ ...item, lastSynced: syncDateTime }));
 
-//     const itemChunks = chunk(items, 25);
-//     for (const chunk in itemChunks) {
+const batchWrite = async (tableName, items) => {
+    console.log(`Performing batchwrite for ${items.length}. Table: ${tableName}`);
+    // split items into chunks of 25
+    const itemChunks = chunk(items, 25);
+    console.log(`Items split into ${itemChunks.length} chunks of 25 items`);
+    for (const index in itemChunks) {
+        // Construct the request params for batchWrite
+        const itemArray = itemChunks[index].map(item => {
+            return {
+                PutRequest: {
+                    Item: item
+                }
+            };
+        });
 
-//         const itemArray = chunk.map(item => {
-//             // add item.lastSynced = current time with reqd format
-//             return {
-//                 PutRequest: {
-//                     Item: item
-//                 }
-//             };
-//         });
+        let requestItems = {};
+        requestItems[tableName] = itemArray;
 
-//         let requestItems = {};
-//         requestItems[tableName] = itemArray;
-//         const params = {
-//             RequestItems: requestItems
-//         };
-//         const { UnprocessedItems } = await dynamoDb.batchWrite(params);
-//         // Todo: process UnprocessedItems
-//         let failedItems = [];
-//         for (const item of items) {
-//             const { UnprocessedItems } = await dynamoDb.batchWrite({
-//                 RequestItems: {
-//                     tableName: [
-//                         {
-//                             PutRequest: {
-//                                 Item: item
-//                             }
-//                         }
-//                     ]
-//                 },
-//             });
-//             // If some questions fail to write, add them to a list of failures
-//             if (UnprocessedItems.length) {
-//                 failedItems.push(UnprocessedItems);
-//             }
-//         }
+        const params = {
+            RequestItems: requestItems
+        };
+        console.log('Performing batchWrite...');
+        const { UnprocessedItems } = await dynamoDb.batchWrite(params);
 
-//         // // retry any failed entries
-//         // if (failedItems.length) {
-//         //     const { UnprocessedItems } = await dynamoDb.batchWrite(tableName, {
-//         //         RequestItems: { [questionTableName]: failedItems },
-//         //     });
+        console.log(`BatchWrite ran with ${UnprocessedItems.length ?? 0} numbers of failed record updates`);
 
-//         //     // if some still fail, add them to a list of items to be returned, return status 500
-//         //     if (UnprocessedItems.length) {
-//         //         console.error(
-//         //             `Failed to add all questions from template to question table `
-//         //         );
-//         //     }
-//     }
-// };
+        if ((UnprocessedItems.length ?? 0) > 0) {
+            const keys = UnprocessedItems.map(item => item[Object.keys(item)[0]]);
+            console.log(`Unprocessed records for the table ${tableName} with keys ${keys}`);
+        }
+    }
+};
 
 const getTableNames = () => {
     let tableNames = [];
@@ -88,36 +69,43 @@ const getTableNames = () => {
     tableNames.push(process.env.AuthUserTableName);
     return tableNames;
 };
+
 export const main = handler(async (event, context) => {
     if (event.source === "serverless-plugin-warmup") return null;
-
+    const syncDateTime = new Date().toISOString();
     const tableNames = getTableNames();
-    console.log('-------------------------------------------------------------------');
-    dynamoDb.listTables({}, l => console.log(l));
-    // Todo: Check if all table has a trigger with postKafkaData as part of its name
 
     for (const tableName of tableNames) {
-
+        console.log(`Starting to scan table ${tableName}`);
         let startingKey;
 
         let keepSearching = true;
-
+        // Looping to perform complete scan of tables due to 1 mb limit per iteration
         while (keepSearching == true) {
-            let items = [];
-            [startingKey, keepSearching, items] =
-                await scanTable(
-                    tableName,
-                    startingKey,
-                    keepSearching,
-                );
-            const count = items.length;
-            console.log('item count: ', count, ' last item: ', JSON.stringify(items(count - 1)));
-            // addLastSynced(items);
-            // await batchWrite(tableName, items);
+
+            let data;
+            try {
+                [startingKey, keepSearching, data] =
+                    await scanTable(
+                        tableName,
+                        startingKey,
+                        keepSearching,
+                    );
+            }
+            catch (err) {
+                // console.log(`Database scan failed for the table ${tableName}
+                // with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}`);
+                continue;
+            }
+
+            // Add lastSynced date time field
+            const updatedItems = mergeLastSynced(data.Items, syncDateTime);
+            try {
+                await batchWrite(tableName, updatedItems);
+            }
+            catch (e) {
+                console.log(`BatchWrite failed with exception ${e}`);
+            }
         }
     }
-
-    // const addLastSynced = items => {
-
-    // }
 });
