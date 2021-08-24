@@ -137,9 +137,9 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  # ForceKafkaSync:
-  #   handler: handlers/kafka/get/forceKafkaSync.main
-  #   role: LambdaApiRole
+  ForceKafkaSync:
+    handler: handlers/kafka/get/forceKafkaSync.main
+    role: LambdaApiRole
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
