@@ -46,6 +46,7 @@ export const main = handler(async (event, context) => {
     Item: {
       year: parseInt(data.year),
       template: data.template,
+      lastSynced: new Date().toISOString(),
     },
   };
 
