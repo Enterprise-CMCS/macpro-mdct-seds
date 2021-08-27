@@ -42,19 +42,19 @@ signalTraps.map((type) => {
 });
 
 const tables = [
-    process.env.AgeRangesTableName,
-    process.env.FormAnswersTableName,
-    process.env.FormQuestionsTableName,
-    process.env.FormsTableName,
-    process.env.FormTemplatesTableName,
-    process.env.StateFormsTableName,
-    process.env.StatesTableName,
-    process.env.StatusTableName,
-    process.env.AuthUserTableName,
+  "age-ranges",
+  "auth-user",
+  "form-answers",
+  "form-questions",
+  "form-templates",
+  "forms",
+  "state-forms",
+  "states",
+  "status",
 ];
 const determineTopicName = (streamARN) => {
   for (const table of tables) {
-    if (streamARN.includes(`/${table}/`)) return topic(table);
+    if (streamARN.includes(`/${STAGE}-${table}/`)) return topic(table);
   }
 };
 
