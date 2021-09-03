@@ -4,12 +4,7 @@ import { connect } from "react-redux";
 import "./SynthesizedGrid.scss";
 import { Table } from "@trussworks/react-uswds";
 
-export const SynthesizedGrid = ({
-  entireForm,
-  range
-}) => {
-
-
+export const SynthesizedGrid = ({ entireForm, range }) => {
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
   let tabAnswers = entireForm.answers.filter(
@@ -28,42 +23,133 @@ export const SynthesizedGrid = ({
     return true;
   });
 
-  let numOr0 = n => isNaN(n) ? 0 : n
+  let numOr0 = n => (isNaN(n) ? 0 : n);
 
-  let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let firstRowQ1Total = Object.values(q1arry[0].rows[1]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let firstRowQ5Total = (isFinite(firstRowQ4Total / firstRowQ1Total) && (firstRowQ4Total / firstRowQ1Total)) || 0;
+  let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let firstRowQ1Total = Object.values(q1arry[0].rows[1]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let firstRowQ5Total =
+    (isFinite(firstRowQ4Total / firstRowQ1Total) &&
+      firstRowQ4Total / firstRowQ1Total) ||
+    0;
 
-  let secondRowQ4Total = Object.values(q4arry[0].rows[2]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let secondRowQ1Total = Object.values(q1arry[0].rows[2]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let secondRowQ5Total = (isFinite(secondRowQ4Total / secondRowQ1Total) && (secondRowQ4Total / secondRowQ1Total)) || 0;
+  let secondRowQ4Total = Object.values(q4arry[0].rows[2]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let secondRowQ1Total = Object.values(q1arry[0].rows[2]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let secondRowQ5Total =
+    (isFinite(secondRowQ4Total / secondRowQ1Total) &&
+      secondRowQ4Total / secondRowQ1Total) ||
+    0;
 
-  let thirdRowQ4Total = Object.values(q4arry[0].rows[3]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let thirdRowQ1Total = Object.values(q1arry[0].rows[3]).reduce((a, b) => numOr0(a) + numOr0(b));
-  let thirdRowQ5Total = (isFinite(thirdRowQ4Total / thirdRowQ1Total) && (thirdRowQ4Total / thirdRowQ1Total)) || 0;
+  let thirdRowQ4Total = Object.values(q4arry[0].rows[3]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let thirdRowQ1Total = Object.values(q1arry[0].rows[3]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let thirdRowQ5Total =
+    (isFinite(thirdRowQ4Total / thirdRowQ1Total) &&
+      thirdRowQ4Total / thirdRowQ1Total) ||
+    0;
   let fourthRowQ5Total =
-    (isFinite((firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) / (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)) &&
-    (firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) / (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)) || 0;
+    (isFinite(
+      (firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) /
+        (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)
+    ) &&
+      (firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) /
+        (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)) ||
+    0;
 
   let Q5Col1Total =
-    (isFinite((q4arry[0].rows[1].col2 + q4arry[0].rows[2].col2 + q4arry[0].rows[3].col2) / (q1arry[0].rows[1].col2 + q1arry[0].rows[2].col2 + q1arry[0].rows[3].col2)) &&
-    (q4arry[0].rows[1].col2 + q4arry[0].rows[2].col2 + q4arry[0].rows[3].col2) / (q1arry[0].rows[1].col2 + q1arry[0].rows[2].col2 + q1arry[0].rows[3].col2)) || 0;
+    (isFinite(
+      (q4arry[0].rows[1].col2 +
+        q4arry[0].rows[2].col2 +
+        q4arry[0].rows[3].col2) /
+        (q1arry[0].rows[1].col2 +
+          q1arry[0].rows[2].col2 +
+          q1arry[0].rows[3].col2)
+    ) &&
+      (q4arry[0].rows[1].col2 +
+        q4arry[0].rows[2].col2 +
+        q4arry[0].rows[3].col2) /
+        (q1arry[0].rows[1].col2 +
+          q1arry[0].rows[2].col2 +
+          q1arry[0].rows[3].col2)) ||
+    0;
 
   let Q5Col2Total =
-    (isFinite((q4arry[0].rows[1].col3 + q4arry[0].rows[2].col3 + q4arry[0].rows[3].col3) / (q1arry[0].rows[1].col3 + q1arry[0].rows[2].col3 + q1arry[0].rows[3].col3)) &&
-    (q4arry[0].rows[1].col3 + q4arry[0].rows[2].col3 + q4arry[0].rows[3].col3) / (q1arry[0].rows[1].col3 + q1arry[0].rows[2].col3 + q1arry[0].rows[3].col3)) || 0;
+    (isFinite(
+      (q4arry[0].rows[1].col3 +
+        q4arry[0].rows[2].col3 +
+        q4arry[0].rows[3].col3) /
+        (q1arry[0].rows[1].col3 +
+          q1arry[0].rows[2].col3 +
+          q1arry[0].rows[3].col3)
+    ) &&
+      (q4arry[0].rows[1].col3 +
+        q4arry[0].rows[2].col3 +
+        q4arry[0].rows[3].col3) /
+        (q1arry[0].rows[1].col3 +
+          q1arry[0].rows[2].col3 +
+          q1arry[0].rows[3].col3)) ||
+    0;
 
   let Q5Col3Total =
-    (isFinite((q4arry[0].rows[1].col4 + q4arry[0].rows[2].col4 + q4arry[0].rows[3].col4) / (q1arry[0].rows[1].col4 + q1arry[0].rows[2].col4 + q1arry[0].rows[3].col4)) &&
-    (q4arry[0].rows[1].col4 + q4arry[0].rows[2].col4 + q4arry[0].rows[3].col4) / (q1arry[0].rows[1].col4 + q1arry[0].rows[2].col4 + q1arry[0].rows[3].col4)) || 0;
+    (isFinite(
+      (q4arry[0].rows[1].col4 +
+        q4arry[0].rows[2].col4 +
+        q4arry[0].rows[3].col4) /
+        (q1arry[0].rows[1].col4 +
+          q1arry[0].rows[2].col4 +
+          q1arry[0].rows[3].col4)
+    ) &&
+      (q4arry[0].rows[1].col4 +
+        q4arry[0].rows[2].col4 +
+        q4arry[0].rows[3].col4) /
+        (q1arry[0].rows[1].col4 +
+          q1arry[0].rows[2].col4 +
+          q1arry[0].rows[3].col4)) ||
+    0;
 
   let Q5Col4Total =
-    (isFinite((q4arry[0].rows[1].col5 + q4arry[0].rows[2].col5 + q4arry[0].rows[3].col5) / (q1arry[0].rows[1].col5 + q1arry[0].rows[2].col5 + q1arry[0].rows[3].col5)) &&
-    (q4arry[0].rows[1].col5 + q4arry[0].rows[2].col5 + q4arry[0].rows[3].col5) / (q1arry[0].rows[1].col5 + q1arry[0].rows[2].col5 + q1arry[0].rows[3].col5)) || 0;
+    (isFinite(
+      (q4arry[0].rows[1].col5 +
+        q4arry[0].rows[2].col5 +
+        q4arry[0].rows[3].col5) /
+        (q1arry[0].rows[1].col5 +
+          q1arry[0].rows[2].col5 +
+          q1arry[0].rows[3].col5)
+    ) &&
+      (q4arry[0].rows[1].col5 +
+        q4arry[0].rows[2].col5 +
+        q4arry[0].rows[3].col5) /
+        (q1arry[0].rows[1].col5 +
+          q1arry[0].rows[2].col5 +
+          q1arry[0].rows[3].col5)) ||
+    0;
 
   let Q5Col5Total =
-    (isFinite((q4arry[0].rows[1].col6 + q4arry[0].rows[2].col6 + q4arry[0].rows[3].col6) / (q1arry[0].rows[1].col6 + q1arry[0].rows[2].col6 + q1arry[0].rows[3].col6)) &&
-    (q4arry[0].rows[1].col6 + q4arry[0].rows[2].col6 + q4arry[0].rows[3].col6) / (q1arry[0].rows[1].col6 + q1arry[0].rows[2].col6 + q1arry[0].rows[3].col6)) || 0;
+    (isFinite(
+      (q4arry[0].rows[1].col6 +
+        q4arry[0].rows[2].col6 +
+        q4arry[0].rows[3].col6) /
+        (q1arry[0].rows[1].col6 +
+          q1arry[0].rows[2].col6 +
+          q1arry[0].rows[3].col6)
+    ) &&
+      (q4arry[0].rows[1].col6 +
+        q4arry[0].rows[2].col6 +
+        q4arry[0].rows[3].col6) /
+        (q1arry[0].rows[1].col6 +
+          q1arry[0].rows[2].col6 +
+          q1arry[0].rows[3].col6)) ||
+    0;
 
   return (
     <div className="grid-with-totals">
@@ -81,29 +167,89 @@ export const SynthesizedGrid = ({
         </thead>
         <tr>
           <th>A. Fee-for-Service</th>
-          <td>{(isFinite(q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2) && (q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3) && (q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4) && (q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5) && (q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6) && (q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6).toFixed(1)) || 0}</td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2) &&
+              (q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3) &&
+              (q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4) &&
+              (q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5) &&
+              (q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6) &&
+              (q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6).toFixed(1)) ||
+              0}
+          </td>
           <td className="total-column">{firstRowQ5Total.toFixed(2)}</td>
         </tr>
         <tr>
-          <th>B. Managed Care Arrangements	</th>
-          <td>{(isFinite(q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2) && (q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3) && (q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4) && (q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5) && (q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6) && (q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6).toFixed(1)) || 0}</td>
+          <th>B. Managed Care Arrangements </th>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2) &&
+              (q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3) &&
+              (q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4) &&
+              (q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5) &&
+              (q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6) &&
+              (q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6).toFixed(1)) ||
+              0}
+          </td>
           <td className="total-column">{secondRowQ5Total.toFixed(2)}</td>
         </tr>
         <tr>
-          <th>C. Primary Care Case Management	</th>
-          <td>{(isFinite(q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2) && (q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3) && (q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4) && (q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5) && (q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5).toFixed(1)) || 0}</td>
-          <td>{(isFinite(q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6) && (q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6).toFixed(1)) || 0}</td>
+          <th>C. Primary Care Case Management </th>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2) &&
+              (q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3) &&
+              (q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4) &&
+              (q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5) &&
+              (q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6) &&
+              (q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6).toFixed(1)) ||
+              0}
+          </td>
           <td className="total-column">{thirdRowQ5Total.toFixed(2)}</td>
         </tr>
         <tr className="total-row">
