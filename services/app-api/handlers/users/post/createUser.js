@@ -69,6 +69,7 @@ export const main = handler(async (event, context) => {
       username: data.username,
       usernameSub: data.sub,
       lastLogin: data.lastLogin ? data.lastLogin : "",
+      lastSynced: new Date().toISOString(),
     },
   };
 
