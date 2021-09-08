@@ -55,7 +55,16 @@ custom:
   AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
   AuthUserTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
+  AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
+  AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+  AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
+  AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+  AuthJobCodesTableStreamArn: ${cf:database-${self:custom.stage}.AuthJobCodesTableStreamArn, cf:database-master.AuthJobCodesTableStreamArn}
+  AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
+  AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+  AuthUserStatesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
+  AuthUserRolesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
   webAclName: ${self:service}-${self:custom.stage}-webacl
@@ -125,6 +134,12 @@ provider:
     StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
     AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
     AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
+    AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
+    AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+    AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
+    AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+    AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
+    AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
     SteamVersion: ".v0"
 
 functions:
@@ -185,6 +200,24 @@ functions:
           type: dynamodb
           arn: ${self:custom.AuthUserTableStreamArn}
           startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthJobCodesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserStatesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserRolesTableStreamArn}
+          startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
@@ -392,33 +425,6 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-  getAgeRanges:
-    handler: handlers/age-ranges/get/getAgeRanges.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: age-ranges
-          method: get
-          cors: true
-          authorizer: aws_iam
-  getStates:
-    handler: handlers/states/get/getStates.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: states
-          method: get
-          cors: true
-          authorizer: aws_iam
-  getStatuses:
-    handler: handlers/statuses/get/getStatuses.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: statuses
-          method: get
-          cors: true
-          authorizer: aws_iam
   uncertified:
     handler: handlers/notification/uncertified.main
     role: LambdaApiRole
@@ -560,6 +566,9 @@ resources:
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
+                    - ${self:custom.AuthUserRolesTableArn}
+                    - ${self:custom.AuthJobCodesTableArn}
+                    - ${self:custom.AuthUserStatesTableArn}
                     - ${self:custom.FormTemplatesTableArn}
                 - Effect: "Allow"
                   Action:
@@ -577,6 +586,9 @@ resources:
                     - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
+                    - ${self:custom.AuthUserRolesTableStreamArn}
+                    - ${self:custom.AuthJobCodesTableStreamArn}
+                    - ${self:custom.AuthUserStatesTableStreamArn}
                     - ${self:custom.FormTemplatesTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
