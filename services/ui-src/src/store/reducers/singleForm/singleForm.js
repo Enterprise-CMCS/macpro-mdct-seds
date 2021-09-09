@@ -1,7 +1,7 @@
 // PACKAGES
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
-import { generateDateForDB } from '../../../utility-functions/transformFunctions'
+import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
 // HELPER FUNCTIONS
 import {

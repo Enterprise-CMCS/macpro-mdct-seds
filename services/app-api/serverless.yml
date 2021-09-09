@@ -140,7 +140,7 @@ provider:
     AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
     AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
-    SteamVersion:  ".v0"
+    SteamVersion: ".v0"
 
 functions:
   loadData:
@@ -152,6 +152,11 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  ForceKafkaSync:
+    handler: handlers/kafka/get/forceKafkaSync.main
+    role: LambdaApiRole
+    timeout: 900
+    memorySize: 3072
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
     events:
@@ -230,7 +235,10 @@ functions:
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
     maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
     vpc:
       securityGroupIds:
         - Ref: KafkaSecurityGroup

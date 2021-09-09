@@ -272,6 +272,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
+
         KeySchema:
           - AttributeName: userId
             KeyType: HASH

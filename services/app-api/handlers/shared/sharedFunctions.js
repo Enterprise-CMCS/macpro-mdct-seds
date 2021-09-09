@@ -431,6 +431,7 @@ export async function createFormTemplate(year, questions) {
     Item: {
       year: parseInt(year),
       template: validatedJSON,
+      lastSynced: new Date().toISOString(),
     },
   };
 

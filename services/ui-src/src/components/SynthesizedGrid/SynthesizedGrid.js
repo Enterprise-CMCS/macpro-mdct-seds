@@ -1,188 +1,272 @@
-import React, { useEffect, useState } from "react";
-import GridWithTotals from "../GridWithTotals/GridWithTotals";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./SynthesizedGrid.scss";
-import {
-  selectRowColumnValueFromArray,
-  selectColumnValuesFromArray,
-  selectRowValuesFromArray
-} from "../../utility-functions/jsonPath";
-import { sortQuestionColumns } from "../../utility-functions/sortingFunctions";
+import { Table } from "@trussworks/react-uswds";
 
-export const SynthesizedGrid = ({
-  entireForm,
-  questionID,
-  gridData,
-  range
-}) => {
-  const [sortedRows, setSortedRows] = useState([]);
-  const [sortedTotals, setSortedTotals] = useState([]);
-  const [sortedRowsTotals, setSortedRowsTotals] = useState([]);
-
-  useEffect(() => {
-    updateSynthesizedGrid();
-  }, [entireForm]); // eslint-disable-line react-hooks/exhaustive-deps
-
+export const SynthesizedGrid = ({ entireForm, range }) => {
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
   let tabAnswers = entireForm.answers.filter(
     element => element.rangeId === range
   );
   // Retrieve question 4 answer data for the current tab
-  let q4arry = tabAnswers.filter(e => e.answer_entry.includes("-04"));
+  let q4arry = tabAnswers.filter(e => e.question.includes("-04"));
   q4arry.map(e => {
     answer_arr.push(e.rows);
     return true;
   });
 
-  useEffect(() => {
-    updateSynthesizedTotals();
-  }, [answer_arr[0]]); // eslint-disable-line react-hooks/exhaustive-deps
+  let q1arry = tabAnswers.filter(e => e.question.includes("-01"));
+  q1arry.map(e => {
+    answer_arr.push(e.rows);
+    return true;
+  });
 
-  // This function updates the grid based on the answers present in redux
-  // Its triggered in this component's useEffect and passed to <GridWithTotals/> as a callback as well
-  const updateSynthesizedGrid = () => {
-    //  Map through the sorted rows for this specific question
-    let calculatedRows = gridData.map(singleRow => {
-      // build a new object for each row
-      const accumulator = {};
+  let numOr0 = n => (isNaN(n) ? 0 : n);
 
-      // The first row remains the same
-      if (singleRow["col1"] === "") {
-        return singleRow;
-      } else {
-        // Map through each row object, copying keys and calculating values
-        Object.keys(singleRow).forEach(element => {
-          if (element === "col1") {
-            accumulator[element] = singleRow[element];
-          } else {
-            accumulator[element] = calculateValue(
-              singleRow[element][0],
-              tabAnswers
-            );
-          }
-        });
-        return accumulator;
-      }
-    });
+  let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let firstRowQ1Total = Object.values(q1arry[0].rows[1]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let firstRowQ5Total =
+    (isFinite(firstRowQ4Total / firstRowQ1Total) &&
+      firstRowQ4Total / firstRowQ1Total) ||
+    0;
 
-    // Set the calculated grid data to local state to be passed down as a prop to <GridWithTotals/>
-    setSortedRows(sortQuestionColumns(calculatedRows));
-  };
+  let secondRowQ4Total = Object.values(q4arry[0].rows[2]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let secondRowQ1Total = Object.values(q1arry[0].rows[2]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let secondRowQ5Total =
+    (isFinite(secondRowQ4Total / secondRowQ1Total) &&
+      secondRowQ4Total / secondRowQ1Total) ||
+    0;
 
-  const updateSynthesizedTotals = () => {
-    let payload = [];
-    let calculatedSynthesizedTotals = gridData.map(singleRow => {
-      // build a new object for each row
-      const accumulator = {};
-      const rowTotals = {};
+  let thirdRowQ4Total = Object.values(q4arry[0].rows[3]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let thirdRowQ1Total = Object.values(q1arry[0].rows[3]).reduce(
+    (a, b) => numOr0(a) + numOr0(b)
+  );
+  let thirdRowQ5Total =
+    (isFinite(thirdRowQ4Total / thirdRowQ1Total) &&
+      thirdRowQ4Total / thirdRowQ1Total) ||
+    0;
+  let fourthRowQ5Total =
+    (isFinite(
+      (firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) /
+        (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)
+    ) &&
+      (firstRowQ4Total + secondRowQ4Total + thirdRowQ4Total) /
+        (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)) ||
+    0;
 
-      // The first row remains the same
-      if (singleRow["col1"] === "") {
-        return singleRow;
-      } else {
-        // Map through each row object, copying keys and calculating values
-        Object.keys(singleRow).forEach(element => {
-          if (element === "col1") {
-            accumulator[element] = "";
-          } else {
-            accumulator[element] = calculateColumnTotalValue(
-              singleRow[element][0],
-              tabAnswers,
-              element
-            );
-            rowTotals[element] = calculateRowTotalValue(
-              singleRow[element][0],
-              tabAnswers,
-              element
-            );
-          }
-        });
-        payload.push(rowTotals.col2);
-        return accumulator;
-      }
-    });
+  let Q5Col1Total =
+    (isFinite(
+      (q4arry[0].rows[1].col2 +
+        q4arry[0].rows[2].col2 +
+        q4arry[0].rows[3].col2) /
+        (q1arry[0].rows[1].col2 +
+          q1arry[0].rows[2].col2 +
+          q1arry[0].rows[3].col2)
+    ) &&
+      (q4arry[0].rows[1].col2 +
+        q4arry[0].rows[2].col2 +
+        q4arry[0].rows[3].col2) /
+        (q1arry[0].rows[1].col2 +
+          q1arry[0].rows[2].col2 +
+          q1arry[0].rows[3].col2)) ||
+    0;
 
-    // Convert to simple array
-    const totalsArray = Object.values(calculatedSynthesizedTotals[2]);
-    setSortedTotals(totalsArray);
-    setSortedRowsTotals(payload);
-  };
+  let Q5Col2Total =
+    (isFinite(
+      (q4arry[0].rows[1].col3 +
+        q4arry[0].rows[2].col3 +
+        q4arry[0].rows[3].col3) /
+        (q1arry[0].rows[1].col3 +
+          q1arry[0].rows[2].col3 +
+          q1arry[0].rows[3].col3)
+    ) &&
+      (q4arry[0].rows[1].col3 +
+        q4arry[0].rows[2].col3 +
+        q4arry[0].rows[3].col3) /
+        (q1arry[0].rows[1].col3 +
+          q1arry[0].rows[2].col3 +
+          q1arry[0].rows[3].col3)) ||
+    0;
 
-  const calculateValue = (incomingFormula, tabAnswers) => {
-    let returnValue = null;
-    // Incoming Formula is the object that includes a 'target', 'actions' and 'formula'
-    const operands = incomingFormula.targets.map(target => {
-      return selectRowColumnValueFromArray(tabAnswers, target);
-    });
-    // calculates the value based off of the formula <0> / <1>,
-    // This formula is currently hard coded
-    let quotient = operands[0] / operands[1];
+  let Q5Col3Total =
+    (isFinite(
+      (q4arry[0].rows[1].col4 +
+        q4arry[0].rows[2].col4 +
+        q4arry[0].rows[3].col4) /
+        (q1arry[0].rows[1].col4 +
+          q1arry[0].rows[2].col4 +
+          q1arry[0].rows[3].col4)
+    ) &&
+      (q4arry[0].rows[1].col4 +
+        q4arry[0].rows[2].col4 +
+        q4arry[0].rows[3].col4) /
+        (q1arry[0].rows[1].col4 +
+          q1arry[0].rows[2].col4 +
+          q1arry[0].rows[3].col4)) ||
+    0;
 
-    // If the quotient is not a falsy value or infinity, return it. Otherwise, return null
-    if (quotient && quotient !== Infinity) {
-      returnValue = quotient ? quotient : 0;
-    }
+  let Q5Col4Total =
+    (isFinite(
+      (q4arry[0].rows[1].col5 +
+        q4arry[0].rows[2].col5 +
+        q4arry[0].rows[3].col5) /
+        (q1arry[0].rows[1].col5 +
+          q1arry[0].rows[2].col5 +
+          q1arry[0].rows[3].col5)
+    ) &&
+      (q4arry[0].rows[1].col5 +
+        q4arry[0].rows[2].col5 +
+        q4arry[0].rows[3].col5) /
+        (q1arry[0].rows[1].col5 +
+          q1arry[0].rows[2].col5 +
+          q1arry[0].rows[3].col5)) ||
+    0;
 
-    return returnValue;
-  };
-
-  // Add values together, then divide
-  const calculateColumnTotalValue = (incomingFormula, tabAnswers, col) => {
-    let returnValue = null;
-
-    // Use formula to loop through all matching columns in question and accumulate
-    const questionTotal = incomingFormula.targets.map(target => {
-      return selectColumnValuesFromArray(tabAnswers, target);
-    });
-
-    // Use hard coded formula
-    let quotient = questionTotal[0] / questionTotal[1];
-
-    // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
-    if (quotient && quotient !== Infinity) {
-      returnValue = quotient ? quotient : 0;
-    }
-
-    return returnValue;
-  };
-
-  // // Add values together, then divide
-  const calculateRowTotalValue = (incomingFormula, tabAnswers, col) => {
-    let returnValue = null;
-    // Use formula to loop through all matching columns in question and accumulate
-    const questionTotal = incomingFormula.targets.map(target => {
-      return selectRowValuesFromArray(tabAnswers, target);
-    });
-
-    // Use hard coded formula
-    let quotient = questionTotal[0] / questionTotal[1];
-
-    // If the quotient is not a falsy value or infinity, return it. Otherwise, return zero
-    if (quotient && quotient !== Infinity) {
-      returnValue = quotient ? quotient : 0;
-    }
-    return returnValue;
-  };
+  let Q5Col5Total =
+    (isFinite(
+      (q4arry[0].rows[1].col6 +
+        q4arry[0].rows[2].col6 +
+        q4arry[0].rows[3].col6) /
+        (q1arry[0].rows[1].col6 +
+          q1arry[0].rows[2].col6 +
+          q1arry[0].rows[3].col6)
+    ) &&
+      (q4arry[0].rows[1].col6 +
+        q4arry[0].rows[2].col6 +
+        q4arry[0].rows[3].col6) /
+        (q1arry[0].rows[1].col6 +
+          q1arry[0].rows[2].col6 +
+          q1arry[0].rows[3].col6)) ||
+    0;
 
   return (
-    <>
-      <GridWithTotals
-        questionID={questionID}
-        gridData={sortedRows}
-        disabled={true}
-        synthesized={true}
-        precision={1}
-        updateSynthesizedValues={updateSynthesizedGrid}
-        totals={sortedTotals}
-        rowTotals={sortedRowsTotals}
-      />
+    <div className="grid-with-totals">
+      <Table bordered={true} fullWidth={true}>
+        <thead>
+          <tr>
+            <th></th>
+            <th>% of FPL 0-133</th>
+            <th>% of FPL 134-200</th>
+            <th>% of FPL 201-250</th>
+            <th>% of FPL 251-300</th>
+            <th>% of FPL 301-317</th>
+            <th className="total-header-cell">Totals</th>
+          </tr>
+        </thead>
+        <tr>
+          <th>A. Fee-for-Service</th>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2) &&
+              (q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3) &&
+              (q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4) &&
+              (q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5) &&
+              (q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6) &&
+              (q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6).toFixed(1)) ||
+              0}
+          </td>
+          <td className="total-column">{firstRowQ5Total.toFixed(2)}</td>
+        </tr>
+        <tr>
+          <th>B. Managed Care Arrangements </th>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2) &&
+              (q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3) &&
+              (q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4) &&
+              (q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5) &&
+              (q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6) &&
+              (q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6).toFixed(1)) ||
+              0}
+          </td>
+          <td className="total-column">{secondRowQ5Total.toFixed(2)}</td>
+        </tr>
+        <tr>
+          <th>C. Primary Care Case Management </th>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2) &&
+              (q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3) &&
+              (q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4) &&
+              (q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5) &&
+              (q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5).toFixed(1)) ||
+              0}
+          </td>
+          <td>
+            {(isFinite(q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6) &&
+              (q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6).toFixed(1)) ||
+              0}
+          </td>
+          <td className="total-column">{thirdRowQ5Total.toFixed(2)}</td>
+        </tr>
+        <tr className="total-row">
+          <th className="total-header-cell">Totals:</th>
+          <td className="total-column">{Q5Col1Total.toFixed(2)}</td>
+          <td className="total-column">{Q5Col2Total.toFixed(2)}</td>
+          <td className="total-column">{Q5Col3Total.toFixed(2)}</td>
+          <td className="total-column">{Q5Col4Total.toFixed(2)}</td>
+          <td className="total-column">{Q5Col5Total.toFixed(2)}</td>
+          <td className="total-column">{fourthRowQ5Total.toFixed(2)}</td>
+        </tr>
+      </Table>
       <div className="disclaimer">
         {" "}
         Values will not appear until source data is provided
       </div>
-    </>
+    </div>
   );
 };
 
