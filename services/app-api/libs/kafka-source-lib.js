@@ -30,7 +30,7 @@ exports.config = {
   ],
   determineTopicName: (streamARN) => {
     for (const table of exports.config.tables) {
-      if (streamARN.includes(`/${STAGE}-${table}/`)) return topic(table);
+      if (streamARN.includes(`/${STAGE}-${table}/`)) return exports.config.topic(table);
     }
   },
   unmarshallOptions: {
@@ -83,7 +83,7 @@ exports.handler = async (event) => {
   if (event.Records) {
     let outboundEvents = {};
     for (const record of event.Records) {
-      const topicName = determineTopicName(
+      const topicName = exports.config.determineTopicName(
         String(record.eventSourceARN.toString())
       );
 
