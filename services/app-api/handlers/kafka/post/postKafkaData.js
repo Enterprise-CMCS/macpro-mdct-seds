@@ -16,6 +16,6 @@ const config = {
   ],
 };
 
-kafakLib.config = { ...kafkaLib.config, ...config };
+kafkaLib.config = { ...kafkaLib.config, ...config };
 
 exports.handler = kafkaLib.handler;
