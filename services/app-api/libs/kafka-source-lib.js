@@ -106,6 +106,7 @@ class KafkaSourceLib {
       //add messages to messages array for corresponding topic
       outboundEvents[topicName].messages.push(dynamoPayload);
     }
+    return outboundEvents;
   }
 
   async handler(event) {
