@@ -87,11 +87,15 @@ class KafkaSourceLib {
     }
   }
 
-  async handler(event) {
+  async handleConnect() {
     if (!connected) {
       await producer.connect();
       connected = true;
     }
+  }
+
+  async handler(event) {
+    this.handleConnect();
     console.log("Raw event", this.stringify(event, true));
 
     if (event.Records) {
