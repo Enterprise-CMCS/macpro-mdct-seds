@@ -94,29 +94,33 @@ class KafkaSourceLib {
     }
   }
 
+  createOutboundEvents(records) {
+    let outboundEvents = {};
+    for (const record of records) {
+      const topicName = this.determineTopicName(
+        String(record.eventSourceARN.toString())
+      );
+
+      const dynamoPayload = this.createPayload(record);
+
+      //initialize configuration object keyed to topic for quick lookup
+      if (!(outboundEvents[topicName] instanceof Object))
+        outboundEvents[topicName] = {
+          topic: topicName,
+          messages: [],
+        };
+
+      //add messages to messages array for corresponding topic
+      outboundEvents[topicName].messages.push(dynamoPayload);
+    }
+  }
+
   async handler(event) {
     this.handleConnect();
     console.log("Raw event", this.stringify(event, true));
 
     if (event.Records) {
-      let outboundEvents = {};
-      for (const record of event.Records) {
-        const topicName = this.determineTopicName(
-          String(record.eventSourceARN.toString())
-        );
-
-        const dynamoPayload = this.createPayload(record);
-
-        //initialize configuration object keyed to topic for quick lookup
-        if (!(outboundEvents[topicName] instanceof Object))
-          outboundEvents[topicName] = {
-            topic: topicName,
-            messages: [],
-          };
-
-        //add messages to messages array for corresponding topic
-        outboundEvents[topicName].messages.push(dynamoPayload);
-      }
+      const outboundEvents = this.createOutboundEvents(event.Records);
 
       const topicMessages = Object.values(outboundEvents);
       console.log(
