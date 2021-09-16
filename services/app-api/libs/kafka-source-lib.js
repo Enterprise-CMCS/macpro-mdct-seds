@@ -87,13 +87,6 @@ class KafkaSourceLib {
     }
   }
 
-  async handleConnect() {
-    if (!connected) {
-      await producer.connect();
-      connected = true;
-    }
-  }
-
   createOutboundEvents(records) {
     let outboundEvents = {};
     for (const record of records) {
@@ -116,7 +109,10 @@ class KafkaSourceLib {
   }
 
   async handler(event) {
-    this.handleConnect();
+    if (!connected) {
+      await producer.connect();
+      connected = true;
+    }
     console.log("Raw event", this.stringify(event, true));
 
     if (event.Records) {
