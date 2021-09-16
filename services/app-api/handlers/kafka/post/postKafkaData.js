@@ -1,9 +1,9 @@
-import kafkaLib from "../../../libs/kafka-source-lib";
+import KafkaSourceLib from "../../../libs/kafka-source-lib";
 
-const config = {
-  topicPrefix: "aws.mdct.seds.cdc",
-  version: "v0",
-  tables: [
+class PostKafkaData extends KafkaSourceLib {
+  topicPrefix = "aws.mdct.seds.cdc";
+  version = "v0";
+  tables = [
     "age-ranges",
     "auth-user",
     "form-answers",
@@ -13,9 +13,9 @@ const config = {
     "state-forms",
     "states",
     "status",
-  ],
-};
+  ];
+}
 
-kafkaLib.config = { ...kafkaLib.config, ...config };
+const postKafkaData = new PostKafkaData();
 
-exports.handler = kafkaLib.handler;
+exports.handler = postKafkaData.handler.bind(postKafkaData);
