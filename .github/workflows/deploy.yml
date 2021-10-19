@@ -89,11 +89,11 @@ jobs:
       #          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
       #          popd
       #          ./test.sh
-       - name: run cypress tests
-         run: |
-          pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-          popd
+    - name: Run Cypress Tests
+      run: |
+        pushd services
+        export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
+        popd
 
           pushd tests/cypress
           if [ "$CI" == "true" ]; then # If we're in a CI system
