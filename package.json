@@ -1,6 +1,5 @@
 {
   "name": "macpro-quickstart-serverless",
-  "type": "module",
   "resolutions": {
     "**/**/lodash": "^4.17.12",
     "minimist": "^1.2.5"
@@ -13,7 +12,9 @@
   },
   "scripts": {
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
-    "smoke": "npm run test --tag smoke"
+    "smoke": "npm run test --tag smoke",
+    "test:cypress": "cd tests/cypress && npm test && cd -",
+    "test:cypress:ci": "cd tests/cypress && npm run test:ci"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,10 @@
     "@types/node": "^14.14.6",
     "@types/yargs": "^15.0.10",
     "chromedriver": ">=88.0.0",
+    "cypress": "^8.5.0",
+    "cypress-cucumber-preprocessor": "^4.3.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-xpath": "^1.6.2",
     "dotenv": "^8.2.0",
     "nightwatch": "^1.5.1",
     "prettier": "2.2.1",
@@ -40,5 +45,8 @@
   "dependencies": {
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "jsonpath": "^1.1.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   }
 }
