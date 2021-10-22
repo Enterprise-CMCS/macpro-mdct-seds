@@ -2,7 +2,7 @@ import React from "react";
 import Dropdown from "react-dropdown";
 import GenerateForms from "./GenerateForms";
 import { Button } from "@trussworks/react-uswds";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 
 describe("Test GenerateForms.js", () => {
   const wrapper = shallow(<GenerateForms />);
@@ -18,6 +18,16 @@ describe("Test GenerateForms.js", () => {
     test("Check that GenerateForms' child react components are being rendered", () => {
       expect(wrapper.find(Dropdown).length).toBe(2);
       expect(wrapper.find(Button).length).toBe(1);
+    });
+
+    test("Check the drop down and button descriptions are accurate", () => {
+      const detailedWrapper = mount(<GenerateForms />);
+      const dropdowns = detailedWrapper.find(Dropdown).children();
+      expect(dropdowns.at(0).text()).toMatch("Select a Year");
+      expect(dropdowns.at(1).text()).toMatch("Select a Quarter");
+
+      const button = detailedWrapper.find(Button).children();
+      expect(button.at(0).text()).toMatch("Generate Forms");
     });
   });
 

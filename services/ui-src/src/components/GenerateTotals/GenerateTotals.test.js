@@ -1,7 +1,7 @@
 import React from "react";
 import GenerateTotals from "./GenerateTotals";
 import { Button } from "@trussworks/react-uswds";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 
 describe("Test GenerateTotals.js", () => {
   const wrapper = shallow(<GenerateTotals />);
@@ -9,6 +9,13 @@ describe("Test GenerateTotals.js", () => {
   test("Check the main div, with classname generate-forms-container and its child exist", () => {
     expect(wrapper.find(".generate-totals-container").length).toBe(1);
     expect(wrapper.find(Button).length).toBe(1);
+  });
+
+  test("Check the button descriptions are accurate", () => {
+    const detailedWrapper = mount(<GenerateTotals />);
+    const button = detailedWrapper.find(Button).children();
+
+    expect(button.at(0).text()).toMatch("Generate Enrollment Totals");
   });
 
   describe("GenerateTotals component should behave as expected when the user submits", () => {
