@@ -21,7 +21,7 @@ describe("Test GenerateTotals.js", () => {
   });
 
   describe("GenerateTotals component should behave as expected when the user submits", () => {
-    test("Check that the generate forms button correctly calls the generateForms method with error message", () => {
+    test("Check that the generate forms button correctly calls the generateTotals method with a confirmation", () => {
       jest.spyOn(window, "confirm").mockImplementation(() => {});
 
       expect(window.confirm).not.toHaveBeenCalled();
