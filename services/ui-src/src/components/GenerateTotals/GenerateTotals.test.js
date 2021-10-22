@@ -7,7 +7,7 @@ describe("Test GenerateTotals.js", () => {
   const wrapper = shallow(<GenerateTotals />);
 
   describe("GenerateTotals component should render its child components ", () => {
-    test("Check the main div, with classname generate-forms-container and its child exist", () => {
+    test("Check the main div, with classname generate-forms-container and its children exist", () => {
       expect(wrapper.find(".generate-totals-container").length).toBe(1);
       expect(wrapper.find(Button).length).toBe(1);
     });
@@ -20,7 +20,7 @@ describe("Test GenerateTotals.js", () => {
     });
   });
 
-  describe("GenerateTotals component should behave as expected when the user submits", () => {
+  describe("GenerateTotals component should correctly submit", () => {
     test("Check that the generate forms button correctly calls the generateTotals method with a confirmation", () => {
       jest.spyOn(window, "confirm").mockImplementation(() => {});
 

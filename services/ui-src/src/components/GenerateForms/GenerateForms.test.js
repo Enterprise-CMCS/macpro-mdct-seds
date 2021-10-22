@@ -32,7 +32,7 @@ describe("Test GenerateForms.js", () => {
   });
 
   describe("GenerateForms component should behave as expected when the user interacts with the page", () => {
-    test("Check that the generate forms button correctly calls the generateForms method with error message", () => {
+    test("Generating Forms should error if the user has not selected a year and quarter", () => {
       jest.spyOn(window, "alert").mockImplementation(() => {});
 
       expect(window.alert).not.toHaveBeenCalled();
