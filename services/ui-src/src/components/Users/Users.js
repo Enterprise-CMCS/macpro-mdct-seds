@@ -212,6 +212,7 @@ const Users = () => {
           onClick={() => handleAddNewUser()}
           className="action-button"
           primary="true"
+          data-testid="HandleAddNewUser"
         >
           Add New User
           <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
