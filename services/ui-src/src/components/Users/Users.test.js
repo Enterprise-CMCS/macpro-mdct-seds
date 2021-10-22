@@ -12,18 +12,20 @@ jest.mock("react-router", () => ({
 describe("Test Users.js", () => {
   const wrapper = shallow(<Users />);
 
-  test("Check the main element, with data-testid Users, exists", () => {
-    expect(wrapper.find({ "data-testid": "Users" }).length).toBe(1);
-    expect(wrapper.find(Button).length).toBe(3);
-  });
+  describe("Users component- render should include its children", () => {
+    test("Check the main element, with data-testid Users, exists", () => {
+      expect(wrapper.find({ "data-testid": "Users" }).length).toBe(1);
+      expect(wrapper.find(Button).length).toBe(3);
+    });
 
-  test("Check the buttons descriptions are accurate", () => {
-    const detailedWrapper = mount(<Users />);
-    const button = detailedWrapper.find(Button).children();
+    test("Check the buttons descriptions are accurate", () => {
+      const detailedWrapper = mount(<Users />);
+      const button = detailedWrapper.find(Button).children();
 
-    expect(button.at(0).text()).toMatch("Add New User");
-    expect(button.at(1).text()).toMatch("Excel");
-    expect(button.at(2).text()).toMatch("PDF");
+      expect(button.at(0).text()).toMatch("Add New User");
+      expect(button.at(1).text()).toMatch("Excel");
+      expect(button.at(2).text()).toMatch("PDF");
+    });
   });
 
   describe("Users component should behave as expected when the user submits", () => {

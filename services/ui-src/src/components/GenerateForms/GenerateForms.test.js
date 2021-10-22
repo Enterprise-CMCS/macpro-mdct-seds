@@ -7,7 +7,7 @@ import { mount, shallow } from "enzyme";
 describe("Test GenerateForms.js", () => {
   const wrapper = shallow(<GenerateForms />);
 
-  describe("GenerateForms component- shallow render should include its children", () => {
+  describe("GenerateForms component- render should include its children", () => {
     test("Check the main div, with classname generate-forms-container, exists", () => {
       expect(wrapper.find(".generate-forms-container").length).toBe(1);
       expect(
