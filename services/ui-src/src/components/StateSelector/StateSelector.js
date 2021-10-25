@@ -96,7 +96,7 @@ const StateSelector = ({ stateList }) => {
             <Button
               type="button"
               className="form-button"
-              data-testid="SaveUpdatedUser"
+              data-testid="saveUpdatedUser"
               onClick={() => {
                 saveUpdatedUser();
               }}

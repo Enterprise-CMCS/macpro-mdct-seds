@@ -38,7 +38,7 @@ describe("StateSelector component", () => {
       jest.spyOn(window, "alert").mockImplementation(() => {});
 
       expect(window.alert).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "SaveUpdatedUser" }).simulate("click");
+      wrapper.find({ "data-testid": "saveUpdatedUser" }).simulate("click");
       expect(window.alert).toBeCalledWith("Please select a state");
     });
   });

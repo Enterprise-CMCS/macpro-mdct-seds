@@ -37,7 +37,7 @@ describe("Test SummaryTab.js", () => {
 
     test("Check that our handleSubmit should error when the user is not authenticated", async () => {
       expect(mockPush).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "HandleSubmit" }).simulate("submit");
+      wrapper.find({ "data-testid": "handleSubmit" }).simulate("submit");
       await expect(Auth.currentAuthenticatedUser()).rejects.toMatch(
         "The user is not authenticated"
       );
