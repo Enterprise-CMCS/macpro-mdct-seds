@@ -56,7 +56,7 @@ const GridWithTotals = props => {
     if (checkQuestion5Summary && checkQuestion5Summary.includes("summary-synthesized")) {
       let sum5Data = translateInitialData(props.gridData);
       sum5Data.map((row, rowIndex) => {
-        if (row !== undefined) {
+        if (row !== undefined && props.questions) {
 
           let q1c1Total =
             props.questions[0].rows[1].col2
@@ -204,7 +204,7 @@ const GridWithTotals = props => {
 
 
       sum5Data.map((row, rowIndex) => {
-        if (row !== undefined) {
+        if (row !== undefined && props.questions) {
           let q1r1 = props.questions[0].rows[1];
           let q4r1 = props.questions[3].rows[1];
 
