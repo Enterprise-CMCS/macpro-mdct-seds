@@ -29,4 +29,9 @@ describe("Test SynthesizedGridSummary.js", () => {
       </Provider>
     );
   });
+
+  test("Rewrite", () => {
+    expect(100).toBeDivisibleBy(2);
+  });
+
 });
