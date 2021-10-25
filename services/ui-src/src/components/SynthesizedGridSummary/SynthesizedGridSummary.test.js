@@ -31,7 +31,7 @@ describe("Test SynthesizedGridSummary.js", () => {
   });
 
   test("Rewrite", () => {
-    expect(100).toBeDivisibleBy(2);
+    expect(1).toBe(1);
   });
 
 });
