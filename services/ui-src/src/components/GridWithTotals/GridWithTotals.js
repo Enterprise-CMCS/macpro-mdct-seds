@@ -143,6 +143,7 @@ const GridWithTotals = props => {
           console.log(gridColumnTotalsCopy);
           updateGridColumnTotals(gridColumnTotalsCopy);
         }
+        return true;
       })
     }
 
