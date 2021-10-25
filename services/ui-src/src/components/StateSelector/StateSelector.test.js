@@ -27,11 +27,8 @@ describe("StateSelector component", () => {
   test("Should render the selection classname", () => {
     expect(wrapper.find(".action-buttons").length).toBe(1);
   });
-  test("Should include a Dropdown component", () => {
-    expect(wrapper.containsMatchingElement(<Dropdown />)).toEqual(true);
-  });
 
-  test("Should included child components thatare rendered", () => {
+  test("Should render child components", () => {
     expect(wrapper.find(Dropdown).length).toBe(1);
     expect(wrapper.find(Button).length).toBe(1);
   });

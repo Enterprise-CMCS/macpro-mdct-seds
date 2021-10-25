@@ -16,7 +16,7 @@ describe("Test SummaryTab.js", () => {
     wrapper = mount(<Profile />);
   });
 
-  describe("Profile component- render should include its children and its correct behavior", () => {
+  describe("Profile component- render should include its children and correct behavior", () => {
     test("Check the main div exists", () => {
       expect(wrapper.find(".Profile").length).toBe(1);
     });
@@ -29,13 +29,13 @@ describe("Test SummaryTab.js", () => {
       expect(wrapper.find("#states").length).toBe(1);
     });
 
-    test("Check that GenerateForms' child react components are being rendered", () => {
+    test("Check that Profiles' child components are being rendered", () => {
       expect(wrapper.find(FormGroup).length).toBe(5);
       expect(wrapper.find(ControlLabel).length).toBe(5);
       expect(wrapper.find(FormControl).length).toBe(5);
     });
 
-    test("Check that our handle submit should error when the user is not authenticated", async () => {
+    test("Check that our handleSubmit should error when the user is not authenticated", async () => {
       expect(mockPush).not.toHaveBeenCalled();
       wrapper.find({ "data-testid": "HandleSubmit" }).simulate("submit");
       await expect(Auth.currentAuthenticatedUser()).rejects.toMatch(
