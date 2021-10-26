@@ -276,9 +276,8 @@ export const main = handler(async (event, context) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;

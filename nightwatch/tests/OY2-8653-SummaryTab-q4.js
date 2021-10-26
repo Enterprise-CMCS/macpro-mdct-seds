@@ -2,7 +2,7 @@ const path = require("path");
 const timeout = 1000;
 
 const mySelector = "//*[@data-testid='textInput']";
-const login = require('./OY2-9998-Login');
+const login = require("./OY2-9998-Login");
 
 module.exports = {
   "@tags": ["smoke", "year", "tag1"],
@@ -41,7 +41,7 @@ module.exports = {
   // },
 
   before: function (browser) {
-    login['Login with user'](browser);
+    login["Login with user"](browser);
   },
   after: function (browser) {
     console.log("Stopping test executions...");
@@ -49,15 +49,13 @@ module.exports = {
     browser.end();
   },
 
-  "Click on year 2021": function (browser){
-
+  "Click on year 2021": function (browser) {
     const tests_data = {
-        year21: {
-          selector: "button[data-testid='accordionButton_2021']",
-        },
-      };
-      browser.click(tests_data.year21.selector).waitForElementPresent("body");
-
+      year21: {
+        selector: "button[data-testid='accordionButton_2021']",
+      },
+    };
+    browser.click(tests_data.year21.selector).waitForElementPresent("body");
   },
 
   "Click on Quarter4": function (browser) {

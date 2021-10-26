@@ -256,9 +256,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[1].col2",
                 "$..[?(@.question=='2020-21E-01')].rows[1].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -268,9 +266,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[1].col3",
                 "$..[?(@.question=='2020-21E-01')].rows[1].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -280,9 +276,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[1].col4",
                 "$..[?(@.question=='2020-21E-01')].rows[1].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -292,9 +286,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[1].col5",
                 "$..[?(@.question=='2020-21E-01')].rows[1].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -304,9 +296,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[1].col6",
                 "$..[?(@.question=='2020-21E-01')].rows[1].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -319,9 +309,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[2].col2",
                 "$..[?(@.question=='2020-21E-01')].rows[2].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -331,9 +319,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[2].col3",
                 "$..[?(@.question=='2020-21E-01')].rows[2].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -343,9 +329,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[2].col4",
                 "$..[?(@.question=='2020-21E-01')].rows[2].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -355,9 +339,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[2].col5",
                 "$..[?(@.question=='2020-21E-01')].rows[2].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -367,9 +349,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[2].col6",
                 "$..[?(@.question=='2020-21E-01')].rows[2].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -382,9 +362,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[3].col2",
                 "$..[?(@.question=='2020-21E-01')].rows[3].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -394,9 +372,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[3].col3",
                 "$..[?(@.question=='2020-21E-01')].rows[3].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -406,9 +382,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[3].col4",
                 "$..[?(@.question=='2020-21E-01')].rows[3].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -418,9 +392,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[3].col5",
                 "$..[?(@.question=='2020-21E-01')].rows[3].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -430,9 +402,7 @@
                 "$..[?(@.question=='2020-21E-04')].rows[3].col6",
                 "$..[?(@.question=='2020-21E-01')].rows[3].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -507,9 +477,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
       "age_ranges": [
@@ -567,9 +535,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [
@@ -627,9 +593,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [
@@ -913,9 +877,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[1].col2",
                 "$..[?(@.question=='2020-21PW-01')].rows[1].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -925,9 +887,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[1].col3",
                 "$..[?(@.question=='2020-21PW-01')].rows[1].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -937,9 +897,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[1].col4",
                 "$..[?(@.question=='2020-21PW-01')].rows[1].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -949,9 +907,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[1].col5",
                 "$..[?(@.question=='2020-21PW-01')].rows[1].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -961,9 +917,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[1].col6",
                 "$..[?(@.question=='2020-21PW-01')].rows[1].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -976,9 +930,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[2].col2",
                 "$..[?(@.question=='2020-21PW-01')].rows[2].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -988,9 +940,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[2].col3",
                 "$..[?(@.question=='2020-21PW-01')].rows[2].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1000,9 +950,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[2].col4",
                 "$..[?(@.question=='2020-21PW-01')].rows[2].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1012,9 +960,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[2].col5",
                 "$..[?(@.question=='2020-21PW-01')].rows[2].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1024,9 +970,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[2].col6",
                 "$..[?(@.question=='2020-21PW-01')].rows[2].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -1039,9 +983,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[3].col2",
                 "$..[?(@.question=='2020-21PW-01')].rows[3].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1051,9 +993,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[3].col3",
                 "$..[?(@.question=='2020-21PW-01')].rows[3].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1063,9 +1003,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[3].col4",
                 "$..[?(@.question=='2020-21PW-01')].rows[3].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1075,9 +1013,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[3].col5",
                 "$..[?(@.question=='2020-21PW-01')].rows[3].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1087,9 +1023,7 @@
                 "$..[?(@.question=='2020-21PW-04')].rows[3].col6",
                 "$..[?(@.question=='2020-21PW-01')].rows[3].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -1160,9 +1094,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of pregnant women ever enrolled during the year?",
       "age_ranges": [
@@ -1216,9 +1148,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of new enrollees during the year?",
       "age_ranges": [
@@ -1272,9 +1202,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of disenrollees during the year?",
       "age_ranges": [
@@ -1569,9 +1497,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[1].col2",
                 "$..[?(@.question=='2020-64.21E-01')].rows[1].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1581,9 +1507,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[1].col3",
                 "$..[?(@.question=='2020-64.21E-01')].rows[1].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1593,9 +1517,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[1].col4",
                 "$..[?(@.question=='2020-64.21E-01')].rows[1].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1605,9 +1527,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[1].col5",
                 "$..[?(@.question=='2020-64.21E-01')].rows[1].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1617,9 +1537,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[1].col6",
                 "$..[?(@.question=='2020-64.21E-01')].rows[1].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -1632,9 +1550,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[2].col2",
                 "$..[?(@.question=='2020-64.21E-01')].rows[2].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1644,9 +1560,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[2].col3",
                 "$..[?(@.question=='2020-64.21E-01')].rows[2].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1656,9 +1570,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[2].col4",
                 "$..[?(@.question=='2020-64.21E-01')].rows[2].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1668,9 +1580,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[2].col5",
                 "$..[?(@.question=='2020-64.21E-01')].rows[2].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1680,9 +1590,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[2].col6",
                 "$..[?(@.question=='2020-64.21E-01')].rows[2].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -1695,9 +1603,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[3].col2",
                 "$..[?(@.question=='2020-64.21E-01')].rows[3].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1707,9 +1613,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[3].col3",
                 "$..[?(@.question=='2020-64.21E-01')].rows[3].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1719,9 +1623,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[3].col4",
                 "$..[?(@.question=='2020-64.21E-01')].rows[3].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1731,9 +1633,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[3].col5",
                 "$..[?(@.question=='2020-64.21E-01')].rows[3].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -1743,9 +1643,7 @@
                 "$..[?(@.question=='2020-64.21E-04')].rows[3].col6",
                 "$..[?(@.question=='2020-64.21E-01')].rows[3].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -1819,9 +1717,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
       "age_ranges": [
@@ -1878,9 +1774,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [
@@ -1937,9 +1831,7 @@
       "row_total": true,
       "column_total": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [
@@ -2237,9 +2129,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[1].col2",
                 "$..[?(@.question=='2020-64.EC-01')].rows[1].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2249,9 +2139,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[1].col3",
                 "$..[?(@.question=='2020-64.EC-01')].rows[1].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2261,9 +2149,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[1].col4",
                 "$..[?(@.question=='2020-64.EC-01')].rows[1].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2273,9 +2159,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[1].col5",
                 "$..[?(@.question=='2020-64.EC-01')].rows[1].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2285,9 +2169,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[1].col6",
                 "$..[?(@.question=='2020-64.EC-01')].rows[1].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -2300,9 +2182,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[2].col2",
                 "$..[?(@.question=='2020-64.EC-01')].rows[2].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2312,9 +2192,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[2].col3",
                 "$..[?(@.question=='2020-64.EC-01')].rows[2].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2324,9 +2202,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[2].col4",
                 "$..[?(@.question=='2020-64.EC-01')].rows[2].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2336,9 +2212,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[2].col5",
                 "$..[?(@.question=='2020-64.EC-01')].rows[2].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2348,9 +2222,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[2].col6",
                 "$..[?(@.question=='2020-64.EC-01')].rows[2].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -2363,9 +2235,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[3].col2",
                 "$..[?(@.question=='2020-64.EC-01')].rows[3].col2"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2375,9 +2245,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[3].col3",
                 "$..[?(@.question=='2020-64.EC-01')].rows[3].col3"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2387,9 +2255,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[3].col4",
                 "$..[?(@.question=='2020-64.EC-01')].rows[3].col4"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2399,9 +2265,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[3].col5",
                 "$..[?(@.question=='2020-64.EC-01')].rows[3].col5"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ],
@@ -2411,9 +2275,7 @@
                 "$..[?(@.question=='2020-64.EC-04')].rows[3].col6",
                 "$..[?(@.question=='2020-64.EC-01')].rows[3].col6"
               ],
-              "actions": [
-                "formula"
-              ],
+              "actions": ["formula"],
               "formula": "<0> / <1>"
             }
           ]
@@ -2486,9 +2348,7 @@
       "rowTotal": true,
       "columnTotal": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
       "age_ranges": [
@@ -2545,9 +2405,7 @@
       "rowTotal": true,
       "columnTotal": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [
@@ -2604,9 +2462,7 @@
       "rowTotal": true,
       "columnTotal": true,
       "context_data": {
-        "show_if_quarter_in": [
-          "4"
-        ]
+        "show_if_quarter_in": ["4"]
       },
       "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
       "age_ranges": [

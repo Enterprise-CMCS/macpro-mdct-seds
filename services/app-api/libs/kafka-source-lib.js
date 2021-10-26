@@ -80,7 +80,7 @@ class KafkaSourceLib {
   }
 
   topic(t) {
-    if(this.version) {
+    if (this.version) {
       return `${this.topicPrefix}.${t}.${this.version}`;
     } else {
       return `${this.topicPrefix}.${t}`;

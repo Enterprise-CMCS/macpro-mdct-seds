@@ -1,6 +1,6 @@
 export class Homepage {
-    launch() {
-        cy.visit("https://google.com");
-    }
+  launch() {
+    cy.visit("https://google.com");
+  }
 }
 export default Homepage;

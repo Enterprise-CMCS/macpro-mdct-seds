@@ -52,6 +52,7 @@ const SummaryTab = ({ questions, answers }) => {
             <SynthesizedGridSummary
               key={`synthesized-${questionNumber}`}
               allAnswers={answers}
+              questions={questions}
               questionID={singleQuestion.question}
               gridData={rowsForGridData.rows}
               label={singleQuestion.label}
