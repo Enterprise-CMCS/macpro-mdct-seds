@@ -205,13 +205,14 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles react-transition fade-in" data-testid="Users">
+    <div className="user-profiles react-transition fade-in" data-testid="users">
       <h1 className="page-header">Users</h1>
       <div className="page-subheader exclude-from-pdf">
         <Button
           onClick={() => handleAddNewUser()}
           className="action-button"
           primary="true"
+          data-testid="handleAddNewUser"
         >
           Add New User
           <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />

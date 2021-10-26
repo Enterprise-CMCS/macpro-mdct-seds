@@ -52,79 +52,205 @@ const GridWithTotals = props => {
     gridColumnTotalsCopy.forEach((part, index, columnTotalsArray) => {
       columnTotalsArray[index] = 0;
     });
+    let checkQuestion5Summary = props.questionID;
+    if (
+      checkQuestion5Summary &&
+      checkQuestion5Summary.includes("summary-synthesized")
+    ) {
+      let sum5Data = translateInitialData(props.gridData);
+      sum5Data.map((row, rowIndex) => {
+        if (row !== undefined && props.questions) {
+          let q1c1Total =
+            props.questions[0].rows[1].col2 +
+            props.questions[0].rows[2].col2 +
+            props.questions[0].rows[3].col2;
 
-    gridData.map((row, rowIndex) => {
-      if (row !== undefined) {
-        row.map((column, columnIndex) => {
-          let currentValue = 0;
+          let q4c1Total =
+            props.questions[3].rows[1].col2 +
+            props.questions[3].rows[2].col2 +
+            props.questions[3].rows[3].col2;
+          ////////////////////////////
 
-          const gridColumnIndex = columnIndex - 1;
+          let q1c2Total =
+            props.questions[0].rows[1].col3 +
+            props.questions[0].rows[2].col3 +
+            props.questions[0].rows[3].col3;
 
-          if (isNaN(column) === false) {
-            currentValue = parseFloat(column);
-          }
+          let q4c2Total =
+            props.questions[3].rows[1].col3 +
+            props.questions[3].rows[2].col3 +
+            props.questions[3].rows[3].col3;
 
-          if (
-            gridColumnTotalsCopy[gridColumnIndex] === undefined ||
-            gridColumnTotalsCopy[gridColumnIndex] === null ||
-            gridColumnTotalsCopy[gridColumnIndex] === ""
-          ) {
-            gridColumnTotalsCopy[gridColumnIndex] = 0;
-          }
+          /////////////////////////////
 
-          // If average totals exist use them
-          if (props.totals) {
-            gridColumnTotalsCopy[gridColumnIndex] =
-              props.totals[gridColumnIndex];
-            // totalOfTotals += props.totals[gridColumnIndex];
-          } else {
-            gridColumnTotalsCopy[gridColumnIndex] += currentValue;
-            // totalOfTotals += currentValue;
-          }
-          totalOfTotals += currentValue;
+          let q1c3Total =
+            props.questions[0].rows[1].col4 +
+            props.questions[0].rows[2].col4 +
+            props.questions[0].rows[3].col4;
 
-          if (synthesized && props.rowTotals) {
-            let sum = sumValues(props.rowTotals);
-            let avg = sum / props.rowTotals.length;
-            totalOfTotals = avg;
-          }
-          return true;
-        });
-      }
-      return true;
-    });
+          let q4c3Total =
+            props.questions[3].rows[1].col4 +
+            props.questions[3].rows[2].col4 +
+            props.questions[3].rows[3].col4;
 
-    updateGridColumnTotals(gridColumnTotalsCopy);
-    updateGridTotalOfTotals(totalOfTotals);
+          /////////////////////////////
+
+          let q1c4Total =
+            props.questions[0].rows[1].col5 +
+            props.questions[0].rows[2].col5 +
+            props.questions[0].rows[3].col5;
+
+          let q4c4Total =
+            props.questions[3].rows[1].col5 +
+            props.questions[3].rows[2].col5 +
+            props.questions[3].rows[3].col5;
+          /////////////////////////////
+
+          let q1c5Total =
+            props.questions[0].rows[1].col6 +
+            props.questions[0].rows[2].col6 +
+            props.questions[0].rows[3].col6;
+
+          let q4c5Total =
+            props.questions[3].rows[1].col6 +
+            props.questions[3].rows[2].col6 +
+            props.questions[3].rows[3].col6;
+
+          gridColumnTotalsCopy[1] = q4c1Total / q1c1Total;
+          gridColumnTotalsCopy[2] = q4c2Total / q1c2Total;
+          gridColumnTotalsCopy[3] = q4c3Total / q1c3Total;
+          gridColumnTotalsCopy[4] = q4c4Total / q1c4Total;
+          gridColumnTotalsCopy[5] = q4c5Total / q1c5Total;
+
+          console.log(gridColumnTotalsCopy);
+          updateGridColumnTotals(gridColumnTotalsCopy);
+        }
+        return true;
+      });
+    } else {
+      gridData.map((row, rowIndex) => {
+        if (row !== undefined) {
+          row.map((column, columnIndex) => {
+            let currentValue = 0;
+
+            const gridColumnIndex = columnIndex - 1;
+
+            if (isNaN(column) === false) {
+              currentValue = parseFloat(column);
+            }
+
+            if (
+              gridColumnTotalsCopy[gridColumnIndex] === undefined ||
+              gridColumnTotalsCopy[gridColumnIndex] === null ||
+              gridColumnTotalsCopy[gridColumnIndex] === ""
+            ) {
+              gridColumnTotalsCopy[gridColumnIndex] = 0;
+            }
+
+            // If average totals exist use them
+            if (props.totals) {
+              gridColumnTotalsCopy[gridColumnIndex] =
+                props.totals[gridColumnIndex];
+              // totalOfTotals += props.totals[gridColumnIndex];
+            } else {
+              gridColumnTotalsCopy[gridColumnIndex] += currentValue;
+              // totalOfTotals += currentValue;
+            }
+            totalOfTotals += currentValue;
+
+            if (synthesized && props.rowTotals) {
+              let sum = sumValues(props.rowTotals);
+              let avg = sum / props.rowTotals.length;
+              totalOfTotals = avg;
+            }
+            return true;
+          });
+        }
+        return true;
+      });
+
+      updateGridColumnTotals(gridColumnTotalsCopy);
+      updateGridTotalOfTotals(totalOfTotals);
+    }
   };
 
   const updateRowTotals = () => {
     let rowTotal = 0;
+    let totalOfTotals = 0;
     let gridRowTotalsCopy = [...gridRowTotals];
+    let checkQuestion5Summary = props.questionID;
+    if (
+      checkQuestion5Summary &&
+      checkQuestion5Summary.includes("summary-synthesized")
+    ) {
+      let sum5Data = translateInitialData(props.gridData);
 
-    gridData.map((row, rowIndex) => {
-      rowTotal = 0;
-      if (row !== undefined) {
-        row.map((column, columnIndex) => {
-          let currentValue = 0;
+      sum5Data.map((row, rowIndex) => {
+        if (row !== undefined && props.questions) {
+          let q1r1 = props.questions[0].rows[1];
+          let q4r1 = props.questions[3].rows[1];
 
-          if (isNaN(column) === false) {
-            currentValue = parseFloat(column);
-          }
-          rowTotal += currentValue;
-          return true;
-        });
-        gridRowTotalsCopy[rowIndex] = rowTotal;
-        if (synthesized && props.rowTotals) {
-          let newIndex = rowIndex - 2;
-          gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
+          let q1r2 = props.questions[0].rows[2];
+          let q4r2 = props.questions[3].rows[2];
+
+          let q1r3 = props.questions[0].rows[3];
+          let q4r3 = props.questions[3].rows[3];
+
+          q1r1.col1 = 0;
+          q4r1.col1 = 0;
+
+          q1r2.col1 = 0;
+          q4r2.col1 = 0;
+
+          q1r3.col1 = 0;
+          q4r3.col1 = 0;
+
+          let q1r1Total = Object.values(q1r1).reduce((a, b) => a + b, 0);
+          let q4r1Total = Object.values(q4r1).reduce((a, b) => a + b, 0);
+
+          let q1r2Total = Object.values(q1r2).reduce((a, b) => a + b, 0);
+          let q4r2Total = Object.values(q4r2).reduce((a, b) => a + b, 0);
+
+          let q1r3Total = Object.values(q1r3).reduce((a, b) => a + b, 0);
+          let q4r3Total = Object.values(q4r3).reduce((a, b) => a + b, 0);
+
+          gridRowTotalsCopy[2] = q4r1Total / q1r1Total;
+          gridRowTotalsCopy[3] = q4r2Total / q1r2Total;
+          gridRowTotalsCopy[4] = q4r3Total / q1r3Total;
+
+          totalOfTotals =
+            (q4r1Total + q4r2Total + q4r3Total) /
+            (q1r1Total + q1r2Total + q1r3Total);
         }
-      }
+        return true;
+      });
+      updateGridTotalOfTotals(totalOfTotals);
+      updateGridRowTotals(gridRowTotalsCopy);
+    } else {
+      gridData.map((row, rowIndex) => {
+        rowTotal = 0;
+        if (row !== undefined) {
+          row.map((column, columnIndex) => {
+            let currentValue = 0;
 
-      return true;
-    });
+            if (isNaN(column) === false) {
+              currentValue = parseFloat(column);
+            }
+            rowTotal += currentValue;
+            return true;
+          });
+          gridRowTotalsCopy[rowIndex] = rowTotal;
+          if (synthesized && props.rowTotals) {
+            let newIndex = rowIndex - 2;
+            gridRowTotalsCopy[rowIndex] = props.rowTotals[newIndex];
+          }
+        }
 
-    updateGridRowTotals(gridRowTotalsCopy);
+        return true;
+      });
+
+      updateGridRowTotals(gridRowTotalsCopy);
+    }
   };
 
   let headerColArray = [];

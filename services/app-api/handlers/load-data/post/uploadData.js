@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
 const uploadData = async (targetTable, dataToUpload) => {
   dataToUpload.forEach((record) => {
     // Updating lastSynced
-    record = {...record, lastSynced: new Date().toISOString()};
+    record = { ...record, lastSynced: new Date().toISOString() };
     console.log("\n\n!!!> loading record:");
     console.log(record);
 
