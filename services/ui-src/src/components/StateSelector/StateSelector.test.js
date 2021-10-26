@@ -3,8 +3,8 @@ import StateSelector from "./StateSelector";
 import { shallow } from "enzyme";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { storeFactory } from "../../provider-mocks/testUtils";
+import { Button } from "@trussworks/react-uswds";
 import Dropdown from "react-dropdown";
-
 // The props this component requires in order to render
 const defaultProps = {
   stateList: fullStoreMock.states
@@ -27,8 +27,20 @@ describe("StateSelector component", () => {
   test("Should render the selection classname", () => {
     expect(wrapper.find(".action-buttons").length).toBe(1);
   });
-  test("Should include a Dropdown component", () => {
-    expect(wrapper.containsMatchingElement(<Dropdown />)).toEqual(true);
+
+  test("Should render child components", () => {
+    expect(wrapper.find(Dropdown).length).toBe(1);
+    expect(wrapper.find(Button).length).toBe(1);
+  });
+
+  describe("StateSelector component should behave as expected when the user interacts with the page", () => {
+    test("should alert user of lack of state selection", () => {
+      jest.spyOn(window, "alert").mockImplementation(() => {});
+
+      expect(window.alert).not.toHaveBeenCalled();
+      wrapper.find({ "data-testid": "saveUpdatedUser" }).simulate("click");
+      expect(window.alert).toBeCalledWith("Please select a state");
+    });
   });
 });
 

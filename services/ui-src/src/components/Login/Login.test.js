@@ -1,14 +1,19 @@
 import React from "react";
+import { Auth } from "aws-amplify";
 import Login from "./Login";
+import LoaderButton from "../LoaderButton/LoaderButton";
 import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 
 let realUseContext;
 let useContextMock;
+let shallowComponent;
 
 // *** set up mocks
 beforeEach(() => {
   realUseContext = React.useContext;
   useContextMock = React.useContext = jest.fn();
+  shallowComponent = shallow(<Login />);
 });
 
 // *** garbage clean up (mocks)
@@ -45,4 +50,27 @@ describe("Test LoaderButton.js", () => {
       expect(formControl.type).toContain("password");
     });
   }
+
+  test("Check that LoaderButtons are rendering", () => {
+    expect(shallowComponent.find(LoaderButton).length).toBe(2);
+  });
+
+  test("Check that our submit button behaves as expected", () => {
+    jest.spyOn(window, "alert").mockImplementation(() => {});
+
+    expect(window.alert).not.toHaveBeenCalled();
+    shallowComponent
+      .find({ "data-testid": "handleSubmitOktaButton" })
+      .simulate("click", {
+        preventDefault: () => {}
+      });
+    expect(window.alert).toHaveBeenCalled();
+  });
+
+  test("Check that our submit behavior to be rejected without login information", async () => {
+    shallowComponent.find({ "data-testid": "loginForm" }).simulate("submit", {
+      preventDefault: () => {}
+    });
+    await expect(Auth.signIn()).rejects.toBeTruthy();
+  });
 });

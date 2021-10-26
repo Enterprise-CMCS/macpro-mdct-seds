@@ -96,7 +96,7 @@ export default function Profile({ user }) {
       <GridContainer className="container">
         <Grid row>
           <Grid col={12}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} data-testid="handleSubmit">
               <FormGroup controlId="email">
                 <ControlLabel>Email</ControlLabel>
                 <FormControl value={email} disabled={true} />

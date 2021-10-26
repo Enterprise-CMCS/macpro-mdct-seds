@@ -14,7 +14,7 @@ describe("Test Users.js", () => {
 
   describe("Users component- render should include its children", () => {
     test("Check the main element, with data-testid Users, exists", () => {
-      expect(wrapper.find({ "data-testid": "Users" }).length).toBe(1);
+      expect(wrapper.find({ "data-testid": "users" }).length).toBe(1);
       expect(wrapper.find(Button).length).toBe(3);
     });
 
@@ -31,7 +31,7 @@ describe("Test Users.js", () => {
   describe("Users component should behave as expected when the user submits", () => {
     test("Check that our component pushes a new url when a new user is added", () => {
       expect(mockPush).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "HandleAddNewUser" }).simulate("click");
+      wrapper.find({ "data-testid": "handleAddNewUser" }).simulate("click");
       expect(mockPush).toHaveBeenCalledTimes(1);
     });
   });
