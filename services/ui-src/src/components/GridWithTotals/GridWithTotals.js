@@ -53,85 +53,67 @@ const GridWithTotals = props => {
       columnTotalsArray[index] = 0;
     });
     let checkQuestion5Summary = props.questionID;
-    if (checkQuestion5Summary && checkQuestion5Summary.includes("summary-synthesized")) {
+    if (
+      checkQuestion5Summary &&
+      checkQuestion5Summary.includes("summary-synthesized")
+    ) {
       let sum5Data = translateInitialData(props.gridData);
       sum5Data.map((row, rowIndex) => {
         if (row !== undefined && props.questions) {
-
           let q1c1Total =
-            props.questions[0].rows[1].col2
-            +
-            props.questions[0].rows[2].col2
-            +
+            props.questions[0].rows[1].col2 +
+            props.questions[0].rows[2].col2 +
             props.questions[0].rows[3].col2;
 
           let q4c1Total =
-            props.questions[3].rows[1].col2
-            +
-            props.questions[3].rows[2].col2
-            +
+            props.questions[3].rows[1].col2 +
+            props.questions[3].rows[2].col2 +
             props.questions[3].rows[3].col2;
           ////////////////////////////
 
           let q1c2Total =
-            props.questions[0].rows[1].col3
-            +
-            props.questions[0].rows[2].col3
-            +
+            props.questions[0].rows[1].col3 +
+            props.questions[0].rows[2].col3 +
             props.questions[0].rows[3].col3;
 
           let q4c2Total =
-            props.questions[3].rows[1].col3
-            +
-            props.questions[3].rows[2].col3
-            +
+            props.questions[3].rows[1].col3 +
+            props.questions[3].rows[2].col3 +
             props.questions[3].rows[3].col3;
 
           /////////////////////////////
 
           let q1c3Total =
-            props.questions[0].rows[1].col4
-            +
-            props.questions[0].rows[2].col4
-            +
+            props.questions[0].rows[1].col4 +
+            props.questions[0].rows[2].col4 +
             props.questions[0].rows[3].col4;
 
           let q4c3Total =
-            props.questions[3].rows[1].col4
-            +
-            props.questions[3].rows[2].col4
-            +
+            props.questions[3].rows[1].col4 +
+            props.questions[3].rows[2].col4 +
             props.questions[3].rows[3].col4;
 
           /////////////////////////////
 
           let q1c4Total =
-            props.questions[0].rows[1].col5
-            +
-            props.questions[0].rows[2].col5
-            +
+            props.questions[0].rows[1].col5 +
+            props.questions[0].rows[2].col5 +
             props.questions[0].rows[3].col5;
 
           let q4c4Total =
-            props.questions[3].rows[1].col5
-            +
-            props.questions[3].rows[2].col5
-            +
+            props.questions[3].rows[1].col5 +
+            props.questions[3].rows[2].col5 +
             props.questions[3].rows[3].col5;
           /////////////////////////////
 
           let q1c5Total =
-            props.questions[0].rows[1].col6
-            +
-            props.questions[0].rows[2].col6
-            +
-            props.questions[0].rows[3].col6
+            props.questions[0].rows[1].col6 +
+            props.questions[0].rows[2].col6 +
+            props.questions[0].rows[3].col6;
 
           let q4c5Total =
-            props.questions[3].rows[1].col6
-            +
-            props.questions[3].rows[2].col6
-            +
+            props.questions[3].rows[1].col6 +
+            props.questions[3].rows[2].col6 +
             props.questions[3].rows[3].col6;
 
           gridColumnTotalsCopy[1] = q4c1Total / q1c1Total;
@@ -144,11 +126,8 @@ const GridWithTotals = props => {
           updateGridColumnTotals(gridColumnTotalsCopy);
         }
         return true;
-      })
-    }
-
-
-    else {
+      });
+    } else {
       gridData.map((row, rowIndex) => {
         if (row !== undefined) {
           row.map((column, columnIndex) => {
@@ -200,9 +179,11 @@ const GridWithTotals = props => {
     let totalOfTotals = 0;
     let gridRowTotalsCopy = [...gridRowTotals];
     let checkQuestion5Summary = props.questionID;
-    if (checkQuestion5Summary && checkQuestion5Summary.includes("summary-synthesized")) {
+    if (
+      checkQuestion5Summary &&
+      checkQuestion5Summary.includes("summary-synthesized")
+    ) {
       let sum5Data = translateInitialData(props.gridData);
-
 
       sum5Data.map((row, rowIndex) => {
         if (row !== undefined && props.questions) {
@@ -237,14 +218,15 @@ const GridWithTotals = props => {
           gridRowTotalsCopy[3] = q4r2Total / q1r2Total;
           gridRowTotalsCopy[4] = q4r3Total / q1r3Total;
 
-          totalOfTotals = (q4r1Total + q4r2Total + q4r3Total) / (q1r1Total + q1r2Total + q1r3Total);
+          totalOfTotals =
+            (q4r1Total + q4r2Total + q4r3Total) /
+            (q1r1Total + q1r2Total + q1r3Total);
         }
         return true;
       });
       updateGridTotalOfTotals(totalOfTotals);
       updateGridRowTotals(gridRowTotalsCopy);
     } else {
-
       gridData.map((row, rowIndex) => {
         rowTotal = 0;
         if (row !== undefined) {
@@ -335,10 +317,10 @@ const GridWithTotals = props => {
                       <span className="usa-input rid-column synthesized">
                         {gridData[rowIndex][columnIndex] >= 0
                           ? addCommas(
-                            parseFloat(
-                              gridData[rowIndex][columnIndex]
-                            ).toFixed(currentPrecision)
-                          )
+                              parseFloat(
+                                gridData[rowIndex][columnIndex]
+                              ).toFixed(currentPrecision)
+                            )
                           : ""}
                       </span>
                     )}
@@ -370,8 +352,8 @@ const GridWithTotals = props => {
                     <span className="usa-input grid-column synthesized ">
                       {column >= 0
                         ? addCommas(
-                          parseFloat(column).toFixed(currentPrecision)
-                        )
+                            parseFloat(column).toFixed(currentPrecision)
+                          )
                         : ""}
                     </span>
                   )}
@@ -384,8 +366,8 @@ const GridWithTotals = props => {
           <td className="total-column">
             {gridRowTotals[rowIndex] > 0
               ? addCommas(
-                parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
-              )
+                  parseFloat(gridRowTotals[rowIndex]).toFixed(currentPrecision)
+                )
               : 0}
           </td>
         </tr>
@@ -409,8 +391,8 @@ const GridWithTotals = props => {
         <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? addCommas(
-              parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
-            )
+                parseFloat(gridColumnTotals[i]).toFixed(currentPrecision)
+              )
             : 0}
         </td>
       );
@@ -432,8 +414,8 @@ const GridWithTotals = props => {
             <td className="total-column">
               {gridTotalOfTotals > 0
                 ? addCommas(
-                  parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
-                )
+                    parseFloat(gridTotalOfTotals).toFixed(currentPrecision)
+                  )
                 : 0}
             </td>
           </tr>

@@ -89,14 +89,11 @@ export const updatedLastSaved = username => {
 
 // THUNKS
 
-export const updatedApplicableThunk = (
-  activeStatus,
-  status,
-  statusId
-) => async dispatch => {
-  const username = await getUsername();
-  dispatch(updatedApplicableStatus(activeStatus, username, status, statusId));
-};
+export const updatedApplicableThunk =
+  (activeStatus, status, statusId) => async dispatch => {
+    const username = await getUsername();
+    dispatch(updatedApplicableStatus(activeStatus, username, status, statusId));
+  };
 
 export const updateFPL = newFPL => {
   return async (dispatch, getState) => {

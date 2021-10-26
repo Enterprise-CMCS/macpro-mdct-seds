@@ -31,7 +31,7 @@ export const main = handler(async (event, context) => {
   }
 
   const record = result.Items[0];
-  const putItem = {...record, lastSynced: new Date().toISOString()};
+  const putItem = { ...record, lastSynced: new Date().toISOString() };
   if (record.form === "21E") {
     record.enrollmentCounts = {
       type: "separate",

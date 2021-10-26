@@ -32,10 +32,8 @@ const CertificationTab = ({
     isFinal === true ? true : isProvisional
   );
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
-  const [
-    viewProvisionalAndFinalCertify,
-    setViewProvisionalAndFinalCertify
-  ] = useState(true);
+  const [viewProvisionalAndFinalCertify, setViewProvisionalAndFinalCertify] =
+    useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
       const userRole = await currentUserRole();
