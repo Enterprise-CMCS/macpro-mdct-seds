@@ -14,7 +14,8 @@ const SynthesizedGridSummary = ({
   allAnswers,
   questionID,
   gridData,
-  label
+  label,
+  questions
 }) => {
   const [sortedRows, setSortedRows] = useState([]);
 
@@ -120,6 +121,7 @@ const SynthesizedGridSummary = ({
           disabled={true}
           synthesized={true}
           precision={1}
+          questions={questions}
         />
         <div className="disclaimer" data-testid="synthesized-disclaimer">
           {" "}

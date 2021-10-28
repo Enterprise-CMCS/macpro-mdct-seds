@@ -85,6 +85,7 @@ export default function Login() {
           onClick={handleSubmitOkta}
           isLoading={isLoadingOkta}
           outline={true}
+          data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
           <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
@@ -94,6 +95,7 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="developer-login text-center"
         hidden={development}
+        data-testid="loginForm"
       >
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
