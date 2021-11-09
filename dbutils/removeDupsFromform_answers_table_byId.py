@@ -9,6 +9,14 @@ file1 = open('dupAnswer_entry_Ids.txt', 'r')
 ids = file1.readlines()
 count = 0
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+
+#Prod Table
+#table = dynamodb.Table('production-form-answers')
+
+#VAL table
+#table = dynamodb.Table('master-form-answers')
+
+# DEV Table
 table = dynamodb.Table('master-form-answers')
 for id in ids:
   currentKey = id.strip()
