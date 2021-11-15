@@ -15,4 +15,13 @@ Scripts:
 
      The script reads the id and loops through the records and finds rows and removes duplicate rows.
 
+---------------------------------------------
+2.) dumpAll-master-form-answers-table.py
+---------------------------------------------
+
+    This script can backup the form-answers table.  It dumps all records from dev master-form-answers table.
+
+    The output can be used to load VAL for final testing and to backup the table.
+
+
 --------------------
