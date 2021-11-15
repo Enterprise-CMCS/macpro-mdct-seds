@@ -1,5 +1,6 @@
 
 # DynamoDB utilities to update or fix data
+# NOTE: Python Scripts for Form Answers table Dups Issues
 
 ========
 Scripts:
@@ -23,5 +24,16 @@ Scripts:
 
     The output can be used to load VAL for final testing and to backup the table.
 
+    example:  python dumpAll-master-form-answers-table.py master-form-answers
+
+---------------------------------------------
+3.) load-form-answer-table.py
+---------------------------------------------
+
+    This script takes a file and loads those records into a new-table.
+
+    This can be used to load data dumped from the form-answers table.
+
+    example:  python load-form-answer-table.py items.json master-form-answers
 
 --------------------
