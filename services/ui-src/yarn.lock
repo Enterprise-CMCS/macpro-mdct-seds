@@ -13326,6 +13326,10 @@ serverless-plugin-scripts@^1.0.2:
   resolved "https://registry.npmjs.org/serverless-plugin-scripts/-/serverless-plugin-scripts-1.0.2.tgz"
   integrity sha1-IYCMPP0KGoTkjAZgsPbzcLVmVIY=
 
+serverless-s3-bucket-helper@CMSgov/serverless-s3-bucket-helper#0.1.1:
+  version "1.0.0"
+  resolved "https://codeload.github.com/CMSgov/serverless-s3-bucket-helper/tar.gz/f0f6d6a1ffe54e292f0afc93777764bce16a4037"
+
 serverless-s3-sync@^1.14.4:
   version "1.15.0"
   resolved "https://registry.npmjs.org/serverless-s3-sync/-/serverless-s3-sync-1.15.0.tgz"

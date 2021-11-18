@@ -2022,6 +2022,10 @@ serverless-plugin-git-variables@^5.1.0:
   resolved "https://registry.yarnpkg.com/serverless-plugin-git-variables/-/serverless-plugin-git-variables-5.1.0.tgz#668aceed366d647ac0143c4a8bc4782b7536df12"
   integrity sha512-72HcfC6KIpsiPimJrdAknvtYEfERgm1+f6TPj3mvA5Dd+2xDFoi6bItyRwqqepoCshL77AFfzpmlxYn58Ez0rw==
 
+serverless-s3-bucket-helper@CMSgov/serverless-s3-bucket-helper#0.1.1:
+  version "1.0.0"
+  resolved "https://codeload.github.com/CMSgov/serverless-s3-bucket-helper/tar.gz/f0f6d6a1ffe54e292f0afc93777764bce16a4037"
+
 serverless-s3-local@^0.6.7:
   version "0.6.7"
   resolved "https://registry.yarnpkg.com/serverless-s3-local/-/serverless-s3-local-0.6.7.tgz#ee833078024d9711dacd221320d0b14facd879b2"
