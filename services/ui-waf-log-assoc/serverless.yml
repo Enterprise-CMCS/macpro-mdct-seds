@@ -1,6 +1,7 @@
 service: ui-waf-log-assoc
 
 plugins:
+  - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-stack-termination-protection
 
