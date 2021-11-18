@@ -13,7 +13,7 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "serverless-s3-bucket-helper": "CMSgov/serverless-s3-bucket-helper#0.1.1",
+    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
     "serverless-stack-termination-protection": "^1.0.4"
   }
 }
