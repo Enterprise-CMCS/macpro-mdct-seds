@@ -192,7 +192,7 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
               (q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6).toFixed(1)) ||
               0}
           </td>
-          <td className="total-column">{firstRowQ5Total.toFixed(2)}</td>
+          <td className="total-column">{firstRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr>
           <th>B. Managed Care Arrangements </th>
@@ -221,7 +221,7 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
               (q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6).toFixed(1)) ||
               0}
           </td>
-          <td className="total-column">{secondRowQ5Total.toFixed(2)}</td>
+          <td className="total-column">{secondRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr>
           <th>C. Primary Care Case Management </th>
@@ -250,16 +250,16 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
               (q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6).toFixed(1)) ||
               0}
           </td>
-          <td className="total-column">{thirdRowQ5Total.toFixed(2)}</td>
+          <td className="total-column">{thirdRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr className="total-row">
           <th className="total-header-cell">Totals:</th>
-          <td className="total-column">{Q5Col1Total.toFixed(2)}</td>
-          <td className="total-column">{Q5Col2Total.toFixed(2)}</td>
-          <td className="total-column">{Q5Col3Total.toFixed(2)}</td>
-          <td className="total-column">{Q5Col4Total.toFixed(2)}</td>
-          <td className="total-column">{Q5Col5Total.toFixed(2)}</td>
-          <td className="total-column">{fourthRowQ5Total.toFixed(2)}</td>
+          <td className="total-column">{Q5Col1Total.toFixed(1)}</td>
+          <td className="total-column">{Q5Col2Total.toFixed(1)}</td>
+          <td className="total-column">{Q5Col3Total.toFixed(1)}</td>
+          <td className="total-column">{Q5Col4Total.toFixed(1)}</td>
+          <td className="total-column">{Q5Col5Total.toFixed(1)}</td>
+          <td className="total-column">{fourthRowQ5Total.toFixed(1)}</td>
         </tr>
       </Table>
       <div className="disclaimer">
