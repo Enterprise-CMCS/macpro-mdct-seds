@@ -46,10 +46,19 @@ NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID= and
 
   EXAMPLE:
 
-  python updateVALtoMatchProd.py keyidlist.txt  production-form-answers master-form-answers
+  python updateVALtoMatchProd.py FL-TestIds.txt  production-form-answers master-form-answers
 
 ---------------------------------------------
-4.) dumpAll-master-form-answers-table.py
+4.) removeDupsFromform_answers_table_byId.py
+---------------------------------------------
+  This will remove dups for keys listed in a file provided for form-answers table.
+
+  EXAMPLE
+
+  python removeDupsFromform_answers_table_byId.py FL-TestIds.txt val-form-answers
+
+---------------------------------------------
+5.) dumpAll-master-form-answers-table.py
 ---------------------------------------------
 
     This script can backup the form-answers table.  It dumps all records from dev master-form-answers table.
@@ -59,7 +68,7 @@ NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID= and
     example:  python dumpAll-master-form-answers-table.py master-form-answers
 
 ---------------------------------------------
-5.) load-form-answer-table.py
+6.) load-form-answer-table.py
 ---------------------------------------------
 
     This script takes a file and loads those records into a new-table.
