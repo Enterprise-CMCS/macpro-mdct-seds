@@ -35,10 +35,21 @@ NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID= and
                                           SRC_AWS_SESSION_TOKEN= and
                                           DEST_AWS_ACCESS_KEY_ID= and
                                           DEST_AWS_SECRET_ACCESS_KEY= and
-                                          DEST_AWS_SESSION_TOKEN=  
+                                          DEST_AWS_SESSION_TOKEN=
+
 
 ---------------------------------------------
-3.) dumpAll-master-form-answers-table.py
+3.) updateVALtoMatchProd.py
+---------------------------------------------
+
+  This will update a dest dynamodb form-answer table with the src table rows.
+
+  EXAMPLE:
+
+  python updateVALtoMatchProd.py keyidlist.txt  production-form-answers master-form-answers
+
+---------------------------------------------
+4.) dumpAll-master-form-answers-table.py
 ---------------------------------------------
 
     This script can backup the form-answers table.  It dumps all records from dev master-form-answers table.
@@ -48,7 +59,7 @@ NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID= and
     example:  python dumpAll-master-form-answers-table.py master-form-answers
 
 ---------------------------------------------
-4.) load-form-answer-table.py
+5.) load-form-answer-table.py
 ---------------------------------------------
 
     This script takes a file and loads those records into a new-table.
