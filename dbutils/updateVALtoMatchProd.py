@@ -36,6 +36,7 @@ if (len(sys.argv) > 3):
         response = table.query(KeyConditionExpression=Key('answer_entry').eq(currentKey)   )
         found = response['Count']
         if (found != 0):
+          srcRows = []
           currentRowValue=(response['Items'])
           response2 = table2.query(KeyConditionExpression=Key('answer_entry').eq(currentKey))
           found = response2['Count']
