@@ -3,6 +3,7 @@ service: data-deployment
 frameworkVersion: "2"
 
 plugins:
+  - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-dynamodb-seed
   - serverless-stack-termination-protection
