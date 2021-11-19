@@ -2,22 +2,43 @@
 # DynamoDB utilities to update or fix data
 # NOTE: Python Scripts for Form Answers table Dups Issues
 
+NOTE You need to setup AWS environment exports for:
+
 ========
 Scripts:
 ========
 
 ---------------------------------------------
-1.) removeDupsFromform_answers_table_byId.py
+1.) findDups.py
 ---------------------------------------------
 
-     The PROD dynamoDB table had duplicate data in the rows field in the form_answers table that needed to be removed. This is for Story: https://qmacbis.atlassian.net/browse/OY2-13518
+    This will find duplicate form-answer records Keys.
 
-     The script uses the included file "dupAnswer_entry_Ids.txt" which is a list of records that had duplicate values for the rows field.
+    EXAMPLE:
 
-     The script reads the id and loops through the records and finds rows and removes duplicate rows.
+    python findDups.py prodAllRecordKeys.txt production-form-answers  > foundDupsInProd.txt
+
+NOTE: Setup AWS credentials environment vars.
 
 ---------------------------------------------
-2.) dumpAll-master-form-answers-table.py
+2.) compareTwoDynamoDBTablesFormAnswers.py
+---------------------------------------------
+
+   This will compare two form-answer dyanamodb tables to find not found keys.
+
+    EXAMPLE:
+
+    python compareTwoDynamoDBTablesFormAnswers.py foundDupsInProd.txt production-form-answers val-form-answers
+
+NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID=
+                                          SRC_AWS_SECRET_ACCESS_KEY=
+                                          SRC_AWS_SESSION_TOKEN=
+                                          DEST_AWS_ACCESS_KEY_ID=
+                                          DEST_AWS_SECRET_ACCESS_KEY=
+                                          DEST_AWS_SESSION_TOKEN=
+
+---------------------------------------------
+3.) dumpAll-master-form-answers-table.py
 ---------------------------------------------
 
     This script can backup the form-answers table.  It dumps all records from dev master-form-answers table.
@@ -27,7 +48,7 @@ Scripts:
     example:  python dumpAll-master-form-answers-table.py master-form-answers
 
 ---------------------------------------------
-3.) load-form-answer-table.py
+4.) load-form-answer-table.py
 ---------------------------------------------
 
     This script takes a file and loads those records into a new-table.
