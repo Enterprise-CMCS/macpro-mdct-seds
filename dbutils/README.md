@@ -30,12 +30,12 @@ NOTE: Setup AWS credentials environment vars.
 
     python compareTwoDynamoDBTablesFormAnswers.py foundDupsInProd.txt production-form-answers val-form-answers
 
-NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID=
-                                          SRC_AWS_SECRET_ACCESS_KEY=
-                                          SRC_AWS_SESSION_TOKEN=
-                                          DEST_AWS_ACCESS_KEY_ID=
-                                          DEST_AWS_SECRET_ACCESS_KEY=
-                                          DEST_AWS_SESSION_TOKEN=
+NOTE: You need to set enviroment vars for SRC_AWS_ACCESS_KEY_ID= and
+                                          SRC_AWS_SECRET_ACCESS_KEY= and
+                                          SRC_AWS_SESSION_TOKEN= and
+                                          DEST_AWS_ACCESS_KEY_ID= and
+                                          DEST_AWS_SECRET_ACCESS_KEY= and
+                                          DEST_AWS_SESSION_TOKEN=  
 
 ---------------------------------------------
 3.) dumpAll-master-form-answers-table.py
