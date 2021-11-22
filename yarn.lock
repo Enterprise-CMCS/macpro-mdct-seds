@@ -10516,6 +10516,11 @@ serverless-plugin-warmup@^5.3.1:
   version "1.0.0"
   resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
 
+serverless-stack-termination-protection@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz#e0430108cfc8f4d72a63138ef5781c6fe9707868"
+  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
+
 serverless-webpack@^5.3.1:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/serverless-webpack/-/serverless-webpack-5.6.0.tgz#4abf495b469e0b17d168e705b34bbcc44d0d5a37"
