@@ -91,7 +91,7 @@ async function getAllIssues() {
     {
       ...octokitRepoParams,
       state: "all",
-      labels: ["security-hub"],
+      labels: ["security-hub", stage],
     }
   )) {
     issues.push(...response.data);
@@ -103,7 +103,7 @@ function issueParamsForFinding(finding) {
   return {
     title: `SHF - ${repo} - ${stage} - ${finding.Severity.Label} - ${finding.Title}`,
     state: "open",
-    labels: ["security-hub"],
+    labels: ["security-hub", stage],
     body: `**************************************************************
 __This issue was generated from Security Hub data and is managed through automation.__
 Please do not edit the title or body of this issue, or remove the security-hub tag.  All other edits/comments are welcome.
@@ -259,11 +259,8 @@ async function assignIssuesToProject(issues, projectId, defaultColumnName) {
   ).data;
 
   // Store the default column's id in a variable.  This is used later to add cards to the Project.
-  var defaultColumnId = _.find(
-    targetProjectColumns,
-    "name",
-    defaultColumnName
-  ).id;
+  var defaultColumnId = _.find(targetProjectColumns, "name", defaultColumnName)
+    .id;
 
   // Store the Project's columns' ids in an array
   var targetColumnIds = _.map(targetProjectColumns, "id");
