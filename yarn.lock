@@ -2517,9 +2517,9 @@ available-typed-arrays@^1.0.5:
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
 aws-sdk@^2.763.0:
-  version "2.1033.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1033.0.tgz#8bd0084142b15cc2ca427483c36c86b27abc046b"
-  integrity sha512-cgcjiuR82bhfBWTffqt6e9+Cn/UgeC6QPQTrlJy3GxwPxChthyrt/h5pekj2l4PLFvETsG10Y6CqQysJEMsncw==
+  version "2.1034.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1034.0.tgz#61b0511e712ff765da1e182ac969d5eca38ac5a5"
+  integrity sha512-yo0B9nOZAKgsQqIKXqkeOJ2Wrt8zx4wd1JmCP1XZzdz1O4b1TfZA/mTN5cMiszOaEk8EWqvPESrw8MaIHFS3wA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -10482,15 +10482,13 @@ serverless-dotenv-plugin@^3.0.0:
     dotenv "^10.0.0"
     dotenv-expand "^5.1.0"
 
-serverless-iam-helper@CMSgov/serverless-iam-helper:
+serverless-iam-helper@./plugins/serverless-iam-helper:
   version "1.0.0"
-  resolved "https://codeload.github.com/CMSgov/serverless-iam-helper/tar.gz/e51709dfbb9461c18712cc429f489504d543c4c7"
   dependencies:
     lodash "^4.17.21"
 
-serverless-idempotency-helper@CMSgov/serverless-idempotency-helper:
+serverless-idempotency-helper@./plugins/serverless-idempotency-helper:
   version "1.0.0"
-  resolved "https://codeload.github.com/CMSgov/serverless-idempotency-helper/tar.gz/22a96de1495fea2d295cadb966e503aefbc1b086"
   dependencies:
     bestzip "^2.2.0"
     extract-zip "^2.0.1"
@@ -10512,9 +10510,8 @@ serverless-plugin-warmup@^5.3.1:
   resolved "https://registry.yarnpkg.com/serverless-plugin-warmup/-/serverless-plugin-warmup-5.3.1.tgz#cc8ca43452c5468a79a7b5447c84267035fa8d1e"
   integrity sha512-+nY6VCTLf/VjwkwAudtCXE/neaYSKy+9NmnYTSL0y8ZGfKB6u9Hrh9J2vqYEcam6eQFnCAEsch9iTs/dbU2vGg==
 
-"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
+serverless-s3-bucket-helper@./plugins/serverless-s3-bucket-helper:
   version "1.0.0"
-  resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
 
 serverless-stack-termination-protection@^1.0.4:
   version "1.0.4"
