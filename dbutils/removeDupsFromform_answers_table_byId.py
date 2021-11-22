@@ -16,7 +16,8 @@ if (len(sys.argv) > 2):
     table = dynamodb.Table(sys.argv[2])
     for id in ids:
         currentKey = id.strip()
-        print("WorkingOn:" + currentKey)
+        count += 1
+        print(str(count) +":WorkingOn:" + currentKey)
         #
         # Find record with the Duplicate based on the key field.
         #
