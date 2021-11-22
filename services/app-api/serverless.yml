@@ -10,6 +10,7 @@ plugins:
   - serverless-bundle
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
+  - serverless-plugin-scripts
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
