@@ -2455,7 +2455,7 @@ child-process-ext@^2.1.1:
     split2 "^3.1.1"
     stream-promise "^3.2.0"
 
-chokidar@3.5.2, chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.5.1:
+chokidar@3.5.2, chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.5.1, chokidar@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
   integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
@@ -7110,6 +7110,12 @@ serialize-error@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-2.1.0.tgz#50b679d5635cdf84667bdc8e59af4e5b81d5f60a"
   integrity sha1-ULZ51WNc34Rme9yOWa9OW4HV9go=
+
+serverless-online@CMSgov/serverless-online:
+  version "1.0.0"
+  resolved "https://codeload.github.com/CMSgov/serverless-online/tar.gz/1f7d068721f10f13f3c1f1b8e2d4bd21be42e77d"
+  dependencies:
+    chokidar "^3.5.2"
 
 "serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
   version "1.0.0"
