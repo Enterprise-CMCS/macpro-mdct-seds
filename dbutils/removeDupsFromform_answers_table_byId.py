@@ -16,7 +16,7 @@ if (len(sys.argv) > 2):
     table = dynamodb.Table(sys.argv[2])
     for id in ids:
         currentKey = id.strip()
-
+        print("WorkingOn:" + currentKey)
         #
         # Find record with the Duplicate based on the key field.
         #
@@ -35,12 +35,13 @@ if (len(sys.argv) > 2):
 
               if dupColumn1 in dupKey:
                  print("Found: Dup: " + currentKey + " : " + dupColumn1)
-                 for x in 2,3,4,5,6:
-
-                    if (str(row['col' + str(x)]).find("targets") < 0):
+                 for x in 2,3,4,5,6,7,8,9:
+                    try:
+                      if (str(row['col' + str(x)]).find("targets") < 0):
                        newtot = int(row['col' + str(x)]) + int(dupKey[dupColumn1]['col' + str(x)])
                        dupKey[dupColumn1]['col' + str(x)] = str(newtot)
-
+                    except:
+                       continue
               else:
                 if (dupColumn1 != ''):
                     dupKey[dupColumn1] = row
