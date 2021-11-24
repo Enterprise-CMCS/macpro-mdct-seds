@@ -17,7 +17,7 @@ Scripts:
   NOTE: Use the prodAllRecordKeys.txt file as the ids for all PROD records as of now.
 
   EXAMPLE
-
+<pre>
 For Dev
   python removeDupsFromform_answers_table_byId.py prodAllRecordKeys.txt master-form-answers
 
@@ -27,5 +27,6 @@ For VAL
 
 For PROD:
   python removeDupsFromform_answers_table_byId.py prodAllRecordKeys.txt production-form-answers
+</pre>
 
 --------------------
