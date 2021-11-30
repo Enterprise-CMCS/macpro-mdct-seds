@@ -13,3 +13,4 @@ tests_output
 *.log
 tests/videos
 tests/package-lock.json
+services/.sechub/scratchserverless.yml
