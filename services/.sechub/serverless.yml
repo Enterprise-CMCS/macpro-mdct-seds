@@ -13,6 +13,22 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-online
 
+resources:
+  Resources:
+    LambdaExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: LambdaExecutionRole
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          statements:
+            - Effect: "Allow"
+              Action:
+                - securityhub:GetFindings
+              Resource:
+                - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+        Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+        permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
 provider:
   name: aws
   runtime: nodejs12.x
@@ -29,6 +45,7 @@ iam:
           - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
 functions:
   sync:
+    role: LambdaExecutionRole
     handler: handlers/sync.main
     timeout: 600
     maximumRetryAttempts: 0
