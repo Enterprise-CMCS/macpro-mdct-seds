@@ -18,8 +18,7 @@ provider:
   runtime: nodejs12.x
   region: us-east-1
 iam:
-  role:
-    Fn::Sub: arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
+  role: arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
 functions:
   sync:
     role: Fn::GetAtt: [ arn:aws:iam::${AWS::AccountId}:policy/delegatedadmin/developer/SecHubGetFindings, Arn ]
