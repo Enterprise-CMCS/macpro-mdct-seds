@@ -42,9 +42,9 @@ provider:
           Statement:
             - Effect: "Allow"
               Action:
-              - securityhub:GetFindings
-            Resource:
-              - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+                - securityhub:GetFindings
+              Resource:
+                - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
             - Effect: "Allow"
               Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*
               Action: "iam:CreateRole"
@@ -66,5 +66,3 @@ provider:
           severity: ${self:custom.severity}
           stage: ${self:custom.stage}
         Role: !GetAtt LambdaExecutionRole.Arn
-    
-  
