@@ -17,6 +17,21 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+functions:
+  sync:
+    role: !GetAtt LambdaExecutionRole.Arn
+    handler: handlers/sync.main
+    timeout: 600
+    maximumRetryAttempts: 0
+    events:
+      - schedule: cron(*/10 * * * ? *)
+    environment:
+      githubAccessToken: ${self:custom.githubAccessToken}
+      githubRepository: ${self:custom.githubRepository}
+      githubRepositoryProjects: ${self:custom.githubRepositoryProjects}
+      githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
+      severity: ${self:custom.severity}
+      stage: ${self:custom.stage}
 
 Resources:
   LambdaExecutionRole:
@@ -32,25 +47,6 @@ Resources:
               - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
       Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
       permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
-  provider:
-    name: aws
-    runtime: nodejs12.x
-    region: us-east-1
-  functions:
-    sync:
-      role: !GetAtt LambdaExecutionRole.Arn
-      handler: handlers/sync.main
-      timeout: 600
-      maximumRetryAttempts: 0
-      events:
-        - schedule: cron(*/10 * * * ? *)
-      environment:
-        githubAccessToken: ${self:custom.githubAccessToken}
-        githubRepository: ${self:custom.githubRepository}
-        githubRepositoryProjects: ${self:custom.githubRepositoryProjects}
-        githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
-        severity: ${self:custom.severity}
-        stage: ${self:custom.stage}
 
 custom:
   stage: ${opt:stage, self:provider.stage}
