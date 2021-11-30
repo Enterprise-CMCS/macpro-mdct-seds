@@ -13,6 +13,19 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-online
 
+LambdaExecutionRole:
+  Type: AWS::IAM::Role
+  Properties:
+    AssumeRolePolicyDocument:
+      Version: "2012-10-17"
+      statements:
+        - Effect: "Allow"
+          Action:
+            - securityhub:GetFindings
+          Resource:
+            - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+    Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+    permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
 provider:
   name: aws
   runtime: nodejs12.x
@@ -32,21 +45,6 @@ functions:
       githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
       severity: ${self:custom.severity}
       stage: ${self:custom.stage}
-
-Resources:
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        statements:
-          - Effect: "Allow"
-            Action:
-              - securityhub:GetFindings
-            Resource:
-              - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
-      Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
 
 custom:
   stage: ${opt:stage, self:provider.stage}
