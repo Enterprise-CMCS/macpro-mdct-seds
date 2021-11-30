@@ -46,7 +46,6 @@ provider:
 
 functions:
   sync:
-    role: LambdaExecutionRole
     handler: handlers/sync.main
     timeout: 600
     role: arn:aws:iam::760820259496:role/delegatedadmin/developer/sechub-role
