@@ -13,6 +13,21 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-online
 
+resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        statements:
+          - Effect: "Allow"
+            Action:
+              - securityhub:GetFindings
+            Resource:
+              - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+      Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -33,35 +48,20 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
-  resources:
-    LambdaExecutionRole:
-      Type: AWS::IAM::Role
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Action:
-                - securityhub:GetFindings
-              Resource:
-                - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
-        path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-        permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
-    syncFunction:
-      Type: AWS::Lambda::Function
-      Properties:
-        runtime: nodejs12.x
-        region: us-east-1
-        handler: handlers/sync.main
-        timeout: 600
-        maximumRetryAttempts: 0
-        events:
-          - schedule: cron(*/10 * * * ? *)
-        environment:
-          githubAccessToken: ${self:custom.githubAccessToken}
-          githubRepository: ${self:custom.githubRepository}
-          githubRepositoryProjects: ${self:custom.githubRepositoryProjects}
-          githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
-          severity: ${self:custom.severity}
-          stage: ${self:custom.stage}
-        Role: !GetAtt LambdaExecutionRole.Arn
+  iam:
+    role:
+functions:
+  sync:
+    handler: handlers/sync.main
+    timeout: 600
+    maximumRetryAttempts: 0
+    events:
+      - schedule: cron(*/10 * * * ? *)
+    environment:
+      githubAccessToken: ${self:custom.githubAccessToken}
+      githubRepository: ${self:custom.githubRepository}
+      githubRepositoryProjects: ${self:custom.githubRepositoryProjects}
+      githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
+      severity: ${self:custom.severity}
+      stage: ${self:custom.stage}
+    Role: !GetAtt LambdaExecutionRole.Arn
