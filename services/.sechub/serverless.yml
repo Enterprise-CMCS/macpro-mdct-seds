@@ -13,8 +13,8 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-online
 
-resources:
-  lambdaExecutionRole:
+Resources:
+  LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -33,7 +33,7 @@ resources:
     region: us-east-1
   functions:
     sync:
-      role: !GetAtt lambdaExecutionRole.Arn
+      role: !GetAtt LambdaExecutionRole.Arn
       handler: handlers/sync.main
       timeout: 600
       maximumRetryAttempts: 0
