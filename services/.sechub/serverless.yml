@@ -18,10 +18,10 @@ provider:
   runtime: nodejs12.x
   region: us-east-1
 iam:
-  role: !GetAtt arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader.arn
+  role: arn:aws:iam::760820259496:policy/delegatedadmin/developer/SecHubGetFindings
 functions:
   sync:
-    role: !GetAtt arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader.arn
+    role: arn:aws:iam::760820259496:policy/delegatedadmin/developer/SecHubGetFindings
     handler: handlers/sync.main
     timeout: 600
     maximumRetryAttempts: 0
