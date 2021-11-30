@@ -33,19 +33,20 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
-  iam:
-    role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  SecHubRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        statements:
+          - Effect: "Allow"
+            Action:
+              - securityhub:GetFindings
+            Resource:
+              - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+      Path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
       permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
-      statements:
-        - Effect: "Allow"
-          Action:
-            - securityhub:GetFindings
-          Resource:
-            - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
-        - Effect: "Deny"
-          Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*
-          Action: "iam:CreateRole"
+
 functions:
   sync:
     handler: handlers/sync.main
@@ -60,3 +61,4 @@ functions:
       githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
       severity: ${self:custom.severity}
       stage: ${self:custom.stage}
+    role: !GetAtt SecHubRole.Arn
