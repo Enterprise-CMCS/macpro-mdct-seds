@@ -1,3 +1,7 @@
+const path = require("path");
+const webpack = require("webpack");
+const nodeExternals = require("webpack-node-externals");
+
 // Our data source is Security Hub Findings.  Auth is provided via the lambda's IAM role.
 import AWS from "aws-sdk";
 const securityhub = new AWS.SecurityHub();
