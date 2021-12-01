@@ -5,7 +5,6 @@ const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
 var zip = require("bestzip");
-
 class ServerlessPlugin {
   constructor(serverless, options) {
     this.serverless = serverless;
