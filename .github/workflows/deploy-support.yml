@@ -4,7 +4,7 @@ on:
   push:
     branches:
       # # List of all branches which should control underlying infrastructure.
-      - sechub
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
