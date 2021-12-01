@@ -5,7 +5,6 @@ const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
 var zip = require("bestzip");
-const resolve = require("path").resolve;
 class ServerlessPlugin {
   constructor(serverless, options) {
     this.serverless = serverless;
@@ -21,7 +20,7 @@ class ServerlessPlugin {
   }
 
   async repackAllFunctions() {
-    const serviceDir = resolve(this.serverless.serviceDir);
+    const serviceDir = this.serverless.serviceDir;
     const dotServerlessDir = `${serviceDir}/.serverless`;
 
     // Find all archives that belong to user defined functions
