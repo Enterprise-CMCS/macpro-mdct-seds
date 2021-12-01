@@ -19,7 +19,8 @@ provider:
   region: us-east-1
 
 iam:
-  role: arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
+  role:
+    - !Sub arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
 functions:
   sync:
     role: Fn::GetAtt: [ arn:aws:iam::${AWS::AccountId}:policy/delegatedadmin/developer/SecHubGetFindings, Arn ]
