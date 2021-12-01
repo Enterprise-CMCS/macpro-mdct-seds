@@ -45,7 +45,7 @@ async function getAllActiveFindings() {
       Value: label,
     });
   });
-  console.log("severityLabels: ", severityLabels);
+
   // prettier-ignore
   for await (const lf of (async function * () {
     let NextToken = EMPTY;
