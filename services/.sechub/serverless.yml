@@ -18,7 +18,7 @@ provider:
   runtime: nodejs12.x
   region: us-east-1
   iam:
-    role: arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
+    role: !Ref arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
 functions:
   sync:
     handler: handlers/sync.main
