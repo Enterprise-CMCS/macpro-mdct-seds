@@ -20,10 +20,9 @@ provider:
 
 iam:
   role:
-    - !Sub arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
+    - arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
 functions:
   sync:
-    role: !GetAtt arn:aws:iam::${AWS::AccountId}:policy/delegatedadmin/developer/SecHubGetFindings.Arn
     handler: handlers/sync.main
     timeout: 600
     maximumRetryAttempts: 0
