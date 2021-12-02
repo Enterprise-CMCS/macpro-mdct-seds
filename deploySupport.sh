@@ -4,9 +4,9 @@ set -e
 
 stage=${1:-dev}
 
-services=(
-  '.sechub'
-)
+# services=(
+#   '.sechub's
+# )
 
 install_deps() {
   if [ "$CI" == "true" ]; then # If we're in a CI system
