@@ -58,7 +58,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI= react-scripts build",
     "test": "jest --setupFiles dotenv/config",
     "coverage": "jest --coverage",
     "test2": "react-scripts test",
