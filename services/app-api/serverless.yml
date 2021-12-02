@@ -17,8 +17,8 @@ plugins:
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  iamPath: ${ssm:/configuration/default/iam/path~true, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  iamPermissionsBoundaryPolicy: /cms-cloud-admin/developer-boundary-policy
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -696,7 +696,11 @@ resources:
                 Service: "lambda.amazonaws.com"
               Action: "sts:AssumeRole"
         Path: ${self:custom.iamPath}
-        PermissionsBoundary: ${ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+        PermissionsBoundary:
+          Fn::If:
+            - CreatePermissionsBoundary
+            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+            - !Ref AWS::NoValue
         Policies:
           - PolicyName: "Warmup"
             PolicyDocument:
