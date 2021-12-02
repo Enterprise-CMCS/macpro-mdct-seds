@@ -696,11 +696,7 @@ resources:
                 Service: "lambda.amazonaws.com"
               Action: "sts:AssumeRole"
         Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
+        PermissionsBoundary: ${ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
         Policies:
           - PolicyName: "Warmup"
             PolicyDocument:
