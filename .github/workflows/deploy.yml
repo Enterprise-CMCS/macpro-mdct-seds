@@ -106,7 +106,7 @@ jobs:
           cypress install
           npm run test:ci
           popd
-      - name: Store test reults
+      - name: Store test results
         uses: actions/upload-artifact@v2
         with:
           name: test_results
