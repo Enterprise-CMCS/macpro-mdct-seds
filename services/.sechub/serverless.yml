@@ -13,34 +13,13 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-online
 
-custom:
-  stage: ${opt:stage, self:provider.stage}
-  region: ${opt:region, self:provider.region}
-  serverlessTerminationProtection:
-    stages:
-      - master
-      - val
-      - production
-  githubAccessToken: ${ssm:/configuration/${self:custom.stage}/sechub/githubAccessToken~true, ssm:/configuration/default/sechub/githubAccessToken~true}
-  githubRepository: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepository~true, ssm:/configuration/default/sechub/githubRepository~true, env:GITHUB_REPOSITORY}
-  githubRepositoryProjects: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepositoryProjects~true, ssm:/configuration/default/sechub/githubRepositoryProjects~true, ""}
-  githubOrganizationProjects: ${ssm:/configuration/${self:custom.stage}/sechub/githubOrganizationProjects~true, ssm:/configuration/default/sechub/githubOrganizationProjects~true, ""}
-  severity: ${ssm:/configuration/${self:custom.stage}/sechub/severity~true, ssm:/configuration/default/sechub/severity~true, "CRITICAL,HIGH"}
-
 provider:
   name: aws
+  versionFunctions: true
   runtime: nodejs12.x
   region: us-east-1
   iam:
-    role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
-      statements:
-        - Effect: "Allow"
-          Action:
-            - securityhub:GetFindings
-          Resource:
-            - !Sub arn:aws:securityhub:*:${AWS::AccountId}:hub/default
+    role: !Sub arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
 functions:
   sync:
     handler: handlers/sync.main
@@ -55,3 +34,19 @@ functions:
       githubOrganizationProjects: ${self:custom.githubOrganizationProjects}
       severity: ${self:custom.severity}
       stage: ${self:custom.stage}
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  iamPath: ${ssm:/configuration/master/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/master/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  serverlessTerminationProtection:
+    stages:
+      - master
+      - val
+      - production
+  githubAccessToken: ${ssm:/configuration/${self:custom.stage}/sechub/githubAccessToken~true, ssm:/configuration/default/sechub/githubAccessToken~true}
+  githubRepository: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepository~true, ssm:/configuration/default/sechub/githubRepository~true, env:GITHUB_REPOSITORY}
+  githubRepositoryProjects: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepositoryProjects~true, ssm:/configuration/default/sechub/githubRepositoryProjects~true, ""}
+  githubOrganizationProjects: ${ssm:/configuration/${self:custom.stage}/sechub/githubOrganizationProjects~true, ssm:/configuration/default/sechub/githubOrganizationProjects~true, ""}
+  severity: ${ssm:/configuration/${self:custom.stage}/sechub/severity~true, ssm:/configuration/default/sechub/severity~true, "CRITICAL,HIGH"}
