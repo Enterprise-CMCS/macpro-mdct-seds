@@ -1,0 +1,27 @@
+version: "2" # required to adjust maintainability checks
+checks:
+  argument-count:
+    enabled: false
+  complex-logic:
+    enabled: false
+  method-lines:
+    config:
+      threshold: 300
+  file-lines:
+    config:
+      threshold: 1000
+  method-complexity:
+    config:
+      threshold: 20
+  return-statements:
+    enabled: false
+  similar-code:
+    enabled: false
+  identical-code:
+    enabled: false
+exclude_patterns:
+  - "**/*.json"
+  - "**/node_modules/"
+  - "**/*.test.js"
+  - "services/app-api/.webpack/**/*"
+  - "src/"
