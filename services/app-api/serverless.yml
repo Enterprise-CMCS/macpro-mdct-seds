@@ -514,7 +514,7 @@ functions:
           authorizer: aws_iam
       - schedule:
           enabled: true
-          rate: cron(0 0 1 */3 ? *)
+          rate: cron(0 0 1 JAN,APR,JUL,OCT ? *)
     timeout: 800
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
