@@ -77,6 +77,11 @@
     "moduleNameMapper": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     },
+    "collectCoverageFrom": [
+      "src/components/**/*.js",
+      "!src/components/Example/*",
+      "!src/components/LocalLogin/*"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/setupEnzyme.js"
     ],
