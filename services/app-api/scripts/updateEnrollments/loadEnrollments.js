@@ -151,16 +151,16 @@ const log = (message) => {
         ":enrollmentCounts": enrollmentCounts,
       },
     };
-    log(`<<<< Updating >>>>", ${JSON.stringify(stateForm.enrollmentCounts)}`);
+    log(`<<<< Updating >>>>", ${JSON.stringify(enrollmentCounts)}`);
     try {
       await update(updateParams);
     } catch (e) {
       console.log(
-        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       );
       console.log(`Error occured while updating :). Details: ${e.message}`);
       console.log(
-        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       );
       console.log("Excecution stopped due to error");
       throw e;
