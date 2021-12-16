@@ -42,7 +42,7 @@ const getStateForms = async () => {
   return await scanTable({
     TableName: tables.stateForm, //"local-form-answers", /////update table name here
     FilterExpression:
-      "contains(#form, :form) AND #quarter = :quarter AND #year = :year",
+      "contains(#form, :form) AND #quarter = :quarter AND (#year = :year1 OR #year = :year2)",
     ExpressionAttributeNames: {
       "#form": "form",
       "#quarter": "quarter",
@@ -51,7 +51,8 @@ const getStateForms = async () => {
     ExpressionAttributeValues: {
       ":form": "21E",
       ":quarter": 4,
-      ":year": 2021,
+      ":year1": 2020,
+      ":year2": 2021,
     },
   });
 };
@@ -151,7 +152,20 @@ const log = (message) => {
       },
     };
     log(`<<<< Updating >>>>", ${JSON.stringify(stateForm.enrollmentCounts)}`);
-    await update(updateParams);
+    try {
+      await update(updateParams);
+    } catch (e) {
+      console.log(
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      );
+      console.log(`Error occured while updating :). Details: ${e.message}`);
+      console.log(
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      );
+      console.log("Excecution stopped due to error");
+      throw e;
+    }
+
     log("<<<< Update Successfull! >>>>");
     log("                               ");
   }
