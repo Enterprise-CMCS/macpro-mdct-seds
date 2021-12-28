@@ -31,7 +31,7 @@ export const main = handler(async (event, context) => {
       ":role": data.role,
       ":states": data.states ?? "",
       ":isActive": data.isActive ?? "inactive",
-      ":lastLogin": data.lastLogin,
+      ":lastLogin": new Date().toISOString(),
       ":usernameSub": data.usernameSub ?? null,
     },
     ExpressionAttributeNames: {
