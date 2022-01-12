@@ -130,7 +130,7 @@ const Users = () => {
         }
       },
       {
-        name: "Joined",
+        name: "Registration Date",
         selector: "dateJoined",
         sortable: true,
         cell: user => {
@@ -140,7 +140,7 @@ const Users = () => {
         }
       },
       {
-        name: "Last Active",
+        name: "Last Login",
         selector: "lastLogin",
         sortable: true,
         cell: user => {

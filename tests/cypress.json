@@ -1,6 +1,6 @@
 {
   "nodeVersion": "system",
-  "baseUrl": "https://google.com",
+  "baseUrl": "http://mdctsedsdev.cms.gov/",
   "redirectionLimit": 20,
   "retries": 5,
   "watchForFileChanges": true,
