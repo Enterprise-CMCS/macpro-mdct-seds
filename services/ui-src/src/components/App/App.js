@@ -17,7 +17,7 @@ import {
   fetchStates,
   fetchStatuses
 } from "../../store/reducers/global";
-
+// this is the entry point
 function App({ fetchAgeRanges, fetchStates, fetchStatuses }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
