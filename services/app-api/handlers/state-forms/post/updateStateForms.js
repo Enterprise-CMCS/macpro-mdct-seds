@@ -20,11 +20,11 @@ export const main = handler(async (event, context) => {
     ExpressionAttributeValues: {
       ":state_form": stateFormId,
     },
-    FilterExpression: "state_form = :state_form",
+    KeyConditionExpression: "state_form = :state_form",
     ConsistentRead: true,
   };
 
-  const result = await dynamoDb.scan(params);
+  const result = await dynamoDb.query(params);
   if (result.Count === 0) {
     return [];
   }
