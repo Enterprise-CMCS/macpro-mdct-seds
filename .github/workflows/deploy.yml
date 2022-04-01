@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - "*"
-      - "dependabot/**"
+      # Dependabot deploys currently broke due to needing secret access
+      - "!dependabot/**"
       - "!skipci*"
+
 
 jobs:
   deploy:
