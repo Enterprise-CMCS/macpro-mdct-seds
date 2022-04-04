@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "serverless-plugin-scripts": "^1.0.2",
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
+    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper#0.1.1",
     "serverless-stack-termination-protection": "^1.0.4"
   }
 }

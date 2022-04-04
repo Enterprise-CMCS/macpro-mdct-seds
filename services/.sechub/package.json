@@ -11,5 +11,10 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "octokit": "^1.5.0"
+  },
+  "devDependencies": {
+    "serverless-iam-helper": "https://github.com/cmsgov/serverless-iam-helper",
+    "serverless-idempotency-helper": "https://github.com/cmsgov/serverless-idempotency-helper",
+    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper#0.1.1"
   }
 }

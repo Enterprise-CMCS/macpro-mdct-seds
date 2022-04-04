@@ -9661,7 +9661,7 @@ serverless-plugin-warmup@^4.9.0:
   dependencies:
     fs-extra "^9.0.0"
 
-"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
+"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper#0.1.1":
   version "1.0.0"
   resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
 
