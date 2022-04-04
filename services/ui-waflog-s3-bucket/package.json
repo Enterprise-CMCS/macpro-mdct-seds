@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper#0.1.1",
     "serverless-stack-termination-protection": "^1.0.4"
   }
 }

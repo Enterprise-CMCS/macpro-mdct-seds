@@ -10835,6 +10835,20 @@ serverless-dotenv-plugin@^3.0.0:
     dotenv "^10.0.0"
     dotenv-expand "^5.1.0"
 
+"serverless-iam-helper@https://github.com/cmsgov/serverless-iam-helper":
+  version "1.0.0"
+  resolved "https://github.com/cmsgov/serverless-iam-helper#e51709dfbb9461c18712cc429f489504d543c4c7"
+  dependencies:
+    lodash "^4.17.21"
+
+"serverless-idempotency-helper@https://github.com/cmsgov/serverless-idempotency-helper":
+  version "1.0.0"
+  resolved "https://github.com/cmsgov/serverless-idempotency-helper#22a96de1495fea2d295cadb966e503aefbc1b086"
+  dependencies:
+    bestzip "^2.2.0"
+    extract-zip "^2.0.1"
+    lodash "^4.17.21"
+
 serverless-offline@^6.8.0:
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-6.9.0.tgz#a87fee3561f34808be9ac8ab06db9278cea8fa5f"
@@ -10885,6 +10899,10 @@ serverless-plugin-warmup@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/serverless-plugin-warmup/-/serverless-plugin-warmup-5.3.1.tgz#cc8ca43452c5468a79a7b5447c84267035fa8d1e"
   integrity sha512-+nY6VCTLf/VjwkwAudtCXE/neaYSKy+9NmnYTSL0y8ZGfKB6u9Hrh9J2vqYEcam6eQFnCAEsch9iTs/dbU2vGg==
+
+"serverless-s3-bucket-helper@https://github.com/CMSgov/serverless-s3-bucket-helper#0.1.1":
+  version "1.0.0"
+  resolved "https://github.com/CMSgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
 
 serverless-stack-termination-protection@^1.0.4:
   version "1.0.4"
