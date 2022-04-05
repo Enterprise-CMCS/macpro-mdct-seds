@@ -52,7 +52,11 @@ export const main = handler(async (event, context) => {
     Item: putItem,
   };
 
-  await dynamoDb.put(paramsPut);
+  try {
+    await dynamoDb.put(paramsPut);
+  } catch (e) {
+    throw("Table params update failed", e);
+  }
 
   return {
     status: 200,
