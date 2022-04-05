@@ -59,7 +59,7 @@ custom:
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
-  webAclName: ${self:service}-${self:custom.stage}-webacl
+  webAclName: ${self:custom.stage}-ApiGwWebAcl
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -736,7 +736,7 @@ resources:
     ApiGwWebAcl:
       Type: AWS::WAFv2::WebACL
       Properties:
-        Name: ${self:custom.stage}-ApiGwWebAcl
+        Name: ${self:custom.webAclName}
         DefaultAction:
           Block: {}
         Rules:
