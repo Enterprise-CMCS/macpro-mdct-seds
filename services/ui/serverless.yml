@@ -130,8 +130,8 @@ resources:
               Action: "s3:*"
               Principal: "*"
               Resource:
-                - !Sub arn:aws:s3:::${S3Bucket}/*
-                - !Sub arn:aws:s3:::${S3Bucket}
+                - !Sub arn:aws:s3:::${LoggingBucket}/*
+                - !Sub arn:aws:s3:::${LoggingBucket}
               Condition:
                 Bool:
                   aws:SecureTransport: false
