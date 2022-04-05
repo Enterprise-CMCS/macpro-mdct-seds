@@ -30,6 +30,10 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${AWS::AccountId}-${self:custom.stage}-waflogs
+        BucketEncryption:
+            ServerSideEncryptionConfiguration:
+              - ServerSideEncryptionByDefault:
+                  SSEAlgorithm: AES256
     WaflogsUploadBucketPolicy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
