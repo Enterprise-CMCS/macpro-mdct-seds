@@ -89,6 +89,16 @@ resources:
               Resource: !Sub arn:aws:s3:::${S3Bucket}/*
               Principal:
                 CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${S3Bucket}/*
+                - !Sub arn:aws:s3:::${S3Bucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
         Bucket: !Ref S3Bucket
     LoggingBucket:
       Type: "AWS::S3::Bucket"
@@ -115,6 +125,16 @@ resources:
               Resource: !Sub arn:aws:s3:::${LoggingBucket}/*
               Principal:
                 AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${S3Bucket}/*
+                - !Sub arn:aws:s3:::${S3Bucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
         Bucket: !Ref LoggingBucket
     CloudFrontWebAcl:
       Type: AWS::WAFv2::WebACL
