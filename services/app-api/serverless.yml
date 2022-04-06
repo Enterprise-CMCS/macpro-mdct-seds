@@ -110,6 +110,12 @@ provider:
     apiGateway: true
   logs:
     restApi: true
+  iam:
+    role:
+      # Even though we are creating our own IAM role that is used in each lambda function below
+      # These values are used by the serverless-iam-helper and need to be set
+      path: ${self:custom.iamPath}
+      permissionsBoundary: ${self:custom.iamPermissionsBoundaryPolicy}
   environment: # Service wide environment variables
     tbl_age_ranges: ${self:custom.AgeRangesTableName}
     tbl_form_answers: ${self:custom.FormAnswersTableName}
