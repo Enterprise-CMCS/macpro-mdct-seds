@@ -102,6 +102,8 @@ provider:
   region: us-east-1
   tracing:
     apiGateway: true
+  logs:
+    restApi: true
   environment: # Service wide environment variables
     tbl_age_ranges: ${self:custom.AgeRangesTableName}
     tbl_form_answers: ${self:custom.FormAnswersTableName}
