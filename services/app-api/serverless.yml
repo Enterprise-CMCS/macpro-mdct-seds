@@ -15,6 +15,7 @@ plugins:
   - serverless-associate-waf
   - serverless-stack-termination-protection
   - serverless-api-client-certificate
+  - serverless-iam-helper
 
 custom:
   stage: ${opt:stage, self:provider.stage}
