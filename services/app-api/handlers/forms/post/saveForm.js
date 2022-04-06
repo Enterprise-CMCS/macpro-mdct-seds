@@ -105,7 +105,7 @@ export const main = handler(async (event, context) => {
       UpdateExpression:
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
-        ":rows": answers[answer].rows,
+        ":rows": JSON.parse(JSON.stringify(answers[answer].rows).replace(/null/g, 0)), //replace null values with 0
         ":last_modified_by": data.username,
         ":last_modified": new Date().toISOString(),
       },
