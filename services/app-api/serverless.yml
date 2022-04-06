@@ -14,6 +14,8 @@ plugins:
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
+  - serverless-api-client-certificate
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -63,6 +65,9 @@ custom:
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
+  serverlessApiClientCertificate:
+    rotateCerts: true
+    daysLeft: 30
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/b/id~true}
