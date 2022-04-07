@@ -9,9 +9,9 @@ on:
       - "!skipci*"
 
 permissions:
-      id-token: write
-      contents: read
-      actions: read
+  id-token: write
+  contents: read
+  actions: read
 jobs:
   deploy:
     runs-on: ubuntu-latest

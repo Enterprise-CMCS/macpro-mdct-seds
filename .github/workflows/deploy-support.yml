@@ -6,9 +6,9 @@ on:
       # # List of all branches which should control underlying infrastructure.
       - master
 permissions:
-      id-token: write
-      contents: read
-      actions: read
+  id-token: write
+  contents: read
+  actions: read
 jobs:
   deploy:
     runs-on: ubuntu-latest

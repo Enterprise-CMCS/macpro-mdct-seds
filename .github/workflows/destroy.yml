@@ -3,9 +3,9 @@ name: Destroy
 on: delete
 
 permissions:
-      id-token: write
-      contents: read
-      actions: read
+  id-token: write
+  contents: read
+  actions: read
 jobs:
   destroy:
     # Protected branches should be designated as such in the GitHub UI.
