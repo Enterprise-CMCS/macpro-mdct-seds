@@ -121,6 +121,4 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        if [[ "${self:custom.stage}" != "production" ]] || [[ "${self:custom.stage}" != "prod" ]]; then
-          sls --stage ${self:custom.stage} dynamodb:seed
-        fi
+        sls --stage ${self:custom.stage} dynamodb:seed
