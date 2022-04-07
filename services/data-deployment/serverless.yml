@@ -118,7 +118,7 @@ custom:
       table: ${self:custom.stage}-auth-user
       sources: [../../src/database/initial_data_load/auth_user.json]
 
-  scripts:
-    hooks:
-      deploy:finalize: |
-        sls --stage ${self:custom.stage} dynamodb:seed
+  # scripts:
+  #   hooks:
+  #     deploy:finalize: |
+  #       sls --stage ${self:custom.stage} dynamodb:seed
