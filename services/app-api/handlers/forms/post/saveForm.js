@@ -16,8 +16,6 @@ export const main = handler(async (event, context) => {
   const answers = data.formAnswers;
   const statusData = data.statusData;
   let questionResult = [];
-  let dbResult;
-  let formResult;
 
   answers.sort(function (a, b) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
@@ -117,12 +115,12 @@ export const main = handler(async (event, context) => {
     };
 
     try {
-      dbResult = await dynamoDb.update(questionParams);
+      const dbResult = await dynamoDb.update(questionParams);
+      questionResult.push(dbResult);
     } catch (e) {
       throw("Question params update failed", e);
     }
 
-    questionResult.push(dbResult);
   }
 
   // Params for updating for statusData;
@@ -151,12 +149,12 @@ export const main = handler(async (event, context) => {
   };
 
   try {
-    formResult = await dynamoDb.update(formParams);
+    await dynamoDb.update(formParams);
   } catch (e) {
     throw("Form params update failed", e);
   }
 
-  if (questionResult.Count === 0 || !formResult) {
+  if (questionResult.Count === 0) {
     throw new Error("Form save query failed");
   }
 
