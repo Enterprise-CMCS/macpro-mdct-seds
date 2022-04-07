@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import cloneDeepWith from "lodash/cloneDeepWith";
 
 /**
  * This handler will loop through a question array and save each row
@@ -94,6 +95,13 @@ export const main = handler(async (event, context) => {
       "-" +
       questionNumber;
 
+    //replace null values with 0
+    const rowWithZeroWhereBlank = cloneDeepWith(answers[answer].rows, (value) => {
+      if(value === null) {
+        return 0;
+      }
+    });
+
     // Params for updating questions
     const questionParams = {
       TableName: process.env.FormAnswersTableName,
@@ -103,7 +111,7 @@ export const main = handler(async (event, context) => {
       UpdateExpression:
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
-        ":rows": JSON.parse(JSON.stringify(answers[answer].rows).replace(/null/g, 0)), //replace null values with 0
+        ":rows": rowWithZeroWhereBlank,
         ":last_modified_by": data.username,
         ":last_modified": new Date().toISOString(),
       },
