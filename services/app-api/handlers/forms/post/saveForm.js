@@ -96,7 +96,7 @@ export const main = handler(async (event, context) => {
       questionNumber;
 
     //replace null values with 0
-    const rowWithZeroWhereBlank = cloneDeepWith(answers[answer].rows, (value) => {
+    const rowsWithZeroWhereBlank = cloneDeepWith(answers[answer].rows, (value) => {
       if(value === null) {
         return 0;
       }
@@ -111,7 +111,7 @@ export const main = handler(async (event, context) => {
       UpdateExpression:
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
-        ":rows": rowWithZeroWhereBlank,
+        ":rows": rowsWithZeroWhereBlank,
         ":last_modified_by": data.username,
         ":last_modified": new Date().toISOString(),
       },
