@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import cloneDeepWith from "lodash/cloneDeepWith";
 
 /**
  * This handler will loop through a question array and save each row
@@ -94,6 +95,13 @@ export const main = handler(async (event, context) => {
       "-" +
       questionNumber;
 
+    //replace null values with 0
+    const rowsWithZeroWhereBlank = cloneDeepWith(answers[answer].rows, (value) => {
+      if(value === null) {
+        return 0;
+      }
+    });
+
     // Params for updating questions
     const questionParams = {
       TableName: process.env.FormAnswersTableName,
@@ -103,7 +111,7 @@ export const main = handler(async (event, context) => {
       UpdateExpression:
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
-        ":rows": answers[answer].rows,
+        ":rows": rowsWithZeroWhereBlank,
         ":last_modified_by": data.username,
         ":last_modified": new Date().toISOString(),
       },
@@ -114,7 +122,13 @@ export const main = handler(async (event, context) => {
       ReturnValues: "ALL_NEW",
     };
 
-    questionResult.push(await dynamoDb.update(questionParams));
+    try {
+      const dbResult = await dynamoDb.update(questionParams);
+      questionResult.push(dbResult);
+    } catch (e) {
+      throw("Question params update failed", e);
+    }
+
   }
 
   // Params for updating for statusData;
@@ -141,9 +155,14 @@ export const main = handler(async (event, context) => {
     },
     ReturnValues: "ALL_NEW",
   };
-  const formResult = await dynamoDb.update(formParams);
 
-  if (questionResult.Count === 0 || !formResult) {
+  try {
+    await dynamoDb.update(formParams);
+  } catch (e) {
+    throw("Form params update failed", e);
+  }
+
+  if (questionResult.Count === 0) {
     throw new Error("Form save query failed");
   }
 
