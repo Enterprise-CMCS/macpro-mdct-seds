@@ -123,6 +123,15 @@ which allows you to view the tables at: [http://localhost:8001/tables/](http://l
 
 To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
 
+From a second terminal you will need to go to `services/ui-src` and run `sh configureLocal.sh BranchName` to configure your local env for that branch. It's important you do this AFTER running `./dev local` because it overwrites the env with blank information.
+
+For a new branch you will need to create a new user: For this, go to `http://localhost:3000/#/signup`
+If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if you need to though.
+
+`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running `npm install -g dynamodb-admin`. Once installed you can view your local dynamodb table with the command: `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admindynamodb-admin` and you will be able to view the tables at: `http://localhost:8001/tables/`
+
+To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
+
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
 Local dev is configured in typescript project in [src/](src/). The entrypoint is [src/dev.ts](src/dev.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
