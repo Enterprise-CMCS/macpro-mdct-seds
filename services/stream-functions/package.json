@@ -10,7 +10,6 @@
   "devDependencies": {
     "serverless-bundle": "^3.0.0",
     "serverless-dotenv-plugin": "^3.0.0",
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
     "serverless-stack-termination-protection": "^1.0.4"
   }
 }
