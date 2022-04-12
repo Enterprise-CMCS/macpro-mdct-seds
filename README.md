@@ -2,7 +2,7 @@
 
 # MACPro Data Collection Tool: CHIP Statistical Enrollment Data System
 
-Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framwork. Is it based on:
+Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framework.
 
 ## Architecture
 
@@ -12,17 +12,21 @@ Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT
 
 Serverless Name Requirements: A service name should only contain alphanumeric characters (case sensitive) and hyphens. The should start with an alphanumeric character and shouldn't exceed 128 characters.
 
-Please push your code to a new branch with a name that meets the Serverless Name Requirements above. Any other variations and the Github Actions will fail.
+Please push your code to a new branch with a name that meets the Serverless Name Requirements above. Any other variations and the GitHub Actions will fail.
 
-After creating a branch, if you need to rename it because it does not follow the rules above, use `git branch -m <new-branch-name>` to rename your local branch then `git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
+After creating a branch, if you need to rename it because it does not follow the rules above, use
 
-This project uses a combination of gitflow and serverless naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
+`git branch -m <new-branch-name>` to rename your local branch then
+
+`git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
+
+This project uses a combination of Gitflow and Serverless naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
 
 - master > feature-my-feature-name
 - master > bugfix-my-bugfix-name
 - master > hotfix-my-hotfix-name
 
-On each PR, a linter and prettier check is run. These checks must pass for a PR to be merged. Prior to submitting your PR, you will need to run the linter and prettier against the work you have done.
+On each PR, a linter and prettier check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the linter and prettier against the work you have done.
 
 - Run Eslint using `yarn lint`
 - Run Prettier using `npx prettier --write .`
@@ -37,9 +41,9 @@ Want to deploy from your Mac?
 
 - Create an AWS account
 - Install/configure the AWS CLI
-- npm install -g severless
-- brew install yarn
-- sh deploy.sh
+- `npm install -g serverless`
+- `brew install yarn`
+- `sh deploy.sh`
 
 Want to deploy from Windows using a VM?
 
@@ -72,13 +76,52 @@ Want to deploy from Windows using a VM?
 
 ## Local Dev
 
-When you create a new branch, the first thing you should do is just push to gitHub, this will trigger the creation of the AWS Stack that some of your local resources will be using.
+When you create a new branch, the first thing you should do is just push to GitHub, this will trigger the creation of the AWS Stack that some of your local resources will be using.
 
-Then you will need to go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where some of your local branches resources will be created.
+Then you will need to go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
 
-From the root directory run `yarn install`, and then go to `services/ui-src` and run `yarn install`
+```
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_SESSION_TOKEN=...
+```
 
-From the repository directory, run all the services locally with the command `./dev local`
+If you don't have yarn, nvm, or java installed, see [Requirements](#requirements)
+
+From the root directory run:
+
+`nvm use`
+
+`yarn install`
+
+`cd services/ui-src`
+
+`yarn install`
+
+`cd ../../`
+
+`./dev local`
+
+This starts a process in your terminal. Open a second terminal tab and run:
+
+`cd services/ui-src`
+
+`sh configureLocal.sh BranchName`
+
+It's important you do this AFTER running `./dev local` because it overwrites the env with blank information.
+
+For a new branch you will need to create a new user: For this, go to [http://localhost:3000/#/signup](http://localhost:3000/#/signup)
+If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if need be.
+
+`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running
+
+`npm install -g dynamodb-admin`
+
+`DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin`
+
+which allows you to view the tables at: [http://localhost:8001/tables/](http://localhost:8001/tables/)
+
+To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
 
 From a second terminal you will need to go to `services/ui-src` and run `sh configureLocal.sh BranchName` to configure your local env for that branch. It's important you do this AFTER running `./dev local` because it overwrites the env with blank information.
 
@@ -91,17 +134,15 @@ To change information about the user you created just go to the `local-auth-user
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
-Local dev is configured in typescript project in `./src`. The entrypoint is `./src/dev.ts`, it manages running the moving pieces locally: the API, the database, the filestore, and the frontend.
+Local dev is configured in typescript project in [src/](src/). The entrypoint is [src/dev.ts](src/dev.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
-Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local db and local s3 in a similar fashion.
+Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). This plugin runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every file save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local Database and S3 buckets in a similar fashion.
 
-When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
+Local authentication bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
 ### Adding New Endpoints
 
-1. In `{ROOT}/services/appi-api/serverless.yml`, add new entry to `functions` describing the new endpoint.
-   Hint: Make sure your http method is set correctly
-   example:
+1. In [services/app-api/serverless.yml](services/app-api/serverless.yml), add a new entry to `functions` describing the new endpoint. Make sure your http method is set correctly. For example:
 
 ```
 functions:
@@ -116,14 +157,14 @@ functions:
             authorizer: aws_iam
 ```
 
-2. Create handler in `{ROOT}/services/app-api/handlers`
-   1. Note: For Table name use custom vars located in `{ROOT}/services/app-api/serverless.yml`
+2. Create a handler in [services/app-api/handlers](services/app-api/handlers)
+   1. Note: For Table names use the custom variables located in [services/app-api/serverless.yml](services/app-api/serverless.yml)
    2. Conventions:
       1. Each file in the handler directory should contain a single function called 'main'
-      2. The handlers are organized by API, each with their own folder. Within those folders should be separate files for each HTTP verb.
-         For instance: There might be `users` folder in handlers, (`app-api/handlers/users`). Within that `users`folder would be individual files each corresponding with an HTTP verb so that the inside of `users` might look like `get.js` `create.js` `update.js` `delete.js`, etc.
-         The intention of this structure is that each of the verbs within a folder corresponds to the same data set in the database.
-3. Add wrapper function in `{ROOT}/services/ui-src/src/lib/api.js`
+      2. The handlers are organized by API, each with their own folder. Within those folders should be separate files per HTTP verb.
+         For instance: There is a `users` folder in handlers, ([services/app-api/handlers/users/](services/app-api/handlers/users/)). That folder would have individual files corresponding to an HTTP verb (e.g. `get.js` `create.js` `update.js` `delete.js`, etc.).
+         The intention of this structure is that each request verb within a folder interacts with the table sharing the folder's name.
+3. Add a wrapper function in [/services/ui-src/src/libs/api.js](/services/ui-src/src/libs/api.js)
    example:
 
 ```
@@ -135,10 +176,12 @@ export function listUsers() {
 
 ### Adding New Forms (quarterly)
 
-1. If necessary, create a new form template, for the year, in ROOT/src/database/initial_data_load/
+1. If necessary, create a new form template for the year in [src/database/initial_data_load/](src/database/initial_data_load/)
    1. Example: `form_questions_2022.json`
-2. Add the new form to seed >form-questions->sources in ROOT/services/data-deployment/serverless.yml
-   1. Example:
+2. Add the new form to seed > form-questions > sources in [services/data-deployment/serverless.yml](./services/data-deployment/serverless.yml)
+
+   Example:
+
    ```form-questions:
     table: ${self:custom.stage}-form-questions
     sources:
@@ -149,33 +192,34 @@ export function listUsers() {
     ../../src/database/initial_data_load/form_questions_2019.json,
     ]
    ```
+
 3. Log in to the site as an Administrator
 4. Select `Generate Quarterly Forms`
-5. Select the Year and Quarter you wish to generate forms for
-6. Select Generate forms button
+5. Select the Year and Quarter for which you wish to generate forms
+6. Click the `Generate Forms` button
 
 ### Legacy SEDS import SQL Files
 
 SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
-found in ${ROOT}/src/dms.
+found in [src/dms](src/dms).
 
 ### Running the nightwatch test suite
 
-1. Navigate to the front end
-   1. `cd services/ui-src`
+1. Navigate to the frontend
+   - `cd services/ui-src`
 2. Launch the test for ui-src tests.
-   1. Run `yarn run nightwatch src/{dir_name}/tests`
+   - Run `yarn run nightwatch src/{dir_name}/tests`
 3. Run root tests
-   1. In terminal, run `export APPLICATION_ENDPOINT=http://localhost:3000`
-   2. Enter `cd {ROOT}/tests/nightwatch/`
-   3. Run `yarn run nightwatch`
+   - In terminal, run `export APPLICATION_ENDPOINT=http://localhost:3000`
+   - Enter `cd {ROOT}/tests/nightwatch/`
+   - Run `yarn run nightwatch`
 
 ### Running Schema Validation
 
 Validate json files against schema to ensure accuracy before each commit.
 
-- Schema Location: `{ROOT}/src/database/schema/`
-- Initial Data Location: `{ROOT}/src/database/initial_data_load`
+- Schema Location: [src/database/schema/](src/database/schema/)
+- Initial Data Location: [src/database/initial_data_load](src/database/initial_data_load)
 
 1. Install AJV globally in your environment
    1. `npm install -g ajv-cli`
@@ -191,6 +235,8 @@ Serverless - Get help installing it here: [Serverless Getting Started page](http
 Yarn - in order to install dependencies, you need to [install yarn](https://classic.yarnpkg.com/en/docs/install/).
 
 AWS Account: You'll need an AWS account with appropriate IAM permissions (admin recommended) to deploy this app in Amazon.
+
+You'll also need to have java installed to run the database locally. M1 Mac users can download [from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`
 
 If you are on a Mac, you should be able to install all the dependencies like so:
 
@@ -225,7 +271,7 @@ None.
 
 ## Contributing / To-Do
 
-See current open [issues](https://github.com/mdial89f/quickstart-serverless/issues) or check out the [project board](https://github.com/mdial89f/quickstart-serverless/projects/1)
+See current open [issues](https://github.com/mdial89f/quickstart-serverless/issues) or check out the [project board](https://github.com/mdial89f/quickstart-serverless/projects/1).
 
 Please feel free to open new issues for defects or enhancements.
 
@@ -233,7 +279,7 @@ To contribute:
 
 - Fork this repository
 - Make changes in your fork
-- Open a pull request targetting this repository
+- Open a pull request targeting this repository
 
 Pull requests are being accepted.
 

@@ -14,6 +14,9 @@ plugins:
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
+  - serverless-api-client-certificate
+  - serverless-iam-helper
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -59,10 +62,13 @@ custom:
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
-  webAclName: ${self:service}-${self:custom.stage}-webacl
+  webAclName: ${self:custom.stage}-ApiGwWebAcl
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
+  serverlessApiClientCertificate:
+    rotateCerts: true
+    daysLeft: 30
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/b/id~true}
@@ -100,6 +106,20 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+  tracing:
+    apiGateway: true
+  logs:
+    restApi: true
+  iam:
+    role:
+      # Even though we are creating our own IAM role that is used in each lambda function below
+      # These values are used by the serverless-iam-helper and need to be set
+      path: ${self:custom.iamPath}
+      permissionsBoundary: 
+        Fn::If:
+            - CreatePermissionsBoundary
+            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+            - !Ref AWS::NoValue
   environment: # Service wide environment variables
     tbl_age_ranges: ${self:custom.AgeRangesTableName}
     tbl_form_answers: ${self:custom.FormAnswersTableName}
@@ -736,7 +756,7 @@ resources:
     ApiGwWebAcl:
       Type: AWS::WAFv2::WebACL
       Properties:
-        Name: ${self:custom.stage}-ApiGwWebAcl
+        Name: ${self:custom.webAclName}
         DefaultAction:
           Block: {}
         Rules:
