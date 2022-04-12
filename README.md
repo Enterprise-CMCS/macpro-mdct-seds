@@ -76,16 +76,6 @@ Want to deploy from Windows using a VM?
 
 ## Local Dev
 
-When you create a new branch, the first thing you should do is just push to GitHub, this will trigger the creation of the AWS Stack that some of your local resources will be using.
-
-Then you will need to go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
-
-```
-export AWS_ACCESS_KEY_ID=...
-export AWS_SECRET_ACCESS_KEY=...
-export AWS_SESSION_TOKEN=...
-```
-
 If you don't have yarn, nvm, or java installed, see [Requirements](#requirements)
 
 From the root directory run:
@@ -102,13 +92,21 @@ From the root directory run:
 
 `./dev local`
 
-This starts a process in your terminal. Open a second terminal tab and run:
+This starts a process in your terminal. Open a second terminal tab and do the following:
+
+Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
+
+```
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_SESSION_TOKEN=...
+```
 
 `cd services/ui-src`
 
-`sh configureLocal.sh BranchName` 
+`sh configureLocal.sh master` 
 
-It's important you do this AFTER running `./dev local` because it overwrites the env with blank information.
+It's important you do this AFTER running `./dev local` because it overwrites the env with blank information. Use 'master' regardless of your branch name. This connects to the dev cognito pool.
 
 For a new branch you will need to create a new user: For this, go to [http://localhost:3000/#/signup](http://localhost:3000/#/signup)
 If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if need be.
