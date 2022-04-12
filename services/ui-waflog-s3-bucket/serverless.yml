@@ -30,6 +30,27 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${AWS::AccountId}-${self:custom.stage}-waflogs
+        BucketEncryption:
+            ServerSideEncryptionConfiguration:
+              - ServerSideEncryptionByDefault:
+                  SSEAlgorithm: AES256
+    WaflogsUploadBucketPolicy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${WaflogsUploadBucket}/*
+                - !Sub arn:aws:s3:::${WaflogsUploadBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
+        Bucket: !Ref WaflogsUploadBucket
 
   Outputs:
     WaflogsUploadBucketArn:

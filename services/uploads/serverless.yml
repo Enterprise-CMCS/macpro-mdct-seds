@@ -40,6 +40,10 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
         CorsConfiguration: # Set the CORS policy
           CorsRules:
             - AllowedOrigins:
@@ -53,6 +57,23 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
+    AttachmentsBucketPolicy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${AttachmentsBucket}/*
+                - !Sub arn:aws:s3:::${AttachmentsBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
+        Bucket: !Ref AttachmentsBucket
   Outputs:
     AttachmentsBucketName: # Print out the name of the bucket that is created
       Value: !Ref AttachmentsBucket
