@@ -11,6 +11,5 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "octokit": "^1.5.0"
-  },
-  "devDependencies": {}
+  }
 }

@@ -14,9 +14,9 @@ Serverless Name Requirements: A service name should only contain alphanumeric ch
 
 Please push your code to a new branch with a name that meets the Serverless Name Requirements above. Any other variations and the GitHub Actions will fail.
 
-After creating a branch, if you need to rename it because it does not follow the rules above, use 
+After creating a branch, if you need to rename it because it does not follow the rules above, use
 
-`git branch -m <new-branch-name>` to rename your local branch then 
+`git branch -m <new-branch-name>` to rename your local branch then
 
 `git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
 
@@ -111,13 +111,22 @@ It's important you do this AFTER running `./dev local` because it overwrites the
 For a new branch you will need to create a new user: For this, go to [http://localhost:3000/#/signup](http://localhost:3000/#/signup)
 If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if need be.
 
-`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running 
+`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running
 
 `npm install -g dynamodb-admin`
 
-`DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` 
+`DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin`
 
 which allows you to view the tables at: [http://localhost:8001/tables/](http://localhost:8001/tables/)
+
+To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
+
+From a second terminal you will need to go to `services/ui-src` and run `sh configureLocal.sh BranchName` to configure your local env for that branch. It's important you do this AFTER running `./dev local` because it overwrites the env with blank information.
+
+For a new branch you will need to create a new user: For this, go to `http://localhost:3000/#/signup`
+If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if you need to though.
+
+`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running `npm install -g dynamodb-admin`. Once installed you can view your local dynamodb table with the command: `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admindynamodb-admin` and you will be able to view the tables at: `http://localhost:8001/tables/`
 
 To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
 
@@ -168,8 +177,9 @@ export function listUsers() {
 1. If necessary, create a new form template for the year in [src/database/initial_data_load/](src/database/initial_data_load/)
    1. Example: `form_questions_2022.json`
 2. Add the new form to seed > form-questions > sources in [services/data-deployment/serverless.yml](./services/data-deployment/serverless.yml)
-   
+
    Example:
+
    ```form-questions:
     table: ${self:custom.stage}-form-questions
     sources:
@@ -180,6 +190,7 @@ export function listUsers() {
     ../../src/database/initial_data_load/form_questions_2019.json,
     ]
    ```
+
 3. Log in to the site as an Administrator
 4. Select `Generate Quarterly Forms`
 5. Select the Year and Quarter for which you wish to generate forms
