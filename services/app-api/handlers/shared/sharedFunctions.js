@@ -39,7 +39,7 @@ export async function getUncertifiedStates(year, quarter) {
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+    "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
