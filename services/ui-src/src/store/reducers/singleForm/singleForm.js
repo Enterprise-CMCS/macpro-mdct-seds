@@ -1,6 +1,7 @@
 // PACKAGES
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
+import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
 // HELPER FUNCTIONS
 import {
@@ -11,8 +12,6 @@ import {
   clearSingleQuestion,
   insertFPL
 } from "./helperFunctions";
-
-import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
 // ENDPOINTS
 import { getSingleForm, saveSingleForm } from "../../../libs/api.js";
@@ -76,7 +75,7 @@ export const updatedApplicableStatus = (
     username,
     status,
     statusId,
-    timeStamp: generateDateForDB(new Date())
+    timeStamp: new Date().toISOString()
   };
 };
 
@@ -117,7 +116,7 @@ export const clearFormData = (user = "cleared") => {
   return async (dispatch, getState) => {
     const username = await getUsername();
     const state = getState();
-    const timeStamp = generateDateForDB();
+    const timeStamp = new Date().toISOString();
     const answers = state.currentForm.answers;
     try {
       const emptyForm = answers.map(singleQuestion => {
@@ -306,11 +305,11 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Final Data Certified and Submitted",
-          status_date: generateDateForDB(new Date()),
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
           status_id: 4,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(new Date())
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case CERTIFY_AND_SUBMIT_PROVISIONAL:
@@ -319,11 +318,11 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status: "Provisional Data Certified and Submitted",
-          status_date: generateDateForDB(new Date()),
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
           status_id: 3,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(new Date())
+          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case SUMMARY_NOTES_SUCCESS:
@@ -343,8 +342,8 @@ export default (state = initialState, action) => {
           status_id: 2,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: generateDateForDB(),
-          status_date: generateDateForDB()
+          last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
+          status_date: new Date().toISOString() // Need to update this with coming soon helper function
         }
       };
     case SAVE_FORM:

@@ -139,7 +139,7 @@ const mapState = state => ({
   notApplicable: state.currentForm.statusData.not_applicable,
   status: state.currentForm.statusData.status || "",
   statusId: state.currentForm.statusData.status_id || "",
-  statusTypes: state.global.statuses
+  statusTypes: state.global.status
 });
 
 const mapDispatch = {

@@ -3555,7 +3555,7 @@ const fullStoreMock = {
         state_id: "WY"
       }
     ],
-    statuses: [
+    status: [
       {
         status_id: 1,
         status: "In Progress",
