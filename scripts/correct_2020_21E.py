@@ -65,9 +65,10 @@ def correct_answers(stage, dynamodb, state):
                             cell['targets'][i] = cell['targets'][i].replace(
                                 '2021-21E-', '2020-21E-')
 
+        if(mismatch):
+            corrected_keys.append(key)
         # Write it back
         if COMMIT_CHANGES and mismatch:
-            corrected_keys.append(key)
             answer_table.update_item(
                 Key={
                     'answer_entry': key,
