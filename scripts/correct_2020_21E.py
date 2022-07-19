@@ -39,9 +39,10 @@ def main():
 def correct_answers(stage, dynamodb, state):
     answer_table = dynamodb.Table(stage + ANSWER_TABLE)
     state_code = state['state_id']
-    mismatch = 0
+    corrected_keys = []
 
     for age_group in AGE_GROUPS:
+        mismatch = False
         key = f'{state_code}-2020-4-21E-{age_group}-05'
 
         # Get answer
@@ -51,7 +52,6 @@ def correct_answers(stage, dynamodb, state):
         rows_arr = response['Item']['rows']
 
         # navigate json schema
-        mismatch = False
         for rows in rows_arr[1:]:  # rows[0] is names, and follows a different layout
             for col in rows:
                 if col == 'col1':  # This one also has a special convention
@@ -67,7 +67,7 @@ def correct_answers(stage, dynamodb, state):
 
         # Write it back
         if COMMIT_CHANGES and mismatch:
-            print("    Correcting:", key)
+            corrected_keys.append(key)
             answer_table.update_item(
                 Key={
                     'answer_entry': key,
@@ -81,10 +81,11 @@ def correct_answers(stage, dynamodb, state):
                 },
                 ReturnValues="UPDATED_NEW"
             )
-    if mismatch:
+
+    if len(corrected_keys) > 0:
         print("Mismatch id'd:", state_code)
-    if COMMIT_CHANGES and mismatch > 0:
-        print("    Corrected:", key)
+        if COMMIT_CHANGES:
+            print("    Corrected:", corrected_keys)
     return mismatch
 
 
