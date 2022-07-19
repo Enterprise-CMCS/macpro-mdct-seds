@@ -13,8 +13,9 @@ import time
 
 RUN_LOCAL = True                        # Target localhost:8000
 STAGE = "master"                        # Prefix for the environment
-TABLE = "-form-answers"
-STATE_CODE = "ME"
+ANSWER_TABLE = "-form-answers"
+STATE_TABLE = "-states"
+COMMIT_CHANGES = True
 AGE_GROUPS = ["0001", "0105", "0612", "1318"]
 
 
@@ -28,16 +29,28 @@ def main():
         stage = "local"
     else:
         dynamodb = boto3.resource('dynamodb')
-    print("Updating ", stage + TABLE)
-    table = dynamodb.Table(stage + TABLE)
+    print("Updating ", stage + ANSWER_TABLE)
+
+    state_codes = get_state_codes(stage, dynamodb)
+    for state in state_codes:
+        correct_answers(stage, dynamodb, state)
+
+
+def correct_answers(stage, dynamodb, state):
+    answer_table = dynamodb.Table(stage + ANSWER_TABLE)
+    state_code = state['state_id']
+    mismatch = 0
 
     for age_group in AGE_GROUPS:
-        key = f'{STATE_CODE}-2020-4-21E-{age_group}-05'
-        print('Updating key:', key)
+        key = f'{state_code}-2020-4-21E-{age_group}-05'
 
-        response = table.get_item(Key={'answer_entry': key})
-
+        # Get answer
+        response = answer_table.get_item(Key={'answer_entry': key})
+        if 'Item' not in response:
+            continue
         rows_arr = response['Item']['rows']
+
+        # navigate json schema
         for rows in rows_arr[1:]:  # rows[0] is names, and follows a different layout
             for col in rows:
                 if col == 'col1':  # This one also has a special convention
@@ -46,11 +59,17 @@ def main():
                 for cell in rules:
                     # Overwrite any matches of the target 2021 at this level
                     for i in range(len(cell['targets'])):
-                        cell['targets'][i] = cell['targets'][i].replace(
-                            '2021-21E-', '2020-21E-')
+                        if('2021-21E-' in cell['targets'][i]):
+                            mismatch = mismatch + 1
+                            cell['targets'][i] = cell['targets'][i].replace(
+                                '2021-21E-', '2020-21E-')
+        if mismatch == 1:
+            print("Mismatch id'd:", state_code)
 
-            # Write it back
-            table.update_item(
+        # Write it back
+        if COMMIT_CHANGES and mismatch > 0:
+            print("    Correcting:", key)
+            answer_table.update_item(
                 Key={
                     'answer_entry': key,
                 },
@@ -63,6 +82,13 @@ def main():
                 },
                 ReturnValues="UPDATED_NEW"
             )
+        return mismatch
+
+
+def get_state_codes(stage, dynamodb):
+    states_table = dynamodb.Table(stage + STATE_TABLE)
+    response = states_table.scan()
+    return response['Items']
 
 
 #### RUN #####
