@@ -15,7 +15,7 @@ RUN_LOCAL = True                        # Target localhost:8000
 STAGE = "master"                        # Prefix for the environment
 ANSWER_TABLE = "-form-answers"
 STATE_TABLE = "-states"
-COMMIT_CHANGES = True
+COMMIT_CHANGES = False
 AGE_GROUPS = ["0001", "0105", "0612", "1318"]
 
 
