@@ -6,7 +6,7 @@ import time
 # Maine 2020 Q4 is pointing at 2021, and breaking. Wanted to save the script in case any other states have the issue
 
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
+#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/credentials
 #    * pip install boto3
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 correct_2020_21E.py`)
@@ -51,6 +51,7 @@ def correct_answers(stage, dynamodb, state):
         rows_arr = response['Item']['rows']
 
         # navigate json schema
+        mismatch = False
         for rows in rows_arr[1:]:  # rows[0] is names, and follows a different layout
             for col in rows:
                 if col == 'col1':  # This one also has a special convention
@@ -60,14 +61,12 @@ def correct_answers(stage, dynamodb, state):
                     # Overwrite any matches of the target 2021 at this level
                     for i in range(len(cell['targets'])):
                         if('2021-21E-' in cell['targets'][i]):
-                            mismatch = mismatch + 1
+                            mismatch = True
                             cell['targets'][i] = cell['targets'][i].replace(
                                 '2021-21E-', '2020-21E-')
-        if mismatch == 1:
-            print("Mismatch id'd:", state_code)
 
         # Write it back
-        if COMMIT_CHANGES and mismatch > 0:
+        if COMMIT_CHANGES and mismatch:
             print("    Correcting:", key)
             answer_table.update_item(
                 Key={
@@ -82,7 +81,11 @@ def correct_answers(stage, dynamodb, state):
                 },
                 ReturnValues="UPDATED_NEW"
             )
-        return mismatch
+    if mismatch:
+        print("Mismatch id'd:", state_code)
+    if COMMIT_CHANGES and mismatch > 0:
+        print("    Corrected:", key)
+    return mismatch
 
 
 def get_state_codes(stage, dynamodb):
