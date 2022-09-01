@@ -30,5 +30,5 @@ export const main = handler(async (event, context) => {
     throw new Error("No state form list found for this state");
   }
   // Return the matching list of items in response body
-  return result.Items;
+  return result;
 });
