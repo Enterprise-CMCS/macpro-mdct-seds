@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { recursiveScan } from "../../shared/sharedFunctions";
 
 /**
  * Returns list of all forms based on state
@@ -25,7 +26,7 @@ export const main = handler(async (event, context) => {
     FilterExpression: "state_id = :stateId",
     ConsistentRead: true,
   };
-  const result = await dynamoDb.scan(params);
+  const result = await recursiveScan(params);
   if (result.Count === 0) {
     throw new Error("No state form list found for this state");
   }
