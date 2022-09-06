@@ -119,7 +119,6 @@ export const getCurrentUserInfo = async (event) => {
       : user["UserAttributes"].find((record) => record["Name"] === "email")
           .Value;
 
-  console.log("zzzEmail from Cognito Auth", email);
   let body;
 
   if (email !== undefined)
