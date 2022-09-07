@@ -55,9 +55,6 @@ const userAttrDict = (cognitoUser) => {
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
-  console.log("\n\n@@@@@@auth provider is:");
-  console.log(authProvider);
-
   switch (authProvider) {
     case "offlineContext_cognitoAuthenticationProvider":
       userObject = localUser;
@@ -66,8 +63,6 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
     default:
       const userInfo = parseAuthProvider(authProvider);
 
-      console.log("\n\n$$$$$user info");
-      console.log(userInfo);
       const body = JSON.stringify({
         usernameSub: userInfo.userId,
       });
@@ -77,16 +72,7 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
         body: body,
       });
 
-      console.log("%%%current user is: ");
-      console.log(currentUser);
-
       const username = JSON.parse(currentUser.body)["Items"][0].username;
-
-      console.log("&&&&&&&&&&&&&&&&&&&Obtained username");
-      console.log(username);
-
-      console.log("\n\n~~~~User info from COGNITO:");
-      console.log(userInfo);
 
       // calling a dependency so we have to try
       try {
@@ -97,9 +83,6 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
             UserPoolId: userInfo.poolId,
           })
           .promise();
-
-        console.log("????userResponse from cognito:");
-        console.log(userResponse);
 
         // we lose type safety here...
         const attributes = userAttrDict(userResponse);
@@ -122,10 +105,6 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
       break;
   }
 
-  console.log("\n\n\n@@@@@returning: ");
-
-  console.log(userObject);
-
   return userObject;
 };
 
@@ -133,12 +112,6 @@ export const getCurrentUserInfo = async (event) => {
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
-
-  console.log("!!!!!!!!!This is the identity!!!!!!:\n\n");
-  console.log(event.requestContext.identity);
-
-  console.log("\n\n!!!!user is: ");
-  console.log(user);
 
   const email =
     user.email !== undefined
@@ -156,8 +129,6 @@ export const getCurrentUserInfo = async (event) => {
   const currentUser = await obtainUserByEmail({
     body: body,
   });
-
-  console.log(currentUser);
 
   return {
     status: "success",

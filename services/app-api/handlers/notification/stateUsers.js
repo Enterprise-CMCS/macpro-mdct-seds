@@ -32,17 +32,16 @@ export const main = handler(async (event, context) => {
 
 function getQuarter() {
   let d = new Date();
-  let m = Math.floor(d.getMonth()/3) + 2;
-  return m > 4? m - 4 : m;
+  let m = Math.floor(d.getMonth() / 3) + 2;
+  return m > 4 ? m - 4 : m;
 }
 const quarter = getQuarter();
-const year =  new Date().getFullYear();
+const year = new Date().getFullYear();
 
 // returns a list of state users emails whose state isnt fully certified
 async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
   const uncertifiedStateList = await getUncertifiedStates(year, quarter);
-  console.log("uncertified states: ",uncertifiedStateList);
 
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {
@@ -57,7 +56,6 @@ async function certifiedStateUsersEmail() {
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
-  console.log("stateUsersToEmail", stateUsersToEmail);
   const fromEmail = "mdct@cms.hhs.gov";
   let todayDate = new Date().toISOString().split("T")[0];
 
