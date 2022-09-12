@@ -1,4 +1,4 @@
-[cms-mdct-seds](https://github.com/CMSgov/cms-mdct-seds) [![Maintainability](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/maintainability)](https://codeclimate.com/repos/605895776f390e01b500ea17/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/test_coverage)](https://codeclimate.com/repos/605895776f390e01b500ea17/test_coverage)
+[cms-mdct-seds](https://github.com/CMSgov/cms-mdct-seds) [![Maintainability](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/maintainability)](https://codeclimate.com/repos/605895776f390e01b500ea17/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/test_coverage)](https://codeclimate.com/repos/605895776f390e01b500ea17/test_coverage) [![CodeQL](https://github.com/CMSgov/cms-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/CMSgov/cms-mdct-seds/actions/workflows/codeql-analysis.yml)
 
 # MACPro Data Collection Tool: CHIP Statistical Enrollment Data System
 
