@@ -110,18 +110,20 @@ export const main = handler(async (event, context) => {
     return currentDate.getFullYear();
   };
 
-  // Get year and quarter from request
-  let data = JSON.parse(event.body);
-
+  // Get year and quarter from request, or the current date for automated jobs
   const currentDate = new Date();
   let specifiedYear;
   let specifiedQuarter;
 
-  // If a data object is sent use those values
-  if (data) {
-    specifiedYear = parseInt(data.year);
-    specifiedQuarter = data.quarter;
+  // If a data object is sent use those values.
+  if (event.body && event.body !== "undefined") {
+    let data = JSON.parse(event.body);
+    if (data) {
+      specifiedYear = parseInt(data.year);
+      specifiedQuarter = data.quarter;
+    }
   }
+
   // If no year, use current year sent in data object
   if (!specifiedYear) {
     specifiedYear = getSpecifiedYear(currentDate);
