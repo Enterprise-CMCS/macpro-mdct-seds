@@ -17,11 +17,8 @@ export const main = handler(async (event, context) => {
     return stateForms;
   }
 
-  // Get answer entries from forms
-  const generatedTotals = await obtainAnswerEntriesFromForms(
-    stateForms.entries,
-    ageRanges
-  );
+  // Get answer entries from forms and bundle totals together
+  const generatedTotals = await generateTotals(stateForms.entries, ageRanges);
   if (generatedTotals.status === 404) {
     return generatedTotals;
   }
@@ -88,7 +85,7 @@ const getStateForms = async (forms) => {
   };
 };
 
-const obtainAnswerEntriesFromForms = async (stateForms, ageRange) => {
+const generateTotals = async (stateForms, ageRange) => {
   const countsToWrite = [];
   // Loop through all stateForms
   for (const i in stateForms) {
