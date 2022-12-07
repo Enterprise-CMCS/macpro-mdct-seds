@@ -1,21 +1,178 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
-/**
- * Generates enrollment data from answer entries array
- */
-
 export const main = handler(async (event, context) => {
-  // *** if this invocation is a pre-warm, do nothing and return
+  // If this invokation is a prewarm, do nothing and return.
   if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
   }
 
-  // Get year and quarter from request
-  let data = JSON.parse(event.body);
-  const putRequests = data.answerEntries;
+  const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
+  const forms = ["21E", "64.21E"];
 
+  // Get all State Forms
+  const stateForms = await getStateForms(forms);
+  if (stateForms.status === 404) {
+    return stateForms;
+  }
+
+  // Get answer entries from forms
+  const generatedTotals = await obtainAnswerEntriesFromForms(
+    stateForms.entries,
+    ageRanges
+  );
+  if (generatedTotals.status === 404) {
+    return generatedTotals;
+  }
+
+  const commitResponse = commitTotalsToDB(generatedTotals.countsToWrite);
+  if (commitResponse.status === 404) {
+    return commitResponse;
+  }
+
+  return {
+    status: 200,
+    message: `Generated Totals Successfully`,
+  };
+});
+
+const getStateForms = async (forms) => {
+  // Build expression Attribute Value object
+  const expressionAttributeValuesObject = () => {
+    const returnObject = {};
+    for (const i in forms) {
+      const key = `:form_${i}`;
+      returnObject[key] = forms[i];
+    }
+    return returnObject;
+  };
+
+  const expressionValues = expressionAttributeValuesObject();
+
+  // Build filter expression
+  const filterExpressionString = () => {
+    let returnString = "";
+    for (const i in expressionValues) {
+      if (i === ":form_0") {
+        returnString += `form = ${i} `;
+      } else {
+        returnString += `OR form = ${i} `;
+      }
+    }
+
+    return returnString;
+  };
+
+  const params = {
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: { ...expressionAttributeValuesObject() },
+    FilterExpression: filterExpressionString(),
+    ConsistentRead: true,
+  };
+
+  const stateFormsResult = await dynamoDb.scan(params);
+
+  if (stateFormsResult.Items === 0) {
+    return {
+      status: 404,
+      message: "Could not find any matching state forms",
+    };
+  }
+  return {
+    status: 200,
+    message: `Nicks Handler Called Successfully`,
+    entries: stateFormsResult.Items,
+  };
+};
+
+const obtainAnswerEntriesFromForms = async (stateForms, ageRange) => {
+  const countsToWrite = [];
+  // Loop through all stateForms
+  for (const i in stateForms) {
+    const questionAccumulator = [];
+    let questionTotal = 0;
+
+    for (const j in ageRange) {
+      const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
+
+      const questionParams = {
+        TableName:
+          process.env.FORM_ANSWERS_TABLE_NAME ??
+          process.env.FormAnswersTableName,
+        ExpressionAttributeValues: {
+          ":answerEntry": answerEntry,
+        },
+        KeyConditionExpression: "answer_entry = :answerEntry",
+      };
+
+      const questionResult = await dynamoDb.query(questionParams);
+
+      // Add just the rows, no other details are needed
+      for (const k in questionResult.Items) {
+        questionAccumulator.push(questionResult.Items[k].rows);
+      }
+
+      // Calculate totals (add all columns together only if they are numbers)
+      questionTotal = questionAccumulator.reduce((accumulator, currentArr) => {
+        let currentTotal = 0;
+        for (const rowObj of currentArr) {
+          for (const col in rowObj) {
+            let value = rowObj[col];
+            if (!isNaN(value)) {
+              let parsed = Number(value);
+              currentTotal += parsed;
+            }
+          }
+        }
+        return accumulator + currentTotal;
+      }, 0);
+    }
+
+    // Setup counts object
+    let countObject = [];
+    if (stateForms[i].form === "21E") {
+      countObject = {
+        type: "separate",
+        year: stateForms[i].year,
+        count: questionTotal,
+      };
+    }
+
+    if (stateForms[i].form === "64.21E") {
+      countObject = {
+        type: "expansion",
+        year: stateForms[i].year,
+        count: questionTotal,
+      };
+    }
+
+    countsToWrite.push({
+      PutRequest: {
+        Item: {
+          ...stateForms[i],
+          enrollmentCounts: countObject,
+        },
+      },
+    });
+
+    if (countsToWrite.Count === 0) {
+      return {
+        status: 404,
+        message: "Could not retrieve Answer Entries",
+      };
+    }
+  }
+  return {
+    status: 200,
+    message: "Answer Entries found and counts accumulated",
+    countsToWrite,
+  };
+};
+
+const commitTotalsToDB = async (putRequests) => {
   const failureList = [];
   const retryFailLimit = 5;
 
@@ -71,9 +228,8 @@ export const main = handler(async (event, context) => {
       message: `Failed to write all entries to database.`,
     };
   }
-
   return {
     status: 200,
-    message: `Forms successfully created.`,
+    message: `Totals Updated Successfully`,
   };
-});
+};
