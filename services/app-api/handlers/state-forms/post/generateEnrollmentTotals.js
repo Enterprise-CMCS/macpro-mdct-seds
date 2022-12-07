@@ -83,7 +83,7 @@ const getStateForms = async (forms) => {
   }
   return {
     status: 200,
-    message: `Nicks Handler Called Successfully`,
+    message: `Get State Forms Called and Returned Forms Successfully`,
     entries: stateFormsResult.Items,
   };
 };

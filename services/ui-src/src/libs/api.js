@@ -97,22 +97,6 @@ export const getStateForms = data => {
   return API.post("mdct-seds", `/forms/obtain-state-forms`, opts);
 };
 
-// *** get state forms based on form(s) provided
-export const obtainStateForms = data => {
-  const opts = requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/state-forms/obtain`, opts);
-};
-
-// *** get state forms based on form(s) provided
-export const obtainAnswerEntriesFromForms = data => {
-  const opts = requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/form-answers/obtain`, opts);
-};
-
 // *** update forms associated with a specified state for specified year and quarter
 export const updateStateForm = data => {
   const opts = requestOptions();
