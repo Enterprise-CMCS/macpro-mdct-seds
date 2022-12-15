@@ -36,37 +36,32 @@ export const main = handler(async (event, context) => {
 
 const getStateForms = async (forms) => {
   // Build expression Attribute Value object
-  const expressionAttributeValuesObject = () => {
-    const returnObject = {};
+  const getExpressions = () => {
+    const expressionAttributeValues = {
+      ":quarter": 4,
+    };
+    let filterExpression = "";
     for (const i in forms) {
       const key = `:form_${i}`;
-      returnObject[key] = forms[i];
-    }
-    return returnObject;
-  };
-
-  const expressionValues = expressionAttributeValuesObject();
-
-  // Build filter expression
-  const filterExpressionString = () => {
-    let returnString = "";
-    for (const i in expressionValues) {
-      if (i === ":form_0") {
-        returnString += `form = ${i} `;
+      expressionAttributeValues[key] = forms[i];
+      if (key === ":form_0") {
+        filterExpression += `(form = ${key} `;
       } else {
-        returnString += `OR form = ${i} `;
+        filterExpression += `OR form = ${key}`;
       }
     }
-
-    return returnString;
+    filterExpression += ") AND quarter = :quarter";
+    return [expressionAttributeValues, filterExpression];
   };
+
+  const [expressionAttributeValues, filterExpression] = getExpressions();
 
   const params = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeValues: { ...expressionAttributeValuesObject() },
-    FilterExpression: filterExpressionString(),
+    ExpressionAttributeValues: { ...expressionAttributeValues },
+    FilterExpression: filterExpression,
     ConsistentRead: true,
   };
 
@@ -88,11 +83,12 @@ const getStateForms = async (forms) => {
 const generateTotals = async (stateForms, ageRange) => {
   const countsToWrite = [];
   // Loop through all stateForms
-  for (const i in stateForms) {
+  let stateFormsLength = stateForms.length;
+  for (let i = 0; i < stateFormsLength; i++) {
     const questionAccumulator = [];
     let questionTotal = 0;
-
-    for (const j in ageRange) {
+    let ageRangeLength = ageRange.length;
+    for (let j = 0; j < ageRangeLength; j++) {
       const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
 
       const questionParams = {
@@ -108,24 +104,13 @@ const generateTotals = async (stateForms, ageRange) => {
       const questionResult = await dynamoDb.query(questionParams);
 
       // Add just the rows, no other details are needed
-      for (const k in questionResult.Items) {
+      let questionResultLength = questionResult.Items.length;
+      for (let k = 0; k < questionResultLength; k++) {
         questionAccumulator.push(questionResult.Items[k].rows);
       }
 
       // Calculate totals (add all columns together only if they are numbers)
-      questionTotal = questionAccumulator.reduce((accumulator, currentArr) => {
-        let currentTotal = 0;
-        for (const rowObj of currentArr) {
-          for (const col in rowObj) {
-            let value = rowObj[col];
-            if (!isNaN(value)) {
-              let parsed = Number(value);
-              currentTotal += parsed;
-            }
-          }
-        }
-        return accumulator + currentTotal;
-      }, 0);
+      questionTotal = totalEnrollmentCount(questionAccumulator);
     }
 
     // Setup counts object
@@ -229,4 +214,19 @@ const commitTotalsToDB = async (putRequests) => {
     status: 200,
     message: `Totals Updated Successfully`,
   };
+};
+
+const totalEnrollmentCount = (questionAccumulator) => {
+  return questionAccumulator.reduce((accumulator, currentArr) => {
+    let currentTotal = 0;
+    let currentArrayLength = currentArr.length;
+    for (let i = 0; i < currentArrayLength; i++) {
+      Object.values(currentArr[i]).forEach((value) => {
+        if (!isNaN(value)) {
+          currentTotal += Number(value);
+        }
+      });
+    }
+    return accumulator + currentTotal;
+  }, 0);
 };
