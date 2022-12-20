@@ -23,7 +23,7 @@ export const main = handler(async (event, context) => {
     return generatedTotals;
   }
 
-  const commitResponse = commitTotalsToDB(generatedTotals.countsToWrite);
+  const commitResponse = await commitTotalsToDB(generatedTotals.countsToWrite);
   if (commitResponse.status === 404) {
     return commitResponse;
   }
@@ -151,7 +151,6 @@ const generateTotals = async (stateForms, ageRange) => {
 
           const items = results.Items;
           existingItems.push(...items);
-          console.log(existingItems);
         } while (startingKey);
 
         // Add just the rows, no other details are needed
