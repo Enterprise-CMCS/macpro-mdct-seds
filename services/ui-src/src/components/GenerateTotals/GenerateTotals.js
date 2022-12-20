@@ -18,7 +18,6 @@ const GenerateTotals = () => {
       setLoading(true);
 
       const response = await generateEnrollmentTotals();
-
       setLoading(false);
       setAlert(response);
     }
@@ -34,16 +33,12 @@ const GenerateTotals = () => {
           </div>
         </div>
       ) : null}
-      {alert && alert.status === 200 ? (
+      {alert && (
         <Alert className="margin-bottom-3" type="success">
-          {alert.message}
+          Enrollment Totals have been requested! Please wait at least 1 minute
+          for the data to reflect this update.
         </Alert>
-      ) : null}
-      {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert className="margin-bottom-3" type="error">
-          {alert.message}
-        </Alert>
-      ) : null}
+      )}
 
       <p className="margin-bottom-3">
         The CARTS system pulls live data from SEDS. This option allows for the
