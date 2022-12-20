@@ -65,9 +65,30 @@ const getStateForms = async (forms) => {
     ConsistentRead: true,
   };
 
-  const stateFormsResult = await dynamoDb.scan(params);
+  let startingKey;
+  let existingItems = [];
+  let results;
 
-  if (stateFormsResult.Items === 0) {
+  const scanTable = async (startingKey) => {
+    params.ExclusiveStartKey = startingKey;
+    let results = await dynamoDb.scan(params);
+    if (results.LastEvaluatedKey) {
+      startingKey = results.LastEvaluatedKey;
+      return [startingKey, results];
+    } else {
+      return [null, results];
+    }
+  };
+
+  // Looping to perform complete scan of tables due to 1 mb limit per iteration
+  do {
+    [startingKey, results] = await scanTable(startingKey);
+
+    const items = results.Items;
+    existingItems.push(...items);
+  } while (startingKey);
+
+  if (existingItems.length === 0) {
     return {
       status: 404,
       message: "Could not find any matching state forms",
@@ -76,7 +97,7 @@ const getStateForms = async (forms) => {
   return {
     status: 200,
     message: `Get State Forms Called and Returned Forms Successfully`,
-    entries: stateFormsResult.Items,
+    entries: existingItems,
   };
 };
 
@@ -101,12 +122,33 @@ const generateTotals = async (stateForms, ageRange) => {
         KeyConditionExpression: "answer_entry = :answerEntry",
       };
 
-      const questionResult = await dynamoDb.query(questionParams);
+      let startingKey;
+      let existingItems = [];
+      let results;
+
+      const queryTable = async (startingKey) => {
+        questionParams.ExclusiveStartKey = startingKey;
+        let results = await dynamoDb.query(questionParams);
+        if (results.LastEvaluatedKey) {
+          startingKey = results.LastEvaluatedKey;
+          return [startingKey, results];
+        } else {
+          return [null, results];
+        }
+      };
+
+      // Looping to perform complete scan of tables due to 1 mb limit per iteration
+      do {
+        [startingKey, results] = await queryTable(startingKey);
+
+        const items = results.Items;
+        existingItems.push(...items);
+      } while (startingKey);
 
       // Add just the rows, no other details are needed
-      let questionResultLength = questionResult.Items.length;
+      let questionResultLength = existingItems.length;
       for (let k = 0; k < questionResultLength; k++) {
-        questionAccumulator.push(questionResult.Items[k].rows);
+        questionAccumulator.push(existingItems[k].rows);
       }
 
       // Calculate totals (add all columns together only if they are numbers)
