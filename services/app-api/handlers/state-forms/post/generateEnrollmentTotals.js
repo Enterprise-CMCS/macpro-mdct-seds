@@ -204,8 +204,8 @@ const generateTotals = async (stateForms, ageRange) => {
     };
   } catch (error) {
     return {
-      status: 404,
-      message: error,
+      status: 500,
+      message: "Something went wrong:\n" + error,
     };
   }
 };
@@ -279,7 +279,7 @@ const commitTotalsToDB = async (putRequests) => {
   } catch (error) {
     return {
       status: 500,
-      message: error,
+      message: "Something went wrong:\n" + error,
     };
   }
 };
