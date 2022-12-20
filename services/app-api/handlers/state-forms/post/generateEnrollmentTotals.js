@@ -102,8 +102,8 @@ const getStateForms = async (forms) => {
     };
   } catch (error) {
     return {
-      status: 404,
-      message: error,
+      status: 500,
+      message: "Something went wrong:\n" + error,
     };
   }
 };
