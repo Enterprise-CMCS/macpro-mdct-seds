@@ -17,9 +17,10 @@ const GenerateTotals = () => {
       // Start loading icon
       setLoading(true);
 
-      const response = await generateEnrollmentTotals();
+      await generateEnrollmentTotals(); // Async request, just returns an immediate 200 and starts processing.
+
       setLoading(false);
-      setAlert(response);
+      setAlert(true);
     }
   };
 
