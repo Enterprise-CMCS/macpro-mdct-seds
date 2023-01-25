@@ -25,7 +25,7 @@
     "jest": "24.9.0",
     "jsonpath": "^1.1.0",
     "jspdf": "^2.3.1",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "nightwatch": "^1.5.1",
     "node-sass": "7.0.0",
     "prettier": "^2.2.1",
