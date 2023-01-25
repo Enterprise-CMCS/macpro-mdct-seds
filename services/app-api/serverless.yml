@@ -14,6 +14,9 @@ plugins:
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
+  - serverless-api-client-certificate
+  - serverless-iam-helper
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -56,13 +59,25 @@ custom:
   AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
   AuthUserTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
+  AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
+  AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+  AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
+  AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+  AuthJobCodesTableStreamArn: ${cf:database-${self:custom.stage}.AuthJobCodesTableStreamArn, cf:database-master.AuthJobCodesTableStreamArn}
+  AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
+  AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
+  AuthUserStatesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
+  AuthUserRolesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
-  webAclName: ${self:service}-${self:custom.stage}-webacl
+  webAclName: ${self:custom.stage}-ApiGwWebAcl
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
+  serverlessApiClientCertificate:
+    rotateCerts: true
+    daysLeft: 30
   dataSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/b/id~true}
@@ -100,6 +115,20 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+  tracing:
+    apiGateway: true
+  logs:
+    restApi: true
+  iam:
+    role:
+      # Even though we are creating our own IAM role that is used in each lambda function below
+      # These values are used by the serverless-iam-helper and need to be set
+      path: ${self:custom.iamPath}
+      permissionsBoundary:
+        Fn::If:
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
   environment: # Service wide environment variables
     tbl_age_ranges: ${self:custom.AgeRangesTableName}
     tbl_form_answers: ${self:custom.FormAnswersTableName}
@@ -126,6 +155,12 @@ provider:
     StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
     AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
     AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
+    AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
+    AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
+    AuthJobCodesTableName: ${env:AUTH_JOB_CODES_TABLE_NAME, cf:database-${self:custom.stage}.AuthJobCodesTableName}
+    AuthJobCodesTableArn: ${env:AUTH_JOB_CODES_TABLE_ARN, cf:database-${self:custom.stage}.AuthJobCodesTableArn}
+    AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
+    AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
     SteamVersion: ".v0"
 
 functions:
@@ -186,6 +221,24 @@ functions:
           type: dynamodb
           arn: ${self:custom.AuthUserTableStreamArn}
           startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthJobCodesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserStatesTableStreamArn}
+          startingPosition: LATEST
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.AuthUserRolesTableStreamArn}
+          startingPosition: LATEST
           maximumRetryAttempts: 2
           enabled: true
       - stream:
@@ -414,25 +467,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  obtainStateForms:
-    handler: handlers/state-forms/post/obtainStateForms.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: state-forms/obtain
-          method: post
-          cors: true
-          authorizer: aws_iam
-  obtainAnswerEntriesFromForms:
-    handler: handlers/forms/post/obtainAnswerEntriesFromForms.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: form-answers/obtain
-          method: post
-          cors: true
-          authorizer: aws_iam
-    timeout: 900
   generateEnrollmentTotals:
     handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
@@ -442,6 +476,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+          async: true
     timeout: 900
   obtainAvailableForms:
     handler: handlers/forms/post/obtainAvailableForms.main
@@ -458,33 +493,6 @@ functions:
     events:
       - http:
           path: form-types
-          method: get
-          cors: true
-          authorizer: aws_iam
-  getAgeRanges:
-    handler: handlers/age-ranges/get/getAgeRanges.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: age-ranges
-          method: get
-          cors: true
-          authorizer: aws_iam
-  getStates:
-    handler: handlers/states/get/getStates.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: states
-          method: get
-          cors: true
-          authorizer: aws_iam
-  getStatuses:
-    handler: handlers/statuses/get/getStatuses.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: statuses
           method: get
           cors: true
           authorizer: aws_iam
@@ -629,6 +637,9 @@ resources:
                     - ${self:custom.StatesTableArn}
                     - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
+                    - ${self:custom.AuthUserRolesTableArn}
+                    - ${self:custom.AuthJobCodesTableArn}
+                    - ${self:custom.AuthUserStatesTableArn}
                     - ${self:custom.FormTemplatesTableArn}
                 - Effect: "Allow"
                   Action:
@@ -646,6 +657,9 @@ resources:
                     - ${self:custom.StateFormsTableStreamArn}
                     - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
+                    - ${self:custom.AuthUserRolesTableStreamArn}
+                    - ${self:custom.AuthJobCodesTableStreamArn}
+                    - ${self:custom.AuthUserStatesTableStreamArn}
                     - ${self:custom.FormTemplatesTableStreamArn}
                     #- ${self:custom.AuthUserTableArn}
                     #- ${self:custom.StatusTableArn}
@@ -736,7 +750,7 @@ resources:
     ApiGwWebAcl:
       Type: AWS::WAFv2::WebACL
       Properties:
-        Name: ${self:custom.stage}-ApiGwWebAcl
+        Name: ${self:custom.webAclName}
         DefaultAction:
           Block: {}
         Rules:

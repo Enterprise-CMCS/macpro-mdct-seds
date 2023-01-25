@@ -20,11 +20,11 @@ export const main = handler(async (event, context) => {
     ExpressionAttributeValues: {
       ":state_form": stateFormId,
     },
-    FilterExpression: "state_form = :state_form",
+    KeyConditionExpression: "state_form = :state_form",
     ConsistentRead: true,
   };
 
-  const result = await dynamoDb.scan(params);
+  const result = await dynamoDb.query(params);
   if (result.Count === 0) {
     return [];
   }
@@ -52,7 +52,11 @@ export const main = handler(async (event, context) => {
     Item: putItem,
   };
 
-  await dynamoDb.put(paramsPut);
+  try {
+    await dynamoDb.put(paramsPut);
+  } catch (e) {
+    throw("Table params update failed", e);
+  }
 
   return {
     status: 200,

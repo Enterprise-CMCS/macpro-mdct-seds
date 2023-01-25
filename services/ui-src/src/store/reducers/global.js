@@ -1,11 +1,22 @@
-import { getAgeRanges, getStates, getStatuses } from "../../../src/libs/api.js";
+// Temporary import, using forms.json static data
+import * as age_ranges from "../to-delete/age_ranges.json";
+import * as states from "../to-delete/states.json";
+import * as status from "../to-delete/status.json";
+
+import { getFormTypes } from "../../../src/libs/api.js";
 
 // ACTION TYPES
+export const LOAD_FORM_TYPES = "LOAD_FORM_TYPES";
 export const LOAD_AGE_RANGES = "LOAD_AGE_RANGES";
 export const LOAD_STATES = "LOAD_STATES";
-export const LOAD_STATUSES = "LOAD_STATUSES";
 
 // ACTION CREATORS
+export const gotFormTypes = (formArray = []) => {
+  return {
+    type: LOAD_FORM_TYPES,
+    formArray
+  };
+};
 export const gotAgeRanges = (agesArray = []) => {
   return {
     type: LOAD_AGE_RANGES,
@@ -19,19 +30,12 @@ export const gotStates = (statesArray = []) => {
   };
 };
 
-export const gotStatuses = (statusesArray = []) => {
-  return {
-    type: LOAD_STATUSES,
-    statusesArray
-  };
-};
-
 // THUNKS
-export const fetchAgeRanges = () => {
+export const fetchFormTypes = () => {
   return async dispatch => {
     try {
-      const data = await getAgeRanges();
-      dispatch(gotAgeRanges(data));
+      const data = await getFormTypes();
+      dispatch(gotFormTypes(data));
     } catch (error) {
       console.log("Error:", error);
       console.dir(error);
@@ -39,35 +43,28 @@ export const fetchAgeRanges = () => {
   };
 };
 
-export const fetchStates = () => {
+export const getAgeRanges = () => {
   return async dispatch => {
-    try {
-      const data = await getStates();
-      dispatch(gotStates(data));
-    } catch (error) {
-      console.log("Error:", error);
-      console.dir(error);
-    }
+    // Call aws amplify endpoint. This is a placeholder
+    // const data = fetchedData
+    // dispatch(gotAgeRanges(data));
   };
 };
 
-export const fetchStatuses = () => {
+export const getStates = () => {
   return async dispatch => {
-    try {
-      const data = await getStatuses();
-      dispatch(gotStatuses(data));
-    } catch (error) {
-      console.log("Error:", error);
-      console.dir(error);
-    }
+    // Call aws amplify endpoint. This is a placeholder
+    // const data = fetchedData
+    // dispatch(gotStates(data));
   };
 };
 
 // INITIAL STATE
 const initialState = {
-  age_ranges: [],
-  states: [],
-  statuses: []
+  formTypes: [],
+  age_ranges: [...age_ranges.default],
+  states: [...states.default],
+  status: [...status.default]
 };
 
 // REDUCER
@@ -82,11 +79,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         states: action.statesArray
-      };
-    case LOAD_STATUSES:
-      return {
-        ...state,
-        statuses: action.statusesArray
       };
     default:
       return state;
