@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - "*"
-      # Dependabot deploys currently broke due to needing secret access
-      - "!dependabot/**"
       - "!skipci*"
 
 permissions:
