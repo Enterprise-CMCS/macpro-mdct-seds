@@ -1,8 +1,10 @@
-[cms-mdct-seds](https://github.com/CMSgov/cms-mdct-seds) [![Maintainability](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/maintainability)](https://codeclimate.com/repos/605895776f390e01b500ea17/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/d2d7f31b3416d12c880f/test_coverage)](https://codeclimate.com/repos/605895776f390e01b500ea17/test_coverage)
+# MDCT SEDS (CHIP Statistical Enrollment Data System)
 
-# MACPro Data Collection Tool: CHIP Statistical Enrollment Data System
+[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/maintainability)](https://codeclimate.com/repos/64037f514def8429ac339423/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/test_coverage)](https://codeclimate.com/repos/64037f514def8429ac339423/test_coverage)
 
-Welcome to the Centers for Medicare & Medicaid MACPro Data Collection Tool (MDCT) CHIP Statistical Enrollment Data System (SEDS). MDCT SEDS is a serverless form submission application built and deployed to AWS within the Serverless Application Framework.
+SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
 ## Architecture
 
@@ -33,7 +35,7 @@ On each PR, a linter and prettier check runs. These checks must pass for a PR to
 
 ## Usage
 
-See master build for the MACPro Quickstart [here](https://github.com/CMSgov/macpro-quickstart-serverless/actions?query=branch%3Amaster)
+See master build for the MACPro Quickstart [here](https://github.com/Enterprise-CMCS/macpro-quickstart-serverless/actions?query=branch%3Amaster)
 
 This application is built and deployed via GitHub Actions.
 
@@ -54,7 +56,7 @@ Want to deploy from Windows using a VM?
 - Copy and add public key to git
 - sudo tail ~/.ssh/id_rsa.pub
 - In your GitHub profile, add the id_rsa to ssh keys
-- Run `git clone git@github.com:CMSgov/cms-mdct-seds.git`
+- Run `git clone git@github.com:Enterprise-CMCS/macpro-mdct-seds.git`
 - cd into the repository directory in your VM terminal and `git checkout master`
 - Install node
 - Run `sudo apt update`
