@@ -124,11 +124,11 @@ provider:
       # Even though we are creating our own IAM role that is used in each lambda function below
       # These values are used by the serverless-iam-helper and need to be set
       path: ${self:custom.iamPath}
-      permissionsBoundary: 
+      permissionsBoundary:
         Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
   environment: # Service wide environment variables
     tbl_age_ranges: ${self:custom.AgeRangesTableName}
     tbl_form_answers: ${self:custom.FormAnswersTableName}
@@ -467,25 +467,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  obtainStateForms:
-    handler: handlers/state-forms/post/obtainStateForms.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: state-forms/obtain
-          method: post
-          cors: true
-          authorizer: aws_iam
-  obtainAnswerEntriesFromForms:
-    handler: handlers/forms/post/obtainAnswerEntriesFromForms.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: form-answers/obtain
-          method: post
-          cors: true
-          authorizer: aws_iam
-    timeout: 900
   generateEnrollmentTotals:
     handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
@@ -495,6 +476,7 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+          async: true
     timeout: 900
   obtainAvailableForms:
     handler: handlers/forms/post/obtainAvailableForms.main
