@@ -172,7 +172,7 @@ export default function Signup() {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Signup
+          Sign Up
         </LoaderButton>
       </form>
     );
