@@ -63,7 +63,7 @@ jobs:
       - name: unit test & publish coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
-          CC_TEST_REPORTER_ID: 405733a088d24c8ce617d4a0079cdb7c387ff13b20d6ed1bcf4c5eb8e81c413f
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           debug: true
           workingDirectory: ${{github.workspace}}/services/ui-src
