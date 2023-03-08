@@ -193,6 +193,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-form-templates
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -282,6 +284,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-auth-user-roles
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -293,6 +297,8 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthJobCodesTable:
       Type: AWS::DynamoDB::Table
+      PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
       Properties:
         TableName: ${self:custom.stage}-auth-user-job-codes
         StreamSpecification:
@@ -306,6 +312,8 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserStatesTable:
       Type: AWS::DynamoDB::Table
+      PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
       Properties:
         TableName: ${self:custom.stage}-auth-user-states
         StreamSpecification:
