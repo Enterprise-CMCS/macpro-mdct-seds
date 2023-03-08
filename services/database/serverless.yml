@@ -193,6 +193,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-form-templates
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -282,6 +284,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-auth-user-roles
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -295,6 +299,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-auth-user-job-codes
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
@@ -308,6 +314,8 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.stage}-auth-user-states
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
