@@ -10,9 +10,9 @@ import time
 #    * run the script (`python3 pitr_recovery.py`)
 RUN_LOCAL = True                        # Target localhost:8000
 STAGE = "master"                        # Prefix for the environment
-TABLE_MAP = [("-state-forms-recovery", "-state-forms"),
-             ("-form-answers-recovery", "-form-answers")]  # (source, destination), aka (backup, original)
-COMMIT_CHANGES = True
+TABLE_MAP = [("-state-forms-recovered", "-state-forms"),
+             ("-form-answers-recovered", "-form-answers")]  # (source, destination), aka (backup, original)
+COMMIT_CHANGES = False
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
 
 def run_transfer(tables, stage, dynamodb):
     (source_table, destination_table) = tables
-    print("Copying ", source_table, "to", destination_table)
+    print("Copying ", stage, source_table, "to", destination_table)
     source = dynamodb.Table(stage + source_table)
     destination = dynamodb.Table(stage + destination_table)
 
@@ -50,7 +50,8 @@ def run_transfer(tables, stage, dynamodb):
         updates.extend(response['Items'])
 
         # Log details
-        print("  -- Accumulated Count:", len(response['Items']))
+        print("  -- Retrieved Count:", len(response['Items']))
+    print(" > Total Count:", len(updates))
 
     # Execute Changes
     if COMMIT_CHANGES:
