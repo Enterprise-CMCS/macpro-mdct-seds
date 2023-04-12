@@ -37,7 +37,6 @@ export default {
     }
     return { Items: items, Count: items.length };
   },
-  // scan: (params) => client.scan(params).promise(),
   batchWrite: (params) => client.batchWrite(params).promise(),
   listTables: (params) => database.listTables(params).promise(),
   increment: (params) =>
