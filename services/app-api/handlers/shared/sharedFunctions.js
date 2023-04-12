@@ -39,7 +39,7 @@ export async function getUncertifiedStates(year, quarter) {
       ":quarter": quarter,
     },
     FilterExpression:
-    "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
@@ -459,24 +459,4 @@ export const getQuarter = (d) => {
   d = d || new Date();
   const m = Math.floor(d.getMonth() / 3) + 2;
   return m > 4 ? m - 4 : m;
-};
-
-// Scan is limited and sometimes needs to be run recursively to get all results
-// Return and array of individual items
-const recursiveScanItems = [];
-export const recursiveScan = async (params) => {
-  // Get initial scan (up to 1MB)
-  const result = await dynamoDb.scan(params);
-
-  // Add current results to return array
-  recursiveScanItems.push(...result.Items);
-
-  // If LastEvaluatedKey has a value, recursively call the function with
-  // the ExclusiveStartKey set to the last record that was read
-  if (result.LastEvaluatedKey !== undefined) {
-    params.ExclusiveStartKey = result.LastEvaluatedKey;
-    return await recursiveScan(params);
-  }
-
-  return recursiveScanItems;
 };

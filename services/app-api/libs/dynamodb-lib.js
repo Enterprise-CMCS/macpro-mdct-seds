@@ -26,7 +26,18 @@ export default {
   query: (params) => client.query(params).promise(),
   update: (params) => client.update(params).promise(),
   delete: (params) => client.delete(params).promise(),
-  scan: (params) => client.scan(params).promise(),
+  scan: async (params) => {
+    const items = [];
+    let complete = false;
+    while (!complete) {
+      const result = await client.scan(params).promise();
+      items.push(...result.Items);
+      params.ExclusiveStartKey = result.LastEvaluatedKey;
+      complete = result.LastEvaluatedKey === undefined;
+    }
+    return { Items: items, Count: items.length };
+  },
+  // scan: (params) => client.scan(params).promise(),
   batchWrite: (params) => client.batchWrite(params).promise(),
   listTables: (params) => database.listTables(params).promise(),
   increment: (params) =>
