@@ -8,10 +8,13 @@ import time
 #    * `pip install boto3` or `python3 -m pip install boto3`
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 pitr_recovery.py`)
-RUN_LOCAL = True                        # Target localhost:8000
-STAGE = "master"                        # Prefix for the environment
+# Target localhost:8000, won't go up to AWS if True
+RUN_LOCAL = True
+# Prefix for the environment (master/val/production)
+STAGE = "master"
 TABLE_MAP = [("-state-forms-recovered", "-state-forms"),
              ("-form-answers-recovered", "-form-answers")]  # (source, destination), aka (backup, original)
+# If True, will execute the changes in the database, rather than just logging them.
 COMMIT_CHANGES = False
 
 
