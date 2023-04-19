@@ -360,7 +360,7 @@ export const main = handler(async (event, context) => {
 export const calculateFormQuarterFromDate = (date) => {
   let year = date.getFullYear();
   let month = date.getMonth();
-  let quarter = month % 3 + 1;
+  let quarter = Math.floor(month / 3) + 1;
 
   return { year, quarter };
 };
