@@ -11,6 +11,8 @@ plugins:
 provider:
   name: aws
   region: us-east-1
+  runtime: nodejs16.x
+
 
 custom:
   stage: ${opt:stage, self:provider.stage}

@@ -113,7 +113,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   region: us-east-1
   tracing:
     apiGateway: true

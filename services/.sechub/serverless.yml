@@ -16,7 +16,7 @@ plugins:
 provider:
   name: aws
   versionFunctions: true
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   region: us-east-1
   iam:
     role: !Sub arn:aws:iam::${AWS::AccountId}:role/delegatedadmin/developer/SecurityHubReader
