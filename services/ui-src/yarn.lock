@@ -2922,10 +2922,10 @@
   resolved "https://registry.npmjs.org/@testing-library/user-event/-/user-event-7.2.1.tgz"
   integrity sha512-oZ0Ib5I4Z2pUEcoo95cT1cr6slco9WY7yiPpG+RGNkj8YcYgJnM7pXmYmorNOReh8MIGcKSqXyeGjxnr8YiZbA==
 
-"@trussworks/react-uswds@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@trussworks/react-uswds/-/react-uswds-1.14.0.tgz#c28cae3c884f3b16df18b0528f42cde16e5587a1"
-  integrity sha512-v7tsDiemcoRZ9qxpW0gmotMN2JmlUbk6LhfdpyZWi+g8eDRaRlzraxzyb6YN7BhfURZVIEDrT99vl5Y1LQx16g==
+"@trussworks/react-uswds@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@trussworks/react-uswds/-/react-uswds-4.2.0.tgz#94393db67c06c88b6f015c27f3dbdfa7d256e8b1"
+  integrity sha512-GFIeZwKw/vx/olFsYdube6Y1rQ0GVSsj3DEjVIUFQP7tjY50WYwv6gvU42Ey0e4PA6iY1wVTB1DeKkctYW22nQ==
 
 "@types/babel__core@^7.1.0":
   version "7.1.12"
