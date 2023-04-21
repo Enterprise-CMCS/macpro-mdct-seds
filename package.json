@@ -41,7 +41,7 @@
     "prettier": "2.2.1",
     "serverless": "^2.43.1",
     "serverless-api-client-certificate": "^1.0.2",
-    "serverless-bundle": "^5.0.1",
+    "serverless-bundle": "^6.0.0",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-iam-helper": "github:cmsgov/serverless-iam-helper",
     "serverless-idempotency-helper": "github:cmsgov/serverless-idempotency-helper",
