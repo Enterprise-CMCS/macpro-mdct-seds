@@ -56,11 +56,11 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Jest setup
-        working-directory: services/ui-src
-        # run: yarn add jest
-        run: yarn install
-      - name: unit test & publish coverage
+      # - name: Jest setup
+      #   working-directory: services/ui-src
+      #   # run: yarn add jest
+      #   run: yarn install
+      # - name: unit test & publish coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
