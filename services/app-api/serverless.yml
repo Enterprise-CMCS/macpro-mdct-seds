@@ -1,6 +1,6 @@
 service: app-api
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 package:
   individually: true
@@ -16,12 +16,13 @@ plugins:
   - serverless-stack-termination-protection
   - serverless-api-client-certificate
   - serverless-iam-helper
+  - serverless-offline-ssm
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -32,7 +33,7 @@ custom:
       - impl
       - val
       - prod
-  infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type~true, ssm:/configuration/default/infrastucture/type~true, "development"}
+  infrastructureType: ${ssm:/configuration/${self:custom.stage}/infrastucture/type, ssm:/configuration/default/infrastucture/type, "development"}
   AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
   AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
   AgeRangesTableStreamArn: ${cf:database-${self:custom.stage}.AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
@@ -69,8 +70,8 @@ custom:
   AuthUserStatesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
   StateFormsTableStreamArn: ${cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
   AuthUserRolesTableStreamArn: ${cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
-  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls~true, ssm:/configuration/default/seds/bootstrapBrokerStringTls~true}
-  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id~true, ssm:/configuration/default/vpc/id~true}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   webAclName: ${self:custom.stage}-ApiGwWebAcl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -79,13 +80,13 @@ custom:
     rotateCerts: true
     daysLeft: 30
   dataSubnets:
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/a/id~true}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/b/id~true}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/c/id~true, ssm:/configuration/default/vpc/subnets/kubernetes/c/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id, ssm:/configuration/default/vpc/subnets/kubernetes/a/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id, ssm:/configuration/default/vpc/subnets/kubernetes/b/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/c/id, ssm:/configuration/default/vpc/subnets/kubernetes/c/id}
   privateSubnets:
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id~true, ssm:/configuration/default/vpc/subnets/private/a/id~true}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id~true, ssm:/configuration/default/vpc/subnets/private/b/id~true}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id~true, ssm:/configuration/default/vpc/subnets/private/c/id~true}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
   warmupEnabled:
     production: true
     development: false

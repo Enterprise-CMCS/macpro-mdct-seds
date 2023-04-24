@@ -1,6 +1,6 @@
 service: ui-waflog-s3-bucket
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
