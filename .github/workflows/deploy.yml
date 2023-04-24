@@ -61,15 +61,15 @@ jobs:
       #   # run: yarn add jest
       #   run: yarn install
       # - name: unit test & publish coverage
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          debug: true
-          workingDirectory: ${{github.workspace}}/services/ui-src
-          coverageCommand: npm run-script coverage
-          coverageLocations: |
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      #   uses: paambaati/codeclimate-action@v2.7.5
+      #   env:
+      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      #   with:
+      #     debug: true
+      #     workingDirectory: ${{github.workspace}}/services/ui-src
+      #     coverageCommand: npm run-script coverage
+      #     coverageLocations: |
+      #       ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
