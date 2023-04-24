@@ -23,7 +23,7 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
     return true;
   });
 
-  let numOr0 = n => (isNaN(n) ? 0 : n);
+  let numOr0 = n => (isNaN(n) ? 0 : Number(n));
 
   let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce(
     (a, b) => numOr0(a) + numOr0(b)
