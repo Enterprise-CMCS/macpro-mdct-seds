@@ -1,0 +1,40 @@
+name: Pull Request
+
+on: [pull_request]
+
+jobs:
+  assignAuthor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Assign PR to Creator
+        run: |
+          if [ "$PR_AUTHOR_TYPE" != "Bot" ]
+            then
+              gh pr edit $PRNUM --add-assignee $PR_AUTHOR
+            fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRNUM: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_TYPE: ${{ github.event.pull_request.user.type }}
+  prettier:
+    name: prettier has been run on compatible files
+    runs-on: ubuntu-latest
+    container: node:14
+    steps:
+      - uses: actions/checkout@v3
+      - name: check that modified files are prettier
+        run: npx prettier --write .
+  eslint:
+    name: frontend linting
+    runs-on: ubuntu-latest
+    container: node:14
+    steps:
+      - uses: actions/checkout@v3
+      - name: install dependencies
+        working-directory: services/ui-src
+        run: yarn install
+      - name: run eslint
+        working-directory: services/ui-src
+        run: npx eslint .
