@@ -1,8 +1,8 @@
 # MDCT SEDS (CHIP Statistical Enrollment Data System)
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/maintainability)](https://codeclimate.com/repos/64037f514def8429ac339423/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/test_coverage)](https://codeclimate.com/repos/64037f514def8429ac339423/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/maintainability)](https://codeclimate.com/repos/64497017eab34100ce938fe6/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/test_coverage)](https://codeclimate.com/repos/64497017eab34100ce938fe6/test_coverage)
 
 SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
