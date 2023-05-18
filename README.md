@@ -189,6 +189,10 @@ export function listUsers() {
 5. Select the Year and Quarter for which you wish to generate forms
 6. Click the `Generate Forms` button
 
+### SEDS & CARTS
+
+SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/stream-functions](services/stream-functions) for the implentation.
+
 ### Legacy SEDS import SQL Files
 
 SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
