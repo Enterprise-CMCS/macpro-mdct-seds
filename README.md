@@ -96,7 +96,7 @@ From the root directory run:
 
 This starts a process in your terminal. Open a second terminal tab and do the following:
 
-Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
+Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. Note you must be on the CMS VPN to retrieve the credentials, but once retrieved you can exit if it is interfering with yarn or git. You can copy the exports and paste them in your terminal. It will look like this
 
 ```
 export AWS_ACCESS_KEY_ID=...
