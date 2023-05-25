@@ -82,9 +82,6 @@
       "!src/components/Example/*",
       "!src/components/LocalLogin/*"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/setupEnzyme.js"
-    ],
     "globals": {
       "_env_": {}
     },
