@@ -73,7 +73,6 @@
     ]
   },
   "jest": {
-    "verbose": true,
     "moduleNameMapper": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     },
@@ -81,11 +80,7 @@
       "src/components/**/*.js",
       "!src/components/Example/*",
       "!src/components/LocalLogin/*"
-    ],
-    "globals": {
-      "_env_": {}
-    },
-    "testEnvironment": "jest-environment-jsdom"
+    ]
   },
   "browserslist": {
     "production": [
