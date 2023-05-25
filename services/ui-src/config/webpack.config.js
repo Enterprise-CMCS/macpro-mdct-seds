@@ -381,7 +381,11 @@ module.exports = function(webpackEnv) {
                         },
                       },
                     },
+                    require.resolve('@babel/plugin-proposal-class-properties')
                   ],
+                ],
+                include: [
+                  path.resolve('node_modules/@trussworks/react-uswds'),
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -399,7 +403,7 @@ module.exports = function(webpackEnv) {
               exclude: /@babel(?:\/|\\{1,2})runtime/,
               loader: require.resolve('babel-loader'),
               options: {
-                babelrc: false,
+                babelrc: true,
                 configFile: false,
                 compact: false,
                 presets: [
