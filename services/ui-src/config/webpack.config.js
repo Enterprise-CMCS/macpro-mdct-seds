@@ -397,17 +397,16 @@ module.exports = function(webpackEnv) {
               },
             },
             // Process any JS outside of the app with Babel.
-            { 
-              test: /node_modules[\\/]@trussworks/, 
-              loader: require.resolve('babel-loader'),
-              options: {
-                plugins: [
-                  require.resolve('@babel/plugin-proposal-class-properties'),
-                  require.resolve('@babel/plugin-transform-optional-chaining'),
-                  require.resolve('@babel/plugin-transform-nullish-coalescing-operator')
-                ],
-              }
-            },
+            // { 
+            //   test: /node_modules[\\/]@trussworks/, 
+            //   loader: require.resolve('babel-loader'),
+            //   options: {
+            //     plugins: [
+            //       require.resolve('@babel/plugin-proposal-class-properties'),
+            //       require.resolve('@babel/plugin-transform-optional-chaining'),
+            //     ],
+            //   }
+            // },
             // Unlike the application JS, we only compile the standard ES features.
             {
               test: /\.(js|mjs)$/,
@@ -433,11 +432,12 @@ module.exports = function(webpackEnv) {
                 sourceMaps: shouldUseSourceMap,
                 inputSourceMap: shouldUseSourceMap,
                 plugins: [
-                  require.resolve('@babel/plugin-proposal-class-properties')
+                  require.resolve('@babel/plugin-proposal-class-properties'),
+                  require.resolve('@babel/plugin-transform-optional-chaining'),
                 ],
-                // include: [
-                //   path.resolve('node_modules/@trussworks/react-uswds'),
-                // ],
+                include: [
+                  path.resolve('node_modules/@trussworks/react-uswds'),
+                ],
               },
             },
             // "postcss" loader applies autoprefixer to our CSS.
