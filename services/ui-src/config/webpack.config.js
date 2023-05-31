@@ -402,7 +402,9 @@ module.exports = function(webpackEnv) {
               loader: require.resolve('babel-loader'),
               options: {
                 plugins: [
-                  require.resolve('@babel/plugin-proposal-class-properties')
+                  require.resolve('@babel/plugin-proposal-class-properties'),
+                  require.resolve('@babel/plugin-transform-optional-chaining'),
+                  require.resolve('@babel/plugin-transform-nullish-coalescing-operator')
                 ],
               }
             },
