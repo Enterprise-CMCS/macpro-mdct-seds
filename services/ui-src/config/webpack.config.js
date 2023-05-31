@@ -384,9 +384,9 @@ module.exports = function(webpackEnv) {
                     require.resolve('@babel/plugin-proposal-class-properties')
                   ],
                 ],
-                include: [
-                  path.resolve('node_modules/@trussworks/react-uswds'),
-                ],
+                // include: [
+                //   path.resolve('node_modules/@trussworks/react-uswds'),
+                // ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
@@ -397,6 +397,15 @@ module.exports = function(webpackEnv) {
               },
             },
             // Process any JS outside of the app with Babel.
+            { 
+              test: /node_modules[\\/]@trussworks/, 
+              loader: require.resolve('babel-loader'),
+              options: {
+                plugins: [
+                  require.resolve('@babel/plugin-proposal-class-properties')
+                ],
+              }
+            },
             // Unlike the application JS, we only compile the standard ES features.
             {
               test: /\.(js|mjs)$/,
@@ -421,6 +430,12 @@ module.exports = function(webpackEnv) {
                 // show incorrect code and set breakpoints on the wrong lines.
                 sourceMaps: shouldUseSourceMap,
                 inputSourceMap: shouldUseSourceMap,
+                plugins: [
+                  require.resolve('@babel/plugin-proposal-class-properties')
+                ],
+                // include: [
+                //   path.resolve('node_modules/@trussworks/react-uswds'),
+                // ],
               },
             },
             // "postcss" loader applies autoprefixer to our CSS.
