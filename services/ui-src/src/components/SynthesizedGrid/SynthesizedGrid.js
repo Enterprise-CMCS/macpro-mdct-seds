@@ -23,7 +23,7 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
     return true;
   });
 
-  let numOr0 = n => (isNaN(n) ? 0 : n);
+  let numOr0 = n => (isNaN(n) ? 0 : Number(n));
 
   let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce(
     (a, b) => numOr0(a) + numOr0(b)
@@ -66,90 +66,32 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
         (firstRowQ1Total + secondRowQ1Total + thirdRowQ1Total)) ||
     0;
 
-  let Q5Col1Total =
-    (isFinite(
-      (q4arry[0].rows[1].col2 +
-        q4arry[0].rows[2].col2 +
-        q4arry[0].rows[3].col2) /
-        (q1arry[0].rows[1].col2 +
-          q1arry[0].rows[2].col2 +
-          q1arry[0].rows[3].col2)
-    ) &&
-      (q4arry[0].rows[1].col2 +
-        q4arry[0].rows[2].col2 +
-        q4arry[0].rows[3].col2) /
-        (q1arry[0].rows[1].col2 +
-          q1arry[0].rows[2].col2 +
-          q1arry[0].rows[3].col2)) ||
-    0;
+  const getCellAverage = (rowNumber, columnNumber) => {
+    const total =
+      q4arry[0].rows[rowNumber][columnNumber] /
+      q1arry[0].rows[rowNumber][columnNumber];
+    return isFinite(total) ? total.toFixed(1) : 0;
+  };
 
-  let Q5Col2Total =
-    (isFinite(
-      (q4arry[0].rows[1].col3 +
-        q4arry[0].rows[2].col3 +
-        q4arry[0].rows[3].col3) /
-        (q1arry[0].rows[1].col3 +
-          q1arry[0].rows[2].col3 +
-          q1arry[0].rows[3].col3)
-    ) &&
-      (q4arry[0].rows[1].col3 +
-        q4arry[0].rows[2].col3 +
-        q4arry[0].rows[3].col3) /
-        (q1arry[0].rows[1].col3 +
-          q1arry[0].rows[2].col3 +
-          q1arry[0].rows[3].col3)) ||
-    0;
+  const columnTotal = (questionArray, columnNumber) => {
+    let total = 0;
+    for (let i = 1; i < 4; i++) {
+      total += Number(questionArray.rows[i][columnNumber]);
+    }
+    return total;
+  };
 
-  let Q5Col3Total =
-    (isFinite(
-      (q4arry[0].rows[1].col4 +
-        q4arry[0].rows[2].col4 +
-        q4arry[0].rows[3].col4) /
-        (q1arry[0].rows[1].col4 +
-          q1arry[0].rows[2].col4 +
-          q1arry[0].rows[3].col4)
-    ) &&
-      (q4arry[0].rows[1].col4 +
-        q4arry[0].rows[2].col4 +
-        q4arry[0].rows[3].col4) /
-        (q1arry[0].rows[1].col4 +
-          q1arry[0].rows[2].col4 +
-          q1arry[0].rows[3].col4)) ||
-    0;
+  const getColumnTotalAverage = column => {
+    const total =
+      columnTotal(q4arry[0], column) / columnTotal(q1arry[0], column);
+    return isFinite(total) ? total : 0;
+  };
 
-  let Q5Col4Total =
-    (isFinite(
-      (q4arry[0].rows[1].col5 +
-        q4arry[0].rows[2].col5 +
-        q4arry[0].rows[3].col5) /
-        (q1arry[0].rows[1].col5 +
-          q1arry[0].rows[2].col5 +
-          q1arry[0].rows[3].col5)
-    ) &&
-      (q4arry[0].rows[1].col5 +
-        q4arry[0].rows[2].col5 +
-        q4arry[0].rows[3].col5) /
-        (q1arry[0].rows[1].col5 +
-          q1arry[0].rows[2].col5 +
-          q1arry[0].rows[3].col5)) ||
-    0;
-
-  let Q5Col5Total =
-    (isFinite(
-      (q4arry[0].rows[1].col6 +
-        q4arry[0].rows[2].col6 +
-        q4arry[0].rows[3].col6) /
-        (q1arry[0].rows[1].col6 +
-          q1arry[0].rows[2].col6 +
-          q1arry[0].rows[3].col6)
-    ) &&
-      (q4arry[0].rows[1].col6 +
-        q4arry[0].rows[2].col6 +
-        q4arry[0].rows[3].col6) /
-        (q1arry[0].rows[1].col6 +
-          q1arry[0].rows[2].col6 +
-          q1arry[0].rows[3].col6)) ||
-    0;
+  let Q5Col1Total = getColumnTotalAverage("col2");
+  let Q5Col2Total = getColumnTotalAverage("col3");
+  let Q5Col3Total = getColumnTotalAverage("col4");
+  let Q5Col4Total = getColumnTotalAverage("col5");
+  let Q5Col5Total = getColumnTotalAverage("col6");
 
   return (
     <div className="grid-with-totals">
@@ -167,89 +109,29 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
         </thead>
         <tr>
           <th>A. Fee-for-Service</th>
-          <td>
-            {(isFinite(q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2) &&
-              (q4arry[0].rows[1].col2 / q1arry[0].rows[1].col2).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3) &&
-              (q4arry[0].rows[1].col3 / q1arry[0].rows[1].col3).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4) &&
-              (q4arry[0].rows[1].col4 / q1arry[0].rows[1].col4).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5) &&
-              (q4arry[0].rows[1].col5 / q1arry[0].rows[1].col5).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6) &&
-              (q4arry[0].rows[1].col6 / q1arry[0].rows[1].col6).toFixed(1)) ||
-              0}
-          </td>
+          <td>{getCellAverage(1, "col2")}</td>
+          <td>{getCellAverage(1, "col3")}</td>
+          <td>{getCellAverage(1, "col4")}</td>
+          <td>{getCellAverage(1, "col5")}</td>
+          <td>{getCellAverage(1, "col6")}</td>
           <td className="total-column">{firstRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr>
           <th>B. Managed Care Arrangements </th>
-          <td>
-            {(isFinite(q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2) &&
-              (q4arry[0].rows[2].col2 / q1arry[0].rows[2].col2).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3) &&
-              (q4arry[0].rows[2].col3 / q1arry[0].rows[2].col3).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4) &&
-              (q4arry[0].rows[2].col4 / q1arry[0].rows[2].col4).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5) &&
-              (q4arry[0].rows[2].col5 / q1arry[0].rows[2].col5).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6) &&
-              (q4arry[0].rows[2].col6 / q1arry[0].rows[2].col6).toFixed(1)) ||
-              0}
-          </td>
+          <td>{getCellAverage(2, "col2")}</td>
+          <td>{getCellAverage(2, "col3")}</td>
+          <td>{getCellAverage(2, "col4")}</td>
+          <td>{getCellAverage(2, "col5")}</td>
+          <td>{getCellAverage(2, "col6")}</td>
           <td className="total-column">{secondRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr>
           <th>C. Primary Care Case Management </th>
-          <td>
-            {(isFinite(q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2) &&
-              (q4arry[0].rows[3].col2 / q1arry[0].rows[3].col2).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3) &&
-              (q4arry[0].rows[3].col3 / q1arry[0].rows[3].col3).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4) &&
-              (q4arry[0].rows[3].col4 / q1arry[0].rows[3].col4).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5) &&
-              (q4arry[0].rows[3].col5 / q1arry[0].rows[3].col5).toFixed(1)) ||
-              0}
-          </td>
-          <td>
-            {(isFinite(q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6) &&
-              (q4arry[0].rows[3].col6 / q1arry[0].rows[3].col6).toFixed(1)) ||
-              0}
-          </td>
+          <td>{getCellAverage(3, "col2")}</td>
+          <td>{getCellAverage(3, "col3")}</td>
+          <td>{getCellAverage(3, "col4")}</td>
+          <td>{getCellAverage(3, "col5")}</td>
+          <td>{getCellAverage(3, "col6")}</td>
           <td className="total-column">{thirdRowQ5Total.toFixed(1)}</td>
         </tr>
         <tr className="total-row">
@@ -263,7 +145,6 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
         </tr>
       </Table>
       <div className="disclaimer">
-        {" "}
         Values will not appear until source data is provided
       </div>
     </div>

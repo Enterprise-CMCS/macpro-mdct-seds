@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "*"
+      - "dependabot/**"
       - "!skipci*"
 
 permissions:
@@ -21,7 +22,7 @@ jobs:
           else
             echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           fi
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Validate branch name
         run: ./.github/branchNameValidation.sh $STAGE_PREFIX$branch_name
       - name: set branch specific variable names
@@ -31,6 +32,7 @@ jobs:
         env:
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
           OKTA_METADATA_URL: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_OKTA_METADATA_URL] || secrets.OKTA_METADATA_URL }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SEED_DATABASE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_SEED_DATABASE] }}
@@ -56,20 +58,21 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      # - name: Jest setup
-      #   working-directory: services/ui-src
-      #   # run: yarn add jest
-      #   run: yarn install
-      # - name: unit test & publish coverage
-      #   uses: paambaati/codeclimate-action@v2.7.5
-      #   env:
-      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      #   with:
-      #     debug: true
-      #     workingDirectory: ${{github.workspace}}/services/ui-src
-      #     coverageCommand: npm run-script coverage
-      #     coverageLocations: |
-      #       ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Jest setup
+        working-directory: services/ui-src
+        # run: yarn add jest
+        run: yarn install
+      - name: unit test & publish coverage
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          debug: true
+          workingDirectory: ${{github.workspace}}/services/ui-src
+          coverageCommand: npm run-script coverage
+          coverageLocations: |
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.

@@ -1,8 +1,8 @@
 # MDCT SEDS (CHIP Statistical Enrollment Data System)
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/maintainability)](https://codeclimate.com/repos/64037f514def8429ac339423/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/2b8eae0e1683f28fcc8e/test_coverage)](https://codeclimate.com/repos/64037f514def8429ac339423/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/maintainability)](https://codeclimate.com/repos/64497017eab34100ce938fe6/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/test_coverage)](https://codeclimate.com/repos/64497017eab34100ce938fe6/test_coverage)
 
 SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
@@ -96,7 +96,7 @@ From the root directory run:
 
 This starts a process in your terminal. Open a second terminal tab and do the following:
 
-Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
+Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. Note you must be on the CMS VPN to retrieve the credentials, but once retrieved you can exit if it is interfering with yarn or git. You can copy the exports and paste them in your terminal. It will look like this
 
 ```
 export AWS_ACCESS_KEY_ID=...
@@ -188,6 +188,10 @@ export function listUsers() {
 4. Select `Generate Quarterly Forms`
 5. Select the Year and Quarter for which you wish to generate forms
 6. Click the `Generate Forms` button
+
+### SEDS & CARTS
+
+SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/stream-functions](services/stream-functions) for the implentation.
 
 ### Legacy SEDS import SQL Files
 
