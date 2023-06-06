@@ -96,9 +96,9 @@ jobs:
           echo "PROJECT_NAME=MDCT" >> $GITHUB_ENV
           echo "JIRA_PROJECT_KEY=MDCT" >> $GITHUB_ENV
           echo "JIRA_ISSUE_TYPE=Task" >> $GITHUB_ENV
-          echo "JIRA_LABELS=QMR,snyk" >> $GITHUB_ENV
+          echo "JIRA_LABELS=SEDS,snyk" >> $GITHUB_ENV
           echo "JIRA_EPIC_KEY=MDCT-2280" >> $GITHUB_ENV
-          echo "JIRA_TITLE_PREFIX=[MCR] - Snyk : " >> $GITHUB_ENV
+          echo "JIRA_TITLE_PREFIX=[SEDS] - Snyk : " >> $GITHUB_ENV
           
       
       - name: Install Jira library for Node.js
