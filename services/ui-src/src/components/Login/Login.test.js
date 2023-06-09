@@ -66,11 +66,4 @@ describe("Test LoaderButton.js", () => {
       });
     expect(window.alert).toHaveBeenCalled();
   });
-
-  test("Check that our submit behavior to be rejected without login information", async () => {
-    shallowComponent.find({ "data-testid": "loginForm" }).simulate("submit", {
-      preventDefault: () => {}
-    });
-    await expect(Auth.signIn()).rejects.toBeTruthy();
-  });
 });

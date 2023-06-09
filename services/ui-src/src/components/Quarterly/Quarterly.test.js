@@ -18,6 +18,23 @@ jest.mock("react-router-dom", () => ({
     formName: "21E"
   })
 }));
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
 
 describe("Quarterly tests", () => {
   // Mock useState before rendering your component to set initial state values

@@ -28,6 +28,10 @@ const mountSetup = (initialState = {}, props = {}, path = "") => {
   );
 };
 
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
+
 describe("Test FormHeader.js", () => {
   const wrapper = mountSetup(fullStoreMock);
 
