@@ -1,5 +1,4 @@
 import React from "react";
-import { Auth } from "aws-amplify";
 import Login from "./Login";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { render } from "@testing-library/react";

@@ -28,6 +28,15 @@ const mountSetup = (initialState = {}, props = {}, path = "") => {
   );
 };
 
+const mockUser = {
+  data: {
+    email: "email@email.com",
+    name: "Test User",
+    states: ["CA"],
+    role: "ADMIN_USER"
+  }
+};
+
 jest.mock("../../libs/api", () => ({
   obtainUserByEmail: () => mockUser
 }));

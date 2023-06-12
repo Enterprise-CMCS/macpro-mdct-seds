@@ -1,5 +1,4 @@
 import React from "react";
-import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import Profile from "./Profile";
 import { mount } from "enzyme";

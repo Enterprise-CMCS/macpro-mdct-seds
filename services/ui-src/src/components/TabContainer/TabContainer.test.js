@@ -4,7 +4,6 @@ import TabContainer from "./TabContainer";
 import configureStore from "redux-mock-store";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { Provider } from "react-redux";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const mockUser = {
   Items: [

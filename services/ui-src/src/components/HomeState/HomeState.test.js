@@ -14,6 +14,13 @@ const mockUser = {
     }
   ]
 };
+
+const mockPush = jest.fn();
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useHistory: () => ({ push: mockPush })
+}));
+
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
