@@ -5,37 +5,32 @@ const passwordInput = "//input[@name='password']";
 const agreeTermCondition = "//input[@type='checkbox']";
 const signInButton = "//input[@id='okta-signin-submit']";
 
-
-
 //-----Actions-----
 export class Loginpage {
+  launch() {
+    cy.visit("http://mdctsedsdev.cms.gov/");
+    cy.wait(2000);
+  }
 
-    launch() 
-    {
-        cy.visit('http://mdctsedsdev.cms.gov/');
-        cy.wait(2000);
-    }
+  clickEuaIDbutton() {
+    cy.xpath(euaIDButton).click();
+  }
 
-    clickEuaIDbutton(){
-        cy.xpath(euaIDButton).click();
-    }
+  enterUserName() {
+    cy.xpath(usernameInput).type("MDCT_Test");
+  }
 
-    enterUserName(){
-        cy.xpath(usernameInput).type("MDCT_Test");
-    }
+  enterPassword() {
+    cy.xpath(passwordInput).type("October1!9");
+  }
 
-    enterPassword(){
-        cy.xpath(passwordInput).type("October1!9");
-    }
+  clickAgreeTermAndConditions() {
+    cy.xpath(agreeTermCondition).click();
+  }
 
-     clickAgreeTermAndConditions(){
-         cy.xpath(agreeTermCondition).click();
-     }
-
-     clickSignIn(){
-         cy.xpath(signInButton).click();
-     }
-
+  clickSignIn() {
+    cy.xpath(signInButton).click();
+  }
 }
 
-export default Loginpage
+export default Loginpage;
