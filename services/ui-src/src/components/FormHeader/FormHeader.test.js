@@ -39,7 +39,6 @@ const mountSetup = (initialState = {}, props = {}, path = "") => {
 const mockAnswers = fullStoreMock.currentForm;
 
 jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser,
   getFormTypes: () => Promise.resolve(mockFormTypes),
   getSingleForm: () => Promise.resolve(mockAnswers)
 }));
