@@ -14,7 +14,7 @@ const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
   const [stateFormsList, setStateFormsList] = React.useState();
-  const [hasAccess, setHasAccess] = React.useState("");
+  const [hasAccess, setHasAccess] = React.useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
