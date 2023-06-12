@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "@trussworks/react-uswds";
 import DataTable from "react-data-table-component";
 import { faFilePdf, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -13,12 +13,11 @@ import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 const Quarterly = () => {
   // Determine values based on URI
   const { state, year, quarter } = useParams();
-  const [stateFormsList, setStateFormsList] = React.useState();
-  const [hasAccess, setHasAccess] = React.useState();
+  const [stateFormsList, setStateFormsList] = useState();
+  const [hasAccess, setHasAccess] = useState();
 
   // Build Title from URI
   const title = `Q${quarter} ${year} Reports`;
-
   useEffect(() => {
     async function fetchData() {
       // Get user information
@@ -51,7 +50,6 @@ const Quarterly = () => {
     }
     return urlSegment;
   };
-
   // Build Columns for data table
   const columns = [
     {
