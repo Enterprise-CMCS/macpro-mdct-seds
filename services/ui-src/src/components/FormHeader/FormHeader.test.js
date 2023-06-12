@@ -17,28 +17,31 @@ const defaultProps = {
   saveForm: function () {}
 };
 
+const mockFormTypes = [
+  {
+    quarter: "1",
+    form: "21E",
+    year: "2021",
+    state: "AL"
+  }
+];
+
 const mountSetup = (initialState = {}, props = {}, path = "") => {
   const setupProps = { ...defaultProps, ...props };
   const store = storeFactory(initialState);
   return mount(
     <BrowserRouter>
-      {" "}
       <FormHeader store={store} path={path} {...setupProps} />{" "}
     </BrowserRouter>
   );
 };
 
-const mockUser = {
-  data: {
-    email: "email@email.com",
-    name: "Test User",
-    states: ["CA"],
-    role: "ADMIN_USER"
-  }
-};
+const mockAnswers = fullStoreMock.currentForm;
 
 jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
+  obtainUserByEmail: () => mockUser,
+  getFormTypes: () => Promise.resolve(mockFormTypes),
+  getSingleForm: () => Promise.resolve(mockAnswers)
 }));
 
 describe("Test FormHeader.js", () => {
