@@ -17,12 +17,16 @@ plugins:
   - serverless-stack-termination-protection
   - serverless-api-client-certificate
   - serverless-iam-helper
+  - serverless-offline-ssm
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  iamPath: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-  iamPermissionsBoundaryPolicy: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+  serverless-offline-ssm:
+    stages:
+      - local
+  dotenv:
+    path: ../../.env
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
