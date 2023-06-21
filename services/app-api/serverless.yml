@@ -43,24 +43,24 @@ custom:
   AgeRangesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,cf:database-${self:custom.stage}.AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
   FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
   FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
-  FormAnswersTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
+  FormAnswersTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
   FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
   FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
-  FormQuestionsTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
+  FormQuestionsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
   FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
   FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
-  FormsTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
+  FormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
   FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
   FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
-  FormTemplatesTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
+  FormTemplatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
   StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
   StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
-  StateTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
+  StateTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
   StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
   StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
   StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
   StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
-  StatusTableStreamArn: ${env.LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
+  StatusTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
   AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
   AuthUserTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,cf:database-${self:custom.stage}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
@@ -84,13 +84,13 @@ custom:
     rotateCerts: true
     daysLeft: 30
   dataSubnets:
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id, ssm:/configuration/default/vpc/subnets/kubernetes/a/id, ""}
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id, ssm:/configuration/default/vpc/subnets/kubernetes/b/id, ""}
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/c/id, ssm:/configuration/default/vpc/subnets/kubernetes/c/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id, ssm:/configuration/default/vpc/subnets/kubernetes/a/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id, ssm:/configuration/default/vpc/subnets/kubernetes/b/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/c/id, ssm:/configuration/default/vpc/subnets/kubernetes/c/id, ""}
   privateSubnets:
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id, ""}
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id, ""}
-    - ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id, ""}
+    - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id, ""}
   warmupEnabled:
     production: true
     development: false
