@@ -5,7 +5,6 @@ frameworkVersion: "3"
 plugins:
   - serverless-s3-bucket-helper
   - serverless-stack-termination-protection
-  - serverless-offline-ssm
 
 provider:
   name: aws

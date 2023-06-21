@@ -7,13 +7,11 @@ plugins:
   - serverless-plugin-scripts
   - serverless-dynamodb-seed
   - serverless-stack-termination-protection
-  - serverless-offline-ssm
 
 provider:
   name: aws
   region: us-east-1
   runtime: nodejs16.x
-
 
 custom:
   stage: ${opt:stage, self:provider.stage}
