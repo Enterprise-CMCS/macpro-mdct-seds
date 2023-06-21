@@ -9,7 +9,6 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-dotenv-plugin
   - serverless-stack-termination-protection
-  - serverless-offline-ssm
 
 provider:
   name: aws
