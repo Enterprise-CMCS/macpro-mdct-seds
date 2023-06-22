@@ -122,7 +122,6 @@ const GridWithTotals = props => {
           gridColumnTotalsCopy[4] = q4c4Total / q1c4Total;
           gridColumnTotalsCopy[5] = q4c5Total / q1c5Total;
 
-          console.log(gridColumnTotalsCopy);
           updateGridColumnTotals(gridColumnTotalsCopy);
         }
         return true;

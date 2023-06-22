@@ -7,32 +7,71 @@
   },
   "version": "1.0.0",
   "dependencies": {
+    "@babel/core": "7.9.0",
     "@babel/parser": "^7.13.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@reduxjs/toolkit": "^1.5.0",
+    "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@trussworks/react-uswds": "^1.14.0",
+    "@trussworks/react-uswds": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
     "aws-amplify": "^3.0.23",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
     "browserify": "^17.0.0",
+    "camelcase": "^5.3.1",
+    "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "css-loader": "3.4.2",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-loader": "3.0.3",
+    "eslint-plugin-flowtype": "4.6.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "file-loader": "4.3.0",
     "file-saver": "^2.0.5",
+    "fs-extra": "^8.1.0",
+    "html-webpack-plugin": "4.0.0-beta.11",
     "html2canvas": "^1.0.0-rc.7",
+    "identity-obj-proxy": "3.0.0",
     "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "1.0.1",
+    "jest-resolve": "24.9.0",
+    "jest-watch-typeahead": "0.4.2",
     "jsonpath": "^1.1.0",
     "jspdf": "^2.3.1",
+    "mini-css-extract-plugin": "0.9.0",
     "moment-timezone": "^0.5.35",
     "nightwatch": "^1.5.1",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "pnp-webpack-plugin": "1.6.4",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "8.0.1",
+    "postcss-preset-env": "6.7.0",
+    "postcss-safe-parser": "4.0.1",
     "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
     "react-bootstrap": "^0.33.1",
     "react-data-table-component": "^6.11.6",
     "react-data-table-component-extensions": "^1.5.0",
+    "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
     "react-dropdown": "^1.9.2",
     "react-ios-switch": "^0.1.19",
@@ -41,7 +80,6 @@
     "react-redux": "^7.2.2",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.3",
     "react-searchable-dropdown": "^1.2.5",
     "react-select": "^3.1.0",
     "react-tabs": "^3.1.2",
@@ -50,19 +88,30 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
+    "resolve": "1.15.0",
+    "resolve-url-loader": "3.1.1",
     "sass": "^1.57.1",
+    "sass-loader": "8.0.2",
+    "semver": "6.3.0",
     "serverless-stack-termination-protection": "^1.0.4",
+    "style-loader": "0.23.1",
     "styled-components": "^5.2.1",
+    "terser-webpack-plugin": "2.3.8",
+    "ts-pnp": "1.1.6",
     "typescript": "^4.2.4",
-    "uswds": "^2.11.1"
+    "url-loader": "2.3.0",
+    "uswds": "^2.11.1",
+    "webpack": "4.42.0",
+    "webpack-dev-server": "3.11.0",
+    "webpack-manifest-plugin": "2.2.0",
+    "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
     "test": "jest --setupFiles dotenv/config",
     "coverage": "jest --coverage",
-    "test2": "react-scripts test",
-    "eject": "react-scripts eject",
+    "test2": "node scripts/test.js",
     "lint": "eslint ."
   },
   "eslintConfig": {
@@ -73,22 +122,57 @@
     ]
   },
   "jest": {
-    "verbose": true,
-    "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    },
+    "roots": [
+      "<rootDir>/src"
+    ],
     "collectCoverageFrom": [
       "src/components/**/*.js",
       "!src/components/Example/*",
       "!src/components/LocalLogin/*"
     ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
     "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js",
       "<rootDir>/setupEnzyme.js"
     ],
-    "globals": {
-      "_env_": {}
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "testEnvironment": "jest-environment-jsdom"
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
   },
   "browserslist": {
     "production": [
@@ -103,12 +187,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.3",
+    "@babel/plugin-transform-optional-chaining": "^7.22.3",
     "@babel/plugin-transform-react-jsx": "^7.12.17",
     "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
     "identity-obj-proxy": "^3.0.0",
+    "react-test-renderer": "^16.13.1",
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
     "serverless-cloudfront-invalidate": "^1.5.0",

@@ -9,6 +9,23 @@ import CertificationTabMock3 from "../../provider-mocks/certificationTabMock3";
 
 const mockStore = configureStore([]);
 
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
 describe("Test CertificationTab.js", () => {
   let wrapper;
   let wrapper2;

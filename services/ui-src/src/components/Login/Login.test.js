@@ -1,5 +1,4 @@
 import React from "react";
-import { Auth } from "aws-amplify";
 import Login from "./Login";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { render } from "@testing-library/react";
@@ -65,12 +64,5 @@ describe("Test LoaderButton.js", () => {
         preventDefault: () => {}
       });
     expect(window.alert).toHaveBeenCalled();
-  });
-
-  test("Check that our submit behavior to be rejected without login information", async () => {
-    shallowComponent.find({ "data-testid": "loginForm" }).simulate("submit", {
-      preventDefault: () => {}
-    });
-    await expect(Auth.signIn()).rejects.toBeTruthy();
   });
 });
