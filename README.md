@@ -80,6 +80,8 @@ Want to deploy from Windows using a VM?
 
 If you don't have yarn, nvm, or java installed, see [Requirements](#requirements)
 
+Get the correct info for the .env file from another developer or copy the env_example to a .env and update it with the appropriate values.
+
 From the root directory run:
 
 `nvm use`
@@ -93,35 +95,6 @@ From the root directory run:
 `cd ../../`
 
 `./dev local`
-
-This starts a process in your terminal. Open a second terminal tab and do the following:
-
-Go to CloudTamer: https://cloudtamer.cms.gov/portal/project, and export the credentials for the Dev account where your local branches resources were created. You can copy the exports and paste them in your terminal. It will look like this
-
-```
-export AWS_ACCESS_KEY_ID=...
-export AWS_SECRET_ACCESS_KEY=...
-export AWS_SESSION_TOKEN=...
-```
-
-`cd services/ui-src`
-
-`sh configureLocal.sh master`
-
-It's important you do this AFTER running `./dev local` because it overwrites the env with blank information. Use 'master' regardless of your branch name. This connects to the dev cognito pool.
-
-For a new branch you will need to create a new user: For this, go to [http://localhost:3000/#/signup](http://localhost:3000/#/signup)
-If you choose a State user you will be able to enter data, but not if you are an admin user. You will be able to change this later if need be.
-
-`./dev local` will spin up a local dynamo instance that you can access through a tool called dynamodb-admin. You will need to set it up first on your machine by running
-
-`npm install -g dynamodb-admin`
-
-`DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin`
-
-which allows you to view the tables at: [http://localhost:8001/tables/](http://localhost:8001/tables/)
-
-To change information about the user you created just go to the `local-auth-user` table and hit view on the right side of the row that you want to edit. A few things to note: An admin user can have multiple state access, but a State user can only have access to one state at a time, so be careful when editing.
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
@@ -145,7 +118,7 @@ functions:
             path: users
             method: get
             cors: true
-            authorizer: aws_iam
+            authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
 ```
 
 2. Create a handler in [services/app-api/handlers](services/app-api/handlers)
@@ -188,6 +161,10 @@ export function listUsers() {
 4. Select `Generate Quarterly Forms`
 5. Select the Year and Quarter for which you wish to generate forms
 6. Click the `Generate Forms` button
+
+### SEDS & CARTS
+
+SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/stream-functions](services/stream-functions) for the implentation.
 
 ### Legacy SEDS import SQL Files
 

@@ -55,7 +55,7 @@ export const main = handler(async (event, context) => {
   try {
     await dynamoDb.put(paramsPut);
   } catch (e) {
-    throw("Table params update failed", e);
+    throw ("Table params update failed", e);
   }
 
   return {

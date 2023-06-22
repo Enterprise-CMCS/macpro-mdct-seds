@@ -122,7 +122,6 @@ const sortFormsByYearAndQuarter = formsArray => {
 const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   let accordionItems = [];
   let uniqueYears;
-
   if (formsArray) {
     uniqueYears = Array.from(new Set(formsArray.map(a => a.year))).map(year => {
       return formsArray.find(a => a.year === year);
@@ -187,6 +186,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
       description: "Quarters for " + uniqueYears[year].year,
       title: uniqueYears[year].year,
       content: quartersOutput,
+      headingLevel: "h1", // unsure
       expanded: expanded
     };
 
