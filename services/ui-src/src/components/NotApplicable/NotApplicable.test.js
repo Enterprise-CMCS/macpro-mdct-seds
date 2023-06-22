@@ -6,6 +6,23 @@ import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
 import { RangeInput } from "@trussworks/react-uswds";
 
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
 // The props this component requires in order to render
 const defaultProps = {
   notApplicable: false,

@@ -24,7 +24,6 @@ export const main = handler(async (event, context) => {
 
   // Loop through answers to add individually
   for (const answer in answers) {
-
     if (answers[answer].question.slice(-2) === "04") {
       var q4Col2Row1 = answers[answer].rows[1].col2;
       var q4Col3Row1 = answers[answer].rows[1].col3;
@@ -43,7 +42,6 @@ export const main = handler(async (event, context) => {
       var q4Col4Row3 = answers[answer].rows[3].col4;
       var q4Col5Row3 = answers[answer].rows[3].col5;
       var q4Col6Row3 = answers[answer].rows[3].col6;
-
     } else if (answers[answer].question.slice(-2) === "01") {
       var q1Col2Row1 = answers[answer].rows[1].col2;
       var q1Col3Row1 = answers[answer].rows[1].col3;
@@ -62,27 +60,54 @@ export const main = handler(async (event, context) => {
       var q1Col4Row3 = answers[answer].rows[3].col4;
       var q1Col5Row3 = answers[answer].rows[3].col5;
       var q1Col6Row3 = answers[answer].rows[3].col6;
+    } else if (answers[answer].question.slice(-2) === "05") {
+      answers[answer].rows[1].col2[0].answer = (
+        q4Col2Row1 / q1Col2Row1
+      ).toFixed(1);
+      answers[answer].rows[1].col3[0].answer = (
+        q4Col3Row1 / q1Col3Row1
+      ).toFixed(1);
+      answers[answer].rows[1].col4[0].answer = (
+        q4Col4Row1 / q1Col4Row1
+      ).toFixed(1);
+      answers[answer].rows[1].col5[0].answer = (
+        q4Col5Row1 / q1Col5Row1
+      ).toFixed(1);
+      answers[answer].rows[1].col6[0].answer = (
+        q4Col6Row1 / q1Col6Row1
+      ).toFixed(1);
 
-    }
-    else if (answers[answer].question.slice(-2) === "05") {
-      answers[answer].rows[1].col2[0].answer = (q4Col2Row1 / q1Col2Row1).toFixed(1);
-      answers[answer].rows[1].col3[0].answer = (q4Col3Row1 / q1Col3Row1).toFixed(1);
-      answers[answer].rows[1].col4[0].answer = (q4Col4Row1 / q1Col4Row1).toFixed(1);
-      answers[answer].rows[1].col5[0].answer = (q4Col5Row1 / q1Col5Row1).toFixed(1);
-      answers[answer].rows[1].col6[0].answer = (q4Col6Row1 / q1Col6Row1).toFixed(1);
+      answers[answer].rows[2].col2[0].answer = (
+        q4Col2Row2 / q1Col2Row2
+      ).toFixed(1);
+      answers[answer].rows[2].col3[0].answer = (
+        q4Col3Row2 / q1Col3Row2
+      ).toFixed(1);
+      answers[answer].rows[2].col4[0].answer = (
+        q4Col4Row2 / q1Col4Row2
+      ).toFixed(1);
+      answers[answer].rows[2].col5[0].answer = (
+        q4Col5Row2 / q1Col5Row2
+      ).toFixed(1);
+      answers[answer].rows[2].col6[0].answer = (
+        q4Col6Row2 / q1Col6Row2
+      ).toFixed(1);
 
-      answers[answer].rows[2].col2[0].answer = (q4Col2Row2 / q1Col2Row2).toFixed(1);
-      answers[answer].rows[2].col3[0].answer = (q4Col3Row2 / q1Col3Row2).toFixed(1);
-      answers[answer].rows[2].col4[0].answer = (q4Col4Row2 / q1Col4Row2).toFixed(1);
-      answers[answer].rows[2].col5[0].answer = (q4Col5Row2 / q1Col5Row2).toFixed(1);
-      answers[answer].rows[2].col6[0].answer = (q4Col6Row2 / q1Col6Row2).toFixed(1);
-
-      answers[answer].rows[3].col2[0].answer = (q4Col2Row3 / q1Col2Row3).toFixed(1);
-      answers[answer].rows[3].col3[0].answer = (q4Col3Row3 / q1Col3Row3).toFixed(1);
-      answers[answer].rows[3].col4[0].answer = (q4Col4Row3 / q1Col4Row3).toFixed(1);
-      answers[answer].rows[3].col5[0].answer = (q4Col5Row3 / q1Col5Row3).toFixed(1);
-      answers[answer].rows[3].col6[0].answer = (q4Col6Row3 / q1Col6Row3).toFixed(1);
-
+      answers[answer].rows[3].col2[0].answer = (
+        q4Col2Row3 / q1Col2Row3
+      ).toFixed(1);
+      answers[answer].rows[3].col3[0].answer = (
+        q4Col3Row3 / q1Col3Row3
+      ).toFixed(1);
+      answers[answer].rows[3].col4[0].answer = (
+        q4Col4Row3 / q1Col4Row3
+      ).toFixed(1);
+      answers[answer].rows[3].col5[0].answer = (
+        q4Col5Row3 / q1Col5Row3
+      ).toFixed(1);
+      answers[answer].rows[3].col6[0].answer = (
+        q4Col6Row3 / q1Col6Row3
+      ).toFixed(1);
     }
     // Extract question number
     const questionNumber = answers[answer].question.split("-")[2];
@@ -96,11 +121,14 @@ export const main = handler(async (event, context) => {
       questionNumber;
 
     //replace null values with 0
-    const rowsWithZeroWhereBlank = cloneDeepWith(answers[answer].rows, (value) => {
-      if(value === null) {
-        return 0;
+    const rowsWithZeroWhereBlank = cloneDeepWith(
+      answers[answer].rows,
+      (value) => {
+        if (value === null) {
+          return 0;
+        }
       }
-    });
+    );
 
     // Params for updating questions
     const questionParams = {
@@ -126,9 +154,8 @@ export const main = handler(async (event, context) => {
       const dbResult = await dynamoDb.update(questionParams);
       questionResult.push(dbResult);
     } catch (e) {
-      throw("Question params update failed", e);
+      throw ("Question params update failed", e);
     }
-
   }
 
   // Params for updating for statusData;
@@ -159,7 +186,7 @@ export const main = handler(async (event, context) => {
   try {
     await dynamoDb.update(formParams);
   } catch (e) {
-    throw("Form params update failed", e);
+    throw ("Form params update failed", e);
   }
 
   if (questionResult.Count === 0) {
