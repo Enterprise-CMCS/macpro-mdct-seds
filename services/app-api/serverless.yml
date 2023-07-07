@@ -22,6 +22,7 @@ custom:
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  bigmacRoleArn: ${ssm:/aws/reference/secretsmanager/seds/${sls:stage}/bigmacRoleArn, ssm:/aws/reference/secretsmanager/seds/default/bigmacRoleArn}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -694,6 +695,11 @@ resources:
                   Action:
                     - lambda:InvokeFunction
                   Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - sts:AssumeRole
+                  Resource:
+                    - ${self:custom.bigmacRoleArn}
     KafkaSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
