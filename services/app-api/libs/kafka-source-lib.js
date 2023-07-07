@@ -25,7 +25,6 @@ class KafkaSourceLib {
   }
   determineTopicName(streamARN) {
     const STAGE = process.env.STAGE;
-    
     for (const table of this.tables) {
       if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
     }
