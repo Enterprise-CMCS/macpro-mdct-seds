@@ -6,6 +6,23 @@ import TabContainer from "../TabContainer/TabContainer.js";
 import currentFormMock_64_21E from "../../provider-mocks/currentFormMock_64_21E.js";
 
 const mockStore = configureStore([]);
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
 
 describe("Test Question.js", () => {
   let store;

@@ -9,6 +9,20 @@ import { BrowserRouter } from "react-router-dom";
 
 const mockStore = configureMockStore([]);
 
+const mockUser = {
+  data: {
+    email: "email@email.com",
+    name: "Test User",
+    states: ["CA"],
+    role: "ADMIN_USER"
+  }
+};
+
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser,
+  getUserById: () => Promise.resolve(mockUser)
+}));
+
 // Mock for useParams
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),

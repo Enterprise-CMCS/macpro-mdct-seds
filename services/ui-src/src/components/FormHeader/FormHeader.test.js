@@ -17,16 +17,31 @@ const defaultProps = {
   saveForm: function () {}
 };
 
+const mockFormTypes = [
+  {
+    quarter: "1",
+    form: "21E",
+    year: "2021",
+    state: "AL"
+  }
+];
+
 const mountSetup = (initialState = {}, props = {}, path = "") => {
   const setupProps = { ...defaultProps, ...props };
   const store = storeFactory(initialState);
   return mount(
     <BrowserRouter>
-      {" "}
       <FormHeader store={store} path={path} {...setupProps} />{" "}
     </BrowserRouter>
   );
 };
+
+const mockAnswers = fullStoreMock.currentForm;
+
+jest.mock("../../libs/api", () => ({
+  getFormTypes: () => Promise.resolve(mockFormTypes),
+  getSingleForm: () => Promise.resolve(mockAnswers)
+}));
 
 describe("Test FormHeader.js", () => {
   const wrapper = mountSetup(fullStoreMock);
