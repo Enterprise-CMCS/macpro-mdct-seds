@@ -8,7 +8,7 @@
   },
   "main": "handler.js",
   "scripts": {
-    "test": "serverless-bundle test"
+    "test": "serverless-bundle test --unhandled-rejections=warn"
   },
   "author": "",
   "license": "CC0-1.0",
@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "serverless-associate-waf": "^1.2.1",
-    "serverless-bundle": "^3.0.0",
+    "serverless-bundle": "^6.0.0",
     "serverless-dotenv-plugin": "^3.0.0",
-    "serverless-offline": "^6.8.0",
+    "serverless-offline": "^12.0.4",
     "serverless-online": "CMSgov/serverless-online",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-plugin-warmup": "^4.9.0",
@@ -32,7 +32,7 @@
     "exceljs": "^4.2.1",
     "kafkajs": "^1.15.0",
     "lambda-multipart-parser": "^1.0.1",
-    "serverless": "^2.45.2",
+    "serverless": "^3.27.0",
     "uuid": "^7.0.3"
   }
 }

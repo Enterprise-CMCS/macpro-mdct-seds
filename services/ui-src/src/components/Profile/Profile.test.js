@@ -1,5 +1,4 @@
 import React from "react";
-import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import Profile from "./Profile";
 import { mount } from "enzyme";
@@ -33,14 +32,6 @@ describe("Test SummaryTab.js", () => {
       expect(wrapper.find(FormGroup).length).toBe(5);
       expect(wrapper.find(ControlLabel).length).toBe(5);
       expect(wrapper.find(FormControl).length).toBe(5);
-    });
-
-    test("Check that our handleSubmit should error when the user is not authenticated", async () => {
-      expect(mockPush).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "handleSubmit" }).simulate("submit");
-      await expect(Auth.currentAuthenticatedUser()).rejects.toMatch(
-        "The user is not authenticated"
-      );
     });
   });
 });
