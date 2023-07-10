@@ -23,6 +23,7 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   iamPermissionsBoundaryPolicy: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   bigmacRoleArn: ${ssm:/aws/reference/secretsmanager/seds/${sls:stage}/bigmacRoleArn, ssm:/aws/reference/secretsmanager/seds/default/bigmacRoleArn}
   serverless-offline-ssm:
@@ -81,7 +82,7 @@ custom:
   AuthUserStatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
   StateFormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
   AuthUserRolesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
-  bootstrapBrokerStringTls: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls, ""}
+ # bootstrapBrokerStringTls: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls, ""}
   vpcId: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id, ""}
   webAclName: ${self:custom.stage}-ApiGwWebAcl
   associateWaf:
