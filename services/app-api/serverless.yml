@@ -24,6 +24,7 @@ custom:
   region: ${opt:region, self:provider.region}
   iamPath: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
   iamPermissionsBoundaryPolicy: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+  bigmacRoleArn: ${ssm:/aws/reference/secretsmanager/seds/${sls:stage}/bigmacRoleArn, ssm:/aws/reference/secretsmanager/seds/default/bigmacRoleArn}
   serverless-offline-ssm:
     stages:
       - local
@@ -268,6 +269,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      bigmacRoleArn: ${self:custom.bigmacRoleArn}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048
@@ -336,6 +338,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      bigmacRoleArn: ${self:custom.bigmacRoleArn}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048
