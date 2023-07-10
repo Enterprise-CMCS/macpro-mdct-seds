@@ -79,7 +79,7 @@ class KafkaSourceLib {
     const STAGE = process.env.STAGE;
     const sasl = await getMechanism("us-east-1", process.env.bigmacRoleArn);
     const kafka = new Kafka({
-      clientId: `carts-${STAGE}`,
+      clientId: `seds-${STAGE}`,
       brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
       retry: {
         initialRetryTime: 300,
