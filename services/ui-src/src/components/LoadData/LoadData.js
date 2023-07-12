@@ -49,6 +49,7 @@ const LoadData = () => {
         <Alert
           type="success"
           heading="Upload success:"
+          headingLevel="h1"
           className="react-transition flip-in-x"
         >
           Data for {targetTable} has been successfully saved.
