@@ -86,7 +86,7 @@ const FormPage = ({ getForm, statusData }) => {
     <div className="react-transition fade-in" data-testid="FormPage">
       {save_error ? (
         <div className="save-error">
-          <Alert type="error" heading="Save Error:">
+          <Alert type="error" heading="Save Error:" headingLevel="h1">
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
             <a
@@ -100,7 +100,7 @@ const FormPage = ({ getForm, statusData }) => {
         </div>
       ) : saveAlert ? (
         <div className="save-success">
-          <Alert type="success" heading="Save success:">
+          <Alert type="success" heading="Save success:" headingLevel="h1">
             Form {formName} has been successfully saved.
           </Alert>
         </div>
