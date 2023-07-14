@@ -10,7 +10,7 @@ import time
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 pitr_recovery.py`)
 # Target localhost:8000, won't go up to AWS if True
-RUN_LOCAL = False
+RUN_LOCAL = True
 # Prefix for the environment (master/val/production)
 STAGE = "master"
 STATE_FORMS_TABLE = "-state-forms"  # 5.3 k forms, 2.6MB
@@ -43,16 +43,23 @@ def find_missing_answers(stage, dynamodb):
     # For each form, check for answers, if one exists, break
     # WB-2021-1-21E
     # WV-2021-1-21E-1318-01
-    missing = []
-    for idx, form in enumerate(state_forms):
-        form_id = form['state_form']
-        expr = Attr('state_form').eq(form_id)
-        matching_answers = scan(
-            answers_table, FilterExpression=expr, first=True)
-        if len(matching_answers) <= 0:
-            missing.append(form_id)
-            print(f'{form_id}    [{idx}/{len(state_forms)}]')
+    missing_dict = {}
+    print("Building Map")
+    for form in state_forms:
+        missing_dict[form['state_form']] = True
 
+    print("Populating...")
+    response = answers_table.scan()
+    entries = response['Items']
+    while 'LastEvaluatedKey' in response:
+        for entry in entries:
+            missing_dict[entry['state_form']] = False
+        # BATCH
+        response = answers_table.scan(
+            ExclusiveStartKey=response['LastEvaluatedKey'])
+        entries.extend(response['Items'])
+
+    missing = [k for k, v in missing_dict.items() if v]
     print("--------------\n TOTAL MISSING", len(missing))
     print(f"writing to {FILENAME}.txt")
     text = "\n".join(missing)
@@ -60,33 +67,19 @@ def find_missing_answers(stage, dynamodb):
         f.write(text)
 
 
-def scan(table, FilterExpression=None, first=False):
+def scan(table):
     # Perform scan and execute a new batch for each 'LastEvaluatedKey'
-    if FilterExpression is not None:
-        response = table.scan(FilterExpression=FilterExpression)
-    else:
-        response = table.scan()
+
+    response = table.scan()
     entries = response['Items']
     total_scans = 1
     while 'LastEvaluatedKey' in response:
         total_scans += 1
-        # print("Batch", total_scans)
-        # print("  -- LastEvaluatedKey:",
-        #       response['LastEvaluatedKey'], "\nFilter:", FilterExpression)
 
         # BATCH
-        if FilterExpression is not None:
-            response = table.scan(
-                FilterExpression=FilterExpression,
-                ExclusiveStartKey=response['LastEvaluatedKey'])
-        else:
-            response = table.scan(
-                ExclusiveStartKey=response['LastEvaluatedKey'])
+        response = table.scan(
+            ExclusiveStartKey=response['LastEvaluatedKey'])
         entries.extend(response['Items'])
-        # Log details
-        # print("  -- Retrieved Count:", len(response['Items']))
-        if len(entries) > 0 and first:
-            break
 
     return entries
 
