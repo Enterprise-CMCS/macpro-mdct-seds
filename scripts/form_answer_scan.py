@@ -2,7 +2,7 @@ import boto3
 from boto3.dynamodb.conditions import Key, Attr
 import time
 
-# This script was created to load data from a PITR-created table after data loss on 3/23/23-3/24/23.
+# This script writes out text files of all state forms missing answers. Notably 64.ECI forms and 2020/2019 forms
 
 # Running this script:
 #    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
