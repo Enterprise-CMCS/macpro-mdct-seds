@@ -15,7 +15,7 @@ RUN_LOCAL = True
 STAGE = "master"
 STATE_FORMS_TABLE = "-state-forms"  # 5.3 k forms, 2.6MB
 ANSWERS_TABLE = "-form-answers"  # 120k answers, 97MB
-FILENAME = STAGE + "-missing.txt"
+FILENAME = STAGE + "-missing"
 
 
 def main():
@@ -46,24 +46,33 @@ def find_missing_answers(stage, dynamodb):
     missing_dict = {}
     print("Building Map")
     for form in state_forms:
-        missing_dict[form['state_form']] = True
+        missing_dict[form['state_form']] = {
+            "missing": True,
+            "created_by": form["created_by"]
+        }
 
     print("Populating...")
     response = answers_table.scan()
     entries = response['Items']
     while 'LastEvaluatedKey' in response:
         for entry in entries:
-            missing_dict[entry['state_form']] = False
+            missing_dict[entry['state_form']]["missing"] = False
         # BATCH
         response = answers_table.scan(
             ExclusiveStartKey=response['LastEvaluatedKey'])
         entries.extend(response['Items'])
 
-    missing = [k for k, v in missing_dict.items() if v]
+    missing = [f"{k}, {v['created_by']}" for k,
+               v in missing_dict.items() if v["missing"]]
     print("--------------\n TOTAL MISSING", len(missing))
     print(f"writing to {FILENAME}.txt")
     text = "\n".join(missing)
-    with open(FILENAME, 'w') as f:
+    with open(FILENAME + ".txt", 'w') as f:
+        f.write(text)
+    print(f"writing to {FILENAME}-non-eci.txt")
+    non_eci = [s for s in missing if 'ECI' not in s]
+    text = "\n".join(non_eci)
+    with open(FILENAME + "-non-eci.txt", 'w') as f:
         f.write(text)
 
 
