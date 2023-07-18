@@ -96,7 +96,7 @@ const NotApplicable = ({
         </p>
 
         <RangeInput
-          onChange={() => changeStatus()}
+          onInput={() => changeStatus()}
           id="range-slider"
           name="range"
           min={0}
