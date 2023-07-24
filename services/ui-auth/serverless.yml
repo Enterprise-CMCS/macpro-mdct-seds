@@ -30,7 +30,7 @@ custom:
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
-  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, ""}
+  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, env:OKTA_METADATA_URL}
 
 resources:
   Conditions:
@@ -44,11 +44,6 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
-    BackWithOkta:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -106,12 +101,10 @@ resources:
           - ${self:custom.application_endpoint_url}
           - https://localhost:3000/
         SupportedIdentityProviders:
-          - Fn::If:
-              - BackWithOkta
-              - !Ref CognitoUserPoolIdentityProvider
-              - !Ref AWS::NoValue
+          - Okta
         UserPoolId:
           Ref: CognitoUserPool
+      DependsOn: CognitoUserPoolIdentityProvider
 
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
@@ -125,7 +118,6 @@ resources:
           Ref: CognitoUserPool
 
     CognitoUserPoolIdentityProvider:
-      Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
