@@ -45,10 +45,10 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
     BackWithOkta:
-      - Fn::Not:
-          - Fn::Equals:
-              - ""
-              - ${self:custom.okta_metadata_url}
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
