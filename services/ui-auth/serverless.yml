@@ -44,6 +44,11 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
+    BackWithOkta:
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -101,10 +106,12 @@ resources:
           - ${self:custom.application_endpoint_url}
           - https://localhost:3000/
         SupportedIdentityProviders:
-          - Okta
+          - Fn::If:
+              - BackWithOkta
+              - !Ref CognitoUserPoolIdentityProvider
+              - !Ref AWS::NoValue
         UserPoolId:
           Ref: CognitoUserPool
-      DependsOn: CognitoUserPoolIdentityProvider
 
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
@@ -118,6 +125,7 @@ resources:
           Ref: CognitoUserPool
 
     CognitoUserPoolIdentityProvider:
+      Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
