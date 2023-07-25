@@ -35,7 +35,7 @@ const GenerateTotals = () => {
         </div>
       ) : null}
       {alert && (
-        <Alert className="margin-bottom-3" type="success">
+        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
           Enrollment Totals have been requested! Please wait at least 1 minute
           for the data to reflect this update.
         </Alert>

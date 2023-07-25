@@ -26,6 +26,7 @@ import { recursiveGetStateForms } from "../../../utility-functions/dbFunctions";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
+export const LOAD_FORM_FAILURE = "LOAD_FORM_FAILURE";
 export const UPDATE_FORM_STATUS = "UPDATE_FORM_STATUS";
 export const UPDATE_APPLICABLE_STATUS = "UPDATE_APPLICABLE_STATUS";
 export const UPDATE_ANSWER = "UPDATE_ANSWER";
@@ -54,6 +55,11 @@ export const gotFormData = formObject => {
   return {
     type: LOAD_SINGLE_FORM,
     formObject
+  };
+};
+export const loadFormFailure = () => {
+  return {
+    type: LOAD_FORM_FAILURE
   };
 };
 export const gotAnswer = (answerArray, questionID) => {
@@ -127,7 +133,6 @@ export const clearFormData = (user = "cleared") => {
         deepCopy.last_modified_by = username;
         return deepCopy;
       });
-
       dispatch(clearedForm(emptyForm));
     } catch (error) {
       console.log("Error:", error);
@@ -175,6 +180,7 @@ export const getFormData = (state, year, quarter, formName) => {
       // Dispatch action creator to set data in redux
       dispatch(gotFormData(allFormData));
     } catch (error) {
+      dispatch(loadFormFailure());
       console.log("Error:", error);
       console.dir(error);
     }
@@ -257,7 +263,8 @@ const initialState = {
   questions: [],
   answers: [],
   statusData: {},
-  tabs: []
+  tabs: [],
+  loadError: false
 };
 
 // REDUCER
@@ -283,7 +290,13 @@ export default (state = initialState, action) => {
         questions: action.formObject.questions,
         answers: action.formObject.answers,
         statusData: action.formObject.statusData,
-        tabs: action.formObject.tabs
+        tabs: action.formObject.tabs,
+        loadError: false
+      };
+    case LOAD_FORM_FAILURE:
+      return {
+        ...state,
+        loadError: true
       };
     case UPDATE_APPLICABLE_STATUS:
       return {
