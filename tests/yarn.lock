@@ -3744,9 +3744,9 @@ serialize-error@^2.1.0:
   resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-2.1.0.tgz#50b679d5635cdf84667bdc8e59af4e5b81d5f60a"
   integrity sha1-ULZ51WNc34Rme9yOWa9OW4HV9go=
 
-"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
+"serverless-s3-bucket-helper@github:Enterprise-CMCS/serverless-s3-bucket-helper":
   version "1.0.0"
-  resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
+  resolved "https://codeload.github.com/Enterprise-CMCS/serverless-s3-bucket-helper/tar.gz/3e519d15676de237ec8ede3ff9ae26abf3f3ef0a"
 
 sha.js@^2.4.0, sha.js@^2.4.8, sha.js@~2.4.4:
   version "2.4.11"
