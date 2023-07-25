@@ -8,6 +8,24 @@ import { BrowserRouter } from "react-router-dom";
 
 const mockStore = configureMockStore([]);
 
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
+
 describe("Test FormFooter.js - Mount", () => {
   let wrapper;
   let store;

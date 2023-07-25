@@ -1,6 +1,6 @@
 service: ui-auth
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
@@ -8,14 +8,14 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   region: us-east-1
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed. You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -26,11 +26,11 @@ custom:
       - impl
       - val
       - prod
-  sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress~true, ssm:/configuration/default/sesSourceEmailAddress~true, ""}
+  sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress, ssm:/configuration/default/sesSourceEmailAddress, ""}
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
-  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, env:OKTA_METADATA_URL}
+  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, ""}
 
 resources:
   Conditions:
@@ -44,6 +44,11 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
+    BackWithOkta:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -101,10 +106,12 @@ resources:
           - ${self:custom.application_endpoint_url}
           - https://localhost:3000/
         SupportedIdentityProviders:
-          - Okta
+          - Fn::If:
+              - BackWithOkta
+              - !Ref CognitoUserPoolIdentityProvider
+              - !Ref AWS::NoValue
         UserPoolId:
           Ref: CognitoUserPool
-      DependsOn: CognitoUserPoolIdentityProvider
 
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
@@ -118,6 +125,7 @@ resources:
           Ref: CognitoUserPool
 
     CognitoUserPoolIdentityProvider:
+      Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:

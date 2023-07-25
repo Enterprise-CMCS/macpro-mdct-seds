@@ -7,7 +7,23 @@ import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
 const mockStore = configureStore([]);
-
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      states: ["CA"],
+      role: "state"
+    }
+  ]
+};
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("../../libs/api", () => ({
+  obtainUserByEmail: () => mockUser
+}));
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useLocation: () => ({

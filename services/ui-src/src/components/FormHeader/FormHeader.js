@@ -30,9 +30,8 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
     const currentUser = await getUserInfo();
 
     if (
-      currentUser.Items &&
-      (currentUser.Items[0].role === "admin" ||
-        currentUser.Items[0].role === "business")
+      currentUser?.Items?.[0]?.role === "admin" ||
+      currentUser?.Items?.[0]?.role === "business"
     ) {
       setDisabled(true);
     }
@@ -43,6 +42,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
       const data = await getFormTypes();
+      console.log(data);
       const formDetails = data.find(element => element.form === form);
       setFormDescription(formDetails);
 
@@ -50,6 +50,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
       if (!formsWithOutFPL.includes(form)) {
         // Get answers for this form from DB
         const { answers } = await getSingleForm(state, year, quarter, form);
+        console.log(answers);
 
         // Determine Maximum FPL
         const maxFPL = getMaxFPL(answers);

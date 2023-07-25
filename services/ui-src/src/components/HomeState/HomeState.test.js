@@ -3,6 +3,31 @@ import HomeState from "./HomeState";
 import { mount } from "enzyme";
 import { Accordion } from "@trussworks/react-uswds";
 
+const mockUser = {
+  Items: [
+    {
+      status: "success",
+      email: "email@email.com",
+      name: "Test User",
+      state: "CA",
+      role: "state"
+    }
+  ]
+};
+
+const mockPush = jest.fn();
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useHistory: () => ({ push: mockPush })
+}));
+
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: () => Promise.resolve(mockUser)
+}));
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useHistory: () => ({ push: mockPush })
+}));
 describe("Test HomeState.js", () => {
   let wrapper;
 

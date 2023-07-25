@@ -114,16 +114,16 @@ const Example = () => {
       <Grid row>
         <Grid col={12}>
           <h2>Alerts</h2>
-          <Alert type="success" heading="Success status">
+          <Alert type="success" heading="Success status" headingLevel="h1">
             Success Message contents
           </Alert>
-          <Alert type="warning" heading="Warning status">
+          <Alert type="warning" heading="Warning status" headingLevel="h1">
             Warning Message contents
           </Alert>
-          <Alert type="error" heading="Error status">
+          <Alert type="error" heading="Error status" headingLevel="h1">
             Error Message contents
           </Alert>
-          <Alert type="info" heading="Info status">
+          <Alert type="info" heading="Info status" headingLevel="h1">
             Info Message contents
           </Alert>
         </Grid>

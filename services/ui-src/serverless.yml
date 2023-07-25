@@ -1,6 +1,6 @@
 service: ui-src
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
@@ -11,7 +11,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   region: us-east-1
 
 custom:
