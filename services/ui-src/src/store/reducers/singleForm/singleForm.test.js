@@ -29,7 +29,8 @@ const initialState = {
   questions: [],
   answers: [],
   statusData: {},
-  tabs: []
+  tabs: [],
+  loadError: false
 };
 
 describe("Single Form Reducer, default values", () => {

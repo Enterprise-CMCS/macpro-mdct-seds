@@ -99,6 +99,7 @@ const FormTemplates = () => {
           <Alert
             className="margin-bottom-3"
             type={alert.status === 200 ? "success" : "error"}
+            headingLevel="h1"
           >
             {alert.message}
           </Alert>

@@ -57,19 +57,19 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert && alert.status === 200 ? (
-        <Alert className="margin-bottom-3" type="success">
+        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && alert.status === 204 ? (
-        <Alert className="margin-bottom-3" type="warning">
+        <Alert className="margin-bottom-3" type="warning" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert className="margin-bottom-3" type="error">
+        <Alert className="margin-bottom-3" type="error" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
