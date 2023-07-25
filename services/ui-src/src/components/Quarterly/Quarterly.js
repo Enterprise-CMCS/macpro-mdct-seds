@@ -29,8 +29,10 @@ const Quarterly = () => {
         userStates.includes(state) ||
         currentUserInfo.Items[0].role === "admin"
       ) {
-        const data = await recursiveGetStateForms({ state, year, quarter });
-
+        let data = await recursiveGetStateForms({ state, year, quarter });
+        // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
+        data = data.filter(i => i.form !== "64.ECI");
+        console.log(data);
         setStateFormsList(data);
         setHasAccess(true);
       } else {

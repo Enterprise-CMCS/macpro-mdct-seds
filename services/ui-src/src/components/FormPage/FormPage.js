@@ -13,9 +13,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import FormLoadError from "../FormLoadError/FormLoadError";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-const FormPage = ({ getForm, statusData }) => {
+const FormPage = ({ getForm, statusData, loadError }) => {
   let history = useHistory();
 
   const [saveAlert, setSaveAlert] = React.useState(false);
@@ -81,7 +82,6 @@ const FormPage = ({ getForm, statusData }) => {
       setSaveAlert(false);
     }
   }, [last_modified]);
-
   return (
     <div className="react-transition fade-in" data-testid="FormPage">
       {save_error ? (
@@ -105,7 +105,7 @@ const FormPage = ({ getForm, statusData }) => {
           </Alert>
         </div>
       ) : null}
-      {hasAccess === true ? (
+      {hasAccess === true && !loadError ? (
         <>
           <div className="margin-x-5 margin-bottom-3">
             <FormHeader
@@ -139,6 +139,19 @@ const FormPage = ({ getForm, statusData }) => {
         </>
       ) : null}
       {hasAccess === false ? <Unauthorized /> : null}
+      {loadError ? (
+        <>
+          <div className="margin-x-5 margin-bottom-3">
+            <FormHeader
+              quarter={quarterInt}
+              form={formattedFormName}
+              year={year}
+              state={formattedStateName}
+            />
+          </div>
+          <FormLoadError />
+        </>
+      ) : null}
     </div>
   );
 };
@@ -149,7 +162,8 @@ FormPage.propTypes = {
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData
+  statusData: state.currentForm.statusData,
+  loadError: state.currentForm.loadError
 });
 
 const mapDispatch = {
