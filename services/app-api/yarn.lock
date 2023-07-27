@@ -9444,9 +9444,9 @@ serverless-offline@^12.0.4:
     velocityjs "^2.0.6"
     ws "^8.11.0"
 
-serverless-online@CMSgov/serverless-online:
+serverless-online@Enterprise-CMCS/macpro-serverless-online:
   version "1.0.0"
-  resolved "https://codeload.github.com/CMSgov/serverless-online/tar.gz/1f7d068721f10f13f3c1f1b8e2d4bd21be42e77d"
+  resolved "https://codeload.github.com/Enterprise-CMCS/macpro-serverless-online/tar.gz/1f7d068721f10f13f3c1f1b8e2d4bd21be42e77d"
   dependencies:
     chokidar "^3.5.2"
 
