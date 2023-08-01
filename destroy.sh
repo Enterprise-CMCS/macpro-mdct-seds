@@ -83,25 +83,32 @@ do
   aws s3api put-bucket-versioning --bucket $i --versioning-configuration Status=Suspended
 
   # Remove all bucket versions.
-  versions=`aws s3api list-object-versions \
+  versions=$(aws s3api list-object-versions \
+    --max-items 200 \
     --bucket "$i" \
     --output=json \
-    --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}'`
-  if ! echo $versions | grep -q '"Objects": null'; then
+    --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')
+  
+  while ! echo $versions | grep -q '"Objects": null'; do
     aws s3api delete-objects \
       --bucket $i \
-      --delete "$versions" > /dev/null 2>&1
-  fi
+      --delete "$versions" >/dev/null 2>&1
+    versions=$(aws s3api list-object-versions \
+      --max-items 200 \
+      --bucket "$i" \
+      --output=json \
+      --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')
+  done
 
   # Remove all bucket delete markers.
-  markers=`aws s3api list-object-versions \
+  markers=$(aws s3api list-object-versions \
     --bucket "$i" \
     --output=json \
-    --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId} }'`
+    --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId} }')
   if ! echo $markers | grep -q '"Objects": null'; then
     aws s3api delete-objects \
       --bucket $i \
-      --delete "$markers" > /dev/null 2>&1
+      --delete "$markers" >/dev/null 2>&1
   fi
 
   # Empty the bucket
