@@ -4,7 +4,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
