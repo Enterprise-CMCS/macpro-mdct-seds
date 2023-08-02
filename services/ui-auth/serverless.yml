@@ -104,7 +104,7 @@ resources:
         GenerateSecret: false
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
-          - "${self:custom.application_endpoint_url}postLogout"
+          - "${self:custom.application_endpoint_url}#/postLogout"
           - https://localhost:3000/
           - http://localhost:3000/postLogout
         SupportedIdentityProviders:
