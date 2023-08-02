@@ -20,6 +20,7 @@ import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
 import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
+import { PostLogoutRedirect } from "../PostLogoutRedirect";
 
 export default function Routes({ user, isAuthorized }) {
   if (!isAuthorized) {
@@ -34,6 +35,9 @@ export default function Routes({ user, isAuthorized }) {
         <UnauthenticatedRoute exact path="/signup">
           <Signup />
         </UnauthenticatedRoute>
+        <UnauthenticatedRoute exact path="/postLogout">
+          <PostLogoutRedirect />
+        </UnauthenticatedRoute>
       </Switch>
     );
   }
@@ -45,6 +49,9 @@ export default function Routes({ user, isAuthorized }) {
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/postLogout">
+        <PostLogoutRedirect />
       </UnauthenticatedRoute>
       {/*************** AUTHENTICATED ROUTES ***************/}
       <AuthenticatedRoute exact path="/">
