@@ -11,7 +11,7 @@
     "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
     "nightwatch": "^1.5.1",
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
+    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper",
     "yargs": "^16.1.1"
   }
 }

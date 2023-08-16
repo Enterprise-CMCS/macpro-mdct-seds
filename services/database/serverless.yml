@@ -4,7 +4,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-stack-termination-protection
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -295,21 +295,6 @@ resources:
           - AttributeName: userId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    AuthJobCodesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.stage}-auth-user-job-codes
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
-        AttributeDefinitions:
-          - AttributeName: job-code
-            AttributeType: S
-        KeySchema:
-          - AttributeName: job-code
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserStatesTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -386,12 +371,6 @@ resources:
       Value: !GetAtt AuthUserRolesTable.Arn
     AuthUserRolesTableStreamArn:
       Value: !GetAtt AuthUserRolesTable.StreamArn
-    AuthJobCodesTableName:
-      Value: !Ref AuthJobCodesTable
-    AuthJobCodesTableArn:
-      Value: !GetAtt AuthJobCodesTable.Arn
-    AuthJobCodesTableStreamArn:
-      Value: !GetAtt AuthJobCodesTable.StreamArn
     AuthUserStatesTableName:
       Value: !Ref AuthUserStatesTable
     AuthUserStatesTableArn:

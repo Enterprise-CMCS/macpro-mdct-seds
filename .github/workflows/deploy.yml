@@ -33,7 +33,6 @@ jobs:
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-          OKTA_METADATA_URL: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_OKTA_METADATA_URL] || secrets.OKTA_METADATA_URL }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SEED_DATABASE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_SEED_DATABASE] }}
       - name: Configure AWS credentials for GitHub Actions OIDC
