@@ -6,6 +6,7 @@ import {
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
+  getAnswersSet,
 } from "../../shared/sharedFunctions";
 
 /**
@@ -103,13 +104,16 @@ export const main = handler(async (event, context) => {
   // Get year and quarter from request, or the current date for automated jobs
   let specifiedYear;
   let specifiedQuarter;
+  let restoreMissingAnswers = false;
 
   // If a data object is sent use those values.
   if (event.body && event.body !== "undefined") {
-    let data = JSON.parse(event.body);
+    let data =
+      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     if (data) {
       specifiedYear = parseInt(data.year);
       specifiedQuarter = data.quarter;
+      restoreMissingAnswers = !!data.restoreMissingAnswers;
     }
   }
 
@@ -206,6 +210,7 @@ export const main = handler(async (event, context) => {
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
+  console.log(`Saving ${putRequestsStateForms.length} state forms`);
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormDescriptions) {
@@ -245,11 +250,11 @@ export const main = handler(async (event, context) => {
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
+  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
     // Loop through each question
-
     for (const question in allQuestions) {
       // Get age range array
       let ageRanges =
@@ -270,7 +275,17 @@ export const main = handler(async (event, context) => {
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
-        if (stateFormsBeingGenerated.includes(stateFormID)) {
+        // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
+        const isGeneratingStateForm = stateFormsBeingGenerated.includes(
+          stateFormID
+        );
+        const missingAnswers =
+          restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
+
+        if (isGeneratingStateForm || missingAnswers) {
+          if (!isGeneratingStateForm && missingAnswers) {
+            console.log(`    - Restoring answer entry: ${answerEntry}`);
+          }
           noMissingForms = false;
           putRequestsFormAnswers.push({
             PutRequest: {
@@ -292,7 +307,7 @@ export const main = handler(async (event, context) => {
       }
     }
   }
-
+  console.log(`Batching ${putRequestsFormAnswers.length} answers`);
   // Begin batching by groups of 25
   const batchArrayFormAnswers = [];
   const batchSizeFA = 25;
@@ -305,9 +320,11 @@ export const main = handler(async (event, context) => {
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {
+    const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
+    console.log(message);
     return {
       status: 204,
-      message: `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`,
+      message: message,
     };
   }
 
