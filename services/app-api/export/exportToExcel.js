@@ -143,10 +143,9 @@ const generateWorkbook = (currentUserInfo, content) => {
       ) {
         return;
       }
-
       worksheet.getRow(rowIndex + 2).getCell(columnIndex + 1).value = row[
         column.selector
-      ].toString();
+      ]?.toString();
     });
     worksheet.getRow(rowIndex + 2).font = {
       name: "Arial",
