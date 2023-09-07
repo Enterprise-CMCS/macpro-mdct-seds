@@ -114,7 +114,7 @@ export default function Signup() {
           <ControlLabel>First Name</ControlLabel>
           <FormControl
             autoFocus
-            type="firstName"
+            type="text"
             value={fields.firstName}
             onChange={handleFieldChange}
           />
@@ -123,7 +123,7 @@ export default function Signup() {
           <ControlLabel>Last Name</ControlLabel>
           <FormControl
             autoFocus
-            type="lastName"
+            type="text"
             value={fields.lastName}
             onChange={handleFieldChange}
           />

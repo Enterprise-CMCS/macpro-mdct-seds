@@ -29,13 +29,13 @@ describe("Test LoaderButton.js", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
     const formControl = getByLabelText("First Name");
-    expect(formControl.type).toContain("firstname");
+    expect(formControl.type).toContain("text");
   });
   test("Check for Last Name input box", () => {
     useContextMock.mockReturnValue(true);
     const { getByLabelText } = render(<Signup />);
     const formControl = getByLabelText("Last Name");
-    expect(formControl.type).toContain("lastname");
+    expect(formControl.type).toContain("text");
   });
   test("Check for Email input box", () => {
     useContextMock.mockReturnValue(true);
