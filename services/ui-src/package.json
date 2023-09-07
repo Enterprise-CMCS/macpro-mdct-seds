@@ -198,7 +198,7 @@
     "react-test-renderer": "^16.13.1",
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
-    "serverless-cloudfront-invalidate": "^1.9.0",
+    "serverless-cloudfront-invalidate": "1.9.0",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-s3-sync": "^1.14.4"
   }
