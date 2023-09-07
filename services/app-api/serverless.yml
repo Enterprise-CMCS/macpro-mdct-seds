@@ -517,7 +517,7 @@ functions:
       - schedule:
           enabled: true
           rate: cron(0 0 1 JAN,APR,JUL,OCT ? *)
-    timeout: 800
+    timeout: 900
   stateUsersEmail:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole

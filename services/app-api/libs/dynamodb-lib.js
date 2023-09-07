@@ -37,6 +37,23 @@ export default {
     }
     return { Items: items, Count: items.length };
   },
+  scanMapToSet: async (params, mapFunction) => {
+    let itemSet = new Set();
+    let complete = false;
+    while (!complete) {
+      const result = await client.scan(params).promise();
+      if (!result.Items) continue;
+
+      itemSet = new Set([
+        ...itemSet,
+        ...result.Items.map((x) => mapFunction(x)),
+      ]);
+
+      params.ExclusiveStartKey = result.LastEvaluatedKey;
+      complete = result.LastEvaluatedKey === undefined;
+    }
+    return itemSet;
+  },
   batchWrite: (params) => client.batchWrite(params).promise(),
   listTables: (params) => database.listTables(params).promise(),
   increment: (params) =>

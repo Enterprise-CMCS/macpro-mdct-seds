@@ -37,7 +37,7 @@
     "cypress-file-upload": "^5.0.8",
     "cypress-xpath": "^1.6.2",
     "dotenv": "^8.2.0",
-    "nightwatch": "^1.5.1",
+    "nightwatch": "3.1.2",
     "prettier": "2.2.1",
     "serverless": "^3.27.0",
     "serverless-api-client-certificate": "^1.0.2",
