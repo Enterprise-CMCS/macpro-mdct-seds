@@ -5,9 +5,9 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^11.5.1",
     "concurrently": "^6.2.1",
     "cypress": "^8.3.1",
-    "cypress-cucumber-preprocessor": "^4.2.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-xpath": "^1.6.2",
     "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper"
