@@ -1,10 +1,8 @@
 import AWS from "aws-sdk";
-import atomicCounter from "dynamodb-atomic-counter";
 
 const dyanmoConfig = {};
 
 // ugly but OK, here's where we will check the environment
-const atomicTableName = process.env.atomicCounterTableName;
 const endpoint = process.env.DYNAMODB_URL;
 if (endpoint) {
   dyanmoConfig.endpoint = endpoint;
@@ -17,8 +15,6 @@ if (endpoint) {
 const database = new AWS.DynamoDB();
 
 const client = new AWS.DynamoDB.DocumentClient(dyanmoConfig);
-
-atomicCounter.config.update(dyanmoConfig);
 
 export default {
   get: (params) => client.get(params).promise(),
@@ -56,6 +52,4 @@ export default {
   },
   batchWrite: (params) => client.batchWrite(params).promise(),
   listTables: (params) => database.listTables(params).promise(),
-  increment: (params) =>
-    atomicCounter.increment(params, { tableName: atomicTableName }),
 };
