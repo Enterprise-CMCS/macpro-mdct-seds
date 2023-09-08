@@ -171,16 +171,17 @@ SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://git
 SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
 found in [src/dms](src/dms).
 
-### Running the nightwatch test suite
+### Running the frontend unit test suite
 
 1. Navigate to the frontend
    - `cd services/ui-src`
 2. Launch the test for ui-src tests.
-   - Run `yarn run nightwatch src/{dir_name}/tests`
-3. Run root tests
-   - In terminal, run `export APPLICATION_ENDPOINT=http://localhost:3000`
-   - Enter `cd {ROOT}/tests/nightwatch/`
-   - Run `yarn run nightwatch`
+   - Run `yarn test`
+
+### Running the integration test suite
+
+1. Launch cypress and select the file you want to run
+   - Run `yarn test:cypress`
 
 ### Running Schema Validation
 
