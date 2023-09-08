@@ -1,0 +1,27 @@
+[
+  {
+    "username": "adminuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "adminuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Adam"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Admins"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_ADMIN_GROUP"
+      }
+    ]
+  }
+]
