@@ -99,6 +99,7 @@ jobs:
           else # We're not in a CI system, let's yarn install
             yarn install
           fi
+          cypress install
           npm run test:ci
           popd
       - name: Store test reults
