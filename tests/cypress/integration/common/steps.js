@@ -1,5 +1,9 @@
-//import { Given } from "cypress-cucumber-preprocessor/steps";
-import { And, Given, Then, When } from "cypress-cucumber-preprocessor/steps";
+import {
+  And,
+  Given,
+  Then,
+  When,
+} from "@badeball/cypress-cucumber-preprocessor";
 import GREFormPage from "../../support/pages/GREFormPage";
 import Homepage from "../../support/pages/Homepage";
 import sixtyFourECFormPage from "../../support/pages/sixtyFourECFormPage";

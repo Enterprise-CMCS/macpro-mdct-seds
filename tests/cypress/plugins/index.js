@@ -3,8 +3,11 @@ module.exports = (on, config) => {
 
   return config;
 };
-const cucumber = require("cypress-cucumber-preprocessor").default;
 
-module.exports = (on, config) => {
-  on("file:preprocessor", cucumber());
+const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
+const browserify = require("@badeball/cypress-cucumber-preprocessor/browserify");
+
+module.exports = async (on, config) => {
+  await preprocessor.addCucumberPreprocessorPlugin(on, config);
+  on("file:preprocessor", browserify.default(config));
 };
