@@ -2,8 +2,6 @@ const webpack = require("@cypress/webpack-preprocessor");
 const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 
 module.exports = async (on, config) => {
-  config.baseUrl = process.env.APPLICATION_ENDPOINT || "http://localhost:3000";
-
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
 
   on(
