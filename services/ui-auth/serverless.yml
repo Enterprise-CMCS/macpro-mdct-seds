@@ -14,8 +14,14 @@ provider:
   region: us-east-1
   iam:
     role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      # Even though we are creating our own IAM role that is used in each lambda function below
+      # These values are used by the serverless-iam-helper and need to be set
+      path: ${self:custom.iamPath}
+      permissionsBoundary:
+        Fn::If:
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
       statements:
         - Effect: "Allow"
           Action:
