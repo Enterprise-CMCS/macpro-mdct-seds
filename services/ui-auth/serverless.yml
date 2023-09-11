@@ -6,6 +6,7 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-stack-termination-protection
   - serverless-plugin-scripts
+  - serverless-bundle
   - serverless-iam-helper
 
 provider:
