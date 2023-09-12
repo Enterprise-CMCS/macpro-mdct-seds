@@ -205,6 +205,23 @@ export async function getFormResultByStateString(stateFormString) {
   return result.Items;
 }
 
+// Return a map of all stateFormIds within the answers table for use when repairing old data sets
+export async function getAnswersSet() {
+  console.log("Building set of state forms with answers");
+  const params = {
+    TableName:
+      process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+  };
+
+  const result = await dynamoDb.scanMapToSet(
+    params,
+    (answer) => answer.state_form
+  );
+  console.log("- Done building set");
+
+  return result;
+}
+
 export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
   const params = {
     TableName:
