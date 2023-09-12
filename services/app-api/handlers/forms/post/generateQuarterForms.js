@@ -70,7 +70,7 @@ export const main = handler(async (event, context) => {
             { key: "1964", label: "Age 19 years through age 64 years" },
           ];
           break;
-        case "64-21E":
+        case "64.21E":
           ageRanges = [
             { key: "0001", label: "Birth through age 12 months" },
             { key: "0105", label: "Age 1 year through age 5 years" },
@@ -87,7 +87,7 @@ export const main = handler(async (event, context) => {
             { key: "1318", label: "Age 13 years through age 18 years" },
           ];
           break;
-        case "64-EC":
+        case "64.EC":
           ageRanges = [
             { key: "0001", label: "Birth through age 12 months" },
             { key: "0105", label: "Age 1 year through age 5 years" },
@@ -250,7 +250,7 @@ export const main = handler(async (event, context) => {
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
-  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
+  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null; //
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
