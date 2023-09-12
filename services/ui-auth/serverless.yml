@@ -8,6 +8,7 @@ plugins:
   - serverless-plugin-scripts
   - serverless-bundle
   - serverless-iam-helper
+  - serverless-idempotency-helper
 
 provider:
   name: aws
