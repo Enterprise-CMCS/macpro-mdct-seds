@@ -13,7 +13,7 @@ import time
 #    * run the script (`python3 correct_null_responses.py`)
 
 RUN_LOCAL = True                        # Target localhost:8000
-RUN_UPDATE = True                       # Dispatch updates for detected changes
+RUN_UPDATE = False                       # Dispatch updates for detected changes
 STAGE = "master"                        # Prefix for the environment
 TABLE = "-form-answers"  # "-form-answers" and "-form-questions" should be corrected
 TARGET_YEAR = "2019"     # "$..[?(@.question=='2020-21E-04')].rows[1].col2",
