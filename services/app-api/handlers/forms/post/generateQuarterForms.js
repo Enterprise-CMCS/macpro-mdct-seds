@@ -250,7 +250,7 @@ export const main = handler(async (event, context) => {
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
-  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null; //
+  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
