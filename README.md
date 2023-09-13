@@ -104,6 +104,14 @@ Local dev is built around the Serverless plugin [`serverless-offline`](https://g
 
 Local authentication bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
+### Logging in
+
+(Make sure you've finished setting up the project locally above before moving on to this step!)
+
+Once you've run `./dev local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
+
+For a password to that user, please ask a fellow developer.
+
 ### Adding New Endpoints
 
 1. In [services/app-api/serverless.yml](services/app-api/serverless.yml), add a new entry to `functions` describing the new endpoint. Make sure your http method is set correctly. For example:

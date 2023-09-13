@@ -23,5 +23,80 @@
         "Value": "CHIP_D_ADMIN_GROUP"
       }
     ]
+  },
+  {
+    "username": "stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Alicia"
+      },
+      {
+        "Name": "family_name",
+        "Value": "States"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  },
+  {
+    "username": "stateuser1@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser1@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Cory"
+      },
+      {
+        "Name": "family_name",
+        "Value": "States"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  },
+  {
+    "username": "stateuser2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Minnie"
+      },
+      {
+        "Name": "family_name",
+        "Value": "States"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
   }
 ]
