@@ -20,7 +20,7 @@
       },
       {
         "Name": "custom:ismemberof",
-        "Value": "CHIP_D_ADMIN_GROUP"
+        "Value": "CHIP_D_USER_GROUP_ADMIN"
       }
     ]
   },
