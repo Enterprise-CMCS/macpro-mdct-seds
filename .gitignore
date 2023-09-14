@@ -11,7 +11,7 @@ services/uploads/local_buckets
 /.env
 tests_output
 *.log
-tests/videos
-tests/package-lock.json
-services/.sechub/scratchserverless.yml
+tests/cypress/videos
+tests/cypress/screenshots
+tests/cypress/downloads
 .vscode

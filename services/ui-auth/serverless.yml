@@ -5,11 +5,25 @@ frameworkVersion: "3"
 plugins:
   - serverless-s3-bucket-helper
   - serverless-stack-termination-protection
+  - serverless-plugin-scripts
+  - serverless-bundle
+  - serverless-iam-helper
+  - serverless-idempotency-helper
 
 provider:
   name: aws
   runtime: nodejs16.x
   region: us-east-1
+  iam:
+    role:
+      # Even though we are creating our own IAM role that is used in each lambda function below
+      # These values are used by the serverless-iam-helper and need to be set
+      path: ${self:custom.iamPath}
+      permissionsBoundary:
+        Fn::If:
+          - CreatePermissionsBoundary
+          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+          - !Ref AWS::NoValue
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -30,7 +44,25 @@ custom:
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
+  bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
+  bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
   okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, ""}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        if [ ${self:custom.bootstrapUsersEnabled} = "true" ];
+        then
+          serverless invoke --stage ${self:custom.stage} --function bootstrapUsers
+        fi
+
+functions:
+  bootstrapUsers:
+    handler: handlers/createUsers.handler
+    role: LambdaApiRole
+    environment:
+      userPoolId: !Ref CognitoUserPool
+      bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
+    timeout: 60
 
 resources:
   Conditions:
@@ -50,6 +82,39 @@ resources:
             - ""
             - ${self:custom.okta_metadata_url}
   Resources:
+    LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
+      Type: "AWS::IAM::Role"
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "lambda.amazonaws.com"
+              Action: "sts:AssumeRole"
+        Path: ${self:custom.iamPath}
+        PermissionsBoundary:
+          Fn::If:
+            - CreatePermissionsBoundary
+            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
+            - !Ref AWS::NoValue
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+        Policies:
+          - PolicyName: "LambdaApiRolePolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "arn:aws:logs:*:*:*"
+                - Effect: "Allow"
+                  Action:
+                    - "*"
+                  Resource: !GetAtt CognitoUserPool.Arn
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:

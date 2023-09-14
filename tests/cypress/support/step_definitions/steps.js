@@ -1,13 +1,17 @@
-//import { Given } from "cypress-cucumber-preprocessor/steps";
-import { And, Given, Then, When } from "cypress-cucumber-preprocessor/steps";
-import GREFormPage from "../../support/pages/GREFormPage";
-import Homepage from "../../support/pages/Homepage";
-import sixtyFourECFormPage from "../../support/pages/sixtyFourECFormPage";
-import twentyOnePWFormPage from "../../support/pages/twentyOnePWFormPage";
-import Loginpage from "../../support/pages/Loginpage";
-import twentyOneEFormPage from "../../support/pages/twentyOneEFormPage";
-import sixtyFourTwentyOneEFormPage from "../../support/pages/sixtyFourTwentyOneEFormPage";
-import sixtyFourECIFormPage from "../../support/pages/sixtyFourECIFormPage";
+import {
+  And,
+  Given,
+  Then,
+  When,
+} from "@badeball/cypress-cucumber-preprocessor";
+import GREFormPage from "../pages/GREFormPage";
+import Homepage from "../pages/Homepage";
+import sixtyFourECFormPage from "../pages/sixtyFourECFormPage";
+import twentyOnePWFormPage from "../pages/twentyOnePWFormPage";
+import Loginpage from "../pages/Loginpage";
+import twentyOneEFormPage from "../pages/twentyOneEFormPage";
+import sixtyFourTwentyOneEFormPage from "../pages/sixtyFourTwentyOneEFormPage";
+import sixtyFourECIFormPage from "../pages/sixtyFourECIFormPage";
 
 const homePage = new Homepage();
 const loginpage = new Loginpage();

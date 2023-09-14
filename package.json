@@ -32,10 +32,6 @@
     "@types/node": "^14.14.6",
     "@types/yargs": "^15.0.10",
     "chromedriver": ">=88.0.0",
-    "cypress": "^8.5.0",
-    "cypress-cucumber-preprocessor": "^4.3.0",
-    "cypress-file-upload": "^5.0.8",
-    "cypress-xpath": "^1.6.2",
     "dotenv": "^8.2.0",
     "nightwatch": "3.1.2",
     "prettier": "2.2.1",
@@ -58,8 +54,5 @@
   "dependencies": {
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "jsonpath": "^1.1.0"
-  },
-  "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true
   }
 }
