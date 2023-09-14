@@ -1,10 +1,31 @@
-module.exports = (on, config) => {
-  config.baseUrl = process.env.APPLICATION_ENDPOINT || "http://localhost:3000";
+const webpack = require("@cypress/webpack-preprocessor");
+const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 
+module.exports = async (on, config) => {
+  await preprocessor.addCucumberPreprocessorPlugin(on, config);
+
+  on(
+    "file:preprocessor",
+    webpack({
+      webpackOptions: {
+        resolve: {
+          extensions: [".ts", ".js"],
+        },
+        module: {
+          rules: [
+            {
+              test: /\.feature$/,
+              use: [
+                {
+                  loader: "@badeball/cypress-cucumber-preprocessor/webpack",
+                  options: config,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    })
+  );
   return config;
-};
-const cucumber = require("cypress-cucumber-preprocessor").default;
-
-module.exports = (on, config) => {
-  on("file:preprocessor", cucumber());
 };

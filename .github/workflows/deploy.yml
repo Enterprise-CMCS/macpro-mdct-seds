@@ -7,6 +7,9 @@ on:
       - "dependabot/**"
       - "!skipci*"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 permissions:
   id-token: write
   contents: read
@@ -40,19 +43,17 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: lock this branch to prevent concurrent builds
-        run: ./.github/github-lock.sh $branch_name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: read .nvmrc
         id: node_version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
-          path: "**/node_modules"
+          path: |
+            node_modules
+            services/**/node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: set path
         run: |
@@ -99,7 +100,6 @@ jobs:
           else # We're not in a CI system, let's yarn install
             yarn install
           fi
-          cypress install
           npm run test:ci
           popd
       - name: Store test reults

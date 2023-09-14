@@ -18,6 +18,13 @@ ANSWERS_TABLE = "-form-answers"  # 120k answers, 97MB
 FILENAME = STAGE + "-missing"
 
 
+def write(file_suffix, data):
+    text = "\n".join(data)
+    with open(FILENAME + file_suffix, 'w') as f:
+        f.write(text)
+    print(f"writing to {FILENAME}{file_suffix}")
+
+
 def main():
     # Config db connection
     dynamodb = None
@@ -44,18 +51,34 @@ def find_missing_answers(stage, dynamodb):
     # WB-2021-1-21E
     # WV-2021-1-21E-1318-01
     missing_dict = {}
+    forms_dict = {}
     print("Building Map")
     for form in state_forms:
         missing_dict[form['state_form']] = {
             "missing": True,
             "created_by": form["created_by"]
         }
+        form_key = str(form["year"]) + "-" + \
+            str(form["quarter"]) + "-" + form["form"]
+        if form_key not in forms_dict:
+            forms_dict[form_key] = 0
+        forms_dict[form_key] = forms_dict[form_key] + 1
+    counts = [f"{k}, {v}" for k,
+              v in forms_dict.items()]
+    counts.sort()
+    write("-quarter-form-counts.txt", counts)
 
     print("Populating...")
     response = answers_table.scan()
     entries = response['Items']
     while 'LastEvaluatedKey' in response:
         for entry in entries:
+            if entry['state_form'] not in missing_dict:
+                missing_dict[entry['state_form']] = {
+                    "missing": False,
+                    "created_by": "ORPHANED"
+                }
+                continue
             missing_dict[entry['state_form']]["missing"] = False
         # BATCH
         response = answers_table.scan(
@@ -64,16 +87,15 @@ def find_missing_answers(stage, dynamodb):
 
     missing = [f"{k}, {v['created_by']}" for k,
                v in missing_dict.items() if v["missing"]]
+    orphaned = [f"{k}, {v['created_by']}" for k,
+                v in missing_dict.items() if v["created_by"] == "ORPHANED"]
+    orphaned.sort()
     print("--------------\n TOTAL MISSING", len(missing))
-    print(f"writing to {FILENAME}.txt")
-    text = "\n".join(missing)
-    with open(FILENAME + ".txt", 'w') as f:
-        f.write(text)
+    write(".txt", missing)
+    write("-orphaned.txt", orphaned)
     print(f"writing to {FILENAME}-non-eci.txt")
     non_eci = [s for s in missing if 'ECI' not in s]
-    text = "\n".join(non_eci)
-    with open(FILENAME + "-non-eci.txt", 'w') as f:
-        f.write(text)
+    write("-non-eci.txt", non_eci)
 
 
 def scan(table):
