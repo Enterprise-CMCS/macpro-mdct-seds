@@ -99,7 +99,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: tests/cypress
-          spec: integration/*.spec.js
+          spec: integration/**/*
           browser: chrome
       - name: Store test reults
         uses: actions/upload-artifact@v2
