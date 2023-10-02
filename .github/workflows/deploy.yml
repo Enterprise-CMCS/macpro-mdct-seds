@@ -106,8 +106,7 @@ jobs:
           working-directory: tests/cypress
           spec: integration/*.spec.js
           browser: chrome
-          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
-          env: true
+          headless: true
       - name: Store test reults
         uses: actions/upload-artifact@v2
         if: failure()
