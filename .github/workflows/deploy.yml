@@ -80,16 +80,28 @@ jobs:
           ./deploy.sh $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
-      #      - name: Run Nightwatch suite
-      #        run: |
-      #          pushd services
-      #          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-      #          popd
-      #          ./test.sh
+      - id: endpoint
+        run: |
+          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
+          echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
+          echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
+
+  e2e-tests:
+    name: E2E Integration Tests (Cypress)
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.16.0-chrome107-ff107
+      options: --user 1001
+    steps:
       - name: Run Cypress Tests
         run: |
           pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
+          export APPLICATION_ENDPOINT=${{ needs.deploy.outputs.application_endpoint }}
           popd
 
           pushd tests/cypress
