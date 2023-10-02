@@ -80,15 +80,6 @@ jobs:
           ./deploy.sh $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
-      - id: endpoint
-        run: |
-          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
-          echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
-          echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
-          echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
-        working-directory: services
-    outputs:
-      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
 
   e2e-tests:
     name: E2E Integration Tests (Cypress)
@@ -100,13 +91,16 @@ jobs:
       options: --user 1001
     steps:
       - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: set path
+        run: echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v5
         with:
           working-directory: tests/cypress
           spec: integration/*.spec.js
           browser: chrome
-          headless: true
       - name: Store test reults
         uses: actions/upload-artifact@v2
         if: failure()
