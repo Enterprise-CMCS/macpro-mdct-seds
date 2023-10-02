@@ -101,7 +101,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v3
         with:
           working-directory: tests/cypress
           spec: integration/*.spec.js
