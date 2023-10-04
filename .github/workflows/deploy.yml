@@ -77,30 +77,30 @@ jobs:
           ./deploy.sh $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
-      #      - name: Run Nightwatch suite
-      #        run: |
-      #          pushd services
-      #          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-      #          popd
-      #          ./test.sh
-      - name: Run Cypress Tests
-        run: |
-          pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-          popd
 
-          pushd tests/cypress
-          if [ "$CI" == "true" ]; then # If we're in a CI system
-            if [ ! -d "node_modules" ]; then # If we don't have any node_modules (CircleCI cache miss scenario), run yarn install --frozen-lockfile.  Otherwise, we're all set, do nothing.
-              yarn install --frozen-lockfile
-            fi
-          else # We're not in a CI system, let's yarn install
-            yarn install
-          fi
-          npm run test:ci
-          popd
+  e2e-tests:
+    name: E2E Integration Tests (Cypress)
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.16.0-chrome107-ff107
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: set path
+        run: echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: tests/cypress
+          spec: integration/**/*
+          browser: chrome
       - name: Store test reults
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
-          name: test_results
-          path: tests/nightwatch/tests_output
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/

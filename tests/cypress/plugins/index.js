@@ -4,6 +4,13 @@ const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 module.exports = async (on, config) => {
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
 
+  on("before:browser:launch", (browser = {}, launchOptions) => {
+    if (browser.name === "chrome" && browser.isHeadless) {
+      launchOptions.args.push("--headless=old");
+    }
+    return launchOptions;
+  });
+
   on(
     "file:preprocessor",
     webpack({
