@@ -39,16 +39,13 @@ jobs:
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SEED_DATABASE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_SEED_DATABASE] }}
       - name: Configure AWS credentials for GitHub Actions OIDC
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: read .nvmrc
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: ".nvmrc"
       - uses: actions/cache@v3
         with:
           path: |
@@ -64,7 +61,7 @@ jobs:
         run: yarn install
       - name: unit test & publish coverage
         if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
         with:
@@ -80,30 +77,30 @@ jobs:
           ./deploy.sh $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
-      #      - name: Run Nightwatch suite
-      #        run: |
-      #          pushd services
-      #          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-      #          popd
-      #          ./test.sh
-      - name: Run Cypress Tests
-        run: |
-          pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui CloudFrontEndpointUrl $STAGE_PREFIX$branch_name`
-          popd
 
-          pushd tests/cypress
-          if [ "$CI" == "true" ]; then # If we're in a CI system
-            if [ ! -d "node_modules" ]; then # If we don't have any node_modules (CircleCI cache miss scenario), run yarn install --frozen-lockfile.  Otherwise, we're all set, do nothing.
-              yarn install --frozen-lockfile
-            fi
-          else # We're not in a CI system, let's yarn install
-            yarn install
-          fi
-          npm run test:ci
-          popd
-      - name: Store test reults
-        uses: actions/upload-artifact@v2
+  e2e-tests:
+    name: E2E Integration Tests (Cypress)
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.16.0-chrome107-ff107
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: set path
+        run: echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v5
         with:
-          name: test_results
-          path: tests/nightwatch/tests_output
+          working-directory: tests/cypress
+          spec: integration/**/*
+          browser: chrome
+      - name: Store test reults
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/
