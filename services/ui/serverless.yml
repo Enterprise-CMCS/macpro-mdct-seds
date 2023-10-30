@@ -248,9 +248,9 @@ resources:
             return response;
           }
         FunctionConfig:
-          Comment: This function adds headers to implement HSTS
+          Comment: This function adds headers to implement various web security measures
           Runtime: cloudfront-js-1.0
-        Name: hsts-${self:custom.stage}
+        Name: security-headers-${self:custom.stage}
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     Firehose:
       Type: AWS::KinesisFirehose::DeliveryStream
