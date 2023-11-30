@@ -213,10 +213,10 @@ export async function getAnswersSet() {
       process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
   };
 
-  const result = await dynamoDb.scanMapToSet(
-    params,
-    (answer) => answer.state_form
-  );
+  const answers = await dynamoDb.scan(params);
+  const stateForms = answers.map((answer) => answer.state_form);
+  const result = new Set(stateForms);
+
   console.log("- Done building set");
 
   return result;

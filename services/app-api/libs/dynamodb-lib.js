@@ -1,55 +1,46 @@
-import AWS from "aws-sdk";
+import {
+  DynamoDBClient,
+  ListTablesCommand,
+} from "@aws-sdk/client-dynamodb";
+import {
+  BatchWriteCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 
-const dyanmoConfig = {};
+const dynamoConfig = {};
 
 // ugly but OK, here's where we will check the environment
 const endpoint = process.env.DYNAMODB_URL;
 if (endpoint) {
-  dyanmoConfig.endpoint = endpoint;
-  dyanmoConfig.accessKeyId = "LOCALFAKEKEY";
-  dyanmoConfig.secretAccessKey = "LOCALFAKESECRET";
+  dynamoConfig.endpoint = endpoint;
+  dynamoConfig.accessKeyId = "LOCALFAKEKEY";
+  dynamoConfig.secretAccessKey = "LOCALFAKESECRET";
 } else {
-  dyanmoConfig["region"] = "us-east-1";
+  dynamoConfig["region"] = "us-east-1";
 }
 
-const database = new AWS.DynamoDB();
-
-const client = new AWS.DynamoDB.DocumentClient(dyanmoConfig);
+const baseClient = new DynamoDBClient(dynamoConfig);
+const client = DynamoDBDocumentClient.from(baseClient);
 
 export default {
-  get: (params) => client.get(params).promise(),
-  put: (params) => client.put(params).promise(),
-  query: (params) => client.query(params).promise(),
-  update: (params) => client.update(params).promise(),
-  delete: (params) => client.delete(params).promise(),
+  put: (params) => client.send(new PutCommand(params)),
+  query: (params) => client.send(new QueryCommand(params)),
+  update: (params) => client.send(new UpdateCommand(params)),
+  delete: (params) => client.send(new DeleteCommand(params)),
   scan: async (params) => {
     const items = [];
-    let complete = false;
-    while (!complete) {
-      const result = await client.scan(params).promise();
+    let ExclusiveStartKey;
+    do {
+      const result = await client.scan({ params, ExclusiveStartKey });
       items.push(...result.Items);
-      params.ExclusiveStartKey = result.LastEvaluatedKey;
-      complete = result.LastEvaluatedKey === undefined;
-    }
+      ExclusiveStartKey = result.LastEvaluatedKey;
+    } while (ExclusiveStartKey)
     return { Items: items, Count: items.length };
   },
-  scanMapToSet: async (params, mapFunction) => {
-    let itemSet = new Set();
-    let complete = false;
-    while (!complete) {
-      const result = await client.scan(params).promise();
-      if (!result.Items) continue;
-
-      itemSet = new Set([
-        ...itemSet,
-        ...result.Items.map((x) => mapFunction(x)),
-      ]);
-
-      params.ExclusiveStartKey = result.LastEvaluatedKey;
-      complete = result.LastEvaluatedKey === undefined;
-    }
-    return itemSet;
-  },
-  batchWrite: (params) => client.batchWrite(params).promise(),
-  listTables: (params) => database.listTables(params).promise(),
+  batchWrite: (params) => client.send(new BatchWriteCommand(params)),
+  listTables: (params) => baseClient.send(new ListTablesCommand(params)),
 };

@@ -1,6 +1,7 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-const AWS = require("aws-sdk");
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
+import { logger } from "../../libs/debug-lib";
 
 /**
  * Handler responsible for sending notification to business users,
@@ -9,9 +10,12 @@ const AWS = require("aws-sdk");
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
   const email = await unCetifiedTemplate(data);
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-    .sendEmail(email)
-    .promise();
+  const client = new SESClient({
+    apiVersion: "2010-12-01",
+    region: "us-east-1",
+    logger,
+  });
+  const sendPromise = client.send(new SendEmailCommand(email));
   try {
     const data = await sendPromise;
     console.log(data, "data: promise");

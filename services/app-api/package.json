@@ -27,11 +27,15 @@
     "serverless-stack-termination-protection": "^1.0.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.1452.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.462.0",
+    "@aws-sdk/client-dynamodb": "^3.462.0",
+    "@aws-sdk/client-ses": "^3.462.0",
+    "@aws-sdk/lib-dynamodb": "^3.464.0",
+    "@aws-sdk/util-dynamodb": "^3.462.0",
     "exceljs": "^4.2.1",
     "kafkajs": "^1.15.0",
     "lambda-multipart-parser": "^1.0.1",
-    "serverless": "^3.27.0",
+    "serverless": "^3.38.0",
     "uuid": "^7.0.3"
   }
 }
