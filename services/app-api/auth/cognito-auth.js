@@ -1,8 +1,9 @@
-import { CognitoIdentityServiceProvider } from "aws-sdk";
+import { AdminGetUserCommand, CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 
 import { localUser } from "./local-user";
 import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
 import { main as obtainUsernameBySub } from "../handlers/users/post/obtainUsernameBySub";
+import { logger } from "../libs/debug-lib";
 
 export const parseAuthProvider = (authProvider) => {
   // *** cognito authentication provider example:
@@ -76,13 +77,14 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 
       // calling a dependency so we have to try
       try {
-        const cognito = new CognitoIdentityServiceProvider();
-        const userResponse = await cognito
-          .adminGetUser({
-            Username: username,
-            UserPoolId: userInfo.poolId,
-          })
-          .promise();
+        const cognitoClient = new CognitoIdentityProviderClient({ logger });
+
+        const command = new AdminGetUserCommand({
+          Username: username,
+          UserPoolId: userInfo.poolId,
+        });
+
+        const userResponse = await cognitoClient.send(command);
 
         // we lose type safety here...
         const attributes = userAttrDict(userResponse);

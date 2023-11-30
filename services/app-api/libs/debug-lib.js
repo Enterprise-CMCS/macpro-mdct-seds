@@ -1,30 +1,56 @@
 import util from "util";
-import AWS from "aws-sdk";
 
-let logs;
+const logs = [];
 
-// Log AWS SDK calls
-AWS.config.logger = { log: debug };
+const buildLoggerForLevel = (level) => {
+  return function (...content) {
+    logs.push({
+      date: new Date(),
+      level: level,
+      string: util.format.apply(null, content),
+    });
 
-export default function debug() {
-  logs.push({
-    date: new Date(),
-    string: util.format.apply(null, arguments),
-  });
+    /*
+     * If we have a function logging thousands of messages,
+     * better to take the console performance hit mid-operation
+     * than to let memory usage run away as well.
+     */
+    if (logs.length > 99) {
+      flush();
+    }
+  };
+};
+
+/*
+ * Individual functions are exported to support handler-lib;
+ * This integrates SDK client logging with lambda logging.
+ */
+export const trace = buildLoggerForLevel("trace");
+export const debug = buildLoggerForLevel("debug");
+export const info = buildLoggerForLevel("info");
+export const warn = buildLoggerForLevel("warn");
+export const error = buildLoggerForLevel("error");
+
+export function flush() {
+  while (logs.length > 0) {
+    const { date, level, string } = logs.shift();
+    // eslint-disable-next-line no-console
+    console[level](date, string);
+  }
 }
 
-export function init(event, context) {
-  logs = [];
+/*
+ * This is only called at the beginning of a lambda handler,
+ * so the log buffer should be empty anyway. But it doesn't
+ * hurt to make sure!
+ */
+export const init = flush;
 
-  // Log API event
-  debug("API event", {
-    body: event.body,
-    pathParameters: event.pathParameters,
-    queryStringParameters: event.queryStringParameters,
-  });
-}
-
-export function flush(e) {
-  logs.forEach(({ date, string }) => console.debug(date, string));
-  console.error(e);
-}
+/**
+ * A logger suitable for passing to any AWS client constructor.
+ * Note that the `trace` log level is excluded.
+ *
+ * This logger accumulates log messages in an internal buffer,
+ * eventually flushing them to the console.
+ */
+export const logger = { debug, info, warn, error };

@@ -3,9 +3,8 @@ import {
   getUsersEmailByRole,
   getUncertifiedStates,
 } from "../shared/sharedFunctions";
-
-var AWS = require("aws-sdk");
-var ses = new AWS.SES({ region: "us-east-1" });
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
+import { logger } from "../../libs/debug-lib";
 
 /**
  * Handler responsible for sending notification to state users At the end of each Quarter.
@@ -15,15 +14,23 @@ var ses = new AWS.SES({ region: "us-east-1" });
 export const main = handler(async (event, context) => {
   const email = await stateUsersTemplate();
   console.log("emailTemplate: ", email);
-  ses.sendEmail(email, function (err, data) {
-    if (err) {
-      console.log(err);
-      context.fail(err);
-    } else {
-      console.log(data);
-      context.succeed(event);
-    }
+
+  const client = new SESClient({
+    apiVersion: "2010-12-01",
+    region: "us-east-1",
+    logger,
   });
+
+  try {
+    const result = await client.send(SendEmailCommand(email));
+    console.log(result);
+    context.succeed(event);
+  }
+  catch (err) {
+    console.log(err);
+    context.fail(err);
+  }
+
   return {
     status: "success",
     message: "Quarterly State owners email sent",

@@ -3,19 +3,23 @@ import {
   getUsersEmailByRole,
   getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
-const AWS = require("aws-sdk");
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
+import { logger } from "../../libs/debug-lib";
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
  * as a CMS Business User, I want to know which states have NOT submitted
  * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
-
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-    .sendEmail(email)
-    .promise();
+  const client = new SESClient({
+    apiVersion: "2010-12-01",
+    region: "us-east-1",
+    logger,
+  });
+  const sendPromise = client.send(new SendEmailCommand(email));
+
   try {
     const data = await sendPromise;
     console.log(data.MessageId);
