@@ -65,14 +65,13 @@ export default function Login() {
   }
 
   //This variable will be used to set the hidden property of the developer-login form
-  //If the environment is not PROD and is not VAL, the developer login will be shown
-  let development = true;
-  if (
-    window.location.hostname !== "mdctseds.cms.gov" &&
-    window.location.hostname !== "mdctsedsval.cms.gov"
-  ) {
-    development = false;
-  }
+  //If the environment is not PROD, VAL, or DEV the developer login will be shown
+  const authDomains = [
+    "mdctseds.cms.gov",
+    "mdctsedsval.cms.gov",
+    "mdctsedsdev.cms.gov"
+  ];
+  const development = !authDomains.includes(window.location.hostname);
 
   return (
     <div
