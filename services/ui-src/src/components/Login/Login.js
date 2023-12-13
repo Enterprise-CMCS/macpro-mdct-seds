@@ -71,7 +71,10 @@ export default function Login() {
     "mdctsedsval.cms.gov",
     "mdctsedsdev.cms.gov"
   ];
-  const development = !authDomains.includes(window.location.hostname);
+  const oktaLoginOnly = authDomains.includes(window.location.hostname);
+  if (oktaLoginOnly) {
+    signInWithOkta();
+  }
 
   return (
     <div
@@ -93,7 +96,7 @@ export default function Login() {
       <form
         onSubmit={handleSubmit}
         className="developer-login text-center"
-        hidden={development}
+        hidden={!oktaLoginOnly}
         data-testid="loginForm"
       >
         <FormGroup controlId="email" bsSize="large">
