@@ -29,7 +29,7 @@
   "dependencies": {
     "aws-sdk": "^2.1452.0",
     "exceljs": "^4.2.1",
-    "kafkajs": "^1.15.0",
+    "kafkajs": "^2.2.4",
     "lambda-multipart-parser": "^1.0.1",
     "serverless": "^3.27.0",
     "uuid": "^7.0.3"
