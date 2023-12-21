@@ -13,7 +13,7 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "serverless-stack-termination-protection": "^1.0.4"
+    "serverless-stack-termination-protection": "^2.0.2"
   },
   "devDependencies": {}
 }
