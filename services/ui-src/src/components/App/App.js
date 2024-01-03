@@ -47,7 +47,7 @@ function App() {
   // fire tealium page view on route change
   useEffect(() => {
     fireTealiumPageView(user, window.location.href, pathname);
-  }, [key]);
+  }, [key, pathname, user]);
 
   return (
     <div className="App react-transition fade-in">
