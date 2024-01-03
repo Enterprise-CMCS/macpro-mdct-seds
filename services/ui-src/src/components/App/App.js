@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Routes from "../Routes/Routes";
 import { AppContext } from "../../libs/contextLib";
 import { Auth } from "aws-amplify";
@@ -11,8 +12,10 @@ import {
   ascertainUserPresence,
   determineRole
 } from "../../utility-functions/initialLoadFunctions";
+import { fireTealiumPageView } from "../../utility-functions/tealium";
 
 function App() {
+  const { pathname, key } = useLocation();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -40,6 +43,11 @@ function App() {
   useEffect(() => {
     onLoad().then();
   }, [isAuthenticated]);
+
+  // fire tealium page view on route change
+  useEffect(() => {
+    fireTealiumPageView(user, window.location.href, pathname);
+  }, [key]);
 
   return (
     <div className="App react-transition fade-in">
