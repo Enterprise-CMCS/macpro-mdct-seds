@@ -1,4 +1,4 @@
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 
 /*************************** HELPER FUNCTIONS ***************************/
 const requestOptions = () => {
@@ -132,9 +132,15 @@ export const obtainAvailableForms = data => {
 };
 
 // *** save single form
-export const saveSingleForm = data => {
+export const saveSingleForm = async data => {
   const opts = requestOptions();
+  const currentUser = (await Auth.currentSession()).getIdToken();
+
   opts.body = data;
+  opts.body = {
+    ...opts.body,
+    username: currentUser.payload.email
+  };
 
   return API.post("mdct-seds", "/single-form/save", opts);
 };

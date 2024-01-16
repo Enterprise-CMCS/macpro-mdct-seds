@@ -236,7 +236,6 @@ export const saveForm = () => {
     try {
       // Update Database
       await saveSingleForm({
-        username,
         formAnswers: answers,
         statusData: statusData
       });
