@@ -1,3 +1,5 @@
+// aws-amplify
+import { Auth } from "aws-amplify";
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import cloneDeepWith from "lodash/cloneDeepWith";
@@ -11,6 +13,12 @@ export const main = handler(async (event, context) => {
   if (event.source == "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
+  }
+
+  // verify whether there is a user logged in
+  const currentUser = (await Auth.currentSession()).getIdToken();
+  if (!currentUser) {
+    throw new Error("No authorized user.");
   }
 
   const data = JSON.parse(event.body);
@@ -140,7 +148,7 @@ export const main = handler(async (event, context) => {
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
         ":rows": rowsWithZeroWhereBlank,
-        ":last_modified_by": data.username,
+        ":last_modified_by": currentUser.payload.email,
         ":last_modified": new Date().toISOString(),
       },
       ExpressionAttributeNames: {
