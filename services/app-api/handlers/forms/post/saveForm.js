@@ -1,8 +1,8 @@
 // aws-amplify
-import { Auth } from "aws-amplify";
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import cloneDeepWith from "lodash/cloneDeepWith";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 /**
  * This handler will loop through a question array and save each row
@@ -16,7 +16,8 @@ export const main = handler(async (event, context) => {
   }
 
   // verify whether there is a user logged in
-  const currentUser = (await Auth.currentSession()).getIdToken();
+  const currentUser = getUserCredentialsFromJwt(event);
+  console.log("THIS IS THE USER", currentUser);
   if (!currentUser) {
     throw new Error("No authorized user.");
   }
@@ -148,7 +149,7 @@ export const main = handler(async (event, context) => {
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
         ":rows": rowsWithZeroWhereBlank,
-        ":last_modified_by": currentUser.payload.email,
+        ":last_modified_by": currentUser.email,
         ":last_modified": new Date().toISOString(),
       },
       ExpressionAttributeNames: {
