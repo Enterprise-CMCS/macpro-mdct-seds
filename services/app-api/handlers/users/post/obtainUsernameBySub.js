@@ -1,16 +1,20 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
   if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
   }
 
+  // verify whether there is a user logged in
+  const currentUser = await getUserCredentialsFromJwt(event);
+  if (!currentUser) {
+    throw new Error("No authorized user.");
+  }
+
   let data = JSON.parse(event.body);
-  console.log("\n\n\n---->about to obtain user: ");
-  console.log(data);
 
   const params = {
     TableName:
@@ -24,15 +28,9 @@ export const main = handler(async (event, context) => {
 
   const result = await dynamoDb.scan(params);
 
-  console.log("\n\nresult of scan ~~~~>");
-  console.log(result);
-
   if (result.Count === 0) {
     return false;
   }
-
-  console.log("\n\n\n=-========>user obtained: ");
-  console.log(result);
 
   // Return the retrieved item
   return result;

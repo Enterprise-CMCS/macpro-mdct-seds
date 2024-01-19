@@ -1,14 +1,18 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByEmail } from "./obtainUserByEmail";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
 
-  const data = JSON.parse(event.body);
+  // verify whether there is a user logged in
+  const user = await getUserCredentialsFromJwt(event);
+  if (!user) {
+    throw new Error("No authorized user.");
+  }
 
-  console.log("got data: ");
-  console.log(data);
+  const data = JSON.parse(event.body);
 
   const body = JSON.stringify({
     email: data.email,

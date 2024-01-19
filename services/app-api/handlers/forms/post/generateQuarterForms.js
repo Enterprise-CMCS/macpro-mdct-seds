@@ -10,8 +10,6 @@ import {
 } from "../../shared/sharedFunctions";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
-// TODO: MAKE A TICKET ABOUT WHETHER THIS ONE SHOULD HAVE THE CURRENT USER CHECK!!!!!!
-
 /**
  * Generates initial form data and statuses for all states given a year and quarter
  */

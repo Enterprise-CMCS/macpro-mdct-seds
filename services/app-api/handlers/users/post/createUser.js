@@ -1,17 +1,21 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByUsername } from "./obtainUserByUsername";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
   if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
   }
 
-  const data = JSON.parse(event.body);
+  // verify whether there is a user logged in
+  const user = await getUserCredentialsFromJwt(event);
+  if (!user) {
+    throw new Error("No authorized user.");
+  }
 
-  console.log(JSON.stringify(event, null, 2));
+  const data = JSON.parse(event.body);
 
   if (!data.username) {
     return `Please enter a username`;
@@ -25,9 +29,6 @@ export const main = handler(async (event, context) => {
   const currentUser = await obtainUserByUsername({
     body: body,
   });
-
-  console.log("this is the current user: ");
-  console.log(currentUser);
 
   if (currentUser.body !== "false") {
     return `User ${data.username} already exists`;
