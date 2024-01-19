@@ -1,5 +1,6 @@
 import * as debug from "./debug-lib";
 import { isAuthorized } from "./authorization";
+import { buildResponse } from "./response-lib";
 
 export default function handler(lambda) {
   return async function (event, context) {
