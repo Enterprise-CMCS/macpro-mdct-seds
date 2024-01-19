@@ -1,5 +1,6 @@
 import dynamodbLib from "../../../libs/dynamodb-lib";
 import handler from "../../../libs/handler-lib";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 /**
  * Returns list of all forms based on state
@@ -9,8 +10,13 @@ import handler from "../../../libs/handler-lib";
 export const main = handler(async (event, context) => {
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
+  }
+
+  // verify whether there is a user logged in
+  const currentUser = await getUserCredentialsFromJwt(event);
+  if (!currentUser) {
+    throw new Error("No authorized user.");
   }
 
   let data = JSON.parse(event.body);
