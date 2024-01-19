@@ -1,4 +1,6 @@
+import { SSM } from "aws-sdk";
 import jwt_decode from "jwt-decode";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 /**
  *
