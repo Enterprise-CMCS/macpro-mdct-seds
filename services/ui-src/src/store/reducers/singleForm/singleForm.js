@@ -112,7 +112,6 @@ export const updateFPL = newFPL => {
       const updatedAnswers = insertFPL(deepCopy, newFPL);
       dispatch(gotFPL(updatedAnswers));
     } catch (error) {
-      console.log("Error:", error);
       console.dir(error);
     }
   };
@@ -135,7 +134,6 @@ export const clearFormData = (user = "cleared") => {
       });
       dispatch(clearedForm(emptyForm));
     } catch (error) {
-      console.log("Error:", error);
       console.dir(error);
     }
   };
@@ -181,7 +179,6 @@ export const getFormData = (state, year, quarter, formName) => {
       dispatch(gotFormData(allFormData));
     } catch (error) {
       dispatch(loadFormFailure());
-      console.log("Error:", error);
       console.dir(error);
     }
   };
@@ -189,7 +186,6 @@ export const getFormData = (state, year, quarter, formName) => {
 
 export const getUsername = async () => {
   const currentUser = (await Auth.currentSession()).getIdToken();
-  console.log("currentUser", currentUser);
   const {
     payload: { email }
   } = currentUser;

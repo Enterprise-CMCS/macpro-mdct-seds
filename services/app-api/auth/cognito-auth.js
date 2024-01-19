@@ -51,7 +51,7 @@ const userAttrDict = (cognitoUser) => {
   return attributes;
 };
 
-// userFromCognitoAuthProvider hits the Cogntio API to get the information in the authProvider
+// userFromCognitoAuthProvider hits the Cognito API to get the information in the authProvider
 export const userFromCognitoAuthProvider = async (authProvider) => {
   let userObject = {};
 
@@ -84,7 +84,6 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
           })
           .promise();
 
-        // we lose type safety here...
         const attributes = userAttrDict(userResponse);
 
         userObject = {

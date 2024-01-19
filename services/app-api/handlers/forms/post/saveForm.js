@@ -11,13 +11,11 @@ import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
   }
 
   // verify whether there is a user logged in
-  const currentUser = getUserCredentialsFromJwt(event);
-  console.log("THIS IS THE USER", currentUser);
+  const currentUser = await getUserCredentialsFromJwt(event);
   if (!currentUser) {
     throw new Error("No authorized user.");
   }
