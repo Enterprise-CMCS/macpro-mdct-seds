@@ -8,6 +8,9 @@ import {
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions";
+import { getUserCredentialsFromJwt } from "../../../libs/authorization";
+
+// TODO: MAKE A TICKET ABOUT WHETHER THIS ONE SHOULD HAVE THE CURRENT USER CHECK!!!!!!
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter
@@ -18,8 +21,13 @@ export const main = handler(async (event, context) => {
 
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
+  }
+
+  // verify whether there is a user logged in
+  const currentUser = await getUserCredentialsFromJwt(event);
+  if (!currentUser) {
+    throw new Error("No authorized user.");
   }
 
   // at top of file, or in some config file
@@ -210,7 +218,6 @@ export const main = handler(async (event, context) => {
   // Get tableName
   const formDescriptionTableName =
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
-  console.log(`Saving ${putRequestsStateForms.length} state forms`);
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormDescriptions) {
@@ -283,9 +290,6 @@ export const main = handler(async (event, context) => {
           restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
 
         if (isGeneratingStateForm || missingAnswers) {
-          if (!isGeneratingStateForm && missingAnswers) {
-            console.log(`    - Restoring answer entry: ${answerEntry}`);
-          }
           noMissingForms = false;
           putRequestsFormAnswers.push({
             PutRequest: {
@@ -307,7 +311,7 @@ export const main = handler(async (event, context) => {
       }
     }
   }
-  console.log(`Batching ${putRequestsFormAnswers.length} answers`);
+
   // Begin batching by groups of 25
   const batchArrayFormAnswers = [];
   const batchSizeFA = 25;
@@ -321,7 +325,6 @@ export const main = handler(async (event, context) => {
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
-    console.log(message);
     return {
       status: 204,
       message: message,

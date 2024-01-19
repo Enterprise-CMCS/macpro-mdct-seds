@@ -1,12 +1,19 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { getUserCredentialsFromJwt } from "../../libs/authorization";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
   if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
     return null;
   }
+
+  // verify whether there is a user logged in
+  const currentUser = await getUserCredentialsFromJwt(event);
+  if (!currentUser) {
+    throw new Error("No authorized user.");
+  }
+
   // Deconstruct variables from URL string
   const { state, specifiedYear, quarter, form } = event.pathParameters;
 
@@ -15,10 +22,6 @@ export const main = handler(async (event, context) => {
   const answerParams = {
     TableName: process.env.FormAnswersTableName,
     IndexName: "state-form-index",
-    /*Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {
-      "#answer_entry": "answer_entry"
-    },*/
     ExpressionAttributeValues: {
       ":answerFormID": answerFormID,
     },
@@ -37,7 +40,6 @@ export const main = handler(async (event, context) => {
     FilterExpression: "form = :form and #theYear = :specifiedYear",
   };
 
-  //const answersResult = await dynamoDb.scan(answerParams);
   const answersResult = await dynamoDb.query(answerParams);
   const questionsResult = await dynamoDb.scan(questionParams);
 
