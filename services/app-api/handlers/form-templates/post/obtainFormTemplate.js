@@ -10,6 +10,7 @@ import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 export const main = handler(async (event, context) => {
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
+    console.log("Warmed up!");
     return null;
   }
 

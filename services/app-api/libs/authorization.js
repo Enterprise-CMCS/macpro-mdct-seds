@@ -16,6 +16,11 @@ class UserCredentials {
   }
 }
 
+/**
+ * TODO: this check will return an empty credentials object or a decoded credentials object anytime it is called,
+ * which will not throw an error regardless of what credentials the user has. In a follow-up PR, this check needs
+ * to be more rigorous whenever it's invoked before an API call.
+ */
 export const getUserCredentialsFromJwt = (event) => {
   if (!event?.headers || !event.headers?.["x-api-key"])
     return new UserCredentials();

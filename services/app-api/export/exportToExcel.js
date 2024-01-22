@@ -5,7 +5,10 @@ import { Workbook } from "exceljs";
 import { getCurrentUserInfo } from "../auth/cognito-auth";
 
 export const main = handler(async (event, context) => {
-  if (event.source === "serverless-plugin-warmup") return null;
+  if (event.source === "serverless-plugin-warmup") {
+    console.log("Warmed up!");
+    return null;
+  }
 
   let content = JSON.parse(event.body);
 

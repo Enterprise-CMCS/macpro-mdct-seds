@@ -2,7 +2,10 @@ import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
-  if (event.source === "serverless-plugin-warmup") return null;
+  if (event.source === "serverless-plugin-warmup") {
+    console.log("Warmed up!");
+    return null;
+  }
 
   const params = {};
 

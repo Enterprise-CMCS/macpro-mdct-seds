@@ -4,7 +4,10 @@ import { main as obtainUserByEmail } from "./obtainUserByEmail";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
-  if (event.source === "serverless-plugin-warmup") return null;
+  if (event.source === "serverless-plugin-warmup") {
+    console.log("Warmed up!");
+    return null;
+  }
 
   // verify whether there is a user logged in
   const user = await getUserCredentialsFromJwt(event);
