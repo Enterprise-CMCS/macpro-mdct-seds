@@ -8,11 +8,10 @@ import {
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions";
-import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter
- * NOTE: This function is triggered by a user on the client-side
+ * NOTE: This function is triggered on a schedule by Cron
  */
 
 export const main = handler(async (event, context) => {
@@ -22,12 +21,6 @@ export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
-  }
-
-  // verify whether there is a user logged in
-  const currentUser = await getUserCredentialsFromJwt(event);
-  if (!currentUser) {
-    throw new Error("No authorized user.");
   }
 
   // at top of file, or in some config file
