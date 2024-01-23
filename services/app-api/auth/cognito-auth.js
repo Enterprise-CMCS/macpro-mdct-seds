@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";
-import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
+import { main as obtainUserByEmail } from "../handlers/users/get/obtainUserByEmail";
 import { main as obtainUsernameBySub } from "../handlers/users/post/obtainUsernameBySub";
 
 export const parseAuthProvider = (authProvider) => {

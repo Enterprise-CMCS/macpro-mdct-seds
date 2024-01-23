@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { obtainUserByEmail } from "./obtainUserByEmail";
+import { obtainUserByEmail } from "../get/obtainUserByEmail";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
