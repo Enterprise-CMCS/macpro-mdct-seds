@@ -66,7 +66,7 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
       // *** retrieve user from db
       const currentUser = await obtainUsernameBySub(usernameSub);
 
-      const username = currentUser.Items[0].username;
+      const username = currentUser.username;
 
       // calling a dependency so we have to try
       try {
