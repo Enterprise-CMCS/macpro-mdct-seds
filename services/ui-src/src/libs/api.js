@@ -62,7 +62,7 @@ export const obtainUserByEmail = async data => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return API.post("mdct-seds", `/users/get/email`, opts);
+  return API.get("mdct-seds", `/users/get/email`, opts);
 };
 
 // *** update user information
