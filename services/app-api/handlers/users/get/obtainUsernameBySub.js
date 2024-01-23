@@ -16,7 +16,10 @@ export const main = handler(async (event, context) => {
   }
 
   let data = JSON.parse(event.body);
+  return await obtainUsernameBySub(data.usernameSub);
+});
 
+export const obtainUsernameBySub = async (usernameSub) => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
@@ -35,4 +38,4 @@ export const main = handler(async (event, context) => {
 
   // Return the retrieved item
   return result;
-});
+};

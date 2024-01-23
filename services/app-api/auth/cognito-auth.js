@@ -1,8 +1,8 @@
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";
-import { main as obtainUserByEmail } from "../handlers/users/get/obtainUserByEmail";
-import { main as obtainUsernameBySub } from "../handlers/users/post/obtainUsernameBySub";
+import { obtainUserByEmail } from "../handlers/users/get/obtainUserByEmail";
+import { obtainUsernameBySub } from "../handlers/users/get/obtainUsernameBySub";
 
 export const parseAuthProvider = (authProvider) => {
   // *** cognito authentication provider example:
@@ -63,16 +63,10 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
     default:
       const userInfo = parseAuthProvider(authProvider);
 
-      const body = JSON.stringify({
-        usernameSub: userInfo.userId,
-      });
-
       // *** retrieve user from db
-      const currentUser = await obtainUsernameBySub({
-        body: body,
-      });
+      const currentUser = await obtainUsernameBySub(usernameSub);
 
-      const username = JSON.parse(currentUser.body)["Items"][0].username;
+      const username = currentUser.Items[0].username;
 
       // calling a dependency so we have to try
       try {
@@ -125,12 +119,10 @@ export const getCurrentUserInfo = async (event) => {
       email: email,
     });
 
-  const currentUser = await obtainUserByEmail({
-    body: body,
-  });
+  const currentUser = await obtainUserByEmail(email);
 
   return {
     status: "success",
-    data: JSON.parse(currentUser.body)["Items"][0],
+    data: currentUser.Items[0],
   };
 };
