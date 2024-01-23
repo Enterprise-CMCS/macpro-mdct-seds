@@ -514,8 +514,8 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  generateQuarterFormsCron:
-    handler: handlers/forms/post/generateQuarterFormsCron.main
+  generateQuarterFormsScheduledJob:
+    handler: handlers/forms/post/generateQuarterForms.scheduledJob
     role: LambdaApiRole
     events:
       - schedule:

@@ -1,4 +1,12 @@
 import dynamoDb from "../../libs/dynamodb-lib";
+import {
+  findExistingStateForms,
+  getStatesList,
+  getFormDescriptions,
+  getQuestionsByYear,
+  fetchOrCreateQuestions,
+  getAnswersSet,
+} from "../../../app-api/handlers/shared/sharedFunctions";
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter
@@ -90,6 +98,7 @@ export async function generateQuarterlyForms(event) {
   let specifiedQuarter;
   let restoreMissingAnswers = false;
 
+  // TODO: pass the quarter, year, and restore missing answer as a parameter from the handler
   // If a data object is sent use those values.
   if (event.body && event.body !== "undefined") {
     let data =
