@@ -1,5 +1,5 @@
 import handler from "../../../libs/handler-lib";
-import { generateQuarterlyForms } from "../../shared/sharedFunctions";
+import { generateQuarterlyForms } from "../../shared/quarterlyForms";
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter

@@ -1,5 +1,5 @@
 import handler from "../../../libs/handler-lib";
-import { generateQuarterlyForms } from "../../shared/sharedFunctions";
+import { generateQuarterlyForms } from "../../shared/quarterlyForms";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 /**
