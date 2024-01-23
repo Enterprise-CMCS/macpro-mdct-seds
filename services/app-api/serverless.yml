@@ -369,12 +369,12 @@ functions:
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   obtainUserByEmail:
-    handler: handlers/users/post/obtainUserByEmail.main
+    handler: handlers/users/get/obtainUserByEmail.main
     role: LambdaApiRole
     events:
       - http:
           path: users/get/email
-          method: post
+          method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   obtainUserStamp:
