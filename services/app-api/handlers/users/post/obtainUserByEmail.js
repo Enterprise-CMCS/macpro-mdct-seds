@@ -16,13 +16,16 @@ export const main = handler(async (event, context) => {
   }
 
   let data = JSON.parse(event.body);
+  return await obtainUserByEmail(data.email);
+});
 
+export const obtainUserByEmail = async (email) => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":email": data.email,
+      ":email": email,
     },
     FilterExpression: "email = :email",
   };
@@ -35,4 +38,4 @@ export const main = handler(async (event, context) => {
 
   // Return the retrieved item
   return result;
-});
+};

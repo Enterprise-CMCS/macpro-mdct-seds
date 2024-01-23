@@ -58,14 +58,6 @@ export const getUserById = async data => {
 };
 
 // *** get user information by username
-export const obtainUserByUsername = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/users/get`, opts);
-};
-
-// *** get user information by username
 export const obtainUserByEmail = async data => {
   const opts = await requestOptions();
   opts.body = data;

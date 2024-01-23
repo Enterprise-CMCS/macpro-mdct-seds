@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { main as obtainUserByUsername } from "./obtainUserByUsername";
+import { obtainUserByUsername } from "../get/obtainUserByUsername";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
@@ -22,16 +22,9 @@ export const main = handler(async (event, context) => {
     return `Please enter a username`;
   }
 
-  // Stringify body contents to match api type
-  const body = JSON.stringify({
-    username: data.username,
-  });
+  const currentUser = await obtainUserByUsername(data.username);
 
-  const currentUser = await obtainUserByUsername({
-    body: body,
-  });
-
-  if (currentUser.body !== "false") {
+  if (currentUser !== false) {
     return `User ${data.username} already exists`;
   }
 

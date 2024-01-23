@@ -368,15 +368,6 @@ functions:
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  obtainUserByUsername:
-    handler: handlers/users/post/obtainUserByUsername.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/get
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   obtainUsernameBySub:
     handler: handlers/users/post/obtainUsernameBySub.main
     role: LambdaApiRole

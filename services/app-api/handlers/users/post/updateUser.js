@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { main as obtainUserByEmail } from "./obtainUserByEmail";
+import { obtainUserByEmail } from "./obtainUserByEmail";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
@@ -21,15 +21,13 @@ export const main = handler(async (event, context) => {
     email: data.email,
   });
 
-  const currentUser = await obtainUserByEmail({
-    body: body,
-  });
+  const currentUser = await obtainUserByEmail(data.email);
 
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Key: {
-      userId: JSON.parse(currentUser.body)["Items"][0].userId,
+      userId: currentUser.Items[0].userId,
     },
     UpdateExpression:
       "SET username = :username, #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
