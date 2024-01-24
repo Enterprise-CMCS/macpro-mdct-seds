@@ -4,11 +4,6 @@ import dynamoDb from "../../../libs/dynamodb-lib";
 import { parse } from "lambda-multipart-parser";
 
 export const main = handler(async (event, context) => {
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   const formData = await parse(event);
   const targetTable = formData["targetTable"];
 

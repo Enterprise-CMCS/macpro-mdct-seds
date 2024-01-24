@@ -8,12 +8,6 @@ import { getUserCredentialsFromJwt } from "../../../libs/authorization";
  */
 
 export const main = handler(async (event, context) => {
-  // *** if this invocation is a pre-warm, do nothing and return
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   // verify whether there is a user logged in
   const currentUser = await getUserCredentialsFromJwt(event);
   console.log("this is the current user", currentUser);
@@ -45,10 +39,10 @@ export const main = handler(async (event, context) => {
 export const scheduledJob = handler(async (event, context) => {
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
+    debug.default("Warmed up!");
+    return buildResponse(200, undefined);
   }
-
+  
   // TODO: parameters here
   const result = await generateQuarterlyForms(event);
   const { failureList, specifiedQuarter, specifiedYear } = result;
