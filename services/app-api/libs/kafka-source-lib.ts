@@ -38,13 +38,16 @@ class KafkaSourceLib {
   version = "some version";
   tables = [list of tables];
   */
+  topicPrefix: string;
+  version: string;
+  tables: string[];
 
   unmarshallOptions = {
     convertEmptyValues: true,
     wrapNumbers: true,
   };
 
-  stringify(e, prettyPrint) {
+  stringify(e, prettyPrint = false) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }

@@ -1,6 +1,8 @@
 import handler from "../../../libs/handler-lib";
 import { generateQuarterlyForms } from "../../shared/quarterlyForms";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
+import debug from "../../../libs/debug-lib";
+import { buildResponse } from "../../../libs/response-lib";
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter
@@ -39,11 +41,12 @@ export const main = handler(async (event, context) => {
 export const scheduledJob = handler(async (event, context) => {
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
-    debug.default("Warmed up!");
+    debug("Warmed up!");
     return buildResponse(200, undefined);
   }
   
   // TODO: parameters here
+  // TODO: Note that generateQuarterlyForms can throw; give it a try-catch
   const result = await generateQuarterlyForms(event);
   const { failureList, specifiedQuarter, specifiedYear } = result;
 

@@ -34,7 +34,7 @@ const generateWorkbook = (currentUserInfo, content) => {
     // ** freeze first row and first column
     views: [
       {
-        state: "frozen",
+        state: "frozen" as const,
         xSplit: 1,
         ySplit: 1,
       },
@@ -42,7 +42,7 @@ const generateWorkbook = (currentUserInfo, content) => {
     // ** set the page up to be printed landscape by default
     pageSetup: {
       paperSize: 9,
-      orientation: "landscape",
+      orientation: "landscape" as const,
     },
     // ** display page numbers for both odd and even pages in the middle of page footer
     headerFooter: {

@@ -227,10 +227,7 @@ export async function generateQuarterlyForms(event) {
 
   // If questions not found, fetch/create them from template table
   if (!questionsFromQuestionTable.length) {
-    let createdQuestions = await fetchOrCreateQuestions(
-      specifiedYear,
-      specifiedQuarter
-    );
+    let createdQuestions = await fetchOrCreateQuestions(specifiedYear);
 
     if (createdQuestions.status !== 200) {
       // Return error message without payload

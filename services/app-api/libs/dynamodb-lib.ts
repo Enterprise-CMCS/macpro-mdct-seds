@@ -1,20 +1,22 @@
 import AWS from "aws-sdk";
 
-const dyanmoConfig = {};
-
-// ugly but OK, here's where we will check the environment
-const endpoint = process.env.DYNAMODB_URL;
-if (endpoint) {
-  dyanmoConfig.endpoint = endpoint;
-  dyanmoConfig.accessKeyId = "LOCALFAKEKEY";
-  dyanmoConfig.secretAccessKey = "LOCALFAKESECRET";
-} else {
-  dyanmoConfig["region"] = "us-east-1";
-}
+const buildClient = () => {
+  const endpoint = process.env.DYNAMODB_URL;
+  if (endpoint) {
+    return new AWS.DynamoDB.DocumentClient({
+      endpoint: endpoint,
+      accessKeyId: "LOCALFAKEKEY",
+      secretAccessKey: "LOCALFAKESECRET",
+    });
+  } else {
+    return new AWS.DynamoDB.DocumentClient({
+      region: "us-east-1",
+    });
+  }
+};
 
 const database = new AWS.DynamoDB();
-
-const client = new AWS.DynamoDB.DocumentClient(dyanmoConfig);
+const client = buildClient();
 
 export default {
   get: (params) => client.get(params).promise(),

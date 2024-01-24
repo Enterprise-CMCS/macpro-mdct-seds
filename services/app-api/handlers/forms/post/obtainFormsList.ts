@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const main = handler(async (event, context) => {
   // verify whether there is a user logged in
@@ -13,7 +14,7 @@ export const main = handler(async (event, context) => {
 
   const startKey = data.startKey;
 
-  const params = {
+  const params: DocumentClient.ScanInput = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",

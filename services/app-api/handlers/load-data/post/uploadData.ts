@@ -17,8 +17,9 @@ export const main = handler(async (event, context) => {
   await uploadData(targetTable, dataToUpload);
 });
 
+// TODO this should probably be a Dynamo Batch Write
 const uploadData = async (targetTable, dataToUpload) => {
-  dataToUpload.forEach((record) => {
+  for (let record of dataToUpload) {
     // Updating lastSynced
     record = { ...record, lastSynced: new Date().toISOString() };
     console.log("\n\n!!!> loading record:");
@@ -29,14 +30,14 @@ const uploadData = async (targetTable, dataToUpload) => {
       Item: record,
     };
 
-    dynamoDb.put(params, (error, result) => {
-      if (error) {
-        console.log("\n\n*** ERROR LOADING DATA: ");
-        console.log(error);
-      } else {
-        console.log("\n+++ record successfully saved: ");
-        console.log(result);
-      }
-    });
-  });
+    try {
+      const result = await dynamoDb.put(params);
+      console.log("\n+++ record successfully saved: ");
+      console.log(result);
+    }
+    catch (error) {
+      console.log("\n\n*** ERROR LOADING DATA: ");
+      console.log(error);
+    }
+  }
 };

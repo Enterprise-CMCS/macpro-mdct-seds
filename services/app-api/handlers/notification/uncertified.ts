@@ -8,7 +8,7 @@ const AWS = require("aws-sdk");
  */
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
-  const email = await unCetifiedTemplate(data);
+  const email = await uncertifiedTemplate(data);
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
     .sendEmail(email)
     .promise();
@@ -37,9 +37,6 @@ async function getBusinessUsersEmail() {
     FilterExpression: "#r = :role",
   };
   const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return false;
-  }
   const payload = result["Items"];
   payload.map((userInfo) => {
     if (userInfo.email) {
@@ -49,11 +46,11 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-async function unCetifiedTemplate(payload) {
+async function uncertifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 
-  if (sendToEmail.Count === 0) {
+  if (sendToEmail.length === 0) {
     throw new Error("No Business users found.");
   }
   return {

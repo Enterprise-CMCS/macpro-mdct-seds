@@ -7,6 +7,11 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
  * @constructor
  */
 class UserCredentials {
+  role: string;
+  state: string;
+  identities: string;
+  email: string;
+
   constructor(decoded) {
     if (decoded === undefined) return;
     this.role = decoded["custom:ismemberof"];
@@ -23,7 +28,7 @@ class UserCredentials {
  */
 export const getUserCredentialsFromJwt = (event) => {
   if (!event?.headers || !event.headers?.["x-api-key"])
-    return new UserCredentials();
+    return new UserCredentials(undefined);
   const decoded = jwt_decode(event.headers["x-api-key"]);
   const credentials = new UserCredentials(decoded);
   return credentials;

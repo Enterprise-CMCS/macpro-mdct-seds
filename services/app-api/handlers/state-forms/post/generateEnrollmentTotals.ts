@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const main = handler(async (event, context) => {
   // verify whether there is a user logged in
@@ -38,7 +39,7 @@ export const main = handler(async (event, context) => {
 const getStateForms = async (forms) => {
   try {
     // Build expression Attribute Value object
-    const getExpressions = () => {
+    const getExpressions = (): [Record<string, number>, string] => {
       const expressionAttributeValues = {
         ":quarter": 4,
       };
@@ -67,30 +68,9 @@ const getStateForms = async (forms) => {
       ConsistentRead: true,
     };
 
-    let startingKey;
-    let existingItems = [];
-    let results;
+    const results = await dynamoDb.scan(params);
 
-    const scanTable = async (startingKey) => {
-      params.ExclusiveStartKey = startingKey;
-      let results = await dynamoDb.scan(params);
-      if (results.LastEvaluatedKey) {
-        startingKey = results.LastEvaluatedKey;
-        return [startingKey, results];
-      } else {
-        return [null, results];
-      }
-    };
-
-    // Looping to perform complete scan of tables due to 1 mb limit per iteration
-    do {
-      [startingKey, results] = await scanTable(startingKey);
-
-      const items = results.Items;
-      existingItems.push(...items);
-    } while (startingKey);
-
-    if (existingItems.length === 0) {
+    if (results.Items.length === 0) {
       return {
         status: 404,
         message: "Could not find any matching state forms",
@@ -99,7 +79,7 @@ const getStateForms = async (forms) => {
     return {
       status: 200,
       message: `Get State Forms Called and Returned Forms Successfully`,
-      entries: existingItems,
+      entries: results.Items,
     };
   } catch (error) {
     return {
@@ -121,7 +101,7 @@ const generateTotals = async (stateForms, ageRange) => {
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
 
-        const questionParams = {
+        const questionParams: DocumentClient.QueryInput = {
           TableName:
             process.env.FORM_ANSWERS_TABLE_NAME ??
             process.env.FormAnswersTableName,
@@ -165,7 +145,7 @@ const generateTotals = async (stateForms, ageRange) => {
       }
 
       // Setup counts object
-      let countObject = [];
+      let countObject = [] as never[] | { type: "separate" | "expansion", year: number, count: number };
       if (stateForms[i].form === "21E") {
         countObject = {
           type: "separate",
@@ -191,7 +171,7 @@ const generateTotals = async (stateForms, ageRange) => {
         },
       });
 
-      if (countsToWrite.Count === 0) {
+      if (countsToWrite.length === 0) {
         return {
           status: 404,
           message: "Could not retrieve Answer Entries",
@@ -290,7 +270,7 @@ const totalEnrollmentCount = (questionAccumulator) => {
     let currentTotal = 0;
     let currentArrayLength = currentArr.length;
     for (let i = 0; i < currentArrayLength; i++) {
-      Object.values(currentArr[i]).forEach((value) => {
+      Object.values(currentArr[i]).forEach((value: any) => {
         if (!isNaN(value)) {
           currentTotal += Number(value);
         }

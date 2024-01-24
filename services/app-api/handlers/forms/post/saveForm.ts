@@ -156,7 +156,7 @@ export const main = handler(async (event, context) => {
       const dbResult = await dynamoDb.update(questionParams);
       questionResult.push(dbResult);
     } catch (e) {
-      throw ("Question params update failed", e);
+      throw new Error("Question params update failed:" + e.message);
     }
   }
 
@@ -188,10 +188,10 @@ export const main = handler(async (event, context) => {
   try {
     await dynamoDb.update(formParams);
   } catch (e) {
-    throw ("Form params update failed", e);
+    throw new Error("Form params update failed:" + e.message);
   }
 
-  if (questionResult.Count === 0) {
+  if (questionResult.length === 0) {
     throw new Error("Form save query failed");
   }
 

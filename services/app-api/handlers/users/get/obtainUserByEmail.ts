@@ -26,10 +26,6 @@ export const obtainUserByEmail = async (email) => {
 
   const result = await dynamoDb.scan(params);
 
-  if (result.Count === 0) {
-    return false;
-  }
-
   // Return the retrieved item
   return result;
 };

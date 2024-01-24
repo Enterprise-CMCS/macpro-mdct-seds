@@ -294,10 +294,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     const previousYearTemplateResult = await dynamoDb.scan(previousYearParams);
 
     if (previousYearTemplateResult.Count === 0) {
-      return {
-        status: 500,
-        message: `Failed to generate form template, check requested year`,
-      };
+      throw new Error("Failed to generate form template, check requested year");
     }
 
     const createdTemplateQuestions = replaceFormYear(
@@ -312,10 +309,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
       console.error(
         `Failed to add template for ${parsedYear} to form-template table`
       );
-      return {
-        status: 400,
-        message: "Please verify that the template contains valid JSON",
-      };
+      throw new Error("Please verify that the template contains valid JSON");
     }
   } else {
     questionsForThisYear = templateResult.Items[0]["template"];
@@ -326,7 +320,11 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   let questionSuccess = await addToQuestionTable(
     questionsForThisYear,
     parsedYear
-  );
+  ) as {
+    status: number,
+    message: string,
+    payload: undefined,
+  };
 
   // Add the questions created/accessed from a template to the status object returned from this function
   questionSuccess.payload = questionsForThisYear;

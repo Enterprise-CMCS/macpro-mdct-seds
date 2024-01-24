@@ -55,18 +55,18 @@ export const getCurrentUserInfo = async (event) => {
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
-  const currentUser = await obtainUserByEmail(user.email);
-
-  // TODO this is probably not what we want.
-  if (currentUser === false) {
+  try {
+    const currentUser = await obtainUserByEmail(user.email);
+    return {
+      status: "success",
+      data: currentUser.Items[0],
+    }
+  }
+  catch (err) {
+    // TODO this is probably not what we want. What happens when no user?
     return {
       status: "uh-oh",
       data: undefined
     }
   }
-
-  return {
-    status: "success",
-    data: currentUser.Items[0],
-  };
 };

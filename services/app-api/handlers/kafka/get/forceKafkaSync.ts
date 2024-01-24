@@ -14,20 +14,6 @@ const tableNames = [
   process.env.AuthUserTableName,
 ];
 
-const scanTable = async (tableName, startingKey, keepSearching) => {
-  let results = await dynamoDb.scan({
-    TableName: tableName,
-    ExclusiveStartKey: startingKey,
-  });
-  if (results.LastEvaluatedKey) {
-    startingKey = results.LastEvaluatedKey;
-    return [startingKey, keepSearching, results];
-  } else {
-    keepSearching = false;
-    return [null, keepSearching, results];
-  }
-};
-
 const mergeLastSynced = (items, syncDateTime) =>
   items.map((item) => ({ ...item, lastSynced: syncDateTime }));
 
@@ -57,13 +43,15 @@ const batchWrite = async (tableName, items) => {
       RequestItems: requestItems,
     };
 
-    const { FailedItems } = await dynamoDb.batchWrite(params);
+    const { UnprocessedItems } = await dynamoDb.batchWrite(params);
     console.log(`BatchWrite performed for ${itemArray.length} items`);
-    if ((FailedItems?.length ?? 0) > 0) {
-      const keys = FailedItems.map((item) => item[Object.keys(item)[0]]);
+    const unprocessedItemArray = UnprocessedItems[tableName];
+    
+    if (unprocessedItemArray.length > 0) {
+      const keys = unprocessedItemArray.map((item) => item[Object.keys(item)[0]]);
       console.log(
         `BatchWrite ran with ${
-          FailedItems.length ?? 0
+          UnprocessedItems.length ?? 0
         } numbers of failed item updates`
       );
       console.log(
@@ -78,34 +66,22 @@ export const main = handler(async (event, context) => {
 
   for (const tableName of tableNames) {
     console.log(`Starting to scan table ${tableName}`);
-    let startingKey;
+    let data;
 
-    let keepSearching = true;
-    // Looping to perform complete scan of tables due to 1 mb limit per iteration
-    while (keepSearching) {
-      let data;
+    try {
+      data = await dynamoDb.scan({ TableName: tableName });
+    } catch (err) {
+      console.error(`Database scan failed for the table ${tableName}. Error: ${err}`);
+      throw err;
+    }
 
-      try {
-        [startingKey, keepSearching, data] = await scanTable(
-          tableName,
-          startingKey,
-          keepSearching
-        );
-      } catch (err) {
-        console.error(`Database scan failed for the table ${tableName}
-                     with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
-                     Error: ${err}`);
-        throw err;
-      }
-
-      // Add lastSynced date time field
-      const updatedItems = mergeLastSynced(data.Items, syncDateTime);
-      try {
-        await batchWrite(tableName, updatedItems);
-      } catch (e) {
-        console.error(`BatchWrite failed with exception ${e}`);
-        throw e;
-      }
+    // Add lastSynced date time field
+    const updatedItems = mergeLastSynced(data.Items, syncDateTime);
+    try {
+      await batchWrite(tableName, updatedItems);
+    } catch (e) {
+      console.error(`BatchWrite failed with exception ${e}`);
+      throw e;
     }
   }
 });
