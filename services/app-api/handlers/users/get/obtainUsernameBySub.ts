@@ -1,22 +1,21 @@
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import dynamoDb from "../../../libs/dynamodb-lib";
 
-export const obtainUsernameBySub = async (usernameSub) => {
+/**
+ * @param usernameSub - This is the userpool user id from cognito
+ */
+export const obtainUsernameBySub = async (usernameSub: string): Promise<DocumentClient.AttributeMap | undefined> => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":usernameSub": data.usernameSub,
+      ":usernameSub": usernameSub,
     },
     FilterExpression: "usernameSub = :usernameSub",
   };
 
   const result = await dynamoDb.scan(params);
 
-  if (result.Count === 0) {
-    return false;
-  }
-
-  // Return the retrieved item
-  return result.Items[0];
+  return result.Items?.[0];
 };
