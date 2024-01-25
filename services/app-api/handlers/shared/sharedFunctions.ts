@@ -317,7 +317,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 
   // Add the questions that were created or found in an existing template to the questions table
   // these are the questions found in the template table or created along with a new template
-  let questionSuccess = (await addToQuestionTable(
+  const questionSuccess = (await addToQuestionTable(
     questionsForThisYear,
     parsedYear
   )) as {
