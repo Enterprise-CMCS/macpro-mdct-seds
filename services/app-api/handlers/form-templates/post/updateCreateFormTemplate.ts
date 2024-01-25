@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
   const isJsonString = (jsonString) => {
     try {
       // try to stringify and parse the incoming data to verify if valid json
-      let o = JSON.parse(JSON.stringify(jsonString));
+      const o = JSON.parse(JSON.stringify(jsonString));
 
       if (o && typeof o === "object") {
         return o;

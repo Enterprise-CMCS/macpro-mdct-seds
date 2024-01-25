@@ -36,7 +36,7 @@ const batchWrite = async (tableName, items) => {
       };
     });
 
-    let requestItems = {};
+    const requestItems = {};
     requestItems[tableName] = itemArray;
 
     const params = {
@@ -46,9 +46,11 @@ const batchWrite = async (tableName, items) => {
     const { UnprocessedItems } = await dynamoDb.batchWrite(params);
     console.log(`BatchWrite performed for ${itemArray.length} items`);
     const unprocessedItemArray = UnprocessedItems[tableName];
-    
+
     if (unprocessedItemArray.length > 0) {
-      const keys = unprocessedItemArray.map((item) => item[Object.keys(item)[0]]);
+      const keys = unprocessedItemArray.map(
+        (item) => item[Object.keys(item)[0]]
+      );
       console.log(
         `BatchWrite ran with ${
           UnprocessedItems.length ?? 0
@@ -71,7 +73,9 @@ export const main = handler(async (event, context) => {
     try {
       data = await dynamoDb.scan({ TableName: tableName });
     } catch (err) {
-      console.error(`Database scan failed for the table ${tableName}. Error: ${err}`);
+      console.error(
+        `Database scan failed for the table ${tableName}. Error: ${err}`
+      );
       throw err;
     }
 

@@ -3,7 +3,7 @@ import {
   getUsersEmailByRole,
   getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
@@ -13,7 +13,7 @@ const AWS = require("aws-sdk");
 
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
     .sendEmail(email)
     .promise();
   try {
@@ -29,8 +29,8 @@ export const main = handler(async (event, context) => {
 });
 
 function getQuarter() {
-  let d = new Date();
-  let m = Math.floor(d.getMonth() / 3) + 2;
+  const d = new Date();
+  const m = Math.floor(d.getMonth() / 3) + 2;
   return m > 4 ? m - 4 : m;
 }
 const quarter = getQuarter();

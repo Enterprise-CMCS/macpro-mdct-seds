@@ -4,8 +4,8 @@ import {
   getUncertifiedStates,
 } from "../shared/sharedFunctions";
 
-var AWS = require("aws-sdk");
-var ses = new AWS.SES({ region: "us-east-1" });
+import AWS from "aws-sdk";
+const ses = new AWS.SES({ region: "us-east-1" });
 
 /**
  * Handler responsible for sending notification to state users At the end of each Quarter.
@@ -31,8 +31,8 @@ export const main = handler(async (event, context) => {
 });
 
 function getQuarter() {
-  let d = new Date();
-  let m = Math.floor(d.getMonth() / 3) + 2;
+  const d = new Date();
+  const m = Math.floor(d.getMonth() / 3) + 2;
   return m > 4 ? m - 4 : m;
 }
 const quarter = getQuarter();
@@ -43,7 +43,7 @@ async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
   const uncertifiedStateList = await getUncertifiedStates(year, quarter);
 
-  let stateUsersToEmail = [];
+  const stateUsersToEmail = [];
   allStateEmails.map((e) => {
     if (uncertifiedStateList.includes(e.state[0])) {
       stateUsersToEmail.push(e.email);
@@ -57,7 +57,7 @@ async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
   const stateUsersToEmail = await certifiedStateUsersEmail();
   const fromEmail = "mdct@cms.hhs.gov";
-  let todayDate = new Date().toISOString().split("T")[0];
+  const todayDate = new Date().toISOString().split("T")[0];
 
   const recipient = {
     TO: stateUsersToEmail,

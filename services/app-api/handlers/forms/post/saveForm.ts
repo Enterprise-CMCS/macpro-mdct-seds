@@ -18,7 +18,7 @@ export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
   const answers = data.formAnswers;
   const statusData = data.statusData;
-  let questionResult = [];
+  const questionResult = [];
 
   answers.sort(function (a, b) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
@@ -26,42 +26,49 @@ export const main = handler(async (event, context) => {
 
   // Loop through answers to add individually
   for (const answer in answers) {
+    let q4Col2Row1, q4Col3Row1, q4Col4Row1, q4Col5Row1, q4Col6Row1;
+    let q4Col2Row2, q4Col3Row2, q4Col4Row2, q4Col5Row2, q4Col6Row2;
+    let q4Col2Row3, q4Col3Row3, q4Col4Row3, q4Col5Row3, q4Col6Row3;
+    let q1Col2Row1, q1Col3Row1, q1Col4Row1, q1Col5Row1, q1Col6Row1;
+    let q1Col2Row2, q1Col3Row2, q1Col4Row2, q1Col5Row2, q1Col6Row2;
+
+    let q1Col2Row3, q1Col3Row3, q1Col4Row3, q1Col5Row3, q1Col6Row3;
     if (answers[answer].question.slice(-2) === "04") {
-      var q4Col2Row1 = answers[answer].rows[1].col2;
-      var q4Col3Row1 = answers[answer].rows[1].col3;
-      var q4Col4Row1 = answers[answer].rows[1].col4;
-      var q4Col5Row1 = answers[answer].rows[1].col5;
-      var q4Col6Row1 = answers[answer].rows[1].col6;
+      q4Col2Row1 = answers[answer].rows[1].col2;
+      q4Col3Row1 = answers[answer].rows[1].col3;
+      q4Col4Row1 = answers[answer].rows[1].col4;
+      q4Col5Row1 = answers[answer].rows[1].col5;
+      q4Col6Row1 = answers[answer].rows[1].col6;
 
-      var q4Col2Row2 = answers[answer].rows[2].col2;
-      var q4Col3Row2 = answers[answer].rows[2].col3;
-      var q4Col4Row2 = answers[answer].rows[2].col4;
-      var q4Col5Row2 = answers[answer].rows[2].col5;
-      var q4Col6Row2 = answers[answer].rows[2].col6;
+      q4Col2Row2 = answers[answer].rows[2].col2;
+      q4Col3Row2 = answers[answer].rows[2].col3;
+      q4Col4Row2 = answers[answer].rows[2].col4;
+      q4Col5Row2 = answers[answer].rows[2].col5;
+      q4Col6Row2 = answers[answer].rows[2].col6;
 
-      var q4Col2Row3 = answers[answer].rows[3].col2;
-      var q4Col3Row3 = answers[answer].rows[3].col3;
-      var q4Col4Row3 = answers[answer].rows[3].col4;
-      var q4Col5Row3 = answers[answer].rows[3].col5;
-      var q4Col6Row3 = answers[answer].rows[3].col6;
+      q4Col2Row3 = answers[answer].rows[3].col2;
+      q4Col3Row3 = answers[answer].rows[3].col3;
+      q4Col4Row3 = answers[answer].rows[3].col4;
+      q4Col5Row3 = answers[answer].rows[3].col5;
+      q4Col6Row3 = answers[answer].rows[3].col6;
     } else if (answers[answer].question.slice(-2) === "01") {
-      var q1Col2Row1 = answers[answer].rows[1].col2;
-      var q1Col3Row1 = answers[answer].rows[1].col3;
-      var q1Col4Row1 = answers[answer].rows[1].col4;
-      var q1Col5Row1 = answers[answer].rows[1].col5;
-      var q1Col6Row1 = answers[answer].rows[1].col6;
+      q1Col2Row1 = answers[answer].rows[1].col2;
+      q1Col3Row1 = answers[answer].rows[1].col3;
+      q1Col4Row1 = answers[answer].rows[1].col4;
+      q1Col5Row1 = answers[answer].rows[1].col5;
+      q1Col6Row1 = answers[answer].rows[1].col6;
 
-      var q1Col2Row2 = answers[answer].rows[2].col2;
-      var q1Col3Row2 = answers[answer].rows[2].col3;
-      var q1Col4Row2 = answers[answer].rows[2].col4;
-      var q1Col5Row2 = answers[answer].rows[2].col5;
-      var q1Col6Row2 = answers[answer].rows[2].col6;
+      q1Col2Row2 = answers[answer].rows[2].col2;
+      q1Col3Row2 = answers[answer].rows[2].col3;
+      q1Col4Row2 = answers[answer].rows[2].col4;
+      q1Col5Row2 = answers[answer].rows[2].col5;
+      q1Col6Row2 = answers[answer].rows[2].col6;
 
-      var q1Col2Row3 = answers[answer].rows[3].col2;
-      var q1Col3Row3 = answers[answer].rows[3].col3;
-      var q1Col4Row3 = answers[answer].rows[3].col4;
-      var q1Col5Row3 = answers[answer].rows[3].col5;
-      var q1Col6Row3 = answers[answer].rows[3].col6;
+      q1Col2Row3 = answers[answer].rows[3].col2;
+      q1Col3Row3 = answers[answer].rows[3].col3;
+      q1Col4Row3 = answers[answer].rows[3].col4;
+      q1Col5Row3 = answers[answer].rows[3].col5;
+      q1Col6Row3 = answers[answer].rows[3].col6;
     } else if (answers[answer].question.slice(-2) === "05") {
       answers[answer].rows[1].col2[0].answer = (
         q4Col2Row1 / q1Col2Row1

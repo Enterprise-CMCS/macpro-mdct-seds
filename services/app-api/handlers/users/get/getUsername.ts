@@ -9,6 +9,6 @@ export const main = handler(async (event) => {
     throw new Error("No authorized user.");
   }
 
-  let currentUser = await getCurrentUserInfo(event);
+  const currentUser = await getCurrentUserInfo(event);
   return currentUser;
 });

@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-const { Kafka } = require("kafkajs");
+import { Kafka, TopicMessages } from "kafkajs";
 
 const STAGE = process.env.STAGE;
 const kafka = new Kafka({
@@ -91,7 +91,7 @@ class KafkaSourceLib {
   }
 
   createOutboundEvents(records) {
-    let outboundEvents = {};
+    const outboundEvents = {};
     for (const record of records) {
       const topicName = this.determineTopicName(
         String(record.eventSourceARN.toString())
@@ -122,7 +122,7 @@ class KafkaSourceLib {
     if (event.Records) {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
-      const topicMessages = Object.values(outboundEvents);
+      const topicMessages: TopicMessages[] = Object.values(outboundEvents);
       console.log(
         `Batch configuration: ${this.stringify(topicMessages, true)}`
       );

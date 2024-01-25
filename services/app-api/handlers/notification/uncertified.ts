@@ -1,15 +1,15 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 /**
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
  */
 export const main = handler(async (event, context) => {
-  let data = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
   const email = await uncertifiedTemplate(data);
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+  const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
     .sendEmail(email)
     .promise();
   try {

@@ -7,7 +7,7 @@ export const main = handler(async (event, context) => {
   const formData = await parse(event);
   const targetTable = formData["targetTable"];
 
-  let dataSlice = event.body
+  const dataSlice = event.body
     .toString()
     .slice(event.body.toString().indexOf("application/json"))
     .replace("application/json", "");
@@ -34,8 +34,7 @@ const uploadData = async (targetTable, dataToUpload) => {
       const result = await dynamoDb.put(params);
       console.log("\n+++ record successfully saved: ");
       console.log(result);
-    }
-    catch (error) {
+    } catch (error) {
       console.log("\n\n*** ERROR LOADING DATA: ");
       console.log(error);
     }

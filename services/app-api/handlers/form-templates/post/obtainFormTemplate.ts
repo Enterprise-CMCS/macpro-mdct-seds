@@ -14,7 +14,7 @@ export const main = handler(async (event, context) => {
     throw new Error("No authorized user.");
   }
 
-  let data = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
 
   const params = {
     TableName:

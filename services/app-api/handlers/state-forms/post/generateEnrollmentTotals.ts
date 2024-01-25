@@ -93,11 +93,11 @@ const generateTotals = async (stateForms, ageRange) => {
   try {
     const countsToWrite = [];
     // Loop through all stateForms
-    let stateFormsLength = stateForms.length;
+    const stateFormsLength = stateForms.length;
     for (let i = 0; i < stateFormsLength; i++) {
       const questionAccumulator = [];
       let questionTotal = 0;
-      let ageRangeLength = ageRange.length;
+      const ageRangeLength = ageRange.length;
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
 
@@ -112,12 +112,12 @@ const generateTotals = async (stateForms, ageRange) => {
         };
 
         let startingKey;
-        let existingItems = [];
+        const existingItems = [];
         let results;
 
         const queryTable = async (startingKey) => {
           questionParams.ExclusiveStartKey = startingKey;
-          let results = await dynamoDb.query(questionParams);
+          const results = await dynamoDb.query(questionParams);
           if (results.LastEvaluatedKey) {
             startingKey = results.LastEvaluatedKey;
             return [startingKey, results];
@@ -135,7 +135,7 @@ const generateTotals = async (stateForms, ageRange) => {
         } while (startingKey);
 
         // Add just the rows, no other details are needed
-        let questionResultLength = existingItems.length;
+        const questionResultLength = existingItems.length;
         for (let k = 0; k < questionResultLength; k++) {
           questionAccumulator.push(existingItems[k].rows);
         }
@@ -145,7 +145,9 @@ const generateTotals = async (stateForms, ageRange) => {
       }
 
       // Setup counts object
-      let countObject = [] as never[] | { type: "separate" | "expansion", year: number, count: number };
+      let countObject = [] as
+        | never[]
+        | { type: "separate" | "expansion"; year: number; count: number };
       if (stateForms[i].form === "21E") {
         countObject = {
           type: "separate",
@@ -236,7 +238,7 @@ const commitTotalsToDB = async (putRequests) => {
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
 
     // Loop through batches and write to DB
-    for (let i in batchArrayFormAnswers) {
+    for (const i in batchArrayFormAnswers) {
       const batchRequest = {
         RequestItems: {
           [formAnswersTableName]: batchArrayFormAnswers[i],
@@ -268,7 +270,7 @@ const commitTotalsToDB = async (putRequests) => {
 const totalEnrollmentCount = (questionAccumulator) => {
   return questionAccumulator.reduce((accumulator, currentArr) => {
     let currentTotal = 0;
-    let currentArrayLength = currentArr.length;
+    const currentArrayLength = currentArr.length;
     for (let i = 0; i < currentArrayLength; i++) {
       Object.values(currentArr[i]).forEach((value: any) => {
         if (!isNaN(value)) {

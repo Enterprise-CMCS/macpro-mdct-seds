@@ -99,7 +99,7 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
   }).filter((stateId, i, stateIds) => i === stateIds.indexOf(stateId));
 
   // Reduce to one state with array of forms
-  let mergedObj = states.reduce((acc, obj) => {
+  const mergedObj = states.reduce((acc, obj) => {
     if (acc[obj.state]) {
       acc[obj.state].form.push(obj.form);
     } else {
@@ -109,15 +109,15 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
   }, {});
 
   // Build output in correct format
-  let output = [];
-  for (let prop in mergedObj) {
+  const output = [];
+  for (const prop in mergedObj) {
     output.push(mergedObj[prop]);
   }
 
   // Sort alphabetically by state
   output.sort((a, b) => {
-    let stateA = a.state.toUpperCase();
-    let stateB = b.state.toUpperCase();
+    const stateA = a.state.toUpperCase();
+    const stateB = b.state.toUpperCase();
     return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
   });
 
@@ -252,7 +252,7 @@ export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
 // This function is called when no entries are found in the question table matching the requested year
 export async function fetchOrCreateQuestions(specifiedYear) {
   // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
-  let parsedYear = parseInt(specifiedYear);
+  const parsedYear = parseInt(specifiedYear);
 
   // GET QUESTIONS FROM TEMPLATE
   const templateParams = {
@@ -268,7 +268,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     KeyConditionExpression: "#theYear = :year",
   };
 
-  let templateResult = await dynamoDb.query(templateParams);
+  const templateResult = await dynamoDb.query(templateParams);
 
   let questionsForThisYear;
 
@@ -317,13 +317,13 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 
   // Add the questions that were created or found in an existing template to the questions table
   // these are the questions found in the template table or created along with a new template
-  let questionSuccess = await addToQuestionTable(
+  let questionSuccess = (await addToQuestionTable(
     questionsForThisYear,
     parsedYear
-  ) as {
-    status: number,
-    message: string,
-    payload: undefined,
+  )) as {
+    status: number;
+    message: string;
+    payload: undefined;
   };
 
   // Add the questions created/accessed from a template to the status object returned from this function
@@ -381,7 +381,7 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
 
   // Add the questions found in the template to the form-questions table
   // this can/should be done recursively to better account for unprocessed items
-  let failedItems = [];
+  const failedItems = [];
   for (const batch of splitQuestions) {
     const { UnprocessedItems } = await dynamoDb.batchWrite({
       RequestItems: { [questionTableName]: batch },
@@ -418,9 +418,9 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
 
 export async function createFormTemplate(year, questions) {
   // try to stringify and parse the incoming data to verify if valid json
-  let unValidatedJSON = JSON.parse(JSON.stringify(questions));
+  const unValidatedJSON = JSON.parse(JSON.stringify(questions));
 
-  let validatedJSON =
+  const validatedJSON =
     unValidatedJSON && typeof unValidatedJSON === "object"
       ? unValidatedJSON
       : false;

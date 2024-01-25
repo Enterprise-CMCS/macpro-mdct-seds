@@ -101,7 +101,7 @@ export async function generateQuarterlyForms(event) {
   // TODO: pass the quarter, year, and restore missing answer as a parameter from the handler
   // If a data object is sent use those values.
   if (event.body && event.body !== "undefined") {
-    let data =
+    const data =
       typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     if (data) {
       specifiedYear = parseInt(data.year);
@@ -122,7 +122,7 @@ export async function generateQuarterlyForms(event) {
   );
 
   // Pull list of states
-  let allStates = await getStatesList();
+  const allStates = await getStatesList();
 
   if (!allStates.length) {
     return {
@@ -194,7 +194,7 @@ export async function generateQuarterlyForms(event) {
   }
 
   // Generate a flat array of the state forms being added
-  let stateFormsBeingGenerated = batchArrayFormDescriptions
+  const stateFormsBeingGenerated = batchArrayFormDescriptions
     .map((e) => {
       return e.map((element) => {
         return element.PutRequest.Item.state_form;
@@ -207,7 +207,7 @@ export async function generateQuarterlyForms(event) {
     process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
 
   // Loop through batches and write to DB
-  for (let i in batchArrayFormDescriptions) {
+  for (const i in batchArrayFormDescriptions) {
     const batchRequest = {
       RequestItems: {
         [formDescriptionTableName]: batchArrayFormDescriptions[i],
@@ -227,7 +227,7 @@ export async function generateQuarterlyForms(event) {
 
   // If questions not found, fetch/create them from template table
   if (!questionsFromQuestionTable.length) {
-    let createdQuestions = await fetchOrCreateQuestions(specifiedYear);
+    const createdQuestions = await fetchOrCreateQuestions(specifiedYear);
 
     if (createdQuestions.status !== 200) {
       // Return error message without payload
@@ -248,7 +248,7 @@ export async function generateQuarterlyForms(event) {
     // Loop through each question
     for (const question in allQuestions) {
       // Get age range array
-      let ageRanges =
+      const ageRanges =
         allQuestions[question].age_ranges ??
         determineAgeRanges(allQuestions[question].question);
       // Loop through each age range and insert row
@@ -321,7 +321,7 @@ export async function generateQuarterlyForms(event) {
     process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName;
 
   // Loop through batches and write to DB
-  for (let i in batchArrayFormAnswers) {
+  for (const i in batchArrayFormAnswers) {
     const batchRequest = {
       RequestItems: {
         [formAnswersTableName]: batchArrayFormAnswers[i],
@@ -354,9 +354,9 @@ export async function generateQuarterlyForms(event) {
  *          The Federal Fiscal Quarter for which forms should be generated
  */
 export const calculateFormQuarterFromDate = (date) => {
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let quarter = Math.floor(month / 3) + 1;
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const quarter = Math.floor(month / 3) + 1;
 
   return { year, quarter };
 };

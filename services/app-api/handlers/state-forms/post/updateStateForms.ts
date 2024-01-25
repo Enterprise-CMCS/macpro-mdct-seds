@@ -10,7 +10,7 @@ export const main = handler(async (event, context) => {
   }
 
   // Get year and quarter from request
-  let data = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
 
   const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
 
