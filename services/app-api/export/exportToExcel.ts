@@ -5,7 +5,7 @@ import { Workbook } from "exceljs";
 import { getCurrentUserInfo } from "../auth/cognito-auth";
 
 export const main = handler(async (event, context) => {
-  let content = JSON.parse(event.body);
+  const content = JSON.parse(event.body);
 
   // *** get information about user creating the export
   const currentUserInfo = await getCurrentUserInfo(event);
