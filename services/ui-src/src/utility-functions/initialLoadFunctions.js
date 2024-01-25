@@ -2,9 +2,10 @@ import { createUser, obtainUserByEmail, updateUser } from "../libs/api";
 import { Auth } from "aws-amplify";
 
 export async function ascertainUserPresence(user) {
-  const existingUser = await obtainUserByEmail({
+  const response = await obtainUserByEmail({
     email: user.attributes.email
   });
+  const existingUser = response.Items[0];
 
   const userObject = {
     username: user.attributes.identities
@@ -18,14 +19,11 @@ export async function ascertainUserPresence(user) {
     lastLogin: new Date().toISOString()
   };
 
-  if (existingUser === false) {
+  if (existingUser === undefined) {
     await createUser(userObject);
   } else {
-    let updateItem = existingUser["Items"];
-    updateItem.map(async userInfo => {
-      userInfo.sub = user.attributes.sub;
-      await updateUser(userInfo);
-    });
+    existingUser.sub = user.attributes.sub;
+    await updateUser(existingUser);
   }
 }
 const checkRoleFromStore = async () => {
