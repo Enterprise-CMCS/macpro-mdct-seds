@@ -374,7 +374,7 @@ functions:
     events:
       - http:
           path: users/get/email
-          method: get
+          method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   obtainUserStamp:

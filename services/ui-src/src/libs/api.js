@@ -62,7 +62,7 @@ export const obtainUserByEmail = async data => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return API.get("mdct-seds", `/users/get/email`, opts);
+  return API.post("mdct-seds", `/users/get/email`, opts);
 
   // TODO: PICK UP TOMORROW
   // return API.get(
