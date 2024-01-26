@@ -1,6 +1,5 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { obtainUserByEmail } from "../get/obtainUserByEmail";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
@@ -10,29 +9,23 @@ export const main = handler(async (event, context) => {
     throw new Error("No authorized user.");
   }
 
-  const data = JSON.parse(event.body);
-
-  const body = JSON.stringify({
-    email: data.email,
-  });
-
-  const currentUser = await obtainUserByEmail(data.email);
+  const currentUser = await getUserAttributes(user.email);
 
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Key: {
-      userId: currentUser.Items[0].userId,
+      userId: currentUser.userId,
     },
     UpdateExpression:
       "SET username = :username, #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
     ExpressionAttributeValues: {
-      ":username": data.username,
-      ":role": data.role,
-      ":states": data.states ?? "",
-      ":isActive": data.isActive ?? "inactive",
+      ":username": currentUser.username,
+      ":role": currentUser.role,
+      ":states": currentUser.states ?? "",
+      ":isActive": currentUser.isActive ?? "inactive",
       ":lastLogin": new Date().toISOString(),
-      ":usernameSub": data.usernameSub ?? null,
+      ":usernameSub": currentUser.usernameSub ?? null,
     },
     ExpressionAttributeNames: {
       "#r": "role",
@@ -43,3 +36,19 @@ export const main = handler(async (event, context) => {
 
   return await dynamoDb.update(params);
 });
+
+// get user attributes based on JWT token
+const getUserAttributes = async (email: string) => {
+  const params = {
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":email": email,
+    },
+    FilterExpression: "email = :email",
+  };
+
+  const result = await dynamoDb.scan(params);
+  return result.Items[0];
+};
