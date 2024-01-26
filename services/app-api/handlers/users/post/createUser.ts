@@ -1,6 +1,5 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { obtainUserByUsername } from "../get/obtainUserByUsername";
 import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
@@ -16,9 +15,7 @@ export const main = handler(async (event, context) => {
     return `Please enter a username`;
   }
 
-  const currentUser = await obtainUserByUsername(data.username);
-
-  if (currentUser !== false) {
+  if (await usernameIsInUse(data.username)) {
     return `User ${data.username} already exists`;
   }
 
@@ -66,3 +63,19 @@ export const main = handler(async (event, context) => {
 
   return `User ${data.username} Added!`;
 });
+
+const usernameIsInUse = async (username: string) => {
+  const params = {
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":username": username,
+    },
+    FilterExpression: "username = :username",
+  };
+
+  const result = await dynamoDb.scan(params);
+
+  return result.Count > 0;
+}

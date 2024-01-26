@@ -2,7 +2,7 @@ import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 import { localUser } from "./local-user";
 import { obtainUserByEmail } from "../handlers/users/get/obtainUserByEmail";
-import { obtainUsernameBySub } from "../handlers/users/get/obtainUsernameBySub";
+import dynamoDb from "../libs/dynamodb-lib";
 
 const parseAuthProvider = (authProvider: string) => {
   // *** cognito authentication provider example:
@@ -20,43 +20,32 @@ const parseAuthProvider = (authProvider: string) => {
   };
 };
 
-// userFromCognitoAuthProvider hits the Cognito API to get the information in the authProvider
-// TODO this function, as currently used, should be renamed to getUserEmailFromAuthProvider. Because that's all we do.
-const userFromCognitoAuthProvider = async (authProvider: string) => {
+const getUserEmailFromAuthProvider = async (authProvider: string) => {
   if (authProvider === "offlineContext_cognitoAuthenticationProvider") {
-    return localUser;
+    return localUser.email;
   }
 
   const userInfo = parseAuthProvider(authProvider);
-  const currentUser = await obtainUsernameBySub(userInfo.userPoolUserId);
+  const username = await obtainUsernameBySub(userInfo.userPoolUserId);
   const cognito = new CognitoIdentityServiceProvider();
 
-  const userResponse = await cognito
+  const response = await cognito
     .adminGetUser({
-      Username: currentUser.username,
+      Username: username,
       UserPoolId: userInfo.userPoolId,
     })
     .promise();
 
-  const attributeMap = new Map(userResponse.UserAttributes?.map(
-    (attr) => [attr.Name, attr.Value]
-  ));
-
-  return {
-    email: attributeMap.get("email"),
-    name: attributeMap.get("given_name") + " " + attributeMap.get("family_name"),
-    state: attributeMap.get("custom:state_code"),
-    role: "STATE_USER",
-  };
+  return response.UserAttributes?.find((attr) => attr.Name === "email")?.Value;
 };
 
 export const getCurrentUserInfo = async (event) => {
-  const user = await userFromCognitoAuthProvider(
+  const email = await getUserEmailFromAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
 
   try {
-    const currentUser = await obtainUserByEmail(user.email);
+    const currentUser = await obtainUserByEmail(email);
     return {
       status: "success",
       data: currentUser.Items[0],
@@ -69,4 +58,20 @@ export const getCurrentUserInfo = async (event) => {
       data: undefined
     }
   }
+};
+
+const obtainUsernameBySub = async (usernameSub: string) => {
+  const params = {
+    TableName:
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    Select: "ALL_ATTRIBUTES",
+    ExpressionAttributeValues: {
+      ":usernameSub": usernameSub,
+    },
+    FilterExpression: "usernameSub = :usernameSub",
+  };
+
+  const result = await dynamoDb.scan(params);
+
+  return result.Items?.[0]?.username;
 };

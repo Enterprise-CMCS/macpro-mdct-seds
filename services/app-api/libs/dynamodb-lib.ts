@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import * as AWS from "aws-sdk";
 
 const buildClient = () => {
   const endpoint = process.env.DYNAMODB_URL;

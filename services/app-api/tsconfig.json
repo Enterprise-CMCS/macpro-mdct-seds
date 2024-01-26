@@ -4,7 +4,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "lib": ["ES2021"],
-    "module": "node16",
+    "module": "Node16",
+    "moduleResolution": "node",
     "target": "ES2021",
     "rootDir": "./"
   }

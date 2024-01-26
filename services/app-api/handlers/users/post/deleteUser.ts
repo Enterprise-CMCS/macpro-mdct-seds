@@ -1,14 +1,11 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { getUserCredentialsFromJwt } from "../../../libs/authorization";
 
+/**
+ * Note that this function is not exposed via the API;
+ * it is only executable by someone with AWS access, like a dev.
+ */
 export const main = handler(async (event, context) => {
-  // verify whether there is a user logged in
-  const currentUser = await getUserCredentialsFromJwt(event);
-  if (!currentUser) {
-    throw new Error("No authorized user.");
-  }
-
   const data = JSON.parse(event.body);
 
   const params = {

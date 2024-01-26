@@ -377,15 +377,6 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  obtainUserStamp:
-    handler: handlers/users/get/getUsername.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/get/username
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -398,12 +389,9 @@ functions:
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
-    events:
-      - http:
-          path: users/delete
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+    warmup:
+      default:
+        enabled: false
   activateDeactivateUser:
     handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
