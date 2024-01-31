@@ -8,10 +8,7 @@ import Footer from "../Footer/Footer";
 
 import "./App.scss";
 
-import {
-  ensureUserExistsInApi,
-  determineRole
-} from "../../utility-functions/initialLoadFunctions";
+import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
 function App() {

@@ -3,7 +3,7 @@ import { getCurrentUserInfo } from "../auth/cognito-auth";
 /** Throws an exception unless the current user is authenticated. */
 export const authorizeAnyUser = async (event) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (!user.role) {
+  if (!user.email) {
     throw new Error("Forbidden");
   }
 };

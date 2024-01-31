@@ -13,7 +13,7 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
 
   await authorizeStateUser(event, data.state);
-  
+
   const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
 
   const params = {

@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
   const { state, specifiedYear, quarter, form } = event.pathParameters;
 
   await authorizeAdminOrUserForState(event, state);
-  
+
   const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
 
   const answerParams = {

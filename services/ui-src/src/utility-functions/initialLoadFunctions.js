@@ -7,6 +7,6 @@ export async function ensureUserExistsInApi(email) {
     await createUser();
     existingUser = await obtainUserByEmail({ email });
   }
-  
+
   return existingUser.Items[0];
 }

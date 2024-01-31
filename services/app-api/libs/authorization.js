@@ -2,9 +2,10 @@ import { SSM } from "aws-sdk";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 
-export function getUserDetailsFromEvent (event) {
+export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
-  
+  const apiKey = event?.headers?.["x-api-key"];
+
   // TODO, it seems that jwt_decode and verifier.verify may return the same object?
   // Maybe we can remove the jwt_decode dependency.
 
@@ -21,8 +22,9 @@ export function getUserDetailsFromEvent (event) {
   };
 }
 
-export async function verifyEventSignature (event) {
+export async function verifyEventSignature(event) {
   const apiKey = event?.headers?.["x-api-key"];
+  console.log(event);
   if (!apiKey) {
     throw new Error("Forbidden");
   }
@@ -32,13 +34,13 @@ export async function verifyEventSignature (event) {
   const verifier = CognitoJwtVerifier.create({
     tokenUse: "id",
     userPoolId,
-    clientId
+    clientId,
   });
 
   await verifier.verify(apiKey);
 }
 
-async function getCognitoValues () {
+async function getCognitoValues() {
   let values = loadCognitoValuesFromEnvironment();
   if (!values.userPoolId || !values.clientId) {
     values = await loadCognitoValuesFromAws();
@@ -47,27 +49,27 @@ async function getCognitoValues () {
   return values;
 }
 
-function loadCognitoValuesFromEnvironment () {
+function loadCognitoValuesFromEnvironment() {
   return {
     userPoolId: process.env.COGNITO_USER_POOL_ID,
     clientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
   };
 }
 
-function storeCognitoValuesInEnvironment (values) {
+function storeCognitoValuesInEnvironment(values) {
   process.env.COGNITO_USER_POOL_ID = values.userPoolId;
   process.env.COGNITO_USER_POOL_CLIENT_ID = values.clientId;
 }
 
-async function loadCognitoValuesFromAws () {
+async function loadCognitoValuesFromAws() {
   const ssm = new SSM();
   const stage = process.env.stage;
-  const getValue = (identifier) => {
+  const getValue = async (identifier) => {
     const response = await ssm.getParameter({
       Name: `/${stage}/ui-auth/${identifier}`,
     });
     return response?.Parameter?.Value;
-  }
+  };
 
   const userPoolId = await getValue("cognito_user_pool_id");
   const clientId = await getValue("cognito_user_pool_client_id");
@@ -79,22 +81,24 @@ async function loadCognitoValuesFromAws () {
   return { userPoolId, clientId };
 }
 
-function mapMembershipToRole (membership) {
+function mapMembershipToRole(membership) {
   if (
-    specRole.includes("CHIP_D_USER_GROUP_ADMIN") ||
-    specRole.includes("CHIP_V_USER_GROUP_ADMIN") ||
-    specRole.includes("CHIP_P_USER_GROUP_ADMIN")
+    membership.includes("CHIP_D_USER_GROUP_ADMIN") ||
+    membership.includes("CHIP_V_USER_GROUP_ADMIN") ||
+    membership.includes("CHIP_P_USER_GROUP_ADMIN")
   ) {
     return "admin";
   }
-  
+
   if (
-    specRole.includes("CHIP_D_USER_GROUP") ||
-    specRole.includes("CHIP_V_USER_GROUP") ||
-    specRole.includes("CHIP_P_USER_GROUP")
+    membership.includes("CHIP_D_USER_GROUP") ||
+    membership.includes("CHIP_V_USER_GROUP") ||
+    membership.includes("CHIP_P_USER_GROUP")
   ) {
     return "state";
   }
 
-  throw new Error("No assigned CHIP user group found on identity. User probably needs to request a Job Code");
+  throw new Error(
+    "No assigned CHIP user group found on identity. User probably needs to request a Job Code"
+  );
 }

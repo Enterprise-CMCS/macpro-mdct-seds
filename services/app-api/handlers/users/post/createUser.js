@@ -1,7 +1,8 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin, authorizeAnyUser } from "../../../auth/authConditions";
+import { authorizeAdmin } from "../../../auth/authConditions";
 import { main as obtainUserByUsername } from "./obtainUserByUsername";
+import { getUserDetailsFromEvent } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
@@ -11,6 +12,8 @@ export const main = handler(async (event, context) => {
   }
 
   const userData = getUserDetailsFromEvent(event);
+
+  console.log("createUser !!!!", userData);
 
   return await createUser(userData);
 });
@@ -30,7 +33,6 @@ export const adminCreateUser = handler(async (event, context) => {
 });
 
 const createUser = async (userData) => {
-
   if (!userData.username) {
     return `Please enter a username`;
   }

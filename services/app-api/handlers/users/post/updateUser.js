@@ -1,7 +1,11 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByEmail } from "./obtainUserByEmail";
-import { authorizeAdmin, authorizeAdminOrUserWithEmail, authorizeAnyUser } from "../../../auth/authConditions";
+import {
+  authorizeAdmin,
+  authorizeAdminOrUserWithEmail,
+  authorizeAnyUser,
+} from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
@@ -53,7 +57,7 @@ export const main = handler(async (event, context) => {
   return await dynamoDb.update(params);
 });
 
-function modifyingAnythingButAnEmptyStateList (incomingUser, existingUser) {
+function modifyingAnythingButAnEmptyStateList(incomingUser, existingUser) {
   if (incomingUser.username !== existingUser.username) return true;
   if (incomingUser.role !== existingUser.role) return true;
   if (incomingUser.isActive !== existingUser.isActive) return true;

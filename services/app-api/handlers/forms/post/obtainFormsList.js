@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.state);
-  
+
   const startKey = data.startKey;
 
   const params = {

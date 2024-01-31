@@ -1,6 +1,9 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAnyUser, authorizeAdminOrUserWithEmail } from "../../../auth/authConditions";
+import {
+  authorizeAnyUser,
+  authorizeAdminOrUserWithEmail,
+} from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.

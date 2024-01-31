@@ -1,6 +1,9 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdminOrUserWithEmail, authorizeAnyUser } from "../../../auth/authConditions";
+import {
+  authorizeAdminOrUserWithEmail,
+  authorizeAnyUser,
+} from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
@@ -13,12 +16,21 @@ export const main = handler(async (event, context) => {
 
   await authorizeAnyUser(event);
 
+  const result = await obtainUserByEmail(data.email);
+
+  if (!result) return result;
+  authorizeAdminOrUserWithEmail(event, result.Items[0].email);
+
+  return result;
+});
+
+export const obtainUserByEmail = async (email) => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":email": data.email,
+      ":email": email,
     },
     FilterExpression: "email = :email",
   };
@@ -29,8 +41,5 @@ export const main = handler(async (event, context) => {
     return false;
   }
 
-  authorizeAdminOrUserWithEmail(event, result.Items[0].email);
-
-  // Return the retrieved item
   return result;
-});
+};

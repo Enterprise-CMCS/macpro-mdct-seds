@@ -14,17 +14,17 @@ import { authorizeAdmin } from "../../../auth/authConditions";
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
-})
+});
 
 /** Called from a scheduled job; no specific user privileges required */
 export const scheduled = handler(async (event, context) => {
   return await generateQuarterForms(event);
-})
+});
 
 /*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-const generateQuarterForms = async (event) => {  
+const generateQuarterForms = async (event) => {
   let noMissingForms = true;
 
   if (event.source === "serverless-plugin-warmup") {
