@@ -1,9 +1,12 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByEmail } from "./obtainUserByEmail";
+import { authorizeAdmin } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
+
+  await authorizeAdmin(event);
 
   const data = JSON.parse(event.body);
 

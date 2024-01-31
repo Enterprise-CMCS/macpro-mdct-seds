@@ -1,12 +1,14 @@
 import handler from "../libs/handler-lib";
 //import dynamoDb from "../libs/dynamodb-lib";
 import { Workbook } from "exceljs";
-
 import { getCurrentUserInfo } from "../auth/cognito-auth";
+import { authorizeAnyUser } from "../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
-
+  
+  await authorizeAnyUser(event);
+  
   let content = JSON.parse(event.body);
 
   // *** get information about user creating the export

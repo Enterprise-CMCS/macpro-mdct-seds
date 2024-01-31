@@ -8,6 +8,7 @@ import {
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions";
+import { authorizeAdmin } from "../../../auth/authConditions";
 
 /**
  * Generates initial form data and statuses for all states given a year and quarter
@@ -21,6 +22,8 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+
+  await authorizeAdmin(event);
 
   // at top of file, or in some config file
   const retryFailLimit = 5;

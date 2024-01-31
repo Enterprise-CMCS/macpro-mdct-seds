@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { authorizeAnyUser, authorizeAdminOrUserWithEmail } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
@@ -7,6 +8,8 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+
+  await authorizeAnyUser(event);
 
   let data = JSON.parse(event.body);
   console.log("\n\n\n---->about to obtain user: ");
@@ -33,6 +36,8 @@ export const main = handler(async (event, context) => {
 
   console.log("\n\n\n=-========>user obtained: ");
   console.log(result);
+
+  authorizeAdminOrUserWithEmail(result.Items[0].email);
 
   // Return the retrieved item
   return result;

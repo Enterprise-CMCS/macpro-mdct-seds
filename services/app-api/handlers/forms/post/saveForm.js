@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import cloneDeepWith from "lodash/cloneDeepWith";
+import { authorizeStateUser } from "../../../auth/authConditions";
 
 /**
  * This handler will loop through a question array and save each row
@@ -14,6 +15,11 @@ export const main = handler(async (event, context) => {
   }
 
   const data = JSON.parse(event.body);
+
+  for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
+    await authorizeStateUser(event, stateId);
+  }
+
   const answers = data.formAnswers;
   const statusData = data.statusData;
   let questionResult = [];
@@ -195,3 +201,11 @@ export const main = handler(async (event, context) => {
 
   return questionResult;
 });
+
+// TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
+const stateIdsPresentInForm = (answers) => {
+  const foundStateIds = new Set();
+  for (let answer of answers) {
+    foundStateIds.add(answer.state_form.substring(0, 2));
+  }
+};

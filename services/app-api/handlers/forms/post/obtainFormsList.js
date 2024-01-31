@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { authorizeAdminOrUserForState } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -10,6 +11,8 @@ export const main = handler(async (event, context) => {
 
   const data = JSON.parse(event.body);
 
+  await authorizeAdminOrUserForState(event, data.state);
+  
   const startKey = data.startKey;
 
   const params = {

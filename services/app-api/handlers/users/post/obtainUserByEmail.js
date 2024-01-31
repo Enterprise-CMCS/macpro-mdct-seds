@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { authorizeAdminOrUserWithEmail, authorizeAnyUser } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invocation is a prewarm, do nothing and return.
@@ -9,6 +10,8 @@ export const main = handler(async (event, context) => {
   }
 
   let data = JSON.parse(event.body);
+
+  await authorizeAnyUser(event);
 
   const params = {
     TableName:
@@ -25,6 +28,8 @@ export const main = handler(async (event, context) => {
   if (result.Count === 0) {
     return false;
   }
+
+  authorizeAdminOrUserWithEmail(event, result.Items[0].email);
 
   // Return the retrieved item
   return result;

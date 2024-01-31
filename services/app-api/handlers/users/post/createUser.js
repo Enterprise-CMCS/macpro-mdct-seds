@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { authorizeAnyUser } from "../../../auth/authConditions";
 import { main as obtainUserByUsername } from "./obtainUserByUsername";
 
 export const main = handler(async (event, context) => {
@@ -8,6 +9,8 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+
+  await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
 
@@ -25,9 +28,6 @@ export const main = handler(async (event, context) => {
   const currentUser = await obtainUserByUsername({
     body: body,
   });
-
-  console.log("this is the current user: ");
-  console.log(currentUser);
 
   if (currentUser.body !== "false") {
     return `User ${data.username} already exists`;

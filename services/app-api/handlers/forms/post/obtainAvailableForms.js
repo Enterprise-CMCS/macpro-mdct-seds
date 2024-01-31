@@ -1,3 +1,4 @@
+import { authorizeAdminOrUserForState } from "../../../auth/authConditions";
 import dynamodbLib from "../../../libs/dynamodb-lib";
 import handler from "../../../libs/handler-lib";
 
@@ -6,7 +7,7 @@ import handler from "../../../libs/handler-lib";
  * This can be used for displaying a list of years and quarters available
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
@@ -14,6 +15,8 @@ export const main = handler(async (event, context) => {
   }
 
   let data = JSON.parse(event.body);
+
+  await authorizeAdminOrUserForState(data.stateId);
 
   const params = {
     TableName:

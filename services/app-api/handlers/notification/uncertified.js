@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { authorizeStateUser } from "../../auth/authConditions";
 const AWS = require("aws-sdk");
 
 /**
@@ -8,6 +9,9 @@ const AWS = require("aws-sdk");
  */
 export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
+
+  await authorizeStateUser(event, data.formInfo.state_id);
+
   const email = await unCetifiedTemplate(data);
   let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
     .sendEmail(email)
