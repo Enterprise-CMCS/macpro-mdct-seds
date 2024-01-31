@@ -20,6 +20,7 @@ jobs:
     steps:
       - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
+          echo "GITHUB_REF=${GITHUB_REF}"
           echo "branch_name=$(./.github/setBranchName.sh ${GITHUB_REF})" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Validate branch name
