@@ -472,6 +472,11 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+    timeout: 900
+  generateQuarterFormsOnSchedule:
+    handler: handlers/forms/post/generateQuarterForms.scheduled
+    role: LambdaApiRole
+    events:
       - schedule:
           enabled: true
           rate: cron(0 0 1 JAN,APR,JUL,OCT ? *)
