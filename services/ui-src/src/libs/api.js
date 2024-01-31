@@ -88,6 +88,14 @@ export const createUser = data => {
   return API.post("mdct-seds", `/users/add`, opts);
 };
 
+// *** create user
+export const adminCreateUser = data => {
+  const opts = requestOptions();
+  opts.body = data;
+
+  return API.post("mdct-seds", `/users/admin-add`, opts);
+};
+
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
 export const getStateForms = data => {

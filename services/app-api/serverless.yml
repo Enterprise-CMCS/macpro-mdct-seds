@@ -377,6 +377,15 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  adminCreateUser:
+    handler: handlers/users/post/createUser.adminCreateUser
+    role: LambdaApiRole
+    events:
+      - http:
+          path: users/admin-add
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole

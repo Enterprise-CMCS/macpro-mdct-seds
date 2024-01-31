@@ -1,12 +1,12 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { main as obtainUserByEmail } from "./obtainUserByEmail";
-import { authorizeAdmin } from "../../../auth/authConditions";
+import { authorizeAdmin, authorizeAdminOrUserWithEmail, authorizeAnyUser } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   if (event.source === "serverless-plugin-warmup") return null;
 
-  await authorizeAdmin(event);
+  await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
 
@@ -20,6 +20,12 @@ export const main = handler(async (event, context) => {
   const currentUser = await obtainUserByEmail({
     body: body,
   });
+
+  await authorizeAdminOrUserWithEmail(event, currentUser.body.Items[0].email);
+
+  if (modifyingAnythingButAnEmptyStateList(data, currentUser.body.Items[0])) {
+    await authorizeAdmin(event);
+  }
 
   const params = {
     TableName:
@@ -46,3 +52,12 @@ export const main = handler(async (event, context) => {
 
   return await dynamoDb.update(params);
 });
+
+function modifyingAnythingButAnEmptyStateList (incomingUser, existingUser) {
+  if (incomingUser.username !== existingUser.username) return true;
+  if (incomingUser.role !== existingUser.role) return true;
+  if (incomingUser.isActive !== existingUser.isActive) return true;
+  if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
+  if (existingUser.states.length > 0) return true;
+  return false;
+}

@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from "aws-sdk";
-
+import { verifyEventSignature } from "../libs/authorization";
 import { localUser } from "./local-user";
 import { main as obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
 import { main as obtainUsernameBySub } from "../handlers/users/post/obtainUsernameBySub";
@@ -109,6 +109,8 @@ export const userFromCognitoAuthProvider = async (authProvider) => {
 };
 
 export const getCurrentUserInfo = async (event) => {
+  await verifyEventSignature(event);
+
   const user = await userFromCognitoAuthProvider(
     event.requestContext.identity.cognitoAuthenticationProvider
   );
