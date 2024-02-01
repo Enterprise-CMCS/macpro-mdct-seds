@@ -21,7 +21,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
-          ls -alh
           BRANCH_NAME=$(./.github/setBranchName.sh ${GITHUB_REF})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
@@ -29,7 +28,7 @@ jobs:
       - name: set branch specific variable names
         run: ./.github/build_vars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values && exit 1
+        run: ./.github/build_vars.sh set_values
         env:
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
