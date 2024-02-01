@@ -208,4 +208,5 @@ const stateIdsPresentInForm = (answers) => {
   for (let answer of answers) {
     foundStateIds.add(answer.state_form.substring(0, 2));
   }
+  return foundStateIds;
 };
