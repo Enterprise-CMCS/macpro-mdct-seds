@@ -18,13 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: set branch_name
-        #This is the old code, and we want to test the failure condition
-        run: | 
-          if [[ "${{ github.event.ref }}" =~ ^dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
-            echo "branch_name=`echo ${{ github.event.ref }} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-          else
-            echo "branch_name=${{ github.event.ref }}" >> $GITHUB_ENV
-          fi
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${GITHUB_REF})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: set branch specific variable names
         run: ./.github/build_vars.sh set_names
       - name: set variable values
