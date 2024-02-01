@@ -24,8 +24,8 @@ export async function getUserDetailsFromEvent(event) {
 
 export async function verifyEventSignature(event) {
   const apiKey = event?.headers?.["x-api-key"];
-  console.log(event);
   if (!apiKey) {
+    console.log("MISSING API KEY, ARE YOU TRYING TO CALL A HANDLER DIRECTLY?");
     throw new Error("Forbidden");
   }
 

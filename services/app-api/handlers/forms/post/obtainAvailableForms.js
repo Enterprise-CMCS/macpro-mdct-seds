@@ -16,7 +16,7 @@ export const main = handler(async (event) => {
 
   let data = JSON.parse(event.body);
 
-  await authorizeAdminOrUserForState(data.stateId);
+  await authorizeAdminOrUserForState(event, data.stateId);
 
   const params = {
     TableName:

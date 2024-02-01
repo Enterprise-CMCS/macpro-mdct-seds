@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { main as obtainUserByEmail } from "./obtainUserByEmail";
+import { obtainUserByEmail } from "./obtainUserByEmail";
 import {
   authorizeAdmin,
   authorizeAdminOrUserWithEmail,
@@ -8,6 +8,7 @@ import {
 } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
+  // TODO: Validate this handler works
   if (event.source === "serverless-plugin-warmup") return null;
 
   await authorizeAnyUser(event);
@@ -17,17 +18,11 @@ export const main = handler(async (event, context) => {
   console.log("got data: ");
   console.log(data);
 
-  const body = JSON.stringify({
-    email: data.email,
-  });
+  const currentUser = await obtainUserByEmail(data.email);
 
-  const currentUser = await obtainUserByEmail({
-    body: body,
-  });
+  await authorizeAdminOrUserWithEmail(event, currentUser.Items[0].email);
 
-  await authorizeAdminOrUserWithEmail(event, currentUser.body.Items[0].email);
-
-  if (modifyingAnythingButAnEmptyStateList(data, currentUser.body.Items[0])) {
+  if (modifyingAnythingButAnEmptyStateList(data, currentUser.Items[0])) {
     await authorizeAdmin(event);
   }
 
@@ -35,7 +30,7 @@ export const main = handler(async (event, context) => {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Key: {
-      userId: JSON.parse(currentUser.body)["Items"][0].userId,
+      userId: currentUser["Items"][0].userId,
     },
     UpdateExpression:
       "SET username = :username, #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",

@@ -1,7 +1,7 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import { authorizeAdmin } from "../../../auth/authConditions";
-import { main as obtainUserByUsername } from "./obtainUserByUsername";
+import { obtainUserByUsername } from "./obtainUserByUsername";
 import { getUserDetailsFromEvent } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
     return null;
   }
 
-  const userData = getUserDetailsFromEvent(event);
+  const userData = await getUserDetailsFromEvent(event);
 
   console.log("createUser !!!!", userData);
 
@@ -37,16 +37,9 @@ const createUser = async (userData) => {
     return `Please enter a username`;
   }
 
-  // Stringify body contents to match api type
-  const body = JSON.stringify({
-    username: userData.username,
-  });
+  const currentUser = await obtainUserByUsername(userData.username);
 
-  const currentUser = await obtainUserByUsername({
-    body: body,
-  });
-
-  if (currentUser.body !== "false") {
+  if (currentUser) {
     return `User ${userData.username} already exists`;
   }
 

@@ -5,10 +5,17 @@ export const getCurrentUserInfo = async (event) => {
   const user = await getUserDetailsFromEvent(event);
   const currentUser = await obtainUserByEmail(user.email);
 
-  if (!currentUser) return {data: {email: user.email, role: undefined, states: undefined}};
-
+  if (!currentUser) {
+    return {
+      data: {
+        email: user.email,
+        role: undefined,
+        states: undefined,
+      },
+    };
+  }
   return {
     status: "success",
-    data: JSON.parse(currentUser.body)["Items"][0],
+    data: currentUser["Items"][0],
   };
 };

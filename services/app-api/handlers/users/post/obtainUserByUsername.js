@@ -13,17 +13,21 @@ export const main = handler(async (event, context) => {
   }
 
   await authorizeAnyUser(event);
-
   let data = JSON.parse(event.body);
   console.log("\n\n\n---->about to obtain user: ");
   console.log(data);
+  const result = await obtainUserByUsername(data.username);
+  authorizeAdminOrUserWithEmail(result.Items[0].email);
+  return result;
+});
 
+export const obtainUserByUsername = async (username) => {
   const params = {
     TableName:
       process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":username": data.username,
+      ":username": username,
     },
     FilterExpression: "username = :username",
   };
@@ -39,9 +43,5 @@ export const main = handler(async (event, context) => {
 
   console.log("\n\n\n=-========>user obtained: ");
   console.log(result);
-
-  authorizeAdminOrUserWithEmail(result.Items[0].email);
-
-  // Return the retrieved item
   return result;
-});
+};
