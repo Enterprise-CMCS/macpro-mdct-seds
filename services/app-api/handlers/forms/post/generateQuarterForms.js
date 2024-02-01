@@ -32,8 +32,6 @@ const generateQuarterForms = async (event) => {
     return null;
   }
 
-  await authorizeAdmin(event);
-
   // at top of file, or in some config file
   const retryFailLimit = 5;
   const failureList = [];
