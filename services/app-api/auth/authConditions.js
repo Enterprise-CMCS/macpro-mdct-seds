@@ -39,3 +39,13 @@ export const authorizeStateUser = async (event, state) => {
     throw new Error("Forbidden");
   }
 };
+
+export const authorizeUserForState = async (event, state) => {
+  const user = (await getCurrentUserInfo(event)).data;
+  if (
+    !["state", "business"].includes(user.role) ||
+    !user.states.includes(state)
+  ) {
+    throw new Error("Forbidden");
+  }
+};

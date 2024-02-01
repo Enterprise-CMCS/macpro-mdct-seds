@@ -1,7 +1,8 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
 import cloneDeepWith from "lodash/cloneDeepWith";
-import { authorizeStateUser } from "../../../auth/authConditions";
+import { authorizeUserForState } from "../../../auth/authConditions";
+import { getCurrentUserInfo } from "../../../auth/cognito-auth";
 
 /**
  * This handler will loop through a question array and save each row
@@ -17,13 +18,31 @@ export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
   for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
-    await authorizeStateUser(event, stateId);
+    await authorizeUserForState(event, stateId);
   }
 
+  const user = (await getCurrentUserInfo(event)).data;
   const answers = data.formAnswers;
   const statusData = data.statusData;
-  let questionResult = [];
+  const stateFormId = answers[0].state_form;
 
+  if (user.role === "state") {
+    await updateAnswers(answers, user);
+  }
+  await updateStateForm(stateFormId, statusData, user);
+});
+
+// TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
+const stateIdsPresentInForm = (answers) => {
+  const foundStateIds = new Set();
+  for (let answer of answers) {
+    foundStateIds.add(answer.state_form.substring(0, 2));
+  }
+  return foundStateIds;
+};
+
+const updateAnswers = async (answers, user) => {
+  let questionResult = [];
   answers.sort(function (a, b) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
   });
@@ -146,7 +165,7 @@ export const main = handler(async (event, context) => {
         "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
         ":rows": rowsWithZeroWhereBlank,
-        ":last_modified_by": data.username,
+        ":last_modified_by": user.username,
         ":last_modified": new Date().toISOString(),
       },
       ExpressionAttributeNames: {
@@ -156,32 +175,54 @@ export const main = handler(async (event, context) => {
       ReturnValues: "ALL_NEW",
     };
 
-    try {
-      const dbResult = await dynamoDb.update(questionParams);
-      questionResult.push(dbResult);
-    } catch (e) {
-      throw ("Question params update failed", e);
-    }
+    const dbResult = await dynamoDb.update(questionParams);
+    questionResult.push(dbResult);
+  }
+};
+
+const updateStateForm = async (stateFormId, statusData, user) => {
+  // Get existing form to compare changes
+  const params = {
+    TableName:
+      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    ExpressionAttributeNames: {
+      "#state_form": "state_form",
+    },
+    ExpressionAttributeValues: {
+      ":state_form": stateFormId,
+    },
+    KeyConditionExpression: "#state_form = :state_form",
+  };
+  const result = await dynamoDb.query(params);
+  if (result.Count === 0) {
+    throw new Error("State Form Not Found");
   }
 
+  const currentForm = result.Items[0];
+  let statusFlags = {};
+  if (currentForm.status_id !== statusData.status_id) {
+    statusFlags[":status_modified_by"] = user.username;
+    statusFlags[":status_date"] = new Date().toISOString();
+  }
   // Params for updating for statusData;
   const formParams = {
     TableName:
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Key: {
-      state_form: answers[0].state_form,
+      state_form: stateFormId,
     },
     UpdateExpression:
       "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable, state_comments = :state_comments",
     ExpressionAttributeValues: {
-      ":last_modified_by": statusData.last_modified_by,
+      ":last_modified_by": user.username,
       ":last_modified": statusData.last_modified,
-      ":status_modified_by": statusData.status_modified_by,
-      ":status_date": statusData.status_date,
+      ":status_modified_by": currentForm.status_modified_by,
+      ":status_date": currentForm.status_date,
       ":status": statusData.status,
       ":status_id": statusData.status_id,
       ":not_applicable": statusData.not_applicable,
       ":state_comments": statusData.state_comments,
+      ...statusFlags,
     },
     ExpressionAttributeNames: {
       "#s": "status",
@@ -194,19 +235,4 @@ export const main = handler(async (event, context) => {
   } catch (e) {
     throw ("Form params update failed", e);
   }
-
-  if (questionResult.Count === 0) {
-    throw new Error("Form save query failed");
-  }
-
-  return questionResult;
-});
-
-// TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
-const stateIdsPresentInForm = (answers) => {
-  const foundStateIds = new Set();
-  for (let answer of answers) {
-    foundStateIds.add(answer.state_form.substring(0, 2));
-  }
-  return foundStateIds;
 };
