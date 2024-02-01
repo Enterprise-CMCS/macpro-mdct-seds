@@ -8,16 +8,11 @@ import {
 } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
-  // TODO: Validate this handler works
   if (event.source === "serverless-plugin-warmup") return null;
 
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
-
-  console.log("got data: ");
-  console.log(data);
-
   const currentUser = await obtainUserByEmail(data.email);
 
   await authorizeAdminOrUserWithEmail(event, currentUser.Items[0].email);

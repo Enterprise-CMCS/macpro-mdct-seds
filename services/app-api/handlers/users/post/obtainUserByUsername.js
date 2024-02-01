@@ -14,8 +14,6 @@ export const main = handler(async (event, context) => {
 
   await authorizeAnyUser(event);
   let data = JSON.parse(event.body);
-  console.log("\n\n\n---->about to obtain user: ");
-  console.log(data);
   const result = await obtainUserByUsername(data.username);
   authorizeAdminOrUserWithEmail(result.Items[0].email);
   return result;
@@ -34,14 +32,9 @@ export const obtainUserByUsername = async (username) => {
 
   const result = await dynamoDb.scan(params);
 
-  console.log("\n\nresult of scan ~~~~>");
-  console.log(result);
-
   if (result.Count === 0) {
     return false;
   }
 
-  console.log("\n\n\n=-========>user obtained: ");
-  console.log(result);
   return result;
 };

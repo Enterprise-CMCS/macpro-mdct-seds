@@ -13,8 +13,6 @@ export const main = handler(async (event, context) => {
 
   const userData = await getUserDetailsFromEvent(event);
 
-  console.log("createUser !!!!", userData);
-
   return await createUser(userData);
 });
 
