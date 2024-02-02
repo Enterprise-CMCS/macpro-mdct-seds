@@ -1,5 +1,6 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
+import { authorizeAdminOrUserForState } from "../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -9,6 +10,8 @@ export const main = handler(async (event, context) => {
   }
   // Deconstruct variables from URL string
   const { state, specifiedYear, quarter, form } = event.pathParameters;
+
+  await authorizeAdminOrUserForState(event, state);
 
   const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
 

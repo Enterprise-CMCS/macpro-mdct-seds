@@ -112,6 +112,15 @@ Once you've run `./dev local` you'll find yourself on a login page at localhost:
 
 For a password to that user, please ask a fellow developer.
 
+### Adding or modifying user roles
+The external SAML IDP passes roles to cognito on login. 
+
+An issue occured with the following configuration:
+- Cognito is limited to 2048 characters in an attribute.
+- Users may request a large amount of roles with the IDP and power users were able to fail the login process by having too many
+
+To avoid this issue, the IDP now filters the roles passed through by the prefix "CHIP_". To add new roles outside of that prefix, a SR will need to be made to modify that rule.
+
 ### Adding New Endpoints
 
 1. In [services/app-api/serverless.yml](services/app-api/serverless.yml), add a new entry to `functions` describing the new endpoint. Make sure your http method is set correctly. For example:
