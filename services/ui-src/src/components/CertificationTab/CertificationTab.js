@@ -88,6 +88,7 @@ const CertificationTab = ({
     return userRole;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const sendEmailtoBo = async () => {
     let userRole = await currentUserRole();
     if (userRole === "state") {
