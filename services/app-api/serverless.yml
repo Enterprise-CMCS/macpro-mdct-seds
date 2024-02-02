@@ -170,15 +170,6 @@ provider:
     SteamVersion: ".v0"
 
 functions:
-  loadData:
-    handler: handlers/load-data/post/uploadData.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: load-data/upload
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   ForceKafkaSync:
     handler: handlers/kafka/get/forceKafkaSync.main
     role: LambdaApiRole
@@ -332,15 +323,6 @@ functions:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
       subnetIds: ${self:custom.privateSubnets}
-  getTableNames:
-    handler: handlers/load-data/get/getTableNames.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: load-data/get-table-names
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   exportToExcel:
     handler: export/exportToExcel.main
     role: LambdaApiRole
@@ -377,30 +359,12 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  obtainUsernameBySub:
-    handler: handlers/users/post/obtainUsernameBySub.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/sub
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   obtainUserByEmail:
     handler: handlers/users/post/obtainUserByEmail.main
     role: LambdaApiRole
     events:
       - http:
           path: users/get/email
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  obtainUserStamp:
-    handler: handlers/users/get/getUsername.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/get/username
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -413,15 +377,18 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  deleteUser:
-    handler: handlers/users/post/deleteUser.main
+  adminCreateUser:
+    handler: handlers/users/post/createUser.adminCreateUser
     role: LambdaApiRole
     events:
       - http:
-          path: users/delete
+          path: users/admin-add
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  deleteUser:
+    handler: handlers/users/post/deleteUser.main
+    role: LambdaApiRole
   activateDeactivateUser:
     handler: handlers/users/post/activateDeactivateUser.main
     role: LambdaApiRole
@@ -514,6 +481,11 @@ functions:
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+    timeout: 900
+  generateQuarterFormsOnSchedule:
+    handler: handlers/forms/post/generateQuarterForms.scheduled
+    role: LambdaApiRole
+    events:
       - schedule:
           enabled: true
           rate: cron(0 0 1 JAN,APR,JUL,OCT ? *)
@@ -522,11 +494,6 @@ functions:
     handler: handlers/notification/stateUsers.main
     role: LambdaApiRole
     events:
-      - http:
-          path: notification/stateUsersEmail
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
       - schedule:
           enabled: true
           rate: cron(0 0 1 */3 ? *)
@@ -534,11 +501,6 @@ functions:
     handler: handlers/notification/businessUsers.main
     role: LambdaApiRole
     events:
-      - http:
-          path: notification/businessUsersEmail
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
       - schedule:
           enabled: true
           rate: cron(0 0 1 */3 ? *)

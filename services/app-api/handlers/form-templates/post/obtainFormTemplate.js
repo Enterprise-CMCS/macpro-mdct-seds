@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import { authorizeAdmin } from "../../../auth/authConditions";
 
 /**
  * Returns a single form template
@@ -12,6 +13,8 @@ export const main = handler(async (event, context) => {
     console.log("Warmed up!");
     return null;
   }
+
+  await authorizeAdmin(event);
 
   let data = JSON.parse(event.body);
 

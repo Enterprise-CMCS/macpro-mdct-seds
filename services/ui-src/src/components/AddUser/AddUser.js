@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Searchable from "react-searchable-dropdown";
 import MultiSelect from "react-multi-select-component";
-import { createUser } from "../../libs/api";
+import { adminCreateUser } from "../../libs/api";
 import { Table, Button, TextInput } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,7 +32,7 @@ const AddUser = ({ currentUser, stateList }) => {
       states: statesToSend
     };
 
-    const response = await createUser(data);
+    const response = await adminCreateUser(data);
     window.alert(response);
   }
 

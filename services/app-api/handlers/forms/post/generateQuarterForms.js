@@ -8,15 +8,25 @@ import {
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions";
+import { authorizeAdmin } from "../../../auth/authConditions";
 
-/**
+/** Called from the API; admin access required */
+export const main = handler(async (event, context) => {
+  await authorizeAdmin(event);
+  return await generateQuarterForms(event);
+});
+
+/** Called from a scheduled job; no specific user privileges required */
+export const scheduled = handler(async (event, context) => {
+  return await generateQuarterForms(event);
+});
+
+/*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-
-export const main = handler(async (event, context) => {
+const generateQuarterForms = async (event) => {
   let noMissingForms = true;
 
-  // *** if this invocation is a pre-warm, do nothing and return
   if (event.source === "serverless-plugin-warmup") {
     console.log("Warmed up!");
     return null;
@@ -355,7 +365,7 @@ export const main = handler(async (event, context) => {
     status: 200,
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
-});
+};
 
 /**
  * We run an automated process at the start of each quarter,
