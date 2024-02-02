@@ -61,12 +61,7 @@ const CertificationTab = ({
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       await uncertify();
       saveForm();
-      /* 
-        NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
-        able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this call will be commented out
-        and not removed.
-      */
-      // await sendEmailtoBo();
+      await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
     }
@@ -88,7 +83,6 @@ const CertificationTab = ({
     return userRole;
   };
 
-  // eslint-disable-next-line no-unused-vars
   const sendEmailtoBo = async () => {
     let userRole = await currentUserRole();
     if (userRole === "state") {
