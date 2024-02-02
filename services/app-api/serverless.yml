@@ -518,30 +518,35 @@ functions:
           enabled: true
           rate: cron(0 0 1 JAN,APR,JUL,OCT ? *)
     timeout: 900
-  stateUsersEmail:
-    handler: handlers/notification/stateUsers.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: notification/stateUsersEmail
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-      - schedule:
-          enabled: true
-          rate: cron(0 0 1 */3 ? *)
-  businessUsersEmail:
-    handler: handlers/notification/businessUsers.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: notification/businessUsersEmail
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-      - schedule:
-          enabled: true
-          rate: cron(0 0 1 */3 ? *)
+  # NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
+  # able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this handler will be commented out
+  # and not removed.
+  #
+  # stateUsersEmail:
+  #   handler: handlers/notification/stateUsers.main
+  #   role: LambdaApiRole
+  #   events:
+  #     - http:
+  #         path: notification/stateUsersEmail
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #     - schedule:
+  #         enabled: true
+  #         rate: cron(0 0 1 */3 ? *)
+  #
+  # businessUsersEmail:
+  #   handler: handlers/notification/businessUsers.main
+  #   role: LambdaApiRole
+  #   events:
+  #     - http:
+  #         path: notification/businessUsersEmail
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #     - schedule:
+  #         enabled: false
+  #         rate: cron(0 0 1 */3 ? *)
   saveForm:
     handler: handlers/forms/post/saveForm.main
     role: LambdaApiRole
