@@ -1,8 +1,6 @@
 name: Destroy
 
-on: 
-  delete
-  workflow-dispatch-event
+on: delete
 
 permissions:
   id-token: write
