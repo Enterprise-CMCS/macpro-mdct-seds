@@ -70,7 +70,6 @@ async function loadCognitoValuesFromAws() {
         Name: `/${stage}/ui-auth/${identifier}`,
       })
       .promise();
-    console.log("requesting from ssm", response);
     return response?.Parameter?.Value;
   };
 
