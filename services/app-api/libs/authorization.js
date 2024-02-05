@@ -65,15 +65,17 @@ async function loadCognitoValuesFromAws() {
   const ssm = new SSM();
   const stage = process.env.STAGE;
   const getValue = async (identifier) => {
-    const response = await ssm.getParameter({
-      Name: `/${stage}/ui-auth/${identifier}`,
-    });
+    const response = await ssm
+      .getParameter({
+        Name: `/${stage}/ui-auth/${identifier}`,
+      })
+      .promise();
     console.log("requesting from ssm", response);
     return response?.Parameter?.Value;
   };
 
-  const userPoolId = await getValue("cognito_user_pool_id").promise();
-  const clientId = await getValue("cognito_user_pool_client_id").promise();
+  const userPoolId = await getValue("cognito_user_pool_id");
+  const clientId = await getValue("cognito_user_pool_client_id");
 
   if (!userPoolId || !clientId) {
     throw new Error("cannot load cognito values");
