@@ -267,6 +267,18 @@ resources:
                         - - ${self:custom.attachments_bucket_arn}/private/
                           - "$"
                           - "{cognito-identity.amazonaws.com:sub}/*"
+    CognitoUserPoolIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /${self:custom.stage}/ui-auth/cognito_user_pool_id
+        Type: String
+        Value: !Ref CognitoUserPool
+    CognitoUserPoolClientIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /${self:custom.stage}/ui-auth/cognito_user_pool_client_id
+        Type: String
+        Value: !Ref CognitoUserPoolClient
   Outputs:
     UserPoolId:
       Value: !Ref CognitoUserPool
