@@ -668,6 +668,10 @@ resources:
                   Action:
                     - lambda:InvokeFunction
                   Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - ssm:GetParameter
+                  Resource: "*"
     KafkaSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
