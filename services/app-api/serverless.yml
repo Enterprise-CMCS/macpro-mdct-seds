@@ -168,6 +168,7 @@ provider:
     AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
     AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
     SteamVersion: ".v0"
+    stage: ${self:custom.stage}
 
 functions:
   ForceKafkaSync:
