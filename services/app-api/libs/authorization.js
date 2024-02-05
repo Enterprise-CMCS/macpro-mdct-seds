@@ -68,6 +68,7 @@ async function loadCognitoValuesFromAws() {
     const response = await ssm.getParameter({
       Name: `/${stage}/ui-auth/${identifier}`,
     });
+    console.log("requesting from ssm", response);
     return response?.Parameter?.Value;
   };
 
