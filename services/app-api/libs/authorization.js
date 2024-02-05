@@ -63,7 +63,7 @@ function storeCognitoValuesInEnvironment(values) {
 
 async function loadCognitoValuesFromAws() {
   const ssm = new SSM();
-  const stage = process.env.stage;
+  const stage = process.env.STAGE;
   const getValue = async (identifier) => {
     const response = await ssm.getParameter({
       Name: `/${stage}/ui-auth/${identifier}`,
