@@ -72,8 +72,8 @@ async function loadCognitoValuesFromAws() {
     return response?.Parameter?.Value;
   };
 
-  const userPoolId = await getValue("cognito_user_pool_id");
-  const clientId = await getValue("cognito_user_pool_client_id");
+  const userPoolId = await getValue("cognito_user_pool_id").promise();
+  const clientId = await getValue("cognito_user_pool_client_id").promise();
 
   if (!userPoolId || !clientId) {
     throw new Error("cannot load cognito values");
