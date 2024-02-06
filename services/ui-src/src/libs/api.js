@@ -19,21 +19,6 @@ export const exportToExcel = async data => {
   return API.post("mdct-seds", "/export/export-to-excel", opts);
 };
 
-/*************************** LOAD DATA API ***************************/
-// *** load data
-export const loadData = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", "/load-data/upload", opts);
-};
-
-export const getTableNames = async () => {
-  const opts = await requestOptions();
-
-  return API.get("mdct-seds", "/load-data/get-table-names", opts);
-};
-
 /*************************** USER API ***************************/
 // *** list all Users
 export const listUsers = async () => {
