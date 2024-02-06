@@ -8,10 +8,7 @@ import Footer from "../Footer/Footer";
 
 import "./App.scss";
 
-import {
-  ascertainUserPresence,
-  determineRole
-} from "../../utility-functions/initialLoadFunctions";
+import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
 function App() {
@@ -23,14 +20,10 @@ function App() {
 
   async function onLoad() {
     try {
-      const user = (await Auth.currentSession()).getIdToken();
-      // *** make sure attributes exist and are in standard format
-      user.attributes = user.payload;
-      user.attributes["app-role"] = await determineRole(
-        user.attributes["custom:ismemberof"]
-      );
-
-      await ascertainUserPresence(user);
+      const token = (await Auth.currentSession()).getIdToken();
+      const apiUser = await ensureUserExistsInApi(token.payload.email);
+      const user = { attributes: apiUser }; // ew
+      user.attributes["app-role"] = user.attributes.role;
 
       setUser(user);
       setIsAuthenticated(true);
