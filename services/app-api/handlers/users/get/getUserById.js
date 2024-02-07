@@ -1,5 +1,9 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
+import {
+  authorizeAdminOrUserWithEmail,
+  authorizeAnyUser,
+} from "../../../auth/authConditions";
 
 export const main = handler(async (event) => {
   // If this invokation is a prewarm, do nothing and return.
@@ -7,6 +11,8 @@ export const main = handler(async (event) => {
     console.log("Warmed up!");
     return null;
   }
+
+  await authorizeAnyUser(event);
 
   const params = {
     TableName:
@@ -28,6 +34,8 @@ export const main = handler(async (event) => {
       message: "No user by specified id found",
     };
   } else {
+    const foundUser = queryResult.Items[0];
+    await authorizeAdminOrUserWithEmail(event, foundUser.userId);
     returnResult = {
       status: "success",
       data: queryResult["Items"][0],
