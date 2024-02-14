@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "BERRY TEST" && exit 1
+
 if [[ $1 == "" ]] ; then
     echo 'ERROR:  You must pass a stage to destroy.  Ex. sh destroy.sh my-stage-name'
     exit 1
