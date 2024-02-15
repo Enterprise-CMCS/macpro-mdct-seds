@@ -1,6 +1,12 @@
 name: Destroy
 
-on: delete
+on:
+  delete:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Name of the environment to destroy:"
+        required: true
 
 permissions:
   id-token: write
@@ -13,13 +19,22 @@ jobs:
     # This conditional is a backup mechanism to help prevent mistakes from becoming disasters.
     # This is a list of branch names that are commonly used for protected branches/environments.
     # Add/remove names from this list as appropriate.
-    if: github.event.ref_type == 'branch' && !contains(fromJson('["master", "val", "production"]'), github.event.ref)
+    if: |
+      (
+        github.event.ref_type == 'branch' &&
+        (!startsWith(github.event.ref, 'skipci')) &&
+        (!contains(fromJson('["master", "val", "production"]'), github.event.ref))
+      ) ||
+      (
+        inputs.environment != '' &&
+        (!contains(fromJson('["master", "val", "production"]'), inputs.environment))
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: set branch_name
         run: |
-          BRANCH_NAME=$(./.github/setBranchName.sh refs/heads/${{ github.event.ref }})
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: set branch specific variable names
         run: ./.github/build_vars.sh set_names
