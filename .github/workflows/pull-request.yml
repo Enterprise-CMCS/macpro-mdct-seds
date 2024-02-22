@@ -6,7 +6,7 @@ jobs:
   assignAuthor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Assign PR to Creator
         run: |
           if [ "$PR_AUTHOR_TYPE" != "Bot" ]
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container: node:14
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: check that modified files are prettier
         run: npx prettier --write .
   eslint:
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     container: node:14
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install dependencies
         working-directory: services/ui-src
         run: yarn install
