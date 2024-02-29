@@ -11,7 +11,7 @@ import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { sendUncertifyEmail, obtainUserByEmail } from "../../libs/api";
+import { obtainUserByEmail } from "../../libs/api";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
@@ -61,7 +61,7 @@ const CertificationTab = ({
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       await uncertify();
       saveForm();
-      await sendEmailtoBo();
+      // await sendEmailtoBo();
       setprovisionalButtonStatus(false);
       setfinalButtonStatus(false);
     }
