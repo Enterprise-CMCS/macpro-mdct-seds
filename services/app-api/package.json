@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "aws-jwt-verify": "^4.0.0",
-    "aws-sdk": "^2.1452.0",
+    "aws-sdk": "^2.1553.0",
     "exceljs": "^4.2.1",
     "kafkajs": "^1.15.0",
     "lambda-multipart-parser": "^1.0.1",
