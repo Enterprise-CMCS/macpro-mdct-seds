@@ -250,7 +250,7 @@ resources:
             - ErrorCode: 403
               ResponseCode: 403
               ResponsePagePath: /index.html
-          WebACLId: !GetAtt CloudFrontWebAcl.Arn
+          WebACLId: !GetAtt WafPluginAcl.Arn
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${self:custom.stage}/
@@ -379,4 +379,4 @@ resources:
     FirehoseArn:
       Value: !GetAtt Firehose.Arn
     CloudFrontWebAclArn:
-      Value: !GetAtt CloudFrontWebAcl.Arn
+      Value: !GetAtt WafPluginAcl.Arn
