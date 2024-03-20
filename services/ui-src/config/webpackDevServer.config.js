@@ -9,7 +9,7 @@ const redirectServedPath = require("react-dev-utils/redirectServedPathMiddleware
 const paths = require("./paths");
 const getHttpsConfig = require("./getHttpsConfig");
 
-const host = process.env.HOST || "0.0.0.0";
+const host = process.env.HOST || "localhost";
 const port = process.env.PORT || "3000";
 
 module.exports = function (proxy) {
@@ -93,7 +93,7 @@ module.exports = function (proxy) {
       overlay: false,
       webSocketURL: {
         hostname: host,
-        pathname: "/",
+        pathname: "/ws",
         port
       },
       logging: "none"
