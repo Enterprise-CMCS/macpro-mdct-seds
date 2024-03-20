@@ -18,10 +18,16 @@ plugins:
   - serverless-api-client-certificate
   - serverless-iam-helper
   - serverless-offline-ssm
+  - "@enterprise-cmcs/serverless-waf-plugin"
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
+  wafPlugin:
+    name: ${self:service}-${self:custom.stage}-webacl-waf
+  wafExcludeRules:
+    awsCommon:
+      - "SizeRestrictions_BODY"
   iamPath: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
   iamPermissionsBoundaryPolicy: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   serverless-offline-ssm:
@@ -79,7 +85,7 @@ custom:
   AuthUserRolesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls, ""}
   vpcId: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id, ""}
-  webAclName: ${self:custom.stage}-ApiGwWebAcl
+  webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -729,35 +735,6 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
-    ApiGwWebAcl:
-      Type: AWS::WAFv2::WebACL
-      Properties:
-        Name: ${self:custom.webAclName}
-        DefaultAction:
-          Block: {}
-        Rules:
-          - Action:
-              Allow: {}
-            Name: ${self:custom.stage}-allow-usa-plus-territories
-            Priority: 0
-            Statement:
-              GeoMatchStatement:
-                CountryCodes:
-                  - GU # Guam
-                  - PR # Puerto Rico
-                  - US # USA
-                  - UM # US Minor Outlying Islands
-                  - VI # US Virgin Islands
-                  - MP # Northern Mariana Islands
-            VisibilityConfig:
-              SampledRequestsEnabled: true
-              CloudWatchMetricsEnabled: true
-              MetricName: WafWebAcl
-        Scope: REGIONAL
-        VisibilityConfig:
-          CloudWatchMetricsEnabled: true
-          SampledRequestsEnabled: true
-          MetricName: ${self:custom.webAclName}
 
   Outputs:
     ApiGatewayRestApiName:
