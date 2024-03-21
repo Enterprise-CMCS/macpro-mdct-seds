@@ -93,7 +93,7 @@ params:
   master:
     restrictToVpn: false
   default:
-    restrictToVpn: true
+    restrictToVpn: false
 
 resources:
   Conditions:
