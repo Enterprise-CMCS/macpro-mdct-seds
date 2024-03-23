@@ -8,8 +8,8 @@
   },
   "version": "1.0.0",
   "dependencies": {
-    "@babel/core": "7.9.0",
-    "@babel/parser": "^7.13.13",
+    "@babel/core": "7.24.0",
+    "@babel/parser": "^7.24.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
