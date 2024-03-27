@@ -27,7 +27,7 @@
     "serverless-stack-termination-protection": "^1.0.4"
   },
   "dependencies": {
-    "aws-jwt-verify": "^4.0.0",
+    "aws-jwt-verify": "^4.0.1",
     "aws-sdk": "^2.1569.0",
     "exceljs": "^4.2.1",
     "kafkajs": "^1.16.0",
