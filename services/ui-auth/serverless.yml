@@ -40,7 +40,6 @@ custom:
       - impl
       - val
       - prod
-  sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress, ssm:/configuration/default/sesSourceEmailAddress, ""}
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
@@ -66,11 +65,6 @@ functions:
 
 resources:
   Conditions:
-    CreateEmailConfiguration:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.sesSourceEmailAddress}
     CreatePermissionsBoundary:
       Fn::Not:
         - Fn::Equals:
@@ -125,12 +119,6 @@ resources:
           - email
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: true
-        EmailConfiguration:
-          Fn::If:
-            - CreateEmailConfiguration
-            - EmailSendingAccount: DEVELOPER
-              SourceArn: !Sub arn:aws:ses:us-east-1:${AWS::AccountId}:identity/${self:custom.sesSourceEmailAddress}
-            - !Ref AWS::NoValue
         Schema:
           - Name: given_name
             AttributeDataType: String

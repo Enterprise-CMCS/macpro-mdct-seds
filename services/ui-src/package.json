@@ -96,11 +96,11 @@
     "styled-components": "^5.2.1",
     "terser-webpack-plugin": "2.3.8",
     "ts-pnp": "1.1.6",
-    "typescript": "^4.2.4",
+    "typescript": "^4.9.5",
     "url-loader": "2.3.0",
     "uswds": "^2.14.0",
     "webpack": "4.42.0",
-    "webpack-dev-server": "^3.11.3",
+    "webpack-dev-server": "^4.8.0",
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1"
   },

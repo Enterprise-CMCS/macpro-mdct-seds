@@ -12,12 +12,11 @@ import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFuncti
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
 function App() {
-  const { pathname, key } = useLocation();
+  const { pathname } = useLocation();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, setUser] = useState();
-
   async function onLoad() {
     try {
       const token = (await Auth.currentSession()).getIdToken();
@@ -39,8 +38,9 @@ function App() {
 
   // fire tealium page view on route change
   useEffect(() => {
-    fireTealiumPageView(user, window.location.href, pathname);
-  }, [key, pathname, user]);
+    if (isAuthenticating) return;
+    fireTealiumPageView(isAuthenticated, window.location.href, pathname);
+  }, [pathname, isAuthenticating, isAuthenticated]);
 
   return (
     <div className="App react-transition fade-in">
