@@ -1,43 +1,92 @@
-import AWS from "aws-sdk";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {
+  BatchWriteCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  ScanCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
+import { logger } from "./debug-lib";
 
-const dyanmoConfig = {};
+const localConfig = {
+  endpoint: process.env.DYNAMODB_URL,
+  region: "localhost",
+  credentials: {
+    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
+    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
+  },
+  logger,
+};
 
-// ugly but OK, here's where we will check the environment
-const endpoint = process.env.DYNAMODB_URL;
-if (endpoint) {
-  dyanmoConfig.endpoint = endpoint;
-  dyanmoConfig.accessKeyId = "LOCALFAKEKEY";
-  dyanmoConfig.secretAccessKey = "LOCALFAKESECRET";
-} else {
-  dyanmoConfig["region"] = "us-east-1";
-}
+const awsConfig = {
+  region: "us-east-1",
+  logger,
+};
 
-const database = new AWS.DynamoDB();
+export const getConfig = () => {
+  return process.env.DYNAMODB_URL ? localConfig : awsConfig;
+};
 
-const client = new AWS.DynamoDB.DocumentClient(dyanmoConfig);
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
+
+const batchRequestHadAnyFailures = (result) => {
+  if (!result.UnprocessedItems) {
+    return false;
+  }
+
+  return Object.values(result.UnprocessedItems).some(
+    (failureList) => failureList.length > 0
+  );
+};
+
+const buildBatchRequestErrorMessage = (
+  params,
+  result
+) => {
+  let errorMessage = "Some items in the batch request were not processed:";
+
+  for (let [tableName, failedRequests] of Object.entries(
+    result.UnprocessedItems
+  )) {
+    if (failedRequests.length === 0) {
+      continue;
+    }
+
+    let failedCount = failedRequests.length;
+    let attemptedCount = params.RequestItems[tableName].length;
+
+    errorMessage += `\n  ${tableName}: ${failedCount} (of ${attemptedCount}) requests failed`;
+  }
+
+  return errorMessage;
+};
 
 export default {
-  get: (params) => client.get(params).promise(),
-  put: (params) => client.put(params).promise(),
-  query: (params) => client.query(params).promise(),
-  update: (params) => client.update(params).promise(),
-  delete: (params) => client.delete(params).promise(),
+  update: async (params) => await client.send(new UpdateCommand(params)),
+  delete: async (params) => await client.send(new DeleteCommand(params)),
+  query: async (params) => await client.send(new QueryCommand(params)),
+  put: async (params) => await client.send(new PutCommand(params)),
   scan: async (params) => {
-    const items = [];
-    let complete = false;
-    while (!complete) {
-      const result = await client.scan(params).promise();
-      items.push(...result.Items);
-      params.ExclusiveStartKey = result.LastEvaluatedKey;
-      complete = result.LastEvaluatedKey === undefined;
-    }
+    let items = [];
+    let ExclusiveStartKey;
+
+    do {
+      const command = new ScanCommand({ ...params, ExclusiveStartKey });
+      const result = await client.send(command);
+      items = items.concat((result.Items) ?? []);
+      ExclusiveStartKey = result.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+
     return { Items: items, Count: items.length };
   },
   scanMapToSet: async (params, mapFunction) => {
     let itemSet = new Set();
-    let complete = false;
-    while (!complete) {
-      const result = await client.scan(params).promise();
+    let ExclusiveStartKey;
+    do {
+      const command = new ScanCommand({ ...params, ExclusiveStartKey });
+      const result = await client.send(command);
       if (!result.Items) continue;
 
       itemSet = new Set([
@@ -45,11 +94,9 @@ export default {
         ...result.Items.map((x) => mapFunction(x)),
       ]);
 
-      params.ExclusiveStartKey = result.LastEvaluatedKey;
-      complete = result.LastEvaluatedKey === undefined;
-    }
+      ExclusiveStartKey = result.LastEvaluatedKey;
+    } while (ExclusiveStartKey)
     return itemSet;
   },
-  batchWrite: (params) => client.batchWrite(params).promise(),
-  listTables: (params) => database.listTables(params).promise(),
+  batchWriteItem: async (params) => await client.send(new BatchWriteCommand(params)),
 };
