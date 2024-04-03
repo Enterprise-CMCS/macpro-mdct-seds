@@ -41,10 +41,7 @@ const batchRequestHadAnyFailures = (result) => {
   );
 };
 
-const buildBatchRequestErrorMessage = (
-  params,
-  result
-) => {
+const buildBatchRequestErrorMessage = (params, result) => {
   let errorMessage = "Some items in the batch request were not processed:";
 
   for (let [tableName, failedRequests] of Object.entries(
@@ -75,7 +72,7 @@ export default {
     do {
       const command = new ScanCommand({ ...params, ExclusiveStartKey });
       const result = await client.send(command);
-      items = items.concat((result.Items) ?? []);
+      items = items.concat(result.Items ?? []);
       ExclusiveStartKey = result.LastEvaluatedKey;
     } while (ExclusiveStartKey);
 
@@ -95,8 +92,9 @@ export default {
       ]);
 
       ExclusiveStartKey = result.LastEvaluatedKey;
-    } while (ExclusiveStartKey)
+    } while (ExclusiveStartKey);
     return itemSet;
   },
-  batchWriteItem: async (params) => await client.send(new BatchWriteCommand(params)),
+  batchWriteItem: async (params) =>
+    await client.send(new BatchWriteCommand(params)),
 };
