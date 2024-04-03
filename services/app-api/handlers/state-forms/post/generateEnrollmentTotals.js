@@ -69,28 +69,8 @@ const getStateForms = async (forms) => {
       ConsistentRead: true,
     };
 
-    let startingKey;
-    let existingItems = [];
-    let results;
-
-    const scanTable = async (startingKey) => {
-      params.ExclusiveStartKey = startingKey;
-      let results = await dynamoDb.scan(params);
-      if (results.LastEvaluatedKey) {
-        startingKey = results.LastEvaluatedKey;
-        return [startingKey, results];
-      } else {
-        return [null, results];
-      }
-    };
-
-    // Looping to perform complete scan of tables due to 1 mb limit per iteration
-    do {
-      [startingKey, results] = await scanTable(startingKey);
-
-      const items = results.Items;
-      existingItems.push(...items);
-    } while (startingKey);
+    const items = await dynamoDb.scan(params);
+    const existingItems = items.Items;
 
     if (existingItems.length === 0) {
       return {
