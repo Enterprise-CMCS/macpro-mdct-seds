@@ -31,35 +31,6 @@ export const getConfig = () => {
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
 
-const batchRequestHadAnyFailures = (result) => {
-  if (!result.UnprocessedItems) {
-    return false;
-  }
-
-  return Object.values(result.UnprocessedItems).some(
-    (failureList) => failureList.length > 0
-  );
-};
-
-const buildBatchRequestErrorMessage = (params, result) => {
-  let errorMessage = "Some items in the batch request were not processed:";
-
-  for (let [tableName, failedRequests] of Object.entries(
-    result.UnprocessedItems
-  )) {
-    if (failedRequests.length === 0) {
-      continue;
-    }
-
-    let failedCount = failedRequests.length;
-    let attemptedCount = params.RequestItems[tableName].length;
-
-    errorMessage += `\n  ${tableName}: ${failedCount} (of ${attemptedCount}) requests failed`;
-  }
-
-  return errorMessage;
-};
-
 export default {
   update: async (params) => await client.send(new UpdateCommand(params)),
   delete: async (params) => await client.send(new DeleteCommand(params)),
