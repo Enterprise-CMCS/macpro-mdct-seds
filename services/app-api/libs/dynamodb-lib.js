@@ -49,23 +49,6 @@ export default {
 
     return { Items: items, Count: items.length };
   },
-  scanMapToSet: async (params, mapFunction) => {
-    let itemSet = new Set();
-    let ExclusiveStartKey;
-    do {
-      const command = new ScanCommand({ ...params, ExclusiveStartKey });
-      const result = await client.send(command);
-      if (!result.Items) continue;
-
-      itemSet = new Set([
-        ...itemSet,
-        ...result.Items.map((x) => mapFunction(x)),
-      ]);
-
-      ExclusiveStartKey = result.LastEvaluatedKey;
-    } while (ExclusiveStartKey);
-    return itemSet;
-  },
   batchWriteItem: async (params) =>
     await client.send(new BatchWriteCommand(params)),
 };
