@@ -113,13 +113,15 @@ Once you've run `./dev local` you'll find yourself on a login page at localhost:
 For a password to that user, please ask a fellow developer.
 
 ### Adding or modifying user roles
-The external SAML IDP passes roles to cognito on login. 
+
+The external SAML IDP passes roles to cognito on login.
 
 An issue occured with the following configuration:
+
 - Cognito is limited to 2048 characters in an attribute.
 - Users may request a large amount of roles with the IDP and power users were able to fail the login process by having too many
 
-To avoid this issue, the IDP now filters the roles passed through by the prefix "CHIP_". To add new roles outside of that prefix, a SR will need to be made to modify that rule.
+To avoid this issue, the IDP now filters the roles passed through by the prefix "CHIP\_". To add new roles outside of that prefix, a SR will need to be made to modify that rule.
 
 ### Adding New Endpoints
 
@@ -268,6 +270,22 @@ To contribute:
 - Open a pull request targeting this repository
 
 Pull requests are being accepted.
+
+## Slack Webhooks:
+
+This repository uses 3 webhooks to publish to  3 different channels all in CMS Slack.
+
+- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-seds-alerts` channel. Alerts published there are for deploy or test failures to the `master`, `val`, or `production` branches.
+
+- INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `mdct-integrations-channel`
+
+- PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of Seds to production.
+
+    - Webhooks are created by CMS tickets, populated into GitHub Secrets
+
+## GitHub Actions Secret Management:
+- Secrets are added to GitHub secrets by GitHub Admins 
+- Upon editing and adding new secrets Admins should also update the encypted `/github/secret-list` SSM parameter in the SEDS AWS Production Account.
 
 ## License
 

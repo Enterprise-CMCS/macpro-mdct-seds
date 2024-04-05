@@ -3,7 +3,9 @@ import {
   getUsersEmailByRole,
   getUncertifiedStatesAndForms,
 } from "../shared/sharedFunctions";
-const AWS = require("aws-sdk");
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
+const client = new SESClient({ region: "us-east-1" });
 
 /**
  * Handler responsible for sending notification to bussiness Owners.
@@ -13,11 +15,9 @@ const AWS = require("aws-sdk");
 
 export const main = handler(async (event, context) => {
   const email = await businessOwnersTemplate();
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-    .sendEmail(email)
-    .promise();
+  const command = new SendEmailCommand(email);
   try {
-    const data = await sendPromise;
+    const data = await client.send(command);
     console.log(data.MessageId);
   } catch (err) {
     console.error(err, err.stack);
