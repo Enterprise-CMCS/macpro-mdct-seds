@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
 const { Kafka } = require("kafkajs");
 
 const STAGE = process.env.stage;
@@ -40,7 +40,7 @@ class KafkaSourceLib {
   */
 
   unmarshallOptions = {
-    convertEmptyValues: true,
+    convertWithoutMapWrapper: false,
     wrapNumbers: true,
   };
 
@@ -56,7 +56,7 @@ class KafkaSourceLib {
   }
 
   unmarshall(r) {
-    return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
+    return dynamoDbUnmarshall(r, this.unmarshallOptions);
   }
 
   createPayload(record) {

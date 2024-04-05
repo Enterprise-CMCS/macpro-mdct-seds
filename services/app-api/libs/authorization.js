@@ -1,6 +1,7 @@
-import { SSM } from "aws-sdk";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import * as logger from "./debug-lib";
 
 export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
@@ -62,15 +63,14 @@ function storeCognitoValuesInEnvironment(values) {
 }
 
 async function loadCognitoValuesFromAws() {
-  const ssm = new SSM();
+  const ssmClient = new SSMClient({ logger });
   const stage = process.env.stage;
   const getValue = async (identifier) => {
-    const response = await ssm
-      .getParameter({
-        Name: `/${stage}/ui-auth/${identifier}`,
-      })
-      .promise();
-    return response?.Parameter?.Value;
+    const command = new GetParameterCommand({
+      Name: `/${stage}/ui-auth/${identifier}`,
+    });
+    const result = await ssmClient.send(command);
+    return result.Parameter?.Value;
   };
 
   const userPoolId = await getValue("cognito_user_pool_id");

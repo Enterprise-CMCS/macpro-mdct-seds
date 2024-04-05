@@ -213,13 +213,8 @@ export async function getAnswersSet() {
       process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
   };
 
-  const result = await dynamoDb.scanMapToSet(
-    params,
-    (answer) => answer.state_form
-  );
-  console.log("- Done building set");
-
-  return result;
+  const result = await dynamoDb.scan(params);
+  return new Set(result.Items.map((answer) => answer.state_form));
 }
 
 export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
