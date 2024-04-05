@@ -15,4 +15,5 @@ jobs:
         env:
           SLACK_TITLE: ":github: A new pull request has been created by ${{ github.event.pull_request.user.login }}"
           SLACK_MESSAGE: "${{ github.event.pull_request.html_url }}"
+          MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
