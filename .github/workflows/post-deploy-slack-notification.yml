@@ -19,7 +19,9 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: The latest SEDS Build on branch '${{ github.event.workflow_run.head_branch }}' has Failed"
+          SLACK_TITLE: ":boom: The latest SEDS Build on branch '${{ github.event.workflow_run.head_branch }}' has failed"
+          SLACK_MESSAGE: "${{ github.event.workflow_run.event.workflow_run_url }}"
+          MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   # Notify the integrations channel only when a Snyk auto merge fails
@@ -33,7 +35,9 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}. See Actions URL above to debug."
+          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}."
+          SLACK_MESSAGE: "${{ github.event.workflow_run.event.workflow_run_url }}"
+          MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
 
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
@@ -45,4 +49,5 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_TITLE: ":rocket: SEDS has successfully released to production."
+          MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.PROD_RELEASE_SLACK_WEBHOOK }}
