@@ -35,8 +35,8 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}.....url: ${{ github.event.workflow_run.url }} jobs_url: ${{ github.event.workflow_run.jobs_url }} html_url: ${{ github.event.workflow_run.event.html_url }}"
-          SLACK_MESSAGE: "url: ${{ github.event.workflow_run.url }} jobs_url: ${{ github.event.workflow_run.jobs_url }} html_url: ${{ github.event.workflow_run.event.html_url }}"
+          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}.....url: ${{ github.event.workflow_run.url }} jobs_url: ${{ github.event.workflow_run.jobs_url }} html_url: ${{ github.event.workflow_run.html_url }}"
+          SLACK_MESSAGE: "url: ${{ github.event.workflow_run.url }} jobs_url: ${{ github.event.workflow_run.jobs_url }} html_url: ${{ github.event.workflow_run.html_url }}"
           MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
 
