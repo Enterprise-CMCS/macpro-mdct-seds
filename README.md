@@ -69,7 +69,7 @@ Want to deploy from Windows using a VM?
 - Run `sudo apt-get install yarn -y`
 - Install NVM `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Add NVM to your current terminal session `source ~/.nvm/nvm.sh`
-- Change Node Version `nvm install 12.20.0`
+- Change Node Version `nvm install`
 - Install Java
 - Run `sudo add-apt-repository ppa:openjdk-r/ppa`
 - Run `sudo apt-get update`

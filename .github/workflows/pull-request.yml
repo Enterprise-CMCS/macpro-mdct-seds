@@ -21,7 +21,7 @@ jobs:
   prettier:
     name: prettier has been run on compatible files
     runs-on: ubuntu-latest
-    container: node:14
+    container: node:18
     steps:
       - uses: actions/checkout@v4
       - name: check that modified files are prettier
@@ -29,7 +29,7 @@ jobs:
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
-    container: node:14
+    container: node:18
     steps:
       - uses: actions/checkout@v4
       - name: install dependencies
