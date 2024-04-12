@@ -1,10 +1,13 @@
 {
   "extends": [
+    "react-app",
     "eslint:recommended",
     "prettier",
+    "prettier/react",
     "plugin:prettier/recommended"
   ],
   "plugins": ["prettier"],
+  "ignorePatterns": ["", "**/public/env-config.js"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-param-reassign": [2, { "props": false }],
