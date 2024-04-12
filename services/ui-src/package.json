@@ -21,7 +21,7 @@
     "@trussworks/react-uswds": "^4.2.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
-    "aws-amplify": "^3.4.3",
+    "aws-amplify": "^4.3.4",
     "babel-eslint": "10.1.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "8.1.0",
@@ -75,6 +75,7 @@
     "react-redux": "^7.2.2",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
+    "react-scripts": "^5.0.0",
     "react-searchable-dropdown": "^1.2.5",
     "react-select": "^3.1.0",
     "react-tabs": "^3.1.2",
@@ -101,8 +102,8 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "jest --setupFiles dotenv/config",
     "coverage": "jest --coverage",
     "test2": "node scripts/test.js",
