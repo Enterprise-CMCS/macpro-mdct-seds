@@ -21,17 +21,21 @@ jobs:
   prettier:
     name: prettier has been run on compatible files
     runs-on: ubuntu-latest
-    container: node:18
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
       - name: check that modified files are prettier
         run: npx prettier --write .
   eslint:
     name: frontend linting
     runs-on: ubuntu-latest
-    container: node:18
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
       - name: install dependencies
         working-directory: services/ui-src
         run: yarn install
