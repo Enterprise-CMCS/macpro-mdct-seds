@@ -174,7 +174,7 @@ jobs:
     if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     container:
-      image: cypress/browsers:node16.16.0-chrome107-ff107
+      image: cypress/browsers:node18.12.0-chrome107
       options: --user 1001
     steps:
       - uses: actions/checkout@v4
