@@ -173,8 +173,15 @@ jobs:
       - register-runner
     if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
     runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.16.0-chrome107-ff107
+      options: --user 1001
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: set path
+        run: echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
         with:
