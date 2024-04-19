@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Searchable from "react-searchable-dropdown";
-import MultiSelect from "react-multi-select-component";
+import { MultiSelect } from "react-multi-select-component";
 import { adminCreateUser } from "../../libs/api";
 import { Table, Button, TextInput } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
