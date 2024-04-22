@@ -66,6 +66,15 @@ jobs:
           coverageCommand: npm run-script coverage
           coverageLocations: |
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test results
+        #if: failure()
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14            
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
@@ -188,12 +197,16 @@ jobs:
           working-directory: tests/cypress
           spec: integration/**/*
           browser: chrome
-      - name: Store test reults
-        uses: actions/upload-artifact@v3
-        if: failure()
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        #if: failure()
         with:
-          name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          name: cypress-test-results
+          path: |
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
+          retention-days: 14          
 
   cleanup:
     name: Delist GHA Runner CIDR Blocks
