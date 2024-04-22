@@ -75,13 +75,13 @@ jobs:
           path: |
             ${{github.workspace}}/services/ui-src/coverage/lcov.info
           retention-days: 14            
-      - name: deploy
-        run: |
-          # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
-          # This can optionally be set as an GitHub Actions Secret
-          ./deploy.sh $STAGE_PREFIX$branch_name
-        env:
-          SKIP_PREFLIGHT_CHECK: true
+      # - name: deploy
+      #   run: |
+      #     # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
+      #     # This can optionally be set as an GitHub Actions Secret
+      #     ./deploy.sh $STAGE_PREFIX$branch_name
+      #   env:
+      #     SKIP_PREFLIGHT_CHECK: true
     outputs:
       BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
       BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
@@ -197,6 +197,8 @@ jobs:
           working-directory: tests/cypress
           spec: integration/**/*
           browser: chrome
+      - name: Where am I
+        run: ls -alh ${{github.workspace}}         
       - name: Debug directory structure
         run: find ${{github.workspace}}/tests/cypress/ -type f -print
       - name: Upload screenshots
