@@ -198,7 +198,7 @@ jobs:
           spec: integration/**/*
           browser: chrome
       - name: Debug directory structure
-        run: sudo apt-get install -y tree && tree
+        run: find ${{github.workspace}}/tests/cypress/ -type f -print
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         if: always()
