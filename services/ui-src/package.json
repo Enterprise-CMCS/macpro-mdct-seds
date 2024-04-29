@@ -18,7 +18,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@trussworks/react-uswds": "^4.2.0",
+    "@trussworks/react-uswds": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "aws-amplify": "^4.3.4",
@@ -89,7 +89,6 @@
     "sass": "^1.57.1",
     "sass-loader": "8.0.2",
     "semver": "6.3.1",
-    "serverless-stack-termination-protection": "^1.0.4",
     "style-loader": "0.23.1",
     "styled-components": "^5.2.1",
     "terser-webpack-plugin": "2.3.8",
@@ -199,7 +198,6 @@
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
     "serverless-cloudfront-invalidate": "1.5.0",
-    "serverless-plugin-scripts": "^1.0.2",
     "serverless-s3-sync": "^1.14.4",
     "webpack-dev-server": "^5.0.0"
   }

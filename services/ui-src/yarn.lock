@@ -5742,10 +5742,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@trussworks/react-uswds@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@trussworks/react-uswds/-/react-uswds-4.2.0.tgz#94393db67c06c88b6f015c27f3dbdfa7d256e8b1"
-  integrity sha512-GFIeZwKw/vx/olFsYdube6Y1rQ0GVSsj3DEjVIUFQP7tjY50WYwv6gvU42Ey0e4PA6iY1wVTB1DeKkctYW22nQ==
+"@trussworks/react-uswds@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@trussworks/react-uswds/-/react-uswds-7.0.0.tgz#03d05f1aec64fbdc4df5621eade9616c7d03a008"
+  integrity sha512-N3O0BRuhyLoZKjYM0Mq+XIXJ3ShvCEh6uhqwRstIde6E9m0Au6JLy1YEv9A8eapBxDvyqZW3jiVTGzW/JqS+eA==
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
@@ -20166,11 +20166,6 @@ serverless-cloudfront-invalidate@1.5.0:
     proxy-agent "^3.0.3"
     randomstring "^1.1.5"
 
-serverless-plugin-scripts@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/serverless-plugin-scripts/-/serverless-plugin-scripts-1.0.2.tgz"
-  integrity sha1-IYCMPP0KGoTkjAZgsPbzcLVmVIY=
-
 serverless-s3-sync@^1.14.4:
   version "1.15.0"
   resolved "https://registry.npmjs.org/serverless-s3-sync/-/serverless-s3-sync-1.15.0.tgz"
@@ -20181,11 +20176,6 @@ serverless-s3-sync@^1.14.4:
     chalk "^2.4.2"
     mime "^2.4.4"
     minimatch "^3.0.4"
-
-serverless-stack-termination-protection@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz"
-  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
 
 set-function-length@^1.2.1:
   version "1.2.2"
