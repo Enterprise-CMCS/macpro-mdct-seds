@@ -1452,19 +1452,14 @@ serialize-javascript@6.0.0:
   dependencies:
     randombytes "^2.1.0"
 
-serverless-dynamodb@^0.2.51:
-  version "0.2.51"
-  resolved "https://registry.yarnpkg.com/serverless-dynamodb/-/serverless-dynamodb-0.2.51.tgz#4fc5bbaa60ea187316eed68b78489d2e3eb021f8"
-  integrity sha512-nqzcviT40SVFImLno7mQ1+DqLuedgi45JeD3Q6VbxSVUBA+PG+d/NBoGsPKnxLrvFOzZFEI2e2n0h9N8woyYoQ==
+serverless-dynamodb@^0.2.53:
+  version "0.2.53"
+  resolved "https://registry.yarnpkg.com/serverless-dynamodb/-/serverless-dynamodb-0.2.53.tgz#263bce8737d70a13e82058460fbe9c3d0a73a1d0"
+  integrity sha512-WffFxjZdjR8OKOdIyU8oS6hEguSM2djQiT9QI4JVr5C1WSxyt1UU2+qiM1p8DvZHDCiwbE/H5RRKergxLdkMkw==
   dependencies:
     "@aws-sdk/client-dynamodb" "^3.428.0"
     "@aws-sdk/lib-dynamodb" "^3.428.0"
     aws-dynamodb-local "^0.0.11"
-
-serverless-stack-termination-protection@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz#e0430108cfc8f4d72a63138ef5781c6fe9707868"
-  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
 
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
