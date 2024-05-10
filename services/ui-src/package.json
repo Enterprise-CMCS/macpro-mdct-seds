@@ -21,7 +21,7 @@
     "@trussworks/react-uswds": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
-    "aws-amplify": "^4.3.4",
+    "aws-amplify": "^5.3.4",
     "babel-eslint": "10.1.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "8.1.0",
