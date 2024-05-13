@@ -28,12 +28,11 @@ export const main = handler(async (event, context) => {
       userId: currentUser["Items"][0].userId,
     },
     UpdateExpression:
-      "SET username = :username, #r = :role, states = :states, isActive = :isActive, lastLogin = :lastLogin, usernameSub = :usernameSub",
+      "SET username = :username, #r = :role, states = :states, lastLogin = :lastLogin, usernameSub = :usernameSub",
     ExpressionAttributeValues: {
       ":username": data.username,
       ":role": data.role,
       ":states": data.states ?? "",
-      ":isActive": data.isActive ?? "inactive",
       ":lastLogin": new Date().toISOString(),
       ":usernameSub": data.usernameSub ?? null,
     },
@@ -50,7 +49,6 @@ export const main = handler(async (event, context) => {
 function modifyingAnythingButAnEmptyStateList(incomingUser, existingUser) {
   if (incomingUser.username !== existingUser.username) return true;
   if (incomingUser.role !== existingUser.role) return true;
-  if (incomingUser.isActive !== existingUser.isActive) return true;
   if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
   if (existingUser.states.length > 0) return true;
   return false;

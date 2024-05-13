@@ -27,14 +27,6 @@ export const listUsers = async () => {
   return API.get("mdct-seds", `/users`, opts);
 };
 
-// *** activate / deactivate user
-export const activateDeactivateUser = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/users/activation/${data.username}`, opts);
-};
-
 // *** get user information by user id
 export const getUserById = async data => {
   const opts = await requestOptions();

@@ -28,7 +28,6 @@ const EditUser = ({ stateList }) => {
   const [username, setUsername] = useState();
   const [user, setUser] = useState();
   const [role, setRole] = useState();
-  const [isActive, setIsActive] = useState();
 
   const [selectedStates, setSelectedStates] = useState([]);
   /* eslint-disable no-unused-vars */
@@ -106,11 +105,6 @@ const EditUser = ({ stateList }) => {
     { value: "state", label: "State User" }
   ];
 
-  const statuses = [
-    { value: true, label: "Active" },
-    { value: false, label: "Inactive" }
-  ];
-
   // Update user object
   const updateLocalUser = (e, field) => {
     let tempUser = { ...user };
@@ -142,13 +136,6 @@ const EditUser = ({ stateList }) => {
       setSelectedStates();
       // Update user
       response = e.value;
-    } else if (field === "isActive") {
-      response = e.value;
-      if (e.value) {
-        setIsActive("True");
-      } else {
-        setIsActive("False");
-      }
     } else if (field === "username") {
       setUsername(e.target.value);
     } else {
@@ -158,12 +145,6 @@ const EditUser = ({ stateList }) => {
     setUser(tempUser);
   };
 
-  const getStatus = status => {
-    if (status) {
-      return true;
-    }
-    return false;
-  };
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
     data.states = statesToSend;
@@ -286,18 +267,6 @@ const EditUser = ({ stateList }) => {
                   </tr>
                 </>
               ) : null}
-              <tr>
-                <th>Status:</th>
-                <td>
-                  <Searchable
-                    options={statuses}
-                    multiple={false}
-                    placeholder="Select a Status"
-                    onSelect={e => updateLocalUser(e, "isActive")}
-                    value={isActive ? isActive : getStatus(user.isActive)}
-                  />
-                </td>
-              </tr>
               <tr>
                 <th>Registration Date</th>
                 <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>

@@ -69,7 +69,6 @@ const createUser = async (userData) => {
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
-      isActive: "true",
       isSuperUser: "true",
       role: userData.role,
       states: [],

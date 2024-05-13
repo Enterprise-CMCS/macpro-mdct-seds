@@ -19,15 +19,13 @@ import {
   faArrowDown,
   faUserPlus,
   faFileExcel,
-  faUserAltSlash,
-  faUserCheck,
   faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
 
 // *** API / data / etc
-import { listUsers, activateDeactivateUser } from "../../libs/api";
+import { listUsers } from "../../libs/api";
 
 // *** styles
 import "./Users.scss";
@@ -57,30 +55,6 @@ const Users = () => {
 
   const handleAddNewUser = () => {
     history.push("/users/add");
-  };
-
-  const deactivateUser = async user => {
-    const confirm = window.confirm(
-      `Are you sure you want to deactivate user ${user.username}`
-    );
-    if (confirm) {
-      const deactivateData = { isActive: false, userId: user.userId };
-      await activateDeactivateUser(deactivateData).then(async () => {
-        await loadUserData();
-      });
-    }
-  };
-
-  const activateUser = async user => {
-    const confirm = window.confirm(
-      `Are you sure you want to activate user ${user.username}`
-    );
-    if (confirm) {
-      const activateData = { isActive: true, userId: user.userId };
-      await activateDeactivateUser(activateData).then(async () => {
-        await loadUserData();
-      });
-    }
   };
 
   let tableData = false;
@@ -159,42 +133,6 @@ const Users = () => {
           return <span>{userStates.sort().join(", ")}</span>;
         }
       },
-      {
-        name: "Status",
-        selector: "isActive",
-        excludeFromExcel: true,
-        sortable: true,
-        cell: user => {
-          return (
-            <span>
-              {user.isActive ? (
-                <Button
-                  className="row-action-button"
-                  secondary={true}
-                  onClick={() => deactivateUser(user)}
-                >
-                  Deactivate
-                  <FontAwesomeIcon
-                    icon={faUserAltSlash}
-                    className="margin-left-2"
-                  />
-                </Button>
-              ) : (
-                <Button
-                  className="row-action-button"
-                  onClick={() => activateUser(user)}
-                >
-                  Activate
-                  <FontAwesomeIcon
-                    icon={faUserCheck}
-                    className="margin-left-2"
-                  />
-                </Button>
-              )}
-            </span>
-          );
-        }
-      }
     ];
 
     tableData = {
