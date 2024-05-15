@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
+import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 
 // load .env
 dotenv.config();
