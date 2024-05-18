@@ -3359,6 +3359,10 @@ const fullStoreMock = {
         state_id: "AK"
       },
       {
+        label: "American Samoa",
+        value: "AS"
+      },
+      {
         state_name: "Arizona",
         state_id: "AZ"
       },
@@ -3387,12 +3391,20 @@ const fullStoreMock = {
         state_id: "DC"
       },
       {
+        label: "Federated States Of Micronesia",
+        value: "FM"
+      },
+      {
         state_name: "Florida",
         state_id: "FL"
       },
       {
         state_name: "Georgia",
         state_id: "GA"
+      },
+      {
+        label: "Guam",
+        value: "GU"
       },
       {
         state_name: "Hawaii",
@@ -3429,6 +3441,10 @@ const fullStoreMock = {
       {
         state_name: "Maine",
         state_id: "ME"
+      },
+      {
+        label: "Marshall Islands",
+        value: "MH"
       },
       {
         state_name: "Maryland",
@@ -3491,6 +3507,10 @@ const fullStoreMock = {
         state_id: "ND"
       },
       {
+        label: "Northern Mariana Islands",
+        value: "MP"
+      },
+      {
         state_name: "Ohio",
         state_id: "OH"
       },
@@ -3503,8 +3523,16 @@ const fullStoreMock = {
         state_id: "OR"
       },
       {
+        label: "Palau",
+        value: "PW"
+      },
+      {
         state_name: "Pennsylvania",
         state_id: "PA"
+      },
+      {
+        label: "Puerto Rico",
+        value: "PR"
       },
       {
         state_name: "Rhode Island",
@@ -3533,6 +3561,10 @@ const fullStoreMock = {
       {
         state_name: "Vermont",
         state_id: "VT"
+      },
+      {
+        label: "Virgin Islands",
+        value: "VI"
       },
       {
         state_name: "Virginia",

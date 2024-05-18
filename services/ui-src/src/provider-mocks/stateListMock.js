@@ -10,6 +10,10 @@ const stateListMock = {
         value: "AK"
       },
       {
+        label: "American Samoa",
+        value: "AS"
+      },
+      {
         label: "Arizona",
         value: "AZ"
       },
@@ -38,12 +42,20 @@ const stateListMock = {
         value: "DC"
       },
       {
+        label: "Federated States Of Micronesia",
+        value: "FM"
+      },
+      {
         label: "Florida",
         value: "FL"
       },
       {
         label: "Georgia",
         value: "GA"
+      },
+      {
+        label: "Guam",
+        value: "GU"
       },
       {
         label: "Hawaii",
@@ -80,6 +92,10 @@ const stateListMock = {
       {
         label: "Maine",
         value: "ME"
+      },
+      {
+        label: "Marshall Islands",
+        value: "MH"
       },
       {
         label: "Maryland",
@@ -142,6 +158,10 @@ const stateListMock = {
         value: "ND"
       },
       {
+        label: "Northern Mariana Islands",
+        value: "MP"
+      },
+      {
         label: "Ohio",
         value: "OH"
       },
@@ -154,8 +174,16 @@ const stateListMock = {
         value: "OR"
       },
       {
+        label: "Palau",
+        value: "PW"
+      },
+      {
         label: "Pennsylvania",
         value: "PA"
+      },
+      {
+        label: "Puerto Rico",
+        value: "PR"
       },
       {
         label: "Rhode Island",
@@ -184,6 +212,10 @@ const stateListMock = {
       {
         label: "Vermont",
         value: "VT"
+      },
+      {
+        label: "Virgin Islands",
+        value: "VI"
       },
       {
         label: "Virginia",
@@ -216,6 +248,10 @@ const stateListMock = {
         state_id: "AK"
       },
       {
+        label: "American Samoa",
+        value: "AS"
+      },
+      {
         state_name: "Arizona",
         state_id: "AZ"
       },
@@ -244,12 +280,20 @@ const stateListMock = {
         state_id: "DC"
       },
       {
+        label: "Federated States Of Micronesia",
+        value: "FM"
+      },
+      {
         state_name: "Florida",
         state_id: "FL"
       },
       {
         state_name: "Georgia",
         state_id: "GA"
+      },
+      {
+        label: "Guam",
+        value: "GU"
       },
       {
         state_name: "Hawaii",
@@ -286,6 +330,10 @@ const stateListMock = {
       {
         state_name: "Maine",
         state_id: "ME"
+      },
+      {
+        label: "Marshall Islands",
+        value: "MH"
       },
       {
         state_name: "Maryland",
@@ -348,6 +396,10 @@ const stateListMock = {
         state_id: "ND"
       },
       {
+        label: "Northern Mariana Islands",
+        value: "MP"
+      },
+      {
         state_name: "Ohio",
         state_id: "OH"
       },
@@ -360,8 +412,16 @@ const stateListMock = {
         state_id: "OR"
       },
       {
+        label: "Palau",
+        value: "PW"
+      },
+      {
         state_name: "Pennsylvania",
         state_id: "PA"
+      },
+      {
+        label: "Puerto Rico",
+        value: "PR"
       },
       {
         state_name: "Rhode Island",
@@ -390,6 +450,10 @@ const stateListMock = {
       {
         state_name: "Vermont",
         state_id: "VT"
+      },
+      {
+        label: "Virgin Islands",
+        value: "VI"
       },
       {
         state_name: "Virginia",
