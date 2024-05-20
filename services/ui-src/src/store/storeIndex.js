@@ -4,7 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import currentForm from "./reducers/singleForm/singleForm";
 import global from "./reducers/global";
 import { MODE } from "../utility-functions/constants";
-import {logger } from "redux-logger";
+import { logger } from "redux-logger";
 
 // Consolidate reducers
 export const reducers = combineReducers({
