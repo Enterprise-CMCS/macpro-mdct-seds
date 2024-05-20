@@ -15,4 +15,13 @@ export default defineConfig({
   build: {
     outDir: "./build_dev",
   },
+  resolve: {
+    alias: [
+        {
+            // this is required for the SCSS modules
+            find: /^~(.*)$/,
+            replacement: '$1',
+        },
+    ],
+},
 });
