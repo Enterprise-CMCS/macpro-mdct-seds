@@ -13,7 +13,7 @@ export default defineConfig({
     global: "globalThis",
   },
   build: {
-    outDir: "./build_dev",
+    outDir: "./build",
   },
   resolve: {
     alias: [
