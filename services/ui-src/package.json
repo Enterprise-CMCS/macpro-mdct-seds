@@ -75,7 +75,6 @@
     "react-redux": "^7.2.2",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^5.0.0",
     "react-searchable-dropdown": "^1.2.5",
     "react-select": "^3.1.0",
     "react-tabs": "^3.1.2",
@@ -101,8 +100,9 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "jest --setupFiles dotenv/config",
     "coverage": "jest --coverage",
     "test2": "node scripts/test.js",
