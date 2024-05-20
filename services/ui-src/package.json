@@ -123,7 +123,7 @@
       "<rootDir>/src"
     ],
     "collectCoverageFrom": [
-      "src/components/**/*.js",
+      "src/components/**/*.{js,jsx}",
       "!src/components/Example/*",
       "!src/components/LocalLogin/*"
     ],
