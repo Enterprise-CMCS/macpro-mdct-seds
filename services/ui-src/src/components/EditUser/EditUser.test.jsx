@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
-import EditUser from "./EditUser.js";
+import EditUser from "./EditUser";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { BrowserRouter } from "react-router-dom";
 
