@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
-import AddUser from "./AddUser.js";
+import AddUser from "./AddUser";
 import stateListMock from "../../provider-mocks/stateListMock";
 import { BrowserRouter } from "react-router-dom";
 
@@ -12,7 +12,7 @@ let wrapper;
 
 const mockStore = configureMockStore([]);
 
-describe("Test AddUser.js", () => {
+describe("Test AddUser.jsx", () => {
   beforeEach(() => {
     store = mockStore(stateListMock);
     wrapper = mount(

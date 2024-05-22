@@ -3,6 +3,8 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import currentForm from "./reducers/singleForm/singleForm";
 import global from "./reducers/global";
+import { MODE } from "../utility-functions/constants";
+import { logger } from "redux-logger";
 
 // Consolidate reducers
 export const reducers = combineReducers({
@@ -13,10 +15,7 @@ export const reducers = combineReducers({
 // Consolidate middleware
 let middlewareArray = [thunk];
 // log redux only in dev environment
-if (process.env.NODE_ENV === "development") {
-  // eslint-disable-next-line global-require
-  const { logger } = require("redux-logger");
-
+if (MODE === "development") {
   middlewareArray = [...middlewareArray, logger];
 }
 const middleware = composeWithDevTools(applyMiddleware(...middlewareArray));
