@@ -1,11 +1,15 @@
-import * as debug from "./debug-lib";
+import * as logger from "./debug-lib";
 
 export default function handler(lambda) {
   return async function (event, context) {
     let body, statusCode;
 
-    // Start debugger
-    debug.init(event, context);
+    logger.init();
+    logger.debug("API event: %O", {
+      body: event.body,
+      pathParameters: event.pathParameters,
+      queryStringParameters: event.queryStringParameters,
+    });
 
     try {
       // Run the Lambda
@@ -13,10 +17,12 @@ export default function handler(lambda) {
       statusCode = 200;
     } catch (e) {
       // Print debug messages
-      debug.flush(e);
+      logger.error("Error: %O", e);
 
       body = { error: e.message };
       statusCode = 500;
+    } finally {
+      logger.flush();
     }
 
     // Return HTTP response

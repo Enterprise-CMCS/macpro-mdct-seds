@@ -69,7 +69,7 @@ Want to deploy from Windows using a VM?
 - Run `sudo apt-get install yarn -y`
 - Install NVM `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Add NVM to your current terminal session `source ~/.nvm/nvm.sh`
-- Change Node Version `nvm install 12.20.0`
+- Change Node Version `nvm install`
 - Install Java
 - Run `sudo add-apt-repository ppa:openjdk-r/ppa`
 - Run `sudo apt-get update`
@@ -94,11 +94,11 @@ From the root directory run:
 
 `cd ../../`
 
-`./dev local`
+`./run local`
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
-Local dev is configured in typescript project in [src/](src/). The entrypoint is [src/dev.ts](src/dev.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+Local dev is configured in typescript project in [src/](src/). The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
 Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). This plugin runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every file save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local Database and S3 buckets in a similar fashion.
 
@@ -108,7 +108,7 @@ Local authentication bypasses Cognito. The frontend mimics login in local storag
 
 (Make sure you've finished setting up the project locally above before moving on to this step!)
 
-Once you've run `./dev local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
+Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
 
 For a password to that user, please ask a fellow developer.
 
@@ -245,7 +245,7 @@ brew install yarn
 
 # run dev
 
-./dev local
+./run local
 
 ```
 
@@ -270,6 +270,22 @@ To contribute:
 - Open a pull request targeting this repository
 
 Pull requests are being accepted.
+
+## Slack Webhooks:
+
+This repository uses 3 webhooks to publish to  3 different channels all in CMS Slack.
+
+- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-seds-alerts` channel. Alerts published there are for deploy or test failures to the `master`, `val`, or `production` branches.
+
+- INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `mdct-integrations-channel`
+
+- PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of Seds to production.
+
+    - Webhooks are created by CMS tickets, populated into GitHub Secrets
+
+## GitHub Actions Secret Management:
+- Secrets are added to GitHub secrets by GitHub Admins 
+- Upon editing and adding new secrets Admins should also update the encypted `/github/secret-list` SSM parameter in the SEDS AWS Production Account.
 
 ## License
 

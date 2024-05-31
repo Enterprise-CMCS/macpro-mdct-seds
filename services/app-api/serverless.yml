@@ -5,7 +5,6 @@ frameworkVersion: "3"
 package:
   individually: true
 
-useDotenv: true
 plugins:
   - serverless-s3-bucket-helper
   - serverless-bundle
@@ -104,16 +103,17 @@ custom:
     production: true
     development: false
   warmup:
-    enabled: ${self:custom.warmupEnabled.${self:custom.infrastructureType}}
-    role: LambdaWarmupRole
-    vpc: false
-    events:
-      - schedule: rate(4 minutes)
-    timeout: 20
-    prewarm: true
-    concurrency: 5
-    folderName: node_modules/serverless-bundle/src/_warmup
-    cleanFolder: false
+    default:
+      enabled: ${self:custom.warmupEnabled.${self:custom.infrastructureType}}
+      role: LambdaWarmupRole
+      vpc: false
+      events:
+        - schedule: rate(4 minutes)
+      timeout: 20
+      prewarm: true
+      concurrency: 5
+      folderName: node_modules/serverless-bundle/src/_warmup
+      cleanFolder: false
   scripts:
     hooks:
       package:setupProviderConfiguration: |
@@ -127,7 +127,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs20.x
   region: us-east-1
   tracing:
     apiGateway: true

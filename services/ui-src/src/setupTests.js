@@ -33,3 +33,8 @@ jest.mock("aws-amplify", () => ({
     listen: jest.fn()
   }
 }));
+
+jest.mock("./utility-functions/constants", () => ({
+  MODE: "production",
+  BASE_URL: "mdctcartsdev.cms.gov"
+}));

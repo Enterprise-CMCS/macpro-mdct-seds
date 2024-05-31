@@ -1,7 +1,9 @@
 import handler from "./../../libs/handler-lib";
 import dynamoDb from "./../../libs/dynamodb-lib";
 import { authorizeStateUser } from "../../auth/authConditions";
-const AWS = require("aws-sdk");
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
+const client = new SESClient({ region: "us-east-1" });
 
 /**
  * Handler responsible for sending notification to business users,
@@ -13,11 +15,9 @@ export const main = handler(async (event, context) => {
   await authorizeStateUser(event, data.formInfo.state_id);
 
   const email = await unCetifiedTemplate(data);
-  let sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-    .sendEmail(email)
-    .promise();
+  const command = new SendEmailCommand(email);
   try {
-    const data = await sendPromise;
+    const data = await client.send(command);
     console.log(data, "data: promise");
     console.log(data.MessageId, "data.MessageId");
   } catch (err) {
