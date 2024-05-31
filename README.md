@@ -80,7 +80,7 @@ Want to deploy from Windows using a VM?
 
 If you don't have yarn, nvm, or java installed, see [Requirements](#requirements)
 
-Get the correct info for the .env file from another developer or copy the env_example to a .env and update it with the appropriate values.
+Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files.
 
 From the root directory run:
 
@@ -94,7 +94,7 @@ From the root directory run:
 
 `cd ../../`
 
-`./run local`
+`./run local --update-env` or `./run local` if you do not have a 1password account and have a .env file populated by hand.
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
@@ -285,7 +285,7 @@ This repository uses 3 webhooks to publish to  3 different channels all in CMS S
 
 ## GitHub Actions Secret Management:
 - Secrets are added to GitHub secrets by GitHub Admins 
-- Upon editing and adding new secrets Admins should also update the encypted `/github/secret-list` SSM parameter in the SEDS AWS Production Account.
+- Development secrets are maintained in a 1Password vault
 
 ## License
 
