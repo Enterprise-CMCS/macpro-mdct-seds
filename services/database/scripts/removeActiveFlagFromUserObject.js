@@ -65,5 +65,5 @@ const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
   }
   console.log(`Scanned ${scannedCount} total users`);
   console.log(`Found ${updatedCount} users in need of update`);
-  console.log("All updated successful");
+  console.log("All updates successful");
 })();
