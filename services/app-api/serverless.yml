@@ -396,15 +396,6 @@ functions:
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
-  activateDeactivateUser:
-    handler: handlers/users/post/activateDeactivateUser.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/activation/{username}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   updateUser:
     handler: handlers/users/post/updateUser.main
     role: LambdaApiRole
