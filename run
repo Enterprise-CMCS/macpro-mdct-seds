@@ -67,8 +67,9 @@ if [ "$UPDATE_ENV" = true ]; then
         exit 1
     fi
 
-    # call 1password vault to retrieve secrets 
+    # call 1password vault to retrieve secrets
     op inject -i .env.tpl -o .env -f
+    sed -i "" -e "s/# pragma: allowlist secret//g" .env
 fi
 
 
