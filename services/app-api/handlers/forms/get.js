@@ -40,7 +40,6 @@ export const main = handler(async (event, context) => {
     FilterExpression: "form = :form and #theYear = :specifiedYear",
   };
 
-  //const answersResult = await dynamoDb.scan(answerParams);
   const answersResult = await dynamoDb.query(answerParams);
   const questionsResult = await dynamoDb.scan(questionParams);
 

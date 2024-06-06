@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
 const { Kafka } = require("kafkajs");
 
 const STAGE = process.env.stage;
@@ -39,11 +39,6 @@ class KafkaSourceLib {
   tables = [list of tables];
   */
 
-  unmarshallOptions = {
-    convertEmptyValues: true,
-    wrapNumbers: true,
-  };
-
   stringify(e, prettyPrint) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
@@ -56,7 +51,7 @@ class KafkaSourceLib {
   }
 
   unmarshall(r) {
-    return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
+    return dynamoDbUnmarshall(r);
   }
 
   createPayload(record) {
@@ -68,7 +63,7 @@ class KafkaSourceLib {
     const { eventID, eventName } = record;
     const dynamoRecord = {
       NewImage: this.unmarshall(dynamodb.NewImage),
-      OldImage: this.unmarshall(dynamodb.OldImage),
+      OldImage: this.unmarshall(dynamodb.OldImage ?? {}),
       Keys: this.unmarshall(dynamodb.Keys),
     };
     return {

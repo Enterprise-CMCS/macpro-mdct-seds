@@ -2,7 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import TabContainer from "../TabContainer/TabContainer.js";
+import TabContainer from "../TabContainer/TabContainer";
 import currentFormMock_64_21E from "../../provider-mocks/currentFormMock_64_21E.js";
 
 const mockStore = configureStore([]);

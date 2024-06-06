@@ -1,9 +1,26 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
+import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
+import { execSync } from "child_process";
 
 // load .env
 dotenv.config();
+
+// Function to update .env files using 1Password CLI
+function updateEnvFiles() {
+  try {
+    execSync("op inject -i .env.tpl -o .env -f", { stdio: "inherit" });
+    execSync(
+      "op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f",
+      { stdio: "inherit" }
+    );
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to update .env files using 1Password CLI.");
+    process.exit(1);
+  }
+}
 
 // run_db_locally runs the local db
 // @ts-ignore
@@ -112,6 +129,25 @@ async function run_all_locally() {
   run_fe_locally(runner);
 }
 
+async function destroy_stage(options: {
+  stage: string;
+  service: string | undefined;
+  wait: boolean;
+  verify: boolean;
+}) {
+  let destroyer = new ServerlessStageDestroyer();
+  /*
+   * Filters enable filtering by resource tags but we aren't leveraging any tags other than
+   * the STAGE tag automatically applied by the serverless framework.  Adding PROJECT and SERVICE
+   * tags would be a good idea.
+   */
+  await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
+    wait: options.wait,
+    filters: [],
+    verify: options.verify,
+  });
+}
+
 // The command definitons in yargs
 // All valid arguments to dev should be enumerated here, this is the entrypoint to the script
 yargs(process.argv.slice(2))
@@ -126,4 +162,24 @@ yargs(process.argv.slice(2))
       console.log("Testing 1. 2. 3.");
     }
   )
+  .command(
+    "destroy",
+    "destroy serverless stage",
+    {
+      stage: { type: "string", demandOption: true },
+      service: { type: "string", demandOption: false },
+      wait: { type: "boolean", demandOption: false, default: true },
+      verify: { type: "boolean", demandOption: false, default: true },
+    },
+    destroy_stage
+  )
+  .command(
+    "update-env",
+    "update environment variables using 1Password",
+    () => {},
+    () => {
+      updateEnvFiles();
+    }
+  )
+  .scriptName("run")
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand

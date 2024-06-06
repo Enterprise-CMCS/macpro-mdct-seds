@@ -39,10 +39,10 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             node_modules
@@ -53,11 +53,10 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: Jest setup
         working-directory: services/ui-src
-        # run: yarn add jest
         run: yarn install
       - name: unit test & publish coverage
         if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v5
+        uses: paambaati/codeclimate-action@v6
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
         with:
@@ -66,6 +65,14 @@ jobs:
           coverageCommand: npm run-script coverage
           coverageLocations: |
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14            
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
@@ -73,7 +80,15 @@ jobs:
           ./deploy.sh $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
+      - id: endpoint
+        run: |
+          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
+          echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
+          echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+        working-directory: services
     outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
       BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
       BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
 
@@ -173,9 +188,6 @@ jobs:
       - register-runner
     if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node16.16.0-chrome107-ff107
-      options: --user 1001
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -183,17 +195,20 @@ jobs:
       - name: set path
         run: echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: tests/cypress
           spec: integration/**/*
           browser: chrome
-      - name: Store test reults
-        uses: actions/upload-artifact@v3
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          name: cypress-test-results
+          path: |
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
+          retention-days: 14          
 
   cleanup:
     name: Delist GHA Runner CIDR Blocks

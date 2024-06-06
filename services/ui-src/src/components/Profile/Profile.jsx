@@ -4,7 +4,6 @@ import { onError } from "../../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.scss";
 import { Auth } from "aws-amplify";
-import "react-phone-input-2/lib/style.css";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
