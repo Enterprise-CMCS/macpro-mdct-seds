@@ -19,7 +19,6 @@ export default function Login() {
       //   "cn=CARTS_Group_Dev,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CARTS_Group_Dev_Admin,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=CHIP_D_USER_GROUP_ADMIN,ou=Groups,dc=cms,dc=hhs,dc=gov,cn=IDM_OKTA_TEST,ou=Groups,dc=cms,dc=hhs,dc=gov",
       dateJoined: "2021-10-01T12:46:35.838Z",
       isSuperUser: "true",
-      isActive: "true",
       userId: "1",
       email: "alicecooper@collabralink.com",
       identities: [{ userId: "AAAA" }],
