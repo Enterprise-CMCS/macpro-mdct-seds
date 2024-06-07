@@ -81,7 +81,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
 
   return (
     <>
-      <div row className="form-header upper-form-nav">
+      <div className="form-header upper-form-nav">
         <div className="breadcrumbs">
           <Link to="/">
             {" "}
