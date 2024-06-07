@@ -69,7 +69,7 @@ const PrintPDF = ({
       ) : null}
       {hasAccess === true ? (
         <>
-          <div row className="form-header upper-form-nav">
+          <div className="form-header upper-form-nav">
             <div className="breadcrumbs">
               <NavLink className="breadcrumb" to="/">
                 {" "}
