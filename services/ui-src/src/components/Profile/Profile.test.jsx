@@ -3,6 +3,8 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import Profile from "./Profile";
 import { mount } from "enzyme";
 
+jest.spyOn(window, "alert").mockImplementation();
+
 describe("Test SummaryTab.js", () => {
   let wrapper;
   const mockPush = jest.fn();
