@@ -99,12 +99,12 @@ export default function Profile({ user }) {
             <form onSubmit={handleSubmit} data-testid="handleSubmit">
               <FormGroup controlId="email">
                 <ControlLabel>Email</ControlLabel>
-                <FormControl value={email} disabled={true} />
+                <FormControl value={email ?? ""} disabled={true} />
               </FormGroup>
               <FormGroup controlId="firstName">
                 <ControlLabel>First Name</ControlLabel>
                 <FormControl
-                  value={firstName}
+                  value={firstName ?? ""}
                   onChange={e => setFirstName(e.target.value)}
                   disabled={true}
                 />
@@ -112,7 +112,7 @@ export default function Profile({ user }) {
               <FormGroup controlId="lastName">
                 <ControlLabel>Last Name</ControlLabel>
                 <FormControl
-                  value={lastName}
+                  value={lastName ?? ""}
                   onChange={e => setLastName(e.target.value)}
                   disabled={true}
                 />
@@ -120,14 +120,14 @@ export default function Profile({ user }) {
               <FormGroup controlId="role">
                 <ControlLabel>Role</ControlLabel>
                 <FormControl
-                  value={capitalize(role)}
+                  value={capitalize(role ?? "")}
                   onChange={e => setRole(e.target.value)}
                   disabled={true}
                 />
               </FormGroup>
               <FormGroup controlId="states">
                 <ControlLabel>States</ControlLabel>
-                <FormControl value={states} disabled={true} />
+                <FormControl value={states ?? []} disabled={true} />
               </FormGroup>
             </form>
           </Grid>
