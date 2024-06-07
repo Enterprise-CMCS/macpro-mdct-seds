@@ -51,7 +51,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
       <Textarea
         id="summaryNotesInput"
         name="summaryNotesInput"
-        value={summaryNotes}
+        value={summaryNotes ?? ""}
         type="text"
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
