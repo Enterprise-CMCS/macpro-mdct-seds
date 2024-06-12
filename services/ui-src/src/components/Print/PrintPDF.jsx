@@ -69,7 +69,7 @@ const PrintPDF = ({
       ) : null}
       {hasAccess === true ? (
         <>
-          <div row className="form-header upper-form-nav">
+          <div className="form-header upper-form-nav">
             <div className="breadcrumbs">
               <NavLink className="breadcrumb" to="/">
                 {" "}
@@ -104,7 +104,7 @@ const PrintPDF = ({
           <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
 
           <div id="TheDiv" className="tab-container-main padding-x-5 testClass">
-            {currentTabs.map((tab, idx) => {
+            {currentTabs.map((tab, tabIndex) => {
               // Filter out just the answer objects that belong in this tab
               const tabAnswers = answers.filter(
                 element => element.rangeId === tab
@@ -114,7 +114,7 @@ const PrintPDF = ({
                 element => tab === element.rangeId
               );
               return (
-                <>
+                <React.Fragment key={tabIndex}>
                   {ageRangeDetails ? (
                     <div className="age-range-description padding-y-2">
                       <h3>{ageRangeDetails.ageDescription}:</h3>
@@ -151,7 +151,7 @@ const PrintPDF = ({
                     }
                     return returnComponent;
                   })}
-                </>
+                </React.Fragment>
               );
             })}
             <div className="summary-notes">

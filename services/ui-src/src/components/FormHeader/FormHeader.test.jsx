@@ -6,6 +6,8 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import currentFormMock_GRE from "../../provider-mocks/currentFormMock_GRE";
 import { storeFactory } from "../../provider-mocks/testUtils";
 
+jest.spyOn(window, "alert").mockImplementation();
+
 // The props this component requires in order to render
 const defaultProps = {
   quarter: "1",

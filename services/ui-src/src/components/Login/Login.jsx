@@ -118,9 +118,7 @@ export default function Login() {
         </FormGroup>
         <div className="padding-y-9">
           <LoaderButton
-            block
             type="submit"
-            bsSize="large"
             isLoading={isLoading}
             disabled={!validateForm()}
           >

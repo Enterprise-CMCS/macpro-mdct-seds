@@ -95,9 +95,7 @@ export default function Signup() {
           <HelpBlock>Please check your email for the code.</HelpBlock>
         </FormGroup>
         <LoaderButton
-          block
           type="submit"
-          bsSize="large"
           isLoading={isLoading}
           disabled={!validateConfirmationForm()}
         >
@@ -166,9 +164,7 @@ export default function Signup() {
           </FormControl>
         </FormGroup>
         <LoaderButton
-          block
           type="submit"
-          bsSize="large"
           isLoading={isLoading}
           disabled={!validateForm()}
         >

@@ -6,7 +6,7 @@ import { storeFactory } from "../../provider-mocks/testUtils";
 
 // The props this component requires in order to render
 const defaultProps = {
-  statusData: { last_modified: "01-15-2021" },
+  statusData: { last_modified: "2021-01-15T12:46:35.838Z" },
   getForm: function () {
     return;
   }
