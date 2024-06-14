@@ -171,6 +171,7 @@
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.3",
     "@babel/plugin-transform-optional-chaining": "^7.22.3",
     "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "@babel/preset-env": "^7.24.7",
     "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
