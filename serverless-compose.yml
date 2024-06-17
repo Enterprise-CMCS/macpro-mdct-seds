@@ -18,7 +18,7 @@ services:
   # depends on ui
   ui-waf-log-assoc:
     path: services/ui-waf-log-assoc
-    param:
+    params:
       CloudFrontWebAclArn: ${ui.CloudFrontWebAclArn}
       FirehoseArn: ${ui.FirehoseArn}
 
