@@ -24,8 +24,8 @@ custom:
       - val
       - prod
   iamPath: ${env:IAM_PATH, "/"}
-  wafAclArn: ${param:CloudFrontWebAclArn}
-  firehoseStreamArn: ${param:FirehoseArn}
+  wafAclArn: ${cf:ui-${self:custom.stage}.CloudFrontWebAclArn}
+  firehoseStreamArn: ${cf:ui-${self:custom.stage}.FirehoseArn}
   scripts:
     hooks:
       # Associate the Firehose and the WAF Acl
