@@ -27,11 +27,10 @@ install_deps() {
   fi
 }
 
-deploy() {
+prepare_service() {
   service=$1
   pushd services/$service
   install_deps
-  serverless deploy --stage $stage
   popd
 }
 
@@ -41,11 +40,17 @@ export PATH=$(pwd)/node_modules/.bin/:$PATH
 for i in "${services[@]}"
 
 do
-   if [[ "$i" == "data-deployment" ]] && [[ "$SEED_DATABASE" != 'true' ]]; then
-     continue
-   fi
-	deploy $i
+  if [[ "$i" == "data-deployment" ]] && [[ "$SEED_DATABASE" == 'true' ]]; then
+    seedservice='data-deployment'
+    prepare_service $seedservice
+    pushd services/$seedservice
+    serverless deploy --stage $stage
+    popd
+  fi
+	prepare_service $i
 done
+
+serverless deploy --stage $stage
 
 pushd services
 echo """
