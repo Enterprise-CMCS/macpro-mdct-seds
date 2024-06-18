@@ -9,12 +9,6 @@ import { getCurrentUserInfo } from "../../../auth/cognito-auth";
  */
 
 export const main = handler(async (event, context) => {
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   const data = JSON.parse(event.body);
 
   for (let stateId of stateIdsPresentInForm(data.formAnswers)) {

@@ -8,12 +8,6 @@ import handler from "../../../libs/handler-lib";
  */
 
 export const main = handler(async (event) => {
-  // *** if this invocation is a pre-warm, do nothing and return
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   let data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.stateId);

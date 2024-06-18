@@ -8,8 +8,6 @@ import {
 } from "../../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
-  if (event.source === "serverless-plugin-warmup") return null;
-
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
