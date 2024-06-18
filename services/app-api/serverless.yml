@@ -14,7 +14,6 @@ plugins:
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
-  - serverless-api-client-certificate
   - serverless-iam-helper
   - serverless-offline-ssm
   - "@enterprise-cmcs/serverless-waf-plugin"
@@ -44,10 +43,6 @@ custom:
       - impl
       - val
       - prod
-  authValue:
-    master: aws_iam
-    val: aws_iam
-    production: aws_iam
   infrastructureType: ${env:INFRASTRUCTURE_TYPE, ssm:/configuration/${self:custom.stage}/infrastucture/type, ssm:/configuration/default/infrastucture/type, "development"}
   AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
   AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
@@ -88,9 +83,6 @@ custom:
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
-  serverlessApiClientCertificate:
-    rotateCerts: true
-    daysLeft: 30
   dataSubnets:
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id, ssm:/configuration/default/vpc/subnets/kubernetes/a/id, ""}
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id, ssm:/configuration/default/vpc/subnets/kubernetes/b/id, ""}
@@ -338,7 +330,7 @@ functions:
           path: export/export-to-excel
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getUserById:
     handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
@@ -347,7 +339,7 @@ functions:
           path: users/{id}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getUsers:
     handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
@@ -356,7 +348,7 @@ functions:
           path: users
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   obtainUserByUsername:
     handler: handlers/users/post/obtainUserByUsername.main
     role: LambdaApiRole
@@ -365,7 +357,7 @@ functions:
           path: users/get
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   obtainUserByEmail:
     handler: handlers/users/post/obtainUserByEmail.main
     role: LambdaApiRole
@@ -374,7 +366,7 @@ functions:
           path: users/get/email
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -383,7 +375,7 @@ functions:
           path: users/add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   adminCreateUser:
     handler: handlers/users/post/createUser.adminCreateUser
     role: LambdaApiRole
@@ -392,7 +384,7 @@ functions:
           path: users/admin-add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
@@ -404,7 +396,7 @@ functions:
           path: users/update/{userId}
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getForm:
     handler: handlers/forms/get.main
     role: LambdaApiRole
@@ -413,7 +405,7 @@ functions:
           path: single-form/{state}/{specifiedYear}/{quarter}/{form}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/post/obtainFormsList.main
     role: LambdaApiRole
@@ -422,7 +414,7 @@ functions:
           path: forms/obtain-state-forms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   updateStateFormList:
     handler: handlers/state-forms/post/updateStateForms.main
     role: LambdaApiRole
@@ -431,7 +423,7 @@ functions:
           path: state-forms/update
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   generateEnrollmentTotals:
     handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
@@ -440,7 +432,7 @@ functions:
           path: generate-enrollment-totals
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
           async: true
     timeout: 900
   obtainAvailableForms:
@@ -451,7 +443,7 @@ functions:
           path: forms/obtainAvailableForms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTypes:
     handler: handlers/forms/get/getFormTypes.main
     role: LambdaApiRole
@@ -460,7 +452,7 @@ functions:
           path: form-types
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   generateQuarterForms:
     handler: handlers/forms/post/generateQuarterForms.main
     role: LambdaApiRole
@@ -469,7 +461,7 @@ functions:
           path: generate-forms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
     timeout: 900
   generateQuarterFormsOnSchedule:
     handler: handlers/forms/post/generateQuarterForms.scheduled
@@ -492,7 +484,7 @@ functions:
   #         path: notification/stateUsersEmail
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #     - schedule:
   #         enabled: true
   #         rate: cron(0 0 1 */3 ? *)
@@ -505,7 +497,7 @@ functions:
   #         path: notification/businessUsersEmail
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #     - schedule:
   #         enabled: false
   #         rate: cron(0 0 1 */3 ? *)
@@ -518,7 +510,7 @@ functions:
   #         path: notification/uncertified
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #
   saveForm:
     handler: handlers/forms/post/saveForm.main
@@ -528,7 +520,7 @@ functions:
           path: single-form/save
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTemplate:
     handler: handlers/form-templates/post/obtainFormTemplate.main
     role: LambdaApiRole
@@ -537,7 +529,7 @@ functions:
           path: form-template
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTemplateYears:
     handler: handlers/form-templates/post/obtainFormTemplateYears.main
     role: LambdaApiRole
@@ -546,7 +538,7 @@ functions:
           path: form-templates/years
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   updateCreateFormTemplate:
     handler: handlers/form-templates/post/updateCreateFormTemplate.main
     role: LambdaApiRole
@@ -555,7 +547,7 @@ functions:
           path: form-templates/add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
 
 resources:
   Description: ${self:service} ${self:custom.stage}
