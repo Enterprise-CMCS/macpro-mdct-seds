@@ -3,11 +3,6 @@ import dynamoDb from "./../../libs/dynamodb-lib";
 import { authorizeAdminOrUserForState } from "../../auth/authConditions";
 
 export const main = handler(async (event, context) => {
-  // If this invokation is a prewarm, do nothing and return.
-  if (event.source == "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
   // Deconstruct variables from URL string
   const { state, specifiedYear, quarter, form } = event.pathParameters;
 
