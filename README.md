@@ -33,52 +33,20 @@ On each PR, a linter and prettier check runs. These checks must pass for a PR to
 - Run Eslint using `yarn lint`
 - Run Prettier using `npx prettier --write .`
 
-## Usage
-
-See master build for the MACPro Quickstart [here](https://github.com/Enterprise-CMCS/macpro-quickstart-serverless/actions?query=branch%3Amaster)
-
-This application is built and deployed via GitHub Actions.
-
-Want to deploy from your Mac?
-
-- Create an AWS account
-- Install/configure the AWS CLI
-- `npm install -g serverless`
-- `brew install yarn`
-- `sh deploy.sh`
-
-Want to deploy from Windows using a VM?
-
-- Install Ubuntu WSL on Windows 10
-- In a new Ubuntu terminal, run the following commands:
-- Add new id_rsa.pub
-- ssh-keygen (Leave all defaults and hit enter until done)
-- Copy and add public key to git
-- sudo tail ~/.ssh/id_rsa.pub
-- In your GitHub profile, add the id_rsa to ssh keys
-- Run `git clone git@github.com:Enterprise-CMCS/macpro-mdct-seds.git`
-- cd into the repository directory in your VM terminal and `git checkout master`
-- Install node
-- Run `sudo apt update`
-- Run `sudo apt upgrade`
-- Run `sudo apt install nodejs`
-- Install Yarn
-- Run `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
-- Run `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
-- Run `sudo apt-get update`
-- Run `sudo apt-get install yarn -y`
-- Install NVM `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
-- Add NVM to your current terminal session `source ~/.nvm/nvm.sh`
-- Change Node Version `nvm install`
-- Install Java
-- Run `sudo add-apt-repository ppa:openjdk-r/ppa`
-- Run `sudo apt-get update`
-- Run `sudo apt install openjdk-12-jdk`
-- Instal AWS CLI (Optional) `sudo apt install awscli`
 
 ## Local Dev
 
-If you don't have yarn, nvm, or java installed, see [Requirements](#requirements)
+### Running MDCT Workspace Setup
+Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository ](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally. 
+
+#### For developers that have run workspace setup running the applicaiton locally please run the following
+1) cd ~/Projects/macpro-mdct-seds/
+2) `./run local --update-env` or `./run local` 
+
+   note: the `./run local --update-env` command will reach out to 1Password to bring in secret values and populate .env files that are git ignored. If you use the `./run local` command you will need to have either previously run with the `--update-env flag` or provide your own .env files.
+
+#### For developers that cannot run the workspace setup script or wish to only run SEDS see steps below.
+If you do not set don't have yarn, nvm, or java installed, see [Requirements](#requirements)
 
 Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files.
 
@@ -216,13 +184,13 @@ Validate json files against schema to ensure accuracy before each commit.
 
 ## Requirements
 
-Node - we enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
+Node - seds enforces using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+**The remaining steps in this section are not needed if you have the MDCT Workspace Setup Script**
 
 Serverless - Get help installing it here: [Serverless Getting Started page](https://www.serverless.com/framework/docs/providers/aws/guide/installation/)
 
 Yarn - in order to install dependencies, you need to [install yarn](https://classic.yarnpkg.com/en/docs/install/).
-
-AWS Account: You'll need an AWS account with appropriate IAM permissions (admin recommended) to deploy this app in Amazon.
 
 You'll also need to have java installed to run the database locally. M1 Mac users can download [from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`
 
