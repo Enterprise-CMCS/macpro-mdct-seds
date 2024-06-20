@@ -37,7 +37,7 @@ On each PR, a linter and prettier check runs. These checks must pass for a PR to
 ## Local Dev
 
 ### Running MDCT Workspace Setup
-Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository ](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally. 
+Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally. 
 
 #### For developers that have run workspace setup running the applicaiton locally please run the following
 1) cd ~/Projects/macpro-mdct-seds/
