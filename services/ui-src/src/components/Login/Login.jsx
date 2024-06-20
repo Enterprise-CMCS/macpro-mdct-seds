@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
@@ -16,16 +16,6 @@ export default function Login() {
     email: "",
     password: ""
   });
-
-  const onLoad = async () => {
-    if (Auth !== undefined && Auth !== null) {
-      await Auth.signOut();
-    }
-  };
-
-  useEffect(() => {
-    onLoad().then();
-  }, []);
 
   function validateForm() {
     return fields.email.length > 0 && fields.password.length > 0;
