@@ -106,7 +106,7 @@ const FormTemplates = () => {
         ) : null}
         {formYears && selectedYear ? (
           <div className="year-selection-container margin-top-3">
-            <label for="year-select" className="margin-top-3">
+            <label htmlFor="year-select" className="margin-top-3">
               Select Year or Create New
             </label>
             <Dropdown
@@ -122,7 +122,7 @@ const FormTemplates = () => {
         ) : null}
         {showYearInput ? (
           <>
-            <label for="year-input" className="margin-top-3">
+            <label htmlFor="year-input" className="margin-top-3">
               Enter Year
             </label>
             <TextInput
@@ -135,7 +135,7 @@ const FormTemplates = () => {
           </>
         ) : null}
         <div className="template-input margin-top-3">
-          <label for="templateInput">Enter or Modify Template</label>
+          <label htmlFor="templateInput">Enter or Modify Template</label>
           <Textarea
             id="templateInput"
             name="templateInput"

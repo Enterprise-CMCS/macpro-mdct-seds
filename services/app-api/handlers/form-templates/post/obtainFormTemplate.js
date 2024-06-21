@@ -8,12 +8,6 @@ import { authorizeAdmin } from "../../../auth/authConditions";
  */
 
 export const main = handler(async (event, context) => {
-  // *** if this invocation is a pre-warm, do nothing and return
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   await authorizeAdmin(event);
 
   let data = JSON.parse(event.body);

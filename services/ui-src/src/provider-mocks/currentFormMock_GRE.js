@@ -623,7 +623,7 @@ const currentFormMock_GRE = {
       not_applicable: false,
       created_date: "01-15-2021",
       form_name: "Gender, Race & Ethnicity",
-      last_modified: "01-15-2021",
+      last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
       status: "In Progress"
     },

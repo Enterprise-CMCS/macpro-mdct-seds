@@ -11,10 +11,7 @@ dotenv.config();
 function updateEnvFiles() {
   try {
     execSync("op inject -i .env.tpl -o .env -f", { stdio: "inherit" });
-    execSync(
-      "op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f",
-      { stdio: "inherit" }
-    );
+    execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
@@ -182,4 +179,5 @@ yargs(process.argv.slice(2))
     }
   )
   .scriptName("run")
+  .strict()
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand

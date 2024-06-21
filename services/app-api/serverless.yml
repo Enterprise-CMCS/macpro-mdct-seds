@@ -9,12 +9,9 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-bundle
   - serverless-dotenv-plugin
-  - serverless-plugin-warmup
-  - serverless-plugin-scripts
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
-  - serverless-api-client-certificate
   - serverless-iam-helper
   - serverless-offline-ssm
   - "@enterprise-cmcs/serverless-waf-plugin"
@@ -44,53 +41,46 @@ custom:
       - impl
       - val
       - prod
-  authValue:
-    master: aws_iam
-    val: aws_iam
-    production: aws_iam
-  infrastructureType: ${env:INFRASTRUCTURE_TYPE, ssm:/configuration/${self:custom.stage}/infrastucture/type, ssm:/configuration/default/infrastucture/type, "development"}
-  AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
-  AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
-  AgeRangesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,cf:database-${self:custom.stage}.AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
-  FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
-  FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
-  FormAnswersTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
-  FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
-  FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
-  FormQuestionsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
-  FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
-  FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
-  FormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
-  FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
-  FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
-  FormTemplatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
-  StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
-  StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
-  StateTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StateTableStreamArn, cf:database-master.StateTableStreamArn}
-  StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
-  StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
-  StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
-  StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
-  StatusTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
-  AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
-  AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
-  AuthUserTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,cf:database-${self:custom.stage}.AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
-  AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
-  AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
-  AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
-  AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
-  AuthUserStatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
-  StateFormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
-  AuthUserRolesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
+  infrastructureType: ${env:INFRASTRUCTURE_TYPE, ssm:/configuration/${self:custom.stage}/infrastructure/type, ssm:/configuration/default/infrastructure/type, "development"}
+  AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, param:AgeRangesTableName}
+  AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, param:AgeRangesTableArn}
+  AgeRangesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,param:AgeRangesTableStreamArn, cf:database-master.AgeRangesTableStreamArn}
+  FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, param:FormAnswersTableName}
+  FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, param:FormAnswersTableArn}
+  FormAnswersTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:FormAnswersTableStreamArn, cf:database-master.FormAnswersTableStreamArn}
+  FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, param:FormQuestionsTableName}
+  FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, param:FormQuestionsTableArn}
+  FormQuestionsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:FormQuestionsTableStreamArn, cf:database-master.FormQuestionsTableStreamArn}
+  FormsTableName: ${env:FORMS_TABLE_NAME, param:FormsTableName}
+  FormsTableArn: ${env:FORMS_TABLE_ARN, param:FormsTableArn}
+  FormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:FormsTableStreamArn, cf:database-master.FormsTableStreamArn}
+  FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, param:FormTemplatesTableName}
+  FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, param:FormTemplatesTableArn}
+  FormTemplatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:FormTemplatesTableStreamArn, cf:database-master.FormTemplatesTableStreamArn}
+  StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, param:StateFormsTableName}
+  StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, param:StateFormsTableArn}
+  StateTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StateTableStreamArn, cf:database-master.StateTableStreamArn}
+  StatesTableName: ${env:STATES_TABLE_NAME, param:StatesTableName}
+  StatesTableArn: ${env:STATES_TABLE_ARN, param:StatesTableArn}
+  StatusTableName: ${env:STATUS_TABLE_NAME, param:StatusTableName}
+  StatusTableArn: ${env:STATUS_TABLE_ARN, param:StatusTableArn}
+  StatusTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
+  AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, param:AuthUserTableName}
+  AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, param:AuthUserTableArn}
+  AuthUserTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,param:AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
+  AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, param:AuthUserRolesTableName}
+  AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, param:AuthUserRolesTableArn}
+  AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, param:AuthUserStatesTableName}
+  AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, param:AuthUserStatesTableArn}
+  AuthUserStatesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:AuthUserStatesTableStreamArn, cf:database-master.AuthUserStatesTableStreamArn}
+  StateFormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
+  AuthUserRolesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls, ""}
   vpcId: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id, ""}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
-  serverlessApiClientCertificate:
-    rotateCerts: true
-    daysLeft: 30
   dataSubnets:
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/a/id, ssm:/configuration/default/vpc/subnets/kubernetes/a/id, ""}
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/kubernetes/b/id, ssm:/configuration/default/vpc/subnets/kubernetes/b/id, ""}
@@ -99,31 +89,6 @@ custom:
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id, ""}
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id, ""}
     - ${env:LOCAL_PLACEHOLDER_ARN, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id, ""}
-  warmupEnabled:
-    production: true
-    development: false
-  warmup:
-    default:
-      enabled: ${self:custom.warmupEnabled.${self:custom.infrastructureType}}
-      role: LambdaWarmupRole
-      vpc: false
-      events:
-        - schedule: rate(4 minutes)
-      timeout: 20
-      prewarm: true
-      concurrency: 5
-      folderName: node_modules/serverless-bundle/src/_warmup
-      cleanFolder: false
-  scripts:
-    hooks:
-      package:setupProviderConfiguration: |
-        # Remove the timestamp line from the warmup handler so a new function is uploaded
-        #   only if a configuration has truly changed.
-        set -e
-        if [ -d "node_modules/serverless-bundle/src/_warmup" ]; then
-          cd node_modules/serverless-bundle/src/_warmup
-          sed '/Generated/d' index.js > index.js.sub && mv -f index.js.sub index.js
-        fi
 
 provider:
   name: aws
@@ -144,36 +109,28 @@ provider:
           - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
           - !Ref AWS::NoValue
   environment: # Service wide environment variables
-    tbl_age_ranges: ${self:custom.AgeRangesTableName}
-    tbl_form_answers: ${self:custom.FormAnswersTableName}
-    tbl_form_questions: ${self:custom.FormQuestionsTableName}
-    tbl_forms: ${self:custom.FormsTableName}
-    tbl_state_forms: ${self:custom.StateFormsTableName}
-    tbl_states: ${self:custom.StatesTableName}
-    tbl_status: ${self:custom.StatusTableName}
-    AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, cf:database-${self:custom.stage}.AgeRangesTableName}
-    AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, cf:database-${self:custom.stage}.AgeRangesTableArn}
-    FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, cf:database-${self:custom.stage}.FormAnswersTableName}
-    FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, cf:database-${self:custom.stage}.FormAnswersTableArn}
-    FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, cf:database-${self:custom.stage}.FormQuestionsTableName}
-    FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, cf:database-${self:custom.stage}.FormQuestionsTableArn}
-    FormsTableName: ${env:FORMS_TABLE_NAME, cf:database-${self:custom.stage}.FormsTableName}
-    FormsTableArn: ${env:FORMS_TABLE_ARN, cf:database-${self:custom.stage}.FormsTableArn}
-    FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplatesTableName}
-    FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, cf:database-${self:custom.stage}.FormTemplatesTableArn}
-    StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, cf:database-${self:custom.stage}.StateFormsTableName}
-    StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, cf:database-${self:custom.stage}.StateFormsTableArn}
-    StatesTableName: ${env:STATES_TABLE_NAME, cf:database-${self:custom.stage}.StatesTableName}
-    StatesTableArn: ${env:STATES_TABLE_ARN, cf:database-${self:custom.stage}.StatesTableArn}
-    StatusTableName: ${env:STATUS_TABLE_NAME, cf:database-${self:custom.stage}.StatusTableName}
-    StatusTableArn: ${env:STATUS_TABLE_ARN, cf:database-${self:custom.stage}.StatusTableArn}
-    AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserTableName}
-    AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserTableArn}
-    AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserRolesTableName}
-    AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserRolesTableArn}
-    AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, cf:database-${self:custom.stage}.AuthUserStatesTableName}
-    AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, cf:database-${self:custom.stage}.AuthUserStatesTableArn}
-    SteamVersion: ".v0"
+    AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, self:custom.AgeRangesTableName}
+    AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, self:custom.AgeRangesTableArn}
+    FormAnswersTableName: ${env:FORM_ANSWERS_TABLE_NAME, self:custom.FormAnswersTableName}
+    FormAnswersTableArn: ${env:FORM_ANSWERS_TABLE_ARN, self:custom.FormAnswersTableArn}
+    FormQuestionsTableName: ${env:FORM_QUESTIONS_TABLE_NAME, self:custom.FormQuestionsTableName}
+    FormQuestionsTableArn: ${env:FORM_QUESTIONS_TABLE_ARN, self:custom.FormQuestionsTableArn}
+    FormsTableName: ${env:FORMS_TABLE_NAME, self:custom.FormsTableName}
+    FormsTableArn: ${env:FORMS_TABLE_ARN, self:custom.FormsTableArn}
+    FormTemplatesTableName: ${env:FORM_TEMPLATES_TABLE_NAME, self:custom.FormTemplatesTableName}
+    FormTemplatesTableArn: ${env:FORM_TEMPLATES_TABLE_ARN, self:custom.FormTemplatesTableArn}
+    StateFormsTableName: ${env:STATE_FORMS_TABLE_NAME, self:custom.StateFormsTableName}
+    StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, self:custom.StateFormsTableArn}
+    StatesTableName: ${env:STATES_TABLE_NAME, self:custom.StatesTableName}
+    StatesTableArn: ${env:STATES_TABLE_ARN, self:custom.StatesTableArn}
+    StatusTableName: ${env:STATUS_TABLE_NAME, self:custom.StatusTableName}
+    StatusTableArn: ${env:STATUS_TABLE_ARN, self:custom.StatusTableArn}
+    AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, self:custom.AuthUserTableName}
+    AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, self:custom.AuthUserTableArn}
+    AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, self:custom.AuthUserRolesTableName}
+    AuthUserRolesTableArn: ${env:AUTH_USER_ROLES_TABLE_ARN, self:custom.AuthUserRolesTableArn}
+    AuthUserStatesTableName: ${env:AUTH_USER_STATES_TABLE_NAME, self:custom.AuthUserStatesTableName}
+    AuthUserStatesTableArn: ${env:AUTH_USER_STATES_TABLE_ARN, self:custom.AuthUserStatesTableArn}
     stage: ${self:custom.stage}
 
 functions:
@@ -338,7 +295,7 @@ functions:
           path: export/export-to-excel
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getUserById:
     handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
@@ -347,7 +304,7 @@ functions:
           path: users/{id}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getUsers:
     handler: handlers/users/get/listUsers.main
     role: LambdaApiRole
@@ -356,7 +313,7 @@ functions:
           path: users
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   obtainUserByUsername:
     handler: handlers/users/post/obtainUserByUsername.main
     role: LambdaApiRole
@@ -365,7 +322,7 @@ functions:
           path: users/get
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   obtainUserByEmail:
     handler: handlers/users/post/obtainUserByEmail.main
     role: LambdaApiRole
@@ -374,7 +331,7 @@ functions:
           path: users/get/email
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   createUser:
     handler: handlers/users/post/createUser.main
     role: LambdaApiRole
@@ -383,7 +340,7 @@ functions:
           path: users/add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   adminCreateUser:
     handler: handlers/users/post/createUser.adminCreateUser
     role: LambdaApiRole
@@ -392,7 +349,7 @@ functions:
           path: users/admin-add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
@@ -404,7 +361,7 @@ functions:
           path: users/update/{userId}
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getForm:
     handler: handlers/forms/get.main
     role: LambdaApiRole
@@ -413,7 +370,7 @@ functions:
           path: single-form/{state}/{specifiedYear}/{quarter}/{form}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getStateFormList:
     handler: handlers/forms/post/obtainFormsList.main
     role: LambdaApiRole
@@ -422,7 +379,7 @@ functions:
           path: forms/obtain-state-forms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   updateStateFormList:
     handler: handlers/state-forms/post/updateStateForms.main
     role: LambdaApiRole
@@ -431,7 +388,7 @@ functions:
           path: state-forms/update
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   generateEnrollmentTotals:
     handler: handlers/state-forms/post/generateEnrollmentTotals.main
     role: LambdaApiRole
@@ -440,7 +397,7 @@ functions:
           path: generate-enrollment-totals
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
           async: true
     timeout: 900
   obtainAvailableForms:
@@ -451,7 +408,7 @@ functions:
           path: forms/obtainAvailableForms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTypes:
     handler: handlers/forms/get/getFormTypes.main
     role: LambdaApiRole
@@ -460,7 +417,7 @@ functions:
           path: form-types
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   generateQuarterForms:
     handler: handlers/forms/post/generateQuarterForms.main
     role: LambdaApiRole
@@ -469,7 +426,7 @@ functions:
           path: generate-forms
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
     timeout: 900
   generateQuarterFormsOnSchedule:
     handler: handlers/forms/post/generateQuarterForms.scheduled
@@ -492,7 +449,7 @@ functions:
   #         path: notification/stateUsersEmail
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #     - schedule:
   #         enabled: true
   #         rate: cron(0 0 1 */3 ? *)
@@ -505,7 +462,7 @@ functions:
   #         path: notification/businessUsersEmail
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #     - schedule:
   #         enabled: false
   #         rate: cron(0 0 1 */3 ? *)
@@ -518,7 +475,7 @@ functions:
   #         path: notification/uncertified
   #         method: post
   #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         authorizer: aws_iam
   #
   saveForm:
     handler: handlers/forms/post/saveForm.main
@@ -528,7 +485,7 @@ functions:
           path: single-form/save
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTemplate:
     handler: handlers/form-templates/post/obtainFormTemplate.main
     role: LambdaApiRole
@@ -537,7 +494,7 @@ functions:
           path: form-template
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   getFormTemplateYears:
     handler: handlers/form-templates/post/obtainFormTemplateYears.main
     role: LambdaApiRole
@@ -546,7 +503,7 @@ functions:
           path: form-templates/years
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
   updateCreateFormTemplate:
     handler: handlers/form-templates/post/updateCreateFormTemplate.main
     role: LambdaApiRole
@@ -555,7 +512,7 @@ functions:
           path: form-templates/add
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          authorizer: aws_iam
 
 resources:
   Description: ${self:service} ${self:custom.stage}
@@ -678,38 +635,6 @@ resources:
       Properties:
         GroupDescription: Security Group for streaming functions.  Egress all is set by default.
         VpcId: ${self:custom.vpcId}
-    LambdaWarmupRole:
-      Type: "AWS::IAM::Role"
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service: "lambda.amazonaws.com"
-              Action: "sts:AssumeRole"
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
-        Policies:
-          - PolicyName: "Warmup"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: "Allow"
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "arn:aws:logs:*:*:*"
-                - Effect: "Allow"
-                  Action:
-                    - lambda:InvokeFunction
-                    - lambda:InvokeAsync
-                  Resource: "*"
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
