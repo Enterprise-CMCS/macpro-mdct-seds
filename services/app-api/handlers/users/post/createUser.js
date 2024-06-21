@@ -5,24 +5,12 @@ import { obtainUserByUsername } from "./obtainUserByUsername";
 import { getUserDetailsFromEvent } from "../../../libs/authorization";
 
 export const main = handler(async (event, context) => {
-  // If this invocation is a prewarm, do nothing and return.
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   const userData = await getUserDetailsFromEvent(event);
 
   return await createUser(userData);
 });
 
 export const adminCreateUser = handler(async (event, context) => {
-  // If this invocation is a prewarm, do nothing and return.
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   await authorizeAdmin(event);
 
   const userData = JSON.parse(event.body);

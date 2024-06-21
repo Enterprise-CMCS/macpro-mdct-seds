@@ -21,7 +21,7 @@ export const statusData = {
   not_applicable: false,
   created_date: "2021-03-02T12:46:35.838Z",
   form_name: "Number of Pregnant Women Served",
-  last_modified: "04-09-2021",
+  last_modified: "2021-04-09T12:46:35.838Z",
   quarter: 1,
   status_id: 1,
   status: "In Progress"

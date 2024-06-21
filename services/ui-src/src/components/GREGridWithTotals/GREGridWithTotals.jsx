@@ -299,7 +299,7 @@ const GREGridWithTotals = props => {
     return true;
   });
 
-  const totalsRow = Array.from(Array(headerCols.length - 1), (e, i) => {
+  const totalsRow = Array.from(Array(headerCols.length - 1), (_, i) => {
     let column;
 
     if (i === 0) {
@@ -310,7 +310,7 @@ const GREGridWithTotals = props => {
       );
     } else if (i === 3) {
       column = (
-        <td className="total-column">
+        <td className="total-column" key={i}>
           {addCommas(
             parseFloat(
               gridCHIPTotals.reduce(function (s, v) {
@@ -322,7 +322,7 @@ const GREGridWithTotals = props => {
       );
     } else {
       column = (
-        <td className="total-column">
+        <td className="total-column" key={i}>
           {addCommas(parseFloat(gridColumnTotals[i]).toFixed(currentPrecision))}
         </td>
       );

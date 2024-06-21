@@ -31,7 +31,7 @@ custom:
   cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
   iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
-  wafLoggingBucket: ${cf:ui-waflog-s3-bucket-${self:custom.stage}.WaflogsUploadBucketArn}
+  wafLoggingBucket: ${param:WaflogsUploadBucketArn, ""}
   vpnIpSetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpSetArn, ssm:/configuration/default/vpnIpSetArn, ""}
   vpnIpv6SetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpv6SetArn, ssm:/configuration/default/vpnIpv6SetArn, ""}
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
@@ -281,7 +281,7 @@ resources:
               FrameOption: "DENY"
               Override: true
             ContentSecurityPolicy:
-              ContentSecurityPolicy: "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'"
+              ContentSecurityPolicy: "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'"
               Override: true
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     Firehose:

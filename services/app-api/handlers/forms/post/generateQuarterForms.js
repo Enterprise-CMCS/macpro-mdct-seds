@@ -27,11 +27,6 @@ export const scheduled = handler(async (event, context) => {
 const generateQuarterForms = async (event) => {
   let noMissingForms = true;
 
-  if (event.source === "serverless-plugin-warmup") {
-    console.log("Warmed up!");
-    return null;
-  }
-
   // at top of file, or in some config file
   const retryFailLimit = 5;
   const failureList = [];

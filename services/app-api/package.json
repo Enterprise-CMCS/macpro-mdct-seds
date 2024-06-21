@@ -21,14 +21,13 @@
     "serverless-offline-ssm": "^6.2.0"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.540.0",
+    "@aws-sdk/client-dynamodb": "^3.577.0",
     "@aws-sdk/client-ses": "^3.540.0",
     "@aws-sdk/client-ssm": "^3.577.0",
     "@aws-sdk/lib-dynamodb": "^3.540.0",
     "aws-jwt-verify": "^4.0.1",
     "exceljs": "^4.2.1",
     "kafkajs": "^1.16.0",
-    "lambda-multipart-parser": "^1.0.1",
     "uuid": "^7.0.3"
   }
 }

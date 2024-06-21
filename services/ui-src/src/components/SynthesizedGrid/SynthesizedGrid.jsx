@@ -107,42 +107,44 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
             <th className="total-header-cell">Totals</th>
           </tr>
         </thead>
-        <tr>
-          <th>A. Fee-for-Service</th>
-          <td>{getCellAverage(1, "col2")}</td>
-          <td>{getCellAverage(1, "col3")}</td>
-          <td>{getCellAverage(1, "col4")}</td>
-          <td>{getCellAverage(1, "col5")}</td>
-          <td>{getCellAverage(1, "col6")}</td>
-          <td className="total-column">{firstRowQ5Total.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <th>B. Managed Care Arrangements </th>
-          <td>{getCellAverage(2, "col2")}</td>
-          <td>{getCellAverage(2, "col3")}</td>
-          <td>{getCellAverage(2, "col4")}</td>
-          <td>{getCellAverage(2, "col5")}</td>
-          <td>{getCellAverage(2, "col6")}</td>
-          <td className="total-column">{secondRowQ5Total.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <th>C. Primary Care Case Management </th>
-          <td>{getCellAverage(3, "col2")}</td>
-          <td>{getCellAverage(3, "col3")}</td>
-          <td>{getCellAverage(3, "col4")}</td>
-          <td>{getCellAverage(3, "col5")}</td>
-          <td>{getCellAverage(3, "col6")}</td>
-          <td className="total-column">{thirdRowQ5Total.toFixed(1)}</td>
-        </tr>
-        <tr className="total-row">
-          <th className="total-header-cell">Totals:</th>
-          <td className="total-column">{Q5Col1Total.toFixed(1)}</td>
-          <td className="total-column">{Q5Col2Total.toFixed(1)}</td>
-          <td className="total-column">{Q5Col3Total.toFixed(1)}</td>
-          <td className="total-column">{Q5Col4Total.toFixed(1)}</td>
-          <td className="total-column">{Q5Col5Total.toFixed(1)}</td>
-          <td className="total-column">{fourthRowQ5Total.toFixed(1)}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>A. Fee-for-Service</th>
+            <td>{getCellAverage(1, "col2")}</td>
+            <td>{getCellAverage(1, "col3")}</td>
+            <td>{getCellAverage(1, "col4")}</td>
+            <td>{getCellAverage(1, "col5")}</td>
+            <td>{getCellAverage(1, "col6")}</td>
+            <td className="total-column">{firstRowQ5Total.toFixed(1)}</td>
+          </tr>
+          <tr>
+            <th>B. Managed Care Arrangements </th>
+            <td>{getCellAverage(2, "col2")}</td>
+            <td>{getCellAverage(2, "col3")}</td>
+            <td>{getCellAverage(2, "col4")}</td>
+            <td>{getCellAverage(2, "col5")}</td>
+            <td>{getCellAverage(2, "col6")}</td>
+            <td className="total-column">{secondRowQ5Total.toFixed(1)}</td>
+          </tr>
+          <tr>
+            <th>C. Primary Care Case Management </th>
+            <td>{getCellAverage(3, "col2")}</td>
+            <td>{getCellAverage(3, "col3")}</td>
+            <td>{getCellAverage(3, "col4")}</td>
+            <td>{getCellAverage(3, "col5")}</td>
+            <td>{getCellAverage(3, "col6")}</td>
+            <td className="total-column">{thirdRowQ5Total.toFixed(1)}</td>
+          </tr>
+          <tr className="total-row">
+            <th className="total-header-cell">Totals:</th>
+            <td className="total-column">{Q5Col1Total.toFixed(1)}</td>
+            <td className="total-column">{Q5Col2Total.toFixed(1)}</td>
+            <td className="total-column">{Q5Col3Total.toFixed(1)}</td>
+            <td className="total-column">{Q5Col4Total.toFixed(1)}</td>
+            <td className="total-column">{Q5Col5Total.toFixed(1)}</td>
+            <td className="total-column">{fourthRowQ5Total.toFixed(1)}</td>
+          </tr>
+        </tbody>
       </Table>
       <div className="disclaimer">
         Values will not appear until source data is provided

@@ -8,7 +8,6 @@ plugins:
   - serverless-plugin-scripts
   - serverless-bundle
   - serverless-iam-helper
-  - serverless-idempotency-helper
 
 provider:
   name: aws
@@ -40,9 +39,9 @@ custom:
       - impl
       - val
       - prod
-  attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
-  api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
-  application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
+  attachments_bucket_arn: ${param:AttachmentsBucketArn}
+  api_gateway_rest_api_name: ${param:ApiGatewayRestApiName}
+  application_endpoint_url: ${param:ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
   bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
   okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/oktaMetadataUrl, ""}
@@ -51,7 +50,7 @@ custom:
       deploy:finalize: |
         if [ ${self:custom.bootstrapUsersEnabled} = "true" ];
         then
-          serverless invoke --stage ${self:custom.stage} --function bootstrapUsers
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${self:custom.stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
 
 functions:

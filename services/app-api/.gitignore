@@ -51,7 +51,4 @@ env.yml
 # Jetbrains IDEs
 .idea
 
-# Serverless warmup plugin temp dir
-_warmup
-
 auth/local-user.js
