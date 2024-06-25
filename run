@@ -34,7 +34,7 @@ fi
 # check serverless is installed globally.
 if ! which serverless > /dev/null ; then
 	echo "installing serverless globally"
-	yarn global add serverless
+	yarn global add serverless@3.38.0
 	export PATH="$PATH:$(yarn global bin)"
 fi
 
