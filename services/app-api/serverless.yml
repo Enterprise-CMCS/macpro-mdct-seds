@@ -17,6 +17,7 @@ plugins:
   - "@enterprise-cmcs/serverless-waf-plugin"
 
 custom:
+  project: "seds"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   wafPlugin:
@@ -94,6 +95,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  stackTags:  
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
   tracing:
     apiGateway: true
   logs:

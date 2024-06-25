@@ -12,6 +12,7 @@ provider:
   stage: dev
 
 custom:
+  project: "seds"
   stage: ${opt:stage, self:provider.stage}
   serverlessTerminationProtection:
     stages:

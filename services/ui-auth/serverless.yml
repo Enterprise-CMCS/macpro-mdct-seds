@@ -10,9 +10,13 @@ plugins:
   - serverless-iam-helper
 
 provider:
+  project: "seds"
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  stackTags:  
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
   iam:
     role:
       # Even though we are creating our own IAM role that is used in each lambda function below

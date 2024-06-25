@@ -15,6 +15,7 @@ provider:
   region: us-east-1
 
 custom:
+  project: "seds"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:

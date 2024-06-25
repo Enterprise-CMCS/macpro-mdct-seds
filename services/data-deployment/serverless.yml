@@ -12,8 +12,12 @@ provider:
   name: aws
   region: us-east-1
   runtime: nodejs20.x
+  stackTags:  
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
 
 custom:
+  project: "seds"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
