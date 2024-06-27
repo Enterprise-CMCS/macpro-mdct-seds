@@ -167,7 +167,6 @@ async function prepare_services(runner: LabeledProcessRunner) {
 }
 
 async function deploy(options: { stage: string }) {
-  console.log("env", process.env);
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
