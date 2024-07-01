@@ -24,7 +24,7 @@
     "@aws-sdk/client-dynamodb": "^3.577.0",
     "@aws-sdk/client-ses": "^3.540.0",
     "@aws-sdk/client-ssm": "^3.577.0",
-    "@aws-sdk/lib-dynamodb": "^3.540.0",
+    "@aws-sdk/lib-dynamodb": "^3.588.0",
     "aws-jwt-verify": "^4.0.1",
     "exceljs": "^4.2.1",
     "kafkajs": "^1.16.0",
