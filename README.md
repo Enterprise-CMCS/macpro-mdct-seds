@@ -4,6 +4,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/maintainability)](https://codeclimate.com/repos/64497017eab34100ce938fe6/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/test_coverage)](https://codeclimate.com/repos/64497017eab34100ce938fe6/test_coverage)
 
+### Integration Environment Deploy Status:
+| Branch  | Build Status |
+| ------------- | ------------- |
+| master  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)  |
+| val  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)  |
+| production  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production)  |
+
 SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
 ## Architecture

@@ -195,7 +195,7 @@ const commitTotalsToDB = async (putRequests) => {
     // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
     const batchWriteAll = async (tryRetryBatch) => {
       // Attempt first batch write
-      const { UnprocessedItems } = await dynamoDb.batchWrite(
+      const { UnprocessedItems } = await dynamoDb.batchWriteItem(
         tryRetryBatch.batch
       );
 

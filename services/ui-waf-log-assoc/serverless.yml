@@ -10,8 +10,12 @@ provider:
   runtime: nodejs20.x
   region: us-east-1
   stage: dev
+  stackTags:  
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
 
 custom:
+  project: "seds"
   stage: ${opt:stage, self:provider.stage}
   serverlessTerminationProtection:
     stages:
