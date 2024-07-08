@@ -34,7 +34,7 @@ const generateQuarterForms = async (event) => {
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
     // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWrite(tryRetryBatch.batch);
+    const { UnprocessedItems } = await dynamoDb.batchWriteItem(tryRetryBatch.batch);
 
     // If there are any failures and under the retry limit
     if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {

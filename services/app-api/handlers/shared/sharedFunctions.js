@@ -380,7 +380,7 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
   // this can/should be done recursively to better account for unprocessed items
   let failedItems = [];
   for (const batch of splitQuestions) {
-    const { UnprocessedItems } = await dynamoDb.batchWrite({
+    const { UnprocessedItems } = await dynamoDb.batchWriteItem({
       RequestItems: { [questionTableName]: batch },
     });
     // If some questions fail to write, add them to a list of failures
@@ -391,7 +391,7 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
 
   // retry any failed entries
   if (failedItems.length) {
-    const { UnprocessedItems } = await dynamoDb.batchWrite({
+    const { UnprocessedItems } = await dynamoDb.batchWriteItem({
       RequestItems: { [questionTableName]: failedItems },
     });
 
