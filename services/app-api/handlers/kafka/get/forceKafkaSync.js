@@ -43,7 +43,7 @@ const batchWrite = async (tableName, items) => {
       RequestItems: requestItems,
     };
 
-    const { FailedItems } = await dynamoDb.batchWrite(params);
+    const { FailedItems } = await dynamoDb.batchWriteItem(params);
     console.log(`BatchWrite performed for ${itemArray.length} items`);
     if ((FailedItems?.length ?? 0) > 0) {
       const keys = FailedItems.map((item) => item[Object.keys(item)[0]]);
