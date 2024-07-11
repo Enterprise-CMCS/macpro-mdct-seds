@@ -32,11 +32,25 @@ export async function verifyEventSignature(event) {
 
   const { userPoolId, clientId } = await getCognitoValues();
 
-  const verifier = CognitoJwtVerifier.create({
-    tokenUse: "id",
-    userPoolId,
-    clientId,
-  });
+  const verifier = CognitoJwtVerifier.create(
+    {
+      tokenUse: "id",
+      userPoolId,
+      clientId,
+    },
+    {
+      jwksCache: new SimpleJwksCache({
+        fetcher: new SimpleJsonFetcher({
+          defaultRequestOptions: {
+            // The default timeout is 1.5s, but we have increased it to 5s after seeing errors
+            // such as "Failed to fetch https://[...]/.well-known/jwks.json"
+            // due to "write EPIPE" or "socked hang up"
+            responseTimeout: 5000,
+          },
+        }),
+      })
+    }
+  );
 
   await verifier.verify(apiKey);
 }
