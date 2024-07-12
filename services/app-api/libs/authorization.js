@@ -2,6 +2,8 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import * as logger from "./debug-lib";
+import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
 export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
