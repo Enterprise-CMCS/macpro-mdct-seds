@@ -23,8 +23,3 @@ serverless-dynamodb-seed@^0.3.0:
   integrity sha512-wwfFh4wwmisRnMlEkNjx/x4srVv01gkjCR8tCkEtEFColsZe3ROC8eX/yFZl/tebix1nK1xi1oQwGF6QqYVZyQ==
   dependencies:
     bluebird "^3.7.2"
-
-serverless-plugin-scripts@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/serverless-plugin-scripts/-/serverless-plugin-scripts-1.0.2.tgz#21808c3cfd0a1a84e48c0660b0f6f370b5665486"
-  integrity sha1-IYCMPP0KGoTkjAZgsPbzcLVmVIY=

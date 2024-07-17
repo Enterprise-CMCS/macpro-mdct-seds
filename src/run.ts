@@ -152,7 +152,7 @@ async function seed_database(
     `services/${seedService}`
   );
   // Run seed
-  const seedCmd = ["sls", "--stage", stage, "dynamodb:seed"];
+  const seedCmd = ["sls", "dynamodb:seed", "--stage", stage];
   await runner.run_command_and_output(
     "Run seed",
     seedCmd,

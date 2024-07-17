@@ -61,7 +61,7 @@ custom:
         ]
     form-templates:
       table: ${self:custom.stage}-form-templates
-      sources: [../../src/database/initial_data_load/form_templates_2019.json]
+      sources: [../../src/database/initial_data_load/form_template_2019.json]
     form-answers:
       table: ${self:custom.stage}-form-answers
       sources:
