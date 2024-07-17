@@ -4,7 +4,6 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
-  - serverless-plugin-scripts
   - serverless-dynamodb-seed
   - serverless-stack-termination-protection
 
@@ -125,8 +124,3 @@ custom:
     auth-user-roles:
       table: ${self:custom.stage}-auth-user-roles
       sources: [../../src/database/initial_data_load/auth_user_roles.json]
-
-  scripts:
-    hooks:
-      deploy:finalize: |
-        sls --stage ${self:custom.stage} dynamodb:seed

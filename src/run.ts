@@ -145,9 +145,17 @@ async function seed_database(
   const seedService = "data-deployment"
   await install_deps(runner, seedService);
   const seedDeployCmd = ["sls", "deploy", "--stage", stage];
+  // Deploy seed service
   await runner.run_command_and_output(
     "Seed service deploy",
     seedDeployCmd,
+    `services/${seedService}`
+  );
+  // Run seed
+  const seedCmd = ["sls", "--stage", stage, "dynamodb:seed"];
+  await runner.run_command_and_output(
+    "Run seed",
+    seedCmd,
     `services/${seedService}`
   );
 }
