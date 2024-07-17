@@ -181,9 +181,9 @@ async function deploy(options: { stage: string }) {
   const deployCmd = ["sls", "deploy", "--stage", stage];
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
   // Seed when flag is set to true
-  // if (process.env.SEED_DATABASE) {
-  await seed_database(runner, stage);
-  // }
+  if (process.env.SEED_DATABASE) {
+    await seed_database(runner, stage);
+  }
 }
 
 async function destroy_stage(options: {
