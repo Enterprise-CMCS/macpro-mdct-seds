@@ -143,7 +143,7 @@ async function seed_database(
   stage: string
 ) {
   const seedService = "data-deployment"
-  install_deps(runner, seedService);
+  await install_deps(runner, seedService);
   const seedDeployCmd = ["sls", "deploy", "--stage", stage];
   await runner.run_command_and_output(
     "Seed service deploy",
@@ -162,7 +162,7 @@ async function install_deps(runner: LabeledProcessRunner, service: string) {
 
 async function prepare_services(runner: LabeledProcessRunner) {
   for (const service of deployedServices) {
-    install_deps(runner, service);
+    await install_deps(runner, service);
   }
 }
 
@@ -173,9 +173,9 @@ async function deploy(options: { stage: string }) {
   const deployCmd = ["sls", "deploy", "--stage", stage];
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
   // Seed when flag is set to true
-  if (process.env.SEED_DATABASE) {
-    seed_database(runner, stage);
-  }
+  // if (process.env.SEED_DATABASE) {
+  await seed_database(runner, stage);
+  // }
 }
 
 async function destroy_stage(options: {
