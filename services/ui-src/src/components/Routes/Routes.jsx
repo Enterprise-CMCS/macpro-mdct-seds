@@ -1,5 +1,5 @@
-import React from "react";
-import { Redirect, Switch } from "react-router-dom";
+import {React, useEffect} from "react";
+import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
 import Home from "../Home/Home";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
@@ -21,6 +21,15 @@ import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
 
 export default function Routes({ user, isAuthorized }) {
+  const history = useHistory()
+  const location = useLocation()
+  // Preserve old hash style urls and route them to adjusted urls
+  useEffect(() => {
+    if (location.hash && location.hash.startsWith('#/')) {
+      history.replace(location.hash.replace('#', ''))
+    }
+  }, [history, location.hash, location.pathname])
+
   if (!isAuthorized) {
     return (
       <Switch>
