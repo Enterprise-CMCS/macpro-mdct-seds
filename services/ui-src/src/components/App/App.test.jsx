@@ -1,6 +1,7 @@
 import React from "react";
 import App from "./App";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -11,7 +12,11 @@ jest.mock("react-router-dom", () => ({
 
 describe("Test App.js", () => {
   test("Check the main div, with classname app, exists", () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.find(".App").length).toBe(1);
+    const { container } = render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+    expect(container.querySelector(".App")).toBeInTheDocument();
   });
 });
