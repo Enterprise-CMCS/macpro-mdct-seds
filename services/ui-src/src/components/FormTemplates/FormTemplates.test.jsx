@@ -1,88 +1,72 @@
 import React from "react";
-import { shallow } from "enzyme";
-
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import FormTemplates from "./FormTemplates";
+import {
+  obtainFormTemplate,
+  obtainFormTemplateYears,
+  updateCreateFormTemplate
+} from "../../libs/api";
+import { act } from "react-dom/test-utils";
 
-const reactMock = require("react");
+jest.mock("../../libs/api", () => ({
+  obtainFormTemplate: jest.fn(),
+  obtainFormTemplateYears: jest.fn(),
+  updateCreateFormTemplate: jest.fn(),
+}));
 
-describe("Tests for FormTemplates.js - With Complete data", () => {
-  const setHookState = newState =>
-    jest.fn().mockImplementation(() => [newState, () => {}]);
+jest.spyOn(window, "confirm").mockImplementation(() => true);
 
-  reactMock.useState = setHookState({
-    arrayValues: [],
-    isFetching: false,
-    formYears: [
-      { label: "+ Create New Template", value: 0 },
-      { label: 2066, value: 2066 },
-      { label: 2022, value: 2022 },
-      { label: 2021, value: 2021 },
-      { label: 2019, value: 2019 },
-      { label: 2018, value: 2018 }
-    ],
-    selectedYear: { label: 2066, value: 2066 },
-    inputYear: 2021,
-    currentTemplate: '[\n  {\n    "test": "value"\n  }\n]',
-    showYearInput: false,
-    alert: false
+describe("Tests for FormTemplates.js", () => {
+  test("Should render correctly when there are no years", async () => {
+    obtainFormTemplateYears.mockResolvedValue([]);
+    
+    render(<FormTemplates />);
+    await waitFor(() => expect(obtainFormTemplateYears).toHaveBeenCalled());
+
+    expect(screen.getByLabelText("Enter Year")).toBeInTheDocument();
+    expect(screen.getByLabelText("Enter Year")).toHaveValue(new Date().getFullYear() + 1);
+    expect(screen.getByLabelText("Enter or Modify Template")).toBeInTheDocument();
+    expect(screen.getByText("Save", { selector: "button" })).toBeInTheDocument();
   });
 
-  const wrapper = shallow(<FormTemplates />);
+  test("Should render correctly when years exist", async () => {
+    const mockTemplate = { foo: "bar" };
+    obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
+    obtainFormTemplate.mockResolvedValue([{ template: mockTemplate }]);
 
-  test("Ensure Form Templates exists", () => {
-    expect(wrapper.find(".formTemplates").length).toBe(1);
+    const { container } = render(<FormTemplates/>);
+    await waitFor(() => {
+      expect(obtainFormTemplateYears).toHaveBeenCalled()
+      expect(obtainFormTemplate).toHaveBeenCalled()
+    });
+
+    const yearSelection = container.querySelector(".Dropdown-root.year-select-list .is-selected");
+    expect(yearSelection).toHaveTextContent("2021");
+
+    const templateInput = screen.getByLabelText("Enter or Modify Template");
+    expect(JSON.parse(templateInput.value)).toEqual(mockTemplate);
+
+    expect(screen.getByText("Save", { selector: "button" })).toBeInTheDocument();
   });
 
-  test("Ensure Form label exists - template input", () => {
-    expect(wrapper.find(".template-input label").length).toBe(1);
-  });
+  test("Should send saved templates back to the API", async () => {
+    const mockTemplate = { foo: "bar" };
+    obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
+    obtainFormTemplate.mockResolvedValue([{ template: mockTemplate }]);
 
-  test("Ensure Form label exists - year selection", () => {
-    expect(wrapper.find(".year-selection-container label").length).toBe(1);
-  });
+    render(<FormTemplates/>);
+    await waitFor(() => {
+      expect(obtainFormTemplateYears).toHaveBeenCalled()
+      expect(obtainFormTemplate).toHaveBeenCalled()
+    });
 
-  test("Ensure Form Year Select List renders", () => {
-    expect(wrapper.find(".year-select-list").length).toBe(1);
-  });
-
-  test("Ensure links are visible", () => {
-    expect(wrapper.find({ "data-testid": "formTemplates" }).length).toBe(1);
-  });
-
-  test("Ensure save button is visible", () => {
-    expect(wrapper.find("#save-button").length).toBe(1);
-  });
-});
-
-describe("Tests for FormTemplates.js - No Data", () => {
-  const setHookState = newState =>
-    jest.fn().mockImplementation(() => [newState, () => {}]);
-
-  reactMock.useState = setHookState({
-    arrayValues: [],
-    isFetching: false,
-    formYears: [{ label: "+ Create New Template", value: 0 }],
-    selectedYear: { label: 2066, value: 2066 },
-    inputYear: 2021,
-    showYearInput: false,
-    alert: false
-  });
-
-  const wrapper = shallow(<FormTemplates />);
-
-  test("Ensure Form Templates exists", () => {
-    expect(wrapper.find(".formTemplates").length).toBe(1);
-  });
-
-  test("Ensure Form Year Select List renders", () => {
-    expect(wrapper.find(".year-select-list").length).toBe(1);
-  });
-
-  test("Ensure links are visible", () => {
-    expect(wrapper.find({ "data-testid": "formTemplates" }).length).toBe(1);
-  });
-
-  test("Ensure save button is visible", () => {
-    expect(wrapper.find("#save-button").length).toBe(1);
+    userEvent.click(screen.getByText("Save", { selector: "button" }));
+    await waitFor(() => {
+      expect(updateCreateFormTemplate).toHaveBeenCalledWith({
+        year: 2021,
+        template: {...mockTemplate},
+      });
+    });
   });
 });
