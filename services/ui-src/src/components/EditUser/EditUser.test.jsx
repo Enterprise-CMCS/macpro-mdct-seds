@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
@@ -32,13 +32,9 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("Test EditUser.js", () => {
-  let store;
-  let wrapper;
-
   beforeEach(() => {
-    store = mockStore(fullStoreMock);
-
-    wrapper = mount(
+    const store = mockStore(fullStoreMock);
+    render(
       <Provider store={store}>
         <BrowserRouter>
           <EditUser />
@@ -47,15 +43,21 @@ describe("Test EditUser.js", () => {
     );
   });
 
-  test("Check the main div, with classname edit-user, exists", () => {
-    expect(wrapper.find(".edit-user").length).toBe(1);
+  test("Check for User List link", () => {
+    const backLink = screen.getByText(
+      "Back to User List",
+      { selector: "a", exact: false }
+    );
+    expect(backLink).toBeInTheDocument();
   });
 
-  test("Check for User List link", () => {
-    expect(wrapper.find(".userListLink").length).toBe(3);
-  });
+  /* TODO, probably some tests for when we CAN find the user */
 
   test("Check for Cannot Find User message", () => {
-    expect(wrapper.text()).toMatch(/Cannot find user with id /);
+    const notFoundElement = screen.getByText(
+      "Cannot find user with id",
+      { exact: false }
+    );
+    expect(notFoundElement).toBeInTheDocument();
   });
 });
