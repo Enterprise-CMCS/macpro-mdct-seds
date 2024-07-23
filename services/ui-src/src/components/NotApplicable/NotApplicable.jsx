@@ -90,7 +90,6 @@ const NotApplicable = ({
           className={
             applicableStatus === 0 ? "applicable-selected is-selected" : null
           }
-          data-test="applicable-selected"
         >
           Active
         </p>
@@ -105,7 +104,6 @@ const NotApplicable = ({
           color="red"
           list="range-list-id"
           disabled={disableSlider}
-          data-test="slider-input"
         />
 
         <p
@@ -114,7 +112,6 @@ const NotApplicable = ({
               ? "not-applicable-selected is-selected"
               : null
           }
-          data-test="not-applicable-selected"
         >
           {" "}
           Not Applicable
