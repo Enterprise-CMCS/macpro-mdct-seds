@@ -145,9 +145,17 @@ async function seed_database(
   const seedService = "data-deployment"
   await install_deps(runner, seedService);
   const seedDeployCmd = ["sls", "deploy", "--stage", stage];
+  // Deploy seed service
   await runner.run_command_and_output(
     "Seed service deploy",
     seedDeployCmd,
+    `services/${seedService}`
+  );
+  // Run seed
+  const seedCmd = ["sls", "dynamodb:seed", "--stage", stage];
+  await runner.run_command_and_output(
+    "Run seed",
+    seedCmd,
     `services/${seedService}`
   );
 }
@@ -174,7 +182,7 @@ async function deploy(options: { stage: string }) {
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
   // Seed when flag is set to true
   if (process.env.SEED_DATABASE) {
-    seed_database(runner, stage);
+    await seed_database(runner, stage);
   }
 }
 
