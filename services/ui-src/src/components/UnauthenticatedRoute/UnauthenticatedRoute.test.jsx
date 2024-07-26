@@ -1,33 +1,46 @@
 import React from "react";
-import { mount } from "enzyme";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
-import * as AppContext from "../../libs/contextLib";
 import { BrowserRouter, Route } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import { render, screen } from "@testing-library/react"
+import { useAppContext } from "../../libs/contextLib";
 
-// Mock for useLocation
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useLocation: () => ({
-    pathname: "localhost:3000/"
-  })
+jest.mock("../../libs/contextLib", () => ({
+  useAppContext: jest.fn(),
 }));
 
+const renderComponent = (isAuthenticated, initialRoute) => {
+  useAppContext.mockReturnValue({ isAuthenticated });
+  const history = createBrowserHistory();
+  history.push(initialRoute);
+  return render(
+    <BrowserRouter>
+      <UnauthenticatedRoute path="/unauth">
+        <p>You need to log in</p>
+      </UnauthenticatedRoute>
+      <Route path="/">
+        <p>Welcome home</p>
+      </Route>
+      <Route path="/elsewhere">
+        <p>a new direction</p>
+      </Route>
+    </BrowserRouter>
+  );
+}
+
 describe("UnauthenticatedRoute tests", () => {
-  test("Check that a route is available", () => {
-    // Set Context values
-    const contextValues = { isAuthenticated: false };
+  it("Should render children for unauthenticated users", () => {
+    renderComponent(false, "/unauth");
+    expect(screen.getByText("You need to log in")).toBeInTheDocument();
+  });
 
-    // Mock useAppContext with new values
-    jest
-      .spyOn(AppContext, "useAppContext")
-      .mockImplementation(() => contextValues);
+  it("Should redirect authenticated users home", () => {
+    renderComponent(true, "/unauth");
+    expect(screen.getByText("Welcome home")).toBeInTheDocument();
+  });
 
-    const wrapper = mount(
-      <BrowserRouter>
-        <UnauthenticatedRoute />
-      </BrowserRouter>
-    );
-
-    expect(wrapper.containsMatchingElement(<Route />)).toEqual(true);
+  it("Should redirect authenticated users elsewhere if specified", () => {
+    renderComponent(true, "/unauth?redirect=/elsewhere");
+    expect(screen.getByText("a new direction")).toBeInTheDocument();
   });
 });
