@@ -46,13 +46,13 @@ const EditUser = ({ stateList }) => {
     // Sort states alphabetically and place in array
     let theStates = [];
     const userStates =
-      user.data.states && user.data.states !== "null" ? user.data.states : [];
+      user.data?.states && user.data.states !== "null" ? user.data.states : [];
     if (userStates) {
       theStates = userStates.sort();
     }
 
     // Set states to array of objects
-    if (user.data.role !== "state") {
+    if (user.data?.role !== "state") {
       setSelectedStates(
         theStates.map(e => {
           let stateName;
@@ -268,7 +268,7 @@ const EditUser = ({ stateList }) => {
                 </>
               ) : null}
               <tr>
-                <th>Registration Date</th>
+                <th>Registration Date:</th>
                 <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
               </tr>
               <tr>

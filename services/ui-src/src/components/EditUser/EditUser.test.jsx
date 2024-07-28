@@ -1,63 +1,162 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureMockStore from "redux-mock-store";
-
 import EditUser from "./EditUser";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import configureMockStore from "redux-mock-store";
+import { getUserById, updateUser } from "../../libs/api";
 
 const mockStore = configureMockStore([]);
-
-const mockUser = {
-  data: {
-    email: "email@email.com",
-    name: "Test User",
-    states: ["CA"],
-    role: "ADMIN_USER"
-  }
-};
+const store = mockStore({
+  global: {
+    states: [
+      { state_name: "Colorado", state_id: "CO" },
+      { state_name: "Texas", state_id: "TX" },
+      { state_name: "Wisconsin", state_id: "WI" },
+    ],
+  },
+});
 
 jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser,
-  getUserById: () => Promise.resolve(mockUser)
+  updateUser: jest.fn().mockResolvedValue({}),
+  getUserById: jest.fn(),
 }));
 
-// Mock for useParams
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useParams: () => ({
-    id: "5"
-  })
+  useParams: jest.fn().mockReturnValue({ id: "23" }),
 }));
 
-describe("Test EditUser.js", () => {
-  beforeEach(() => {
-    const store = mockStore(fullStoreMock);
-    render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <EditUser />
-        </BrowserRouter>
-      </Provider>
-    );
-  });
+const renderComponent = (user) => {
+  if (user) {
+    getUserById.mockResolvedValue({
+      status: "success",
+      data: user,
+    });
+  }
+  else {
+    getUserById.mockResolvedValue({
+      status: "error",
+      message: "No user by specified id found",
+    });
+  }
 
-  test("Check for User List link", () => {
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <EditUser />
+      </BrowserRouter>
+    </Provider>
+  );
+};
+
+const mockUser =   {
+  userId: 23,
+  username: "QWER",
+  firstName: "Quentin",
+  lastName: "Werther",
+  email: "qwer@email.test",
+  role: "state",
+  dateJoined: "2024-01-15",
+  lastLogin: "2024-02-16",
+  states: ["CO"],
+};
+
+describe("Test EditUser.js", () => {
+  it("should render header and button when user is found", async () => {
+    renderComponent(mockUser);
+    await waitFor(() => expect(getUserById).toHaveBeenCalled());
+    
     const backLink = screen.getByText(
       "Back to User List",
       { selector: "a", exact: false }
     );
     expect(backLink).toBeInTheDocument();
+
+    const updateButton = screen.getByText(
+      "Update User",
+      { selector: "button" }
+    );
+    expect(updateButton).toBeInTheDocument();
   });
 
-  /* TODO, probably some tests for when we CAN find the user */
+  it("should render error when user is not found", async () => {
+    renderComponent(undefined);
+    await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-  test("Check for Cannot Find User message", () => {
-    const notFoundElement = screen.getByText(
-      "Cannot find user with id",
-      { exact: false }
+    const errorMessage = screen.getByText(
+      "Cannot find user with id 23",
     );
-    expect(notFoundElement).toBeInTheDocument();
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  it("should render user details in a table", async () => {
+    renderComponent(mockUser);
+    await waitFor(() => expect(getUserById).toHaveBeenCalled());
+    
+    const table = screen.getByTestId("table");
+    const rows = [...table.querySelectorAll("tr")];
+    expect(rows.length).toBe(8);
+
+    expect(rows[0].querySelector("th")).toHaveTextContent("Username:");
+    expect(rows[0].querySelector("td input")).toHaveValue("QWER");
+
+    expect(rows[1].querySelector("th")).toHaveTextContent("First Name:");
+    expect(rows[1].querySelector("td input")).toHaveValue("Quentin");
+
+    expect(rows[2].querySelector("th")).toHaveTextContent("Last Name:");
+    expect(rows[2].querySelector("td input")).toHaveValue("Werther");
+
+    expect(rows[3].querySelector("th")).toHaveTextContent("Email:");
+    expect(rows[3].querySelector("td input")).toHaveValue("qwer@email.test");
+
+    expect(rows[4].querySelector("th")).toHaveTextContent("Role:");
+    expect(rows[4].querySelector("td input")).toHaveValue("State User");
+
+    expect(rows[5].querySelector("th")).toHaveTextContent("State:");
+    expect(rows[5].querySelector("td .is-selected")).toHaveTextContent("Colorado");
+
+    expect(rows[6].querySelector("th")).toHaveTextContent("Registration Date:");
+    expect(rows[6].querySelector("td")).toHaveTextContent("1/14/2024");
+
+    expect(rows[7].querySelector("th")).toHaveTextContent("Last Login:");
+    expect(rows[7].querySelector("td")).toHaveTextContent("2/15/2024");
+  });
+
+  it("should render admin users' states in a multiselect", async () => {
+    const user = {
+      ...mockUser,
+      role: "admin",
+      states: ["WI", "TX"],
+    };
+    renderComponent(user);
+    await waitFor(() => expect(getUserById).toHaveBeenCalled());
+
+    const table = screen.getByTestId("table");
+    const rows = [...table.querySelectorAll("tr")];
+
+    expect(rows[5].querySelector("th")).toHaveTextContent("State:");
+    expect(rows[5].querySelector("td .dropdown-heading-value"))
+      .toHaveTextContent("Texas, Wisconsin");
+  });
+
+  it("should call the API to save updated user details", async () => {
+    renderComponent(mockUser);
+    await waitFor(() => expect(getUserById).toHaveBeenCalled());
+
+    const table = screen.getByTestId("table");
+    const usernameInput = table.querySelector(".userName input");
+    userEvent.type(usernameInput, "TY");
+
+    const saveButton = screen.getByText(
+      "Update User",
+      { selector: "button" }
+    );
+    userEvent.click(saveButton);
+
+    expect(updateUser).toHaveBeenCalledWith(expect.objectContaining({
+      username: "QWERTY",
+    }));
   });
 });
