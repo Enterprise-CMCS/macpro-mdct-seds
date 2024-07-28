@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import GridWithTotals from "./GridWithTotals";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
@@ -113,5 +114,18 @@ describe("Test GridWithTotals.js", () => {
       "60",
       "270",
     ]);
+  });
+
+  it("should update totals on input", () => {
+    const { container } = renderComponent();
+
+    const input = container.querySelector("input");
+    userEvent.type(input, "00");
+
+    const rowTotal = container.querySelector("tbody tr td:nth-last-child(1)");
+    expect(rowTotal).toHaveTextContent("114");
+
+    const columnTotal = container.querySelector("tbody tr:nth-last-child(1) td");
+    expect(columnTotal).toHaveTextContent("147");
   });
 });
