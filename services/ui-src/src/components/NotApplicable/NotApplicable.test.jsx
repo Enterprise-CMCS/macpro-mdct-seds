@@ -11,7 +11,7 @@ jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
 }));
 
-const renderComponent = (user, statusId) => {
+const renderComponent = (user, statusId, notApplicable) => {
   getUserInfo.mockResolvedValue({ Items: [user] });
   const initialStore = {
     ...fullStoreMock,
@@ -19,6 +19,7 @@ const renderComponent = (user, statusId) => {
       ...fullStoreMock.currentForm,
       statusData: {
         ...fullStoreMock.currentForm.statusData,
+        not_applicable: notApplicable,
         status_id: statusId,
       },
     }
@@ -38,23 +39,37 @@ const adminUser = { role: "admin" };
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
-    renderComponent(stateUser, 1);
+    renderComponent(stateUser, 1, false);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeEnabled();
   });
 
   it("should be disabled for admin users", async () => {
-    renderComponent(adminUser, 1);
+    renderComponent(adminUser, 1, false);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeDisabled();
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
-    renderComponent(stateUser, 3);
+    renderComponent(stateUser, 3, false);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeDisabled();
+  });
+
+  it("should initialize to Active when applicable", async () => {
+    renderComponent(stateUser, 1, false);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input.value).toBe("0");
+  });
+
+  it("should initialize to Not Applicable when appropriate", async () => {
+    renderComponent(stateUser, 1, true);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input.value).toBe("1");
   });
 });
