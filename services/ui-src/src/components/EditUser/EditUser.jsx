@@ -94,7 +94,7 @@ const EditUser = ({ stateList }) => {
       states = option.join("-");
     }
     if (!states) {
-      states = "null";
+      states = null;
     }
     setStatesToSend(states);
   };
@@ -122,7 +122,7 @@ const EditUser = ({ stateList }) => {
         setStatesToSend(newStates);
       } else {
         if (!e.value) {
-          e.value = "null";
+          e.value = null;
         }
         setStatesToSend([e.value]);
         response = e.value;
@@ -132,7 +132,7 @@ const EditUser = ({ stateList }) => {
     } else if (field === "role") {
       // Save to local state
       setRole(e.value);
-      setStatesToSend("null");
+      setStatesToSend(null);
       setSelectedStates();
       // Update user
       response = e.value;
