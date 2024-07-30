@@ -58,8 +58,8 @@ const mockUser =   {
   lastName: "Werther",
   email: "qwer@email.test",
   role: "state",
-  dateJoined: "2024-01-15",
-  lastLogin: "2024-02-16",
+  dateJoined: "2024-01-15T12:34:45Z",
+  lastLogin: "2024-02-16T12:34:45Z",
   states: ["CO"],
 };
 
@@ -118,10 +118,10 @@ describe("Test EditUser.js", () => {
     expect(rows[5].querySelector("td .is-selected")).toHaveTextContent("Colorado");
 
     expect(rows[6].querySelector("th")).toHaveTextContent("Registration Date:");
-    expect(rows[6].querySelector("td")).toHaveTextContent("1/14/2024");
+    expect(rows[6].querySelector("td")).toHaveTextContent("1/15/2024");
 
     expect(rows[7].querySelector("th")).toHaveTextContent("Last Login:");
-    expect(rows[7].querySelector("td")).toHaveTextContent("2/15/2024");
+    expect(rows[7].querySelector("td")).toHaveTextContent("2/16/2024");
   });
 
   it("should render admin users' states in a multiselect", async () => {

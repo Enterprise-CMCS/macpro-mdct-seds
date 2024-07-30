@@ -30,8 +30,8 @@ const mockUsers = [
     lastName: "Werther",
     email: "qwer@email.test",
     role: "state",
-    dateJoined: "2024-01-15",
-    lastLogin: "2024-02-16",
+    dateJoined: "2024-01-15T12:34:45Z",
+    lastLogin: "2024-02-16T12:34:45Z",
     states: ["CO"],
   },
   {
@@ -41,8 +41,8 @@ const mockUsers = [
     lastName: "D'Fern",
     email: "asdf@email.test",
     role: "admin",
-    dateJoined: "2024-03-17",
-    lastLogin: "2024-04-18",
+    dateJoined: "2024-03-17T12:34:45Z",
+    lastLogin: "2024-04-18T12:34:45Z",
     states: ["WI", "TX", "CO"],
   },
 ];
@@ -130,11 +130,9 @@ describe("Test Users.js", () => {
 
     expect(row1cells[4].textContent).toBe("admin");
 
-    // Note the step back in time for these dates;
-    // 12:00am on 3/17 in UTC was 3/16 on the US east coast
-    expect(row1cells[5].textContent).toBe("3/16/2024");
+    expect(row1cells[5].textContent).toBe("3/17/2024");
 
-    expect(row1cells[6].textContent).toBe("4/17/2024");
+    expect(row1cells[6].textContent).toBe("4/18/2024");
 
     expect(row1cells[7].textContent).toBe("CO, TX, WI");
   });

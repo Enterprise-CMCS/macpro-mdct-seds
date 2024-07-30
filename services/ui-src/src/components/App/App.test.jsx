@@ -5,6 +5,10 @@ import { BrowserRouter } from "react-router-dom";
 import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
+jest.mock("../Routes/Routes", () =>
+  (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
+);
+
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useLocation: () => ({
@@ -79,7 +83,7 @@ describe("Test App.js", () => {
       expect(ensureUserExistsInApi).toHaveBeenCalledWith("qwer@email.test");
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         false, // not authenticated
-        "http://localhost/login", // we've been redirected
+        "http://localhost/", // we've been redirected
         "localhost:3000/example/path",
       );
     });
