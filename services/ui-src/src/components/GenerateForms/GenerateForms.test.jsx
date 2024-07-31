@@ -1,43 +1,57 @@
 import React from "react";
-import Dropdown from "react-dropdown";
 import GenerateForms from "./GenerateForms";
-import { Button } from "@trussworks/react-uswds";
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { generateQuarterlyForms } from "../../libs/api";
+
+jest.spyOn(window, "alert").mockImplementation(() => {});
+jest.spyOn(window, "confirm").mockImplementation(() => true);
+
+jest.mock("../../libs/api", () => ({
+  generateQuarterlyForms: jest.fn(),
+}));
 
 describe("Test GenerateForms.js", () => {
-  const wrapper = shallow(<GenerateForms />);
-
-  describe("GenerateForms component- render should include its children", () => {
-    test("Check the main div, with classname generate-forms-container, exists", () => {
-      expect(wrapper.find(".generate-forms-container").length).toBe(1);
-      expect(
-        wrapper.find({ "data-testid": "generateFormsButton" }).length
-      ).toBe(1);
-    });
-
-    test("Check that GenerateForms' child react components are being rendered", () => {
-      expect(wrapper.find(Dropdown).length).toBe(2);
-      expect(wrapper.find(Button).length).toBe(1);
-    });
-
-    test("Check the drop down and button descriptions are accurate", () => {
-      const detailedWrapper = mount(<GenerateForms />);
-      const dropdowns = detailedWrapper.find(Dropdown).children();
-      expect(dropdowns.at(0).text()).toMatch("Select a Year");
-      expect(dropdowns.at(1).text()).toMatch("Select a Quarter");
-
-      const button = detailedWrapper.find(Button).children();
-      expect(button.at(0).text()).toMatch("Generate Forms");
-    });
+  let container;
+  beforeEach(() => {
+    container = render(<GenerateForms/>).container;
+    jest.clearAllMocks();
   });
 
-  describe("GenerateForms component should behave as expected when the user interacts with the page", () => {
-    test("Generating Forms should error if the user has not selected a year and quarter", () => {
-      jest.spyOn(window, "alert").mockImplementation(() => {});
+  it("should render", () => {
+    // A dropdown for year, and a dropdown for quarter
+    expect(container.querySelectorAll(".Dropdown-root")).toHaveLength(2);
+    expect(screen.getByText("Generate Forms", { selector: "button" })).toBeInTheDocument();
+  });
 
-      expect(window.alert).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "generateFormsButton" }).simulate("click");
-      expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
+  test("Generating Forms should error if the user has not selected a year and quarter", () => {
+    expect(window.alert).not.toHaveBeenCalled();
+
+    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    userEvent.click(generateButton);
+
+    expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
+  });
+
+  test("Generating Forms should send a request to the API", () => {
+    expect(generateQuarterlyForms).not.toHaveBeenCalled();
+
+    const yearDropdown = screen.getByText("Select a Year");
+    userEvent.click(yearDropdown);
+    const yearOption = screen.getByText("2022");
+    userEvent.click(yearOption);
+
+    const quarterDropdown = screen.getByText("Select a Quarter");
+    userEvent.click(quarterDropdown);
+    const quarterOption = screen.getByText("Q2");
+    userEvent.click(quarterOption);
+
+    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    userEvent.click(generateButton);
+
+    expect(generateQuarterlyForms).toHaveBeenCalledWith({
+      year: 2022,
+      quarter: 2,
     });
   });
 });

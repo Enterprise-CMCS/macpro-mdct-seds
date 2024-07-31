@@ -1,149 +1,131 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import GridWithTotals from "./GridWithTotals";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+
+const gridDataItems = [
+  {
+    col1: "",
+    col2: "% of FPL 0-133",
+    col3: "% of FPL 134-200",
+    col4: "% of FPL 201-250",
+    col5: "% of FPL 251-300",
+    col6: "% of FPL 301-317"
+  },
+  {
+    col1: "A. Fee-for-Service",
+    col2: 1,
+    col3: 2,
+    col4: 3,
+    col5: 4,
+    col6: 5
+  },
+  {
+    col1: "B. Managed Care Arrangements",
+    col2: 21,
+    col3: 22,
+    col4: 23,
+    col5: 24,
+    col6: 25
+  },
+  {
+    col1: "C. Primary Care Case Management",
+    col2: 26,
+    col3: 27,
+    col4: 28,
+    col5: 29,
+    col6: 30
+  }
+];
+
 const mockStore = configureStore([]);
+const renderComponent = () => {
+  const store = mockStore(currentFormMock_21E);
+  return render(
+    <Provider store={store}>
+      <GridWithTotals
+        gridData={gridDataItems}
+        questionID="42"
+      />
+    </Provider>
+  );
+}
 
 describe("Test GridWithTotals.js", () => {
-  let store;
-  let wrapper;
-  const gridDataItems = [
-    {
-      col1: "",
-      col2: "% of FPL 0-133",
-      col3: "% of FPL 134-200",
-      col4: "% of FPL 201-250",
-      col5: "% of FPL 251-300",
-      col6: "% of FPL 301-317"
-    },
-    {
-      col1: "A. Fee-for-Service",
-      col2: 1,
-      col3: 2,
-      col4: 3,
-      col5: 4,
-      col6: 5
-    },
-    {
-      col1: "B. Managed Care Arrangements",
-      col2: 21,
-      col3: 22,
-      col4: 23,
-      col5: 24,
-      col6: 25
-    },
-    {
-      col1: "C. Primary Care Case Management",
-      col2: 26,
-      col3: 27,
-      col4: 28,
-      col5: 29,
-      col6: 30
-    }
-  ];
+  it("should render headers from provided grid data", () => {
+    const { container } = renderComponent();
 
-  beforeEach(() => {
-    store = mockStore(currentFormMock_21E);
-    wrapper = mount(
-      <Provider store={store}>
-        <GridWithTotals gridData={gridDataItems} />
-      </Provider>
-    );
+    const columnHeaders = [...container.querySelectorAll("thead th")]
+      .map(th => th.textContent);
+    expect(columnHeaders).toEqual([
+      "", // spacer
+      "% of FPL 0-133",
+      "% of FPL 134-200",
+      "% of FPL 201-250",
+      "% of FPL 251-300",
+      "% of FPL 301-317",
+      "Totals",
+    ]);
+
+    const rowHeaders = [...container.querySelectorAll("tbody tr th")]
+      .map(th => th.textContent);
+    expect(rowHeaders).toEqual([
+      "A. Fee-for-Service",
+      "B. Managed Care Arrangements",
+      "C. Primary Care Case Management",
+      "Totals:"
+    ]);
   });
 
-  test("Check the main div, with classname app, exists", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(1);
+  it("Should render input values from provided grid data", () => {
+    const { container } = renderComponent();
+
+    // We will only test the first row; the others are generated from the same code.
+    const firstRowInputValues = [...container.querySelectorAll("tbody tr:nth-child(1) td")]
+      .map(td => td.querySelector("input")?.value);
+
+    expect(firstRowInputValues).toEqual([
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      undefined, // Total; not an input
+    ]);
   });
 
-  test("Check for all top headers", () => {
-    expect(wrapper.text()).toMatch(/% of FPL 0-133/);
-    expect(wrapper.text()).toMatch(/% of FPL 134-200/);
-    expect(wrapper.text()).toMatch(/% of FPL 201-250/);
-    expect(wrapper.text()).toMatch(/% of FPL 251-300/);
-    expect(wrapper.text()).toMatch(/% of FPL 301-317/);
+  it("should calculate correct totals", () => {
+    const { container } = renderComponent();
+
+    const firstRowSubtotal = container.querySelector("tbody tr:nth-child(1) td.total-column")
+      .textContent;
+    expect(firstRowSubtotal).toBe("15");
+
+    const grandTotals = [...container.querySelectorAll("tbody tr:nth-last-child(1) td")]
+      .map(td => td.textContent);
+    expect(grandTotals).toEqual([
+      "48",
+      "51",
+      "54",
+      "57",
+      "60",
+      "270",
+    ]);
   });
 
-  test("Check for all side headers", () => {
-    expect(wrapper.text()).toMatch(/A. Fee-for-Service/);
-    expect(wrapper.text()).toMatch(/B. Managed Care Arrangements/);
-    expect(wrapper.text()).toMatch(/C. Primary Care Case Management/);
-  });
+  it("should update totals on input", () => {
+    const { container } = renderComponent();
 
-  test("Check table input values from provided data", () => {
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(0)
-        .children()
-        .find("input")
-        .instance().value
-    ).toMatch(/1/);
+    const input = container.querySelector("input");
+    userEvent.type(input, "00");
 
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(1)
-        .children()
-        .find("input")
-        .instance().value
-    ).toMatch(/2/);
+    const rowTotal = container.querySelector("tbody tr td:nth-last-child(1)");
+    expect(rowTotal).toHaveTextContent("114");
 
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(2)
-        .children()
-        .find("input")
-        .instance().value
-    ).toMatch(/3/);
-
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(3)
-        .children()
-        .find("input")
-        .instance().value
-    ).toMatch(/4/);
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(4)
-        .children()
-        .find("input")
-        .instance().value
-    ).toMatch(/5/);
-  });
-  test("Check table output values after addition occurs", () => {
-    expect(
-      wrapper.find(".total-row").children().find("td").at(0).text()
-    ).toMatch(/48/);
-    expect(
-      wrapper.find(".total-row").children().find("td").at(1).text()
-    ).toMatch(/51/);
-    expect(
-      wrapper.find(".total-row").children().find("td").at(2).text()
-    ).toMatch(/54/);
-    expect(
-      wrapper.find(".total-row").children().find("td").at(3).text()
-    ).toMatch(/57/);
-    expect(
-      wrapper.find(".total-row").children().find("td").at(4).text()
-    ).toMatch(/60/);
-    expect(
-      wrapper.find(".total-row").children().find("td").at(5).text()
-    ).toMatch(/270/);
+    const columnTotal = container.querySelector("tbody tr:nth-last-child(1) td");
+    expect(columnTotal).toHaveTextContent("147");
   });
 });

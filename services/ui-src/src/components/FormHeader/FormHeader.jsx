@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
 import { getFormTypes, getSingleForm } from "../../libs/api";
-import "./FormHeader.scss";
 import {
   updateFPL,
   saveForm
@@ -108,19 +107,19 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
                 <th>
                   <b>State:</b>
                 </th>
-                <td className="state-value">{`${state}`}</td>
+                <td data-testid="state-value">{`${state}`}</td>
 
                 <th>
                   <b>Quarter:</b>
                 </th>
-                <td className="quarter-value">{`${quarter}/${year}`}</td>
+                <td data-testid="quarter-value">{`${quarter}/${year}`}</td>
               </tr>
             </tbody>
           </Table>
         </div>
 
         {showFPL ? (
-          <div className="form-max-fpl">
+          <div data-testid="form-max-fpl">
             <p>What is the upper income eligibility limit for this program?</p>
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
