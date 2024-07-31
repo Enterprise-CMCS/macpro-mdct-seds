@@ -41,4 +41,4 @@ jest.mock("./utility-functions/constants", () => ({
 
 HTMLCanvasElement.prototype.getContext = () => {
   /* Nothing; we don't unit test our jsPDF integration */
-}
+};
