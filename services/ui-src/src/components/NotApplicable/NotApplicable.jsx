@@ -21,7 +21,7 @@ const NotApplicable = ({
   saveForm,
   updatedApplicableThunk
 }) => {
-  const [applicableStatus, setApplicableStatus] = useState(1); // 0 or 1
+  const [applicableStatus, setApplicableStatus] = useState(notApplicable ? 1 : 0);
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
   const determineUserRole = async () => {

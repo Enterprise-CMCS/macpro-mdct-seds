@@ -279,3 +279,4 @@ work worldwide through the CC0 1.0 Universal public domain dedication.
 ### Contributors
 
 This project made possible by the [Serverless Stack](https://serverless-stack.com/) and its authors/contributors. The extremely detailed tutorial, code examples, and serverless pattern is where this project started. 
+
