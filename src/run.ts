@@ -7,6 +7,18 @@ import { execSync } from "child_process";
 // load .env
 dotenv.config();
 
+const deployedServices = [
+  "database",
+  "uploads",
+  "app-api",
+  "stream-functions",
+  "ui-waflog-s3-bucket",
+  "ui",
+  "ui-auth",
+  "ui-waf-log-assoc",
+  "ui-src",
+]
+
 // Function to update .env files using 1Password CLI
 function updateEnvFiles() {
   try {
@@ -126,6 +138,54 @@ async function run_all_locally() {
   run_fe_locally(runner);
 }
 
+async function seed_database(
+  runner: LabeledProcessRunner,
+  stage: string
+) {
+  const seedService = "data-deployment"
+  await install_deps(runner, seedService);
+  const seedDeployCmd = ["sls", "deploy", "--stage", stage];
+  // Deploy seed service
+  await runner.run_command_and_output(
+    "Seed service deploy",
+    seedDeployCmd,
+    `services/${seedService}`
+  );
+  // Run seed
+  const seedCmd = ["sls", "dynamodb:seed", "--stage", stage];
+  await runner.run_command_and_output(
+    "Run seed",
+    seedCmd,
+    `services/${seedService}`
+  );
+}
+
+async function install_deps(runner: LabeledProcessRunner, service: string) {
+  await runner.run_command_and_output(
+    "Installing dependencies",
+    ["yarn", "install", "--frozen-lockfile"],
+    `services/${service}`
+  );
+}
+
+async function prepare_services(runner: LabeledProcessRunner) {
+  for (const service of deployedServices) {
+    await install_deps(runner, service);
+  }
+}
+
+async function deploy(options: { stage: string }) {
+  const stage = options.stage;
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+  const deployCmd = ["sls", "deploy", "--stage", stage];
+  await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
+  // Seed when flag is set to true
+  if (process.env.SEED_DATABASE) {
+    await seed_database(runner, stage);
+  }
+}
+
 async function destroy_stage(options: {
   stage: string;
   service: string | undefined;
@@ -166,6 +226,14 @@ yargs(process.argv.slice(2))
     () => {
       console.log("Testing 1. 2. 3.");
     }
+  )
+  .command(
+    "deploy",
+    "deploy the app with serverless compose to the cloud",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    deploy
   )
   .command(
     "destroy",
