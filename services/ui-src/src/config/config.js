@@ -1,5 +1,4 @@
 export default {
-  MAX_ATTACHMENT_SIZE: 5000000,
   apiGateway: {
     REGION: window._env_.API_REGION,
     URL: window._env_.API_URL

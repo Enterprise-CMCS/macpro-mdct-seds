@@ -42,7 +42,6 @@ custom:
       - impl
       - val
       - prod
-  attachments_bucket_arn: ${param:AttachmentsBucketArn}
   api_gateway_rest_api_name: ${param:ApiGatewayRestApiName}
   application_endpoint_url: ${param:ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
