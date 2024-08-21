@@ -17,7 +17,7 @@ const Home = ({ user }) => {
   const renderLander = () => {
     let content;
 
-    switch (user.attributes["app-role"]) {
+    switch (user?.attributes["app-role"]) {
       case "state":
         content = <HomeState />;
         break;

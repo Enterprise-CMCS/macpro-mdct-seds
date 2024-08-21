@@ -9,7 +9,6 @@ dotenv.config();
 
 const deployedServices = [
   "database",
-  "uploads",
   "app-api",
   "stream-functions",
   "ui-waflog-s3-bucket",
@@ -86,26 +85,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
   );
 }
 
-// run_s3_locally runs s3 locally
-// @ts-ignore
-async function run_s3_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "s3 yarn",
-    ["yarn", "install"],
-    "services/uploads"
-  );
-  await runner.run_command_and_output(
-    "s3 svls doc",
-    ["serverless", "doctor"],
-    "services/uploads"
-  );
-  runner.run_command_and_output(
-    "s3",
-    ["serverless", "s3", "start", "--stage=local"],
-    "services/uploads"
-  );
-}
-
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner) {
@@ -133,7 +112,6 @@ async function run_all_locally() {
   const runner = new LabeledProcessRunner();
 
   run_db_locally(runner);
-  run_s3_locally(runner);
   run_api_locally(runner);
   run_fe_locally(runner);
 }
