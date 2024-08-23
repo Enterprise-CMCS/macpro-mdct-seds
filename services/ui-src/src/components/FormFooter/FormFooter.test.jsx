@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
@@ -19,21 +19,19 @@ const mockUser = {
     }
   ]
 };
+
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
+
 jest.mock("../../libs/api", () => ({
   obtainUserByEmail: () => mockUser
 }));
 
-describe("Test FormFooter.js - Mount", () => {
-  let wrapper;
-  let store;
-
+describe("Test FormFooter.js", () => {
   beforeEach(() => {
-    store = mockStore(fullStoreMock);
-
-    wrapper = mount(
+    const store = mockStore(fullStoreMock);
+    render(
       <Provider store={store}>
         <BrowserRouter>
           <FormFooter state="AL" year="2021" quarter="1" />
@@ -42,29 +40,17 @@ describe("Test FormFooter.js - Mount", () => {
     );
   });
 
-  test("Check the form footer div exists", () => {
-    expect(wrapper.find(".formfooter").length).toBe(1);
-  });
-
   test("Check for Link back to Quarter Page list of available reports", () => {
-    expect(wrapper.find(".form-nav").length).toBe(2);
+    expect(screen.getByText("Back to Q1 2021")).toBeInTheDocument();
   });
 
   test("Check for Last Saved Date display", () => {
-    expect(wrapper.find(".form-actions").length).toBe(2);
+    expect(screen.getByTestId("lastModified"))
+      .toHaveTextContent("Last saved: 04-14-2021 at 8:46:35 am EST");
   });
 
   test("Check for Save button", () => {
-    expect(wrapper.find({ "data-testid": "saveButton" }).length).toBe(2);
-  });
-
-  test("Check for last modified button", () => {
-    expect(wrapper.find({ "data-testid": "lastModified" }).length).toBe(2);
-  });
-
-  test("Check for correct time and date", () => {
-    expect(wrapper.find(`[data-testid="lastModified"]`).at(0).text()).toBe(
-      " Last saved: 04-14-2021 at 8:46:35 am EST "
-    );
+    const saveButton = screen.getByText("Save", { selector: "button" })
+    expect(saveButton).toBeInTheDocument();
   });
 });

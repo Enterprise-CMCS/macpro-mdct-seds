@@ -1,120 +1,119 @@
 import React from "react";
-import { mount } from "enzyme";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { act } from "react-dom/test-utils";
 import Quarterly from "../Quarterly/Quarterly";
+import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
+import { getUserInfo } from "../../utility-functions/userFunctions";
+import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 
 const mockStore = configureStore([]);
 let store = mockStore(mockStore);
-let wrapper;
+
 jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
-  useParams: () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: jest.fn().mockReturnValue({
     state: "AL",
     year: "2021",
-    quarter: "01",
-    formName: "21E"
-  })
-}));
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["AL"],
-      role: "state"
-    }
-  ]
-};
-const mockQuartelyData = quarterlyDataMock;
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
-}));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
-jest.mock("../../utility-functions/dbFunctions", () => ({
-  recursiveGetStateForms: () => Promise.resolve(mockQuartelyData)
+    quarter: "01"
+  }),
 }));
 
-describe("Quarterly tests", () => {
-  const wrapperComponent = (
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: jest.fn().mockResolvedValue({
+    Items: [{ states: ["AL"] }],
+  }),
+}));
+
+jest.mock("../../utility-functions/dbFunctions", () => ({
+  recursiveGetStateForms: jest.fn(),
+}));
+recursiveGetStateForms.mockResolvedValue(quarterlyDataMock);
+
+const forms = [
+  {
+    id: "GRE",
+    name: "Gender, Race & Ethnicity",
+    status: "In Progress",
+    date: "04-08-2021 at 8:46:35 am EST",
+  },
+  {
+    id: "21PW",
+    name: "Number of Pregnant Women Served",
+    status: "In Progress",
+    date: "04-07-2021 at 8:46:35 am EST",
+  },
+  {
+    id: "64.21E",
+    name: "Number of Children Served in Medicaid Expansion Program",
+    status: "Provisional Data Certified and Submitted",
+    date: "04-06-2021 at 8:46:35 am EST",
+  },
+  {
+    id: "21E",
+    name: "Number of Children Served in Separate CHIP Program",
+    status: "Final Data Certified and Submitted",
+    date: "04-05-2021 at 8:46:35 am EST",
+  },
+  {
+    id: "64.EC",
+    name: "Number of Children Served in Medicaid Program",
+    status: "Final Data Certified and Submitted",
+    date: "04-04-2021 at 8:46:35 am EST",
+  },
+];
+
+
+const renderComponent = () => {
+  return render(
     <Provider store={store}>
       <BrowserRouter>
-        <Quarterly />
+        <Quarterly/>
       </BrowserRouter>
     </Provider>
-  );
+  )
+};
 
-  test("Check that the title and path are generated with the correct text", async () => {
-    await act(async () => {
-      wrapper = await mount(wrapperComponent);
+describe("Quarterly tests", () => {
+  it("should render correctly", async () => {
+    const { container } = renderComponent();
+    await waitFor(() => {
+      expect(getUserInfo).toHaveBeenCalled();
+      expect(recursiveGetStateForms).toHaveBeenCalled();
     });
-    expect(wrapper.find(".page-quarterly").find("h1").at(0).text()).toMatch(
-      "Q01 2021 Reports"
-    );
-    expect(wrapper.find(".breadcrumbs").text()).toContain(
-      "Enrollment Data Home > AL Q01 2021"
-    );
-  });
 
-  test("Check that the links to the state forms contain the correct text", async () => {
-    await act(async () => {
-      wrapper = await mount(wrapperComponent);
-    });
-    expect(wrapper.find({ children: "GRE" }));
-    expect(wrapper.find({ children: "21PW" }));
-    expect(wrapper.find({ children: "64.21E" }));
-    expect(wrapper.find({ children: "21E" }));
-    expect(wrapper.find({ children: "64.EC" }));
-  });
+    expect(screen.getByText(
+      "Q01 2021 Reports",
+      { selector: "h1" }
+    )).toBeInTheDocument();
 
-  test("Check that the form names contain the correct text", async () => {
-    await act(async () => {
-      wrapper = await mount(wrapperComponent);
-    });
-    expect(wrapper.find({ children: "Gender, Race & Ethnicity" }));
-    expect(wrapper.find({ children: "Number of Pregnant Women Served" }));
-    expect(
-      wrapper.find({
-        children: "Number of Children Served in Medicaid Expansion Program"
-      })
-    );
-    expect(
-      wrapper.find({
-        children: "Number of Children Served in Separate CHIP Program"
-      })
-    );
-    expect(
-      wrapper.find({
-        children: "Number of Children Served in Medicaid Program"
-      })
-    );
-  });
+    expect(screen.getByText(
+      "Enrollment Data Home",
+      { selector: ".breadcrumbs a" }
+    )).toBeInTheDocument();
 
-  test("Check that the status of each form is correct", async () => {
-    await act(async () => {
-      wrapper = await mount(wrapperComponent);
-    });
-    expect(wrapper.find({ children: "In Progress" }));
-    expect(
-      wrapper.find({ children: "Provisional Data Certified and Submitted" })
-    );
-    expect(wrapper.find({ children: "Final Data Certified and Submitted" }));
-  });
+    const rows = container.querySelectorAll(".rdt_TableBody .rdt_TableRow");
+    expect(rows.length).toBe(forms.length);
 
-  test("Check that the status dates are correct", async () => {
-    await act(async () => {
-      wrapper = await mount(wrapperComponent);
-    });
-    expect(wrapper.find({ children: "04-07-2021 at 8:00:00 pm EST" }));
-    expect(wrapper.find({ children: "04-06-2021 at 8:00:00 pm EST" }));
-    expect(wrapper.find({ children: "04-05-2021 at 8:00:00 pm EST" }));
-    expect(wrapper.find({ children: "04-04-2021 at 8:00:00 pm EST" }));
-    expect(wrapper.find({ children: "04-03-2021 at 8:00:00 pm EST" }));
+    for (let i = 0; i < forms.length; i += 1) {
+      const row = rows[i];
+      const cells = [...row.querySelectorAll(".rdt_TableCell")];
+      const [ idCell, nameCell, statusCell, lastUpdatedCell, printCell] = cells;
+      const form = forms[i];
+
+      expect(idCell.textContent).toBe(form.id);
+      const idHref = idCell.querySelector("a").href;
+      expect(idHref).toContain(`/forms/AL/2021/01/${form.id.replace(".", "-")}`);
+
+      expect(nameCell.textContent).toBe(form.name);
+
+      expect(statusCell.textContent).toBe(form.status);
+
+      expect(lastUpdatedCell.textContent).toBe(form.date);
+
+      const printHref = printCell.querySelector("a").href
+      expect(printHref).toContain(`/print/AL/2021/01/${form.id.replace(".", "-")}`);
+    }
   });
 });

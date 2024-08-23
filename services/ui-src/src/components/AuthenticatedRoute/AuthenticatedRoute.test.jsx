@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import * as AppContext from "../../libs/contextLib";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -12,22 +12,32 @@ jest.mock("react-router-dom", () => ({
   })
 }));
 
+const testRoute = (
+  <BrowserRouter>
+    <AuthenticatedRoute>
+      <h1>Hello, world!</h1>
+    </AuthenticatedRoute>
+  </BrowserRouter>
+);
+
 describe("AuthenticatedRoute tests", () => {
   test("Check that a route is available", () => {
-    // Set Context values
-    const contextValues = { isAuthenticated: true };
-
-    // Mock useAppContext with new values
     jest
       .spyOn(AppContext, "useAppContext")
-      .mockImplementation(() => contextValues);
+      .mockImplementation(() => ({ isAuthenticated: true }));
 
-    const wrapper = mount(
-      <BrowserRouter>
-        <AuthenticatedRoute />
-      </BrowserRouter>
-    );
+    render(testRoute);
 
-    expect(wrapper.containsMatchingElement(<Route />)).toEqual(true);
+    expect(screen.getByText("Hello, world!")).toBeInTheDocument();
+  });
+
+  test("Check that unauthenticated users are redirected", () => {
+    jest
+      .spyOn(AppContext, "useAppContext")
+      .mockImplementation(() => ({ isAuthenticated: false }));
+
+      render(testRoute);
+
+    expect(screen.queryByText("Hello, world!")).not.toBeInTheDocument();
   });
 });
