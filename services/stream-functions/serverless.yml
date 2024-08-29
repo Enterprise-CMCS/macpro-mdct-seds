@@ -6,6 +6,7 @@ package:
   individually: true
 
 plugins:
+  - serverless-s3-bucket-helper
   - serverless-dotenv-plugin
   - serverless-stack-termination-protection
 
