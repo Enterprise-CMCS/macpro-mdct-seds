@@ -3,6 +3,7 @@ service: ui-src
 frameworkVersion: "3"
 
 plugins:
+  - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-stack-termination-protection
   - serverless-cloudfront-invalidate
