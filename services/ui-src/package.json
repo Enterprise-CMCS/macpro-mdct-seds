@@ -14,9 +14,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "@trussworks/react-uswds": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
@@ -28,11 +25,8 @@
     "babel-plugin-named-asset-import": "^0.3.6",
     "browserify": "^17.0.0",
     "camelcase": "^5.3.1",
-    "css-loader": "3.4.2",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-loader": "3.0.3",
@@ -71,7 +65,6 @@
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "resolve": "1.15.0",
-    "resolve-url-loader": "^3.1.5",
     "sass": "^1.57.1",
     "sass-loader": "8.0.2",
     "semver": "6.3.1",
@@ -111,8 +104,7 @@
       "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js",
-      "<rootDir>/setupEnzyme.js"
+      "<rootDir>/src/setupTests.js"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -120,9 +112,7 @@
     ],
     "testEnvironment": "jest-environment-jsdom",
     "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
@@ -169,19 +159,23 @@
     "@babel/plugin-transform-optional-chaining": "^7.22.3",
     "@babel/plugin-transform-react-jsx": "^7.12.17",
     "@babel/preset-env": "^7.24.7",
+    "@testing-library/dom": "7.31.2",
+    "@testing-library/jest-dom": "6.4.6",
+    "@testing-library/react": "12.1.5",
+    "@testing-library/user-event": "13.5.0",
     "core-js": "^3.9.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "history": "^4.9.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^29.0.0",
+    "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
     "react-test-renderer": "^16.13.1",
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
-    "serverless-cloudfront-invalidate": "1.5.0",
-    "serverless-s3-sync": "^1.14.4"
+    "serverless-cloudfront-invalidate": "1.5.0"
   }
 }

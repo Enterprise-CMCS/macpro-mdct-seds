@@ -1,171 +1,113 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import TabContainer from "./TabContainer";
 import configureStore from "redux-mock-store";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { Provider } from "react-redux";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      state: "CA",
-      role: "state"
-    }
-  ]
-};
+jest.mock("../Question/Question", () =>
+  (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../SummaryTab/SummaryTab", () =>
+  (props) => (<div data-testid="summary-tab">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../CertificationTab/CertificationTab", () =>
+  (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
+);
+
 jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
+  getUserInfo: jest.fn(),
 }));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
-const mockstore = configureStore([]);
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useLocation: () => ({
-    pathname: "localhost:3000/forms/AL/2021/1/21E"
-  })
-}));
+const renderComponent = (userRole) => {
+  getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
+  const mockstore = configureStore([]);
+  const store = mockstore(fullStoreMock);
+  return render(
+    <Provider store={store}>
+      <TabContainer/>
+    </Provider>
+  );
+};
 
 describe("TabContainer tests", () => {
-  let store;
-  let wrapper;
+  it("should render the correct subcomponents", async () => {
+    const { container } = renderComponent("state");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
-  beforeEach(() => {
-    store = mockstore(fullStoreMock);
-    wrapper = mount(
-      <Provider store={store}>
-        <TabContainer />
-      </Provider>
-    );
+    const firstQuestion = container.querySelector(".question-component");
+    const firstQuestionProps = JSON.parse(firstQuestion.textContent);
+    expect(firstQuestionProps.disabled).toBe(false);
+
+    userEvent.click(screen.getAllByRole("tab")[5]);
+    expect(screen.getByTestId("summary-tab")).toBeInTheDocument();
+
+    userEvent.click(screen.getAllByRole("tab")[6]);
+    expect(screen.getByTestId("certification-tab")).toBeInTheDocument();
   });
 
-  test("Main tabcontainer div with classname tab-container-main loads", () => {
-    expect(wrapper.find(".tab-container-main").length).toBe(3);
+  it("should disable questions for admin users", async () => {
+    const { container } = renderComponent("admin");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+
+    const firstQuestion = container.querySelector(".question-component");
+    const firstQuestionProps = JSON.parse(firstQuestion.textContent);
+    expect(firstQuestionProps.disabled).toBe(true);
   });
 
-  test("Check tab list", () => {
-    expect(wrapper.find(".react-tabs__tab-list").length).toBe(2);
+  it("should render the correct tab names", async () => {
+    renderComponent("state");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+
+    const expectedTabNames = [
+      "Under Age 0",
+      "Ages 0 - 1",
+      "Ages 1 - 5",
+      "Ages 6 - 12",
+      "Ages 13 - 18",
+      "Summary",
+      "Certification",
+    ];
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs.length).toBe(expectedTabNames.length);
+    for (let i = 0; i < expectedTabNames.length; i += 1) {
+      expect(tabs[i].textContent).toBe(expectedTabNames[i]);
+    }
   });
 
-  test("Check tab titles", () => {
-    const tabs = wrapper.find(".react-tabs__tab-list").children().find("li");
-    expect(tabs.at(0).text()).toMatch("Under Age 0");
-    expect(tabs.at(1).text()).toMatch("Ages 0 - 1");
-    expect(tabs.at(2).text()).toMatch("Ages 1 - 5");
-    expect(tabs.at(3).text()).toMatch("Ages 6 - 12");
-    expect(tabs.at(4).text()).toMatch("Ages 13 - 18");
-    expect(tabs.at(5).text()).toMatch("Summary");
-    expect(tabs.at(6).text()).toMatch("Certification");
+  it("should render the correct headings within tabs", async () => {
+    renderComponent("state");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+
+    const expectedTabHeaders = [
+      "Conception to birth:",
+      "Birth through age 12 months:",
+      "Age 1 year through age 5 years:",
+      "Age 6 years through age 12 years:",
+      "Age 13 years through age 18 years:",
+      // Note that the summary and certification tabs do not contain h3s
+    ];
+    const tabs = screen.getAllByRole("tab");
+    for (let i = 0; i < expectedTabHeaders.length; i += 1) {
+      userEvent.click(tabs[i]);
+      expect(screen.getByText(expectedTabHeaders[i])).toBeInTheDocument();
+    }
   });
 
-  test("Check tab header values", () => {
-    let tabControl;
+  it("should render the correct content within tabs", async () => {
+    const { container } = renderComponent("state");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
-    // Get all tab lists
-    const tabs = wrapper.find(".react-tabs__tab-list").children().find("li");
-
-    // Check first tab title
-    tabs.at(0).simulate("click");
-    tabControl = tabs.at(0).prop("aria-controls");
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Conception to birth:");
-
-    // Simulate click on second attribute
-    tabs.at(1).simulate("click");
-
-    // Retrieve id for tab content ID
-    tabControl = tabs.at(1).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Birth through age 12 months:");
-
-    // Simulate click on third attribute
-    tabs.at(2).simulate("click");
-    tabControl = tabs.at(2).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Age 1 year through age 5 years:");
-
-    // Simulate click on fourth attribute
-    tabs.at(3).simulate("click");
-    tabControl = tabs.at(3).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Age 6 years through age 12 years:");
-
-    // Simulate click on fifth attribute
-    tabs.at(4).simulate("click");
-    tabControl = tabs.at(4).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Age 13 years through age 18 years:");
-
-    // Simulate click on sixth attribute
-    tabs.at(5).simulate("click");
-    tabControl = tabs.at(5).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Summary:");
-
-    // Simulate click on seventh attribute
-    tabs.at(6).simulate("click");
-    tabControl = tabs.at(6).prop("aria-controls");
-
-    expect(
-      wrapper
-        .find("#" + tabControl)
-        .children()
-        .find(".age-range-description")
-        .children()
-        .find("h3")
-        .text()
-    ).toMatch("Certify and Submit:");
+    // All five age group tabs should containe six questions each
+    const tabs = screen.getAllByRole("tab");
+    for (let i = 0; i < 5; i += 1) {
+      userEvent.click(tabs[i]);
+      const questions = container.querySelectorAll(".question-component");
+      expect(questions.length).toBe(6)
+    }
   });
 });

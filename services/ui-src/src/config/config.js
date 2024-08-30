@@ -1,10 +1,4 @@
 export default {
-  MAX_ATTACHMENT_SIZE: 5000000,
-  s3: {
-    REGION: window._env_.S3_ATTACHMENTS_BUCKET_REGION,
-    BUCKET: window._env_.S3_ATTACHMENTS_BUCKET_NAME,
-    LOCAL_ENDPOINT: window._env_.S3_LOCAL_ENDPOINT
-  },
   apiGateway: {
     REGION: window._env_.API_REGION,
     URL: window._env_.API_URL

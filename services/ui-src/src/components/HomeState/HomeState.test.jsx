@@ -1,48 +1,78 @@
 import React from "react";
 import HomeState from "./HomeState";
-import { mount } from "enzyme";
-import { Accordion } from "@trussworks/react-uswds";
+import { BrowserRouter, useHistory } from "react-router-dom";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import { render, screen, waitFor } from "@testing-library/react";
+import { getUserInfo } from "../../utility-functions/userFunctions";
+import { obtainAvailableForms } from "../../libs/api";
 
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
-};
-
-jest.mock("../../libs/api", () => ({
-  obtainAvailableForms: jest.fn().mockResolvedValue([]),
-}));
-
-const mockPush = jest.fn();
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
-  useHistory: () => ({ push: mockPush })
-}));
+const store = configureStore([])(fullStoreMock);
 
 jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
+  getUserInfo: jest.fn(),
 }));
 
+jest.mock("../../libs/api", () => ({
+  obtainAvailableForms: jest.fn(),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: jest.fn(),
+}));
+
+const renderComponent = (...userStates) => {
+  const user = {
+    attributes: {
+      "app-role": "state",
+    },
+    states: userStates,
+  };
+  getUserInfo.mockResolvedValue({ Items: [user] });
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <HomeState user={user}/>
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
 describe("Test HomeState.js", () => {
-  let wrapper;
+  beforeEach(() => jest.clearAllMocks());
 
-  beforeEach(() => {
-    wrapper = mount(<HomeState />);
+  it("should redirect users with no state", async () => {
+    const history = [];
+    useHistory.mockReturnValue(history);
+    
+    renderComponent();
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+
+    expect(history).toEqual(["/register-state"]);
   });
 
-  test("Should render the home state classname", () => {
-    expect(wrapper.find(".page-home-state").length).toBe(1);
-  });
-  test("Should render the report list classname", () => {
-    expect(wrapper.find(".quarterly-report-list").length).toBe(1);
-  });
-  test("Should include a Accordion component", () => {
-    expect(wrapper.containsMatchingElement(<Accordion />)).toEqual(true);
+  it("should display links to quarterly reports", async () => {
+    obtainAvailableForms.mockResolvedValue([
+      { year: 2021, quarter: 3 },
+      { year: 2021, quarter: 4 },
+      { year: 2022, quarter: 1 },
+    ]);
+
+    const { container } = renderComponent("CO");
+    await waitFor(() => {
+      expect(getUserInfo).toHaveBeenCalled();
+      expect(obtainAvailableForms).toHaveBeenCalledWith({ stateId: "CO" });
+    });
+
+    const expectedUrls = [
+      "/forms/CO/2021/3",
+      "/forms/CO/2021/4",
+      "/forms/CO/2022/1",
+    ]
+    for (let url of expectedUrls) {
+      expect(container.querySelector(`a[href='${url}']`)).toBeInTheDocument();
+    }
   });
 });
