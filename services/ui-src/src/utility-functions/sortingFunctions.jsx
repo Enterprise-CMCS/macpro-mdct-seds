@@ -52,12 +52,12 @@ const dateFormatter = dateString => {
     const yyyy = dateParts("year");
     const M = dateParts("month");
     const d = dateParts("day");
-    const hh = timeParts("hour");
+    const h = timeParts("hour");
     const mm = timeParts("minute");
     const ss = timeParts("second");
     const amOrPm = timeParts("dayPeriod");
     const zzz = timeParts("timeZoneName");
-    return `${M}/${d}/${yyyy} at ${hh}:${mm}:${ss} ${amOrPm} ${zzz}`;
+    return `${M}/${d}/${yyyy} at ${h}:${mm}:${ss} ${amOrPm} ${zzz}`;
   }
   catch (err) {
     console.error(err);
