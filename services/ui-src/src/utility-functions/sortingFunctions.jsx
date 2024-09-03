@@ -42,7 +42,7 @@ const dateFormatter = dateString => {
 
   try {
     const date = new Date(dateString);
-    const dateParts = formattedParts(date, {
+    const dateParts = formattedPartsET(date, {
       // Note: I wish I could use dateStyle here, but none of the presets work.
       // I want a 4-digit year and a numeric month; the `full`, `long`, and
       // `medium` dateStyles spell out the month; `short` has a 2-digit year.
@@ -50,7 +50,7 @@ const dateFormatter = dateString => {
       month: "numeric",
       day: "numeric",
     });
-    const timeParts = formattedParts(date, { timeStyle: "long" });
+    const timeParts = formattedPartsET(date, { timeStyle: "long" });
     const yyyy = dateParts("year");
     const M = dateParts("month");
     const d = dateParts("day");
@@ -66,7 +66,7 @@ const dateFormatter = dateString => {
   }
 };
 
-const formattedParts = (date, options) => {
+const formattedPartsET = (date, options) => {
   const zone = { timeZone: "America/New_York" };
   const formatter = new Intl.DateTimeFormat("en-US", { ...options, ...zone });
   const parts = formatter.formatToParts(date);
