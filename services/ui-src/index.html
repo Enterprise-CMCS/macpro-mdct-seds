@@ -32,8 +32,15 @@
       "mdctsedsval.cms.gov": "qa"
     };
     var tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-    var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-general/${tealiumEnv}/utag.sync.js`;
-    document.write(`<script src="${tealiumUrl}" async><\/script>`);
+    var tealiumDomainMap = {
+      "prod": "tags.tiqcdn.com",
+      "qa": "tags.tiqcdn.com",
+      "dev": "tealium-tags.cms.gov",
+    }
+    var tealiumDomain = tealiumDomainMap[tealiumEnv];
+    var tealiumPath = `https://${tealiumDomain}/utag/cmsgov/cms-general/${tealiumEnv}`;
+    document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
+    document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
   </script>
 </head>
 
@@ -42,22 +49,6 @@
   <!-- Tealium Analytics Tag Manager -->
   <script>
     window.utag_cfg_ovrd = { noview: true };
-  </script>
-  <script>
-    (function (t, e, a, l, i, u, m) {
-      t = "cmsgov/cms-general";
-      e = tealiumEnv;
-      a = "/" + t + "/" + e + "/utag.js";
-      l = "//tags.tiqcdn.com/utag" + a;
-      i = document;
-      u = "script";
-      m = i.createElement(u);
-      m.src = l;
-      m.type = "text/java" + u;
-      m.async = true;
-      l = i.getElementsByTagName(u)[0];
-      l.parentNode.insertBefore(m, l);
-    })();
   </script>
   <div id="root"></div>
   <!--
