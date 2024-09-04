@@ -27,18 +27,19 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
   <!-- Tealium Analytics Tag Manager -->
   <script>
-    var tealiumEnvMap = {
+    window.utag_cfg_ovrd = { noview: true };
+    const tealiumEnvMap = {
       "mdctseds.cms.gov": "prod",
       "mdctsedsval.cms.gov": "qa"
     };
-    var tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-    var tealiumDomainMap = {
+    const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
+    const tealiumDomainMap = {
       "prod": "tags.tiqcdn.com",
       "qa": "tags.tiqcdn.com",
       "dev": "tealium-tags.cms.gov",
     }
-    var tealiumDomain = tealiumDomainMap[tealiumEnv];
-    var tealiumPath = `https://${tealiumDomain}/utag/cmsgov/cms-general/${tealiumEnv}`;
+    const tealiumDomain = tealiumDomainMap[tealiumEnv];
+    const tealiumPath = `https://${tealiumDomain}/utag/cmsgov/cms-general/${tealiumEnv}`;
     document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
     document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
   </script>
@@ -46,10 +47,6 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <!-- Tealium Analytics Tag Manager -->
-  <script>
-    window.utag_cfg_ovrd = { noview: true };
-  </script>
   <div id="root"></div>
   <!--
       This HTML file is a template.
