@@ -4,6 +4,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-s3-bucket-helper
+  - serverless-s3-sync
   - serverless-plugin-scripts
   - serverless-stack-termination-protection
   - serverless-cloudfront-invalidate
@@ -12,9 +13,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "seds"
@@ -37,9 +38,14 @@ custom:
   cognito_user_pool_id: ${param:UserPoolId}
   cognito_user_pool_client_id: ${param:UserPoolClientId}
   cognito_user_pool_client_domain: ${param:UserPoolClientDomain}
+  ui_s3_bucket_name: ${param:S3BucketName}
   ui_cloudfront_distribution_id: ${param:CloudFrontDistributionId}
   application_endpoint_url: ${param:ApplicationEndpointUrl}
 
+  s3Sync:
+    - bucketName: ${self:custom.ui_s3_bucket_name}
+      localDir: ./build
+      deleteRemoved: true
   cloudfrontInvalidate:
     distributionId: ${self:custom.ui_cloudfront_distribution_id}
     items:
