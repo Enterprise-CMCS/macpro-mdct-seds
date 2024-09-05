@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import React from "react";
-import moment from "moment-timezone";
+import { Link } from "react-router-dom";
 import { selectRowColumnValueFromArray } from "./jsonPath";
 
 const sortQuestionColumns = columnArray => {
@@ -30,38 +29,48 @@ const sortRowArray = arrayOfRows => {
   return sortedRows;
 };
 
+/**
+ * @param {string} dateString An ISO-formatted date,
+ *  like `"2021-10-05T14:48:00.000Z"`
+ * @returns {string} The given date, converted to U.S. Eastern time,
+ *  and formatted like `"10/5/2021 at 10:48:00 AM EDT"`
+ */
 const dateFormatter = dateString => {
-  let returnString = "Date not supplied";
-
-  if (dateString) {
-    // datestring will be saved as ISO string, ie: 2021-10-05T14:48:00.000Z
-    try {
-      let estDate = moment.tz(dateString, "America/New_York").format();
-
-      const splitDate = estDate.split("T");
-      const date = splitDate[0].split("-");
-      const time = splitDate[1].split(":");
-      const minutes = time[1];
-      const seconds = time[2].slice(0, 2);
-
-      let amOrPm;
-      let parsedHour = parseInt(time[0]);
-      let hour;
-
-      if (parsedHour > 12) {
-        amOrPm = "pm";
-        hour = parsedHour - 12;
-      } else {
-        amOrPm = "am";
-        hour = parsedHour;
-      }
-
-      returnString = `${date[1]}-${date[2]}-${date[0]} at ${hour}:${minutes}:${seconds} ${amOrPm} EST`;
-    } catch (error) {
-      returnString = `${dateString} GMT`;
-    }
+  if (!dateString) {
+    return "Date not supplied";
   }
-  return returnString;
+
+  try {
+    const date = new Date(dateString);
+    const dateParts = formattedPartsET(date, {
+      // Note: I wish I could use dateStyle here, but none of the presets work.
+      // I want a 4-digit year and a numeric month; the `full`, `long`, and
+      // `medium` dateStyles spell out the month; `short` has a 2-digit year.
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+    const timeParts = formattedPartsET(date, { timeStyle: "long" });
+    const yyyy = dateParts("year");
+    const M = dateParts("month");
+    const d = dateParts("day");
+    const h = timeParts("hour");
+    const mm = timeParts("minute");
+    const ss = timeParts("second");
+    const amOrPm = timeParts("dayPeriod");
+    const zzz = timeParts("timeZoneName");
+    return `${M}/${d}/${yyyy} at ${h}:${mm}:${ss} ${amOrPm} ${zzz}`;
+  } catch (err) {
+    console.error(err);
+    return `${dateString} GMT`;
+  }
+};
+
+const formattedPartsET = (date, options) => {
+  const zone = { timeZone: "America/New_York" };
+  const formatter = new Intl.DateTimeFormat("en-US", { ...options, ...zone });
+  const parts = formatter.formatToParts(date);
+  return (type) => parts.find((part) => part.type === type).value;
 };
 
 const compileSimpleArrayStates = complexArray => {
