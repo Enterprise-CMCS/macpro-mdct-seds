@@ -1,59 +1,97 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter, useHistory } from "react-router-dom";
 import StateSelector from "./StateSelector";
-import { shallow } from "enzyme";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { storeFactory } from "../../provider-mocks/testUtils";
-import { Button } from "@trussworks/react-uswds";
-import Dropdown from "react-dropdown";
-// The props this component requires in order to render
-const defaultProps = {
-  stateList: fullStoreMock.states
-};
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event"
+import { getUserInfo } from "../../utility-functions/userFunctions";
+import { updateUser } from "../../libs/api";
 
-const shallowSetup = (initialState = {}, props = {}, path = "") => {
-  const setupProps = { ...defaultProps, ...props };
-  const store = storeFactory(initialState);
-  return shallow(<StateSelector store={store} path={path} {...setupProps} />)
-    .dive()
-    .dive();
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: jest.fn(),
+}));
+
+jest.mock("../../libs/api", () => ({
+  updateUser: jest.fn(),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: jest.fn(),
+}));
+
+const store = storeFactory({
+  global: {
+      states: [
+      { state_name: "Colorado", state_id: "CO" },
+      { state_name: "Texas", state_id: "TX" },
+      { state_name: "Wisconsin", state_id: "WI" },
+    ],
+  },
+});
+
+const renderComponent = (user) => {
+  getUserInfo.mockResolvedValue({ Items: [user] });
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <StateSelector/>
+      </BrowserRouter>
+    </Provider>
+  )
 };
 
 describe("StateSelector component", () => {
-  const wrapper = shallowSetup(fullStoreMock);
+  it("should render an alert for users with a state", async () => {
+    const { container } = renderComponent({ states: ["CO"] });
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
-  test("Should render the topmost classname", () => {
-    expect(wrapper.find(".page-state-selector").length).toBe(1);
+    expect(screen.getByText(
+      "This account has already been associated with a state: CO"
+    )).toBeInTheDocument();
+
+    expect(screen.queryByText(
+      "This account is not associated with any states"
+    )).not.toBeInTheDocument();
+    expect(container.querySelector(".Dropdown-root")).not.toBeInTheDocument();
+    expect(screen.queryByText(
+      "Update User", { selector: "button" }
+    )).not.toBeInTheDocument();
   });
-  test("Should render the selection classname", () => {
-    expect(wrapper.find(".action-buttons").length).toBe(1);
+
+  it("should render a selector for users with no state", async () => {
+    const { container } = renderComponent({ states: [] });
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+
+    expect(screen.queryByText(
+      "This account has already been associated with a state", { exact: false }
+    )).not.toBeInTheDocument();
+
+    expect(screen.getByText(
+      "This account is not associated with any states"
+    )).toBeInTheDocument();
+    expect(container.querySelector(".Dropdown-root")).toBeInTheDocument();
+    expect(screen.getByText(
+      "Update User", { selector: "button" }
+    )).toBeInTheDocument();
   });
 
-  test("Should render child components", () => {
-    expect(wrapper.find(Dropdown).length).toBe(1);
-    expect(wrapper.find(Button).length).toBe(1);
-  });
+  it("should save the user's selected state, and redirect them to Home", async () => {
+    jest.spyOn(window, "confirm").mockImplementation(() => true);
+    const mockHistory = { push: jest.fn() };
+    useHistory.mockReturnValue(mockHistory);
 
-  describe("StateSelector component should behave as expected when the user interacts with the page", () => {
-    test("should alert user of lack of state selection", () => {
-      jest.spyOn(window, "alert").mockImplementation(() => {});
+    renderComponent({ id: 42, states: [] });
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
-      expect(window.alert).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "saveUpdatedUser" }).simulate("click");
-      expect(window.alert).toBeCalledWith("Please select a state");
-    });
-  });
-});
-
-describe("StateSelector component- props", () => {
-  // creating a true shallow wrapper so that the props are accessible
-  const tempStore = storeFactory(fullStoreMock);
-  const wrapper = shallow(
-    <StateSelector store={tempStore} {...defaultProps} />
-  );
-
-  test("Should include a stateList prop as an array", () => {
-    expect(Array.isArray(wrapper.props().children.props.stateList)).toEqual(
-      true
-    );
-  });
+    userEvent.click(screen.getByText("Select a state"));
+    userEvent.click(screen.getByText("Colorado"));
+    userEvent.click(screen.getByText("Update User", { selector: "button" }));
+    
+    await waitFor(() => {
+      expect(updateUser).toHaveBeenCalledWith({ id: 42, states: ["CO"] });
+    })
+    expect(mockHistory.push).toHaveBeenCalledWith("/");
+  })
 });

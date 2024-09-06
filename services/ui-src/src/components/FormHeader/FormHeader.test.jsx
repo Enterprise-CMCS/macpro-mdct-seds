@@ -1,5 +1,5 @@
 import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import FormHeader from "./FormHeader";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
@@ -31,7 +31,7 @@ const mockFormTypes = [
 const mountSetup = (initialState = {}, props = {}, path = "") => {
   const setupProps = { ...defaultProps, ...props };
   const store = storeFactory(initialState);
-  return mount(
+  return render(
     <BrowserRouter>
       <FormHeader store={store} path={path} {...setupProps} />{" "}
     </BrowserRouter>
@@ -46,25 +46,18 @@ jest.mock("../../libs/api", () => ({
 }));
 
 describe("Test FormHeader.js", () => {
-  const wrapper = mountSetup(fullStoreMock);
-
-  test("Check the header div exists", () => {
-    expect(wrapper.find(".form-header").length).toBe(1);
-  });
-
   test("Check for correct state", () => {
-    // Using Link from TrussWorks results in the component AND link sharing the same class name...
-    // This would be 3 otherwise
-    expect(wrapper.find(".state-value").text()).toBe("AL");
+    mountSetup(fullStoreMock);
+    expect(screen.getByTestId("state-value")).toHaveTextContent("AL");
   });
 
   test("Check for correct quarter/year", () => {
-    // Using Link from TrussWorks results in the component AND link sharing the same class name...
-    // This would be 3 otherwise
-    expect(wrapper.find(".quarter-value").text()).toBe("1/2021");
+    mountSetup(fullStoreMock);
+    expect(screen.getByTestId("quarter-value")).toHaveTextContent("1/2021");
   });
+
   test("Hides the FPL when the form is GRE", () => {
-    const GREwrapper = mountSetup(currentFormMock_GRE);
-    expect(GREwrapper.find(".form-max-fpl").length).toBe(0);
+    mountSetup(currentFormMock_GRE);
+    expect(screen.queryByTestId("form-max-fpl")).not.toBeInTheDocument();
   });
 });

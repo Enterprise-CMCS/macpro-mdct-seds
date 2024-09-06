@@ -1,34 +1,28 @@
 import React from "react";
 import GenerateTotals from "./GenerateTotals";
-import { Button } from "@trussworks/react-uswds";
-import { mount, shallow } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { generateEnrollmentTotals } from "../../libs/api";
+
+jest.spyOn(window, "confirm").mockImplementation(() => true);
+
+jest.mock("../../libs/api", () => ({
+  generateEnrollmentTotals: jest.fn(),
+}));
 
 describe("Test GenerateTotals.js", () => {
-  const wrapper = shallow(<GenerateTotals />);
-
-  describe("GenerateTotals component should render its child components ", () => {
-    test("Check the main div, with classname generate-forms-container and its children exist", () => {
-      expect(wrapper.find(".generate-totals-container").length).toBe(1);
-      expect(wrapper.find(Button).length).toBe(1);
-    });
-
-    test("Check the button descriptions are accurate", () => {
-      const detailedWrapper = mount(<GenerateTotals />);
-      const button = detailedWrapper.find(Button).children();
-
-      expect(button.at(0).text()).toMatch("Generate Enrollment Totals");
-    });
+  let container;
+  beforeEach(() => {
+    container = render(<GenerateTotals/>).container;
+    jest.clearAllMocks();
   });
 
-  describe("GenerateTotals component should correctly submit", () => {
-    test("Check that the generate forms button correctly calls the generateTotals method with a confirmation", () => {
-      jest.spyOn(window, "confirm").mockImplementation(() => {});
+  it("should send a request to the API, and display a success message", async () => {
+    const submitButton = screen.getByText("Generate Enrollment Totals", { selector: "button" });
+    userEvent.click(submitButton);
+    
+    await waitFor(() => expect(generateEnrollmentTotals).toHaveBeenCalled());
 
-      expect(window.confirm).not.toHaveBeenCalled();
-      wrapper.find({ "data-testid": "generateTotalsButton" }).simulate("click");
-      expect(window.confirm).toBeCalledWith(
-        "You are about to create new Enrollment Totals. This action cannot be undone. Do you wish to proceed?"
-      );
-    });
+    expect(screen.getByText(/Enrollment Totals have been requested.*Please wait/)).toBeInTheDocument();
   });
 });

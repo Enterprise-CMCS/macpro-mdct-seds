@@ -1,68 +1,65 @@
 import React from "react";
 import Login from "./Login";
-import LoaderButton from "../LoaderButton/LoaderButton";
-import { render } from "@testing-library/react";
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-let realUseContext;
-let useContextMock;
-let shallowComponent;
+jest.mock("aws-amplify", () => ({
+  Auth: {
+    configure: jest.fn().mockReturnValue({
+      oauth: {
+        domain: "mock-domain",
+        redirectSignIn: "mock-redirect",
+        responseType: "mock-response-type",
+      },
+      userPoolWebClientId: "mock-client-id",
+    }),
+  },
+}));
 
-// *** set up mocks
-beforeEach(() => {
-  realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
-  shallowComponent = shallow(<Login />);
-});
+const currentlyOnDevelopmentBranch = () =>
+  window.location.hostname !== "mdctseds.cms.gov" &&
+  window.location.hostname !== "mdctsedsval.cms.gov"
 
-// *** garbage clean up (mocks)
-afterEach(() => {
-  React.useContext = realUseContext;
-});
+describe("Test Login.js", () => {
+  let originalLocation;
 
-describe("Test LoaderButton.js", () => {
-  test("Checks the main elements, and verify they exists", () => {
-    useContextMock.mockReturnValue(true);
-    const { getByTestId } = render(<Login />);
-    expect(getByTestId("Login")).toBeVisible();
+  beforeAll(() => {
+    // window.location is hard to mock; copying https://stackoverflow.com/a/61097271
+    originalLocation = window.location;
+    delete window.location;
+    window.location = {
+      ...originalLocation,
+      assign: jest.fn(),
+    }
   });
-  test("Checks the main elements, and verify they exists", () => {
-    useContextMock.mockReturnValue(true);
-    const { getByTestId } = render(<Login />);
-    expect(getByTestId("OktaLogin")).toBeVisible();
+
+  afterAll(() => {
+    window.location = originalLocation;
   });
-  //These options are only available on development branches
-  if (
-    window.location.hostname !== "mdctseds.cms.gov" &&
-    window.location.hostname !== "mdctsedsval.cms.gov"
-  ) {
-    test("Check for Email input box", () => {
-      useContextMock.mockReturnValue(true);
-      const { getByLabelText } = render(<Login />);
-      const formControl = getByLabelText("Email");
-      expect(formControl.type).toContain("email");
-    });
-    test("Check for Password input box", () => {
-      useContextMock.mockReturnValue(true);
-      const { getByLabelText } = render(<Login />);
-      const formControl = getByLabelText("Password");
-      expect(formControl.type).toContain("password");
+
+  if (currentlyOnDevelopmentBranch()) {
+    it("should render email login form", () => {
+      render(<Login/>);
+      expect(screen.getByLabelText("Email")).toBeInTheDocument();
+      expect(screen.getByLabelText("Password")).toBeInTheDocument();
+      expect(screen.getByText("Login", { selector: "button"})).toBeInTheDocument();
     });
   }
 
-  test("Check that LoaderButtons are rendering", () => {
-    expect(shallowComponent.find(LoaderButton).length).toBe(2);
+  it("should render EUA login button", () => {
+    render(<Login/>);
+    expect(screen.getByText("Login with EUA ID", { selector: "button"})).toBeInTheDocument();
   });
 
-  test("Check that our submit button behaves as expected", () => {
-    jest.spyOn(window, "alert").mockImplementation(() => {});
+  it("should redirect to Okta for login", () => {
+    jest.spyOn(window, "alert").mockImplementation(console.error);
 
-    expect(window.alert).not.toHaveBeenCalled();
-    shallowComponent
-      .find({ "data-testid": "handleSubmitOktaButton" })
-      .simulate("click", {
-        preventDefault: () => {}
-      });
-    expect(window.alert).toHaveBeenCalled();
+    render(<Login/>);
+
+    const loginButton = screen.getByText("Login with EUA ID", { selector: "button"});
+    userEvent.click(loginButton);
+
+    const oktaUrl = "https://mock-domain/oauth2/authorize?identity_provider=Okta&redirect_uri=mock-redirect&response_type=mock-response-type&client_id=mock-client-id";
+    expect(window.location.assign).toHaveBeenCalledWith(oktaUrl);
   });
 });

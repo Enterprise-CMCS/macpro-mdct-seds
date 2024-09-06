@@ -1,27 +1,58 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import Home from "./Home";
-import { shallow } from "enzyme";
-let realUseContext;
-let useContextMock;
+import configureStore from "redux-mock-store";
+import { render, screen, waitFor } from "@testing-library/react";
+import { useAppContext } from "../../libs/contextLib";
+import { getUserInfo } from "../../utility-functions/userFunctions";
+import fullStoreMock from "../../provider-mocks/fullStoreMock";
+
+jest.mock("../../libs/contextLib", () => ({
+  useAppContext: jest.fn()
+}));
+
+jest.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: jest.fn().mockResolvedValue(),
+}));
+
+const mockStore = configureStore([]);
+
+const renderComponent = (user) => {
+  const store = mockStore(fullStoreMock);
+  useAppContext.mockReturnValue({ isAuthenticated: !!user });
+  getUserInfo.mockResolvedValue({ Items: [user] });
+  render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <Home user={user}/>
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+const adminUser = {
+  attributes: { "app-role": "admin" },
+};
+const stateUser = {
+  attributes: { "app-role": "state" },
+}
 
 describe("Test Home.js", () => {
-  beforeEach(() => {
-    realUseContext = React.useContext;
-    useContextMock = React.useContext = jest.fn();
+  it("should render the admin view for admins", async () => {
+    renderComponent(adminUser);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    expect(screen.getByText("Home Admin User Page", { selector: "h1" })).toBeInTheDocument();
   });
 
-  // *** garbage clean up (mocks)
-  afterEach(() => {
-    React.useContext = realUseContext;
+  it("should render the state view for state users", async () => {
+    renderComponent(stateUser);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    expect(screen.getByText("Welcome to SEDS!", { exact: false })).toBeInTheDocument();
   });
 
-  test("Check the main div, with classname app, exists", () => {
-    useContextMock.mockReturnValue(true);
-    const mockUser = {
-      attributes: { "app-role": "admin" }
-    };
-
-    const wrapper = shallow(<Home user={mockUser} />);
-    expect(wrapper.find(".Home").length).toBe(1);
+  it("should render the unauthorized view when no user is logged in", async () => {
+    renderComponent(undefined);
+    expect(screen.getByText("Unauthorized", { selector: "h1" })).toBeInTheDocument();
   });
 });

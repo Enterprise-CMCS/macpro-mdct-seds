@@ -2,8 +2,6 @@ services:
   # wave 1: no dependencies
   database:
     path: services/database
-  uploads:
-    path: services/uploads
   stream-functions:
     path: services/stream-functions
   ui-waflog-s3-bucket:
@@ -60,15 +58,14 @@ services:
       StateFormsTableStreamArn: ${database.StateFormsTableStreamArn}
       AuthUserRolesTableStreamArn: ${database.AuthUserRolesTableStreamArn}
 
-  # depends on app-api, ui, and uploads
+  # depends on app-api and ui
   ui-auth:
     path: services/ui-auth
     params:
-      AttachmentsBucketArn: ${uploads.AttachmentsBucketArn}
       ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}
       ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
 
-  # depends on app-api, ui, ui-auth, and uploads,
+  # depends on app-api, ui, and ui-auth
   ui-src:
     path: services/ui-src
     params:
@@ -79,8 +76,5 @@ services:
       UserPoolId: ${ui-auth.UserPoolId}
       UserPoolClientId: ${ui-auth.UserPoolClientId}
       UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
-      AttachmentsBucketRegion: ${uploads.Region}
-      AttachmentsBucketName: ${uploads.AttachmentsBucketName}
-      S3BucketName: ${ui.S3BucketName}
       CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
       ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}

@@ -1,29 +1,23 @@
 import React from "react";
-import { mount } from "enzyme";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
 import SummaryTab from "./SummaryTab";
 import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
-import SummaryNotes from "../SummaryNotes/SummaryNotes";
 
-const mockStore = configureStore([]);
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
-};
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
-}));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
+jest.mock("../Question/Question", () =>
+  (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../SummaryNotes/SummaryNotes", () =>
+  (props) => (<div data-testid="summary-notes">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () =>
+  (props) => (<div className="synth-grid-summary">{JSON.stringify(props)}</div>)
+);
+
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useLocation: () => ({
@@ -31,103 +25,82 @@ jest.mock("react-router-dom", () => ({
   })
 }));
 
+const renderComponent = () => {
+  const store = configureStore([])(currentFormMock_21E)
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <SummaryTab/>
+      </BrowserRouter>
+    </Provider>
+  );
+};
+
 describe("Test SummaryTab.js", () => {
-  let store;
-  let wrapper;
+  it("should render correctly", () => {
+    const { container } = renderComponent();
 
-  beforeEach(() => {
-    store = mockStore(currentFormMock_21E);
-    wrapper = mount(
-      <Provider store={store}>
-        <SummaryTab />
-      </Provider>
-    );
-  });
+    expect(screen.getByText("Summary:")).toBeInTheDocument();
 
-  test("Check the main div, with classname app, exists", () => {
-    expect(wrapper.find(".summary-tab").length).toBe(1);
-  });
+    const questions = [...container.querySelectorAll(".question-component, .synth-grid-summary")];
 
-  test("Check for appropriate tab header", () => {
-    expect(wrapper.find(".summary-tab").children().find("h3").text()).toMatch(
-      /Summary:/
-    );
-  });
+    expect(questions[0].className).toBe("question-component");
+    expect(JSON.parse(questions[0].textContent)).toEqual({
+      questionID: "summary-2021-21E-01",
+      rangeID: "summary",
+      questionData: currentFormMock_21E.currentForm.questions[0],
+      answerData: currentFormMock_21E.currentForm.questions[0],
+      disabled: true,
+      synthesized: true,
+    });
 
-  test("Check for all top headers", () => {
-    expect(wrapper.text()).toMatch(/% of FPL 0-133/);
-    expect(wrapper.text()).toMatch(/% of FPL 134-200/);
-    expect(wrapper.text()).toMatch(/% of FPL 201-250/);
-    expect(wrapper.text()).toMatch(/% of FPL 251-300/);
-    expect(wrapper.text()).toMatch(/% of FPL 301-317/);
-  });
+    expect(questions[1].className).toBe("question-component");
+    expect(JSON.parse(questions[1].textContent)).toEqual({
+      questionID: "summary-2021-21E-02",
+      rangeID: "summary",
+      questionData: currentFormMock_21E.currentForm.questions[1],
+      answerData: currentFormMock_21E.currentForm.questions[1],
+      disabled: true,
+      synthesized: true,
+    });
 
-  test("Check for all side headers", () => {
-    expect(wrapper.text()).toMatch(/A. Fee-for-Service/);
-    expect(wrapper.text()).toMatch(/B. Managed Care Arrangements/);
-    expect(wrapper.text()).toMatch(/C. Primary Care Case Management/);
-  });
+    expect(questions[2].className).toBe("question-component");
+    expect(JSON.parse(questions[2].textContent)).toEqual({
+      questionID: "summary-2021-21E-03",
+      rangeID: "summary",
+      questionData: currentFormMock_21E.currentForm.questions[2],
+      answerData: currentFormMock_21E.currentForm.questions[2],
+      disabled: true,
+      synthesized: true,
+    });
 
-  test("Check number of gridwithtotal elements", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(6);
-  });
+    expect(questions[3].className).toBe("question-component");
+    expect(JSON.parse(questions[3].textContent)).toEqual({
+      questionID: "summary-2021-21E-04",
+      rangeID: "summary",
+      questionData: currentFormMock_21E.currentForm.questions[3],
+      answerData: currentFormMock_21E.currentForm.questions[3],
+      disabled: true,
+      synthesized: true,
+    });
 
-  test("Check table input values for correct math", () => {
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(0)
-        .children()
-        .find("span")
-        .text()
-    ).toMatch(/2/);
+    expect(questions[4].className).toBe("synth-grid-summary");
+    expect(JSON.parse(questions[4].textContent)).toEqual({
+      allAnswers: currentFormMock_21E.currentForm.answers,
+      questions: currentFormMock_21E.currentForm.questions,
+      questionID: "2021-21E-05",
+      gridData: currentFormMock_21E.currentForm.answers[4].rows,
+      label: "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?"
+    });
 
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(1)
-        .children()
-        .find("span")
-        .text()
-    ).toMatch(/4/);
-
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(2)
-        .children()
-        .find("span")
-        .text()
-    ).toMatch(/6/);
-
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(3)
-        .children()
-        .find("span")
-        .text()
-    ).toMatch(/8/);
-    expect(
-      wrapper
-        .find("tbody")
-        .children()
-        .find("td")
-        .at(4)
-        .children()
-        .find("span")
-        .text()
-    ).toMatch(/10/);
-  });
-  test("Check for Summary Notes component", () => {
-    expect(wrapper.contains(<SummaryNotes />)).toBe(true);
+    expect(questions[5].className).toBe("question-component");
+    expect(JSON.parse(questions[5].textContent)).toEqual({
+      questionID: "summary-2021-21E-06",
+      rangeID: "summary",
+      questionData: currentFormMock_21E.currentForm.questions[5],
+      answerData: currentFormMock_21E.currentForm.questions[5],
+      disabled: true,
+      synthesized: true,
+    });
   });
 });
