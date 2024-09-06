@@ -76,5 +76,6 @@ services:
       UserPoolId: ${ui-auth.UserPoolId}
       UserPoolClientId: ${ui-auth.UserPoolClientId}
       UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
+      S3BucketName: ${ui.S3BucketName}
       CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
       ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
