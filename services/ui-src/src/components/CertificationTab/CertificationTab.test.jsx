@@ -1,11 +1,9 @@
 import React from "react";
-import { mount } from "enzyme";
+import { getDefaultNormalizer, render, screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import CertificationTab from "../CertificationTab/CertificationTab";
 import CertificationTabMock from "../../provider-mocks/certificationTabMock";
-import CertificationTabMock2 from "../../provider-mocks/certificationTabMock2";
-import CertificationTabMock3 from "../../provider-mocks/certificationTabMock3";
 
 const mockStore = configureStore([]);
 
@@ -20,88 +18,103 @@ const mockUser = {
     }
   ]
 };
+
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
+
 jest.mock("../../libs/api", () => ({
   obtainUserByEmail: () => mockUser
 }));
+
+const renderWithStatus = (statusData) => {
+  const form = JSON.parse(JSON.stringify(CertificationTabMock));
+  form.currentForm.statusData = {
+    ...form.currentForm.statusData,
+    ...statusData,
+  };
+  const store = mockStore(form);
+  return render(
+    <Provider store={store}>
+      <CertificationTab />
+    </Provider>
+  );
+};
+
+const inProgress = {
+  status_id: 2,
+  status: "In Progress",
+};
+
+const provisional = {
+  status_id: 3,
+  status: "Provisional Data Certified and Submitted",
+};
+
+const final = {
+  status_id: 4,
+  status: "Final Data Certified and Submitted",
+};
+
 describe("Test CertificationTab.js", () => {
-  let wrapper;
-  let wrapper2;
-  let wrapper3;
-  let store = mockStore(CertificationTabMock); // form status = in_progress
-  let store2 = mockStore(CertificationTabMock2); // form status = provisional
-  let store3 = mockStore(CertificationTabMock3); // form status = final
-
-  beforeEach(() => {
-    wrapper = mount(
-      <Provider store={store}>
-        <CertificationTab />
-      </Provider>
-    );
-
-    wrapper2 = mount(
-      <Provider store={store2}>
-        <CertificationTab />
-      </Provider>
-    );
-
-    wrapper3 = mount(
-      <Provider store={store3}>
-        <CertificationTab />
-      </Provider>
-    );
+  it("should not display status text for in-progress forms", () => {
+    renderWithStatus(inProgress);
+    expect(screen.queryByTestId("statusText")).not.toBeInTheDocument();
   });
 
-  test("Check for modified_on and modified_by for all three statuses", async () => {
-    expect(wrapper.find({ "data-testid": "statusText" })).toEqual({});
-
-    expect(wrapper2.find({ "data-testid": "statusText" }).text()).toMatch(
-      "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Tim Griesemer"
-    );
-
-    expect(wrapper3.find({ "data-testid": "statusText" }).text()).toMatch(
-      "This report was updated to Final Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Timothy Griesemer"
-    );
-  });
-  test("Check button prop disabled for all three statuses", () => {
-    expect(wrapper.find("button").at(0).prop("disabled")).toBe(false);
-    expect(wrapper.find("button").at(1).prop("disabled")).toBe(false);
-    expect(wrapper.find("button").at(2).exists()).toBe(false);
-
-    expect(wrapper2.find("button").at(0).prop("disabled")).toBe(true);
-    expect(wrapper2.find("button").at(1).prop("disabled")).toBe(false);
-    expect(wrapper.find("button").at(2).exists()).toBe(false);
-
-    expect(wrapper3.find("button").at(0).prop("disabled")).toBe(true);
-    expect(wrapper3.find("button").at(1).prop("disabled")).toBe(true);
-    expect(wrapper3.find("button").at(2).exists()).toBe(true);
+  it("should display status text for provisional forms", () => {
+    renderWithStatus(provisional);
+    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
+    const statusElement = screen.getByTestId("statusText");
+    expect(statusElement).toHaveTextContent(expectedText);
   });
 
-  test("Check truthy text for all three statuses", () => {
-    expect(
-      wrapper
-        .find({ "data-testid": "certificationText" })
-        .find("b")
-        .at(0)
-        .text()
-    ).toMatch("Ready to certify?");
+  it("should display status text for final forms", () => {
+    renderWithStatus(final);
+    const expectedText = "This report was updated to Final Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
+    const statusElement = screen.getByTestId("statusText");
+    expect(statusElement).toHaveTextContent(expectedText);
+  })
 
-    expect(
-      wrapper2
-        .find({ "data-testid": "certificationText" })
-        .find("b")
-        .at(0)
-        .text()
-    ).toMatch("Ready to final certify?");
+  it("should allow certify, but not uncertify for in-progress forms", () => {
+    renderWithStatus(inProgress);
+    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).not.toBeDisabled();
+    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).not.toBeDisabled();
+    expect(screen.queryByText("Uncertify", { selector: "button" })).not.toBeInTheDocument();
+  });
 
-    expect(
-      wrapper3
-        .find({ "data-testid": "certificationText" })
-        .find("b")
-        .at(0)
-        .text()
-    ).toMatch("Thank you for submitting your SEDS data!");
+  it("should allow final certify, but not provisional certify or uncertify for provisional forms", () => {
+    renderWithStatus(provisional);
+    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).toBeDisabled();
+    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).not.toBeDisabled();
+    expect(screen.queryByText("Uncertify", { selector: "button" })).not.toBeInTheDocument();
+  });
+
+  it("should allow uncertify, but not certify for final forms", () => {
+    renderWithStatus(final);
+    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).toBeDisabled();
+    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).toBeDisabled();
+    expect(screen.queryByText("Uncertify", { selector: "button" })).toBeInTheDocument();
+  });
+
+  test("should display correct certify text for in-progress forms", () => {
+    renderWithStatus(inProgress);
+    const expectedText = "Ready to certify?";
+    const certifyElement = screen.getByTestId("certificationText");
+    expect(certifyElement).toHaveTextContent(expectedText);
+  });
+
+  test("should display correct certify text for provisional forms", () => {
+    renderWithStatus(provisional);
+    const expectedText = "Ready to final certify?";
+    const certifyElement = screen.getByTestId("certificationText");
+    expect(certifyElement).toHaveTextContent(expectedText);
+  });
+
+  test("should display correct certify text for final", () => {
+    renderWithStatus(final);
+    const expectedText = "Thank you for submitting your SEDS data!";
+    const certifyElement = screen.getByTestId("certificationText");
+    expect(certifyElement).toHaveTextContent(expectedText);
   });
 });

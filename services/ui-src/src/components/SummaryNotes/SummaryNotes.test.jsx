@@ -1,60 +1,78 @@
 import React from "react";
-import { mount } from "enzyme";
-import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import SummaryNotes from "./SummaryNotes";
-import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import { render, screen, waitFor } from "@testing-library/react";
+import { storeFactory } from "../../provider-mocks/testUtils";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
-const mockStore = configureStore([]);
-
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
-};
 jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
+  getUserInfo: jest.fn(),
 }));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: jest.fn(),
 }));
+
+const renderComponent = (userRole, status_id = 1, initialComment = "") => {
+  getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
+  const state_comments = initialComment
+    ? [{ entry: initialComment }]
+    : undefined;
+
+  const store = storeFactory({
+    currentForm: {
+      statusData: {
+        status_id,
+        state_comments,
+      },
+    },
+  });
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <SummaryNotes/>
+      </BrowserRouter>
+    </Provider>
+  )
+};
+
 describe("Test SummaryNotes.js", () => {
-  let store;
-  let wrapper;
-  // Cache original functionality
-  const realUseState = React.useState;
-  // Stub the initial state
-  const mockInitialState =
-    currentFormMock_21E.currentForm.statusData.state_comments[0].entry;
-  // Mock useState before rendering your component to set initial state values
-  jest
-    .spyOn(React, "useState")
-    .mockImplementationOnce(() => realUseState(mockInitialState));
-  beforeEach(() => {
-    store = mockStore(currentFormMock_21E);
-    wrapper = mount(
-      <Provider store={store}>
-        <SummaryNotes />
-      </Provider>
-    );
+  const labelText = "Add any notes here to accompany the form submission";
+  const findCommentBox = () => screen.getByLabelText(labelText);
+
+  it("should render correctly", async () => {
+    renderComponent("state");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    
+    const commentBox = findCommentBox();
+    expect(commentBox).toBeInTheDocument();
+    expect(commentBox).not.toBeDisabled();
+    expect(commentBox.value).toBe("");
   });
 
-  test("Check for Summary Notes label and input", () => {
-    expect(wrapper.find("label").at(0).text()).toMatch(
-      /Add any notes here to accompany the form submission/
-    );
-    expect(wrapper.find("#summaryNotesInput").at(1).exists()).toBe(true);
+  it("should render existing notes", async () => {
+    renderComponent("state", 3, "existing comment");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    
+    const commentBox = findCommentBox();
+    expect(commentBox.value).toBe("existing comment");
   });
 
-  test("Check that the Summary notes contain the correct values", () => {
-    expect(wrapper.find("#summaryNotesInput").at(1).text()).toMatch(
-      "This is an example of summary notes on the state form 21E for AL"
-    );
+  it("should disable the input for admin users", async () => {
+    renderComponent("admin");
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    
+    const commentBox = findCommentBox();
+    expect(commentBox).toBeDisabled();
+  });
+
+  it("should disable the input for certified forms", async () => {
+    renderComponent("state", 4);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    
+    const commentBox = findCommentBox();
+    expect(commentBox).toBeDisabled();
   });
 });

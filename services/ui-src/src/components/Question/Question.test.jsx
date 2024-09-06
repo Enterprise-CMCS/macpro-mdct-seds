@@ -1,55 +1,145 @@
 import React from "react";
-import { mount } from "enzyme";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
-import TabContainer from "../TabContainer/TabContainer";
-import currentFormMock_64_21E from "../../provider-mocks/currentFormMock_64_21E.js";
+import QuestionComponent from "./Question";
+import { render, screen } from "@testing-library/react";
 
-const mockStore = configureStore([]);
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
+jest.mock("../GridWithTotals/GridWithTotals", () =>
+  (props) => (<div data-testid="grid-with-totals">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../GREGridWithTotals/GREGridWithTotals", () =>
+  (props) => (<div data-testid="gre-grid-with-totals">{JSON.stringify(props)}</div>)
+);
+
+jest.mock("../SynthesizedGrid/SynthesizedGrid", () =>
+  (props) => (<div data-testid="synthesized-grid">{JSON.stringify(props)}</div>)
+);
+
+const mockQuestionData = {
+  label: "Mock Question: &&&VARIABLE&&&",
+  question: "2021-64.21E-01",
+  type: "datagridwithtotals",
+}
+
+const mockAnswerData = {
+  question: "2021-64.21E-01",
+  rows: [
+    { col1: "",      col2: "Column A", col3: "Column B", },
+    { col1: "Row 1", col2: null,       col3: null },
+    { col1: "Row 2", col2: null,       col3: null },
+  ],
+  answer_entry: "CO-2021-1-64.21E-0000-01"
+}
+
+const defaultProps = {
+  questionData: mockQuestionData,
+  answerData: mockAnswerData,
+  rangeID: "0612",
+  disabled: false,
+  synthesized: false,
 };
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
-}));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
 
 describe("Test Question.js", () => {
-  let store;
-  let wrapper;
-
-  beforeEach(() => {
-    store = mockStore(currentFormMock_64_21E);
-    wrapper = mount(
-      <Provider store={store}>
-        <TabContainer />
-      </Provider>
-    );
+  it("should render the question label correctly", () => {
+    render(<QuestionComponent {...defaultProps} />);
+    
+    const questionLabel = screen.getByText("1. Mock Question: between the ages of 6 and 12");
+    expect(questionLabel).toBeInTheDocument();
   });
 
-  test("Check for all question numbers and the beginning of the question", () => {
-    expect(wrapper.text()).toMatch(/1. What is the/);
-    expect(wrapper.text()).toMatch(/2. What is the/);
-    expect(wrapper.text()).toMatch(/3. What is the/);
-    expect(wrapper.text()).toMatch(/4. What is the/);
-    expect(wrapper.text()).toMatch(/5. What is the/);
-    expect(wrapper.text()).toMatch(/6. What is the/);
+  it("should render the default grid correctly", () => {
+    render(<QuestionComponent {...defaultProps} />);
+
+    const grid = screen.getByTestId("grid-with-totals");
+    expect(grid).toBeInTheDocument();
+    
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps).toEqual({
+      questionID: mockAnswerData.answer_entry,
+      gridData: mockAnswerData.rows,
+      disabled: false,
+      synthesized: false,
+    });
   });
 
-  test("Check for correct age range", () => {
-    expect(wrapper.text()).toMatch(/Under Age 0/);
+  it("should disable the default grid when the question is disabled", () => {
+    let props = {...defaultProps, disabled: true };
+
+    render(<QuestionComponent {...props} />);
+
+    let grid = screen.getByTestId("grid-with-totals");
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps.disabled).toBe(true);
   });
-  test("Check number of gridwithtotal elements", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(6);
+
+  it("should inform the default grid when it is synthesized", () => {
+    let props = {...defaultProps, synthesized: true };
+
+    render(<QuestionComponent {...props} />);
+
+    let grid = screen.getByTestId("grid-with-totals");
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps.synthesized).toBe(true);
+  });
+
+  it("should render the GRE grid correctly", () => {
+    const props = {
+      ...defaultProps,
+      questionData: {
+        ...defaultProps.questionData,
+        type: "gregridwithtotals",
+      },
+    }
+    render(<QuestionComponent {...props} />);
+
+    const grid = screen.getByTestId("gre-grid-with-totals");
+    expect(grid).toBeInTheDocument();
+    
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps).toEqual({
+      questionID: mockAnswerData.answer_entry,
+      gridData: mockAnswerData.rows,
+      disabled: false,
+    });
+  });
+
+  it("should disable the GRE grid when the question is disabled", () => {
+    let props = {
+      ...defaultProps,
+      questionData: {
+        ...defaultProps.questionData,
+        type: "gregridwithtotals",
+      },
+      disabled: true,
+    };
+
+    render(<QuestionComponent {...props} />);
+    
+    let grid = screen.getByTestId("gre-grid-with-totals");
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps.disabled).toBe(true);
+  });
+
+  it("should render the synthesized grid correctly", () => {
+    const props = {
+      ...defaultProps,
+      questionData: {
+        ...defaultProps.questionData,
+        // Question 5 is always a SynthesizedGrid
+        question: "2021-64.21E-05",
+      },
+    }
+    render(<QuestionComponent {...props} />);
+
+    const questionLabel = screen.getByText("5. Mock Question: between the ages of 6 and 12");
+    expect(questionLabel).toBeInTheDocument();
+
+    const grid = screen.getByTestId("synthesized-grid");
+    expect(grid).toBeInTheDocument();
+    
+    const gridProps = JSON.parse(grid.textContent);
+    expect(gridProps).toEqual({
+      questionID: mockAnswerData.answer_entry,
+      gridData: mockAnswerData.rows,
+    });
   });
 });

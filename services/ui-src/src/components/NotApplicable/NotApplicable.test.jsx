@@ -1,116 +1,75 @@
 import React from "react";
-import { shallow, mount } from "enzyme";
+import { Provider } from "react-redux";
+import { render, screen, waitFor } from "@testing-library/react";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import NotApplicable from "./NotApplicable";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
-import { RangeInput } from "@trussworks/react-uswds";
+import { getUserInfo } from "../../utility-functions/userFunctions";
 
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
-};
 jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
+  getUserInfo: jest.fn(),
 }));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
-// The props this component requires in order to render
-const defaultProps = {
-  notApplicable: false,
-  status: "In Progress",
-  statusId: 2,
-  statusTypes: [fullStoreMock.global.status],
-  updatedApplicableStatus: function () {},
-  resetData: function () {}
-};
 
-const shallowSetup = (initialState = {}, props = {}, path = "") => {
-  const setupProps = { ...defaultProps, ...props };
-  const store = storeFactory(initialState);
-  return shallow(<NotApplicable store={store} path={path} {...setupProps} />)
-    .dive()
-    .dive();
-};
-const mountSetup = (initialState = {}, props = {}, path = "") => {
-  const setupProps = { ...defaultProps, ...props };
-  const store = storeFactory(initialState);
-  return mount(
-    <BrowserRouter>
-      {" "}
-      <NotApplicable store={store} path={path} {...setupProps} />{" "}
-    </BrowserRouter>
-  );
-};
-
-describe("NotApplicable component- includes data attributes", () => {
-  const wrapper = shallowSetup(fullStoreMock);
-
-  test("Should include data attribute: applicable-wrapper", () => {
-    expect(wrapper.find(`[data-test="applicable-wrapper"]`).length).toBe(1);
-  });
-
-  test("Should include data attribute: applicable-prompt", () => {
-    expect(wrapper.find(`[data-test="applicable-prompt"]`).length).toBe(1);
-  });
-
-  test("Should include data attribute: applicable-slider", () => {
-    expect(wrapper.find(`[data-test="applicable-slider"]`).length).toBe(1);
-  });
-  test("Should include data attribute: slider-input", () => {
-    expect(wrapper.find(`[data-test="slider-input"]`).length).toBe(1);
-  });
-  test("Should include RangeInput component", () => {
-    expect(wrapper.containsMatchingElement(<RangeInput />)).toEqual(true);
-  });
-});
-
-describe("NotApplicable component- props", () => {
-  // creating a true shallow wrapper so that the props are accessible
-  const tempStore = storeFactory(fullStoreMock);
-  const wrapper = shallow(
-    <NotApplicable store={tempStore} {...defaultProps} />
-  );
-
-  test("Should include a notApplicable prop as a boolean", () => {
-    expect(typeof wrapper.props().children.props.notApplicable).toEqual(
-      "boolean"
-    );
-  });
-
-  test("Should include a resetData prop as a function", () => {
-    expect(typeof wrapper.props().children.props.resetData).toEqual("function");
-  });
-  test("Should include a status prop as a string", () => {
-    expect(typeof wrapper.props().children.props.status).toEqual("string");
-  });
-  test("Should include a statusTypes prop as an array", () => {
-    expect(Array.isArray(wrapper.props().children.props.statusTypes)).toEqual(
-      true
-    );
-  });
-});
-
-describe("NotApplicable component- disabled functionality", () => {
-  const inProgressProps = {
-    status: "In Progress"
+const renderComponent = (user, statusId, notApplicable) => {
+  getUserInfo.mockResolvedValue({ Items: [user] });
+  const initialStore = {
+    ...fullStoreMock,
+    currentForm: {
+      ...fullStoreMock.currentForm,
+      statusData: {
+        ...fullStoreMock.currentForm.statusData,
+        not_applicable: notApplicable,
+        status_id: statusId,
+      },
+    }
   };
-  let wrapper = mountSetup(fullStoreMock, inProgressProps);
-  test("Only one status should be selected", () => {
-    expect(wrapper.find(".is-selected").length).toBe(1);
+  const store = storeFactory(initialStore);
+  return render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <NotApplicable/>
+      </BrowserRouter>
+    </Provider>
+  );
+};
+
+const stateUser = { role: "state" };
+const adminUser = { role: "admin" };
+
+describe("NotApplicable", () => {
+  it("should be enabled for state users viewing an in-progress form", async () => {
+    renderComponent(stateUser, 1, false);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input).toBeEnabled();
   });
-  test("When the form status is `in progress` Applicable should be selected", () => {
-    expect(wrapper.find(".applicable-selected").length).toBe(1);
+
+  it("should be disabled for admin users", async () => {
+    renderComponent(adminUser, 1, false);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input).toBeDisabled();
   });
-  test("When the form status is `in progress` Not Applicable should not be selected", () => {
-    expect(wrapper.find(".not-applicable-selected").length).toBe(0);
+
+  it("should be disabled for state users viewing a certified form", async () => {
+    renderComponent(stateUser, 3, false);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input).toBeDisabled();
+  });
+
+  it("should initialize to Active when applicable", async () => {
+    renderComponent(stateUser, 1, false);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input.value).toBe("0");
+  });
+
+  it("should initialize to Not Applicable when appropriate", async () => {
+    renderComponent(stateUser, 1, true);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const input = screen.getByTestId("range");
+    expect(input.value).toBe("1");
   });
 });

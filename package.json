@@ -38,7 +38,7 @@
     "dotenv": "^8.2.0",
     "nightwatch": "3.1.2",
     "prettier": "2.2.1",
-    "serverless": "^3.38.0",
+    "serverless": "^3.39.0",
     "serverless-bundle": "^6.0.0",
     "serverless-dotenv-plugin": "^4.0.0",
     "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",

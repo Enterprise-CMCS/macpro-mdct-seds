@@ -1,74 +1,75 @@
 import React from "react";
-import { mount } from "enzyme";
-import TabContainer from "../TabContainer/TabContainer";
-import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import currentFormMock_64_21E from "../../provider-mocks/currentFormMock_64_21E.js";
-const mockStore = configureStore([]);
+import SynthesizedGrid from "./SynthesizedGrid";
+import { render } from "@testing-library/react";
+import configureStore from "redux-mock-store";
+import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 
-const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
+const renderComponent = () => {
+  const mockStore = configureStore([]);
+  const store = mockStore(currentFormMock_21E);
+  return render(
+    <Provider store={store}>
+      <SynthesizedGrid
+        questionID="unused"
+        gridData={[ /*unused*/ ]}
+        range="0000"
+      />
+    </Provider>
+  );
 };
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
-}));
-jest.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
 
 describe("Test SynthesizedGrid.js", () => {
-  let store;
-  let wrapper;
+  it("should render the correct headers and data", () => {
+    const { container } = renderComponent();
+    
+    const expectedColumnHeaders = [
+      "", // spacer
+      "% of FPL 0-133",
+      "% of FPL 134-200",
+      "% of FPL 201-250",
+      "% of FPL 251-300",
+      "% of FPL 301-317",
+      "Totals",
+    ];
+    const columnHeaders = [...container.querySelectorAll("thead tr th")]
+      .map(tr => tr.textContent.trim());
+    expect(columnHeaders.length).toBe(expectedColumnHeaders.length);
+    for (let i = 0; i < columnHeaders.length; i += 1) {
+      expect(columnHeaders[i]).toBe(expectedColumnHeaders[i]);
+    }
 
-  beforeEach(() => {
-    store = mockStore(currentFormMock_64_21E);
-    wrapper = mount(
-      <Provider store={store}>
-        <TabContainer />
-      </Provider>
-    );
-  });
-  // Synthesied Grid should have all of the right FPL ranges in the header row
-  test("Check for all top headers", () => {
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /% of FPL 0-133/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /% of FPL 134-200/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /% of FPL 201-250/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /% of FPL 251-300/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /% of FPL 301-317/
-    );
-  });
-  // Synthesized Grid should have all three row headers
-  test("Check for all side headers", () => {
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /A. Fee-for-Service/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /B. Managed Care Arrangements/
-    );
-    expect(wrapper.find("GridWithTotals").at(4).text()).toMatch(
-      /C. Primary Care Case Management/
-    );
-  });
+    const expectedRowHeaders = [
+      "A. Fee-for-Service",
+      "B. Managed Care Arrangements",
+      "C. Primary Care Case Management",
+      "Totals:",
+    ];
+    const rowHeaders = [...container.querySelectorAll("tbody tr th:nth-child(1)")]
+      .map(tr => tr.textContent.trim());
+    expect(rowHeaders.length).toBe(expectedRowHeaders.length);
+    for (let i = 0; i < rowHeaders.length; i += 1) {
+      expect(rowHeaders[i]).toBe(expectedRowHeaders[i]);
+    }
 
-  // There should only be 6 grid with totals in the mock form
-  test("Check number of gridwithtotal elements", () => {
-    expect(wrapper.find(".grid-with-totals").length).toBe(6);
+    // This grid has a lot of calculations in it, so we're verifying EVERYTHING
+    const expectedData = [
+      ["98.0", "2.0", "1.0", "114.3", "0.8", "37.7"],
+      ["1.3", "1.3", "1.8", "0.5", "0.1", "0.9"],
+      ["1.3", "1.0", "0.4", "0.2", "0", "0.7"],
+      ["11.0", "1.2", "0.9", "24.3", "0.5", "8.7"],
+    ];
+    const rows = [...container.querySelectorAll("tbody tr")]
+      .map(tr => [...tr.querySelectorAll("td")]
+        .map(td => td.textContent.trim()));
+    expect(rows.length).toBe(expectedData.length);
+    for (let i = 0; i < expectedData.length; i += 1) {
+      const row = rows[i];
+      const expected = expectedData[i];
+      expect(row.length).toBe(expected.length);
+      for (let j = 0; j < expected.length; j += 1) {
+        expect(row[j]).toBe(expected[j]);
+      }
+    }
   });
 });

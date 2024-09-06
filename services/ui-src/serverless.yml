@@ -5,7 +5,6 @@ frameworkVersion: "3"
 plugins:
   - serverless-s3-bucket-helper
   - serverless-plugin-scripts
-  - serverless-s3-sync
   - serverless-stack-termination-protection
   - serverless-cloudfront-invalidate
 
@@ -38,16 +37,9 @@ custom:
   cognito_user_pool_id: ${param:UserPoolId}
   cognito_user_pool_client_id: ${param:UserPoolClientId}
   cognito_user_pool_client_domain: ${param:UserPoolClientDomain}
-  s3_attachments_bucket_region: ${param:AttachmentsBucketRegion}
-  s3_attachments_bucket_name: ${param:AttachmentsBucketName}
-  ui_s3_bucket_name: ${param:S3BucketName}
   ui_cloudfront_distribution_id: ${param:CloudFrontDistributionId}
   application_endpoint_url: ${param:ApplicationEndpointUrl}
 
-  s3Sync:
-    - bucketName: ${self:custom.ui_s3_bucket_name}
-      localDir: ./build
-      deleteRemoved: true
   cloudfrontInvalidate:
     distributionId: ${self:custom.ui_cloudfront_distribution_id}
     items:
@@ -67,8 +59,6 @@ custom:
         export COGNITO_USER_POOL_CLIENT_DOMAIN=${self:custom.cognito_user_pool_client_domain}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
-        export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
-        export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
         export LOCAL_LOGIN=false
         export STAGE=${self:custom.stage}
         ./env.sh

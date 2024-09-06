@@ -46,13 +46,13 @@ const EditUser = ({ stateList }) => {
     // Sort states alphabetically and place in array
     let theStates = [];
     const userStates =
-      user.data.states && user.data.states !== "null" ? user.data.states : [];
+      user.data?.states && user.data.states !== "null" ? user.data.states : [];
     if (userStates) {
       theStates = userStates.sort();
     }
 
     // Set states to array of objects
-    if (user.data.role !== "state") {
+    if (user.data?.role !== "state") {
       setSelectedStates(
         theStates.map(e => {
           let stateName;
@@ -94,7 +94,7 @@ const EditUser = ({ stateList }) => {
       states = option.join("-");
     }
     if (!states) {
-      states = "null";
+      states = null;
     }
     setStatesToSend(states);
   };
@@ -122,7 +122,7 @@ const EditUser = ({ stateList }) => {
         setStatesToSend(newStates);
       } else {
         if (!e.value) {
-          e.value = "null";
+          e.value = null;
         }
         setStatesToSend([e.value]);
         response = e.value;
@@ -132,7 +132,7 @@ const EditUser = ({ stateList }) => {
     } else if (field === "role") {
       // Save to local state
       setRole(e.value);
-      setStatesToSend("null");
+      setStatesToSend(null);
       setSelectedStates();
       // Update user
       response = e.value;
@@ -268,7 +268,7 @@ const EditUser = ({ stateList }) => {
                 </>
               ) : null}
               <tr>
-                <th>Registration Date</th>
+                <th>Registration Date:</th>
                 <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
               </tr>
               <tr>

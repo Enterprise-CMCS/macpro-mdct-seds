@@ -116,7 +116,6 @@
               "checkbox_flag",
               "daterange",
               "email",
-              "file_upload",
               "integer",
               "mailing_address",
               "money",
