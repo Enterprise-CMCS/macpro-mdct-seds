@@ -47,14 +47,8 @@ describe("Export Functions", () => {
 
     it("should handle undefined properties in the data", async () => {
       const content = {
-        columns: [
-          { name: "Value", selector: "value" },
-        ],
-        data: [
-          { value: "foo" },
-          { },
-          { value: "bar" },
-        ],
+        columns: [{ name: "Value", selector: "value" }],
+        data: [{ value: "foo" }, {}, { value: "bar" }]
       };
 
       const fileContents = buildCsvContents(content);
