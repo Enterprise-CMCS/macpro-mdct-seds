@@ -39,7 +39,7 @@
       "dev": "tealium-tags.cms.gov",
     }
     const tealiumDomain = tealiumDomainMap[tealiumEnv];
-    const tealiumPath = `https://${tealiumDomain}/utag/cmsgov/cms-general/${tealiumEnv}`;
+    const tealiumPath = `https://${tealiumDomain}/cms-general/${tealiumEnv}`;
     document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
     document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
   </script>
