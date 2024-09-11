@@ -31,7 +31,7 @@ export const handleExcelExport = async (fileName, content) => {
  */
 export const buildCsvContents = content => {
   const escape = value => {
-    const str = value.toString();
+    const str = value?.toString() ?? "";
     return /[\r\n,]/.test(str) ? `"${str.replaceAll('"', '""')}"` : str;
   };
   const createRow = arr => arr.map(escape).join(",");

@@ -45,6 +45,17 @@ describe("Export Functions", () => {
       expect(fileContents).toBe("Name,Count\r\napple,3\r\norange,5");
     });
 
+    it("should handle undefined properties in the data", async () => {
+      const content = {
+        columns: [{ name: "Value", selector: "value" }],
+        data: [{ value: "foo" }, {}, { value: "bar" }]
+      };
+
+      const fileContents = buildCsvContents(content);
+
+      expect(fileContents).toBe("Value\r\nfoo\r\n\r\nbar");
+    });
+
     it("should properly escape fields when necessary", async () => {
       const content = {
         columns: [
