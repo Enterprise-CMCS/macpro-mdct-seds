@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
   faUserPlus,
+  faFileCsv,
   faFileExcel,
   faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
@@ -164,6 +165,16 @@ const Users = () => {
         >
           Excel
           <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
+        </Button>
+        <Button
+          className="margin-left-3 action-button"
+          primary="true"
+          onClick={() =>
+            handleExport("csv", "MDCT Users Export.csv", tableData)
+          }
+        >
+          CSV
+          <FontAwesomeIcon icon={faFileCsv} className="margin-left-2" />
         </Button>
 
         <Button
