@@ -172,6 +172,25 @@ describe("Test Users.js", () => {
     );
   });
 
+  it("should export to CSV somehow", async () => {
+    renderComponent();
+    await waitFor(() => expect(listUsers).toHaveBeenCalled());
+
+    const csvButton = screen.getByText(
+      "CSV",
+      { selector: "button" }
+    );
+    userEvent.click(csvButton);
+    
+    expect(handleExport).toHaveBeenCalledWith(
+      "csv",
+      "MDCT Users Export.csv",
+      expect.objectContaining({
+        data: mockUsers,
+      })
+    );
+  });
+
   it("should export to PDF somehow", async () => {
     renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());

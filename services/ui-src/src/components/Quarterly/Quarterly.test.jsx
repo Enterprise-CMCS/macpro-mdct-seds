@@ -36,31 +36,31 @@ const forms = [
     id: "GRE",
     name: "Gender, Race & Ethnicity",
     status: "In Progress",
-    date: "04-08-2021 at 8:46:35 am EST",
+    date: "4/8/2021 at 8:46:35 AM EDT",
   },
   {
     id: "21PW",
     name: "Number of Pregnant Women Served",
     status: "In Progress",
-    date: "04-07-2021 at 8:46:35 am EST",
+    date: "4/7/2021 at 8:46:35 AM EDT",
   },
   {
     id: "64.21E",
     name: "Number of Children Served in Medicaid Expansion Program",
     status: "Provisional Data Certified and Submitted",
-    date: "04-06-2021 at 8:46:35 am EST",
+    date: "4/6/2021 at 8:46:35 AM EDT",
   },
   {
     id: "21E",
     name: "Number of Children Served in Separate CHIP Program",
     status: "Final Data Certified and Submitted",
-    date: "04-05-2021 at 8:46:35 am EST",
+    date: "4/5/2021 at 8:46:35 AM EDT",
   },
   {
     id: "64.EC",
     name: "Number of Children Served in Medicaid Program",
     status: "Final Data Certified and Submitted",
-    date: "04-04-2021 at 8:46:35 am EST",
+    date: "4/4/2021 at 8:46:35 AM EDT",
   },
 ];
 

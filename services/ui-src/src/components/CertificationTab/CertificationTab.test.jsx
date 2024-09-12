@@ -64,14 +64,14 @@ describe("Test CertificationTab.js", () => {
 
   it("should display status text for provisional forms", () => {
     renderWithStatus(provisional);
-    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Timothy Griesemer";
+    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
   });
 
   it("should display status text for final forms", () => {
     renderWithStatus(final);
-    const expectedText = "This report was updated to Final Data Certified and Submitted on 01-15-2021 at 7:46:35 am EST by Timothy Griesemer";
+    const expectedText = "This report was updated to Final Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
   })

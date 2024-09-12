@@ -46,7 +46,7 @@ describe("Test FormFooter.js", () => {
 
   test("Check for Last Saved Date display", () => {
     expect(screen.getByTestId("lastModified"))
-      .toHaveTextContent("Last saved: 04-14-2021 at 8:46:35 am EST");
+      .toHaveTextContent("Last saved: 4/14/2021 at 8:46:35 AM EDT");
   });
 
   test("Check for Save button", () => {
