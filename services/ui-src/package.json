@@ -71,7 +71,7 @@
     "typescript": "^4.9.5",
     "url-loader": "2.3.0",
     "uswds": "^2.14.0",
-    "vite": "^5.2.11",
+    "vite": "^5.2.14",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "scripts": {
