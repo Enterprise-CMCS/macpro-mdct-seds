@@ -33,7 +33,6 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
-          SEED_DATABASE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_SEED_DATABASE] }}
       - name: Configure AWS credentials for GitHub Actions OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:

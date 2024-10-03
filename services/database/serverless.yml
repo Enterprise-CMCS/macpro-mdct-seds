@@ -6,6 +6,8 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-dynamodb
   - serverless-stack-termination-protection
+  - serverless-plugin-scripts
+
 custom:
   project: "seds"
   stage: ${opt:stage, self:provider.stage}
@@ -20,7 +22,16 @@ custom:
       - impl
       - val
       - prod
-
+  seedTestDataMap:
+    production: false
+    val: false
+    master: false
+    default: true
+  seedTestData: ${self:custom.seedTestDataMap.${self:custom.stage}, self:custom.seedTestDataMap.default}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${self:custom.stage}-seed --invocation-type RequestResponse /dev/null
   dynamodb:
     stages:
       - local
@@ -135,6 +146,29 @@ provider:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}  
   versionFunctions: true
+  iam:
+    role:
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+
+functions:
+  seed:
+    handler: handlers/seed/seed.handler
+    environment:
+      dynamoPrefix: ${self:custom.stage}
+      seedTestData: ${self:custom.seedTestData}
+    timeout: 120
 
 resources:
   Resources:
