@@ -60,7 +60,7 @@ const seed = {
     "../../../data/initial_data_load/form_answers_PA_2020.json",
   ],
   tableNameBuilder: (stage) => `${stage}-form-answers`,
-  keys: ["answer_entry", "state_form"],
+  keys: ["answer_entry"],
 };
 
 module.exports = seed;
