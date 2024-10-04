@@ -1,6 +1,6 @@
 const seed = {
   name: "Forms",
-  filenames: ["../../../../../src/database/initial_data_load/forms.json"],
+  filenames: ["../../../data/initial_data_load/forms.json"],
   tableNameBuilder: (stage) => `${stage}-forms`,
   keys: ["form"],
 };

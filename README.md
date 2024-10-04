@@ -137,7 +137,7 @@ export function listUsers() {
 
 ### Adding New Forms (quarterly)
 
-1. If necessary, create a new form template for the year in [src/database/initial_data_load/](src/database/initial_data_load/)
+1. If necessary, create a new form template for the year in [services/database/data/initial_data_load/](services/database/data/initial_data_load/)
    1. Example: `form_questions_2022.json`
 2. Add the new form to seed > form-questions > sources in [services/database/handlers/seed](./services/database/handlers/seed/)
 
@@ -147,10 +147,10 @@ export function listUsers() {
     table: ${self:custom.stage}-form-questions
     sources:
     [
-    ../../src/database/initial_data_load/form_questions_2022.json,
-    ../../src/database/initial_data_load/form_questions_2021.json,
-    ../../src/database/initial_data_load/form_questions_2020.json,
-    ../../src/database/initial_data_load/form_questions_2019.json,
+    data/initial_data_load/form_questions_2022.json,
+    data/initial_data_load/form_questions_2021.json,
+    data/initial_data_load/form_questions_2020.json,
+    data/initial_data_load/form_questions_2019.json,
     ]
    ```
 
@@ -185,7 +185,7 @@ found in [src/dms](src/dms).
 Validate json files against schema to ensure accuracy before each commit.
 
 - Schema Location: [src/database/schema/](src/database/schema/)
-- Initial Data Location: [src/database/initial_data_load](src/database/initial_data_load)
+- Initial Data Location: [services/database/data/initial_data_load](services/database/data/initial_data_load)
 
 1. Install AJV globally in your environment
    1. `npm install -g ajv-cli`
