@@ -5,6 +5,8 @@ const tables = [
   require("./form-questions"),
   require("./form-templates"),
   require("./forms"),
+  require("./form-answers"),
+  require("./state-forms"),
   require("./states"),
   require("./status"),
 ];

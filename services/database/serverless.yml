@@ -24,12 +24,12 @@ custom:
       - impl
       - val
       - prod
-  seedTestDataMap:
+  seedDataMap:
     production: false
     val: false
     master: false
     default: true
-  seedTestData: ${self:custom.seedTestDataMap.${self:custom.stage}, self:custom.seedTestDataMap.default}
+  seedData: ${self:custom.seedDataMap.${self:custom.stage}, self:custom.seedDataMap.default}
   scripts:
     hooks:
       deploy:finalize: |
@@ -172,7 +172,7 @@ functions:
     handler: handlers/seed/seed.handler
     environment:
       dynamoPrefix: ${self:custom.stage}
-      seedTestData: ${self:custom.seedTestData}
+      seedData: ${self:custom.seedData}
     timeout: 120
 
 resources:

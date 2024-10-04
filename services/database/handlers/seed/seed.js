@@ -9,24 +9,19 @@
 
 // eslint-disable-next-line no-unused-vars
 async function myHandler(event, context, callback) {
+  if (process.env.seedData !== "true") {
+    // eslint-disable-next-line no-console
+    console.log("Seed data not enabled for environemt, skipping.");
+    return;
+  }
   // eslint-disable-next-line no-console
   console.log("Seeding Tables");
 
   const buildRunner = require("./services/seedRunner");
   const seedRunner = buildRunner();
-  let data = [];
-
   const { tables } = require("./tables/index");
-  data = data.concat(tables);
 
-  if (process.env.seedTestData === "true") {
-    // eslint-disable-next-line no-console
-    console.log("Including test data");
-    const { testTables } = require("./test-tables/index");
-    data = data.concat(testTables);
-  }
-
-  for (const table of data) {
+  for (const table of tables) {
     await seedRunner.executeSeed(table);
   }
 
