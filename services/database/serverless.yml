@@ -7,6 +7,7 @@ plugins:
   - serverless-dynamodb
   - serverless-stack-termination-protection
   - serverless-plugin-scripts
+  - serverless-offline
 
 custom:
   project: "seds"
@@ -30,6 +31,7 @@ custom:
     master: false
     default: true
   seedData: ${self:custom.seedDataMap.${self:custom.stage}, self:custom.seedDataMap.default}
+  localDynamoEndpoint: ${env:DYNAMODB_URL, ""}
   scripts:
     hooks:
       deploy:finalize: |
@@ -37,108 +39,10 @@ custom:
   dynamodb:
     stages:
       - local
-      - master
     start:
       port: 8000
       inMemory: true
       migrate: true
-      seed: true
-    seed:
-      domain:
-        sources:
-          - table: ${self:custom.stage}-forms
-            sources: [data/initial_data_load/forms.json]
-          - table: ${self:custom.stage}-age-ranges
-            sources: [data/initial_data_load/age_ranges.json]
-          - table: ${self:custom.stage}-status
-            sources: [data/initial_data_load/status.json]
-          - table: ${self:custom.stage}-states
-            sources: [data/initial_data_load/states.json]
-          - table: ${self:custom.stage}-state-forms
-            sources:
-              [
-                data/initial_data_load/state_forms.json,
-                data/initial_data_load/state_forms_2021Q1.json,
-                data/initial_data_load/state_forms_2020.json,
-              ]
-          - table: ${self:custom.stage}-form-questions
-            sources:
-              [
-                data/initial_data_load/form_questions_2021.json,
-                data/initial_data_load/form_questions_2020.json,
-              ]
-          - table: ${self:custom.stage}-form-templates
-            sources:
-              [
-                data/initial_data_load/form_template_2019.json,
-                data/initial_data_load/form_template_2020.json,
-                data/initial_data_load/form_template_2021.json,
-              ]
-          - table: ${self:custom.stage}-form-answers
-            sources:
-              [
-                data/initial_data_load/form_answers_AL.json,
-                data/initial_data_load/form_answers_AK.json,
-                data/initial_data_load/form_answers_AZ.json,
-                data/initial_data_load/form_answers_AR.json,
-                data/initial_data_load/form_answers_CA.json,
-                data/initial_data_load/form_answers_CO.json,
-                data/initial_data_load/form_answers_CT.json,
-                data/initial_data_load/form_answers_DE.json,
-                data/initial_data_load/form_answers_DC.json,
-                data/initial_data_load/form_answers_FL.json,
-                data/initial_data_load/form_answers_GA.json,
-                data/initial_data_load/form_answers_HI.json,
-                data/initial_data_load/form_answers_ID.json,
-                data/initial_data_load/form_answers_IL.json,
-                data/initial_data_load/form_answers_IN.json,
-                data/initial_data_load/form_answers_IA.json,
-                data/initial_data_load/form_answers_KS.json,
-                data/initial_data_load/form_answers_KY.json,
-                data/initial_data_load/form_answers_LA.json,
-                data/initial_data_load/form_answers_ME.json,
-                data/initial_data_load/form_answers_MD.json,
-                data/initial_data_load/form_answers_MA.json,
-                data/initial_data_load/form_answers_MI.json,
-                data/initial_data_load/form_answers_MN.json,
-                data/initial_data_load/form_answers_MO.json,
-                data/initial_data_load/form_answers_MS.json,
-                data/initial_data_load/form_answers_MT.json,
-                data/initial_data_load/form_answers_NE.json,
-                data/initial_data_load/form_answers_NV.json,
-                data/initial_data_load/form_answers_NH.json,
-                data/initial_data_load/form_answers_NJ.json,
-                data/initial_data_load/form_answers_NM.json,
-                data/initial_data_load/form_answers_NY.json,
-                data/initial_data_load/form_answers_NC.json,
-                data/initial_data_load/form_answers_ND.json,
-                data/initial_data_load/form_answers_OH.json,
-                data/initial_data_load/form_answers_OK.json,
-                data/initial_data_load/form_answers_OR.json,
-                data/initial_data_load/form_answers_PA.json,
-                data/initial_data_load/form_answers_RI.json,
-                data/initial_data_load/form_answers_SC.json,
-                data/initial_data_load/form_answers_SD.json,
-                data/initial_data_load/form_answers_TN.json,
-                data/initial_data_load/form_answers_TX.json,
-                data/initial_data_load/form_answers_UT.json,
-                data/initial_data_load/form_answers_VT.json,
-                data/initial_data_load/form_answers_VA.json,
-                data/initial_data_load/form_answers_WA.json,
-                data/initial_data_load/form_answers_WV.json,
-                data/initial_data_load/form_answers_WI.json,
-                data/initial_data_load/form_answers_WY.json,
-                data/initial_data_load/form_answers_AL_2021Q1.json,
-                data/initial_data_load/form_answers_MD_2021Q1.json,
-                data/initial_data_load/form_answers_PA_2021Q1.json,
-                data/initial_data_load/form_answers_AL_2020.json,
-                data/initial_data_load/form_answers_MD_2020.json,
-                data/initial_data_load/form_answers_PA_2020.json,
-              ]
-          - table: ${self:custom.stage}-auth-user
-            sources: [data/initial_data_load/auth_user.json]
-          - table: ${self:custom.stage}-auth-user-roles
-            sources: [data/initial_data_load/auth_user_roles.json]
 
 provider:
   name: aws
@@ -173,6 +77,7 @@ functions:
     environment:
       dynamoPrefix: ${self:custom.stage}
       seedData: ${self:custom.seedData}
+      DYNAMODB_URL: ${self:custom.localDynamoEndpoint}
     timeout: 120
 
 resources:

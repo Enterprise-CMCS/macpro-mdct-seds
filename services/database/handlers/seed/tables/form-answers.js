@@ -1,5 +1,4 @@
 const seed = {
-  name: "Form Answers - Test Data",
   filenames: [
     "../../../data/initial_data_load/form_answers_AL.json",
     "../../../data/initial_data_load/form_answers_AK.json",

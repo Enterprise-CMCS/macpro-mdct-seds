@@ -1,5 +1,4 @@
 const seed = {
-  name: "Form Templates",
   filenames: [
     "../../../data/initial_data_load/form_template_2019.json",
     "../../../data/initial_data_load/form_template_2020.json",

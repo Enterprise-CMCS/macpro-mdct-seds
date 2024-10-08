@@ -9,18 +9,13 @@ let dynamoPrefix;
 
 const runSeed = async (seedInstructions) => {
   const { name, filenames, tableNameBuilder, keys } = seedInstructions;
-  // eslint-disable-next-line no-console
-  console.log(`  - ${name}: Seeding`);
   for (const filename of filenames) {
     const tableName = tableNameBuilder(dynamoPrefix);
     if (!filenames || filenames <= 0) continue;
-    const data = require(filename);
+    const file = require(filename);
+    const data = file.constructor.name == "Array" ? file : [file];
     if (!data || data.length <= 0) continue;
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `  -  ${tableName}: Updating ${data.length} entries from ${filename}`
-    );
     await updateItems(tableName, data, keys);
   }
 };
@@ -70,8 +65,6 @@ const convertToDynamoExpression = (listOfVars) => {
 const buildSeedRunner = () => {
   const dynamoConfig = {
     logger: {
-      debug: console.debug, // eslint-disable-line no-console
-      info: console.info, // eslint-disable-line no-console
       warn: console.warn, // eslint-disable-line no-console
       error: console.error, // eslint-disable-line no-console
     },

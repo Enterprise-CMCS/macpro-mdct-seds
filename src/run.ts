@@ -50,7 +50,35 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "db",
-    ["serverless", "dynamodb", "start", "--stage=local", "--migrate"],
+    [
+      "serverless",
+      "offline",
+      "start",
+      "--stage",
+      "local",
+      "--lambdaPort",
+      "3003",
+    ],
+    "services/database"
+  );
+  runner.run_command_and_output(
+    "db",
+    ["serverless", "dynamodb", "start", "--stage=local"],
+    "services/database"
+  );
+  await new Promise((res) => setTimeout(res, 10 * 1000)); // The above runners need to all finish, not all can be awaited, they block
+  await runner.run_command_and_output(
+    "db",
+    [
+      "aws",
+      "lambda",
+      "invoke",
+      "/dev/null",
+      "--endpoint-url",
+      "http://localhost:3003",
+      "--function-name",
+      "database-local-seed",
+    ],
     "services/database"
   );
 }
