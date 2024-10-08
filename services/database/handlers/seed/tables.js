@@ -1,46 +1,38 @@
 module.exports = {
   tables: [
     {
-      "filenames": [
-        "../../../data/initial_data_load/age_ranges.json"
-      ],
-      "tableNameSuffix": "age-ranges"
+      filenames: ["../../../data/initial_data_load/age_ranges.json"],
+      tableNameSuffix: "age-ranges",
     },
     {
-      "filenames": [
-        "../../../data/initial_data_load/auth_user.json"
-      ],
-      "tableNameSuffix": "auth-user"
+      filenames: ["../../../data/initial_data_load/auth_user.json"],
+      tableNameSuffix: "auth-user",
     },
     {
-      "filenames": [
-        "../../../data/initial_data_load/auth_user_roles.json"
-      ],
-      "tableNameSuffix": "auth-user-roles"
+      filenames: ["../../../data/initial_data_load/auth_user_roles.json"],
+      tableNameSuffix: "auth-user-roles",
     },
     {
-      "filenames": [
+      filenames: [
         "../../../data/initial_data_load/form_questions_2021.json",
-        "../../../data/initial_data_load/form_questions_2020.json"
+        "../../../data/initial_data_load/form_questions_2020.json",
       ],
-      "tableNameSuffix": "form-questions"
+      tableNameSuffix: "form-questions",
     },
     {
-      "filenames": [
+      filenames: [
         "../../../data/initial_data_load/form_template_2019.json",
         "../../../data/initial_data_load/form_template_2020.json",
-        "../../../data/initial_data_load/form_template_2021.json"
+        "../../../data/initial_data_load/form_template_2021.json",
       ],
-      "tableNameSuffix": "form-templates"
+      tableNameSuffix: "form-templates",
     },
     {
-      "filenames": [
-        "../../../data/initial_data_load/forms.json"
-      ],
-      "tableNameSuffix": "forms"
+      filenames: ["../../../data/initial_data_load/forms.json"],
+      tableNameSuffix: "forms",
     },
     {
-      "filenames": [
+      filenames: [
         "../../../data/initial_data_load/form_answers_AL.json",
         "../../../data/initial_data_load/form_answers_AK.json",
         "../../../data/initial_data_load/form_answers_AZ.json",
@@ -97,29 +89,25 @@ module.exports = {
         "../../../data/initial_data_load/form_answers_PA_2021Q1.json",
         "../../../data/initial_data_load/form_answers_AL_2020.json",
         "../../../data/initial_data_load/form_answers_MD_2020.json",
-        "../../../data/initial_data_load/form_answers_PA_2020.json"
+        "../../../data/initial_data_load/form_answers_PA_2020.json",
       ],
-      "tableNameSuffix": "form-answers"
+      tableNameSuffix: "form-answers",
     },
     {
-      "filenames": [
+      filenames: [
         "../../../data/initial_data_load/state_forms.json",
         "../../../data/initial_data_load/state_forms_2021Q1.json",
-        "../../../data/initial_data_load/state_forms_2020.json"
+        "../../../data/initial_data_load/state_forms_2020.json",
       ],
-      "tableNameSuffix": "state-forms"
+      tableNameSuffix: "state-forms",
     },
     {
-      "filenames": [
-        "../../../data/initial_data_load/states.json"
-      ],
-      "tableNameSuffix": "states"
+      filenames: ["../../../data/initial_data_load/states.json"],
+      tableNameSuffix: "states",
     },
     {
-      "filenames": [
-        "../../../data/initial_data_load/status.json"
-      ],
-      "tableNameSuffix": "status"
-    }
-  ]
+      filenames: ["../../../data/initial_data_load/status.json"],
+      tableNameSuffix: "status",
+    },
+  ],
 };
