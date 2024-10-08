@@ -1,32 +1,46 @@
+/* eslint-disable no-console */
 /**
  * Custom handler for seeding deployed environments with required data.
  * Simple functionality to add required section base templates to each branch
- *
- * @param {*} event
- * @param {*} context
- * @param {*} callback
  */
-
-// eslint-disable-next-line no-unused-vars
-async function myHandler(event, context, callback) {
+async function myHandler(_event, _context, _callback) {
   if (process.env.seedData !== "true") {
-    // eslint-disable-next-line no-console
-    console.log("Seed data not enabled for environemt, skipping.");
+    console.log("Seed data not enabled for environment, skipping.");
     return;
   }
-  // eslint-disable-next-line no-console
   console.log("Seeding Tables");
 
-  const buildRunner = require("./services/seedRunner");
-  const seedRunner = buildRunner();
-  const { tables } = require("./tables/index");
+  const { tables } = require("./tables");
 
   for (const table of tables) {
-    await seedRunner.executeSeed(table);
+    await runSeed(table);
   }
 
-  // eslint-disable-next-line no-console
   console.log("Seed Finished");
 }
+
+/**
+ * @param {{
+*  filenames: string[];
+*  tableNameSuffix: string;
+* }} seedInstructions 
+*/
+const runSeed = async (seedInstructions) => {
+  const { filenames, tableNameSuffix } = seedInstructions;
+  for (const filename of filenames) {
+    const TableName = `${process.env.dynamoPrefix}-${tableNameSuffix}`;
+    if (!filenames || filenames <= 0) continue;
+    const items = require(filename);
+    if (!items || items.length <= 0) continue;
+
+    try {
+      for (const Item of items) {
+        await dynamoClient.send(new PutCommand({ TableName, Item }));
+      }
+    } catch (e) {
+      console.log(` -- ERROR UPLOADING ${TableName}\n`, e);
+    }
+  }
+};
 
 exports.handler = myHandler;

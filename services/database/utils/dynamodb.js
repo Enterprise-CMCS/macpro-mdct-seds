@@ -6,7 +6,7 @@ const {
   ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
-let dynamoClient;
+let dynamoClient = buildDynamoClient();
 
 const buildDynamoClient = () => {
   const dynamoConfig = {
@@ -30,7 +30,7 @@ const buildDynamoClient = () => {
   }
 
   const bareBonesClient = new DynamoDBClient(dynamoConfig);
-  dynamoClient = DynamoDBDocumentClient.from(bareBonesClient);
+  return DynamoDBDocumentClient.from(bareBonesClient);
 };
 
 const scan = async (scanParams) => {
