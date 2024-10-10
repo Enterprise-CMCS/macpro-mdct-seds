@@ -5,7 +5,6 @@ var_list=(
   'AWS_DEFAULT_REGION'
   'CODE_CLIMATE_ID'
   'STAGE_PREFIX'
-  'SEED_DATABASE'
 )
 
 set_value() {

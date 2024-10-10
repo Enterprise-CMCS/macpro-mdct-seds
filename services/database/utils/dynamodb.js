@@ -6,13 +6,9 @@ const {
   ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
-let dynamoClient;
-
 const buildDynamoClient = () => {
   const dynamoConfig = {
     logger: {
-      debug: console.debug,
-      info: console.info,
       warn: console.warn,
       error: console.error,
     },
@@ -30,8 +26,10 @@ const buildDynamoClient = () => {
   }
 
   const bareBonesClient = new DynamoDBClient(dynamoConfig);
-  dynamoClient = DynamoDBDocumentClient.from(bareBonesClient);
+  return DynamoDBDocumentClient.from(bareBonesClient);
 };
+
+let dynamoClient = buildDynamoClient();
 
 const scan = async (scanParams) => {
   let ExclusiveStartKey;
@@ -60,7 +58,7 @@ const update = async (tableName, items) => {
       const command = new PutCommand(params);
       await dynamoClient.send(command);
     }
-    console.log(`Touched ${items.length} in table ${tableName}`)
+    console.log(`Touched ${items.length} in table ${tableName}`);
   } catch (e) {
     console.log(` -- ERROR UPLOADING ${tableName}\n`, e);
   }
