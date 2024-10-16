@@ -13,6 +13,9 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
     "smoke": "npm run test --tag smoke",
     "test:cypress": "cd tests/cypress && npm test && cd -",
@@ -40,6 +43,7 @@
     "prettier": "2.2.1",
     "serverless": "^4.4.18",
     "serverless-dotenv-plugin": "^4.0.0",
+    "aws-cdk": "2.161.1",
     "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",
     "serverless-offline": "^14.4.0",
     "serverless-online": "Enterprise-CMCS/macpro-serverless-online",
@@ -51,6 +55,8 @@
   "dependencies": {
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "jsonpath": "^1.1.0"
+    "jsonpath": "^1.1.0",
+    "aws-cdk-lib": "^2.161.1",
+    "constructs": "^10.3.0"
   }
 }
