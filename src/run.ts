@@ -200,6 +200,7 @@ async function deploy(options: { stage: string }) {
   await prepare_services(runner);
   const deployCmd = ["sls", "deploy", "--stage", stage];
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
+}
 
 async function cdkDeploy(options: { stage: string }) {
   const stage = options.stage;
@@ -207,10 +208,6 @@ async function cdkDeploy(options: { stage: string }) {
   await prepare_services(runner);
   const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
-  // Seed when flag is set to true
-  if (process.env.SEED_DATABASE) {
-    await seed_database(runner, stage);
-  }
 
   // TODO: do we need to build and deploy react separately?  If so, this is what mako did:
   // await runCommand("bun", ["run", "build"], "react-app");
