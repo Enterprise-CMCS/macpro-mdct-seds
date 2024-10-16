@@ -24,8 +24,7 @@ export class ParentStack extends cdk.Stack {
     // const indexNamespace = props.stage;
 
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
-      // vpcName: props.vpcName,
-      isDefault: true,
+      vpcName: props.vpcName,
     });
     // const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
