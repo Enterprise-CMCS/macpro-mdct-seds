@@ -10,6 +10,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { StartingPosition } from "aws-cdk-lib/aws-lambda";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { RegionalWaf } from "../local-constructs/waf";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -488,6 +489,11 @@ export class ApiStack extends cdk.NestedStack {
     //     // Add other WAF rules here
     //   ],
     // });
+
+    new RegionalWaf(this, "WafConstruct", {
+      name: `${props.project}-${stage}-${this.shortStackName}`,
+      apiGateway: this.api,
+    });
 
     // Outputs
     new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
