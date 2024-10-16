@@ -26,7 +26,7 @@ export class ParentStack extends cdk.Stack {
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
       vpcName: props.vpcName,
     });
-    // const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
+    const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
     if (!props.isDev) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
@@ -79,6 +79,7 @@ export class ParentStack extends cdk.Stack {
       stack: "api",
       tables: dataStack.tables,
       vpc,
+      privateSubnets,
     });
 
     // const apiStack = new Stacks.Api(this, "api", {
@@ -166,20 +167,20 @@ export class ParentStack extends cdk.Stack {
   }
 }
 
-// function getSubnetSize(cidrBlock: string): number {
-//   const subnetMask = parseInt(cidrBlock.split("/")[1], 10);
-//   return Math.pow(2, 32 - subnetMask);
-// }
+function getSubnetSize(cidrBlock: string): number {
+  const subnetMask = parseInt(cidrBlock.split("/")[1], 10);
+  return Math.pow(2, 32 - subnetMask);
+}
 
-// function sortSubnets(subnets: cdk.aws_ec2.ISubnet[]): cdk.aws_ec2.ISubnet[] {
-//   return subnets.sort((a, b) => {
-//     const sizeA = getSubnetSize(a.ipv4CidrBlock);
-//     const sizeB = getSubnetSize(b.ipv4CidrBlock);
+function sortSubnets(subnets: cdk.aws_ec2.ISubnet[]): cdk.aws_ec2.ISubnet[] {
+  return subnets.sort((a, b) => {
+    const sizeA = getSubnetSize(a.ipv4CidrBlock);
+    const sizeB = getSubnetSize(b.ipv4CidrBlock);
 
-//     if (sizeA !== sizeB) {
-//       return sizeB - sizeA; // Sort by size in decreasing order
-//     }
+    if (sizeA !== sizeB) {
+      return sizeB - sizeA; // Sort by size in decreasing order
+    }
 
-//     return a.subnetId.localeCompare(b.subnetId); // Sort by name if sizes are equal
-//   });
-// }
+    return a.subnetId.localeCompare(b.subnetId); // Sort by name if sizes are equal
+  });
+}
