@@ -18,6 +18,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   isDev: boolean;
   tables: { [name: string]: dynamodb.Table };
   vpc: ec2.IVpc;
+  privateSubnets: cdk.aws_ec2.ISubnet[];
 }
 
 export class ApiStack extends cdk.NestedStack {
@@ -36,9 +37,7 @@ export class ApiStack extends cdk.NestedStack {
 
     this.tables = props.tables;
 
-    const { vpc } = props;
-
-    const vpcSubnets = { subnetType: ec2.SubnetType.PRIVATE_ISOLATED };
+    const { vpc, privateSubnets } = props;
 
     const kafkaSecurityGroup = new ec2.SecurityGroup(
       this,
@@ -114,7 +113,7 @@ export class ApiStack extends cdk.NestedStack {
       memorySize: 2048,
       retryAttempts: 2,
       vpc,
-      vpcSubnets,
+      vpcSubnets: { subnets: privateSubnets },
       securityGroups: [kafkaSecurityGroup],
     });
 
@@ -139,7 +138,7 @@ export class ApiStack extends cdk.NestedStack {
       memorySize: 2048,
       retryAttempts: 2,
       vpc,
-      vpcSubnets,
+      vpcSubnets: { subnets: privateSubnets },
       securityGroups: [kafkaSecurityGroup],
     });
 
