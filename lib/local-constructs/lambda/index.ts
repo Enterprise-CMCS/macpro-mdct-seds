@@ -54,7 +54,6 @@ export class Lambda extends Construct {
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: "TODO", // brokerString,
       STAGE: stage,
-      stage,
       ...Object.values((Stack.of(this) as ApiStack).tables).reduce(
         (acc, table) => {
           const currentTable = Stack.of(table)
