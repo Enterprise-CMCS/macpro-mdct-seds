@@ -18,10 +18,6 @@ export class ParentStack extends cdk.Stack {
       stage: props.stage,
       isDev: props.isDev,
     };
-    // const topicNamespace = props.isDev
-    //   ? `--${props.project}--${props.stage}--`
-    //   : "";
-    // const indexNamespace = props.stage;
 
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
       vpcName: props.vpcName,
@@ -36,45 +32,12 @@ export class ParentStack extends cdk.Stack {
 
     console.log("TODO: this is temporary commonProps:", commonProps);
 
-    // const networkingStack = new Stacks.Networking(this, "networking", {
-    //   ...commonProps,
-    //   stack: "networking",
-    //   vpc,
-    // });
-
-    // const alertsStack = new Stacks.Alerts(this, "alerts", {
-    //   ...commonProps,
-    //   stack: "alerts",
-    // });
-
-    // const uiInfraStack = new Stacks.UiInfra(this, "ui-infra", {
-    //   ...commonProps,
-    //   stack: "ui-infra",
-    //   isDev: props.isDev,
-    //   domainCertificateArn: props.domainCertificateArn,
-    //   domainName: props.domainName,
-    // });
-
-    // const uploadsStack = new Stacks.Uploads(this, "uploads", {
-    //   ...commonProps,
-    //   stack: "uploads",
-    // });
-
     const dataStack = new Stacks.DatabaseStack(this, "database", {
       ...commonProps,
       stack: "database",
-      // vpc,
-      // privateSubnets,
-      // brokerString: props.brokerString,
-      // lambdaSecurityGroup: "", //networkingStack.lambdaSecurityGroup,
-      // topicNamespace,
-      // indexNamespace,
-      // devPasswordArn: props.devPasswordArn,
-      // sharedOpenSearchDomainArn: props.sharedOpenSearchDomainArn,
-      // sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
     });
 
-    new Stacks.ApiStack(this, "api", {
+    const apiStack = new Stacks.ApiStack(this, "api", {
       ...commonProps,
       stack: "api",
       tables: dataStack.tables,
@@ -82,88 +45,52 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
     });
 
-    // const apiStack = new Stacks.Api(this, "api", {
-    //   ...commonProps,
-    //   stack: "api",
-    //   vpc,
-    //   privateSubnets,
-    //   brokerString: props.brokerString,
-    //   dbInfoSecretName: props.dbInfoSecretName,
-    //   legacyS3AccessRoleArn: props.legacyS3AccessRoleArn,
-    //   lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-    //   topicNamespace,
-    //   indexNamespace,
-    //   openSearchDomainArn: dataStack.openSearchDomainArn,
-    //   openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
-    //   alertsTopic: alertsStack.topic,
-    //   attachmentsBucket: uploadsStack.attachmentsBucket,
-    // });
+    new Stacks.StreamFunctionsStack(this, "stream-functions", {
+      ...commonProps,
+      stack: "stream-functions",
+    });
 
-    // const authStack = new Stacks.Auth(this, "auth", {
-    //   ...commonProps,
-    //   stack: "auth",
-    //   apiGateway: apiStack.apiGateway,
-    //   applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
-    //   vpc,
-    //   privateSubnets,
-    //   lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-    //   idmEnable: props.idmEnable,
-    //   idmClientId: props.idmClientId,
-    //   idmClientIssuer: props.idmClientIssuer,
-    //   idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
-    //   idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
-    //   idmClientSecretArn: props.idmClientSecretArn,
-    //   devPasswordArn: props.devPasswordArn,
-    // });
+    new Stacks.UiAuthStack(this, "ui-auth", {
+      ...commonProps,
+      stack: "ui-auth",
+    });
 
-    // new Stacks.Email(this, "email", {
-    //   ...commonProps,
-    //   stack: "email",
-    //   vpc,
-    //   privateSubnets,
-    //   brokerString: props.brokerString,
-    //   topicNamespace,
-    //   indexNamespace,
-    //   lambdaSecurityGroupId:
-    //     networkingStack.lambdaSecurityGroup.securityGroupId,
-    //   applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
-    //   emailAddressLookupSecretName: props.emailAddressLookupSecretName,
-    //   lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-    //   openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
-    //   openSearchDomainArn: dataStack.openSearchDomainArn,
-    // });
+    new Stacks.UiSrcStack(this, "ui-src", {
+      ...commonProps,
+      stack: "ui-src",
+    });
 
-    // new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
-    //   parameterName: `/${props.project}/${props.stage}/deployment-output`,
-    //   stringValue: JSON.stringify({
-    //     apiGatewayRestApiUrl: apiStack.apiGatewayUrl,
-    //     identityPoolId: authStack.identityPool.attrId,
-    //     userPoolId: authStack.userPool.userPoolId,
-    //     userPoolClientId: authStack.userPoolClient.attrClientId,
-    //     userPoolClientDomain: authStack.userPoolClientDomain,
-    //     applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
-    //     s3BucketName: uiInfraStack.bucket.bucketName,
-    //     cloudfrontDistributionId: uiInfraStack.distribution.distributionId,
-    //     idmHomeUrl: props.idmHomeUrl,
-    //     kibanaUrl: `https://${dataStack.openSearchDomainEndpoint}/_dashboards`,
-    //   }),
-    //   description: `Deployment output for the ${props.stage} environment.`,
-    // });
+    new Stacks.UiWafLogAssocStack(this, "ui-waf-log-assoc", {
+      ...commonProps,
+      stack: "ui-waf-log-assoc",
+    });
 
-    // new cdk.aws_ssm.StringParameter(this, "DeploymentConfig", {
-    //   parameterName: `/${props.project}/${props.stage}/deployment-config`,
-    //   stringValue: JSON.stringify(props),
-    //   description: `Deployment config for the ${props.stage} environment.`,
-    // });
+    new Stacks.UiWafLogS3BucketStack(this, "ui-waflog-s3-bucket", {
+      ...commonProps,
+      stack: "ui-waflog-s3-bucket",
+    });
 
-    // if (props.stage === "main") {
-    //   this.exportValue(dataStack.openSearchDomainEndpoint, {
-    //     name: `${props.project}-sharedOpenSearchDomainEndpoint`,
-    //   });
-    //   this.exportValue(dataStack.openSearchDomainArn, {
-    //     name: `${props.project}-sharedOpenSearchDomainArn`,
-    //   });
-    // }
+    new Stacks.UiStack(this, "ui", {
+      ...commonProps,
+      stack: "ui",
+    });
+
+    new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
+      parameterName: `/${props.project}/${props.stage}/deployment-output`,
+      stringValue: JSON.stringify({
+        apiGatewayRestApiUrl: apiStack.api.url,
+        // applicationEndpointUrl: ui.applicationEndpointUrl,
+        // s3BucketName: ui.bucket.bucketName,
+        // cloudfrontDistributionId: ui.distribution.distributionId,
+      }),
+      description: `Deployment output for the ${props.stage} environment.`,
+    });
+
+    new cdk.aws_ssm.StringParameter(this, "DeploymentConfig", {
+      parameterName: `/${props.project}/${props.stage}/deployment-config`,
+      stringValue: JSON.stringify(props),
+      description: `Deployment config for the ${props.stage} environment.`,
+    });
   }
 }
 
