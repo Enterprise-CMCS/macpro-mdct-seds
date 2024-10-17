@@ -104,7 +104,7 @@ export class ApiStack extends cdk.NestedStack {
     new Lambda(this, "ForceKafkaSync", {
       entry: "services/app-api/handlers/kafka/get/forceKafkaSync.js",
       timeout: cdk.Duration.minutes(15),
-      memorySize: 3008, // TODO: 3072,
+      memorySize: 3072,
     });
 
     const postKafkaData = new Lambda(this, "postKafkaData", {
