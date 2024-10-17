@@ -84,23 +84,19 @@ export class Lambda extends Construct {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              resources: ["arn:aws:logs:*:*:*"],
+            }),
           ],
         }),
       },
     });
-
-    // Add permissions to Lambda role
-    role.addToPolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-        ],
-        resources: ["arn:aws:logs:*:*:*"],
-      })
-    );
 
     // TOOD: instead of this being one policy per table, put all of the tables in one policy in the resources key
     Object.values((Stack.of(this) as ApiStack).tables).forEach((table) => {
