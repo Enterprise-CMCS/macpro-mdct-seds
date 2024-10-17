@@ -1,6 +1,5 @@
 import * as cdk from "aws-cdk-lib";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-// import * as wafv2 from "aws-cdk-lib/aws-wafv2";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import { Construct } from "constructs";
@@ -357,11 +356,7 @@ export class ApiStack extends cdk.NestedStack {
       method: "POST",
     });
 
-    // resources:
-    //   Resources:
-
     // TODO: I don't think this was deploying correctly to my personal AWS account, need to compare my CDK to this when its deployed correctly to make sure permissions are being created correctly.
-
     //     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
     //       Type: "AWS::IAM::Role"
     //       Properties:
@@ -456,39 +451,6 @@ export class ApiStack extends cdk.NestedStack {
     //                   Action:
     //                     - ssm:GetParameter
     //                   Resource: "*"
-
-    //
-
-    // // WAF
-    // const wafAcl = new wafv2.CfnWebACL(this, "WafPluginAcl", {
-    //   name: "app-api-sls-webacl-waf",
-    //   defaultAction: { block: {} },
-    //   scope: "REGIONAL",
-    //   visibilityConfig: {
-    //     cloudWatchMetricsEnabled: true,
-    //     metricName: "app-api-sls-webacl-waf-webacl",
-    //     sampledRequestsEnabled: true,
-    //   },
-    //   rules: [
-    //     {
-    //       name: "app-api-sls-webacl-waf-DDOSRateLimitRule",
-    //       priority: 10,
-    //       action: { block: {} },
-    //       visibilityConfig: {
-    //         sampledRequestsEnabled: true,
-    //         cloudWatchMetricsEnabled: true,
-    //         metricName: "app-api-sls-webacl-waf-DDOSRateLimitRuleMetric",
-    //       },
-    //       statement: {
-    //         rateBasedStatement: {
-    //           limit: 5000,
-    //           aggregateKeyType: "IP",
-    //         },
-    //       },
-    //     },
-    //     // Add other WAF rules here
-    //   ],
-    // });
 
     new RegionalWaf(this, "WafConstruct", {
       name: `${props.project}-${stage}-${this.shortStackName}`,
