@@ -42,7 +42,7 @@ export class UiStack extends cdk.NestedStack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: isDev,
+      // autoDeleteObjects: isDev, // TODO: add isDev to this stack.
     });
 
     // Deny insecure requests to the bucket
