@@ -30,8 +30,6 @@ export class ParentStack extends cdk.Stack {
       });
     }
 
-    console.log("TODO: this is temporary commonProps:", commonProps);
-
     const dataStack = new Stacks.DatabaseStack(this, "database", {
       ...commonProps,
       stack: "database",
