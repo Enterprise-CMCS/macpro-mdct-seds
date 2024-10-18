@@ -71,6 +71,7 @@ export class ParentStack extends cdk.Stack {
     new Stacks.UiStack(this, "ui", {
       ...commonProps,
       stack: "ui",
+      restrictToVpn: false,
     });
 
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
