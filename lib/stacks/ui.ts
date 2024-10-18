@@ -121,7 +121,7 @@ export class UiStack extends cdk.NestedStack {
             new iam.PolicyStatement({
               actions: ["s3:PutObject"],
               resources: [
-                `${props.project}-${props.stage}-cloudfront-logs-${this.account}/*`,
+                `arn:aws:s3:::${props.project}-${props.stage}-cloudfront-logs-${this.account}/*`,
               ],
               effect: iam.Effect.ALLOW,
             }),
