@@ -99,50 +99,52 @@ export class UiStack extends cdk.NestedStack {
       }
     );
 
-    const vpnIpSetArn = safeGetSsmParameter(this, [
-      `/configuration/${props.stage}/vpnIpSetArn`,
-      `/configuration/default/vpnIpSetArn`,
-    ]);
+    (async () => {
+      const vpnIpSetArn = await safeGetSsmParameter(this, [
+        `/configuration/${props.stage}/vpnIpSetArn`,
+        `/configuration/default/vpnIpSetArn`,
+      ]);
 
-    const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
+      const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
 
-    if (vpnIpSetArn) {
-      wafRules.push({
-        name: "block-all-other-traffic",
-        priority: 1,
-        action: { block: {} },
-        visibilityConfig: {
-          cloudWatchMetricsEnabled: true,
-          metricName: `${props.project}-${props.stage}-block-traffic`,
-          sampledRequestsEnabled: true,
-        },
-        statement: {
-          notStatement: {
-            statement: {
-              ipSetReferenceStatement: {
-                arn: vpnIpSetArn,
+      if (vpnIpSetArn) {
+        wafRules.push({
+          name: "block-all-other-traffic",
+          priority: 1,
+          action: { block: {} },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: `${props.project}-${props.stage}-block-traffic`,
+            sampledRequestsEnabled: true,
+          },
+          statement: {
+            notStatement: {
+              statement: {
+                ipSetReferenceStatement: {
+                  arn: vpnIpSetArn,
+                },
               },
             },
           },
-        },
-      });
-    }
+        });
+      }
 
-    // Web ACL for CloudFront
-    // const wafAcl =
-    new wafv2.CfnWebACL(this, "WebACL", {
-      name: `${props.project}-${props.stage}-webacl-waf`,
-      scope: "CLOUDFRONT",
-      defaultAction: {
-        allow: {},
-      },
-      visibilityConfig: {
-        sampledRequestsEnabled: true,
-        cloudWatchMetricsEnabled: true,
-        metricName: `${props.project}-${props.stage}-webacl`,
-      },
-      rules: wafRules,
-    });
+      // Web ACL for CloudFront
+      // const wafAcl =
+      new wafv2.CfnWebACL(this, "WebACL", {
+        name: `${props.project}-${props.stage}-webacl-waf`,
+        scope: "CLOUDFRONT",
+        defaultAction: {
+          allow: {},
+        },
+        visibilityConfig: {
+          sampledRequestsEnabled: true,
+          cloudWatchMetricsEnabled: true,
+          metricName: `${props.project}-${props.stage}-webacl`,
+        },
+        rules: wafRules,
+      });
+    })();
 
     // Firehose for WAF logging
     const firehoseRole = new iam.Role(this, "FirehoseRole", {
