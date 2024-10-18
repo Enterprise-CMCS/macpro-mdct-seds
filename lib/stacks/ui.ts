@@ -1,16 +1,171 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
+import {
+  aws_s3 as s3,
+  aws_iam as iam,
+  aws_route53 as route53,
+  aws_route53_targets as route53Targets,
+  aws_cloudfront as cloudfront,
+  aws_cloudfront_origins as cloudfrontOrigins,
+  aws_ssm as ssm,
+  aws_wafv2 as wafv2,
+  aws_kinesisfirehose as firehose,
+} from "aws-cdk-lib";
 
-interface StackProps extends cdk.NestedStackProps {
+interface UiStackProps extends cdk.NestedStackProps {
   stack: string;
+  project: string;
+  stage: string;
+  restrictToVpn: boolean;
 }
 
 export class UiStack extends cdk.NestedStack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+  constructor(scope: Construct, id: string, props: UiStackProps) {
     super(scope, id, props);
 
-    const stage = this.node.tryGetContext("stage") || "dev";
+    // const stage = this.node.tryGetContext("stage") || "dev";
 
-    console.log("TODO: implement this stack", stage);
+    // S3 Bucket for UI hosting
+    const s3Bucket = new s3.Bucket(this, "S3Bucket", {
+      websiteIndexDocument: "index.html",
+      websiteErrorDocument: "index.html",
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // Logging bucket
+    const loggingBucket = new s3.Bucket(this, "LoggingBucket", {
+      bucketName: `${props.project}-${props.stage}-cloudfront-logs-${this.account}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // CloudFront OAI
+    // const oai = new cloudfront.OriginAccessIdentity(this, "CloudFrontOAI");
+
+    // CloudFront distribution
+    const cloudFrontDistribution = new cloudfront.Distribution(
+      this,
+      "CloudFrontDistribution",
+      {
+        defaultBehavior: {
+          origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
+            s3Bucket
+          ),
+          // new cloudfrontOrigins.S3BucketOrigin(s3Bucket, {
+          //   originAccessIdentity: oai,
+          // }),
+          allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+          viewerProtocolPolicy:
+            cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        },
+        defaultRootObject: "index.html",
+        enableLogging: true,
+        logBucket: loggingBucket,
+      }
+    );
+
+    // Web ACL for CloudFront
+    // const wafAcl =
+    new wafv2.CfnWebACL(this, "WebACL", {
+      name: `${props.project}-${props.stage}-webacl-waf`,
+      scope: "CLOUDFRONT",
+      defaultAction: {
+        allow: {},
+      },
+      visibilityConfig: {
+        sampledRequestsEnabled: true,
+        cloudWatchMetricsEnabled: true,
+        metricName: `${props.project}-${props.stage}-webacl`,
+      },
+      rules: [
+        {
+          name: "block-all-other-traffic",
+          priority: 1,
+          action: { block: {} },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: `${props.project}-${props.stage}-block-traffic`,
+            sampledRequestsEnabled: true,
+          },
+          statement: {
+            notStatement: {
+              statement: {
+                ipSetReferenceStatement: {
+                  arn: ssm.StringParameter.valueFromLookup(
+                    this,
+                    `/configuration/${props.stage}/vpnIpSetArn`
+                  ),
+                },
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    // Firehose for WAF logging
+    const firehoseRole = new iam.Role(this, "FirehoseRole", {
+      assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
+      inlinePolicies: {
+        FirehoseS3Access: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: ["s3:PutObject"],
+              resources: [
+                `${props.project}-${props.stage}-cloudfront-logs-${this.account}/*`,
+              ],
+              effect: iam.Effect.ALLOW,
+            }),
+          ],
+        }),
+      },
+    });
+
+    new firehose.CfnDeliveryStream(this, "Firehose", {
+      deliveryStreamName: `aws-waf-logs-${props.project}-${props.stage}-firehose`,
+      extendedS3DestinationConfiguration: {
+        roleArn: firehoseRole.roleArn,
+        bucketArn: loggingBucket.bucketArn,
+        prefix: `AWSLogs/WAF/${props.stage}/`,
+        bufferingHints: {
+          intervalInSeconds: 300,
+          sizeInMBs: 5,
+        },
+        compressionFormat: "UNCOMPRESSED",
+      },
+    });
+
+    // Route 53 DNS Record
+    const hostedZoneId = ssm.StringParameter.valueFromLookup(
+      this,
+      `/configuration/${props.stage}/route53/hostedZoneId`
+    );
+    const domainName = ssm.StringParameter.valueFromLookup(
+      this,
+      `/configuration/${props.stage}/route53/domainName`
+    );
+
+    if (hostedZoneId && domainName) {
+      const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
+        hostedZoneId,
+        zoneName: domainName,
+      });
+
+      new route53.ARecord(this, "AliasRecord", {
+        zone,
+        target: route53.RecordTarget.fromAlias(
+          new route53Targets.CloudFrontTarget(cloudFrontDistribution)
+        ),
+      });
+    }
+
+    // Output the bucket name and CloudFront URL
+    new cdk.CfnOutput(this, "S3BucketName", { value: s3Bucket.bucketName });
+    new cdk.CfnOutput(this, "CloudFrontUrl", {
+      value: cloudFrontDistribution.distributionDomainName,
+    });
   }
 }
