@@ -81,7 +81,7 @@ jobs:
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
           ./run deploy --stage $STAGE_PREFIX$branch_name
-          ./run cdkDeploy --stage cdk$STAGE_PREFIX$branch_name
+          ./run cdkDeploy --stage $STAGE_PREFIX$branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
       - id: endpoint
