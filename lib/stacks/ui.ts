@@ -3,11 +3,11 @@ import { Construct } from "constructs";
 import {
   aws_s3 as s3,
   aws_iam as iam,
-  aws_route53 as route53,
-  aws_route53_targets as route53Targets,
+  // aws_route53 as route53,
+  // aws_route53_targets as route53Targets,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
-  aws_ssm as ssm,
+  // aws_ssm as ssm,
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
@@ -72,7 +72,7 @@ export class UiStack extends cdk.NestedStack {
     //   `/configuration/default/vpnIpSetArn`,
     // ]);
 
-    const wafRules = [];
+    const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
 
     // if (vpnIpSetArn) {
     //   wafRules.push({
@@ -176,17 +176,17 @@ export class UiStack extends cdk.NestedStack {
   }
 }
 
-function safeGetSsmParameter(
-  scope: Construct,
-  paramPaths: string[]
-): string | undefined {
-  for (const paramPath of paramPaths) {
-    try {
-      return ssm.StringParameter.valueFromLookup(scope, paramPath);
-    } catch (e) {
-      console.warn(`SSM parameter ${paramPath} not found, trying next...`);
-    }
-  }
-  console.warn("No valid SSM parameters found for VPN IP Set.");
-  return undefined;
-}
+// function safeGetSsmParameter(
+//   scope: Construct,
+//   paramPaths: string[]
+// ): string | undefined {
+//   for (const paramPath of paramPaths) {
+//     try {
+//       return ssm.StringParameter.valueFromLookup(scope, paramPath);
+//     } catch (e) {
+//       console.warn(`SSM parameter ${paramPath} not found, trying next...`);
+//     }
+//   }
+//   console.warn("No valid SSM parameters found for VPN IP Set.");
+//   return undefined;
+// }
