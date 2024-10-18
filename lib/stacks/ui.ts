@@ -183,26 +183,32 @@ export class UiStack extends cdk.NestedStack {
 
     (async () => {
       // Route 53 DNS Record
-      const hostedZoneId = await getParameter(
-        `/configuration/${props.stage}/route53/hostedZoneId`
-      );
-      const domainName = await getParameter(
-        `/configuration/${props.stage}/route53/domainName`
-      );
+      try {
+        const hostedZoneId = await getParameter(
+          `/configuration/${props.stage}/route53/hostedZoneId`
+        );
+        const domainName = await getParameter(
+          `/configuration/${props.stage}/route53/domainName`
+        );
 
-      if (hostedZoneId && domainName) {
-        const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
-          hostedZoneId,
-          zoneName: domainName,
-        });
+        if (hostedZoneId && domainName) {
+          const zone = route53.HostedZone.fromHostedZoneAttributes(
+            this,
+            "Zone",
+            {
+              hostedZoneId,
+              zoneName: domainName,
+            }
+          );
 
-        new route53.ARecord(this, "AliasRecord", {
-          zone,
-          target: route53.RecordTarget.fromAlias(
-            new route53Targets.CloudFrontTarget(cloudFrontDistribution)
-          ),
-        });
-      }
+          new route53.ARecord(this, "AliasRecord", {
+            zone,
+            target: route53.RecordTarget.fromAlias(
+              new route53Targets.CloudFrontTarget(cloudFrontDistribution)
+            ),
+          });
+        }
+      } catch {}
     })();
 
     // Output the bucket name and CloudFront URL
