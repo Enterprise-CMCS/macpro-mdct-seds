@@ -100,10 +100,21 @@ export class UiStack extends cdk.NestedStack {
     );
 
     (async () => {
-      const vpnIpSetArn = await safeGetSsmParameter(this, [
-        `/configuration/${props.stage}/vpnIpSetArn`,
-        `/configuration/default/vpnIpSetArn`,
-      ]);
+      const vpnIpSetArn = await (async () => {
+        const vpnIpSetPaths = [
+          `/configuration/${props.stage}/vpnIpSetArn`,
+          `/configuration/default/vpnIpSetArn`,
+        ];
+
+        for (const paramPath of vpnIpSetPaths) {
+          try {
+            const paramValue = await getParameter(paramPath);
+            return paramValue; // Return the first valid value
+          } catch (e) {}
+        }
+
+        return undefined;
+      })();
 
       const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
 
@@ -253,23 +264,4 @@ export async function getParameter(
   } catch (error: unknown) {
     throw new Error(`Failed to fetch parameter ${parameterName}: ${error}`);
   }
-}
-
-export async function safeGetSsmParameter(
-  _scope: Construct,
-  paramPaths: string[],
-  region: string = "us-east-1"
-): Promise<string | undefined> {
-  for (const paramPath of paramPaths) {
-    try {
-      const paramValue = await getParameter(paramPath, region);
-      return paramValue;
-    } catch (e) {
-      console.warn(
-        `SSM parameter ${paramPath} not found or failed to fetch, trying next...`
-      );
-    }
-  }
-  console.warn("No valid SSM parameters found for provided paths.");
-  return undefined;
 }
