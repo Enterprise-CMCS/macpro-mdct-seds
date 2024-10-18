@@ -3,11 +3,10 @@ import { Construct } from "constructs";
 import {
   aws_s3 as s3,
   aws_iam as iam,
-  // aws_route53 as route53,
-  // aws_route53_targets as route53Targets,
+  aws_route53 as route53,
+  aws_route53_targets as route53Targets,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
-  // aws_ssm as ssm,
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
@@ -73,9 +72,6 @@ export class UiStack extends cdk.NestedStack {
       })
     );
 
-    // CloudFront OAI
-    // const oai = new cloudfront.OriginAccessIdentity(this, "CloudFrontOAI");
-
     // CloudFront distribution
     const cloudFrontDistribution = new cloudfront.Distribution(
       this,
@@ -85,9 +81,6 @@ export class UiStack extends cdk.NestedStack {
           origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
             s3Bucket
           ),
-          // new cloudfrontOrigins.S3BucketOrigin(s3Bucket, {
-          //   originAccessIdentity: oai,
-          // }),
           allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
           viewerProtocolPolicy:
             cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -109,7 +102,7 @@ export class UiStack extends cdk.NestedStack {
         for (const paramPath of vpnIpSetPaths) {
           try {
             const paramValue = await getParameter(paramPath);
-            return paramValue; // Return the first valid value
+            return paramValue;
           } catch (e) {}
         }
 
@@ -141,7 +134,6 @@ export class UiStack extends cdk.NestedStack {
       }
 
       // Web ACL for CloudFront
-      // const wafAcl =
       new wafv2.CfnWebACL(this, "WebACL", {
         name: `${props.project}-${props.stage}-webacl-waf`,
         scope: "CLOUDFRONT",
@@ -189,29 +181,29 @@ export class UiStack extends cdk.NestedStack {
       },
     });
 
-    // // Route 53 DNS Record
-    // const hostedZoneId = ssm.StringParameter.valueFromLookup(
-    //   this,
-    //   `/configuration/${props.stage}/route53/hostedZoneId`
-    // );
-    // const domainName = ssm.StringParameter.valueFromLookup(
-    //   this,
-    //   `/configuration/${props.stage}/route53/domainName`
-    // );
+    (async () => {
+      // Route 53 DNS Record
+      const hostedZoneId = await getParameter(
+        `/configuration/${props.stage}/route53/hostedZoneId`
+      );
+      const domainName = await getParameter(
+        `/configuration/${props.stage}/route53/domainName`
+      );
 
-    // if (hostedZoneId && domainName) {
-    //   const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
-    //     hostedZoneId,
-    //     zoneName: domainName,
-    //   });
+      if (hostedZoneId && domainName) {
+        const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
+          hostedZoneId,
+          zoneName: domainName,
+        });
 
-    //   new route53.ARecord(this, "AliasRecord", {
-    //     zone,
-    //     target: route53.RecordTarget.fromAlias(
-    //       new route53Targets.CloudFrontTarget(cloudFrontDistribution)
-    //     ),
-    //   });
-    // }
+        new route53.ARecord(this, "AliasRecord", {
+          zone,
+          target: route53.RecordTarget.fromAlias(
+            new route53Targets.CloudFrontTarget(cloudFrontDistribution)
+          ),
+        });
+      }
+    })();
 
     // Output the bucket name and CloudFront URL
     new cdk.CfnOutput(this, "S3BucketName", { value: s3Bucket.bucketName });
