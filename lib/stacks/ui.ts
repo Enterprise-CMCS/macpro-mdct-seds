@@ -67,6 +67,35 @@ export class UiStack extends cdk.NestedStack {
       }
     );
 
+    const vpnIpSetArn = safeGetSsmParameter(this, [
+      `/configuration/${props.stage}/vpnIpSetArn`,
+      `/configuration/default/vpnIpSetArn`,
+    ]);
+
+    const wafRules = [];
+
+    if (vpnIpSetArn) {
+      wafRules.push({
+        name: "block-all-other-traffic",
+        priority: 1,
+        action: { block: {} },
+        visibilityConfig: {
+          cloudWatchMetricsEnabled: true,
+          metricName: `${props.project}-${props.stage}-block-traffic`,
+          sampledRequestsEnabled: true,
+        },
+        statement: {
+          notStatement: {
+            statement: {
+              ipSetReferenceStatement: {
+                arn: vpnIpSetArn,
+              },
+            },
+          },
+        },
+      });
+    }
+
     // Web ACL for CloudFront
     // const wafAcl =
     new wafv2.CfnWebACL(this, "WebACL", {
@@ -80,30 +109,7 @@ export class UiStack extends cdk.NestedStack {
         cloudWatchMetricsEnabled: true,
         metricName: `${props.project}-${props.stage}-webacl`,
       },
-      rules: [
-        {
-          name: "block-all-other-traffic",
-          priority: 1,
-          action: { block: {} },
-          visibilityConfig: {
-            cloudWatchMetricsEnabled: true,
-            metricName: `${props.project}-${props.stage}-block-traffic`,
-            sampledRequestsEnabled: true,
-          },
-          statement: {
-            notStatement: {
-              statement: {
-                ipSetReferenceStatement: {
-                  arn: ssm.StringParameter.valueFromLookup(
-                    this,
-                    `/configuration/${props.stage}/vpnIpSetArn`
-                  ),
-                },
-              },
-            },
-          },
-        },
-      ],
+      rules: wafRules,
     });
 
     // Firehose for WAF logging
@@ -168,4 +174,19 @@ export class UiStack extends cdk.NestedStack {
       value: cloudFrontDistribution.distributionDomainName,
     });
   }
+}
+
+function safeGetSsmParameter(
+  scope: Construct,
+  paramPaths: string[]
+): string | undefined {
+  for (const paramPath of paramPaths) {
+    try {
+      return ssm.StringParameter.valueFromLookup(scope, paramPath);
+    } catch (e) {
+      console.warn(`SSM parameter ${paramPath} not found, trying next...`);
+    }
+  }
+  console.warn("No valid SSM parameters found for VPN IP Set.");
+  return undefined;
 }
