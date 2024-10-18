@@ -7,7 +7,7 @@ import {
   // aws_route53_targets as route53Targets,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
-  // aws_ssm as ssm,
+  aws_ssm as ssm,
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
@@ -94,34 +94,34 @@ export class UiStack extends cdk.NestedStack {
       }
     );
 
-    // const vpnIpSetArn = safeGetSsmParameter(this, [
-    //   `/configuration/${props.stage}/vpnIpSetArn`,
-    //   `/configuration/default/vpnIpSetArn`,
-    // ]);
+    const vpnIpSetArn = safeGetSsmParameter(this, [
+      `/configuration/${props.stage}/vpnIpSetArn`,
+      `/configuration/default/vpnIpSetArn`,
+    ]);
 
     const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
 
-    // if (vpnIpSetArn) {
-    //   wafRules.push({
-    //     name: "block-all-other-traffic",
-    //     priority: 1,
-    //     action: { block: {} },
-    //     visibilityConfig: {
-    //       cloudWatchMetricsEnabled: true,
-    //       metricName: `${props.project}-${props.stage}-block-traffic`,
-    //       sampledRequestsEnabled: true,
-    //     },
-    //     statement: {
-    //       notStatement: {
-    //         statement: {
-    //           ipSetReferenceStatement: {
-    //             arn: vpnIpSetArn,
-    //           },
-    //         },
-    //       },
-    //     },
-    //   });
-    // }
+    if (vpnIpSetArn) {
+      wafRules.push({
+        name: "block-all-other-traffic",
+        priority: 1,
+        action: { block: {} },
+        visibilityConfig: {
+          cloudWatchMetricsEnabled: true,
+          metricName: `${props.project}-${props.stage}-block-traffic`,
+          sampledRequestsEnabled: true,
+        },
+        statement: {
+          notStatement: {
+            statement: {
+              ipSetReferenceStatement: {
+                arn: vpnIpSetArn,
+              },
+            },
+          },
+        },
+      });
+    }
 
     // Web ACL for CloudFront
     // const wafAcl =
@@ -203,17 +203,25 @@ export class UiStack extends cdk.NestedStack {
   }
 }
 
-// function safeGetSsmParameter(
-//   scope: Construct,
-//   paramPaths: string[]
-// ): string | undefined {
-//   for (const paramPath of paramPaths) {
-//     try {
-//       return ssm.StringParameter.valueFromLookup(scope, paramPath);
-//     } catch (e) {
-//       console.warn(`SSM parameter ${paramPath} not found, trying next...`);
-//     }
-//   }
-//   console.warn("No valid SSM parameters found for VPN IP Set.");
-//   return undefined;
-// }
+function safeGetSsmParameter(
+  scope: Construct,
+  paramPaths: string[]
+): string | undefined {
+  for (const paramPath of paramPaths) {
+    try {
+      const param = ssm.StringParameter.fromStringParameterAttributes(
+        scope,
+        `Parameter-${paramPath}`,
+        {
+          parameterName: paramPath,
+          simpleName: false,
+        }
+      );
+      return param.stringValue;
+    } catch (e) {
+      console.warn(`SSM parameter ${paramPath} not found, trying next...`);
+    }
+  }
+  console.warn("No valid SSM parameters found for VPN IP Set.");
+  return undefined;
+}
