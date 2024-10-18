@@ -36,10 +36,37 @@ export class UiStack extends cdk.NestedStack {
     // Logging bucket
     const loggingBucket = new s3.Bucket(this, "LoggingBucket", {
       bucketName: `${props.project}-${props.stage}-cloudfront-logs-${this.account}`,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      versioned: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
     });
+
+    // Deny insecure requests to the bucket
+    loggingBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.DENY,
+        principals: [new iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [loggingBucket.bucketArn, `${loggingBucket.bucketArn}/*`],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      })
+    );
+
+    // Add bucket policy to allow CloudFront to write logs
+    loggingBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
+        actions: ["s3:PutObject"],
+        resources: [`${loggingBucket.bucketArn}/*`],
+      })
+    );
 
     // CloudFront OAI
     // const oai = new cloudfront.OriginAccessIdentity(this, "CloudFrontOAI");
