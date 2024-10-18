@@ -7,10 +7,15 @@ import {
   // aws_route53_targets as route53Targets,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
-  aws_ssm as ssm,
+  // aws_ssm as ssm,
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
+import {
+  SSMClient,
+  GetParameterCommand,
+  DescribeParametersCommand,
+} from "@aws-sdk/client-ssm";
 
 interface UiStackProps extends cdk.NestedStackProps {
   stack: string;
@@ -203,25 +208,66 @@ export class UiStack extends cdk.NestedStack {
   }
 }
 
-function safeGetSsmParameter(
-  scope: Construct,
-  paramPaths: string[]
-): string | undefined {
+export async function getParameter(
+  parameterName: string,
+  region: string = "us-east-1",
+  withDecryption: boolean = true
+): Promise<string> {
+  const client = new SSMClient({ region });
+
+  try {
+    // Check if the parameter exists by describing it
+    const describeCommand = new DescribeParametersCommand({
+      ParameterFilters: [
+        {
+          Key: "Name",
+          Values: [parameterName],
+        },
+      ],
+    });
+
+    const parameterMetadata = await client.send(describeCommand);
+    if (
+      !parameterMetadata.Parameters ||
+      parameterMetadata.Parameters.length === 0
+    ) {
+      throw new Error(`Parameter ${parameterName} does not exist.`);
+    }
+
+    // Fetch the parameter value
+    const command = new GetParameterCommand({
+      Name: parameterName,
+      WithDecryption: withDecryption,
+    });
+
+    const data = await client.send(command);
+    if (!data.Parameter || !data.Parameter.Value) {
+      throw new Error(
+        `Parameter ${parameterName} has no value present in response`
+      );
+    }
+
+    return data.Parameter.Value;
+  } catch (error: unknown) {
+    throw new Error(`Failed to fetch parameter ${parameterName}: ${error}`);
+  }
+}
+
+export async function safeGetSsmParameter(
+  _scope: Construct,
+  paramPaths: string[],
+  region: string = "us-east-1"
+): Promise<string | undefined> {
   for (const paramPath of paramPaths) {
     try {
-      const param = ssm.StringParameter.fromStringParameterAttributes(
-        scope,
-        `Parameter-${paramPath}`,
-        {
-          parameterName: paramPath,
-          simpleName: false,
-        }
-      );
-      return param.stringValue;
+      const paramValue = await getParameter(paramPath, region);
+      return paramValue;
     } catch (e) {
-      console.warn(`SSM parameter ${paramPath} not found, trying next...`);
+      console.warn(
+        `SSM parameter ${paramPath} not found or failed to fetch, trying next...`
+      );
     }
   }
-  console.warn("No valid SSM parameters found for VPN IP Set.");
+  console.warn("No valid SSM parameters found for provided paths.");
   return undefined;
 }
