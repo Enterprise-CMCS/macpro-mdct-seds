@@ -17,7 +17,7 @@ export class UiWafLogS3BucketStack extends cdk.NestedStack {
 
     // S3 Bucket
     const waflogsBucket = new s3.Bucket(this, "WaflogsUploadBucket", {
-      bucketName: `${cdk.Aws.ACCOUNT_ID}-${props.stage}-waflogs`,
+      bucketName: `${cdk.Aws.ACCOUNT_ID}-${props.stage}-cdk-waflogs`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       enforceSSL: true,
     });
@@ -28,13 +28,7 @@ export class UiWafLogS3BucketStack extends cdk.NestedStack {
         sid: "AllowSSLRequestsOnly",
         effect: iam.Effect.DENY,
         actions: ["s3:*"],
-        resources: [
-          waflogsBucket.bucketArn,
-
-
-
-          waflogsBucket.arnForObjects("*"),
-        ],
+        resources: [waflogsBucket.bucketArn, waflogsBucket.arnForObjects("*")],
         principals: [new iam.AnyPrincipal()],
         conditions: {
           Bool: { "aws:SecureTransport": "false" },
