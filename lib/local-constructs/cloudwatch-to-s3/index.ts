@@ -34,7 +34,7 @@ export class CloudWatchToS3 extends Construct {
       new PolicyStatement({
         actions: ["s3:PutObject", "s3:PutObjectAcl"],
         resources: [`${bucket.bucketArn}/*`],
-      }),
+      })
     );
 
     firehoseRole.addToPolicy(
@@ -45,7 +45,7 @@ export class CloudWatchToS3 extends Construct {
             cdk.Stack.of(this).account
           }:log-group:/aws/kinesisfirehose/*`,
         ],
-      }),
+      })
     );
 
     // Create a CloudWatch Log Group for Firehose logging
@@ -90,7 +90,7 @@ export class CloudWatchToS3 extends Construct {
       filterPattern: filterPattern,
       destinationArn: cdk.Fn.getAtt(
         this.deliveryStream.logicalId,
-        "Arn",
+        "Arn"
       ).toString(),
       roleArn: subscriptionFilterRole.roleArn,
     });
