@@ -37,10 +37,6 @@ export class UiAuthStack extends cdk.NestedStack {
           required: false,
           mutable: true,
         },
-        ismemberof: {
-          required: false,
-          mutable: true,
-        },
       },
     });
     // IAM Role for Lambda
