@@ -97,7 +97,7 @@ export class UiStack extends cdk.NestedStack {
 
 
     new cloudfront.ResponseHeadersPolicy(this, "CloudFormationHeadersPolicy", {
-      responseHeadersPolicyName: `Headers-Policy-${this.node.tryGetContext(
+      responseHeadersPolicyName: `Headers-Policy-cdk-${this.node.tryGetContext(
         "stage"
       )}`,
       comment: "Add Security Headers",
