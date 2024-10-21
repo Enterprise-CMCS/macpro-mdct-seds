@@ -10,6 +10,8 @@ import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { StartingPosition } from "aws-cdk-lib/aws-lambda";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RegionalWaf } from "../local-constructs/waf";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as s3 from "aws-cdk-lib/aws-s3";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -457,6 +459,25 @@ export class ApiStack extends cdk.NestedStack {
       apiGateway: this.api,
     });
 
+    const logBucket = new s3.Bucket(this, "LogBucket", {
+      versioned: true,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      // autoDeleteObjects: isDev, // TODO
+    });
+
+    logBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.DENY,
+        principals: [new iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [logBucket.bucketArn, `${logBucket.bucketArn}/*`],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      })
+    );
     // Outputs
     new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
       value: this.api.url,
