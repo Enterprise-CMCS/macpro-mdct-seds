@@ -20,10 +20,13 @@ export class UiAuthStack extends cdk.NestedStack {
     new cognito.UserPool(this, "UserPool", {
       userPoolName: `${stage}-user-pool`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      signInAliases: {
+        email: true,
+      },
       autoVerify: {
         email: true,
       },
-      signInAliases: { email: true },
+      selfSignUpEnabled: false,
       standardAttributes: {
         givenName: {
           required: false,
@@ -38,6 +41,10 @@ export class UiAuthStack extends cdk.NestedStack {
           mutable: true,
         },
       },
+      customAttributes: {
+        ismemberof: new cognito.StringAttribute({ mutable: true }),
+      },
+      advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
     });
     // IAM Role for Lambda
     const lambdaApiRole = new iam.Role(this, "LambdaApiRole", {
