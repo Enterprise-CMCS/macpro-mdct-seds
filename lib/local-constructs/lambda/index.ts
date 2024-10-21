@@ -119,7 +119,7 @@ export class Lambda extends Construct {
     });
 
     this.lambda = new NodejsFunction(this, id, {
-      functionName: `${(Stack.of(this) as ApiStack).shortStackName}-${id}`,
+      functionName: `${(Stack.of(this) as ApiStack).shortStackName}-cdk-${id}`,
       handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
