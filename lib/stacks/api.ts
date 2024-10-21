@@ -12,6 +12,7 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RegionalWaf } from "../local-constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import { CloudWatchToS3 } from "../local-constructs/cloudwatch-to-s3";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -454,7 +455,7 @@ export class ApiStack extends cdk.NestedStack {
     //                     - ssm:GetParameter
     //                   Resource: "*"
 
-    new RegionalWaf(this, "WafConstruct", {
+    const waf = new RegionalWaf(this, "WafConstruct", {
       name: `${props.project}-${stage}-${this.shortStackName}`,
       apiGateway: this.api,
     });
@@ -478,6 +479,10 @@ export class ApiStack extends cdk.NestedStack {
         },
       })
     );
+    new CloudWatchToS3(this, "CloudWatchToS3Construct", {
+      logGroup: waf.logGroup,
+      bucket: logBucket,
+    });
     // Outputs
     new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
       value: this.api.url,
