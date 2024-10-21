@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import {
   aws_iam as iam,
+  aws_cognito as cognito,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
