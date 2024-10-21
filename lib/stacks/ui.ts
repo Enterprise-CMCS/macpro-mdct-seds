@@ -144,7 +144,7 @@ export class UiStack extends cdk.NestedStack {
 
       if (vpnIpSetArn) {
         const githubIpSet = new wafv2.CfnIPSet(this, "GitHubIPSet", {
-          name: `${this.node.tryGetContext("stage")}-gh-ipset`,
+          name: `${this.node.tryGetContext("stage")}-cdk-gh-ipset`,
           scope: "CLOUDFRONT",
           addresses: [],
           ipAddressVersion: "IPV4",
