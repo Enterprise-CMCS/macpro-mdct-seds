@@ -92,6 +92,13 @@ export class UiStack extends cdk.NestedStack {
         enableLogging: true,
         logBucket: loggingBucket,
         httpVersion: cloudfront.HttpVersion.HTTP2,
+        errorResponses: [
+          {
+            httpStatus: 403,
+            responseHttpStatus: 200,
+            responsePagePath: "/index.html",
+          },
+        ],
       }
     );
 
