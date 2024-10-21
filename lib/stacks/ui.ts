@@ -31,10 +31,11 @@ export class UiStack extends cdk.NestedStack {
 
     // S3 Bucket for UI hosting
     const s3Bucket = new s3.Bucket(this, "S3Bucket", {
-      websiteIndexDocument: "index.html",
-      websiteErrorDocument: "index.html",
+      // websiteIndexDocument: "index.html",
+      // websiteErrorDocument: "index.html",
       encryption: s3.BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
 
     // Logging bucket
@@ -85,12 +86,42 @@ export class UiStack extends cdk.NestedStack {
           viewerProtocolPolicy:
             cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
           cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+          compress: true,
         },
         defaultRootObject: "index.html",
         enableLogging: true,
         logBucket: loggingBucket,
+        httpVersion: cloudfront.HttpVersion.HTTP2,
       }
     );
+
+
+    new cloudfront.ResponseHeadersPolicy(this, "CloudFormationHeadersPolicy", {
+      responseHeadersPolicyName: `Headers-Policy-${this.node.tryGetContext(
+        "stage"
+      )}`,
+      comment: "Add Security Headers",
+      securityHeadersBehavior: {
+        contentTypeOptions: {
+          override: true,
+        },
+        strictTransportSecurity: {
+          accessControlMaxAge: cdk.Duration.days(730),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+        frameOptions: {
+          frameOption: cloudfront.HeadersFrameOption.DENY,
+          override: true,
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy:
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+          override: true,
+        },
+      },
+    });
 
     (async () => {
       const vpnIpSetArn = await (async () => {
