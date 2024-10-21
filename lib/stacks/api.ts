@@ -40,7 +40,7 @@ export class ApiStack extends cdk.NestedStack {
 
     this.tables = props.tables;
 
-    const { vpc, privateSubnets } = props;
+    const { vpc, privateSubnets, isDev } = props;
 
     const kafkaSecurityGroup = new ec2.SecurityGroup(
       this,
@@ -465,7 +465,7 @@ export class ApiStack extends cdk.NestedStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      // autoDeleteObjects: isDev, // TODO
+      autoDeleteObjects: isDev,
     });
 
     logBucket.addToResourcePolicy(
@@ -479,10 +479,14 @@ export class ApiStack extends cdk.NestedStack {
         },
       })
     );
-    new CloudWatchToS3(this, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-      bucket: logBucket,
-    });
+
+    if (!isDev) {
+      new CloudWatchToS3(this, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+      });
+    }
+
     // Outputs
     new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
       value: this.api.url,
