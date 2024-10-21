@@ -58,16 +58,6 @@ export class ParentStack extends cdk.Stack {
       stack: "ui-src",
     });
 
-    new Stacks.UiWafLogAssocStack(this, "ui-waf-log-assoc", {
-      ...commonProps,
-      stack: "ui-waf-log-assoc",
-    });
-
-    new Stacks.UiWafLogS3BucketStack(this, "ui-waflog-s3-bucket", {
-      ...commonProps,
-      stack: "ui-waflog-s3-bucket",
-    });
-
     new Stacks.UiStack(this, "ui", {
       ...commonProps,
       stack: "ui",
