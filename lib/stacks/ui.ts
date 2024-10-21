@@ -143,10 +143,44 @@ export class UiStack extends cdk.NestedStack {
       const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
 
       if (vpnIpSetArn) {
+        const githubIpSet = new wafv2.CfnIPSet(this, "GitHubIPSet", {
+          name: `${this.node.tryGetContext("stage")}-gh-ipset`,
+          scope: "CLOUDFRONT",
+          addresses: [],
+          ipAddressVersion: "IPV4",
+        });
+
+        wafRules.push({
+          name: "vpn-only",
+          priority: 0,
+          action: { allow: {} },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: `${props.project}-${props.stage}-webacl-vpn-only`,
+            sampledRequestsEnabled: true,
+          },
+          statement: {
+            orStatement: {
+              statements: [
+                {
+                  ipSetReferenceStatement: {
+                    arn: vpnIpSetArn,
+                  },
+                },
+                {
+                  ipSetReferenceStatement: {
+                    arn: githubIpSet.attrArn,
+                  },
+                },
+              ],
+            },
+          },
+        });
+
         wafRules.push({
           name: "block-all-other-traffic",
-          priority: 1,
-          action: { block: {} },
+          priority: 3,
+          action: { block: { customResponse: { responseCode: 403 } } },
           visibilityConfig: {
             cloudWatchMetricsEnabled: true,
             metricName: `${props.project}-${props.stage}-block-traffic`,
