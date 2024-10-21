@@ -19,7 +19,6 @@ interface CloudWatchToS3Props {
 
 export class CloudWatchToS3 extends Construct {
   public readonly deliveryStream: CfnDeliveryStream;
-  public readonly logBucket: Bucket;
 
   constructor(scope: Construct, id: string, props: CloudWatchToS3Props) {
     super(scope, id);
