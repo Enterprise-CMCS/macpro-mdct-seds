@@ -25,15 +25,15 @@ export class UiAuthStack extends cdk.NestedStack {
       },
       signInAliases: { email: true },
       standardAttributes: {
-        given_name: {
+        givenName: {
           required: false,
           mutable: true,
         },
-        family_name: {
+        familyName: {
           required: false,
           mutable: true,
         },
-        phone_number: {
+        phoneNumber: {
           required: false,
           mutable: true,
         },
