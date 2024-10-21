@@ -53,11 +53,6 @@ export class ParentStack extends cdk.Stack {
       stack: "ui-auth",
     });
 
-    new Stacks.UiSrcStack(this, "ui-src", {
-      ...commonProps,
-      stack: "ui-src",
-    });
-
     new Stacks.UiStack(this, "ui", {
       ...commonProps,
       stack: "ui",
