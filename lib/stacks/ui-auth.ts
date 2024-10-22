@@ -78,8 +78,9 @@ export class UiAuthStack extends cdk.NestedStack {
       })
     );
 
-    let backWithOkta = false;
     // back with okta
+    let backWithOkta = false;
+    let idp = undefined;
     async () => {
       const oktaMetadataUrl = await getOktaMetadataUrl(stage);
 
@@ -87,7 +88,6 @@ export class UiAuthStack extends cdk.NestedStack {
         backWithOkta = true;
       }
 
-      let idp = undefined;
       if (backWithOkta) {
         idp = new cognito.CfnUserPoolIdentityProvider(
           this,
