@@ -78,40 +78,42 @@ export class UiAuthStack extends cdk.NestedStack {
       })
     );
 
-    // back with okta
-    const oktaMetadataUrl = await getOktaMetadataUrl(stage);
-
     let backWithOkta = false;
-    if (oktaMetadataUrl) {
-      backWithOkta = true;
-    }
+    // back with okta
+    async () => {
+      const oktaMetadataUrl = await getOktaMetadataUrl(stage);
 
-    let idp = undefined;
-    if (backWithOkta) {
-      idp = new cognito.CfnUserPoolIdentityProvider(
-        this,
-        "CognitoUserPoolIdentityProvider",
-        {
-          providerName: "Okta",
-          providerType: "SAML",
-          userPoolId: userPool.userPoolId,
-          providerDetails: {
-            MetadataURL:
-              "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
-          },
-          attributeMapping: {
-            email:
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-            family_name:
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-            given_name:
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-            "custom:ismemberof": "ismemberof",
-          },
-          idpIdentifiers: ["IdpIdentifier"],
-        }
-      );
-    }
+      if (oktaMetadataUrl) {
+        backWithOkta = true;
+      }
+
+      let idp = undefined;
+      if (backWithOkta) {
+        idp = new cognito.CfnUserPoolIdentityProvider(
+          this,
+          "CognitoUserPoolIdentityProvider",
+          {
+            providerName: "Okta",
+            providerType: "SAML",
+            userPoolId: userPool.userPoolId,
+            providerDetails: {
+              MetadataURL:
+                "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
+            },
+            attributeMapping: {
+              email:
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+              family_name:
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+              given_name:
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+              "custom:ismemberof": "ismemberof",
+            },
+            idpIdentifiers: ["IdpIdentifier"],
+          }
+        );
+      }
+    };
 
     // Cognito User Pool Client
     new cognito.UserPoolClient(this, "UserPoolClient", {
