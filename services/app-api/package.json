@@ -26,7 +26,6 @@
     "@aws-sdk/client-ssm": "^3.645.0",
     "@aws-sdk/lib-dynamodb": "^3.645.0",
     "aws-jwt-verify": "^4.0.1",
-    "exceljs": "^4.2.1",
     "kafkajs": "^1.16.0",
     "uuid": "^7.0.3"
   }

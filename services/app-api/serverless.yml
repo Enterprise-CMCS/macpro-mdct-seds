@@ -291,15 +291,6 @@ functions:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
       subnetIds: ${self:custom.privateSubnets}
-  exportToExcel:
-    handler: export/exportToExcel.main
-    role: LambdaApiRole
-    events:
-      - http:
-          path: export/export-to-excel
-          method: post
-          cors: true
-          authorizer: aws_iam
   getUserById:
     handler: handlers/users/get/getUserById.main
     role: LambdaApiRole
