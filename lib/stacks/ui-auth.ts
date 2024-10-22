@@ -167,8 +167,7 @@ export class UiAuthStack extends cdk.NestedStack {
     );
 
     // IAM Role for Cognito Authenticated Users
-    // const authRole =
-    new iam.Role(this, "CognitoAuthRole", {
+    const cognitoAuthRole = new iam.Role(this, "CognitoAuthRole", {
       assumedBy: new cdk.aws_iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
         {
@@ -204,6 +203,15 @@ export class UiAuthStack extends cdk.NestedStack {
         }),
       },
     });
+
+    new cdk.aws_cognito.CfnIdentityPoolRoleAttachment(
+      this,
+      "CognitoIdentityPoolRoles",
+      {
+        identityPoolId: identityPool.ref,
+        roles: { authenticated: cognitoAuthRole.roleArn },
+      }
+    );
 
 
   }
