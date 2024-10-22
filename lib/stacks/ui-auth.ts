@@ -17,7 +17,7 @@ export class UiAuthStack extends cdk.NestedStack {
 
 
     // Cognito User Pool
-    new cognito.UserPool(this, "UserPool", {
+    const userPool = new cognito.UserPool(this, "UserPool", {
       userPoolName: `${stage}-user-pool`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       signInAliases: {
@@ -46,6 +46,7 @@ export class UiAuthStack extends cdk.NestedStack {
       },
       advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
     });
+
     // IAM Role for Lambda
     const lambdaApiRole = new iam.Role(this, "LambdaApiRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -65,6 +66,14 @@ export class UiAuthStack extends cdk.NestedStack {
           "logs:PutLogEvents",
         ],
         resources: ["arn:aws:logs:*:*:*"],
+      })
+    );
+
+    lambdaApiRole.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["*"],
+        resources: [userPool.userPoolArn],
       })
     );
 
