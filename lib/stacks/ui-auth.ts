@@ -3,6 +3,8 @@ import {
   aws_iam as iam,
   aws_cognito as cognito,
   aws_ssm as ssm,
+  aws_lambda as lambda,
+  aws_lambda_nodejs as lambda_nodejs,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { getParameter } from "../utils/ssm";
@@ -213,7 +215,6 @@ export class UiAuthStack extends cdk.NestedStack {
       }
     );
 
-
     new ssm.StringParameter(this, "CognitoUserPoolIdParameter", {
       parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_id`,
       stringValue: userPool.userPoolId,
@@ -221,6 +222,19 @@ export class UiAuthStack extends cdk.NestedStack {
     new ssm.StringParameter(this, "CognitoUserPoolClientIdParameter", {
       parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_client_id`,
       stringValue: userPoolClient.userPoolClientId,
+    });
+
+    // Lambda function: bootstrapUsers
+    new lambda_nodejs.NodejsFunction(this, "bootstrapUsers", {
+      entry: "services/ui-auth/handlers/createUsers.js",
+      handler: "handlers.handler",
+      runtime: lambda.Runtime.NODEJS_20_X,
+      timeout: cdk.Duration.seconds(60),
+      role: lambdaApiRole,
+      environment: {
+        userPoolId: userPool.userPoolId,
+        bootstrapUsersPassword: process.env.BOOTSTRAP_USERS_PASSWORD || "",
+      },
     });
 
     // Outputs
