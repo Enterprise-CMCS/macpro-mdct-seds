@@ -77,5 +77,28 @@ export class UiAuthStack extends cdk.NestedStack {
       })
     );
 
+    new cognito.UserPoolClient(this, "UserPoolClient", {
+      userPool,
+      oAuth: {
+        flows: {
+          implicitCodeGrant: true,
+        },
+        scopes: [
+          cognito.OAuthScope.EMAIL,
+          cognito.OAuthScope.OPENID,
+          cognito.OAuthScope.PROFILE,
+        ],
+        callbackUrls: [
+          // TODO: applicationEndpointUrl,
+          "https://localhost:3000/",
+        ],
+        logoutUrls: [
+          // TODO: applicationEndpointUrl,
+          "https://localhost:3000/",
+        ],
+      },
+      generateSecret: false,
+    });
+
   }
 }
