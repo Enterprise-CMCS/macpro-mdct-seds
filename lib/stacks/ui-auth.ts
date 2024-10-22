@@ -102,8 +102,12 @@ export class UiAuthStack extends cdk.NestedStack {
       generateSecret: false,
     });
 
+    new cognito.UserPoolDomain(this, "UserPoolDomain", {
+      userPool,
+      cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
+    });
     new cdk.CfnOutput(this, "Troubleshooting", {
-      value: `${stage}-login-${userPoolClient}`,
+      value: `${stage}-login-user-pool-client`,
     });
 
   }
