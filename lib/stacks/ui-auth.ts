@@ -149,6 +149,19 @@ export class UiAuthStack extends cdk.NestedStack {
       cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
     });
 
+    // Cognito Identity Pool
+    // const identityPool =
+    new cognito.CfnIdentityPool(this, "CognitoIdentityPool", {
+      identityPoolName: `${stage}IdentityPool`,
+      allowUnauthenticatedIdentities: false,
+      cognitoIdentityProviders: [
+        {
+          clientId: userPoolClient.userPoolClientId,
+          providerName: userPool.userPoolProviderName,
+        },
+      ],
+    });
+
 
   }
 }
