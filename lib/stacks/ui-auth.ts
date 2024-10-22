@@ -106,9 +106,26 @@ export class UiAuthStack extends cdk.NestedStack {
       userPool,
       cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
     });
-    new cdk.CfnOutput(this, "Troubleshooting", {
-      value: `${stage}-login-user-pool-client`,
-    });
+
+    new cognito.CfnUserPoolIdentityProvider(
+      this,
+      "CognitoUserPoolIdentityProvider",
+      {
+        providerName: "Okta",
+        providerType: "SAML",
+        userPoolId: userPool.userPoolId,
+        attributeMapping: {
+          email:
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+          family_name:
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+          given_name:
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+          "custom:ismemberof": "ismemberof",
+        },
+        idpIdentifiers: ["IdpIdentifier"],
+      }
+    );
 
   }
 }
