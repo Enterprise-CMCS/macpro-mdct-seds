@@ -8,6 +8,7 @@ import { getParameter } from "../utils/ssm";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
+  api: cdk.aws_apigateway.RestApi;
 }
 
 export class UiAuthStack extends cdk.NestedStack {
@@ -150,16 +151,58 @@ export class UiAuthStack extends cdk.NestedStack {
     });
 
     // Cognito Identity Pool
-    // const identityPool =
-    new cognito.CfnIdentityPool(this, "CognitoIdentityPool", {
-      identityPoolName: `${stage}IdentityPool`,
-      allowUnauthenticatedIdentities: false,
-      cognitoIdentityProviders: [
+    const identityPool = new cognito.CfnIdentityPool(
+      this,
+      "CognitoIdentityPool",
+      {
+        identityPoolName: `${stage}IdentityPool`,
+        allowUnauthenticatedIdentities: false,
+        cognitoIdentityProviders: [
+          {
+            clientId: userPoolClient.userPoolClientId,
+            providerName: userPool.userPoolProviderName,
+          },
+        ],
+      }
+    );
+
+    // IAM Role for Cognito Authenticated Users
+    // const authRole =
+    new iam.Role(this, "CognitoAuthRole", {
+      assumedBy: new cdk.aws_iam.FederatedPrincipal(
+        "cognito-identity.amazonaws.com",
         {
-          clientId: userPoolClient.userPoolClientId,
-          providerName: userPool.userPoolProviderName,
+          StringEquals: {
+            "cognito-identity.amazonaws.com:aud": identityPool.ref,
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated",
+          },
         },
-      ],
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+      inlinePolicies: {
+        CognitoAuthorizedPolicy: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              actions: [
+                "mobileanalytics:PutEvents",
+                "cognito-sync:*",
+                "cognito-identity:*",
+              ],
+              resources: ["*"],
+              effect: cdk.aws_iam.Effect.ALLOW,
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              actions: ["execute-api:Invoke"],
+              resources: [
+                `arn:aws:execute-api:${this.region}:${this.account}:${props.api.restApiId}/*`,
+              ],
+              effect: cdk.aws_iam.Effect.ALLOW,
+            }),
+          ],
+        }),
+      },
     });
 
 
