@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import {
   aws_iam as iam,
   aws_cognito as cognito,
+  aws_ssm as ssm,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { getParameter } from "../utils/ssm";
@@ -215,7 +216,7 @@ export class UiAuthStack extends cdk.NestedStack {
 
 
     new ssm.StringParameter(this, "CognitoUserPoolIdParameter", {
-      parameterName: "/${stage}/ui-auth/cognito_user_pool_id",
+      parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
       stringValue: userPool.userPoolId,
     });
 
