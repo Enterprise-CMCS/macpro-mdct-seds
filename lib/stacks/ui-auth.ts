@@ -77,7 +77,8 @@ export class UiAuthStack extends cdk.NestedStack {
       })
     );
 
-    new cognito.UserPoolClient(this, "UserPoolClient", {
+    // Cognito User Pool Client
+    const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
       userPool,
       oAuth: {
@@ -99,6 +100,11 @@ export class UiAuthStack extends cdk.NestedStack {
         ],
       },
       generateSecret: false,
+    });
+
+    new cognito.UserPoolDomain(this, "UserPoolDomain", {
+      userPool,
+      cognitoDomain: { domainPrefix: `${stage}-login-${userPoolClient}` },
     });
 
   }
