@@ -4,6 +4,7 @@ import {
   aws_cognito as cognito,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
+import { getParameter } from "../utils/ssm";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
@@ -77,6 +78,41 @@ export class UiAuthStack extends cdk.NestedStack {
       })
     );
 
+    // back with okta
+    const oktaMetadataUrl = await getOktaMetadataUrl(stage);
+
+    let backWithOkta = false;
+    if (oktaMetadataUrl) {
+      backWithOkta = true;
+    }
+
+    let idp = undefined;
+    if (backWithOkta) {
+      idp = new cognito.CfnUserPoolIdentityProvider(
+        this,
+        "CognitoUserPoolIdentityProvider",
+        {
+          providerName: "Okta",
+          providerType: "SAML",
+          userPoolId: userPool.userPoolId,
+          providerDetails: {
+            MetadataURL:
+              "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
+          },
+          attributeMapping: {
+            email:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            family_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+            given_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+            "custom:ismemberof": "ismemberof",
+          },
+          idpIdentifiers: ["IdpIdentifier"],
+        }
+      );
+    }
+
     // Cognito User Pool Client
     new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
@@ -99,6 +135,10 @@ export class UiAuthStack extends cdk.NestedStack {
           "https://localhost:3000/",
         ],
       },
+      supportedIdentityProviders:
+        backWithOkta && idp
+          ? [(idp as unknown) as cognito.UserPoolClientIdentityProvider]
+          : undefined,
       generateSecret: false,
     });
 
@@ -107,29 +147,25 @@ export class UiAuthStack extends cdk.NestedStack {
       cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
     });
 
-    new cognito.CfnUserPoolIdentityProvider(
-      this,
-      "CognitoUserPoolIdentityProvider",
-      {
-        providerName: "Okta",
-        providerType: "SAML",
-        userPoolId: userPool.userPoolId,
-        providerDetails: {
-          MetadataURL:
-            "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
-        },
-        attributeMapping: {
-          email:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-          family_name:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-          given_name:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-          "custom:ismemberof": "ismemberof",
-        },
-        idpIdentifiers: ["IdpIdentifier"],
-      }
-    );
 
+  }
+}
+
+async function getOktaMetadataUrl(stage: string): Promise<string> {
+  try {
+    const oktaMetadataUrl = await getParameter(
+      `ssm:/configuration/${stage}/oktaMetadataUrl`
+    );
+    return oktaMetadataUrl;
+  } catch (error) {
+    if ((error as Error).message.includes("Failed to fetch parameter")) {
+      console.warn(
+        'Ignoring "Failed to fetch parameter" error:',
+        (error as Error).message
+      );
+      return "";
+    } else {
+      throw error;
+    }
   }
 }
