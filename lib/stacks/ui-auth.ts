@@ -78,7 +78,7 @@ export class UiAuthStack extends cdk.NestedStack {
     );
 
     // Cognito User Pool Client
-    const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
+    new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
       userPool,
       oAuth: {
