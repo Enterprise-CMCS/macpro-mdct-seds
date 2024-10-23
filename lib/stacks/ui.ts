@@ -125,109 +125,149 @@ export class UiStack extends cdk.NestedStack {
       },
     });
 
-    (async () => {
-      const vpnIpSetArn = await (async () => {
-        const vpnIpSetPaths = [
-          `/configuration/${props.stage}/vpnIpSetArn`,
-          `/configuration/default/vpnIpSetArn`,
-        ];
+    this.setupWaf(props);
+    this.setupRoute53(props, this.distribution);
 
-        for (const paramPath of vpnIpSetPaths) {
-          try {
-            const paramValue = await getParameter(paramPath);
-            return paramValue;
-          } catch (error) {
-            if (
-              (error as Error).message.includes("Failed to fetch parameter")
-            ) {
-              console.warn(
-                'Ignoring "Failed to fetch parameter" error:',
-                (error as Error).message
-              );
-            } else {
-              throw error;
-            }
-          }
-        }
+    this.createFirehoseLogging(props, loggingBucket);
 
-        return undefined;
-      })();
+    new cdk.CfnOutput(this, "S3BucketName", { value: this.bucket.bucketName });
+    new cdk.CfnOutput(this, "CloudFrontUrl", {
+      value: this.distribution.distributionDomainName,
+    });
+  }
 
-      const wafRules: cdk.aws_wafv2.CfnWebACL.RuleProperty[] = [];
+  private async setupWaf(props: UiStackProps) {
+    const vpnIpSetArn = await this.fetchVpnIpSetArn(props);
+    const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
-      if (vpnIpSetArn) {
-        const githubIpSet = new wafv2.CfnIPSet(this, "GitHubIPSet", {
-          name: `${this.node.tryGetContext("stage")}-cdk-gh-ipset`,
-          scope: "CLOUDFRONT",
-          addresses: [],
-          ipAddressVersion: "IPV4",
-        });
+    if (vpnIpSetArn) {
+      const githubIpSet = new wafv2.CfnIPSet(this, "GitHubIPSet", {
+        name: `${this.node.tryGetContext("stage")}-cdk-gh-ipset`,
+        scope: "CLOUDFRONT",
+        addresses: [],
+        ipAddressVersion: "IPV4",
+      });
 
-        wafRules.push({
-          name: "vpn-only",
-          priority: 0,
-          action: { allow: {} },
-          visibilityConfig: {
-            cloudWatchMetricsEnabled: true,
-            metricName: `${props.project}-${props.stage}-webacl-vpn-only`,
-            sampledRequestsEnabled: true,
-          },
-          statement: {
-            orStatement: {
-              statements: [
-                {
-                  ipSetReferenceStatement: {
-                    arn: vpnIpSetArn,
-                  },
-                },
-                {
-                  ipSetReferenceStatement: {
-                    arn: githubIpSet.attrArn,
-                  },
-                },
-              ],
-            },
-          },
-        });
-
-        wafRules.push({
-          name: "block-all-other-traffic",
-          priority: 3,
-          action: { block: { customResponse: { responseCode: 403 } } },
-          visibilityConfig: {
-            cloudWatchMetricsEnabled: true,
-            metricName: `${props.project}-${props.stage}-block-traffic`,
-            sampledRequestsEnabled: true,
-          },
-          statement: {
-            notStatement: {
-              statement: {
-                ipSetReferenceStatement: {
-                  arn: vpnIpSetArn,
-                },
+      wafRules.push({
+        name: "vpn-only",
+        priority: 0,
+        action: { allow: {} },
+        visibilityConfig: {
+          cloudWatchMetricsEnabled: true,
+          metricName: `${props.project}-${props.stage}-webacl-vpn-only`,
+          sampledRequestsEnabled: true,
+        },
+        statement: {
+          orStatement: {
+            statements: [
+              {
+                ipSetReferenceStatement: { arn: vpnIpSetArn },
               },
+              {
+                ipSetReferenceStatement: { arn: githubIpSet.attrArn },
+              },
+            ],
+          },
+        },
+      });
+
+      wafRules.push({
+        name: "block-all-other-traffic",
+        priority: 3,
+        action: { block: { customResponse: { responseCode: 403 } } },
+        visibilityConfig: {
+          cloudWatchMetricsEnabled: true,
+          metricName: `${props.project}-${props.stage}-block-traffic`,
+          sampledRequestsEnabled: true,
+        },
+        statement: {
+          notStatement: {
+            statement: {
+              ipSetReferenceStatement: { arn: vpnIpSetArn },
             },
           },
+        },
+      });
+    }
+
+    new wafv2.CfnWebACL(this, "WebACL", {
+      name: `${props.project}-${props.stage}-webacl-waf`,
+      scope: "CLOUDFRONT",
+      defaultAction: { allow: {} },
+      visibilityConfig: {
+        sampledRequestsEnabled: true,
+        cloudWatchMetricsEnabled: true,
+        metricName: `${props.project}-${props.stage}-webacl`,
+      },
+      rules: wafRules,
+    });
+  }
+
+  private async fetchVpnIpSetArn(
+    props: UiStackProps
+  ): Promise<string | undefined> {
+    const vpnIpSetPaths = [
+      `/configuration/${props.stage}/vpnIpSetArn`,
+      `/configuration/default/vpnIpSetArn`,
+    ];
+
+    for (const paramPath of vpnIpSetPaths) {
+      try {
+        const paramValue = await getParameter(paramPath);
+        return paramValue;
+      } catch (error) {
+        if ((error as Error).message.includes("Failed to fetch parameter")) {
+          console.warn(
+            'Ignoring "Failed to fetch parameter" error:',
+            (error as Error).message
+          );
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  private async setupRoute53(
+    props: UiStackProps,
+    distribution: cloudfront.Distribution
+  ) {
+    try {
+      const hostedZoneId = await getParameter(
+        `/configuration/${props.stage}/route53/hostedZoneId`
+      );
+      const domainName = await getParameter(
+        `/configuration/${props.stage}/route53/domainName`
+      );
+
+      if (hostedZoneId && domainName) {
+        const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
+          hostedZoneId,
+          zoneName: domainName,
+        });
+
+        new route53.ARecord(this, "AliasRecord", {
+          zone,
+          target: route53.RecordTarget.fromAlias(
+            new route53Targets.CloudFrontTarget(distribution)
+          ),
         });
       }
+    } catch (error) {
+      if ((error as Error).message.includes("Failed to fetch parameter")) {
+        console.warn(
+          'Ignoring "Failed to fetch parameter" error:',
+          (error as Error).message
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
 
-      // Web ACL for CloudFront
-      new wafv2.CfnWebACL(this, "WebACL", {
-        name: `${props.project}-${props.stage}-webacl-waf`,
-        scope: "CLOUDFRONT",
-        defaultAction: {
-          allow: {},
-        },
-        visibilityConfig: {
-          sampledRequestsEnabled: true,
-          cloudWatchMetricsEnabled: true,
-          metricName: `${props.project}-${props.stage}-webacl`,
-        },
-        rules: wafRules,
-      });
-    })();
-
-    // Firehose for WAF logging
+  private createFirehoseLogging(props: UiStackProps, loggingBucket: s3.Bucket) {
     const firehoseRole = new iam.Role(this, "FirehoseRole", {
       assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
       inlinePolicies: {
@@ -257,51 +297,6 @@ export class UiStack extends cdk.NestedStack {
         },
         compressionFormat: "UNCOMPRESSED",
       },
-    });
-
-    (async () => {
-      // Route 53 DNS Record
-      try {
-        const hostedZoneId = await getParameter(
-          `/configuration/${props.stage}/route53/hostedZoneId`
-        );
-        const domainName = await getParameter(
-          `/configuration/${props.stage}/route53/domainName`
-        );
-
-        if (hostedZoneId && domainName) {
-          const zone = route53.HostedZone.fromHostedZoneAttributes(
-            this,
-            "Zone",
-            {
-              hostedZoneId,
-              zoneName: domainName,
-            }
-          );
-
-          new route53.ARecord(this, "AliasRecord", {
-            zone,
-            target: route53.RecordTarget.fromAlias(
-              new route53Targets.CloudFrontTarget(cloudFrontDistribution)
-            ),
-          });
-        }
-      } catch (error) {
-        if ((error as Error).message.includes("Failed to fetch parameter")) {
-          console.warn(
-            'Ignoring "Failed to fetch parameter" error:',
-            (error as Error).message
-          );
-        } else {
-          throw error;
-        }
-      }
-    })();
-
-    // Output the bucket name and CloudFront URL
-    new cdk.CfnOutput(this, "S3BucketName", { value: this.bucket.bucketName });
-    new cdk.CfnOutput(this, "CloudFrontUrl", {
-      value: cloudFrontDistribution.distributionDomainName,
     });
   }
 }
