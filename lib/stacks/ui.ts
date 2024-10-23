@@ -68,8 +68,7 @@ export class UiStack extends cdk.NestedStack {
       })
     );
 
-    // CloudFront distribution
-    const cloudFrontDistribution = new cloudfront.Distribution(
+    this.distribution = new cloudfront.Distribution(
       this,
       "CloudFrontDistribution",
       {
