@@ -8,6 +8,7 @@ import {
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { getParameter } from "../utils/ssm";
+import { WafConstruct } from "../local-constructs/waf";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
@@ -236,6 +237,17 @@ export class UiAuthStack extends cdk.NestedStack {
         bootstrapUsersPassword: process.env.BOOTSTRAP_USERS_PASSWORD || "",
       },
     });
+
+
+    new WafConstruct(
+      this,
+      "WafConstruct",
+      {
+        name: `ui-auth-${stage}-webacl-waf`,
+        // apiGateway: this.api,
+      },
+      "cognito"
+    );
 
     // Outputs
     new cdk.CfnOutput(this, "UserPoolIdOutput", {
