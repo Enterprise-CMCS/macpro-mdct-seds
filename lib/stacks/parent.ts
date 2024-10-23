@@ -49,7 +49,7 @@ export class ParentStack extends cdk.Stack {
       api: apiStack.api,
     });
 
-    new Stacks.UiStack(this, "ui", {
+    const uiStack = new Stacks.UiStack(this, "ui", {
       ...commonProps,
       stack: "ui",
       restrictToVpn: false,
@@ -59,9 +59,9 @@ export class ParentStack extends cdk.Stack {
       parameterName: `/${props.project}/${props.stage}/deployment-output`,
       stringValue: JSON.stringify({
         apiGatewayRestApiUrl: apiStack.api.url,
-        // applicationEndpointUrl: ui.applicationEndpointUrl,
-        // s3BucketName: ui.bucket.bucketName,
-        // cloudfrontDistributionId: ui.distribution.distributionId,
+        applicationEndpointUrl: uiStack.applicationEndpointUrl,
+        s3BucketName: uiStack.bucket.bucketName,
+        cloudfrontDistributionId: uiStack.distribution.distributionId,
       }),
       description: `Deployment output for the ${props.stage} environment.`,
     });

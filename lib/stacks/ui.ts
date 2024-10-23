@@ -20,13 +20,17 @@ interface UiStackProps extends cdk.NestedStackProps {
 }
 
 export class UiStack extends cdk.NestedStack {
+  public readonly distribution: cloudfront.Distribution;
+  public readonly applicationEndpointUrl: string;
+  public readonly bucket: s3.Bucket;
+
   constructor(scope: Construct, id: string, props: UiStackProps) {
     super(scope, id, props);
 
     // const stage = this.node.tryGetContext("stage") || "dev";
 
     // S3 Bucket for UI hosting
-    const s3Bucket = new s3.Bucket(this, "S3Bucket", {
+    this.bucket = new s3.Bucket(this, "S3Bucket", {
       // websiteIndexDocument: "index.html",
       // websiteErrorDocument: "index.html",
       encryption: s3.BucketEncryption.S3_MANAGED,
@@ -76,7 +80,7 @@ export class UiStack extends cdk.NestedStack {
       {
         defaultBehavior: {
           origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
-            s3Bucket
+            this.bucket
           ),
           allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
           viewerProtocolPolicy:
@@ -97,6 +101,8 @@ export class UiStack extends cdk.NestedStack {
         ],
       }
     );
+
+    this.applicationEndpointUrl = `https://${cloudFrontDistribution.distributionDomainName}/`;
 
     new cloudfront.ResponseHeadersPolicy(this, "CloudFormationHeadersPolicy", {
       responseHeadersPolicyName: `Headers-Policy-cdk-${this.node.tryGetContext(
@@ -299,7 +305,7 @@ export class UiStack extends cdk.NestedStack {
     })();
 
     // Output the bucket name and CloudFront URL
-    new cdk.CfnOutput(this, "S3BucketName", { value: s3Bucket.bucketName });
+    new cdk.CfnOutput(this, "S3BucketName", { value: this.bucket.bucketName });
     new cdk.CfnOutput(this, "CloudFrontUrl", {
       value: cloudFrontDistribution.distributionDomainName,
     });
