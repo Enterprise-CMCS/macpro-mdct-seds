@@ -27,18 +27,13 @@ export class UiStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UiStackProps) {
     super(scope, id, props);
 
-    // const stage = this.node.tryGetContext("stage") || "dev";
-
     // S3 Bucket for UI hosting
     this.bucket = new s3.Bucket(this, "S3Bucket", {
-      // websiteIndexDocument: "index.html",
-      // websiteErrorDocument: "index.html",
       encryption: s3.BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
 
-    // Logging bucket
     const loggingBucket = new s3.Bucket(this, "LoggingBucket", {
       bucketName: `${props.project}-${props.stage}-cloudfront-logs-${this.account}`,
       versioned: true,
