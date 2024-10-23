@@ -10,6 +10,10 @@ import {
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import path from "path";
+import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from "@aws-sdk/client-cloudfront";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -230,6 +234,22 @@ async function cdkDeploy(options: { stage: string }) {
     "."
   );
 
+  const cloudfrontClient = new CloudFrontClient({
+    region,
+  });
+  const invalidationParams = {
+    DistributionId: cloudfrontDistributionId,
+    InvalidationBatch: {
+      CallerReference: `${Date.now()}`,
+      Paths: {
+        Quantity: 1,
+        Items: ["/*"],
+      },
+    },
+  };
+  await cloudfrontClient.send(
+    new CreateInvalidationCommand(invalidationParams)
+  );
 
   console.log(
     `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
