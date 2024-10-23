@@ -10,6 +10,7 @@ import {
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import path from "path";
+import { writeUiEnvFile } from "./write-ui-env-file.js";
 import {
   CloudFrontClient,
   CreateInvalidationCommand,
@@ -196,6 +197,8 @@ async function cdkDeploy(options: { stage: string }) {
     ["yarn", "run", "build"],
     "services/ui-src"
   );
+
+  await writeUiEnvFile(options.stage);
 
   const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
     (
