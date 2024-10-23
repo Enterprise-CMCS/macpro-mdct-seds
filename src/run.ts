@@ -9,6 +9,7 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
+import { writeUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
 dotenv.config();
@@ -174,6 +175,8 @@ async function cdkDeploy(options: { stage: string }) {
 
   // TODO: do we need to build and deploy react separately?  If so, this is what mako did:
   // await runCommand("bun", ["run", "build"], "react-app");
+  await writeUiEnvFile(options.stage);
+
   await runner.run_command_and_output(
     "build react app",
     ["yarn", "run", "build"],
