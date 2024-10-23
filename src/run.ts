@@ -183,9 +183,6 @@ async function cdkDeploy(options: { stage: string }) {
   const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
-  // TODO: test without this (check the deployed UI and confirm the values are not there before testing with this)
-  // await writeUiEnvFile(options.stage);
-
   await runner.run_command_and_output(
     "build react app",
     ["yarn", "run", "build"],
