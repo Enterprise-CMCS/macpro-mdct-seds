@@ -9,7 +9,13 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
+import path from "path";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // load .env
 dotenv.config();
@@ -173,8 +179,8 @@ async function cdkDeploy(options: { stage: string }) {
   const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
-  // TODO: do we need to build and deploy react separately?  If so, this is what mako did:
-  // await runCommand("bun", ["run", "build"], "react-app");
+  // TODO: test without this (check the deployed UI and confirm the values are not there before testing with this)
+  // await writeUiEnvFile(options.stage);
 
   await runner.run_command_and_output(
     "build react app",
@@ -182,7 +188,6 @@ async function cdkDeploy(options: { stage: string }) {
     "services/ui-src"
   );
 
-  // const buildDir = path.join(__dirname, "../../../react-app", "dist");
   const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
     (
       await new SSMClient({ region: "us-east-1" }).send(
@@ -199,31 +204,36 @@ async function cdkDeploy(options: { stage: string }) {
 
   console.log(s3BucketName, cloudfrontDistributionId);
 
+  console.log("__dirname:", __dirname);
+
+  const buildDir = path.join(__dirname, "../../services/ui-src", "build");
+
+  try {
+    execSync(`find ${buildDir} -type f -exec touch -t 202001010000 {} +`);
+  } catch (error) {
+    console.error("Failed to set fixed timestamps:", error);
+  }
+
   await runner.run_command_and_output("look at me", ["env"], "services/ui-src");
 
-  // try {
-  //   execSync(`find ${buildDir} -type f -exec touch -t 202001010000 {} +`);
-  // } catch (error) {
-  //   console.error("Failed to set fixed timestamps:", error);
-  // }
+  // There's a mime type issue when aws s3 syncing files up
+  // Empirically, this issue never presents itself if the bucket is cleared just before.
+  // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
+  await runner.run_command_and_output(
+    "",
+    ["aws", "s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
+    "."
+  );
+  await runner.run_command_and_output(
+    "copy react app to s3 bucket",
+    ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`],
+    "."
+  );
 
-  // // There's a mime type issue when aws s3 syncing files up
-  // // Empirically, this issue never presents itself if the bucket is cleared just before.
-  // // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
-  // await runCommand(
-  //   "aws",
-  //   ["s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
-  //   "."
-  // );
-  // await runCommand(
-  //   "aws",
-  //   ["s3", "sync", buildDir, `s3://${s3BucketName}/`],
-  //   "."
-  // );
 
-  // console.log(
-  //   `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
-  // );
+  console.log(
+    `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
+  );
 }
 
 const waitForStackDeleteComplete = async (
