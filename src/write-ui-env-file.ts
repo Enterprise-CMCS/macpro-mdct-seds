@@ -10,6 +10,24 @@ const __dirname = dirname(__filename);
 const project = "seds";
 const region = "us-east-1";
 
+const writeEnvConfig = async (
+  envVariables: Record<string, string>,
+  outputPath: string
+) => {
+  const configFilePath = path.resolve(outputPath, "env-config.js");
+
+  await fs.rm(configFilePath, { force: true });
+  await fs.writeFile(configFilePath, "", { flag: "w" });
+
+  await fs.appendFile(configFilePath, "window._env_ = {\n");
+
+  for (const [key, value] of Object.entries(envVariables)) {
+    await fs.appendFile(configFilePath, `  ${key}: "${value}",\n`);
+  }
+
+  await fs.appendFile(configFilePath, "};\n");
+};
+
 export async function writeUiEnvFile(stage: string, local = false) {
   const deploymentOutput = JSON.parse(
     (
@@ -21,45 +39,27 @@ export async function writeUiEnvFile(stage: string, local = false) {
     ).Parameter!.Value!
   );
 
-  const deploymentConfig = JSON.parse(
-    (
-      await new SSMClient({ region: "us-east-1" }).send(
-        new GetParameterCommand({
-          Name: `/${project}/${stage}/deployment-config`,
-        })
-      )
-    ).Parameter!.Value!
-  );
-
   const envVariables = {
-    VITE_API_REGION: `"${region}"`,
-    VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
-    VITE_NODE_ENV: `"development"`,
-    VITE_COGNITO_REGION: region,
-    VITE_COGNITO_IDENTITY_POOL_ID: deploymentOutput.identityPoolId,
-    VITE_COGNITO_USER_POOL_ID: deploymentOutput.userPoolId,
-    VITE_COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,
-    VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
-    VITE_COGNITO_REDIRECT_SIGNIN: local
-      ? `"http://localhost:5000/"`
+    LOCAL_LOGIN: "false",
+    SKIP_PREFLIGHT_CHECK: "true",
+    API_REGION: region,
+    API_URL: deploymentOutput.apiGatewayRestApiUrl,
+    COGNITO_REGION: region,
+    COGNITO_IDENTITY_POOL_ID: deploymentOutput.identityPoolId,
+    COGNITO_USER_POOL_ID: deploymentOutput.userPoolId,
+    COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,
+    COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
+    COGNITO_REDIRECT_SIGNIN: local
+      ? "http://localhost:5000/"
       : deploymentOutput.applicationEndpointUrl,
-    VITE_COGNITO_REDIRECT_SIGNOUT: local
-      ? `"http://localhost:5000/"`
+    COGNITO_REDIRECT_SIGNOUT: local
+      ? "http://localhost:5000/"
       : deploymentOutput.applicationEndpointUrl,
-    VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
-    VITE_GOOGLE_ANALYTICS_GTAG: `"${deploymentConfig.googleAnalyticsGTag}"`,
-    VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
-    VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
+    STAGE: stage,
   };
 
-  const envFilePath = path.join(__dirname, "../../services/ui-src", ".env");
-  console.log(envFilePath);
-  const envFileContent = Object.entries(envVariables)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("\n");
-
-  await fs.writeFile(envFilePath, envFileContent);
-
-  console.log(`.env file written to ${envFilePath}`);
-  return envFilePath;
+  await writeEnvConfig(
+    envVariables,
+    path.join(__dirname, "../../services/ui-src", "build")
+  );
 }
