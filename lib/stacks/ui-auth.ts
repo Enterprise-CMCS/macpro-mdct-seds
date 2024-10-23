@@ -17,13 +17,18 @@ interface UiAuthStackProps extends cdk.NestedStackProps {
 }
 
 export class UiAuthStack extends cdk.NestedStack {
+  public readonly identityPool: cognito.CfnIdentityPool;
+  public readonly userPool: cognito.UserPool;
+  public readonly userPoolClient: cognito.UserPoolClient;
+  public readonly userPoolDomain: cognito.UserPoolDomain;
+
   constructor(scope: Construct, id: string, props: UiAuthStackProps) {
     super(scope, id, props);
 
     const stage = this.node.tryGetContext("stage") || "dev";
 
     // Cognito User Pool
-    const userPool = new cognito.UserPool(this, "UserPool", {
+    this.userPool = new cognito.UserPool(this, "UserPool", {
       userPoolName: `${stage}-user-pool`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       signInAliases: {
@@ -79,7 +84,7 @@ export class UiAuthStack extends cdk.NestedStack {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["*"],
-        resources: [userPool.userPoolArn],
+        resources: [this.userPool.userPoolArn],
       })
     );
 
@@ -100,7 +105,7 @@ export class UiAuthStack extends cdk.NestedStack {
           {
             providerName: "Okta",
             providerType: "SAML",
-            userPoolId: userPool.userPoolId,
+            userPoolId: this.userPool.userPoolId,
             providerDetails: {
               MetadataURL:
                 "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
@@ -121,9 +126,9 @@ export class UiAuthStack extends cdk.NestedStack {
     };
 
     // Cognito User Pool Client
-    const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
+    this.userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
-      userPool,
+      userPool: this.userPool,
       oAuth: {
         flows: {
           implicitCodeGrant: true,
@@ -149,13 +154,13 @@ export class UiAuthStack extends cdk.NestedStack {
       generateSecret: false,
     });
 
-    const userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
-      userPool,
+    this.userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
+      userPool: this.userPool,
       cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
     });
 
     // Cognito Identity Pool
-    const identityPool = new cognito.CfnIdentityPool(
+    this.identityPool = new cognito.CfnIdentityPool(
       this,
       "CognitoIdentityPool",
       {
@@ -163,8 +168,8 @@ export class UiAuthStack extends cdk.NestedStack {
         allowUnauthenticatedIdentities: false,
         cognitoIdentityProviders: [
           {
-            clientId: userPoolClient.userPoolClientId,
-            providerName: userPool.userPoolProviderName,
+            clientId: this.userPoolClient.userPoolClientId,
+            providerName: this.userPool.userPoolProviderName,
           },
         ],
       }
@@ -176,7 +181,7 @@ export class UiAuthStack extends cdk.NestedStack {
         "cognito-identity.amazonaws.com",
         {
           StringEquals: {
-            "cognito-identity.amazonaws.com:aud": identityPool.ref,
+            "cognito-identity.amazonaws.com:aud": this.identityPool.ref,
           },
           "ForAnyValue:StringLike": {
             "cognito-identity.amazonaws.com:amr": "authenticated",
@@ -212,18 +217,18 @@ export class UiAuthStack extends cdk.NestedStack {
       this,
       "CognitoIdentityPoolRoles",
       {
-        identityPoolId: identityPool.ref,
+        identityPoolId: this.identityPool.ref,
         roles: { authenticated: cognitoAuthRole.roleArn },
       }
     );
 
     new ssm.StringParameter(this, "CognitoUserPoolIdParameter", {
       parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_id`,
-      stringValue: userPool.userPoolId,
+      stringValue: this.userPool.userPoolId,
     });
     new ssm.StringParameter(this, "CognitoUserPoolClientIdParameter", {
       parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_client_id`,
-      stringValue: userPoolClient.userPoolClientId,
+      stringValue: this.userPoolClient.userPoolClientId,
     });
 
     // Lambda function: bootstrapUsers
@@ -234,7 +239,7 @@ export class UiAuthStack extends cdk.NestedStack {
       timeout: cdk.Duration.seconds(60),
       role: lambdaApiRole,
       environment: {
-        userPoolId: userPool.userPoolId,
+        userPoolId: this.userPool.userPoolId,
         bootstrapUsersPassword: process.env.BOOTSTRAP_USERS_PASSWORD || "",
       },
     });
@@ -248,25 +253,25 @@ export class UiAuthStack extends cdk.NestedStack {
     ).webAcl;
 
     new wafv2.CfnWebACLAssociation(this, "CognitoUserPoolWAFAssociation", {
-      resourceArn: userPool.userPoolArn,
+      resourceArn: this.userPool.userPoolArn,
       webAclArn: webAcl.attrArn,
     });
 
     // Outputs
     new cdk.CfnOutput(this, "UserPoolIdOutput", {
-      value: userPool.userPoolId,
+      value: this.userPool.userPoolId,
     });
 
     new cdk.CfnOutput(this, "UserPoolClientIdOutput", {
-      value: userPoolClient.userPoolClientId,
+      value: this.userPoolClient.userPoolClientId,
     });
 
     new cdk.CfnOutput(this, "UserPoolClientDomainOutput", {
-      value: userPoolDomain.domainName,
+      value: this.userPoolDomain.domainName,
     });
 
     new cdk.CfnOutput(this, "IdentityPoolIdOutput", {
-      value: identityPool.ref,
+      value: this.identityPool.ref,
     });
 
     new cdk.CfnOutput(this, "RegionOutput", {
