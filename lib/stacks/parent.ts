@@ -43,7 +43,7 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
     });
 
-    new Stacks.UiAuthStack(this, "ui-auth", {
+    const authStack = new Stacks.UiAuthStack(this, "ui-auth", {
       ...commonProps,
       stack: "ui-auth",
       api: apiStack.api,
@@ -62,6 +62,10 @@ export class ParentStack extends cdk.Stack {
         applicationEndpointUrl: uiStack.applicationEndpointUrl,
         s3BucketName: uiStack.bucket.bucketName,
         cloudfrontDistributionId: uiStack.distribution.distributionId,
+        identityPoolId: authStack.identityPool.ref,
+        userPoolId: authStack.userPool.userPoolId,
+        userPoolClientId: authStack.userPoolClient.userPoolClientId,
+        userPoolClientDomain: authStack.userPoolDomain.domainName,
       }),
       description: `Deployment output for the ${props.stage} environment.`,
     });
