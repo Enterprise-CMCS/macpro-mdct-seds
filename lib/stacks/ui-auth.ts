@@ -1,10 +1,11 @@
 import * as cdk from "aws-cdk-lib";
 import {
-  aws_iam as iam,
   aws_cognito as cognito,
-  aws_ssm as ssm,
+  aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
+  aws_ssm as ssm,
+  aws_wafv2 as wafv2,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { getParameter } from "../utils/ssm";
@@ -239,15 +240,17 @@ export class UiAuthStack extends cdk.NestedStack {
     });
 
 
-    new WafConstruct(
+    const webAcl = new WafConstruct(
       this,
       "WafConstruct",
-      {
-        name: `ui-auth-cdk-${stage}-webacl-waf`,
-        // apiGateway: this.api,
-      },
+      { name: `ui-auth-cdk-${stage}-webacl-waf` },
       "REGIONAL"
-    );
+    ).webAcl;
+
+    new wafv2.CfnWebACLAssociation(this, "CognitoUserPoolWAFAssociation", {
+      resourceArn: userPool.userPoolArn,
+      webAclArn: webAcl.attrArn,
+    });
 
     // Outputs
     new cdk.CfnOutput(this, "UserPoolIdOutput", {
