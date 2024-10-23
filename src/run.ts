@@ -9,7 +9,7 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { writeUiEnvFile } from "./write-ui-env-file.js";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 // load .env
 dotenv.config();
@@ -175,7 +175,6 @@ async function cdkDeploy(options: { stage: string }) {
 
   // TODO: do we need to build and deploy react separately?  If so, this is what mako did:
   // await runCommand("bun", ["run", "build"], "react-app");
-  await writeUiEnvFile(options.stage);
 
   await runner.run_command_and_output(
     "build react app",
@@ -184,6 +183,22 @@ async function cdkDeploy(options: { stage: string }) {
   );
 
   // const buildDir = path.join(__dirname, "../../../react-app", "dist");
+  const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
+    (
+      await new SSMClient({ region: "us-east-1" }).send(
+        new GetParameterCommand({
+          Name: `/${project}/${options.stage}/deployment-output`,
+        })
+      )
+    ).Parameter!.Value!
+  );
+
+  if (!s3BucketName || !cloudfrontDistributionId) {
+    throw new Error("Missing necessary CloudFormation exports");
+  }
+
+  console.log(s3BucketName, cloudfrontDistributionId);
+
   await runner.run_command_and_output("look at me", ["env"], "services/ui-src");
 
   // try {
