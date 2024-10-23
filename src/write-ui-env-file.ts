@@ -52,11 +52,7 @@ export async function writeUiEnvFile(stage: string, local = false) {
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
 
-  const envFilePath = path.join(
-    __dirname,
-    "../../services/ui-src",
-    ".env.local"
-  );
+  const envFilePath = path.join(__dirname, "../../services/ui-src", ".env");
   console.log(envFilePath);
   const envFileContent = Object.entries(envVariables)
     .map(([key, value]) => `${key}=${value}`)
@@ -64,6 +60,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
 
   await fs.writeFile(envFilePath, envFileContent);
 
-  console.log(`.env.local file written to ${envFilePath}`);
+  console.log(`.env file written to ${envFilePath}`);
   return envFilePath;
 }
