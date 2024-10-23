@@ -43,11 +43,6 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
     });
 
-    new Stacks.StreamFunctionsStack(this, "stream-functions", {
-      ...commonProps,
-      stack: "stream-functions",
-    });
-
     new Stacks.UiAuthStack(this, "ui-auth", {
       ...commonProps,
       stack: "ui-auth",
