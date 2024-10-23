@@ -174,8 +174,14 @@ async function cdkDeploy(options: { stage: string }) {
 
   // TODO: do we need to build and deploy react separately?  If so, this is what mako did:
   // await runCommand("bun", ["run", "build"], "react-app");
+  await runner.run_command_and_output(
+    "build react app",
+    ["yarn", "run", "build"],
+    "services/ui-src"
+  );
 
   // const buildDir = path.join(__dirname, "../../../react-app", "dist");
+  await runner.run_command_and_output("look at me", ["env"], "services/ui-src");
 
   // try {
   //   execSync(`find ${buildDir} -type f -exec touch -t 202001010000 {} +`);
