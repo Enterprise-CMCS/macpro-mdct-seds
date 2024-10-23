@@ -246,7 +246,7 @@ export class UiAuthStack extends cdk.NestedStack {
         name: `ui-auth-${stage}-webacl-waf`,
         // apiGateway: this.api,
       },
-      "cognito"
+      "REGIONAL"
     );
 
     // Outputs
