@@ -44,17 +44,19 @@ export class ParentStack extends cdk.Stack {
       brokerString: props.brokerString,
     });
 
+    const uiStack = new Stacks.UiStack(this, "ui", {
+      ...commonProps,
+      stack: "ui",
+      restrictToVpn: false,
+    });
+
     const authStack = new Stacks.UiAuthStack(this, "ui-auth", {
       ...commonProps,
       stack: "ui-auth",
       api: apiStack.api,
       applicationEndpointUrl: uiStack.applicationEndpointUrl,
-    });
-
-    const uiStack = new Stacks.UiStack(this, "ui", {
-      ...commonProps,
-      stack: "ui",
-      restrictToVpn: false,
+      oktaMetadataUrl: props.oktaMetadataUrl,
+      bootstrapUsersPassword: props.bootstrapUsersPassword,
     });
 
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
