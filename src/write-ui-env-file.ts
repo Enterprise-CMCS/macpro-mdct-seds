@@ -10,34 +10,14 @@ const __dirname = dirname(__filename);
 const project = "seds";
 const region = "us-east-1";
 
-const writeEnvConfig = async (
-  envVariables: Record<string, string>,
-  outputPath: string
-) => {
-  const configFilePath = path.resolve(outputPath, "env-config.js");
-
-  await fs.rm(configFilePath, { force: true });
-  await fs.writeFile(configFilePath, "", { flag: "w" });
-
-  await fs.appendFile(configFilePath, "window._env_ = {\n");
-
-  for (const [key, value] of Object.entries(envVariables)) {
-    await fs.appendFile(configFilePath, `  ${key}: "${value}",\n`);
-  }
-
-  await fs.appendFile(configFilePath, "};\n");
-};
-
 export async function writeUiEnvFile(stage: string, local = false) {
-  const deploymentOutput = JSON.parse(
-    (
-      await new SSMClient({ region: "us-east-1" }).send(
-        new GetParameterCommand({
-          Name: `/${project}/${stage}/deployment-output`,
-        })
-      )
-    ).Parameter!.Value!
+  const ssmClient = new SSMClient({ region });
+  const parameterName = `/${project}/${stage}/deployment-output`;
+
+  const { Parameter } = await ssmClient.send(
+    new GetParameterCommand({ Name: parameterName })
   );
+  const deploymentOutput = JSON.parse(Parameter!.Value!);
 
   const envVariables = {
     LOCAL_LOGIN: "false",
@@ -58,8 +38,18 @@ export async function writeUiEnvFile(stage: string, local = false) {
     STAGE: stage,
   };
 
-  await writeEnvConfig(
-    envVariables,
-    path.join(__dirname, "../../services/ui-src", "build")
-  );
+  const outputPath = path.join(__dirname, "../../services/ui-src", "build");
+  const configFilePath = path.resolve(outputPath, "env-config.js");
+
+  await fs.rm(configFilePath, { force: true });
+
+  const envConfigContent = [
+    "window._env_ = {",
+    ...Object.entries(envVariables).map(
+      ([key, value]) => `  ${key}: "${value}",`
+    ),
+    "};",
+  ].join("\n");
+
+  await fs.writeFile(configFilePath, envConfigContent);
 }
