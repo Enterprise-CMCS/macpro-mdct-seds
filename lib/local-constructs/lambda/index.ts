@@ -22,6 +22,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler?: string;
   timeout?: Duration;
   memorySize?: number;
+  brokerString?: string;
   path?: string;
   method?: string;
 }
@@ -36,6 +37,7 @@ export class Lambda extends Construct {
       handler = "main",
       timeout = Duration.seconds(6),
       memorySize = 1024,
+      brokerString = "",
       path,
       method,
       ...restProps
@@ -47,12 +49,8 @@ export class Lambda extends Construct {
 
     const stage = this.node.tryGetContext("stage") || "dev";
 
-    // TODO: need to get broker string
-    // const { brokerString } =
-    console.log("TODO: parent:", Stack.of(this).nestedStackParent);
-
     const environment = {
-      BOOTSTRAP_BROKER_STRING_TLS: "TODO", // brokerString,
+      BOOTSTRAP_BROKER_STRING_TLS: brokerString,
       STAGE: stage,
       ...Object.values((Stack.of(this) as ApiStack).tables).reduce(
         (acc, table) => {
