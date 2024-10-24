@@ -222,18 +222,19 @@ export class UiAuthStack extends cdk.NestedStack {
       stringValue: this.userPoolClient.userPoolClientId,
     });
 
-    // Lambda function: bootstrapUsers
-    new lambda_nodejs.NodejsFunction(this, "bootstrapUsers", {
-      entry: "services/ui-auth/handlers/createUsers.js",
-      handler: "handlers.handler",
-      runtime: lambda.Runtime.NODEJS_20_X,
-      timeout: cdk.Duration.seconds(60),
-      role: lambdaApiRole,
-      environment: {
-        userPoolId: this.userPool.userPoolId,
-        bootstrapUsersPassword: process.env.BOOTSTRAP_USERS_PASSWORD || "",
-      },
-    });
+    if (props.bootstrapUsersPassword) {
+      new lambda_nodejs.NodejsFunction(this, "bootstrapUsers", {
+        entry: "services/ui-auth/handlers/createUsers.js",
+        handler: "handlers.handler",
+        runtime: lambda.Runtime.NODEJS_20_X,
+        timeout: cdk.Duration.seconds(60),
+        role: lambdaApiRole,
+        environment: {
+          userPoolId: this.userPool.userPoolId,
+          bootstrapUsersPassword: props.bootstrapUsersPassword,
+        },
+      });
+    }
 
     const webAcl = new WafConstruct(
       this,
