@@ -19,7 +19,6 @@ import {
   faArrowDown,
   faUserPlus,
   faFileCsv,
-  faFileExcel,
   faFilePdf
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -155,16 +154,6 @@ const Users = () => {
         >
           Add New User
           <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-        </Button>
-        <Button
-          className="margin-left-3 action-button"
-          primary="true"
-          onClick={async () =>
-            await handleExport("excel", "MDCT Users Export.xlsx", tableData)
-          }
-        >
-          Excel
-          <FontAwesomeIcon icon={faFileExcel} className="margin-left-2" />
         </Button>
         <Button
           className="margin-left-3 action-button"
