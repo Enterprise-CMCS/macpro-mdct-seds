@@ -8,7 +8,6 @@ import {
   aws_wafv2 as wafv2,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { getParameter } from "../utils/ssm";
 import { WafConstruct } from "../local-constructs/waf";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
@@ -16,6 +15,8 @@ interface UiAuthStackProps extends cdk.NestedStackProps {
   api: cdk.aws_apigateway.RestApi;
   applicationEndpointUrl: string;
   stage: string;
+  oktaMetadataUrl: string;
+  bootstrapUsersPassword: string;
 }
 
 export class UiAuthStack extends cdk.NestedStack {
@@ -91,40 +92,33 @@ export class UiAuthStack extends cdk.NestedStack {
     );
 
     // back with okta
-    let backWithOkta = false;
+
     let idp = undefined;
-    async () => {
-      const oktaMetadataUrl = await getOktaMetadataUrl(stage);
 
-      if (oktaMetadataUrl) {
-        backWithOkta = true;
-      }
-
-      if (backWithOkta) {
-        idp = new cognito.CfnUserPoolIdentityProvider(
-          this,
-          "CognitoUserPoolIdentityProvider",
-          {
-            providerName: "Okta",
-            providerType: "SAML",
-            userPoolId: this.userPool.userPoolId,
-            providerDetails: {
-              MetadataURL: oktaMetadataUrl,
-            },
-            attributeMapping: {
-              email:
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-              family_name:
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-              given_name:
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-              "custom:ismemberof": "ismemberof",
-            },
-            idpIdentifiers: ["IdpIdentifier"],
-          }
-        );
-      }
-    };
+    if (props.oktaMetadataUrl) {
+      idp = new cognito.CfnUserPoolIdentityProvider(
+        this,
+        "CognitoUserPoolIdentityProvider",
+        {
+          providerName: "Okta",
+          providerType: "SAML",
+          userPoolId: this.userPool.userPoolId,
+          providerDetails: {
+            MetadataURL: props.oktaMetadataUrl,
+          },
+          attributeMapping: {
+            email:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            family_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+            given_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+            "custom:ismemberof": "ismemberof",
+          },
+          idpIdentifiers: ["IdpIdentifier"],
+        }
+      );
+    }
 
     // Cognito User Pool Client
     this.userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
@@ -145,10 +139,9 @@ export class UiAuthStack extends cdk.NestedStack {
         defaultRedirectUri: props.applicationEndpointUrl,
         logoutUrls: [props.applicationEndpointUrl || "https://localhost:3000/"],
       },
-      supportedIdentityProviders:
-        backWithOkta && idp
-          ? [(idp as unknown) as cognito.UserPoolClientIdentityProvider]
-          : undefined,
+      supportedIdentityProviders: idp
+        ? [(idp as unknown) as cognito.UserPoolClientIdentityProvider]
+        : undefined,
       generateSecret: false,
     });
 
@@ -242,7 +235,6 @@ export class UiAuthStack extends cdk.NestedStack {
       },
     });
 
-
     const webAcl = new WafConstruct(
       this,
       "WafConstruct",
@@ -275,24 +267,5 @@ export class UiAuthStack extends cdk.NestedStack {
     new cdk.CfnOutput(this, "RegionOutput", {
       value: this.region,
     });
-  }
-}
-
-async function getOktaMetadataUrl(stage: string): Promise<string> {
-  try {
-    const oktaMetadataUrl = await getParameter(
-      `ssm:/configuration/${stage}/oktaMetadataUrl`
-    );
-    return oktaMetadataUrl;
-  } catch (error) {
-    if ((error as Error).message.includes("Failed to fetch parameter")) {
-      console.warn(
-        'Ignoring "Failed to fetch parameter" error:',
-        (error as Error).message
-      );
-      return "";
-    } else {
-      throw error;
-    }
   }
 }
