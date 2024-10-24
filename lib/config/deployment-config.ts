@@ -98,11 +98,7 @@ export type DeploymentConfigProperties = InjectedConfigProperties & {
 export class DeploymentConfig {
   public config: DeploymentConfigProperties;
 
-  private constructor(
-    options: InjectedConfigOptions,
-    config: DeploymentConfigProperties
-  ) {
-    console.log("TODO: This is temporary options:", options);
+  private constructor(config: DeploymentConfigProperties) {
     this.config = config;
   }
 
@@ -122,7 +118,7 @@ export class DeploymentConfig {
       sharedOpenSearchDomainEndpoint: "",
     };
 
-    const appConfigInstance = new DeploymentConfig(options, appConfig);
+    const appConfigInstance = new DeploymentConfig(appConfig);
     await appConfigInstance.initialize();
     return appConfigInstance;
   }
