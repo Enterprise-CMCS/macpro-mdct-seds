@@ -64,6 +64,8 @@ export interface InjectedConfigOptions {
 }
 
 export type InjectedConfigProperties = {
+  bootstrapUsersPassword: string;
+  oktaMetadataUrl: string;
   brokerString: string;
   dbInfoSecretName: string;
   devPasswordArn: string;
@@ -174,6 +176,8 @@ export class DeploymentConfig {
 
   private static isConfig(config: any): config is InjectedConfigProperties {
     return (
+      typeof config.bootstrapUsersPassword === "string" &&
+      typeof config.oktaMetadataUrl === "string" &&
       typeof config.brokerString === "string" &&
       typeof config.dbInfoSecretName == "string" && // pragma: allowlist secret
       typeof config.devPasswordArn == "string" && // pragma: allowlist secret
