@@ -14,6 +14,7 @@ import { WafConstruct } from "../local-constructs/waf";
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
   api: cdk.aws_apigateway.RestApi;
+  applicationEndpointUrl: string;
 }
 
 export class UiAuthStack extends cdk.NestedStack {
@@ -138,13 +139,10 @@ export class UiAuthStack extends cdk.NestedStack {
           cognito.OAuthScope.PROFILE,
         ],
         callbackUrls: [
-          // TODO: applicationEndpointUrl,
-          "https://localhost:3000/",
+          props.applicationEndpointUrl || "https://localhost:3000/",
         ],
-        logoutUrls: [
-          // TODO: applicationEndpointUrl,
-          "https://localhost:3000/",
-        ],
+        defaultRedirectUri: props.applicationEndpointUrl,
+        logoutUrls: [props.applicationEndpointUrl || "https://localhost:3000/"],
       },
       supportedIdentityProviders:
         backWithOkta && idp
