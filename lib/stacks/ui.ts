@@ -13,6 +13,7 @@ import {
 import { getParameter } from "../utils/ssm";
 
 interface UiStackProps extends cdk.NestedStackProps {
+  isDev: boolean;
   stack: string;
   project: string;
   stage: string;
@@ -42,7 +43,7 @@ export class UiStack extends cdk.NestedStack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      // autoDeleteObjects: isDev, // TODO: add isDev to this stack.
+      autoDeleteObjects: props.isDev,
     });
 
     // Deny insecure requests to the bucket
