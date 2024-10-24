@@ -15,6 +15,7 @@ interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
   api: cdk.aws_apigateway.RestApi;
   applicationEndpointUrl: string;
+  stage: string;
 }
 
 export class UiAuthStack extends cdk.NestedStack {
