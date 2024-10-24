@@ -48,6 +48,7 @@ export class ParentStack extends cdk.Stack {
       ...commonProps,
       stack: "ui-auth",
       api: apiStack.api,
+      applicationEndpointUrl: uiStack.applicationEndpointUrl,
     });
 
     const uiStack = new Stacks.UiStack(this, "ui", {
