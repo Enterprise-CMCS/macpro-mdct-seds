@@ -18,6 +18,7 @@ import {
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -192,7 +193,11 @@ async function cdkDeploy(options: { stage: string }) {
 
   await writeUiEnvFile(options.stage);
 
-  const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
+  const {
+    s3BucketName,
+    cloudfrontDistributionId,
+    bootstrapUsersFunctionName,
+  } = JSON.parse(
     (
       await new SSMClient({ region: "us-east-1" }).send(
         new GetParameterCommand({
@@ -201,6 +206,14 @@ async function cdkDeploy(options: { stage: string }) {
       )
     ).Parameter!.Value!
   );
+
+  if (bootstrapUsersFunctionName) {
+    const client = new LambdaClient({ region });
+    const command = new InvokeCommand({
+      FunctionName: bootstrapUsersFunctionName,
+    });
+    await client.send(command);
+  }
 
   if (!s3BucketName || !cloudfrontDistributionId) {
     throw new Error("Missing necessary CloudFormation exports");

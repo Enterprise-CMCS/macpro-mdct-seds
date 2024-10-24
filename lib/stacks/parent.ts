@@ -70,6 +70,8 @@ export class ParentStack extends cdk.Stack {
         userPoolId: authStack.userPool.userPoolId,
         userPoolClientId: authStack.userPoolClient.userPoolClientId,
         userPoolClientDomain: authStack.userPoolDomain.domainName,
+        bootstrapUsersFunctionName:
+          authStack.bootstrapUsersFunction?.functionName,
       }),
       description: `Deployment output for the ${props.stage} environment.`,
     });

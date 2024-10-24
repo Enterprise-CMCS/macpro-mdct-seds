@@ -11,7 +11,7 @@ export async function handler(_event, _context, _callback) {
       UserAttributes: user.attributes,
     };
     var passwordData = {
-      Password: process.env.bootstrapUsersPassword,
+      Password: password,
       UserPoolId: userPoolId,
       Username: user.username,
       Permanent: true,

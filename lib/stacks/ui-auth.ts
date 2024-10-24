@@ -24,6 +24,9 @@ export class UiAuthStack extends cdk.NestedStack {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
   public readonly userPoolDomain: cognito.UserPoolDomain;
+  public readonly bootstrapUsersFunction:
+    | lambda_nodejs.NodejsFunction
+    | undefined;
 
   constructor(scope: Construct, id: string, props: UiAuthStackProps) {
     super(scope, id, props);
@@ -60,38 +63,6 @@ export class UiAuthStack extends cdk.NestedStack {
       },
       advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
     });
-
-    // IAM Role for Lambda
-    const lambdaApiRole = new iam.Role(this, "LambdaApiRole", {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-    });
-
-    lambdaApiRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-        ],
-        resources: ["arn:aws:logs:*:*:*"],
-      })
-    );
-
-    lambdaApiRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["*"],
-        resources: [this.userPool.userPoolArn],
-      })
-    );
-
-    // back with okta
 
     let idp = undefined;
 
@@ -223,12 +194,49 @@ export class UiAuthStack extends cdk.NestedStack {
     });
 
     if (props.bootstrapUsersPasswordArn) {
-      const bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
+      const lambdaApiRole = new iam.Role(this, "LambdaApiRole", {
+        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole"
+          ),
+        ],
+      });
+
+      lambdaApiRole.addToPolicy(
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+          ],
+          resources: ["arn:aws:logs:*:*:*"],
+        })
+      );
+
+      lambdaApiRole.addToPolicy(
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ["*"],
+          resources: [this.userPool.userPoolArn],
+        })
+      );
+
+      lambdaApiRole.addToPolicy(
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ["ssm:GetParameter"],
+          resources: [props.bootstrapUsersPasswordArn],
+        })
+      );
+
+      this.bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
         this,
         "bootstrapUsers",
         {
           entry: "services/ui-auth/handlers/createUsers.js",
-          handler: "handlers.handler",
+          handler: "handler",
           runtime: lambda.Runtime.NODEJS_20_X,
           timeout: cdk.Duration.seconds(60),
           role: lambdaApiRole,
@@ -238,10 +246,6 @@ export class UiAuthStack extends cdk.NestedStack {
           },
         }
       );
-
-      new cdk.CfnOutput(this, "bootstrapUsersFunction", {
-        value: bootstrapUsersFunction.functionName,
-      });
     }
 
     const webAcl = new WafConstruct(
