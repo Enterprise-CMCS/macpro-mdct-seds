@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cloudfront": "^3.678.0",
+    "@aws-sdk/client-lambda": "^3.678.0",
     "@aws-sdk/client-secrets-manager": "^3.670.0",
     "@aws-sdk/client-ssm": "^3.674.0",
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
