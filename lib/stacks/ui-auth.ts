@@ -107,8 +107,7 @@ export class UiAuthStack extends cdk.NestedStack {
             providerType: "SAML",
             userPoolId: this.userPool.userPoolId,
             providerDetails: {
-              MetadataURL:
-                "https://test.idp.idm.cms.gov/app/exk6nytt8hbVUKGOg297/sso/saml/metadata", // TODO: oktaMetadataUrl
+              MetadataURL: oktaMetadataUrl,
             },
             attributeMapping: {
               email:
