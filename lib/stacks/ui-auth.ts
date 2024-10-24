@@ -16,7 +16,7 @@ interface UiAuthStackProps extends cdk.NestedStackProps {
   applicationEndpointUrl: string;
   stage: string;
   oktaMetadataUrl: string;
-  bootstrapUsersPassword: string;
+  bootstrapUsersPasswordArn: string;
 }
 
 export class UiAuthStack extends cdk.NestedStack {
@@ -222,17 +222,25 @@ export class UiAuthStack extends cdk.NestedStack {
       stringValue: this.userPoolClient.userPoolClientId,
     });
 
-    if (props.bootstrapUsersPassword) {
-      new lambda_nodejs.NodejsFunction(this, "bootstrapUsers", {
-        entry: "services/ui-auth/handlers/createUsers.js",
-        handler: "handlers.handler",
-        runtime: lambda.Runtime.NODEJS_20_X,
-        timeout: cdk.Duration.seconds(60),
-        role: lambdaApiRole,
-        environment: {
-          userPoolId: this.userPool.userPoolId,
-          bootstrapUsersPassword: props.bootstrapUsersPassword,
-        },
+    if (props.bootstrapUsersPasswordArn) {
+      const bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
+        this,
+        "bootstrapUsers",
+        {
+          entry: "services/ui-auth/handlers/createUsers.js",
+          handler: "handlers.handler",
+          runtime: lambda.Runtime.NODEJS_20_X,
+          timeout: cdk.Duration.seconds(60),
+          role: lambdaApiRole,
+          environment: {
+            userPoolId: this.userPool.userPoolId,
+            bootstrapUsersPasswordArn: props.bootstrapUsersPasswordArn,
+          },
+        }
+      );
+
+      new cdk.CfnOutput(this, "bootstrapUsersFunction", {
+        value: bootstrapUsersFunction.functionName,
       });
     }
 

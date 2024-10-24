@@ -56,7 +56,7 @@ export class ParentStack extends cdk.Stack {
       api: apiStack.api,
       applicationEndpointUrl: uiStack.applicationEndpointUrl,
       oktaMetadataUrl: props.oktaMetadataUrl,
-      bootstrapUsersPassword: props.bootstrapUsersPassword,
+      bootstrapUsersPasswordArn: props.bootstrapUsersPasswordArn,
     });
 
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
