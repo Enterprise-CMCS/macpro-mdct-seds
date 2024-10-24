@@ -260,7 +260,6 @@ export class ApiStack extends cdk.NestedStack {
       entry:
         "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.js",
       path: "/generate-enrollment-totals",
-      // async: true // TODO: figure out how to represent the equivalent of that in CDK // confirmed the lambda config matches.
       method: "POST",
       timeout: cdk.Duration.minutes(15),
       brokerString,
@@ -383,102 +382,6 @@ export class ApiStack extends cdk.NestedStack {
       method: "POST",
       brokerString,
     });
-
-    // TODO: I don't think this was deploying correctly to my personal AWS account, need to compare my CDK to this when its deployed correctly to make sure permissions are being created correctly.
-    //     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
-    //       Type: "AWS::IAM::Role"
-    //       Properties:
-    //         AssumeRolePolicyDocument:
-    //           Version: "2012-10-17"
-    //           Statement:
-    //             - Effect: "Allow"
-    //               Principal:
-    //                 Service: "lambda.amazonaws.com"
-    //               Action: "sts:AssumeRole"
-    //         Path: ${self:custom.iamPath}
-    //         ManagedPolicyArns:
-    //           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-    //         Policies:
-    //           - PolicyName: "LambdaApiRolePolicy"
-    //             PolicyDocument:
-    //               Version: "2012-10-17"
-    //               Statement:
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - logs:CreateLogGroup
-    //                     - logs:CreateLogStream
-    //                     - logs:PutLogEvents
-    //                   Resource: "arn:aws:logs:*:*:*"
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - dynamodb:DescribeTable
-    //                     - dynamodb:Query
-    //                     - dynamodb:Scan
-    //                     - dynamodb:GetItem
-    //                     - dynamodb:PutItem
-    //                     - dynamodb:UpdateItem
-    //                     - dynamodb:DeleteItem
-    //                     - dynamodb:ListTables
-    //                     - dynamodb:BatchWriteItem
-    //                   Resource:
-    //                     - ${self:custom.AgeRangesTableArn}
-    //                     - ${self:custom.FormAnswersTableArn}
-    //                     - ${self:custom.FormQuestionsTableArn}
-    //                     - ${self:custom.FormsTableArn}
-    //                     - ${self:custom.StateFormsTableArn}
-    //                     - ${self:custom.StatesTableArn}
-    //                     - ${self:custom.StatusTableArn}
-    //                     - ${self:custom.AuthUserTableArn}
-    //                     - ${self:custom.AuthUserRolesTableArn}
-    //                     - ${self:custom.AuthUserStatesTableArn}
-    //                     - ${self:custom.FormTemplatesTableArn}
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - dynamodb:DescribeStream
-    //                     - dynamodb:GetRecords
-    //                     - dynamodb:GetShardIterator
-    //                     - dynamodb:ListShards
-    //                     - dynamodb:ListStreams
-    //                   Resource:
-    //                     - ${self:custom.AgeRangesTableStreamArn}
-    //                     - ${self:custom.FormAnswersTableStreamArn}
-    //                     - ${self:custom.FormQuestionsTableStreamArn}
-    //                     - ${self:custom.FormsTableStreamArn}
-    //                     - ${self:custom.StateTableStreamArn}
-    //                     - ${self:custom.StateFormsTableStreamArn}
-    //                     - ${self:custom.StatusTableStreamArn}
-    //                     - ${self:custom.AuthUserTableStreamArn}
-    //                     - ${self:custom.AuthUserRolesTableStreamArn}
-    //                     - ${self:custom.AuthUserStatesTableStreamArn}
-    //                     - ${self:custom.FormTemplatesTableStreamArn}
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - dynamodb:Query
-    //                     - dynamodb:Scan
-    //                   Resource:
-    //                     - arn:aws:dynamodb:*:*:table/${self:custom.FormAnswersTableName}/index/*
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - logs:CreateLogStream
-    //                     - logs:CreateLogGroup
-    //                   Resource: !Sub /arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - cognito-idp:AdminGetUser
-    //                   Resource: "*"
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - ses:SendEmail
-    //                     - ses:SendRawEmail
-    //                   Resource: "*"
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - lambda:InvokeFunction
-    //                   Resource: "*"
-    //                 - Effect: "Allow"
-    //                   Action:
-    //                     - ssm:GetParameter
-    //                   Resource: "*"
 
     const waf = new RegionalWaf(this, "WafConstruct", {
       name: `${props.project}-${stage}-${this.shortStackName}`,
