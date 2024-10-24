@@ -41,6 +41,7 @@ export class ParentStack extends cdk.Stack {
       tables: dataStack.tables,
       vpc,
       privateSubnets,
+      brokerString: props.brokerString,
     });
 
     const authStack = new Stacks.UiAuthStack(this, "ui-auth", {
