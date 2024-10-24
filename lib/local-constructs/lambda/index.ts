@@ -102,14 +102,14 @@ export class Lambda extends Construct {
         new PolicyStatement({
           effect: Effect.ALLOW,
           actions: [
+            "dynamodb:BatchWriteItem",
+            "dynamodb:DeleteItem",
             "dynamodb:DescribeTable",
-            "dynamodb:Query",
-            "dynamodb:Scan",
             "dynamodb:GetItem",
             "dynamodb:PutItem",
+            "dynamodb:Query",
+            "dynamodb:Scan",
             "dynamodb:UpdateItem",
-            "dynamodb:DeleteItem",
-            "dynamodb:BatchWriteItem",
           ],
           resources: [table.tableArn],
         })
