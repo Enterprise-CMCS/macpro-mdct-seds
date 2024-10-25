@@ -229,8 +229,6 @@ async function cdkDeploy(options: { stage: string }) {
 
   console.log(s3BucketName, cloudfrontDistributionId);
 
-  console.log("__dirname:", __dirname);
-
   const buildDir = path.join(__dirname, "../../services/ui-src", "build");
 
   try {
