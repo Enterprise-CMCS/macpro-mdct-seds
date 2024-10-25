@@ -231,8 +231,6 @@ async function cdkDeploy(options: { stage: string }) {
     console.error("Failed to set fixed timestamps:", error);
   }
 
-  await runner.run_command_and_output("look at me", ["env"], "services/ui-src");
-
   // There's a mime type issue when aws s3 syncing files up
   // Empirically, this issue never presents itself if the bucket is cleared just before.
   // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.

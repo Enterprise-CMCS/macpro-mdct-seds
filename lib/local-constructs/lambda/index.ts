@@ -55,6 +55,7 @@ export class Lambda extends Construct {
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: brokerString,
       STAGE: stage,
+      stage,
       ...Object.values(props.tables).reduce((acc, table) => {
         const currentTable = Stack.of(table)
           .getLogicalId(table.node.defaultChild as CfnElement)
@@ -80,6 +81,11 @@ export class Lambda extends Construct {
             new PolicyStatement({
               effect: Effect.DENY,
               actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: ["ssm:GetParameter"],
               resources: ["*"],
             }),
             new PolicyStatement({
