@@ -15,8 +15,8 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { commonBundlingOptions } from "../../config/bundling-config";
-import { ApiStack } from "../../stacks/api";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler?: string;
@@ -25,6 +25,9 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   brokerString?: string;
   path?: string;
   method?: string;
+  stackName: string;
+  tables: { [name: string]: dynamodb.Table };
+  api: apigateway.RestApi;
 }
 
 export class Lambda extends Construct {
@@ -52,19 +55,16 @@ export class Lambda extends Construct {
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: brokerString,
       STAGE: stage,
-      ...Object.values((Stack.of(this) as ApiStack).tables).reduce(
-        (acc, table) => {
-          const currentTable = Stack.of(table)
-            .getLogicalId(table.node.defaultChild as CfnElement)
-            .slice(0, -8);
+      ...Object.values(props.tables).reduce((acc, table) => {
+        const currentTable = Stack.of(table)
+          .getLogicalId(table.node.defaultChild as CfnElement)
+          .slice(0, -8);
 
-          acc[`${currentTable}Name`] = table.tableName;
-          acc[`${currentTable}Arn`] = table.tableArn;
+        acc[`${currentTable}Name`] = table.tableName;
+        acc[`${currentTable}Arn`] = table.tableArn;
 
-          return acc;
-        },
-        {} as { [key: string]: string }
-      ),
+        return acc;
+      }, {} as { [key: string]: string }),
     };
 
     const role = new Role(this, `${id}LambdaExecutionRole`, {
@@ -97,7 +97,7 @@ export class Lambda extends Construct {
     });
 
     // TOOD: instead of this being one policy per table, put all of the tables in one policy in the resources key
-    Object.values((Stack.of(this) as ApiStack).tables).forEach((table) => {
+    Object.values(props.tables).forEach((table) => {
       role.addToPolicy(
         new PolicyStatement({
           effect: Effect.ALLOW,
@@ -117,7 +117,7 @@ export class Lambda extends Construct {
     });
 
     this.lambda = new NodejsFunction(this, id, {
-      functionName: `${(Stack.of(this) as ApiStack).shortStackName}-cdk-${id}`,
+      functionName: `${props.stackName}-${id}`,
       handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
@@ -130,13 +130,13 @@ export class Lambda extends Construct {
     });
 
     if (path && method) {
-      const resource = (Stack.of(this) as ApiStack).api.root.resourceForPath(
-        path
-      );
+      const resource = props.api.root.resourceForPath(path);
       resource.addMethod(
         method,
         new apigateway.LambdaIntegration(this.lambda),
-        { authorizationType: apigateway.AuthorizationType.IAM }
+        {
+          authorizationType: apigateway.AuthorizationType.IAM,
+        }
       );
     }
   }
