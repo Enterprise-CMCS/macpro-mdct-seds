@@ -19,7 +19,7 @@ export class DynamoDBTable extends Construct {
     super(scope, id);
 
     this.table = new dynamodb.Table(this, "Table", {
-      tableName: `${props.stage}-cdk-${props.name}`,
+      tableName: `${props.stage}-${props.name}`,
       partitionKey: props.partitionKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,

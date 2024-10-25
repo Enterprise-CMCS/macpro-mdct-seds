@@ -36,7 +36,7 @@ export class ApiStack extends cdk.NestedStack {
     const stage = this.node.tryGetContext("stage") || "dev";
 
     const service = "app-api";
-    this.shortStackName = `${service}-${stage}-cdk`;
+    this.shortStackName = `${service}-${stage}`;
     cdk.Tags.of(this).add("SERVICE", service);
 
     this.tables = props.tables;
