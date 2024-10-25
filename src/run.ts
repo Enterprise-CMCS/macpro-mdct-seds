@@ -197,6 +197,7 @@ async function cdkDeploy(options: { stage: string }) {
     s3BucketName,
     cloudfrontDistributionId,
     bootstrapUsersFunctionName,
+    seedDataFunctionName,
   } = JSON.parse(
     (
       await new SSMClient({ region: "us-east-1" }).send(
@@ -211,6 +212,14 @@ async function cdkDeploy(options: { stage: string }) {
     const client = new LambdaClient({ region });
     const command = new InvokeCommand({
       FunctionName: bootstrapUsersFunctionName,
+    });
+    await client.send(command);
+  }
+
+  if (seedDataFunctionName) {
+    const client = new LambdaClient({ region });
+    const command = new InvokeCommand({
+      FunctionName: seedDataFunctionName,
     });
     await client.send(command);
   }
