@@ -120,7 +120,7 @@ resources:
                 - Effect: "Allow"
                   Action:
                     - "ssm:GetParameter"
-                  Resource: "arn:aws:ssm:*:*:parameter/configuration/*/cognito/bootstrapUsers/password"
+                  Resource: "*"
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
