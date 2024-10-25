@@ -194,11 +194,11 @@ export class UiAuthStack extends cdk.NestedStack {
     );
 
     new ssm.StringParameter(this, "CognitoUserPoolIdParameter", {
-      parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_id`,
+      parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
       stringValue: this.userPool.userPoolId,
     });
     new ssm.StringParameter(this, "CognitoUserPoolClientIdParameter", {
-      parameterName: `/${stage}/ui-auth/cdk_cognito_user_pool_client_id`,
+      parameterName: `/${stage}/ui-auth/cognito_user_pool_client_id`,
       stringValue: this.userPoolClient.userPoolClientId,
     });
 
