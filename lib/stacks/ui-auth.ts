@@ -260,7 +260,7 @@ export class UiAuthStack extends cdk.NestedStack {
     const webAcl = new WafConstruct(
       this,
       "WafConstruct",
-      { name: `ui-auth-cdk-${stage}-webacl-waf` },
+      { name: `ui-auth-${stage}-webacl-waf` },
       "REGIONAL"
     ).webAcl;
 
