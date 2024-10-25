@@ -7,12 +7,7 @@ import {
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
 } from "aws-cdk-lib";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 interface DatabaseStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
@@ -142,7 +137,7 @@ export class DatabaseStack extends cdk.NestedStack {
           beforeBundling(inputDir: string, outputDir: string): string[] {
             return [
               `mkdir -p ${outputDir}/data/initial_data_load/`,
-              `cp -r ${inputDir}/data/initial_data_load/ ${outputDir}/data/initial_data_load/`,
+              `cp -r ${inputDir}/services/database/data/initial_data_load/ ${outputDir}/data/initial_data_load/`,
             ];
           },
           afterBundling() {
