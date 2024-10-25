@@ -72,6 +72,7 @@ export class ParentStack extends cdk.Stack {
         userPoolClientDomain: `${authStack.userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
         bootstrapUsersFunctionName:
           authStack.bootstrapUsersFunction?.functionName,
+        seedDataFunctionName: dataStack.seedDataFunction?.functionName,
       }),
       description: `Deployment output for the ${props.stage} environment.`,
     });
