@@ -95,6 +95,9 @@ export class UiAuthStack extends cdk.NestedStack {
     this.userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
       userPool: this.userPool,
+      authFlows: {
+        userPassword: true,
+      },
       oAuth: {
         flows: {
           implicitCodeGrant: true,
@@ -115,6 +118,12 @@ export class UiAuthStack extends cdk.NestedStack {
         : undefined,
       generateSecret: false,
     });
+
+    (this.userPoolClient.node
+      .defaultChild as cognito.CfnUserPoolClient).addPropertyOverride(
+      "ExplicitAuthFlows",
+      ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
+    );
 
     this.userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
       userPool: this.userPool,
