@@ -174,14 +174,6 @@ async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = ["sls", "deploy", "--stage", stage];
-  await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
-}
-
-async function cdkDeploy(options: { stage: string }) {
-  const stage = options.stage;
-  const runner = new LabeledProcessRunner();
-  await prepare_services(runner);
   const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
@@ -284,7 +276,7 @@ const waitForStackDeleteComplete = async (
   );
 };
 
-async function cdkDestroy({
+async function destroy({
   stage,
   wait,
   verify,
@@ -321,33 +313,6 @@ async function cdkDestroy({
   }
 }
 
-async function destroy_stage(options: {
-  stage: string;
-  service: string | undefined;
-  wait: boolean;
-  verify: boolean;
-}) {
-  let destroyer = new ServerlessStageDestroyer();
-  let filters = [
-    {
-      Key: "PROJECT",
-      Value: `${process.env.PROJECT}`,
-    },
-  ];
-  if (options.service) {
-    filters.push({
-      Key: "SERVICE",
-      Value: `${options.service}`,
-    });
-  }
-
-  await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
-    wait: options.wait,
-    filters: filters,
-    verify: options.verify,
-  });
-}
-
 // The command definitons in yargs
 // All valid arguments to dev should be enumerated here, this is the entrypoint to the script
 yargs(process.argv.slice(2))
@@ -364,22 +329,14 @@ yargs(process.argv.slice(2))
   )
   .command(
     "deploy",
-    "deploy the app with serverless compose to the cloud",
+    "deploy the app with cdk to the cloud",
     {
       stage: { type: "string", demandOption: true },
     },
     deploy
   )
   .command(
-    "cdkDeploy",
-    "deploy the app with cdk to the cloud",
-    {
-      stage: { type: "string", demandOption: true },
-    },
-    cdkDeploy
-  )
-  .command(
-    "cdkDestroy",
+    "destroy",
     "destroy a cdk stage in AWS",
     {
       stage: { type: "string", demandOption: true },
@@ -387,18 +344,7 @@ yargs(process.argv.slice(2))
       wait: { type: "boolean", demandOption: false, default: true },
       verify: { type: "boolean", demandOption: false, default: true },
     },
-    cdkDestroy
-  )
-  .command(
-    "destroy",
-    "destroy serverless stage",
-    {
-      stage: { type: "string", demandOption: true },
-      service: { type: "string", demandOption: false },
-      wait: { type: "boolean", demandOption: false, default: true },
-      verify: { type: "boolean", demandOption: false, default: true },
-    },
-    destroy_stage
+    destroy
   )
   .command(
     "update-env",
