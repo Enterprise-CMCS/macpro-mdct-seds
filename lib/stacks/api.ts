@@ -393,6 +393,7 @@ export class ApiStack extends cdk.NestedStack {
     const waf = new RegionalWaf(this, "WafConstruct", {
       name: `${props.project}-${stage}-${this.shortStackName}`,
       apiGateway: this.api,
+      awsCommonExcludeRules: ["SizeRestrictions_BODY"],
     });
 
     const logBucket = new s3.Bucket(this, "LogBucket", {
