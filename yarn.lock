@@ -106,7 +106,7 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-cloudformation@^3.128.0", "@aws-sdk/client-cloudformation@^3.137.0":
+"@aws-sdk/client-cloudformation@^3.137.0":
   version "3.672.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-cloudformation/-/client-cloudformation-3.672.0.tgz#6780d3ab8139449e4ef8b850cabd3b265a331c89"
   integrity sha512-PsQ+Qg/3fGz7oI+zrN+kBGkpGrZ20tWCA/sUqyfDIroBFpmQ1YqxeQT4mFD7u57QB42Pbhm2k15+lH4j8hdTPQ==
@@ -309,7 +309,7 @@
     "@smithy/util-waiter" "^3.1.6"
     tslib "^2.6.2"
 
-"@aws-sdk/client-s3@^3.128.0", "@aws-sdk/client-s3@^3.137.0":
+"@aws-sdk/client-s3@^3.137.0":
   version "3.670.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-s3/-/client-s3-3.670.0.tgz#53e9ba24ee2dacb94bed9dfab50521108d3b6fa0"
   integrity sha512-8Pwu1K+PgbYpXDaGKNy5hEbRH5FXHlfXJOhtV4oEDroL7ngix3ZUVWN9oIVVSDK02y1oQS1jCSEGUiUiauzb0g==
@@ -3076,16 +3076,6 @@
     "@smithy/types" "^3.7.2"
     tslib "^2.6.2"
 
-"@stratiformdigital/serverless-stage-destroyer@^2.0.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@stratiformdigital/serverless-stage-destroyer/-/serverless-stage-destroyer-2.1.1.tgz#6c0a5bde84d8e0646aa4ddf9ea0b0b9b099495fb"
-  integrity sha512-2rotApZgNH3SDNvig5voZ8f0NDDWYLd/Z3yIMDpHh4dQOPR92zXh8eBou4Cio/vgTAtxVLsOL/EPViQWkPXcTg==
-  dependencies:
-    "@aws-sdk/client-cloudformation" "^3.128.0"
-    "@aws-sdk/client-s3" "^3.128.0"
-    "@types/readline-sync" "^1.4.4"
-    readline-sync "^1.4.10"
-
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.6.tgz#b4a914bb62e7c272d4e5989fe4440f812ab1d807"
@@ -3160,11 +3150,6 @@
   integrity sha512-vOTpLduLkZXePLxHiHsBLp98mHGnl8RptV4YAO3HfKO5UHjDvySGbxKtpYfy8Sx5+WKcgc45qNreJJRVM3L6mw==
   dependencies:
     undici-types "~6.19.2"
-
-"@types/readline-sync@^1.4.4":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.8.tgz#dc9767a93fc83825d90331f2549a2e90fc3255f0"
-  integrity sha512-BL7xOf0yKLA6baAX6MMOnYkoflUyj/c7y3pqMRfU0va7XlwHAOTOIo4x55P/qLfMsuaYdJJKubToLqRVmRtRZA==
 
 "@types/responselike@^1.0.0":
   version "1.0.3"
@@ -6792,11 +6777,6 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
-
-readline-sync@^1.4.10:
-  version "1.4.10"
-  resolved "https://registry.yarnpkg.com/readline-sync/-/readline-sync-1.4.10.tgz#41df7fbb4b6312d673011594145705bf56d8873b"
-  integrity sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==
 
 reflect.getprototypeof@^1.0.6, reflect.getprototypeof@^1.0.9:
   version "1.0.10"
