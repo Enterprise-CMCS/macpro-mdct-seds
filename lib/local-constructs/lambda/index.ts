@@ -122,6 +122,14 @@ export class Lambda extends Construct {
       );
     });
 
+    role.addToPolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["dynamodb:Query", "dynamodb:Scan"],
+        resources: [`${props.tables["form-answers"].tableArn}/index/*`],
+      })
+    );
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${props.stackName}-${id}`,
       handler,
