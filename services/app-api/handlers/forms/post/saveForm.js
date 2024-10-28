@@ -11,20 +11,19 @@ import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
 export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
 
-  console.log("data:", data);
-  // for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
-  //   await authorizeUserForState(event, stateId);
-  // }
+  for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
+    await authorizeUserForState(event, stateId);
+  }
 
-  // const user = (await getCurrentUserInfo(event)).data;
-  // const answers = data.formAnswers;
-  // const statusData = data.statusData;
-  // const stateFormId = answers[0].state_form;
+  const user = (await getCurrentUserInfo(event)).data;
+  const answers = data.formAnswers;
+  const statusData = data.statusData;
+  const stateFormId = answers[0].state_form;
 
-  // if (user.role === "state") {
-  //   await updateAnswers(answers, user);
-  // }
-  // await updateStateForm(stateFormId, statusData, user);
+  if (user.role === "state") {
+    await updateAnswers(answers, user);
+  }
+  await updateStateForm(stateFormId, statusData, user);
 });
 
 // TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
