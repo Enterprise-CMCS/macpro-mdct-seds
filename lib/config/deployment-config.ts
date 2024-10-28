@@ -105,7 +105,6 @@ export class DeploymentConfig {
     };
 
     const appConfigInstance = new DeploymentConfig(appConfig);
-    await appConfigInstance.initialize();
     return appConfigInstance;
   }
 
