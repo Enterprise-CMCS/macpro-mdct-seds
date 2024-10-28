@@ -139,6 +139,7 @@ export class UiStack extends cdk.NestedStack {
 
   private async setupWaf(props: UiStackProps) {
     const vpnIpSetArn = await this.fetchVpnIpSetArn(props);
+    const vpnIpv6SetArn = await this.fetchVpnIpv6SetArn(props);
     const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
     if (vpnIpSetArn) {
@@ -148,6 +149,21 @@ export class UiStack extends cdk.NestedStack {
         addresses: [],
         ipAddressVersion: "IPV4",
       });
+
+      const statements = [
+        {
+          ipSetReferenceStatement: { arn: vpnIpSetArn },
+        },
+        {
+          ipSetReferenceStatement: { arn: githubIpSet.attrArn },
+        },
+      ];
+
+      if (vpnIpv6SetArn) {
+        statements.push({
+          ipSetReferenceStatement: { arn: vpnIpv6SetArn },
+        });
+      }
 
       wafRules.push({
         name: "vpn-only",
@@ -160,14 +176,7 @@ export class UiStack extends cdk.NestedStack {
         },
         statement: {
           orStatement: {
-            statements: [
-              {
-                ipSetReferenceStatement: { arn: vpnIpSetArn },
-              },
-              {
-                ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-              },
-            ],
+            statements,
           },
         },
       });
@@ -213,6 +222,33 @@ export class UiStack extends cdk.NestedStack {
     ];
 
     for (const paramPath of vpnIpSetPaths) {
+      try {
+        const paramValue = await getParameter(paramPath);
+        return paramValue;
+      } catch (error) {
+        if ((error as Error).message.includes("Failed to fetch parameter")) {
+          console.warn(
+            'Ignoring "Failed to fetch parameter" error:',
+            (error as Error).message
+          );
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  private async fetchVpnIpv6SetArn(
+    props: UiStackProps
+  ): Promise<string | undefined> {
+    const vpnIpv6SetPaths = [
+      `/configuration/${props.stage}/vpnIpv6SetArn`,
+      `/configuration/default/vpnIpv6SetArn`,
+    ];
+
+    for (const paramPath of vpnIpv6SetPaths) {
       try {
         const paramValue = await getParameter(paramPath);
         return paramValue;
