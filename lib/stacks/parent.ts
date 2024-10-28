@@ -1,9 +1,11 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "../local-constructs/cloudwatch-logs-resource-policy";
-
 import { DeploymentConfigProperties } from "../config/deployment-config";
-import * as Stacks from "../stacks";
+import { ApiStack } from "./api";
+import { UiAuthStack } from "./ui-auth";
+import { UiStack } from "./ui";
+import { DatabaseStack } from "./data";
 
 export class ParentStack extends cdk.Stack {
   constructor(
@@ -30,12 +32,12 @@ export class ParentStack extends cdk.Stack {
       });
     }
 
-    const dataStack = new Stacks.DatabaseStack(this, "database", {
+    const dataStack = new DatabaseStack(this, "database", {
       ...commonProps,
       stack: "database",
     });
 
-    const apiStack = new Stacks.ApiStack(this, "api", {
+    const apiStack = new ApiStack(this, "api", {
       ...commonProps,
       stack: "api",
       tables: dataStack.tables,
@@ -44,13 +46,13 @@ export class ParentStack extends cdk.Stack {
       brokerString: props.brokerString,
     });
 
-    const uiStack = new Stacks.UiStack(this, "ui", {
+    const uiStack = new UiStack(this, "ui", {
       ...commonProps,
       stack: "ui",
       restrictToVpn: false,
     });
 
-    const authStack = new Stacks.UiAuthStack(this, "ui-auth", {
+    const authStack = new UiAuthStack(this, "ui-auth", {
       ...commonProps,
       stack: "ui-auth",
       api: apiStack.api,
