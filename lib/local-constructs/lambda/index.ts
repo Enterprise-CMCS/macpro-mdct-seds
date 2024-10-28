@@ -120,6 +120,21 @@ export class Lambda extends Construct {
           resources: [table.tableArn],
         })
       );
+      if (table.tableStreamArn) {
+        role.addToPolicy(
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: [
+              "dynamodb:DescribeStream",
+              "dynamodb:GetRecords",
+              "dynamodb:GetShardIterator",
+              "dynamodb:ListShards",
+              "dynamodb:ListStreams",
+            ],
+            resources: [table.tableStreamArn],
+          })
+        );
+      }
     });
 
     role.addToPolicy(
@@ -127,6 +142,20 @@ export class Lambda extends Construct {
         effect: Effect.ALLOW,
         actions: ["dynamodb:Query", "dynamodb:Scan"],
         resources: [`${props.tables["form-answers"].tableArn}/index/*`],
+      })
+    );
+
+    role.addToPolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          "cognito-idp:AdminGetUser",
+          "ses:SendEmail",
+          "ses:SendRawEmail",
+          "lambda:InvokeFunction",
+          "ssm:GetParameter",
+        ],
+        resources: ["*"],
       })
     );
 
