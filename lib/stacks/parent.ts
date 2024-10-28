@@ -82,6 +82,10 @@ export class ParentStack extends cdk.Stack {
       stringValue: JSON.stringify(props),
       description: `Deployment config for the ${props.stage} environment.`,
     });
+
+    new cdk.CfnOutput(this, "CloudFrontUrl", {
+      value: uiStack.distribution.distributionDomainName,
+    });
   }
 }
 
