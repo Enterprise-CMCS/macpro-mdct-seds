@@ -60,6 +60,7 @@
     "aws-cdk-lib": "^2.161.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "constructs": "^10.3.0",
-    "jsonpath": "^1.1.0"
+    "jsonpath": "^1.1.0",
+    "readline-sync": "^1.4.10"
   }
 }
