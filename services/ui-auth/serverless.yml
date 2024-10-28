@@ -96,10 +96,6 @@ resources:
                   Action:
                     - "*"
                   Resource: !GetAtt CognitoUserPool.Arn
-                - Effect: "Allow"
-                  Action:
-                    - "ssm:GetParameter"
-                  Resource: "*"
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
