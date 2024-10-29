@@ -1,8 +1,26 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
-import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { execSync } from "child_process";
+import * as readlineSync from "readline-sync";
+import {
+  CloudFormationClient,
+  DeleteStackCommand,
+  waitUntilStackDeleteComplete,
+} from "@aws-sdk/client-cloudformation";
+import path from "path";
+import { writeUiEnvFile } from "./write-ui-env-file.js";
+import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from "@aws-sdk/client-cloudfront";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // load .env
 dotenv.config();
@@ -17,6 +35,36 @@ const deployedServices = [
   "ui-waf-log-assoc",
   "ui-src",
 ];
+
+const project = process.env.PROJECT;
+const region = process.env.REGION_A;
+
+function confirmDestroyCommand(stack: string) {
+  const orange = "\x1b[38;5;208m";
+  const reset = "\x1b[0m";
+
+  const confirmation = readlineSync.question(`
+${orange}********************************* STOP *******************************
+You've requested a destroy for: 
+
+    ${stack}
+
+Continuing will irreversibly delete all data and infrastructure
+associated with ${stack} and its nested stacks.
+
+Do you really want to destroy it?
+Re-enter the stack name (${stack}) to continue:
+**********************************************************************${reset}
+`);
+
+  if (confirmation !== stack) {
+    throw new Error(`
+${orange}**********************************************************************
+The destroy operation has been aborted.
+**********************************************************************${reset}
+`);
+  }
+}
 
 // Function to update .env files using 1Password CLI
 function updateEnvFiles() {
@@ -162,35 +210,143 @@ async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = ["sls", "deploy", "--stage", stage];
-  await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
+  const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
+  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+
+  await runner.run_command_and_output(
+    "build react app",
+    ["yarn", "run", "build"],
+    "services/ui-src"
+  );
+
+  await writeUiEnvFile(options.stage);
+
+  const {
+    s3BucketName,
+    cloudfrontDistributionId,
+    bootstrapUsersFunctionName,
+    seedDataFunctionName,
+  } = JSON.parse(
+    (
+      await new SSMClient({ region: "us-east-1" }).send(
+        new GetParameterCommand({
+          Name: `/${project}/${options.stage}/deployment-output`,
+        })
+      )
+    ).Parameter!.Value!
+  );
+
+  if (bootstrapUsersFunctionName) {
+    const client = new LambdaClient({ region });
+    const command = new InvokeCommand({
+      FunctionName: bootstrapUsersFunctionName,
+    });
+    await client.send(command);
+  }
+
+  if (seedDataFunctionName) {
+    const client = new LambdaClient({ region });
+    const command = new InvokeCommand({
+      FunctionName: seedDataFunctionName,
+    });
+    await client.send(command);
+  }
+
+  if (!s3BucketName || !cloudfrontDistributionId) {
+    throw new Error("Missing necessary CloudFormation exports");
+  }
+
+  console.log(s3BucketName, cloudfrontDistributionId);
+
+  const buildDir = path.join(__dirname, "../../services/ui-src", "build");
+
+  try {
+    execSync(`find ${buildDir} -type f -exec touch -t 202001010000 {} +`);
+  } catch (error) {
+    console.error("Failed to set fixed timestamps:", error);
+  }
+
+  // There's a mime type issue when aws s3 syncing files up
+  // Empirically, this issue never presents itself if the bucket is cleared just before.
+  // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
+  await runner.run_command_and_output(
+    "",
+    ["aws", "s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
+    "."
+  );
+  await runner.run_command_and_output(
+    "copy react app to s3 bucket",
+    ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`],
+    "."
+  );
+
+  const cloudfrontClient = new CloudFrontClient({
+    region,
+  });
+  const invalidationParams = {
+    DistributionId: cloudfrontDistributionId,
+    InvalidationBatch: {
+      CallerReference: `${Date.now()}`,
+      Paths: {
+        Quantity: 1,
+        Items: ["/*"],
+      },
+    },
+  };
+  await cloudfrontClient.send(
+    new CreateInvalidationCommand(invalidationParams)
+  );
+
+  console.log(
+    `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
+  );
 }
 
-async function destroy_stage(options: {
+const waitForStackDeleteComplete = async (
+  client: CloudFormationClient,
+  stackName: string
+) => {
+  return waitUntilStackDeleteComplete(
+    { client, maxWaitTime: 3600 },
+    { StackName: stackName }
+  );
+};
+
+async function destroy({
+  stage,
+  wait,
+  verify,
+}: {
   stage: string;
-  service: string | undefined;
   wait: boolean;
   verify: boolean;
 }) {
-  let destroyer = new ServerlessStageDestroyer();
-  let filters = [
-    {
-      Key: "PROJECT",
-      Value: `${process.env.PROJECT}`,
-    },
-  ];
-  if (options.service) {
-    filters.push({
-      Key: "SERVICE",
-      Value: `${options.service}`,
-    });
+  const stackName = `${project}-${stage}`;
+
+  if (/prod/i.test(stage)) {
+    console.log("Error: Destruction of production stages is not allowed.");
+    process.exit(1);
   }
 
-  await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
-    wait: options.wait,
-    filters: filters,
-    verify: options.verify,
-  });
+  if (verify) await confirmDestroyCommand(stackName);
+
+  const client = new CloudFormationClient({ region });
+  await client.send(new DeleteStackCommand({ StackName: stackName }));
+  console.log(`Stack ${stackName} delete initiated.`);
+
+  if (wait) {
+    console.log(`Waiting for stack ${stackName} to be deleted...`);
+    const result = await waitForStackDeleteComplete(client, stackName);
+    console.log(
+      result.state === "SUCCESS"
+        ? `Stack ${stackName} deleted successfully.`
+        : `Error: Stack ${stackName} deletion failed.`
+    );
+  } else {
+    console.log(
+      `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`
+    );
+  }
 }
 
 // The command definitons in yargs
@@ -209,7 +365,7 @@ yargs(process.argv.slice(2))
   )
   .command(
     "deploy",
-    "deploy the app with serverless compose to the cloud",
+    "deploy the app with cdk to the cloud",
     {
       stage: { type: "string", demandOption: true },
     },
@@ -217,14 +373,14 @@ yargs(process.argv.slice(2))
   )
   .command(
     "destroy",
-    "destroy serverless stage",
+    "destroy a cdk stage in AWS",
     {
       stage: { type: "string", demandOption: true },
       service: { type: "string", demandOption: false },
       wait: { type: "boolean", demandOption: false, default: true },
       verify: { type: "boolean", demandOption: false, default: true },
     },
-    destroy_stage
+    destroy
   )
   .command(
     "update-env",

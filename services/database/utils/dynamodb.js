@@ -11,6 +11,7 @@ const buildDynamoClient = () => {
     logger: {
       warn: console.warn,
       error: console.error,
+      debug: console.debug,
     },
   };
   const endpoint = process.env.DYNAMODB_URL;
