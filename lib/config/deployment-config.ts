@@ -18,8 +18,6 @@ type InjectedConfigProperties = {
 export type DeploymentConfigProperties = InjectedConfigProperties & {
   isDev: boolean;
   project: string;
-  sharedOpenSearchDomainArn: string;
-  sharedOpenSearchDomainEndpoint: string;
   stage: string;
   terminationProtection: boolean;
 };
@@ -43,8 +41,6 @@ export class DeploymentConfig {
       terminationProtection: ["main", "val", "production"].includes(
         options.stage
       ),
-      sharedOpenSearchDomainArn: "",
-      sharedOpenSearchDomainEndpoint: "",
     };
 
     const appConfigInstance = new DeploymentConfig(appConfig);
