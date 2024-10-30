@@ -9,8 +9,10 @@ const {
 const buildDynamoClient = () => {
   const dynamoConfig = {
     logger: {
-      warn: console.warn,
+      debug: console.debug,
       error: console.error,
+      info: console.info,
+      warn: console.warn,
     },
   };
   const endpoint = process.env.DYNAMODB_URL;
