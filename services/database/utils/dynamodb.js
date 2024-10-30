@@ -12,7 +12,6 @@ const buildDynamoClient = () => {
       debug: console.debug,
       error: console.error,
       info: console.info,
-      trace: console.trace,
       warn: console.warn,
     },
   };
