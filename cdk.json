@@ -8,12 +8,12 @@
       "README.md",
       "cdk*.json",
       "**/*.d.ts",
-      "**/*.js",
       "tsconfig.json",
       "package*.json",
       "yarn.lock",
       "node_modules",
-      "test"
+      "test",
+      "services/ui-src/src/**"
     ]
   },
   "context": {
