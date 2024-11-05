@@ -25,11 +25,6 @@ export class DatabaseStack extends cdk.NestedStack {
     const stage = this.node.tryGetContext("stage") || "dev";
 
     this.tables = {
-      "age-ranges": new DynamoDBTable(this, "AgeRanges", {
-        stage,
-        name: "age-ranges",
-        partitionKey: { name: "ageRange", type: dynamodb.AttributeType.STRING },
-      }).table,
       "form-answers": new DynamoDBTable(this, "FormAnswers", {
         stage,
         name: "form-answers",
@@ -73,24 +68,9 @@ export class DatabaseStack extends cdk.NestedStack {
         name: "states",
         partitionKey: { name: "state_id", type: dynamodb.AttributeType.STRING },
       }).table,
-      status: new DynamoDBTable(this, "Status", {
-        stage,
-        name: "status",
-        partitionKey: { name: "status", type: dynamodb.AttributeType.STRING },
-      }).table,
       "auth-user": new DynamoDBTable(this, "AuthUser", {
         stage,
         name: "auth-user",
-        partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
-      }).table,
-      "auth-user-roles": new DynamoDBTable(this, "AuthUserRoles", {
-        stage,
-        name: "auth-user-roles",
-        partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
-      }).table,
-      "auth-user-states": new DynamoDBTable(this, "AuthUserStates", {
-        stage,
-        name: "auth-user-states",
         partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
       }).table,
     };
