@@ -166,7 +166,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
     "services/ui-src"
   );
 
-  await writeUiEnvFile("local");
+  await writeUiEnvFile("master", true);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
