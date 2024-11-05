@@ -14,9 +14,14 @@ export async function writeUiEnvFile(stage: string, local = false) {
   const ssmClient = new SSMClient({ region });
   const parameterName = `/${project}/${stage}/deployment-output`;
 
-  const { Parameter } = await ssmClient.send(
-    new GetParameterCommand({ Name: parameterName })
-  );
+  let Parameter;
+  try {
+    Parameter = (
+      await ssmClient.send(new GetParameterCommand({ Name: parameterName }))
+    ).Parameter;
+  } catch {
+    throw Error(`Cannot find SSM parameter ${parameterName}`);
+  }
   const deploymentOutput = JSON.parse(Parameter!.Value!);
 
   const envVariables = {
