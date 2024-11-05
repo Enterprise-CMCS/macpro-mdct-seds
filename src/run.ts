@@ -102,7 +102,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
       "-port",
       "8000",
     ],
-    "services/database/dynamodb-local"
+    "services/database/.dynamodb"
   );
   await new Promise((res) => setTimeout(res, 8 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
