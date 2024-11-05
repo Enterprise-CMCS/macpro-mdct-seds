@@ -166,12 +166,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
     "services/ui-src"
   );
 
-  // TODO: update this to match my changes to env.sh
-  await runner.run_command_and_output(
-    "ui conf",
-    ["./env.sh", "local"],
-    "services/ui-src"
-  );
+  await writeUiEnvFile("local");
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
