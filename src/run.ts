@@ -86,29 +86,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/database"
   );
-  await runner.run_command_and_output(
-    "db svls",
-    ["serverless", "dynamodb", "install", "--stage=local"],
-    "services/database"
-  );
-  await runner.run_command_and_output(
-    "db svls doc",
-    ["serverless", "doctor"],
-    "services/database"
-  );
-  runner.run_command_and_output(
-    "db",
-    [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
-      "local",
-      "--lambdaPort",
-      "3003",
-    ],
-    "services/database"
-  );
+  // TODO: test this approach with the serverless stack
   runner.run_command_and_output(
     "db",
     [
