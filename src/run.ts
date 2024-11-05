@@ -93,8 +93,16 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "db",
-    ["serverless", "dynamodb", "start", "--stage=local"],
-    "services/database"
+    [
+      "java",
+      "-Djava.library.path=./DynamoDBLocal_lib",
+      "-jar",
+      "DynamoDBLocal.jar",
+      "-sharedDb",
+      "-port",
+      "8000",
+    ],
+    "services/database/dynamodb-local"
   );
   await new Promise((res) => setTimeout(res, 8 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
