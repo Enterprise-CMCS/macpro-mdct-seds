@@ -91,6 +91,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     ["serverless", "dynamodb", "install", "--stage=local"],
     "services/database"
   );
+  // TODO: test this approach with the serverless stack
   runner.run_command_and_output(
     "db",
     [
