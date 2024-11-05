@@ -112,7 +112,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
 }
 
-// run_api_locally uses the serverless-offline plugin to run the api lambdas locally
+// run_api_locally uses AWS SAM Local to run the API lambdas locally
 // @ts-ignore
 async function run_api_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
