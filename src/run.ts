@@ -103,7 +103,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
       "-port",
       "8000",
     ],
-    "services/database/dynamodb-local"
+    "services/database/.dynamodb"
   );
   await new Promise((res) => setTimeout(res, 8 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
@@ -129,8 +129,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/app-api"
   );
-<<<<<<< HEAD
-=======
 
   await runner.run_command_and_output(
     "api synth",
@@ -142,7 +140,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     "services/app-api"
   );
 
->>>>>>> a390a945 (Update run.ts)
   runner.run_command_and_output(
     "api",
     [
