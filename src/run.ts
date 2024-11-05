@@ -120,18 +120,29 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/app-api"
   );
+
+  await runner.run_command_and_output(
+    "api synth",
+    [
+      "cdk",
+      "synth",
+      // "--no-staging" // TODO: determine if this is helpful
+    ],
+    "services/app-api"
+  );
+
   runner.run_command_and_output(
     "api",
     [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
+      "sam",
       "local",
-      "--region",
-      "us-east-1",
-      "--httpPort",
+      "start-api",
+      // "--template", // TODO: determine if this is helpful
+      // "./cdk.out/AppApiStack.template.json", // TODO: determine if this is helpful
+      "--port",
       "3030",
+      // "--warm-containers", // TODO: determine if this is helpful
+      // "EAGER", // TODO: determine if this is helpful
     ],
     "services/app-api"
   );
@@ -145,6 +156,8 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/ui-src"
   );
+
+  // TODO: update this to match my changes to env.sh
   await runner.run_command_and_output(
     "ui conf",
     ["./env.sh", "local"],
