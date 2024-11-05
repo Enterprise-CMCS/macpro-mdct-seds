@@ -131,13 +131,9 @@ export class ApiStack extends cdk.NestedStack {
     });
 
     for (const table in this.tables) {
-      let startingPosition = StartingPosition.TRIM_HORIZON;
-      if (["auth-user-roles", "auth-user-states"].includes(table)) {
-        startingPosition = StartingPosition.LATEST;
-      }
       postKafkaData.lambda.addEventSource(
         new DynamoEventSource(this.tables[table], {
-          startingPosition,
+          startingPosition: StartingPosition.TRIM_HORIZON,
           retryAttempts: 2,
           enabled: true,
         })
@@ -164,9 +160,7 @@ export class ApiStack extends cdk.NestedStack {
           "state-forms",
           "forms",
           "form-templates",
-          "status",
           "states",
-          "age-ranges",
           "form-answers",
         ].includes(table)
       ) {
