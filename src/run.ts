@@ -86,7 +86,6 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/database"
   );
-  // TODO: test this approach with the serverless stack
   runner.run_command_and_output(
     "db",
     [
@@ -98,7 +97,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
       "-port",
       "8000",
     ],
-    "services/database/dynamodb-local"
+    "services/database/.dynamodb"
   );
   await new Promise((res) => setTimeout(res, 10 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
