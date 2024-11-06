@@ -117,7 +117,7 @@ export class DatabaseStack extends cdk.NestedStack {
           beforeBundling(inputDir: string, outputDir: string): string[] {
             return [
               `mkdir -p ${outputDir}/data/initial_data_load/`,
-              `cp -r ${inputDir}/services/database/data/initial_data_load/ ${outputDir}/data/`,
+              `cp -r ${inputDir}/services/database/data/initial_data_load/ ${outputDir}/data/initial_data_load/`,
             ];
           },
           afterBundling() {
