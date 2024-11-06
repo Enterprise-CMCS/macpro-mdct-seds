@@ -30,7 +30,7 @@ AUTH_USER_STATES_TABLE_NAME=local-auth-user-states
 AUTH_USER_STATES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
 
 
-DYNAMODB_URL=http://localhost:8000
+DYNAMODB_URL=http://host.docker.internal:8000
 API_URL=http://localhost:3030/local
 API_REGION=op://mdct_devs/seds_secrets/AWS-DEFAULT-REGION
 COGNITO_REGION=op://mdct_devs/seds_secrets/AWS-DEFAULT-REGION
