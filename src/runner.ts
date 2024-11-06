@@ -58,7 +58,7 @@ export default class LabeledProcessRunner {
     prefix: string,
     cmd: string[],
     cwd: string | null
-  ) {
+  ): Promise<string> {
     const proc_opts: Record<string, any> = {};
 
     if (cwd) {
@@ -72,10 +72,14 @@ export default class LabeledProcessRunner {
     const startingPrefix = this.formattedPrefix(prefix);
     process.stdout.write(`${startingPrefix} Running: ${cmd.join(" ")}\n`);
 
+    let stdoutData = "";
+
     proc.stdout.on("data", (data) => {
       const paddedPrefix = this.formattedPrefix(prefix);
+      const dataStr = data.toString();
 
-      for (let line of data.toString().split("\n")) {
+      stdoutData += dataStr;
+      for (let line of dataStr.split("\n")) {
         process.stdout.write(`${paddedPrefix} ${line}\n`);
       }
     });
@@ -88,13 +92,13 @@ export default class LabeledProcessRunner {
       }
     });
 
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       proc.on("error", (error) => {
         const paddedPrefix = this.formattedPrefix(prefix);
         process.stdout.write(`${paddedPrefix} A PROCESS ERROR: ${error}\n`);
         reject(error);
       });
-      
+
       proc.on("close", (code) => {
         const paddedPrefix = this.formattedPrefix(prefix);
         process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
@@ -102,7 +106,7 @@ export default class LabeledProcessRunner {
           reject(code);
           return;
         }
-        resolve();
+        resolve(stdoutData);
       });
     });
   }
