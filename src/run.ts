@@ -18,6 +18,7 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
+import yaml from "js-yaml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -100,6 +101,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
       "-jar",
       "DynamoDBLocal.jar",
       "-sharedDb",
+      "-inMemory",
       "-port",
       "8000",
     ],
@@ -117,7 +119,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
       "--stage",
       "local"
     ],
-    "services/database"
+    "."
   );
 }
 
@@ -130,15 +132,15 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     "services/app-api"
   );
 
-  await runner.run_command_and_output(
+  const synthOutput = await runner.run_command_and_output(
     "api synth",
-    [
-      "cdk",
-      "synth",
-      // "--no-staging" // TODO: determine if this is helpful
-    ],
-    "services/app-api"
+    ["cdk", "synth", "--no-staging", "-c", "stage=master"],
+    "."
   );
+
+  const snythedApiTemplate = (yaml.load(synthOutput) as any)["Resources"][
+    "apiNestedStackapiNestedStackResourceDFDE5E1E"
+  ]["Metadata"]["aws:asset:path"];
 
   runner.run_command_and_output(
     "api",
@@ -146,14 +148,14 @@ async function run_api_locally(runner: LabeledProcessRunner) {
       "sam",
       "local",
       "start-api",
-      // "--template", // TODO: determine if this is helpful
-      // "./cdk.out/AppApiStack.template.json", // TODO: determine if this is helpful
+      "--template",
+      `./.cdk/cdk.out/${snythedApiTemplate}`,
       "--port",
       "3030",
       // "--warm-containers", // TODO: determine if this is helpful
       // "EAGER", // TODO: determine if this is helpful
     ],
-    "services/app-api"
+    "."
   );
 }
 
