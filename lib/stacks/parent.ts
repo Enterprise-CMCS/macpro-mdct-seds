@@ -6,7 +6,6 @@ import { ApiStack } from "./api";
 import { UiAuthStack } from "./ui-auth";
 import { UiStack } from "./ui";
 import { DatabaseStack } from "./data";
-import * as cr from "aws-cdk-lib/custom-resources";
 import { getTableStreamArn } from "../utils/ddb";
 
 export class ParentStack extends cdk.Stack {
@@ -91,33 +90,13 @@ export class ParentStack extends cdk.Stack {
       value: uiStack.distribution.distributionDomainName,
     });
 
-    new cdk.CfnOutput(this, "temp10", {
-      value: dataStack.tables["form-answers"].tableStreamArn || "",
-    });
-
-    new cdk.CfnOutput(this, "temp11", {
-      value: this.getTableStreamArn(dataStack.tables["form-answers"]),
-    });
-
     new cdk.CfnOutput(this, "temp12", {
-      value: getTableStreamArn(this, dataStack.tables["form-answers"]),
+      value: getTableStreamArn(
+        this,
+        "form-answers",
+        dataStack.tables["form-answers"]
+      ),
     });
-  }
-
-  getTableStreamArn(table: cdk.aws_dynamodb.Table) {
-    return new cr.AwsCustomResource(this, "StreamArnLookup", {
-      onCreate: {
-        service: "DynamoDB",
-        action: "describeTable",
-        parameters: {
-          TableName: table.tableArn,
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(table.tableArn),
-      },
-      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [table.tableArn],
-      }),
-    }).getResponseField("Table.LatestStreamArn");
   }
 }
 
