@@ -4,9 +4,10 @@ import * as cr from "aws-cdk-lib/custom-resources";
 
 export function getTableStreamArn(
   scope: Construct,
+  id: string,
   table: cdk.aws_dynamodb.Table
 ): string {
-  return new cr.AwsCustomResource(scope, "StreamArnLookup", {
+  return new cr.AwsCustomResource(scope, `${id}StreamArnLookup`, {
     onCreate: {
       service: "DynamoDB",
       action: "describeTable",
