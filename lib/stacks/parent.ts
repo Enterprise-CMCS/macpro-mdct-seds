@@ -6,8 +6,8 @@ import { ApiStack } from "./api";
 import { UiAuthStack } from "./ui-auth";
 import { UiStack } from "./ui";
 import { DatabaseStack } from "./data";
-// import { getTableStreamArn } from "../utils/ddb";
 import * as cr from "aws-cdk-lib/custom-resources";
+import { getTableStreamArn } from "../utils/ddb";
 
 export class ParentStack extends cdk.Stack {
   constructor(
@@ -90,15 +90,17 @@ export class ParentStack extends cdk.Stack {
     new cdk.CfnOutput(this, "CloudFrontUrl", {
       value: uiStack.distribution.distributionDomainName,
     });
+
     new cdk.CfnOutput(this, "temp10", {
       value: dataStack.tables["form-answers"].tableStreamArn || "",
     });
 
-    // new cdk.CfnOutput(this, "temp11", {
-    //   value: getTableStreamArn(this, dataStack.tables["form-answers"]),
-    // });
-    new cdk.CfnOutput(this, "temp3", {
+    new cdk.CfnOutput(this, "temp11", {
       value: this.getTableStreamArn(dataStack.tables["form-answers"]),
+    });
+
+    new cdk.CfnOutput(this, "temp12", {
+      value: getTableStreamArn(this, dataStack.tables["form-answers"]),
     });
   }
 
