@@ -3,6 +3,7 @@
   "requireApproval": "never",
   "output": ".cdk/cdk.out",
   "watch": {
+    "hot": true,
     "include": ["**"],
     "exclude": [
       "README.md",
