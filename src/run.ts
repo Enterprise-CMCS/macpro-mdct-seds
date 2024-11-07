@@ -177,7 +177,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
 async function run_all_locally() {
   const runner = new LabeledProcessRunner();
 
-  run_db_locally(runner);
+  run_db_locally(runner); // TODO: does db really need to be local?
   run_api_locally(runner);
   run_fe_locally(runner);
 }
