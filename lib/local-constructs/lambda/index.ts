@@ -121,21 +121,25 @@ export class Lambda extends Construct {
           resources: [table.tableArn],
         })
       );
-      if (table.tableStreamArn) {
-        role.addToPolicy(
-          new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: [
-              "dynamodb:DescribeStream",
-              "dynamodb:GetRecords",
-              "dynamodb:GetShardIterator",
-              "dynamodb:ListShards",
-              "dynamodb:ListStreams",
-            ],
-            resources: [table.tableStreamArn],
-          })
-        );
-      }
+
+      const tableStreamArn = scope.getTableStreamArnWithCaching(
+        stage,
+        tableName
+      );
+
+      role.addToPolicy(
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            "dynamodb:DescribeStream",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+            "dynamodb:ListShards",
+            "dynamodb:ListStreams",
+          ],
+          resources: [tableStreamArn],
+        })
+      );
     });
 
     role.addToPolicy(
