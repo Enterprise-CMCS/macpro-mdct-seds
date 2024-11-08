@@ -6,8 +6,6 @@ import { Construct } from "constructs";
 import { Lambda } from "../local-constructs/lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
-import { StartingPosition } from "aws-cdk-lib/aws-lambda";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RegionalWaf } from "../local-constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -136,15 +134,24 @@ export class ApiStack extends cdk.NestedStack {
       ...commonProps,
     });
 
-    for (const table in this.tables) {
-      postKafkaData.lambda.addEventSource(
-        new DynamoEventSource(this.tables[table], {
-          startingPosition: StartingPosition.TRIM_HORIZON,
-          retryAttempts: 2,
-          enabled: true,
-        })
+    Object.keys(this.tables).forEach((tableName) => {
+      const tableStreamArn = this.getTableStreamArnWithCaching(
+        stage,
+        tableName
       );
-    }
+
+      new cdk.aws_lambda.CfnEventSourceMapping(
+        this,
+        `postKafkaData${tableName}DynamoDBStreamEventSourceMapping`,
+        {
+          eventSourceArn: tableStreamArn,
+          functionName: postKafkaData.lambda.functionArn,
+          startingPosition: "TRIM_HORIZON",
+          maximumRetryAttempts: 2,
+          enabled: true,
+        }
+      );
+    });
 
     const dataConnectSource = new Lambda(this, "dataConnectSource", {
       entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
@@ -158,7 +165,7 @@ export class ApiStack extends cdk.NestedStack {
       ...commonProps,
     });
 
-    for (const table in this.tables) {
+    for (const tableName in this.tables) {
       if (
         [
           "form-questions",
@@ -168,14 +175,23 @@ export class ApiStack extends cdk.NestedStack {
           "form-templates",
           "states",
           "form-answers",
-        ].includes(table)
+        ].includes(tableName)
       ) {
-        dataConnectSource.lambda.addEventSource(
-          new DynamoEventSource(this.tables[table], {
-            startingPosition: StartingPosition.TRIM_HORIZON,
-            retryAttempts: 2,
+        const tableStreamArn = this.getTableStreamArnWithCaching(
+          stage,
+          tableName
+        );
+
+        new cdk.aws_lambda.CfnEventSourceMapping(
+          this,
+          `dataConnectSource${tableName}DynamoDBStreamEventSourceMapping`,
+          {
+            eventSourceArn: tableStreamArn,
+            functionName: dataConnectSource.lambda.functionArn,
+            startingPosition: "TRIM_HORIZON",
+            maximumRetryAttempts: 2,
             enabled: true,
-          })
+          }
         );
       }
     }
