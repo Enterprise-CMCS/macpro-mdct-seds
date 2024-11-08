@@ -103,7 +103,8 @@ export class Lambda extends Construct {
       },
     });
 
-    // TOOD: instead of this being one policy per table, put all of the tables in one policy in the resources key
+    // TODO: move this into ApiStack and then pass this in rather than creating it here.
+    // TODO: instead of this being one policy per table, put all of the tables in one policy in the resources key
     Object.entries(props.tables).forEach(([tableName, table]) => {
       role.addToPolicy(
         new PolicyStatement({
