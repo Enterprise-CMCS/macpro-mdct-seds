@@ -6,7 +6,6 @@ import { ApiStack } from "./api";
 import { UiAuthStack } from "./ui-auth";
 import { UiStack } from "./ui";
 import { DatabaseStack } from "./data";
-import { getTableStreamArn } from "../utils/ddb";
 
 export class ParentStack extends cdk.Stack {
   constructor(
@@ -88,14 +87,6 @@ export class ParentStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, "CloudFrontUrl", {
       value: uiStack.distribution.distributionDomainName,
-    });
-
-    new cdk.CfnOutput(this, "temp12", {
-      value: getTableStreamArn(
-        this,
-        "form-answers",
-        dataStack.tables["form-answers"]
-      ),
     });
   }
 }
