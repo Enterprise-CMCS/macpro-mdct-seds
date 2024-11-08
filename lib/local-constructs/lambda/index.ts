@@ -122,24 +122,24 @@ export class Lambda extends Construct {
         })
       );
 
-      const tableStreamArn = scope.getTableStreamArnWithCaching(
-        stage,
-        tableName
-      );
+      // const tableStreamArn = scope.getTableStreamArnWithCaching(
+      //   stage,
+      //   tableName
+      // );
 
-      role.addToPolicy(
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            "dynamodb:DescribeStream",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
-            "dynamodb:ListShards",
-            "dynamodb:ListStreams",
-          ],
-          resources: [tableStreamArn],
-        })
-      );
+      // role.addToPolicy(
+      //   new PolicyStatement({
+      //     effect: Effect.ALLOW,
+      //     actions: [
+      //       "dynamodb:DescribeStream",
+      //       "dynamodb:GetRecords",
+      //       "dynamodb:GetShardIterator",
+      //       "dynamodb:ListShards",
+      //       "dynamodb:ListStreams",
+      //     ],
+      //     resources: [tableStreamArn],
+      //   })
+      // );
     });
 
     role.addToPolicy(
