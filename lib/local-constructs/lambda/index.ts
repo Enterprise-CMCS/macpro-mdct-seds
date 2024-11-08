@@ -3,8 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration, RemovalPolicy, Stack, CfnElement } from "aws-cdk-lib";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { Duration, Stack, CfnElement } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -47,10 +46,6 @@ export class Lambda extends Construct {
       ...restProps
     } = props;
 
-    const logGroup = new LogGroup(this, `${id}LogGroup`, {
-      removalPolicy: RemovalPolicy.DESTROY,
-    });
-
     const stage = this.node.tryGetContext("stage") || "dev";
 
     const environment = {
@@ -79,11 +74,6 @@ export class Lambda extends Construct {
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
           statements: [
-            new PolicyStatement({
-              effect: Effect.DENY,
-              actions: ["logs:CreateLogGroup"],
-              resources: ["*"],
-            }),
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: ["ssm:GetParameter"],
@@ -165,13 +155,13 @@ export class Lambda extends Construct {
       })
     );
 
+    // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${props.stackName}-${id}`,
       handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
-      logGroup,
       role,
       bundling: commonBundlingOptions,
       environment,
