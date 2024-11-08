@@ -2,22 +2,20 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as cr from "aws-cdk-lib/custom-resources";
 
-export function getTableStreamArn(
-  scope: Construct,
-  id: string,
-  table: cdk.aws_dynamodb.Table
-): string {
-  return new cr.AwsCustomResource(scope, `${id}StreamArnLookup`, {
+export function getTableStreamArn(scope: Construct, tableName: string): string {
+  return new cr.AwsCustomResource(scope, `${tableName}StreamArnLookup`, {
     onCreate: {
       service: "DynamoDB",
       action: "describeTable",
       parameters: {
-        TableName: table.tableArn,
+        TableName: tableName,
       },
-      physicalResourceId: cr.PhysicalResourceId.of(table.tableArn),
+      physicalResourceId: cr.PhysicalResourceId.of(tableName),
     },
     policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-      resources: [table.tableArn],
+      resources: [
+        `arn:aws:dynamodb:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:table/${tableName}`,
+      ],
     }),
   }).getResponseField("Table.LatestStreamArn");
 }
