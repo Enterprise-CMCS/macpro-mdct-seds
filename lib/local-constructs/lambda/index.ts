@@ -104,8 +104,7 @@ export class Lambda extends Construct {
     });
 
     // TOOD: instead of this being one policy per table, put all of the tables in one policy in the resources key
-    Object.entries(props.tables).forEach(([, table]) => {
-      // tableName
+    Object.entries(props.tables).forEach(([tableName, table]) => {
       role.addToPolicy(
         new PolicyStatement({
           effect: Effect.ALLOW,
@@ -123,24 +122,24 @@ export class Lambda extends Construct {
         })
       );
 
-      // const tableStreamArn = scope.getTableStreamArnWithCaching(
-      //   stage,
-      //   tableName
-      // );
+      const tableStreamArn = scope.getTableStreamArnWithCaching(
+        stage,
+        tableName
+      );
 
-      // role.addToPolicy(
-      //   new PolicyStatement({
-      //     effect: Effect.ALLOW,
-      //     actions: [
-      //       "dynamodb:DescribeStream",
-      //       "dynamodb:GetRecords",
-      //       "dynamodb:GetShardIterator",
-      //       "dynamodb:ListShards",
-      //       "dynamodb:ListStreams",
-      //     ],
-      //     resources: [tableStreamArn],
-      //   })
-      // );
+      role.addToPolicy(
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            "dynamodb:DescribeStream",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+            "dynamodb:ListShards",
+            "dynamodb:ListStreams",
+          ],
+          resources: [tableStreamArn],
+        })
+      );
     });
 
     role.addToPolicy(
