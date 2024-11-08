@@ -13,6 +13,7 @@ import { RegionalWaf } from "../local-constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { CloudWatchToS3 } from "../local-constructs/cloudwatch-to-s3";
+import { getTableStreamArn } from "../utils/ddb";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -25,7 +26,12 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: string;
 }
 
+interface LookupCache {
+  [key: string]: string;
+}
+
 export class ApiStack extends cdk.NestedStack {
+  private lookupCache: LookupCache = {};
   public readonly shortStackName: string;
   public readonly tables: { [name: string]: dynamodb.Table };
   public readonly api: apigateway.RestApi;
@@ -427,5 +433,21 @@ export class ApiStack extends cdk.NestedStack {
     new cdk.CfnOutput(this, "Region", {
       value: this.region,
     });
+  }
+
+  public getTableStreamArnWithCaching(
+    stage: string,
+    tableName: string
+  ): string {
+    // Check if the value is already in the cache
+    if (!(tableName in this.lookupCache)) {
+      // Perform the lookup only if it's not already cached
+      console.log("looking up the value for the table", tableName);
+      const value = getTableStreamArn(this, `${stage}-${tableName}`);
+      this.lookupCache[tableName] = value;
+    } else {
+      console.log("already had the value");
+    }
+    return this.lookupCache[tableName];
   }
 }
