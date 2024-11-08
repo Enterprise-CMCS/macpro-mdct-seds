@@ -439,14 +439,9 @@ export class ApiStack extends cdk.NestedStack {
     stage: string,
     tableName: string
   ): string {
-    // Check if the value is already in the cache
     if (!(tableName in this.lookupCache)) {
-      // Perform the lookup only if it's not already cached
-      console.log("looking up the value for the table", tableName);
       const value = getTableStreamArn(this, `${stage}-${tableName}`);
       this.lookupCache[tableName] = value;
-    } else {
-      console.log("already had the value");
     }
     return this.lookupCache[tableName];
   }
