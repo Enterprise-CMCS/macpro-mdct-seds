@@ -240,6 +240,7 @@ export class UiAuthStack extends cdk.NestedStack {
         })
       );
 
+      // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
       this.bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
         this,
         "bootstrapUsers",
