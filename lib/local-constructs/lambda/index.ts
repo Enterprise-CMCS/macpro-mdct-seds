@@ -17,6 +17,7 @@ import {
 import { commonBundlingOptions } from "../../config/bundling-config";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { ApiStack } from "../../stacks/api";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler?: string;
@@ -33,7 +34,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
 export class Lambda extends Construct {
   public readonly lambda: NodejsFunction;
 
-  constructor(scope: Construct, id: string, props: LambdaProps) {
+  constructor(scope: ApiStack, id: string, props: LambdaProps) {
     super(scope, id);
 
     const {
@@ -103,7 +104,7 @@ export class Lambda extends Construct {
     });
 
     // TOOD: instead of this being one policy per table, put all of the tables in one policy in the resources key
-    Object.values(props.tables).forEach((table) => {
+    Object.entries(props.tables).forEach(([tableName, table]) => {
       role.addToPolicy(
         new PolicyStatement({
           effect: Effect.ALLOW,
