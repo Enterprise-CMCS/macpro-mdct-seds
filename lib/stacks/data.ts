@@ -101,6 +101,7 @@ export class DatabaseStack extends cdk.NestedStack {
       })
     );
 
+    // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.seedDataFunction = new lambda_nodejs.NodejsFunction(this, "seedData", {
       entry: "services/database/handlers/seed/seed.js",
       handler: "handler",
