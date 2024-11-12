@@ -48,6 +48,7 @@ export class Lambda extends Construct {
 
     const stage = this.node.tryGetContext("stage") || "dev";
 
+    // TODO: since this environment variables object is the same for every lambda right now, move it to the API stack instead of the lambda construct
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: brokerString,
       STAGE: stage,
