@@ -108,11 +108,28 @@ export class ApiStack extends cdk.NestedStack {
       },
     });
 
+    const environment = {
+      BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+      STAGE: stage,
+      stage,
+      ...Object.values(props.tables).reduce((acc, table) => {
+        const currentTable = cdk.Stack.of(table)
+          .getLogicalId(table.node.defaultChild as cdk.CfnElement)
+          .slice(0, -8);
+
+        acc[`${currentTable}Name`] = table.tableName;
+        acc[`${currentTable}Arn`] = table.tableArn;
+
+        return acc;
+      }, {} as { [key: string]: string }),
+    };
+
     const commonProps = {
       brokerString,
       stackName: this.shortStackName,
       tables: this.tables,
       api: this.api,
+      environment,
     };
 
     new Lambda(this, "ForceKafkaSync", {

@@ -3,7 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration, Stack, CfnElement } from "aws-cdk-lib";
+import { Duration } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -41,29 +41,13 @@ export class Lambda extends Construct {
       timeout = Duration.seconds(6),
       memorySize = 1024,
       brokerString = "",
+      environment = {},
       path,
       method,
       ...restProps
     } = props;
 
     const stage = this.node.tryGetContext("stage") || "dev";
-
-    // TODO: since this environment variables object is the same for every lambda right now, move it to the API stack instead of the lambda construct
-    const environment = {
-      BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-      STAGE: stage,
-      stage,
-      ...Object.values(props.tables).reduce((acc, table) => {
-        const currentTable = Stack.of(table)
-          .getLogicalId(table.node.defaultChild as CfnElement)
-          .slice(0, -8);
-
-        acc[`${currentTable}Name`] = table.tableName;
-        acc[`${currentTable}Arn`] = table.tableArn;
-
-        return acc;
-      }, {} as { [key: string]: string }),
-    };
 
     const role = new Role(this, `${id}LambdaExecutionRole`, {
       assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
