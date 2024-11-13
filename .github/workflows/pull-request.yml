@@ -3,6 +3,13 @@ name: Pull Request
 on: [pull_request]
 
 jobs:
+  prchecks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure pre-commit to skip branch name validation
+        run: |
+          echo "SKIP=branch-name-validation" >> $GITHUB_ENV
   assignAuthor:
     runs-on: ubuntu-latest
     steps:
@@ -23,10 +30,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Configure pre-commit to skip branch name validation
-        run: |
-          echo "SKIP=branch-name-validation" >> $GITHUB_ENV
-      - uses: pre-commit/action@v3.0.1
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
