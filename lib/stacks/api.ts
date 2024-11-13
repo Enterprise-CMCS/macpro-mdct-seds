@@ -32,7 +32,8 @@ export class ApiStack extends cdk.NestedStack {
   private lookupCache: LookupCache = {};
   public readonly shortStackName: string;
   public readonly tables: { [name: string]: dynamodb.Table };
-  public readonly api: apigateway.RestApi;
+  public readonly restApiId: string;
+  public readonly url: string;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
@@ -60,7 +61,7 @@ export class ApiStack extends cdk.NestedStack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    this.api = new apigateway.RestApi(this, "ApiGatewayRestApi", {
+    const api = new apigateway.RestApi(this, "ApiGatewayRestApi", {
       restApiName: `${stage}-app-api`,
       deploy: true,
       deployOptions: {
@@ -88,8 +89,10 @@ export class ApiStack extends cdk.NestedStack {
         allowMethods: apigateway.Cors.ALL_METHODS,
       },
     });
+    this.restApiId = api.restApiId;
+    this.url = api.url;
 
-    this.api.addGatewayResponse("Default4XXResponse", {
+    api.addGatewayResponse("Default4XXResponse", {
       type: apigateway.ResponseType.DEFAULT_4XX,
       responseHeaders: {
         "Access-Control-Allow-Origin": "'*'",
@@ -97,7 +100,7 @@ export class ApiStack extends cdk.NestedStack {
       },
     });
 
-    this.api.addGatewayResponse("Default5XXResponse", {
+    api.addGatewayResponse("Default5XXResponse", {
       type: apigateway.ResponseType.DEFAULT_5XX,
       responseHeaders: {
         "Access-Control-Allow-Origin": "'*'",
@@ -173,7 +176,7 @@ export class ApiStack extends cdk.NestedStack {
       brokerString,
       stackName: this.shortStackName,
       tables: this.tables,
-      api: this.api,
+      api: api,
       environment,
       additionalPolicies,
     };
@@ -499,7 +502,7 @@ export class ApiStack extends cdk.NestedStack {
       "REGIONAL"
     );
     new CfnWebACLAssociation(this, "WebACLAssociation", {
-      resourceArn: this.api.deploymentStage.stageArn,
+      resourceArn: api.deploymentStage.stageArn,
       webAclArn: waf.webAcl.attrArn,
     });
 
@@ -532,10 +535,10 @@ export class ApiStack extends cdk.NestedStack {
 
     // Outputs
     new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
-      value: this.api.url,
+      value: api.url,
     });
     new cdk.CfnOutput(this, "ApiGatewayRestApiName", {
-      value: this.api.restApiName,
+      value: api.restApiName,
     });
     new cdk.CfnOutput(this, "Region", {
       value: this.region,
