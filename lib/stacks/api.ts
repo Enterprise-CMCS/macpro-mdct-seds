@@ -5,13 +5,13 @@ import * as targets from "aws-cdk-lib/aws-events-targets";
 import { Construct } from "constructs";
 import { Lambda } from "../local-constructs/lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
-import { RegionalWaf } from "../local-constructs/waf";
+import { WafConstruct } from "../local-constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { CloudWatchToS3 } from "../local-constructs/cloudwatch-to-s3";
 import { getTableStreamArn } from "../utils/ddb";
+import { CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -19,7 +19,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   stack: string;
   isDev: boolean;
   tables: { [name: string]: dynamodb.Table };
-  vpc: ec2.IVpc;
+  vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   brokerString: string;
 }
@@ -44,8 +44,7 @@ export class ApiStack extends cdk.NestedStack {
 
     this.tables = props.tables;
 
-
-    const kafkaSecurityGroup = new ec2.SecurityGroup(
+    const kafkaSecurityGroup = new cdk.aws_ec2.SecurityGroup(
       this,
       "KafkaSecurityGroup",
       {
@@ -490,10 +489,18 @@ export class ApiStack extends cdk.NestedStack {
       ...commonProps,
     });
 
-    const waf = new RegionalWaf(this, "WafConstruct", {
-      name: `${props.project}-${stage}-${this.shortStackName}`,
-      apiGateway: this.api,
-      awsCommonExcludeRules: ["SizeRestrictions_BODY"],
+    const waf = new WafConstruct(
+      this,
+      "WafConstruct",
+      {
+        name: `${props.project}-${stage}-${this.shortStackName}`,
+        blockRequestBodyOver8KB: false,
+      },
+      "REGIONAL"
+    );
+    new CfnWebACLAssociation(this, "WebACLAssociation", {
+      resourceArn: this.api.deploymentStage.stageArn,
+      webAclArn: waf.webAcl.attrArn,
     });
 
     const logBucket = new s3.Bucket(this, "LogBucket", {
