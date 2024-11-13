@@ -12,7 +12,7 @@ import { WafConstruct } from "../local-constructs/waf";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
-  api: cdk.aws_apigateway.RestApi;
+  restApiId: string;
   applicationEndpointUrl: string;
   stage: string;
   oktaMetadataUrl: string;
@@ -175,7 +175,7 @@ export class UiAuthStack extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               actions: ["execute-api:Invoke"],
               resources: [
-                `arn:aws:execute-api:${this.region}:${this.account}:${props.api.restApiId}/*`,
+                `arn:aws:execute-api:${this.region}:${this.account}:${props.restApiId}/*`,
               ],
               effect: cdk.aws_iam.Effect.ALLOW,
             }),
