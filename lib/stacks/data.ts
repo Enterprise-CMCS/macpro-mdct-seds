@@ -17,6 +17,8 @@ interface DatabaseStackProps extends cdk.NestedStackProps {
 
 export class DatabaseStack extends cdk.NestedStack {
   public readonly tables: { [name: string]: dynamodb.Table };
+  // TODO: can table data be loaded into a structure like this?
+  // public readonly tables: { name: string, arn: string, streamArn: string }[];
   public readonly seedDataFunction: lambda_nodejs.NodejsFunction | undefined;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
