@@ -28,6 +28,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   stackName: string;
   tables: { [name: string]: dynamodb.Table };
   api: apigateway.RestApi;
+  additionalPolicies?: PolicyStatement[];
 }
 
 export class Lambda extends Construct {
@@ -44,10 +45,9 @@ export class Lambda extends Construct {
       environment = {},
       path,
       method,
+      additionalPolicies = [],
       ...restProps
     } = props;
-
-    const stage = this.node.tryGetContext("stage") || "dev";
 
     const role = new Role(this, `${id}LambdaExecutionRole`, {
       assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
@@ -73,72 +73,11 @@ export class Lambda extends Construct {
               ],
               resources: ["arn:aws:logs:*:*:*"],
             }),
+            ...additionalPolicies,
           ],
         }),
       },
     });
-
-    // TODO: move this into ApiStack and then pass this in rather than creating it here.
-    // TODO: instead of this being one policy per table, put all of the tables in one policy in the resources key
-    Object.entries(props.tables).forEach(([tableName, table]) => {
-      role.addToPolicy(
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            "dynamodb:BatchWriteItem",
-            "dynamodb:DeleteItem",
-            "dynamodb:DescribeTable",
-            "dynamodb:GetItem",
-            "dynamodb:PutItem",
-            "dynamodb:Query",
-            "dynamodb:Scan",
-            "dynamodb:UpdateItem",
-          ],
-          resources: [table.tableArn],
-        })
-      );
-
-      const tableStreamArn = scope.getTableStreamArnWithCaching(
-        stage,
-        tableName
-      );
-
-      role.addToPolicy(
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            "dynamodb:DescribeStream",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
-            "dynamodb:ListShards",
-            "dynamodb:ListStreams",
-          ],
-          resources: [tableStreamArn],
-        })
-      );
-    });
-
-    role.addToPolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ["dynamodb:Query", "dynamodb:Scan"],
-        resources: [`${props.tables["form-answers"].tableArn}/index/*`],
-      })
-    );
-
-    role.addToPolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [
-          "cognito-idp:AdminGetUser",
-          "ses:SendEmail",
-          "ses:SendRawEmail",
-          "lambda:InvokeFunction",
-          "ssm:GetParameter",
-        ],
-        resources: ["*"],
-      })
-    );
 
     // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new NodejsFunction(this, id, {

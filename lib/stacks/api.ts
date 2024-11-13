@@ -124,12 +124,62 @@ export class ApiStack extends cdk.NestedStack {
       }, {} as { [key: string]: string }),
     };
 
+    const additionalPolicies = [
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.ALLOW,
+        actions: [
+          "dynamodb:BatchWriteItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:UpdateItem",
+        ],
+        resources: Object.entries(this.tables).map(
+          ([, table]) => table.tableArn
+        ),
+      }),
+
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.ALLOW,
+        actions: [
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListShards",
+          "dynamodb:ListStreams",
+        ],
+        resources: Object.keys(this.tables).map((tableName) =>
+          this.getTableStreamArnWithCaching(stage, tableName)
+        ),
+      }),
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.ALLOW,
+        actions: ["dynamodb:Query", "dynamodb:Scan"],
+        resources: [`${this.tables["form-answers"].tableArn}/index/*`],
+      }),
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.ALLOW,
+        actions: [
+          "cognito-idp:AdminGetUser",
+          "ses:SendEmail",
+          "ses:SendRawEmail",
+          "lambda:InvokeFunction",
+          "ssm:GetParameter",
+        ],
+        resources: ["*"],
+      }),
+    ];
+
     const commonProps = {
       brokerString,
       stackName: this.shortStackName,
       tables: this.tables,
       api: this.api,
       environment,
+      additionalPolicies,
     };
 
     new Lambda(this, "ForceKafkaSync", {
