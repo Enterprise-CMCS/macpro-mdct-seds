@@ -2,7 +2,7 @@ import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { execSync } from "child_process";
-import * as readlineSync from "readline-sync";
+import readline from "node:readline";
 import {
   CloudFormationClient,
   DeleteStackCommand,
@@ -40,11 +40,23 @@ const deployedServices = [
 const project = process.env.PROJECT;
 const region = process.env.REGION_A;
 
-function confirmDestroyCommand(stack: string) {
+async function confirmDestroyCommand(stack: string) {
   const orange = "\x1b[38;5;208m";
   const reset = "\x1b[0m";
 
-  const confirmation = readlineSync.question(`
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  const question = async (message: string) => {
+    return new Promise((resolve) => {
+      rl.question(message, (answer) => {
+        resolve(answer);
+      });
+    });
+  };
+
+  const confirmation = await question(`
 ${orange}********************************* STOP *******************************
 You've requested a destroy for: 
 
