@@ -55,7 +55,7 @@ export class ParentStack extends cdk.Stack {
     const authStack = new UiAuthStack(this, "ui-auth", {
       ...commonProps,
       stack: "ui-auth",
-      api: apiStack.api,
+      restApiId: apiStack.restApiId,
       applicationEndpointUrl: uiStack.applicationEndpointUrl,
       oktaMetadataUrl: props.oktaMetadataUrl,
       bootstrapUsersPasswordArn: props.bootstrapUsersPasswordArn,
@@ -64,7 +64,7 @@ export class ParentStack extends cdk.Stack {
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
       parameterName: `/${props.project}/${props.stage}/deployment-output`,
       stringValue: JSON.stringify({
-        apiGatewayRestApiUrl: apiStack.api.url,
+        apiGatewayRestApiUrl: apiStack.url,
         applicationEndpointUrl: uiStack.applicationEndpointUrl,
         s3BucketName: uiStack.bucket.bucketName,
         cloudfrontDistributionId: uiStack.distribution.distributionId,
