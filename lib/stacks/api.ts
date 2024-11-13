@@ -108,7 +108,6 @@ export class ApiStack extends cdk.NestedStack {
 
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-      STAGE: stage,
       stage,
       ...Object.values(props.tables).reduce((acc, table) => {
         const currentTable = cdk.Stack.of(table)
