@@ -20,9 +20,6 @@ import { dirname } from "path";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import yaml from "js-yaml";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 // load .env
 dotenv.config();
 
@@ -122,7 +119,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
 
   const synthOutput = await runner.run_command_and_output(
     "db synth",
-    ["cdk", "synth", "--no-staging", "-c", "stage=local"],
+    ["cdk", "synth", "--no-staging", "--context", "stage=local"],
     "."
   );
 
@@ -155,7 +152,7 @@ async function run_api_locally(runner: LabeledProcessRunner) {
 
   const synthOutput = await runner.run_command_and_output(
     "api synth",
-    ["cdk", "synth", "--no-staging", "-c", "stage=master"],
+    ["cdk", "synth", "--no-staging", "--context", "stage=master"],
     "."
   );
 
@@ -221,7 +218,7 @@ async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = ["cdk", "deploy", "-c", `stage=${stage}`, "--all"];
+  const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
   await runner.run_command_and_output(
@@ -269,17 +266,10 @@ async function deploy(options: { stage: string }) {
 
   console.log(s3BucketName, cloudfrontDistributionId);
 
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
   const buildDir = path.join(__dirname, "../../services/ui-src", "build");
 
-  try {
-    execSync(`find ${buildDir} -type f -exec touch -t 202001010000 {} +`);
-  } catch (error) {
-    console.error("Failed to set fixed timestamps:", error);
-  }
-
-  // There's a mime type issue when aws s3 syncing files up
-  // Empirically, this issue never presents itself if the bucket is cleared just before.
-  // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
   await runner.run_command_and_output(
     "",
     ["aws", "s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
