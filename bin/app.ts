@@ -2,20 +2,10 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { ParentStack } from "../lib/stacks/parent";
-import { DeploymentConfig } from "../lib/config/deployment-config";
+import { determineDeploymentConfig } from "../lib/config/deployment-config";
 import { IamPathAspect } from "../lib/local-aspects/iam-path";
 import { IamPermissionsBoundaryAspect } from "../lib/local-aspects/iam-permissions-boundary";
 import { getSecret } from "../lib/utils/sm";
-
-function validateEnvVariable(variableName: string): string {
-  const value = process.env[variableName];
-  if (!value) {
-    throw new Error(
-      `Environment variable ${variableName} is required but not set`
-    );
-  }
-  return value;
-}
 
 async function main() {
   try {
@@ -25,18 +15,14 @@ async function main() {
       ),
     });
 
-    validateEnvVariable("REGION_A");
-
-    const project = validateEnvVariable("PROJECT");
-    cdk.Tags.of(app).add("PROJECT", project);
-
     const stage = app.node.tryGetContext("stage");
+    const config = await determineDeploymentConfig(stage);
+
     cdk.Tags.of(app).add("STAGE", stage);
+    cdk.Tags.of(app).add("PROJECT", config.project);
 
-    const deploymentConfig = await DeploymentConfig.fetch({ project, stage });
-
-    new ParentStack(app, `${project}-${stage}`, {
-      ...deploymentConfig.config,
+    new ParentStack(app, `${config.project}-${stage}`, {
+      ...config,
       env: {
         account: process.env.CDK_DEFAULT_ACCOUNT,
         region: process.env.CDK_DEFAULT_REGION,
@@ -44,11 +30,9 @@ async function main() {
     });
 
     cdk.Aspects.of(app).add(
-      new IamPermissionsBoundaryAspect(
-        deploymentConfig.config.iamPermissionsBoundary
-      )
+      new IamPermissionsBoundaryAspect(config.iamPermissionsBoundary)
     );
-    cdk.Aspects.of(app).add(new IamPathAspect(deploymentConfig.config.iamPath));
+    cdk.Aspects.of(app).add(new IamPathAspect(config.iamPath));
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);
