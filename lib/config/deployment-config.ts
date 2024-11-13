@@ -34,13 +34,13 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 const loadDefaultSecret = async (project: string) => {
-  return JSON.parse(await getSecret(`${project}-default`));
+  return JSON.parse((await getSecret(`${project}-default`))!);
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
   const secretName = `${project}-${stage}`;
   try {
-    return JSON.parse(await getSecret(secretName));
+    return JSON.parse((await getSecret(secretName))!);
   } catch (error: any) {
     console.warn(
       `Optional stage secret "${secretName}" not found: ${error.message}`
