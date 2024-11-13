@@ -36,8 +36,7 @@ export class ApiStack extends cdk.NestedStack {
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
-
-    const stage = this.node.tryGetContext("stage") || "dev";
+    const { vpc, privateSubnets, isDev, brokerString, stage } = props;
 
     const service = "app-api";
     this.shortStackName = `${service}-${stage}`;
@@ -45,7 +44,6 @@ export class ApiStack extends cdk.NestedStack {
 
     this.tables = props.tables;
 
-    const { vpc, privateSubnets, isDev, brokerString } = props;
 
     const kafkaSecurityGroup = new ec2.SecurityGroup(
       this,

@@ -22,7 +22,7 @@ export class DatabaseStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
 
-    const stage = this.node.tryGetContext("stage") || "dev";
+    const stage = props.stage;
 
     this.tables = {
       "form-answers": new DynamoDBTable(this, "FormAnswers", {
