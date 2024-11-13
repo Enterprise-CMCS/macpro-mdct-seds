@@ -100,9 +100,7 @@ export class UiStack extends cdk.NestedStack {
     this.applicationEndpointUrl = `https://${this.distribution.distributionDomainName}/`;
 
     new cloudfront.ResponseHeadersPolicy(this, "CloudFormationHeadersPolicy", {
-      responseHeadersPolicyName: `Headers-Policy-${this.node.tryGetContext(
-        "stage"
-      )}`,
+      responseHeadersPolicyName: `Headers-Policy-${props.stage}`,
       comment: "Add Security Headers",
       securityHeadersBehavior: {
         contentTypeOptions: {
@@ -144,7 +142,7 @@ export class UiStack extends cdk.NestedStack {
 
     if (vpnIpSetArn) {
       const githubIpSet = new wafv2.CfnIPSet(this, "GitHubIPSet", {
-        name: `${this.node.tryGetContext("stage")}-gh-ipset`,
+        name: `${props.stage}-gh-ipset`,
         scope: "CLOUDFRONT",
         addresses: [],
         ipAddressVersion: "IPV4",

@@ -15,7 +15,7 @@ async function main() {
       ),
     });
 
-    const stage = app.node.tryGetContext("stage");
+    const stage = app.node.getContext("stage");
     const config = await determineDeploymentConfig(stage);
 
     cdk.Tags.of(app).add("STAGE", stage);
