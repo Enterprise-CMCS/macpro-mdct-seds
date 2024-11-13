@@ -18,7 +18,7 @@ import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { ApiStack } from "../../stacks/api";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler?: string;
+  handler: string;
   timeout?: Duration;
   memorySize?: number;
   brokerString?: string;
@@ -37,7 +37,7 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler = "main",
+      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
       brokerString = "",

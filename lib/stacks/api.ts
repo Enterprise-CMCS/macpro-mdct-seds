@@ -184,6 +184,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "ForceKafkaSync", {
       entry: "services/app-api/handlers/kafka/get/forceKafkaSync.js",
+      handler: "main",
       timeout: cdk.Duration.minutes(15),
       memorySize: 3072,
       ...commonProps,
@@ -265,6 +266,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "exportToExcel", {
       entry: "services/app-api/export/exportToExcel.js",
+      handler: "main",
       path: "/export/export-to-excel",
       method: "POST",
       ...commonProps,
@@ -272,6 +274,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "getUserById", {
       entry: "services/app-api/handlers/users/get/getUserById.js",
+      handler: "main",
       path: "/users/{id}",
       method: "GET",
       ...commonProps,
@@ -279,6 +282,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "getUsers", {
       entry: "services/app-api/handlers/users/get/listUsers.js",
+      handler: "main",
       path: "/users",
       method: "GET",
       ...commonProps,
@@ -286,6 +290,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "obtainUserByUsername", {
       entry: "services/app-api/handlers/users/post/obtainUserByUsername.js",
+      handler: "main",
       path: "/users/get",
       method: "POST",
       ...commonProps,
@@ -293,6 +298,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "obtainUserByEmail", {
       entry: "services/app-api/handlers/users/post/obtainUserByEmail.js",
+      handler: "main",
       path: "/users/get/email",
       method: "POST",
       ...commonProps,
@@ -300,6 +306,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "createUser", {
       entry: "services/app-api/handlers/users/post/createUser.js",
+      handler: "main",
       path: "/users/add",
       method: "POST",
       ...commonProps,
@@ -315,11 +322,13 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "deleteUser", {
       entry: "services/app-api/handlers/users/post/deleteUser.js",
+      handler: "main",
       ...commonProps,
     });
 
     new Lambda(this, "updateUser", {
       entry: "services/app-api/handlers/users/post/updateUser.js",
+      handler: "main",
       path: "/users/update/{userId}",
       method: "POST",
       ...commonProps,
@@ -327,6 +336,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "getForm", {
       entry: "services/app-api/handlers/forms/get.js",
+      handler: "main",
       path: "/single-form/{state}/{specifiedYear}/{quarter}/{form}",
       method: "GET",
       ...commonProps,
@@ -334,6 +344,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "getStateFormList", {
       entry: "services/app-api/handlers/forms/post/obtainFormsList.js",
+      handler: "main",
       path: "/forms/obtain-state-forms",
       method: "POST",
       ...commonProps,
@@ -341,6 +352,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "updateStateFormList", {
       entry: "services/app-api/handlers/state-forms/post/updateStateForms.js",
+      handler: "main",
       path: "/state-forms/update",
       method: "POST",
       ...commonProps,
@@ -349,6 +361,7 @@ export class ApiStack extends cdk.NestedStack {
     new Lambda(this, "generateEnrollmentTotals", {
       entry:
         "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.js",
+      handler: "main",
       path: "/generate-enrollment-totals",
       method: "POST",
       timeout: cdk.Duration.minutes(15),
@@ -357,6 +370,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "obtainAvailableForms", {
       entry: "services/app-api/handlers/forms/post/obtainAvailableForms.js",
+      handler: "main",
       path: "/forms/obtainAvailableForms",
       method: "POST",
       ...commonProps,
@@ -364,6 +378,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "getFormTypes", {
       entry: "services/app-api/handlers/forms/get/getFormTypes.js",
+      handler: "main",
       path: "/form-types",
       method: "GET",
       ...commonProps,
@@ -371,6 +386,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "generateQuarterForms", {
       entry: "services/app-api/handlers/forms/post/generateQuarterForms.js",
+      handler: "main",
       path: "/generate-forms",
       method: "POST",
       timeout: cdk.Duration.minutes(15),
@@ -444,6 +460,7 @@ export class ApiStack extends cdk.NestedStack {
 
     new Lambda(this, "saveForm", {
       entry: "services/app-api/handlers/forms/post/saveForm.js",
+      handler: "main",
       path: "/single-form/save",
       method: "POST",
       ...commonProps,
@@ -452,6 +469,7 @@ export class ApiStack extends cdk.NestedStack {
     new Lambda(this, "getFormTemplate", {
       entry:
         "services/app-api/handlers/form-templates/post/obtainFormTemplate.js",
+      handler: "main",
       path: "/form-template",
       method: "POST",
       ...commonProps,
@@ -460,6 +478,7 @@ export class ApiStack extends cdk.NestedStack {
     new Lambda(this, "getFormTemplateYears", {
       entry:
         "services/app-api/handlers/form-templates/post/obtainFormTemplateYears.js",
+      handler: "main",
       path: "/form-templates/years",
       method: "POST",
       ...commonProps,
@@ -468,6 +487,7 @@ export class ApiStack extends cdk.NestedStack {
     new Lambda(this, "updateCreateFormTemplate", {
       entry:
         "services/app-api/handlers/form-templates/post/updateCreateFormTemplate.js",
+      handler: "main",
       path: "/form-templates/add",
       method: "POST",
       ...commonProps,
