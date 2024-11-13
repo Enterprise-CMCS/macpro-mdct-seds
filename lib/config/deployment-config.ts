@@ -1,8 +1,10 @@
 import { getSecret } from "../utils/sm";
 
-interface DeploymentConfigShape {
+export interface DeploymentConfigProperties {
   project: string;
   stage: string;
+  isDev: boolean;
+  terminationProtection: boolean;
   bootstrapUsersPasswordArn: string;
   oktaMetadataUrl: string;
   brokerString: string;
@@ -49,7 +51,7 @@ const loadStageSecret = async (project: string, stage: string) => {
 
 function validateConfig(config: {
   [key: string]: any;
-}): asserts config is DeploymentConfigShape {
+}): asserts config is DeploymentConfigProperties {
   const expectedKeys = [
     "bootstrapUsersPasswordArn",
     "oktaMetadataUrl",
