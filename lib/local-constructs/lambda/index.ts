@@ -13,7 +13,6 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { commonBundlingOptions } from "../../config/bundling-config";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { ApiStack } from "../../stacks/api";
@@ -87,7 +86,10 @@ export class Lambda extends Construct {
       timeout,
       memorySize,
       role,
-      bundling: commonBundlingOptions,
+      bundling: {
+        minify: true,
+        sourceMap: true,
+      },
       environment,
       ...restProps,
     });
