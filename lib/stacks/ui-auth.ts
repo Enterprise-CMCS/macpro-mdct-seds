@@ -31,7 +31,7 @@ export class UiAuthStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UiAuthStackProps) {
     super(scope, id, props);
 
-    const stage = this.node.tryGetContext("stage") || "dev";
+    const stage = props.stage;
 
     // Cognito User Pool
     this.userPool = new cognito.UserPool(this, "UserPool", {
