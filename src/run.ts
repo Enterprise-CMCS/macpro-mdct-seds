@@ -49,6 +49,7 @@ async function confirmDestroyCommand(stack: string) {
     return new Promise((resolve) => {
       rl.question(message, (answer) => {
         resolve(answer);
+        rl.close();
       });
     });
   };
