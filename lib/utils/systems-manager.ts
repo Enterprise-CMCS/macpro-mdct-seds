@@ -13,14 +13,34 @@ export async function getParameter(parameterName: string) {
     Name: parameterName,
     WithDecryption,
   });
+  const data = await client.send(command);
+  return data.Parameter?.Value;
+}
+
+export async function getDeploymentConfigParameter(
+  parameterName: string,
+  stage: string
+) {
+  const stageSpecificKey = `/configuration/${stage}/${parameterName}`;
+  const defaultKey = `/configuration/default/${parameterName}`;
+
   try {
-    const data = await client.send(command);
-    return data.Parameter?.Value;
-  } catch (error: unknown) {
-    if (error instanceof Error && error.name === "ParameterNotFound") {
-      console.warn(`Parameter ${parameterName} does not exist.`);
-      return undefined;
+    const specificValue = await getParameter(stageSpecificKey);
+    if (specificValue) {
+      return specificValue;
     }
-    throw error;
+  } catch (err) {
+    console.info(`No value in SSM for ${stageSpecificKey}; using default`);
   }
+
+  try {
+    const defaultValue = await getParameter(defaultKey);
+    if (defaultValue) {
+      return defaultValue;
+    }
+  } catch (err) {
+    console.info(`No value in SSM for ${defaultKey}; treating as undefined`);
+  }
+
+  return undefined;
 }
