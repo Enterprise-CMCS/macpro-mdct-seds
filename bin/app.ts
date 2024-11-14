@@ -5,7 +5,7 @@ import { ParentStack } from "../lib/stacks/parent";
 import { determineDeploymentConfig } from "../lib/config/deployment-config";
 import { IamPathAspect } from "../lib/local-aspects/iam-path";
 import { IamPermissionsBoundaryAspect } from "../lib/local-aspects/iam-permissions-boundary";
-import { getSecret } from "../lib/utils/sm";
+import { getSecret } from "../lib/utils/secrets-manager";
 
 async function main() {
   try {
