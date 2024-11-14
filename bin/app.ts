@@ -9,15 +9,9 @@ import { getSecret } from "../lib/utils/secrets-manager";
 
 async function main() {
   try {
-    const synthesizerConfig = await getSecret("cdkSynthesizerConfig");
-
-    if (!synthesizerConfig) {
-      console.error("no cdk synthesizer config");
-      process.exit(1);
-    }
     const app = new cdk.App({
       defaultStackSynthesizer: new cdk.DefaultStackSynthesizer(
-        JSON.parse(synthesizerConfig)
+        JSON.parse((await getSecret("cdkSynthesizerConfig"))!)
       ),
     });
 
