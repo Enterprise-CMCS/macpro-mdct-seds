@@ -10,7 +10,7 @@ import {
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
-import { getParameter } from "../utils/systems-manager";
+import { getDeploymentConfigParameter } from "../utils/systems-manager";
 
 interface UiStackProps extends cdk.NestedStackProps {
   isDev: boolean;
@@ -136,8 +136,14 @@ export class UiStack extends cdk.NestedStack {
   }
 
   private async setupWaf(props: UiStackProps) {
-    const vpnIpSetArn = await this.fetchVpnIpSetArn(props);
-    const vpnIpv6SetArn = await this.fetchVpnIpv6SetArn(props);
+    const vpnIpSetArn = await getDeploymentConfigParameter(
+      "vpnIpSetArn",
+      props.stage
+    );
+    const vpnIpv6SetArn = await getDeploymentConfigParameter(
+      "vpnIpv6SetArn",
+      props.stage
+    );
     const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
     if (vpnIpSetArn) {
@@ -211,94 +217,31 @@ export class UiStack extends cdk.NestedStack {
     });
   }
 
-  private async fetchVpnIpSetArn(
-    props: UiStackProps
-  ): Promise<string | undefined> {
-    const vpnIpSetPaths = [
-      `/configuration/${props.stage}/vpnIpSetArn`,
-      `/configuration/default/vpnIpSetArn`,
-    ];
-
-    for (const paramPath of vpnIpSetPaths) {
-      try {
-        const paramValue = await getParameter(paramPath);
-        return paramValue;
-      } catch (error) {
-        if ((error as Error).message.includes("Failed to fetch parameter")) {
-          console.warn(
-            'Ignoring "Failed to fetch parameter" error:',
-            (error as Error).message
-          );
-        } else {
-          throw error;
-        }
-      }
-    }
-
-    return undefined;
-  }
-
-  private async fetchVpnIpv6SetArn(
-    props: UiStackProps
-  ): Promise<string | undefined> {
-    const vpnIpv6SetPaths = [
-      `/configuration/${props.stage}/vpnIpv6SetArn`,
-      `/configuration/default/vpnIpv6SetArn`,
-    ];
-
-    for (const paramPath of vpnIpv6SetPaths) {
-      try {
-        const paramValue = await getParameter(paramPath);
-        return paramValue;
-      } catch (error) {
-        if ((error as Error).message.includes("Failed to fetch parameter")) {
-          console.warn(
-            'Ignoring "Failed to fetch parameter" error:',
-            (error as Error).message
-          );
-        } else {
-          throw error;
-        }
-      }
-    }
-
-    return undefined;
-  }
-
   private async setupRoute53(
     props: UiStackProps,
     distribution: cloudfront.Distribution
   ) {
-    try {
-      const hostedZoneId = await getParameter(
-        `/configuration/${props.stage}/route53/hostedZoneId`
-      );
-      const domainName = await getParameter(
-        `/configuration/${props.stage}/route53/domainName`
-      );
+    const hostedZoneId = await getDeploymentConfigParameter(
+      "route53/hostedZoneId",
+      props.stage
+    );
+    const domainName = await getDeploymentConfigParameter(
+      "route53/domainName",
+      props.stage
+    );
 
-      if (hostedZoneId && domainName) {
-        const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
-          hostedZoneId,
-          zoneName: domainName,
-        });
+    if (hostedZoneId && domainName) {
+      const zone = route53.HostedZone.fromHostedZoneAttributes(this, "Zone", {
+        hostedZoneId,
+        zoneName: domainName,
+      });
 
-        new route53.ARecord(this, "AliasRecord", {
-          zone,
-          target: route53.RecordTarget.fromAlias(
-            new route53Targets.CloudFrontTarget(distribution)
-          ),
-        });
-      }
-    } catch (error) {
-      if ((error as Error).message.includes("Failed to fetch parameter")) {
-        console.warn(
-          'Ignoring "Failed to fetch parameter" error:',
-          (error as Error).message
-        );
-      } else {
-        throw error;
-      }
+      new route53.ARecord(this, "AliasRecord", {
+        zone,
+        target: route53.RecordTarget.fromAlias(
+          new route53Targets.CloudFrontTarget(distribution)
+        ),
+      });
     }
   }
 
