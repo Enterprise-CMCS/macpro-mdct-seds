@@ -10,7 +10,7 @@ import {
   aws_wafv2 as wafv2,
   aws_kinesisfirehose as firehose,
 } from "aws-cdk-lib";
-import { getParameter } from "../utils/ssm";
+import { getParameter } from "../utils/systems-manager";
 
 interface UiStackProps extends cdk.NestedStackProps {
   isDev: boolean;

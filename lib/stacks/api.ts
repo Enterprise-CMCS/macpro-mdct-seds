@@ -10,7 +10,7 @@ import { WafConstruct } from "../local-constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { CloudWatchToS3 } from "../local-constructs/cloudwatch-to-s3";
-import { getTableStreamArn } from "../utils/ddb";
+import { getTableStreamArn } from "../utils/dynamodb";
 import { CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
 
 interface ApiStackProps extends cdk.NestedStackProps {
