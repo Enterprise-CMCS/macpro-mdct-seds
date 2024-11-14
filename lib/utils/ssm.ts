@@ -13,6 +13,14 @@ export async function getParameter(parameterName: string) {
     Name: parameterName,
     WithDecryption,
   });
-  const data = await client.send(command);
-  return data.Parameter?.Value;
+  try {
+    const data = await client.send(command);
+    return data.Parameter?.Value;
+  } catch (error: unknown) {
+    if (error instanceof Error && error.name === "ParameterNotFound") {
+      console.warn(`Parameter ${parameterName} does not exist.`);
+      return null;
+    }
+    throw error;
+  }
 }
