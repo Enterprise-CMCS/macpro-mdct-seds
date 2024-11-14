@@ -19,7 +19,7 @@ export async function getParameter(parameterName: string) {
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "ParameterNotFound") {
       console.warn(`Parameter ${parameterName} does not exist.`);
-      return null;
+      return undefined;
     }
     throw error;
   }
