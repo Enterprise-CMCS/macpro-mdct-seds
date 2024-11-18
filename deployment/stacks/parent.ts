@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "../local-constructs/cloudwatch-logs-resource-policy";
-import { DeploymentConfigProperties } from "../config/deployment-config";
+import { DeploymentConfigProperties } from "../deployment-config";
 import { ApiStack } from "./api";
 import { UiAuthStack } from "./ui-auth";
 import { UiStack } from "./ui";
