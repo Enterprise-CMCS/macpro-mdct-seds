@@ -15,7 +15,7 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import { ApiStack } from "../../stacks/api";
+import { ApiStack } from "../stacks/api";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler: string;

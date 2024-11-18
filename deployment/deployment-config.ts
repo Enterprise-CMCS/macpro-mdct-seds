@@ -1,4 +1,4 @@
-import { getSecret } from "../utils/secrets-manager";
+import { getSecret } from "./utils/secrets-manager";
 
 export interface DeploymentConfigProperties {
   project: string;
