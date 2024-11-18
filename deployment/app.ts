@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { ParentStack } from "../lib/stacks/parent";
-import { determineDeploymentConfig } from "../lib/config/deployment-config";
-import { IamPathAspect } from "../lib/local-aspects/iam-path";
-import { IamPermissionsBoundaryAspect } from "../lib/local-aspects/iam-permissions-boundary";
-import { getSecret } from "../lib/utils/secrets-manager";
+import { ParentStack } from "./stacks/parent";
+import { determineDeploymentConfig } from "./config/deployment-config";
+import { IamPathAspect } from "./local-aspects/iam-path";
+import { IamPermissionsBoundaryAspect } from "./local-aspects/iam-permissions-boundary";
+import { getSecret } from "./utils/secrets-manager";
 
 async function main() {
   try {
