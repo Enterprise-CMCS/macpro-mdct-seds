@@ -8,7 +8,7 @@ import {
   aws_wafv2 as wafv2,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { WafConstruct } from "../local-constructs/waf";
+import { WafConstruct } from "../constructs/waf";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;

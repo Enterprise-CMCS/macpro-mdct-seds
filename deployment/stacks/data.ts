@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
-import { DynamoDBTable } from "../local-constructs/dynamodb-table";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 import {
   aws_iam as iam,
   aws_lambda as lambda,
