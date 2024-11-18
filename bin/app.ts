@@ -29,6 +29,7 @@ async function main() {
       },
     });
 
+    // TODO: try without aspects and see what is required to set pemissions boundary and path within CDK rather than in aspects
     cdk.Aspects.of(app).add(
       new IamPermissionsBoundaryAspect(config.iamPermissionsBoundary)
     );
