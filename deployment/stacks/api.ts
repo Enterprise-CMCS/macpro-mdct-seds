@@ -3,13 +3,13 @@ import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import { Construct } from "constructs";
-import { Lambda } from "../local-constructs/lambda";
+import { Lambda } from "../constructs/lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
-import { WafConstruct } from "../local-constructs/waf";
+import { WafConstruct } from "../constructs/waf";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import { CloudWatchToS3 } from "../local-constructs/cloudwatch-to-s3";
+import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { getTableStreamArn } from "../utils/dynamodb";
 import { CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
 
