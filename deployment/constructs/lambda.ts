@@ -28,6 +28,8 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   tables: { [name: string]: dynamodb.Table };
   api: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
+  iamPermissionsBoundary: string;
+  iamPath: string;
 }
 
 export class Lambda extends Construct {
@@ -55,6 +57,12 @@ export class Lambda extends Construct {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
+      permissionsBoundary: ManagedPolicy.fromManagedPolicyArn(
+        this,
+        "iamPermissionsBoundary",
+        props.iamPermissionsBoundary
+      ),
+      path: props.iamPath,
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
           statements: [

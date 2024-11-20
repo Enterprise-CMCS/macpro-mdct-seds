@@ -13,6 +13,8 @@ interface DatabaseStackProps extends cdk.NestedStackProps {
   stage: string;
   stack: string;
   isDev: boolean;
+  iamPermissionsBoundary: string;
+  iamPath: string;
 }
 
 export class DatabaseStack extends cdk.NestedStack {
@@ -85,6 +87,12 @@ export class DatabaseStack extends cdk.NestedStack {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
+      permissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
+        this,
+        "iamPermissionsBoundary",
+        props.iamPermissionsBoundary
+      ),
+      path: props.iamPath,
     });
 
     lambdaApiRole.addToPolicy(
