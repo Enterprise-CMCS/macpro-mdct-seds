@@ -117,7 +117,6 @@ export class ApiStack extends cdk.NestedStack {
           .slice(0, -8);
 
         acc[`${currentTable}Name`] = table.tableName;
-        acc[`${currentTable}Arn`] = table.tableArn;
 
         return acc;
       }, {} as { [key: string]: string }),
