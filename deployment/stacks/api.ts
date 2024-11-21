@@ -511,19 +511,8 @@ export class ApiStack extends cdk.NestedStack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: isDev,
+      enforceSSL: true,
     });
-
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.DENY,
-        principals: [new iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [logBucket.bucketArn, `${logBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      })
-    );
 
     if (!isDev) {
       new CloudWatchToS3(this, "CloudWatchToS3Construct", {
