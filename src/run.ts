@@ -80,8 +80,12 @@ The destroy operation has been aborted.
 // Function to update .env files using 1Password CLI
 function updateEnvFiles() {
   try {
-    execSync("op inject -i .env.tpl -o .env -f", { stdio: "inherit" });
-    execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
+    execSync("op inject --in-file .env.tpl --out-file .env --force", {
+      stdio: "inherit",
+    });
+    execSync(
+      "sed --in-place='' --expression='s/# pragma: allowlist secret//g' .env"
+    );
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
