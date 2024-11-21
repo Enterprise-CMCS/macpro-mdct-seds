@@ -33,7 +33,7 @@ export class UiStack extends cdk.NestedStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
-      enforceSSL: true
+      enforceSSL: true,
     });
 
     const loggingBucket = new s3.Bucket(this, "LoggingBucket", {
@@ -117,11 +117,6 @@ export class UiStack extends cdk.NestedStack {
     this.setupRoute53(props, this.distribution);
 
     this.createFirehoseLogging(props, loggingBucket);
-
-    new cdk.CfnOutput(this, "S3BucketName", { value: this.bucket.bucketName });
-    new cdk.CfnOutput(this, "CloudFrontUrl", {
-      value: this.distribution.distributionDomainName,
-    });
   }
 
   private async setupWaf(props: UiStackProps) {
