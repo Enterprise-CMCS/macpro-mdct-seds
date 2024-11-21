@@ -1,5 +1,4 @@
 import { Construct } from "constructs";
-import { CfnOutput } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
@@ -33,15 +32,5 @@ export class DynamoDBTable extends Construct {
         projectionType: dynamodb.ProjectionType.ALL,
       });
     }
-
-    new CfnOutput(this, "TableName", {
-      value: this.table.tableName,
-    });
-    new CfnOutput(this, "TableArn", {
-      value: this.table.tableArn,
-    });
-    new CfnOutput(this, "TableStreamArn", {
-      value: this.table.tableStreamArn!,
-    });
   }
 }

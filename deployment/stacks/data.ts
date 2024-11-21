@@ -132,8 +132,5 @@ export class DatabaseStack extends cdk.NestedStack {
         },
       },
     });
-
-    // Region Output
-    new cdk.CfnOutput(this, "Region", { value: this.region });
   }
 }

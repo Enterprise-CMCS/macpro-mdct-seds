@@ -520,17 +520,6 @@ export class ApiStack extends cdk.NestedStack {
         bucket: logBucket,
       });
     }
-
-    // Outputs
-    new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
-      value: api.url,
-    });
-    new cdk.CfnOutput(this, "ApiGatewayRestApiName", {
-      value: api.restApiName,
-    });
-    new cdk.CfnOutput(this, "Region", {
-      value: this.region,
-    });
   }
 
   public getTableStreamArnWithCaching(
