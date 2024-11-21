@@ -1,110 +1,97 @@
-import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
+import {
+  aws_ec2 as ec2,
+  aws_ssm as ssm,
+  CfnOutput,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { CloudWatchLogsResourcePolicy } from "../constructs/cloudwatch-logs-resource-policy";
 import { DeploymentConfigProperties } from "../deployment-config";
-import { ApiStack } from "./api";
-import { UiAuthStack } from "./ui-auth";
-import { UiStack } from "./ui";
-import { DatabaseStack } from "./data";
+import { createDataComponents } from "./data";
+import { createUiAuthComponents } from "./ui-auth";
+import { createUiComponents } from "./ui";
+import { createApiComponents } from "./api";
+import { sortSubnets } from "../utils/vpc";
 
-export class ParentStack extends cdk.Stack {
+export class ParentStack extends Stack {
   constructor(
     scope: Construct,
     id: string,
-    props: cdk.StackProps & DeploymentConfigProperties
+    props: StackProps & DeploymentConfigProperties
   ) {
     super(scope, id, props);
 
-    const commonProps = {
-      project: props.project,
-      stage: props.stage,
-      isDev: props.isDev,
-    };
+    const {
+      stage,
+      project,
+      isDev,
+      vpcName,
+      bootstrapUsersPasswordArn,
+      oktaMetadataUrl,
+      brokerString,
+    } = props;
 
-    const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
-      vpcName: props.vpcName,
-    });
+    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
-    if (!props.isDev) {
-      new CloudWatchLogsResourcePolicy(this, "logPolicy", {
-        project: props.project,
-      });
+    if (!isDev) {
+      new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
     }
 
-    const dataStack = new DatabaseStack(this, "database", {
-      ...commonProps,
-      stack: "database",
+    const { seedDataFunctionName, tables } = createDataComponents({
+      scope: this,
+      stage,
     });
-
-    const apiStack = new ApiStack(this, "api", {
-      ...commonProps,
-      stack: "api",
-      tables: dataStack.tables,
+    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
+      scope: this,
+      stage,
+      project,
+      isDev,
       vpc,
       privateSubnets,
-      brokerString: props.brokerString,
+      tables,
+      brokerString,
+    });
+    const {
+      applicationEndpointUrl,
+      cloudfrontDistributionId,
+      s3BucketName,
+    } = createUiComponents({ scope: this, stage, project, isDev });
+    const {
+      userPoolDomain,
+      bootstrapUsersFunction,
+      identityPool,
+      userPool,
+      userPoolClient,
+    } = createUiAuthComponents({
+      scope: this,
+      stage,
+      oktaMetadataUrl,
+      applicationEndpointUrl,
+      restApiId,
+      bootstrapUsersPasswordArn,
     });
 
-    const uiStack = new UiStack(this, "ui", {
-      ...commonProps,
-      stack: "ui",
-      restrictToVpn: false,
-    });
-
-    const authStack = new UiAuthStack(this, "ui-auth", {
-      ...commonProps,
-      stack: "ui-auth",
-      restApiId: apiStack.restApiId,
-      applicationEndpointUrl: uiStack.applicationEndpointUrl,
-      oktaMetadataUrl: props.oktaMetadataUrl,
-      bootstrapUsersPasswordArn: props.bootstrapUsersPasswordArn,
-    });
-
-    new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
-      parameterName: `/${props.project}/${props.stage}/deployment-output`,
+    new ssm.StringParameter(this, "DeploymentOutput", {
+      parameterName: `/${project}/${stage}/deployment-output`,
       stringValue: JSON.stringify({
-        apiGatewayRestApiUrl: apiStack.url,
-        applicationEndpointUrl: uiStack.applicationEndpointUrl,
-        s3BucketName: uiStack.bucket.bucketName,
-        cloudfrontDistributionId: uiStack.distribution.distributionId,
-        identityPoolId: authStack.identityPool.ref,
-        userPoolId: authStack.userPool.userPoolId,
-        userPoolClientId: authStack.userPoolClient.userPoolClientId,
-        userPoolClientDomain: `${authStack.userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
-        bootstrapUsersFunctionName:
-          authStack.bootstrapUsersFunction?.functionName,
-        seedDataFunctionName: dataStack.seedDataFunction?.functionName,
+        apiGatewayRestApiUrl,
+        applicationEndpointUrl,
+        s3BucketName,
+        cloudfrontDistributionId,
+        identityPoolId: identityPool.ref,
+        userPoolId: userPool.userPoolId,
+        userPoolClientId: userPoolClient.userPoolClientId,
+        userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
+        bootstrapUsersFunctionName: bootstrapUsersFunction?.functionName,
+        seedDataFunctionName,
       }),
-      description: `Deployment output for the ${props.stage} environment.`,
+      description: `Deployment output for the ${stage} environment.`,
     });
 
-    new cdk.aws_ssm.StringParameter(this, "DeploymentConfig", {
-      parameterName: `/${props.project}/${props.stage}/deployment-config`,
-      stringValue: JSON.stringify(props),
-      description: `Deployment config for the ${props.stage} environment.`,
-    });
-
-    new cdk.CfnOutput(this, "CloudFrontUrl", {
-      value: uiStack.distribution.distributionDomainName,
+    new CfnOutput(this, "CloudFrontUrl", {
+      value: applicationEndpointUrl,
     });
   }
-}
-
-function getSubnetSize(cidrBlock: string): number {
-  const subnetMask = parseInt(cidrBlock.split("/")[1], 10);
-  return Math.pow(2, 32 - subnetMask);
-}
-
-function sortSubnets(subnets: cdk.aws_ec2.ISubnet[]): cdk.aws_ec2.ISubnet[] {
-  return subnets.sort((a, b) => {
-    const sizeA = getSubnetSize(a.ipv4CidrBlock);
-    const sizeB = getSubnetSize(b.ipv4CidrBlock);
-
-    if (sizeA !== sizeB) {
-      return sizeB - sizeA; // Sort by size in decreasing order
-    }
-
-    return a.subnetId.localeCompare(b.subnetId); // Sort by name if sizes are equal
-  });
 }
