@@ -117,6 +117,12 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   createFirehoseLogging(scope, stage, project, loggingBucket);
 
+  addIamPropertiesToBucketAutoDeleteRole(
+    scope,
+    props.iamPermissionsBoundary.managedPolicyArn,
+    props.iamPath
+  );
+
   return {
     cloudfrontDistributionId: distribution.distributionId,
     applicationEndpointUrl,
@@ -168,23 +174,6 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
         orStatement: {
           statements,
         },
-  private createFirehoseLogging(props: UiStackProps, loggingBucket: s3.Bucket) {
-    const firehoseRole = new iam.Role(this, "FirehoseRole", {
-      permissionsBoundary: props.iamPermissionsBoundary,
-      path: props.iamPath,
-      assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
-      inlinePolicies: {
-        FirehoseS3Access: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              actions: ["s3:PutObject"],
-              resources: [
-                `arn:aws:s3:::${props.project}-${props.stage}-cloudfront-logs-${this.account}/*`,
-              ],
-              effect: iam.Effect.ALLOW,
-            }),
-          ],
-        }),
       },
     });
 
@@ -246,12 +235,6 @@ async function setupRoute53(
         new route53Targets.CloudFrontTarget(distribution)
       ),
     });
-
-    addIamPropertiesToBucketAutoDeleteRole(
-      this,
-      props.iamPermissionsBoundary.managedPolicyArn,
-      props.iamPath
-    );
   }
 }
 
