@@ -3,8 +3,6 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
-import { IamPathAspect } from "./aspects/iam-path";
-import { IamPermissionsBoundaryAspect } from "./aspects/iam-permissions-boundary";
 import { getSecret } from "./utils/secrets-manager";
 
 async function main() {
@@ -28,12 +26,6 @@ async function main() {
         region: process.env.CDK_DEFAULT_REGION,
       },
     });
-
-    // TODO: try without aspects and see what is required to set pemissions boundary and path within CDK rather than in aspects
-    cdk.Aspects.of(app).add(
-      new IamPermissionsBoundaryAspect(config.iamPermissionsBoundary)
-    );
-    cdk.Aspects.of(app).add(new IamPathAspect(config.iamPath));
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);
