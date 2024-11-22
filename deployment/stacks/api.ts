@@ -11,6 +11,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { getTableStreamArn } from "../utils/dynamodb";
 import { CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
+import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -21,6 +22,8 @@ interface ApiStackProps extends cdk.NestedStackProps {
   vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   brokerString: string;
+  iamPermissionsBoundary: iam.IManagedPolicy;
+  iamPath: string;
 }
 
 interface LookupCache {
@@ -63,6 +66,7 @@ export class ApiStack extends cdk.NestedStack {
     const api = new apigateway.RestApi(this, "ApiGatewayRestApi", {
       restApiName: `${stage}-app-api`,
       deploy: true,
+      cloudWatchRole: false,
       deployOptions: {
         stageName: stage,
         tracingEnabled: true,
@@ -107,6 +111,31 @@ export class ApiStack extends cdk.NestedStack {
       },
     });
 
+    const cloudWatchRole = new cdk.aws_iam.Role(
+      this,
+      "ApiGatewayRestApiCloudWatchRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
+        permissionsBoundary: props.iamPermissionsBoundary,
+        path: props.iamPath,
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+          ),
+        ],
+      }
+    );
+    cloudWatchRole.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+
+    const apiGatewayRestApiAccount = new apigateway.CfnAccount(
+      this,
+      "ApiGatewayRestApiAccount",
+      {
+        cloudWatchRoleArn: cloudWatchRole.roleArn,
+      }
+    );
+    apiGatewayRestApiAccount.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+
     const environment = {
       BOOTSTRAP_BROKER_STRING_TLS: brokerString,
       stage,
@@ -149,7 +178,12 @@ export class ApiStack extends cdk.NestedStack {
           "dynamodb:ListStreams",
         ],
         resources: Object.keys(this.tables).map((tableName) =>
-          this.getTableStreamArnWithCaching(stage, tableName)
+          this.getTableStreamArnWithCaching(
+            stage,
+            tableName,
+            props.iamPermissionsBoundary,
+            props.iamPath
+          )
         ),
       }),
       new cdk.aws_iam.PolicyStatement({
@@ -177,6 +211,8 @@ export class ApiStack extends cdk.NestedStack {
       api: api,
       environment,
       additionalPolicies,
+      iamPermissionsBoundary: props.iamPermissionsBoundary,
+      iamPath: props.iamPath,
     };
 
     new Lambda(this, "ForceKafkaSync", {
@@ -202,7 +238,9 @@ export class ApiStack extends cdk.NestedStack {
     Object.keys(this.tables).forEach((tableName) => {
       const tableStreamArn = this.getTableStreamArnWithCaching(
         stage,
-        tableName
+        tableName,
+        props.iamPermissionsBoundary,
+        props.iamPath
       );
 
       new cdk.aws_lambda.CfnEventSourceMapping(
@@ -244,7 +282,9 @@ export class ApiStack extends cdk.NestedStack {
       ) {
         const tableStreamArn = this.getTableStreamArnWithCaching(
           stage,
-          tableName
+          tableName,
+          props.iamPermissionsBoundary,
+          props.iamPath
         );
 
         new cdk.aws_lambda.CfnEventSourceMapping(
@@ -519,14 +559,27 @@ export class ApiStack extends cdk.NestedStack {
         bucket: logBucket,
       });
     }
+        
+    addIamPropertiesToBucketAutoDeleteRole(
+      this,
+      props.iamPermissionsBoundary.managedPolicyArn,
+      props.iamPath
+    );
   }
 
   public getTableStreamArnWithCaching(
     stage: string,
-    tableName: string
+    tableName: string,
+    iamPermissionsBoundary: iam.IManagedPolicy,
+    iamPath: string
   ): string {
     if (!(tableName in this.lookupCache)) {
-      const value = getTableStreamArn(this, `${stage}-${tableName}`);
+      const value = getTableStreamArn(
+        this,
+        `${stage}-${tableName}`,
+        iamPermissionsBoundary,
+        iamPath
+      );
       this.lookupCache[tableName] = value;
     }
     return this.lookupCache[tableName];

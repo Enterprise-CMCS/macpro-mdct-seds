@@ -9,7 +9,7 @@ export interface DeploymentConfigProperties {
   oktaMetadataUrl: string;
   brokerString: string;
   iamPath: string;
-  iamPermissionsBoundary: string;
+  iamPermissionsBoundaryArn: string;
   vpcName: string;
 }
 
@@ -56,7 +56,7 @@ function validateConfig(config: {
     "bootstrapUsersPasswordArn",
     "oktaMetadataUrl",
     "brokerString",
-    "iamPermissionsBoundary",
+    "iamPermissionsBoundaryArn",
     "iamPath",
     "vpcName",
     "stage",
