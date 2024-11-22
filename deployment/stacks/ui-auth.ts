@@ -9,6 +9,7 @@ import {
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { WafConstruct } from "../constructs/waf";
+import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface UiAuthStackProps extends cdk.NestedStackProps {
   stack: string;
@@ -17,7 +18,7 @@ interface UiAuthStackProps extends cdk.NestedStackProps {
   stage: string;
   oktaMetadataUrl: string;
   bootstrapUsersPasswordArn: string;
-  iamPermissionsBoundary: string;
+  iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
 }
 
@@ -150,11 +151,7 @@ export class UiAuthStack extends cdk.NestedStack {
 
     // IAM Role for Cognito Authenticated Users
     const cognitoAuthRole = new iam.Role(this, "CognitoAuthRole", {
-      permissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
-        this,
-        "iamPermissionsBoundaryCognitoAuthRole",
-        props.iamPermissionsBoundary
-      ),
+      permissionsBoundary: props.iamPermissionsBoundary,
       path: props.iamPath,
       assumedBy: new cdk.aws_iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -212,11 +209,7 @@ export class UiAuthStack extends cdk.NestedStack {
 
     if (props.bootstrapUsersPasswordArn) {
       const lambdaApiRole = new iam.Role(this, "LambdaApiRole", {
-        permissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
-          this,
-          "iamPermissionsBoundaryLambdaApiRole",
-          props.iamPermissionsBoundary
-        ),
+        permissionsBoundary: props.iamPermissionsBoundary,
         path: props.iamPath,
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [

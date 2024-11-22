@@ -19,7 +19,11 @@ export class ParentStack extends cdk.Stack {
       project: props.project,
       stage: props.stage,
       isDev: props.isDev,
-      iamPermissionsBoundary: props.iamPermissionsBoundary,
+      iamPermissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
+        this,
+        "iamPermissionsBoundary",
+        props.iamPermissionsBoundaryArn
+      ),
       iamPath: props.iamPath,
     };
 

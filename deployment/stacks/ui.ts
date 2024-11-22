@@ -12,6 +12,7 @@ import {
 } from "aws-cdk-lib";
 import { getDeploymentConfigParameter } from "../utils/systems-manager";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
+import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface UiStackProps extends cdk.NestedStackProps {
   isDev: boolean;
@@ -19,7 +20,7 @@ interface UiStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   restrictToVpn: boolean;
-  iamPermissionsBoundary: string;
+  iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
 }
 
@@ -250,11 +251,7 @@ export class UiStack extends cdk.NestedStack {
 
   private createFirehoseLogging(props: UiStackProps, loggingBucket: s3.Bucket) {
     const firehoseRole = new iam.Role(this, "FirehoseRole", {
-      permissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
-        this,
-        "iamPermissionsBoundary",
-        props.iamPermissionsBoundary
-      ),
+      permissionsBoundary: props.iamPermissionsBoundary,
       path: props.iamPath,
       assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
       inlinePolicies: {
@@ -288,7 +285,7 @@ export class UiStack extends cdk.NestedStack {
 
     addIamPropertiesToBucketAutoDeleteRole(
       this,
-      props.iamPermissionsBoundary,
+      props.iamPermissionsBoundary.managedPolicyArn,
       props.iamPath
     );
   }

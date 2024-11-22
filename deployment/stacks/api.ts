@@ -23,7 +23,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   brokerString: string;
-  iamPermissionsBoundary: string;
+  iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
 }
 
@@ -117,11 +117,7 @@ export class ApiStack extends cdk.NestedStack {
       "ApiGatewayRestApiCloudWatchRole",
       {
         assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
-        permissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
-          this,
-          "iamPermissionsBoundary",
-          props.iamPermissionsBoundary
-        ),
+        permissionsBoundary: props.iamPermissionsBoundary,
         path: props.iamPath,
         managedPolicies: [
           cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -560,7 +556,7 @@ export class ApiStack extends cdk.NestedStack {
 
     addIamPropertiesToBucketAutoDeleteRole(
       this,
-      props.iamPermissionsBoundary,
+      props.iamPermissionsBoundary.managedPolicyArn,
       props.iamPath
     );
 
@@ -598,7 +594,7 @@ export class ApiStack extends cdk.NestedStack {
   public getTableStreamArnWithCaching(
     stage: string,
     tableName: string,
-    iamPermissionsBoundary: string,
+    iamPermissionsBoundary: iam.IManagedPolicy,
     iamPath: string
   ): string {
     if (!(tableName in this.lookupCache)) {

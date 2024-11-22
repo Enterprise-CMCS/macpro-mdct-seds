@@ -1,11 +1,12 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as cr from "aws-cdk-lib/custom-resources";
+import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 export function getTableStreamArn(
   scope: Construct,
   tableName: string,
-  iamPermissionsBoundary: string,
+  iamPermissionsBoundary: IManagedPolicy,
   iamPath: string
 ): string {
   return new cr.AwsCustomResource(scope, `${tableName}StreamArnLookup`, {
@@ -24,11 +25,7 @@ export function getTableStreamArn(
           ],
         }),
       },
-      permissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
-        scope,
-        `${tableName}StreamArnLookupIamPermissionsBoundary`,
-        iamPermissionsBoundary
-      ),
+      permissionsBoundary: iamPermissionsBoundary,
       path: iamPath,
     }),
     onCreate: {
