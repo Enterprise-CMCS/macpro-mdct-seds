@@ -6,11 +6,15 @@ import {
   aws_lambda_nodejs as lambda_nodejs,
   Duration,
 } from "aws-cdk-lib";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
+import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
+  stack: string;
+  isDev: boolean;
+  iamPermissionsBoundary: IManagedPolicy;
+  iamPath: string;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {

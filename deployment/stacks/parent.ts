@@ -32,6 +32,18 @@ export class ParentStack extends Stack {
       brokerString,
     } = props;
 
+    const commonProps = {
+      project: props.project,
+      stage: props.stage,
+      isDev: props.isDev,
+      iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
+        this,
+        "iamPermissionsBoundary",
+        props.iamPermissionsBoundaryArn
+      ),
+      iamPath: props.iamPath,
+    };
+
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 

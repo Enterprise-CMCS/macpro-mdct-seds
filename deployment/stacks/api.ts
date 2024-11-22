@@ -19,6 +19,7 @@ import {
 import { Lambda } from "../constructs/lambda";
 import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { WafConstruct } from "../constructs/waf";
+import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -29,6 +30,8 @@ interface CreateApiComponentsProps {
   privateSubnets: ec2.ISubnet[];
   tables: { [name: string]: dynamodb.Table };
   brokerString: string;
+  iamPermissionsBoundary: iam.IManagedPolicy;
+  iamPath: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -66,6 +69,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
     restApiName: `${stage}-app-api`,
     deploy: true,
+      cloudWatchRole: false,
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
@@ -107,6 +111,31 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "Access-Control-Allow-Headers": "'*'",
     },
   });
+
+    const cloudWatchRole = new cdk.aws_iam.Role(
+      this,
+      "ApiGatewayRestApiCloudWatchRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
+        permissionsBoundary: props.iamPermissionsBoundary,
+        path: props.iamPath,
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+          ),
+        ],
+      }
+    );
+    cloudWatchRole.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+
+    const apiGatewayRestApiAccount = new apigateway.CfnAccount(
+      this,
+      "ApiGatewayRestApiAccount",
+      {
+        cloudWatchRoleArn: cloudWatchRole.roleArn,
+      }
+    );
+    apiGatewayRestApiAccount.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
@@ -176,6 +205,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
+      iamPermissionsBoundary: props.iamPermissionsBoundary,
+      iamPath: props.iamPath,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -502,12 +533,28 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     enforceSSL: true,
   });
 
-  if (!isDev) {
-    new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-      bucket: logBucket,
-    });
+    if (!isDev) {
+      new CloudWatchToS3(this, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+      });
+    }
+
+    addIamPropertiesToBucketAutoDeleteRole(
+      this,
+      props.iamPermissionsBoundary.managedPolicyArn,
+      props.iamPath
+    );
   }
 
-  return { restApiId: api.restApiId, apiGatewayRestApiUrl: api.url };
+  public getTableStreamArnWithCaching(
+    stage: string,
+    tableName: string
+  ): string {
+    if (!(tableName in this.lookupCache)) {
+      const value = getTableStreamArn(this, `${stage}-${tableName}`);
+      this.lookupCache[tableName] = value;
+    }
+    return this.lookupCache[tableName];
+  }
 }

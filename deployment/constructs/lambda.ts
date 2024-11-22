@@ -7,6 +7,7 @@ import { Duration } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
+  IManagedPolicy,
   ManagedPolicy,
   PolicyDocument,
   PolicyStatement,
@@ -27,6 +28,8 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   tables: { [name: string]: dynamodb.Table };
   api: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
+  iamPermissionsBoundary: IManagedPolicy;
+  iamPath: string;
 }
 
 export class Lambda extends Construct {
@@ -54,6 +57,8 @@ export class Lambda extends Construct {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
+      permissionsBoundary: props.iamPermissionsBoundary,
+      path: props.iamPath,
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
           statements: [
