@@ -19,6 +19,12 @@ export class ParentStack extends cdk.Stack {
       project: props.project,
       stage: props.stage,
       isDev: props.isDev,
+      iamPermissionsBoundary: cdk.aws_iam.ManagedPolicy.fromManagedPolicyArn(
+        this,
+        "iamPermissionsBoundary",
+        props.iamPermissionsBoundaryArn
+      ),
+      iamPath: props.iamPath,
     };
 
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {

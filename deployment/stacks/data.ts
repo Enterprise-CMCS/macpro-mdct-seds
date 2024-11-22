@@ -7,12 +7,15 @@ import {
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
 } from "aws-cdk-lib";
+import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface DatabaseStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
   isDev: boolean;
+  iamPermissionsBoundary: IManagedPolicy;
+  iamPath: string;
 }
 
 export class DatabaseStack extends cdk.NestedStack {
@@ -85,6 +88,8 @@ export class DatabaseStack extends cdk.NestedStack {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
+      permissionsBoundary: props.iamPermissionsBoundary,
+      path: props.iamPath,
     });
 
     lambdaApiRole.addToPolicy(
