@@ -77,6 +77,8 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         "service-role/AWSLambdaVPCAccessExecutionRole"
       ),
     ],
+    permissionsBoundary: props.iamPermissionsBoundary,
+    path: props.iamPath,
   });
 
   lambdaApiRole.addToPolicy(

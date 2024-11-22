@@ -21,13 +21,19 @@ interface CreateUiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  restrictToVpn: boolean;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
-  const { scope, stage, project, isDev } = props;
+  const {
+    scope,
+    stage,
+    project,
+    isDev,
+    iamPermissionsBoundary,
+    iamPath,
+  } = props;
   // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
     encryption: s3.BucketEncryption.S3_MANAGED,
@@ -115,12 +121,19 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   setupWaf(scope, stage, project);
   setupRoute53(scope, stage, distribution);
 
-  createFirehoseLogging(scope, stage, project, loggingBucket);
+  createFirehoseLogging(
+    scope,
+    stage,
+    project,
+    loggingBucket,
+    iamPermissionsBoundary,
+    iamPath
+  );
 
   addIamPropertiesToBucketAutoDeleteRole(
     scope,
-    props.iamPermissionsBoundary.managedPolicyArn,
-    props.iamPath
+    iamPermissionsBoundary.managedPolicyArn,
+    iamPath
   );
 
   return {
@@ -242,9 +255,13 @@ function createFirehoseLogging(
   scope: Construct,
   stage: string,
   project: string,
-  loggingBucket: s3.Bucket
+  loggingBucket: s3.Bucket,
+  iamPermissionsBoundary: IManagedPolicy,
+  iamPath: string
 ) {
   const firehoseRole = new iam.Role(scope, "FirehoseRole", {
+    permissionsBoundary: iamPermissionsBoundary,
+    path: iamPath,
     assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
     inlinePolicies: {
       FirehoseS3Access: new iam.PolicyDocument({

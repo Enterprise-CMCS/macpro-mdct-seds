@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import {
   aws_ec2 as ec2,
+  aws_iam as iam,
   aws_ssm as ssm,
   CfnOutput,
   Stack,
@@ -30,18 +31,21 @@ export class ParentStack extends Stack {
       bootstrapUsersPasswordArn,
       oktaMetadataUrl,
       brokerString,
+      iamPermissionsBoundaryArn,
+      iamPath,
     } = props;
 
     const commonProps = {
-      project: props.project,
-      stage: props.stage,
-      isDev: props.isDev,
+      scope: this,
+      stage,
+      project,
+      isDev,
       iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
         this,
         "iamPermissionsBoundary",
-        props.iamPermissionsBoundaryArn
+        iamPermissionsBoundaryArn
       ),
-      iamPath: props.iamPath,
+      iamPath,
     };
 
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
@@ -52,24 +56,25 @@ export class ParentStack extends Stack {
     }
 
     const { seedDataFunctionName, tables } = createDataComponents({
-      scope: this,
-      stage,
+      ...commonProps,
     });
+
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
-      scope: this,
-      stage,
-      project,
-      isDev,
+      ...commonProps,
       vpc,
       privateSubnets,
       tables,
       brokerString,
     });
+
     const {
       applicationEndpointUrl,
       cloudfrontDistributionId,
       s3BucketName,
-    } = createUiComponents({ scope: this, stage, project, isDev });
+    } = createUiComponents({
+      ...commonProps,
+    });
+
     const {
       userPoolDomain,
       bootstrapUsersFunction,
@@ -77,8 +82,7 @@ export class ParentStack extends Stack {
       userPool,
       userPoolClient,
     } = createUiAuthComponents({
-      scope: this,
-      stage,
+      ...commonProps,
       oktaMetadataUrl,
       applicationEndpointUrl,
       restApiId,

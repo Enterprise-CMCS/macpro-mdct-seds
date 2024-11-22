@@ -31,6 +31,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     applicationEndpointUrl,
     restApiId,
     bootstrapUsersPasswordArn,
+    iamPath,
+    iamPermissionsBoundary,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
@@ -142,6 +144,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   );
 
   const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
+    permissionsBoundary: iamPermissionsBoundary,
+    path: iamPath,
     assumedBy: new iam.FederatedPrincipal(
       "cognito-identity.amazonaws.com",
       {
@@ -187,6 +191,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   if (bootstrapUsersPasswordArn) {
     const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
+      permissionsBoundary: iamPermissionsBoundary,
+      path: iamPath,
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
