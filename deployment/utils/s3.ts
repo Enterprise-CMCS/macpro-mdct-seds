@@ -1,7 +1,8 @@
 import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
 
 export function addIamPropertiesToBucketAutoDeleteRole(
-  stack: cdk.Stack,
+  stack: cdk.Stack | Construct,
   iamPermissionsBoundaryArn: string,
   iamPath: string
 ) {
