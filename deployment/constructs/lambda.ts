@@ -16,7 +16,6 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import { ApiStack } from "../stacks/api";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler: string;
@@ -36,7 +35,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
 export class Lambda extends Construct {
   public readonly lambda: NodejsFunction;
 
-  constructor(scope: ApiStack, id: string, props: LambdaProps) {
+  constructor(scope: Construct, id: string, props: LambdaProps) {
     super(scope, id);
 
     const {
