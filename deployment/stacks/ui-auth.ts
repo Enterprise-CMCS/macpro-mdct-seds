@@ -36,7 +36,6 @@ export class UiAuthStack extends cdk.NestedStack {
 
     const stage = props.stage;
 
-    // Cognito User Pool
     this.userPool = new cognito.UserPool(this, "UserPool", {
       userPoolName: `${stage}-user-pool`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -94,7 +93,6 @@ export class UiAuthStack extends cdk.NestedStack {
       );
     }
 
-    // Cognito User Pool Client
     this.userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPoolClientName: `${stage}-user-pool-client`,
       userPool: this.userPool,
@@ -133,7 +131,6 @@ export class UiAuthStack extends cdk.NestedStack {
       cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
     });
 
-    // Cognito Identity Pool
     this.identityPool = new cognito.CfnIdentityPool(
       this,
       "CognitoIdentityPool",
@@ -149,7 +146,6 @@ export class UiAuthStack extends cdk.NestedStack {
       }
     );
 
-    // IAM Role for Cognito Authenticated Users
     const cognitoAuthRole = new iam.Role(this, "CognitoAuthRole", {
       permissionsBoundary: props.iamPermissionsBoundary,
       path: props.iamPath,
@@ -277,25 +273,7 @@ export class UiAuthStack extends cdk.NestedStack {
       webAclArn: webAcl.attrArn,
     });
 
-    // Outputs
-    new cdk.CfnOutput(this, "UserPoolIdOutput", {
-      value: this.userPool.userPoolId,
-    });
 
-    new cdk.CfnOutput(this, "UserPoolClientIdOutput", {
-      value: this.userPoolClient.userPoolClientId,
-    });
 
-    new cdk.CfnOutput(this, "UserPoolClientDomainOutput", {
-      value: this.userPoolDomain.domainName,
-    });
-
-    new cdk.CfnOutput(this, "IdentityPoolIdOutput", {
-      value: this.identityPool.ref,
-    });
-
-    new cdk.CfnOutput(this, "RegionOutput", {
-      value: this.region,
-    });
   }
 }

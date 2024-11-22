@@ -7,7 +7,6 @@ import { Lambda } from "../constructs/lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { WafConstruct } from "../constructs/waf";
-import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { getTableStreamArn } from "../utils/dynamodb";
@@ -146,7 +145,6 @@ export class ApiStack extends cdk.NestedStack {
           .slice(0, -8);
 
         acc[`${currentTable}Name`] = table.tableName;
-        acc[`${currentTable}Arn`] = table.tableArn;
 
         return acc;
       }, {} as { [key: string]: string }),
@@ -552,25 +550,8 @@ export class ApiStack extends cdk.NestedStack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: isDev,
+      enforceSSL: true,
     });
-
-    addIamPropertiesToBucketAutoDeleteRole(
-      this,
-      props.iamPermissionsBoundary.managedPolicyArn,
-      props.iamPath
-    );
-
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.DENY,
-        principals: [new iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [logBucket.bucketArn, `${logBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      })
-    );
 
     if (!isDev) {
       new CloudWatchToS3(this, "CloudWatchToS3Construct", {
@@ -578,17 +559,12 @@ export class ApiStack extends cdk.NestedStack {
         bucket: logBucket,
       });
     }
-
-    // Outputs
-    new cdk.CfnOutput(this, "ApiGatewayRestApiUrl", {
-      value: api.url,
-    });
-    new cdk.CfnOutput(this, "ApiGatewayRestApiName", {
-      value: api.restApiName,
-    });
-    new cdk.CfnOutput(this, "Region", {
-      value: this.region,
-    });
+        
+    addIamPropertiesToBucketAutoDeleteRole(
+      this,
+      props.iamPermissionsBoundary.managedPolicyArn,
+      props.iamPath
+    );
   }
 
   public getTableStreamArnWithCaching(

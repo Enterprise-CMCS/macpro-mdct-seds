@@ -37,6 +37,7 @@ export class UiStack extends cdk.NestedStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      enforceSSL: true,
     });
 
     const loggingBucket = new s3.Bucket(this, "LoggingBucket", {
@@ -48,20 +49,8 @@ export class UiStack extends cdk.NestedStack {
       objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: props.isDev,
+      enforceSSL: true,
     });
-
-    // Deny insecure requests to the bucket
-    loggingBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.DENY,
-        principals: [new iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [loggingBucket.bucketArn, `${loggingBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      })
-    );
 
     // Add bucket policy to allow CloudFront to write logs
     loggingBucket.addToResourcePolicy(
@@ -132,11 +121,6 @@ export class UiStack extends cdk.NestedStack {
     this.setupRoute53(props, this.distribution);
 
     this.createFirehoseLogging(props, loggingBucket);
-
-    new cdk.CfnOutput(this, "S3BucketName", { value: this.bucket.bucketName });
-    new cdk.CfnOutput(this, "CloudFrontUrl", {
-      value: this.distribution.distributionDomainName,
-    });
   }
 
   private async setupWaf(props: UiStackProps) {

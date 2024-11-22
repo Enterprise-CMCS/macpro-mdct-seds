@@ -124,8 +124,8 @@ export class DatabaseStack extends cdk.NestedStack {
         commandHooks: {
           beforeBundling(inputDir: string, outputDir: string): string[] {
             return [
-              `mkdir -p ${outputDir}/data/initial_data_load/`,
-              `cp -r ${inputDir}/services/database/data/initial_data_load/ ${outputDir}/data/initial_data_load/`,
+              `mkdir --parents ${outputDir}/data/initial_data_load/`,
+              `cp --recursive ${inputDir}/services/database/data/initial_data_load/ ${outputDir}/data/initial_data_load/`,
             ];
           },
           afterBundling() {
@@ -137,8 +137,5 @@ export class DatabaseStack extends cdk.NestedStack {
         },
       },
     });
-
-    // Region Output
-    new cdk.CfnOutput(this, "Region", { value: this.region });
   }
 }
