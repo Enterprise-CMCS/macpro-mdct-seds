@@ -5,6 +5,7 @@ import {
   Duration,
   aws_s3 as s3,
   aws_s3_deployment as s3_deployment,
+  custom_resources as cr,
 } from "aws-cdk-lib";
 import path from "path";
 import { execSync } from "node:child_process";
@@ -37,9 +38,7 @@ export async function deployFrontend(props: DeployFrontendProps) {
   } = props;
 
   const reactAppPath = "./services/ui-src/";
-
   const buildOutputPath = path.join(reactAppPath, "build");
-
   const fullPath = path.resolve(reactAppPath);
 
   execSync("yarn run build", {
@@ -115,4 +114,48 @@ export async function deployFrontend(props: DeployFrontendProps) {
   );
 
   deployTimeConfig.node.addDependency(deployWebsite);
+
+  const invalidateEnvConfig = new cr.AwsCustomResource(
+    scope,
+    "InvalidateEnvConfig",
+    {
+      onCreate: {
+        service: "CloudFront",
+        action: "createInvalidation",
+        parameters: {
+          DistributionId: props.distribution.distributionId,
+          InvalidationBatch: {
+            Paths: {
+              Quantity: 1,
+              Items: ["/env-config.js"],
+            },
+            CallerReference: new Date().toISOString(),
+          },
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(
+          `InvalidateEnvConfig-${new Date().toISOString()}`
+        ),
+      },
+      onUpdate: {
+        service: "CloudFront",
+        action: "createInvalidation",
+        parameters: {
+          DistributionId: props.distribution.distributionId,
+          InvalidationBatch: {
+            Paths: {
+              Quantity: 1,
+              Items: ["/env-config.js"],
+            },
+            CallerReference: new Date().toISOString(),
+          },
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(
+          `InvalidateEnvConfig-${new Date().toISOString()}`
+        ),
+      },
+      role: deploymentRole,
+    }
+  );
+
+  invalidateEnvConfig.node.addDependency(deployTimeConfig);
 }
