@@ -1,0 +1,89 @@
+import { Construct } from "constructs";
+import {
+  aws_iam as iam,
+  aws_cloudfront as cloudfront,
+  Duration,
+  aws_s3 as s3,
+  aws_s3_deployment as s3_deployment,
+} from "aws-cdk-lib";
+import path from "path";
+import { execSync } from "node:child_process";
+import { writeUiEnvFile } from "../../src/write-ui-env-file";
+
+interface DeployFrontendProps {
+  scope: Construct;
+  stage: string;
+  uiBucket: s3.Bucket;
+  distribution: cloudfront.Distribution;
+  iamPermissionsBoundary: iam.IManagedPolicy;
+  iamPath: string;
+}
+
+export async function deployFrontend(props: DeployFrontendProps) {
+  const { scope, stage } = props;
+
+  const reactAppPath = "./services/ui-src/";
+
+  const buildOutputPath = path.join(reactAppPath, "build");
+
+  const fullPath = path.resolve(reactAppPath);
+
+  await writeUiEnvFile(stage);
+
+  execSync("yarn run build", {
+    cwd: fullPath,
+    stdio: "inherit",
+  });
+
+  const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
+    assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+    path: props.iamPath,
+    permissionsBoundary: props.iamPermissionsBoundary,
+  });
+
+  deploymentRole.addToPolicy(
+    new iam.PolicyStatement({
+      actions: [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:ListBucketVersions",
+      ],
+      resources: [props.uiBucket.bucketArn, `${props.uiBucket.bucketArn}/*`],
+    })
+  );
+
+  deploymentRole.addToPolicy(
+    new iam.PolicyStatement({
+      actions: ["cloudfront:CreateInvalidation"],
+      resources: ["*"],
+    })
+  );
+
+  new s3_deployment.BucketDeployment(scope, "DeployWebsite", {
+    sources: [s3_deployment.Source.asset(buildOutputPath)],
+    destinationBucket: props.uiBucket,
+    distribution: props.distribution,
+    distributionPaths: ["/*"],
+    prune: true,
+    cacheControl: [
+      s3_deployment.CacheControl.setPublic(),
+      s3_deployment.CacheControl.maxAge(Duration.days(365)),
+      s3_deployment.CacheControl.noCache(),
+    ],
+    role: deploymentRole,
+  });
+
+  new s3_deployment.DeployTimeSubstitutedFile(scope, "DeployTimeConfig", {
+    destinationBucket: props.uiBucket,
+    destinationKey: "env-config.js",
+    source: path.join("./deployment/stacks/", "env-config.template.js"),
+    substitutions: {
+      stage,
+    },
+  });
+}
