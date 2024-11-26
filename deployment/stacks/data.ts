@@ -127,5 +127,14 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
   });
 
+  // TODO: Figure out the best approach to invoke the seed data function.  Probably change it to a custom resource.
+  // if (seedDataFunctionName) {
+  //   const client = new LambdaClient({ region });
+  //   const command = new InvokeCommand({
+  //     FunctionName: seedDataFunctionName,
+  //   });
+  //   await client.send(command);
+  // }
+
   return { seedDataFunctionName: seedDataFunction.functionName, tables };
 }

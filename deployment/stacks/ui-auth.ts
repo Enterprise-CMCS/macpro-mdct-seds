@@ -259,6 +259,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     webAclArn: webAcl.attrArn,
   });
 
+  // TODO: figure out the best approach to invoke the bootstrap users function.  Probably change it to a custom resource.
+  // if (bootstrapUsersFunctionName) {
+  //   const client = new LambdaClient({ region });
+  //   const command = new InvokeCommand({
+  //     FunctionName: bootstrapUsersFunctionName,
+  //   });
+  //   await client.send(command);
+  // }
+
   return {
     userPoolDomain,
     bootstrapUsersFunction,

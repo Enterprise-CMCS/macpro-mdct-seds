@@ -14,6 +14,7 @@ import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { sortSubnets } from "../utils/vpc";
+import { deployFrontend } from "./deployFrontend";
 
 export class ParentStack extends Stack {
   constructor(
@@ -70,7 +71,9 @@ export class ParentStack extends Stack {
     const {
       applicationEndpointUrl,
       cloudfrontDistributionId,
+      distribution,
       s3BucketName,
+      uiBucket,
     } = createUiComponents({
       ...commonProps,
     });
@@ -87,6 +90,18 @@ export class ParentStack extends Stack {
       applicationEndpointUrl,
       restApiId,
       bootstrapUsersPasswordArn,
+    });
+
+    deployFrontend({
+      ...commonProps,
+      uiBucket,
+      distribution,
+      apiGatewayRestApiUrl,
+      applicationEndpointUrl,
+      identityPoolId: identityPool.ref,
+      userPoolId: userPool.userPoolId,
+      userPoolClientId: userPoolClient.userPoolClientId,
+      userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
     });
 
     new ssm.StringParameter(this, "DeploymentOutput", {

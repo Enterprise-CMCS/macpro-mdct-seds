@@ -546,5 +546,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     props.iamPath
   );
 
-  return { restApiId: api.restApiId, apiGatewayRestApiUrl: api.url };
+  return {
+    restApiId: api.restApiId,
+    apiGatewayRestApiUrl: api.url.slice(0, -1),
+  };
 }
