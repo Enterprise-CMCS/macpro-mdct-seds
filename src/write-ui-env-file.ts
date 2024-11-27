@@ -6,6 +6,8 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const outputPath = path.join(__dirname, "../../services/ui-src", "build");
+const configFilePath = path.resolve(outputPath, "env-config.js");
 
 const project = "seds";
 const region = "us-east-1";
@@ -60,9 +62,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
       : deploymentOutput.applicationEndpointUrl,
     STAGE: stage,
   };
-
-  const outputPath = path.join(__dirname, "../../services/ui-src", "build");
-  const configFilePath = path.resolve(outputPath, "env-config.js");
 
   await fs.rm(configFilePath, { force: true });
 
