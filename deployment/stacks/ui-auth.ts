@@ -267,6 +267,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   //   });
   //   await client.send(command);
   // }
+  new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
+    parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
+    stringValue: userPool.userPoolId,
+  });
+  new ssm.StringParameter(scope, "CognitoUserPoolClientIdParameter", {
+    parameterName: `/${stage}/ui-auth/cognito_user_pool_client_id`,
+    stringValue: userPoolClient.userPoolClientId,
+  });
+
 
   return {
     userPoolDomain,
