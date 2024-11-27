@@ -94,6 +94,7 @@ export class ParentStack extends Stack {
       applicationEndpointUrl,
       restApiId,
       bootstrapUsersPasswordArn,
+      customResourceRole,
     });
 
     deployFrontend({

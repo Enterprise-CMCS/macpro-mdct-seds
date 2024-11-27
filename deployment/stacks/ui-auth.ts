@@ -5,9 +5,11 @@ import {
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
+  aws_ssm as ssm,
   RemovalPolicy,
   Aws,
   Duration,
+  custom_resources as cr,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -21,6 +23,7 @@ interface CreateUiAuthComponentsProps {
   bootstrapUsersPasswordArn: string;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
+  customResourceRole: iam.Role;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
@@ -259,14 +262,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     webAclArn: webAcl.attrArn,
   });
 
-  // TODO: figure out the best approach to invoke the bootstrap users function.  Probably change it to a custom resource.
-  // if (bootstrapUsersFunctionName) {
-  //   const client = new LambdaClient({ region });
-  //   const command = new InvokeCommand({
-  //     FunctionName: bootstrapUsersFunctionName,
-  //   });
-  //   await client.send(command);
-  // }
   new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
     parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
     stringValue: userPool.userPoolId,
@@ -276,6 +271,38 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     stringValue: userPoolClient.userPoolClientId,
   });
 
+  if (bootstrapUsersFunction) {
+    const bootstrapUsersInvoke = new cr.AwsCustomResource(
+      scope,
+      "InvokeBootstrapUsersFunction",
+      {
+        onCreate: {
+          service: "Lambda",
+          action: "invoke",
+          parameters: {
+            FunctionName: bootstrapUsersFunction.functionName,
+            InvocationType: "Event",
+            Payload: JSON.stringify({}),
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(
+            `InvokeBootstrapUsersFunction-${stage}`
+          ),
+        },
+        onUpdate: undefined,
+        onDelete: undefined,
+        policy: cr.AwsCustomResourcePolicy.fromStatements([
+          new iam.PolicyStatement({
+            actions: ["lambda:InvokeFunction"],
+            resources: [bootstrapUsersFunction.functionArn],
+          }),
+        ]),
+        role: props.customResourceRole,
+        resourceType: "Custom::InvokeBootstrapUsersFunction",
+      }
+    );
+
+    bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
+  }
 
   return {
     userPoolDomain,
