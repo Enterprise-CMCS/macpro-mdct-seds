@@ -138,13 +138,15 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         action: "invoke",
         parameters: {
           FunctionName: seedDataFunction.functionName,
-          InvocationType: "RequestResponse",
+          InvocationType: "Event",
           Payload: JSON.stringify({}),
         },
         physicalResourceId: cr.PhysicalResourceId.of(
           `InvokeSeedDataFunction-${stage}`
         ),
       },
+      onUpdate: undefined,
+      onDelete: undefined,
       policy: cr.AwsCustomResourcePolicy.fromStatements([
         new iam.PolicyStatement({
           actions: ["lambda:InvokeFunction"],
