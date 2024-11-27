@@ -305,10 +305,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   }
 
   return {
-    userPoolDomain,
-    bootstrapUsersFunction,
-    identityPool,
-    userPool,
-    userPoolClient,
+    userPoolDomainName: userPoolDomain.domainName,
+    identityPoolId: identityPool.ref,
+    userPoolId: userPool.userPoolId,
+    userPoolClientId: userPoolClient.userPoolClientId,
   };
 }

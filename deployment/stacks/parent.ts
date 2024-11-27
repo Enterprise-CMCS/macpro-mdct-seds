@@ -59,7 +59,7 @@ export class ParentStack extends Stack {
 
     const { customResourceRole } = createCustomResourceRole({ ...commonProps });
 
-    const { seedDataFunctionName, tables } = createDataComponents({
+    const { tables } = createDataComponents({
       ...commonProps,
       customResourceRole,
     });
@@ -83,11 +83,10 @@ export class ParentStack extends Stack {
     });
 
     const {
-      userPoolDomain,
-      bootstrapUsersFunction,
-      identityPool,
-      userPool,
-      userPoolClient,
+      userPoolDomainName,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
     } = createUiAuthComponents({
       ...commonProps,
       oktaMetadataUrl,
@@ -103,10 +102,10 @@ export class ParentStack extends Stack {
       distribution,
       apiGatewayRestApiUrl,
       applicationEndpointUrl,
-      identityPoolId: identityPool.ref,
-      userPoolId: userPool.userPoolId,
-      userPoolClientId: userPoolClient.userPoolClientId,
-      userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
       customResourceRole,
     });
 
@@ -117,12 +116,10 @@ export class ParentStack extends Stack {
         applicationEndpointUrl,
         s3BucketName,
         cloudfrontDistributionId,
-        identityPoolId: identityPool.ref,
-        userPoolId: userPool.userPoolId,
-        userPoolClientId: userPoolClient.userPoolClientId,
-        userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
-        bootstrapUsersFunctionName: bootstrapUsersFunction?.functionName,
-        seedDataFunctionName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+        userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
       }),
       description: `Deployment output for the ${stage} environment.`,
     });

@@ -160,5 +160,5 @@ export function createDataComponents(props: CreateDataComponentsProps) {
 
   seedDataInvoke.node.addDependency(seedDataFunction);
 
-  return { seedDataFunctionName: seedDataFunction.functionName, tables };
+  return { tables };
 }

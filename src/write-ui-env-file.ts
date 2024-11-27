@@ -38,10 +38,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
   //   userPoolClientId: "6lebne58mma8qgasbhj763on18",
   //   userPoolClientDomain:
   //     "jon-cdk2-login-user-pool-client.auth.us-east-1.amazoncognito.com",
-  //   bootstrapUsersFunctionName:
-  //     "seds-jon-cdk2-uiauthNestedS-bootstrapUsers9AF96131-2j29wPIx60Mb",
-  //   seedDataFunctionName:
-  //     "seds-jon-cdk2-databaseNestedStack-seedData88C4E515-4usR7jNnsDrs",
   // };
 
   const envVariables = {
