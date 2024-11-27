@@ -23,6 +23,7 @@ interface DeployFrontendProps {
   userPoolClientDomain: string;
   iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
+  customResourceRole: iam.Role;
 }
 
 export async function deployFrontend(props: DeployFrontendProps) {
@@ -153,7 +154,8 @@ export async function deployFrontend(props: DeployFrontendProps) {
           `InvalidateEnvConfig-${new Date().toISOString()}`
         ),
       },
-      role: deploymentRole,
+      role: props.customResourceRole,
+      resourceType: "Custom::InvalidateEnvConfig",
     }
   );
 
