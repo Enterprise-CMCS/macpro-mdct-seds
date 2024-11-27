@@ -15,6 +15,7 @@ import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { sortSubnets } from "../utils/vpc";
 import { deployFrontend } from "./deployFrontend";
+import { createCustomResourceRole } from "./customResourceRole";
 
 export class ParentStack extends Stack {
   constructor(
@@ -56,8 +57,11 @@ export class ParentStack extends Stack {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
     }
 
+    const { customResourceRole } = createCustomResourceRole({ ...commonProps });
+
     const { seedDataFunctionName, tables } = createDataComponents({
       ...commonProps,
+      customResourceRole,
     });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
@@ -102,6 +106,7 @@ export class ParentStack extends Stack {
       userPoolId: userPool.userPoolId,
       userPoolClientId: userPoolClient.userPoolClientId,
       userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
+      customResourceRole,
     });
 
     new ssm.StringParameter(this, "DeploymentOutput", {
