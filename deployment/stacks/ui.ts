@@ -64,6 +64,35 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     })
   );
 
+  const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
+    scope,
+    "CloudFormationHeadersPolicy",
+    {
+      responseHeadersPolicyName: `Headers-Policy-${stage}`,
+      comment: "Add Security Headers",
+      securityHeadersBehavior: {
+        contentTypeOptions: {
+          override: true,
+        },
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.days(730),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+        frameOptions: {
+          frameOption: cloudfront.HeadersFrameOption.DENY,
+          override: true,
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy:
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+          override: true,
+        },
+      },
+    }
+  );
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
@@ -76,6 +105,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
         compress: true,
+        responseHeadersPolicy: securityHeadersPolicy,
       },
       defaultRootObject: "index.html",
       enableLogging: true,
@@ -92,31 +122,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
-
-  new cloudfront.ResponseHeadersPolicy(scope, "CloudFormationHeadersPolicy", {
-    responseHeadersPolicyName: `Headers-Policy-${stage}`,
-    comment: "Add Security Headers",
-    securityHeadersBehavior: {
-      contentTypeOptions: {
-        override: true,
-      },
-      strictTransportSecurity: {
-        accessControlMaxAge: Duration.days(730),
-        includeSubdomains: true,
-        preload: true,
-        override: true,
-      },
-      frameOptions: {
-        frameOption: cloudfront.HeadersFrameOption.DENY,
-        override: true,
-      },
-      contentSecurityPolicy: {
-        contentSecurityPolicy:
-          "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
-        override: true,
-      },
-    },
-  });
 
   setupWaf(scope, stage, project);
   setupRoute53(scope, stage, distribution);
@@ -270,9 +275,7 @@ function createFirehoseLogging(
         statements: [
           new iam.PolicyStatement({
             actions: ["s3:PutObject"],
-            resources: [
-              `arn:aws:s3:::${project}-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}/*`,
-            ],
+            resources: [`${loggingBucket.bucketArn}/*`],
             effect: iam.Effect.ALLOW,
           }),
         ],
