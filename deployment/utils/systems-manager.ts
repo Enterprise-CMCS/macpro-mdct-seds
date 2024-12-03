@@ -19,10 +19,10 @@ export async function getParameter(parameterName: string) {
 
 export async function getDeploymentConfigParameter(
   parameterName: string,
-  stage: string
+  stage: string,
+  useDefault: boolean = true
 ) {
   const stageSpecificKey = `/configuration/${stage}/${parameterName}`;
-  const defaultKey = `/configuration/default/${parameterName}`;
 
   try {
     const specificValue = await getParameter(stageSpecificKey);
@@ -30,16 +30,19 @@ export async function getDeploymentConfigParameter(
       return specificValue;
     }
   } catch (err) {
-    console.info(`No value in SSM for ${stageSpecificKey}; using default`);
+    console.info(`No value in SSM for ${stageSpecificKey}`);
   }
 
-  try {
-    const defaultValue = await getParameter(defaultKey);
-    if (defaultValue) {
-      return defaultValue;
+  if (useDefault) {
+    const defaultKey = `/configuration/default/${parameterName}`;
+    try {
+      const defaultValue = await getParameter(defaultKey);
+      if (defaultValue) {
+        return defaultValue;
+      }
+    } catch (err) {
+      console.info(`No value in SSM for ${defaultKey}; treating as undefined`);
     }
-  } catch (err) {
-    console.info(`No value in SSM for ${defaultKey}; treating as undefined`);
   }
 
   return undefined;
