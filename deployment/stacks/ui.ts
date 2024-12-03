@@ -162,7 +162,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   };
 }
 
-async function setupWaf(
+function setupWaf(
   scope: Construct,
   stage: string,
   project: string,
@@ -229,7 +229,7 @@ async function setupWaf(
   });
 }
 
-async function setupRoute53(
+function setupRoute53(
   scope: Construct,
   distribution: cloudfront.Distribution,
   deploymentConfigParameters: { [name: string]: string | undefined }

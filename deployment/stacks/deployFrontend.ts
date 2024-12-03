@@ -26,7 +26,7 @@ interface DeployFrontendProps {
   customResourceRole: iam.Role;
 }
 
-export async function deployFrontend(props: DeployFrontendProps) {
+export function deployFrontend(props: DeployFrontendProps) {
   const {
     scope,
     stage,
