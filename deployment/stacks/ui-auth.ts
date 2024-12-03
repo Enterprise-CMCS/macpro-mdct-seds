@@ -68,14 +68,18 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
   });
 
-  let idp = undefined;
+  let supportedIdentityProviders:
+    | cognito.UserPoolClientIdentityProvider[]
+    | undefined = undefined;
 
   if (oktaMetadataUrl) {
-    idp = new cognito.CfnUserPoolIdentityProvider(
+    const providerName = "Okta";
+
+    new cognito.CfnUserPoolIdentityProvider(
       scope,
       "CognitoUserPoolIdentityProvider",
       {
-        providerName: "Okta",
+        providerName,
         providerType: "SAML",
         userPoolId: userPool.userPoolId,
         providerDetails: {
@@ -93,6 +97,10 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         idpIdentifiers: ["IdpIdentifier"],
       }
     );
+
+    supportedIdentityProviders = [
+      cognito.UserPoolClientIdentityProvider.custom(providerName),
+    ];
   }
 
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
@@ -114,9 +122,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       defaultRedirectUri: applicationEndpointUrl,
       logoutUrls: [applicationEndpointUrl || "https://localhost:3000/"],
     },
-    supportedIdentityProviders: idp
-      ? [(idp as unknown) as cognito.UserPoolClientIdentityProvider]
-      : undefined,
+    supportedIdentityProviders,
     generateSecret: false,
   });
 
