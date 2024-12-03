@@ -1,8 +1,4 @@
-import {
-  SSMClient,
-  GetParameterCommand,
-  GetParametersCommand,
-} from "@aws-sdk/client-ssm";
+import { SSMClient, GetParametersCommand } from "@aws-sdk/client-ssm";
 
 // If the param is a SecureString, decrypt it. No effect otherwise.
 const WithDecryption = true;
@@ -54,49 +50,6 @@ export async function getParameters(
   return result;
 }
 
-export async function getParameter(parameterName: string) {
-  console.log(
-    "getting systems manager parameter store parameter:",
-    parameterName
-  );
-  const command = new GetParameterCommand({
-    Name: parameterName,
-    WithDecryption,
-  });
-  const data = await client.send(command);
-  return data.Parameter?.Value;
-}
-
-export async function getDeploymentConfigParameter(
-  parameterName: string,
-  stage: string,
-  useDefault: boolean = true
-) {
-  const stageSpecificKey = `/configuration/${stage}/${parameterName}`;
-
-  try {
-    const specificValue = await getParameter(stageSpecificKey);
-    if (specificValue) {
-      return specificValue;
-    }
-  } catch (err) {
-    console.info(`No value in SSM for ${stageSpecificKey}`);
-  }
-
-  if (useDefault) {
-    const defaultKey = `/configuration/default/${parameterName}`;
-    try {
-      const defaultValue = await getParameter(defaultKey);
-      if (defaultValue) {
-        return defaultValue;
-      }
-    } catch (err) {
-      console.info(`No value in SSM for ${defaultKey}; treating as undefined`);
-    }
-  }
-
-  return undefined;
-}
 export async function getDeploymentConfigParameters(
   parameterNames: { [key: string]: { name: string; useDefault?: boolean } },
   stage: string
