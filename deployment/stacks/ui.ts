@@ -11,6 +11,7 @@ import {
   Aws,
   Duration,
   RemovalPolicy,
+  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -98,6 +99,16 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     scope,
     "CloudFrontDistribution",
     {
+      certificate: deploymentConfigParameters.cloudfrontCertificateArn
+        ? acm.Certificate.fromCertificateArn(
+            scope,
+            "certArn",
+            deploymentConfigParameters.cloudfrontCertificateArn
+          )
+        : undefined,
+      domainNames: deploymentConfigParameters.cloudfrontDomainName
+        ? [deploymentConfigParameters.cloudfrontDomainName]
+        : [],
       defaultBehavior: {
         origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
           uiBucket
