@@ -97,3 +97,37 @@ export async function getDeploymentConfigParameter(
 
   return undefined;
 }
+export async function getDeploymentConfigParameters(
+  parameterNames: { [key: string]: { name: string; useDefault?: boolean } },
+  stage: string
+) {
+  const stageSpecificKeys = Object.entries(parameterNames).map(
+    ([, { name }]) => `/configuration/${stage}/${name}`
+  );
+
+  const defaultKeys = Object.entries(parameterNames)
+    .filter(([, { useDefault }]) => useDefault !== false)
+    .map(([, { name }]) => `/configuration/default/${name}`);
+
+  const allKeys = [...stageSpecificKeys, ...defaultKeys];
+
+  const fetchedParameters = await getParameters(allKeys);
+
+  const result: { [key: string]: string | undefined } = {};
+  for (const [key, { name, useDefault }] of Object.entries(parameterNames)) {
+    const stageSpecificKey = `/configuration/${stage}/${name}`;
+    const defaultKey = `/configuration/default/${name}`;
+
+    // Try stage-specific parameter
+    let value = fetchedParameters[stageSpecificKey];
+
+    // If not found and useDefault is true, try default parameter
+    if (useDefault && value === undefined) {
+      value = fetchedParameters[defaultKey];
+    }
+
+    result[key] = value;
+  }
+
+  return result;
+}
