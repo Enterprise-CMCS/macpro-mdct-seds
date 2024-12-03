@@ -170,6 +170,10 @@ async function setupWaf(
 ) {
   const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
+  const defaultAction = deploymentConfigParameter.vpnIpSetArn
+    ? { block: {} }
+    : { allow: {} };
+
   if (deploymentConfigParameter.vpnIpSetArn) {
     const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
       name: `${stage}-gh-ipset`,
@@ -210,32 +214,12 @@ async function setupWaf(
         },
       },
     });
-
-    wafRules.push({
-      name: "block-all-other-traffic",
-      priority: 3,
-      action: { block: { customResponse: { responseCode: 403 } } },
-      visibilityConfig: {
-        cloudWatchMetricsEnabled: true,
-        metricName: `${project}-${stage}-block-traffic`,
-        sampledRequestsEnabled: true,
-      },
-      statement: {
-        notStatement: {
-          statement: {
-            ipSetReferenceStatement: {
-              arn: deploymentConfigParameter.vpnIpSetArn,
-            },
-          },
-        },
-      },
-    });
   }
 
   new wafv2.CfnWebACL(scope, "WebACL", {
     name: `${project}-${stage}-webacl-waf`,
     scope: "CLOUDFRONT",
-    defaultAction: { allow: {} },
+    defaultAction,
     visibilityConfig: {
       sampledRequestsEnabled: true,
       cloudWatchMetricsEnabled: true,
