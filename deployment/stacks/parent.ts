@@ -35,6 +35,7 @@ export class ParentStack extends Stack {
       brokerString,
       iamPermissionsBoundaryArn,
       iamPath,
+      deploymentConfigParameters,
     } = props;
 
     const commonProps = {
@@ -79,6 +80,7 @@ export class ParentStack extends Stack {
       s3BucketName,
       uiBucket,
     } = createUiComponents({
+      deploymentConfigParameters,
       ...commonProps,
     });
 

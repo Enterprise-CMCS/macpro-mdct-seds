@@ -11,6 +11,7 @@ export interface DeploymentConfigProperties {
   iamPath: string;
   iamPermissionsBoundaryArn: string;
   vpcName: string;
+  deploymentConfigParameters: { [name: string]: string | undefined };
 }
 
 export const determineDeploymentConfig = async (stage: string) => {

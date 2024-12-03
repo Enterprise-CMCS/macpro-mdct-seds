@@ -12,7 +12,6 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { getDeploymentConfigParameter } from "../utils/systems-manager";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
@@ -23,6 +22,7 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
+  deploymentConfigParameters: { [name: string]: string | undefined };
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -33,6 +33,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev,
     iamPermissionsBoundary,
     iamPath,
+    deploymentConfigParameters,
   } = props;
   // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -123,8 +124,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
-  setupWaf(scope, stage, project);
-  setupRoute53(scope, stage, distribution);
+  setupWaf(scope, stage, project, deploymentConfigParameters);
+  setupRoute53(scope, distribution, deploymentConfigParameters);
 
   createFirehoseLogging(
     scope,
@@ -150,15 +151,15 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   };
 }
 
-async function setupWaf(scope: Construct, stage: string, project: string) {
-  const vpnIpSetArn = await getDeploymentConfigParameter("vpnIpSetArn", stage);
-  const vpnIpv6SetArn = await getDeploymentConfigParameter(
-    "vpnIpv6SetArn",
-    stage
-  );
+async function setupWaf(
+  scope: Construct,
+  stage: string,
+  project: string,
+  deploymentConfigParameter: { [name: string]: string | undefined }
+) {
   const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
-  if (vpnIpSetArn) {
+  if (deploymentConfigParameter.vpnIpSetArn) {
     const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
       name: `${stage}-gh-ipset`,
       scope: "CLOUDFRONT",
@@ -168,16 +169,18 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
 
     const statements = [
       {
-        ipSetReferenceStatement: { arn: vpnIpSetArn },
+        ipSetReferenceStatement: { arn: deploymentConfigParameter.vpnIpSetArn },
       },
       {
         ipSetReferenceStatement: { arn: githubIpSet.attrArn },
       },
     ];
 
-    if (vpnIpv6SetArn) {
+    if (deploymentConfigParameter.vpnIpv6SetArn) {
       statements.push({
-        ipSetReferenceStatement: { arn: vpnIpv6SetArn },
+        ipSetReferenceStatement: {
+          arn: deploymentConfigParameter.vpnIpv6SetArn,
+        },
       });
     }
 
@@ -209,7 +212,9 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
       statement: {
         notStatement: {
           statement: {
-            ipSetReferenceStatement: { arn: vpnIpSetArn },
+            ipSetReferenceStatement: {
+              arn: deploymentConfigParameter.vpnIpSetArn,
+            },
           },
         },
       },
@@ -231,22 +236,16 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
 
 async function setupRoute53(
   scope: Construct,
-  stage: string,
-  distribution: cloudfront.Distribution
+  distribution: cloudfront.Distribution,
+  deploymentConfigParameters: { [name: string]: string | undefined }
 ) {
-  const hostedZoneId = await getDeploymentConfigParameter(
-    "route53/hostedZoneId",
-    stage
-  );
-  const domainName = await getDeploymentConfigParameter(
-    "route53/domainName",
-    stage
-  );
-
-  if (hostedZoneId && domainName) {
+  if (
+    deploymentConfigParameters.hostedZoneId &&
+    deploymentConfigParameters.domainName
+  ) {
     const zone = route53.HostedZone.fromHostedZoneAttributes(scope, "Zone", {
-      hostedZoneId,
-      zoneName: domainName,
+      hostedZoneId: deploymentConfigParameters.hostedZoneId,
+      zoneName: deploymentConfigParameters.domainName,
     });
 
     new route53.ARecord(scope, "AliasRecord", {
