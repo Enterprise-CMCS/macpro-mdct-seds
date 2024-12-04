@@ -157,7 +157,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       actions: [
         "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
-        "dynamodb:DescribeTable",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
@@ -310,12 +309,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     handler: "adminCreateUser",
     path: "/users/admin-add",
     method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "deleteUser", {
-    entry: "services/app-api/handlers/users/post/deleteUser.js",
-    handler: "main",
     ...commonProps,
   });
 
