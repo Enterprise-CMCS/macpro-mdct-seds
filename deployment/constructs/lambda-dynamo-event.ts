@@ -11,13 +11,10 @@ interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   brokerString?: string;
-  handler: string;
   iamPath: string;
   iamPermissionsBoundary: iam.IManagedPolicy;
-  memorySize?: number;
   stackName: string;
   tables: dynamodb.Table[];
-  timeout?: Duration;
 }
 
 export class LambdaDynamoEventSource extends Construct {
