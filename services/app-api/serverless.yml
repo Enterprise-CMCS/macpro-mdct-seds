@@ -518,9 +518,9 @@ resources:
             - ""
             - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
-    # ApiGatewayRestApi:
-    #   Type: AWS::ApiGateway::RestApi
-    #   DeletionPolicy: Retain
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      DeletionPolicy: Retain
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
       Type: "AWS::IAM::Role"
       Properties:
