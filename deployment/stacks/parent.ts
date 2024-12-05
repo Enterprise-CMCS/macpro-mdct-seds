@@ -14,6 +14,8 @@ import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { sortSubnets } from "../utils/vpc";
+import { deployFrontend } from "./deployFrontend";
+import { createCustomResourceRole } from "./customResourceRole";
 
 export class ParentStack extends Stack {
   constructor(
@@ -33,6 +35,7 @@ export class ParentStack extends Stack {
       brokerString,
       iamPermissionsBoundaryArn,
       iamPath,
+      deploymentConfigParameters,
     } = props;
 
     const commonProps = {
@@ -55,8 +58,11 @@ export class ParentStack extends Stack {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
     }
 
-    const { seedDataFunctionName, tables } = createDataComponents({
+    const { customResourceRole } = createCustomResourceRole({ ...commonProps });
+
+    const { tables } = createDataComponents({
       ...commonProps,
+      customResourceRole,
     });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
@@ -70,23 +76,39 @@ export class ParentStack extends Stack {
     const {
       applicationEndpointUrl,
       cloudfrontDistributionId,
+      distribution,
       s3BucketName,
+      uiBucket,
     } = createUiComponents({
+      deploymentConfigParameters,
       ...commonProps,
     });
 
     const {
-      userPoolDomain,
-      bootstrapUsersFunction,
-      identityPool,
-      userPool,
-      userPoolClient,
+      userPoolDomainName,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
     } = createUiAuthComponents({
       ...commonProps,
       oktaMetadataUrl,
       applicationEndpointUrl,
       restApiId,
       bootstrapUsersPasswordArn,
+      customResourceRole,
+    });
+
+    deployFrontend({
+      ...commonProps,
+      uiBucket,
+      distribution,
+      apiGatewayRestApiUrl,
+      applicationEndpointUrl,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
+      customResourceRole,
     });
 
     new ssm.StringParameter(this, "DeploymentOutput", {
@@ -96,12 +118,10 @@ export class ParentStack extends Stack {
         applicationEndpointUrl,
         s3BucketName,
         cloudfrontDistributionId,
-        identityPoolId: identityPool.ref,
-        userPoolId: userPool.userPoolId,
-        userPoolClientId: userPoolClient.userPoolClientId,
-        userPoolClientDomain: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
-        bootstrapUsersFunctionName: bootstrapUsersFunction?.functionName,
-        seedDataFunctionName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+        userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
       }),
       description: `Deployment output for the ${stage} environment.`,
     });
