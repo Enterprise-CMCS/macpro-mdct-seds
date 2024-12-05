@@ -20,8 +20,8 @@ interface CreateDataComponentsProps {
 
 export function createDataComponents(props: CreateDataComponentsProps) {
   const { scope, stage } = props;
-  const tables = {
-    "form-answers": new DynamoDBTable(scope, "FormAnswers", {
+  const tables = [
+    new DynamoDBTable(scope, "FormAnswers", {
       stage,
       name: "form-answers",
       partitionKey: {
@@ -35,41 +35,41 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           type: dynamodb.AttributeType.STRING,
         },
       },
-    }).table,
-    "form-questions": new DynamoDBTable(scope, "FormQuestions", {
+    }).identifiers,
+    new DynamoDBTable(scope, "FormQuestions", {
       stage,
       name: "form-questions",
       partitionKey: { name: "question", type: dynamodb.AttributeType.STRING },
-    }).table,
-    "form-templates": new DynamoDBTable(scope, "FormTemplates", {
+    }).identifiers,
+    new DynamoDBTable(scope, "FormTemplates", {
       stage,
       name: "form-templates",
       partitionKey: { name: "year", type: dynamodb.AttributeType.NUMBER },
-    }).table,
-    forms: new DynamoDBTable(scope, "Forms", {
+    }).identifiers,
+    new DynamoDBTable(scope, "Forms", {
       stage,
       name: "forms",
       partitionKey: { name: "form", type: dynamodb.AttributeType.STRING },
-    }).table,
-    "state-forms": new DynamoDBTable(scope, "StateForms", {
+    }).identifiers,
+    new DynamoDBTable(scope, "StateForms", {
       stage,
       name: "state-forms",
       partitionKey: {
         name: "state_form",
         type: dynamodb.AttributeType.STRING,
       },
-    }).table,
-    states: new DynamoDBTable(scope, "States", {
+    }).identifiers,
+    new DynamoDBTable(scope, "States", {
       stage,
       name: "states",
       partitionKey: { name: "state_id", type: dynamodb.AttributeType.STRING },
-    }).table,
-    "auth-user": new DynamoDBTable(scope, "AuthUser", {
+    }).identifiers,
+    new DynamoDBTable(scope, "AuthUser", {
       stage,
       name: "auth-user",
       partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
-    }).table,
-  };
+    }).identifiers,
+  ];
 
   // seed data
   const lambdaApiRole = new iam.Role(scope, "SeedDataLambdaApiRole", {
