@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { CfnResourcePolicy } from "aws-cdk-lib/aws-logs";
-import { Stack, aws_iam as iam } from "aws-cdk-lib";
+import { Aws, aws_iam as iam } from "aws-cdk-lib";
 
 interface CloudWatchLogsResourcePolicyProps {
   readonly project: string;
@@ -15,7 +15,6 @@ export class CloudWatchLogsResourcePolicy extends Construct {
     props: CloudWatchLogsResourcePolicyProps
   ) {
     super(scope, id);
-    const stack = Stack.of(this);
 
     const policyDocument = new iam.PolicyDocument({
       statements: [
@@ -24,14 +23,14 @@ export class CloudWatchLogsResourcePolicy extends Construct {
           principals: [new iam.ServicePrincipal("delivery.logs.amazonaws.com")],
           actions: ["logs:CreateLogStream", "logs:PutLogEvents"],
           resources: [
-            `arn:aws:logs:*:${stack.account}:log-group:aws-waf-logs-*`,
-            `arn:aws:logs:*:${stack.account}:log-group:/aws/http-api/*`,
-            `arn:aws:logs:*:${stack.account}:log-group:/aws/vendedlogs/*`,
+            `arn:aws:logs:*:${Aws.ACCOUNT_ID}:log-group:aws-waf-logs-*`,
+            `arn:aws:logs:*:${Aws.ACCOUNT_ID}:log-group:/aws/http-api/*`,
+            `arn:aws:logs:*:${Aws.ACCOUNT_ID}:log-group:/aws/vendedlogs/*`,
           ],
           conditions: {
-            StringEquals: { "aws:SourceAccount": stack.account },
+            StringEquals: { "aws:SourceAccount": Aws.ACCOUNT_ID },
             ArnLike: {
-              "aws:SourceArn": `arn:aws:logs:${stack.region}:${stack.account}:*`,
+              "aws:SourceArn": `arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*`,
             },
           },
         }),

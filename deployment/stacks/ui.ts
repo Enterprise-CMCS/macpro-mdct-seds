@@ -11,8 +11,8 @@ import {
   Aws,
   Duration,
   RemovalPolicy,
+  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
-import { getDeploymentConfigParameter } from "../utils/systems-manager";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
@@ -23,6 +23,7 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
+  deploymentConfigParameters: { [name: string]: string | undefined };
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -33,6 +34,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev,
     iamPermissionsBoundary,
     iamPath,
+    deploymentConfigParameters,
   } = props;
   // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -64,10 +66,49 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     })
   );
 
+  const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
+    scope,
+    "CloudFormationHeadersPolicy",
+    {
+      responseHeadersPolicyName: `Headers-Policy-${stage}`,
+      comment: "Add Security Headers",
+      securityHeadersBehavior: {
+        contentTypeOptions: {
+          override: true,
+        },
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.days(730),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+        frameOptions: {
+          frameOption: cloudfront.HeadersFrameOption.DENY,
+          override: true,
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy:
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+          override: true,
+        },
+      },
+    }
+  );
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
     {
+      certificate: deploymentConfigParameters.cloudfrontCertificateArn
+        ? acm.Certificate.fromCertificateArn(
+            scope,
+            "certArn",
+            deploymentConfigParameters.cloudfrontCertificateArn
+          )
+        : undefined,
+      domainNames: deploymentConfigParameters.cloudfrontDomainName
+        ? [deploymentConfigParameters.cloudfrontDomainName]
+        : [],
       defaultBehavior: {
         origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
           uiBucket
@@ -76,6 +117,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
         compress: true,
+        responseHeadersPolicy: securityHeadersPolicy,
       },
       defaultRootObject: "index.html",
       enableLogging: true,
@@ -93,33 +135,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
-  new cloudfront.ResponseHeadersPolicy(scope, "CloudFormationHeadersPolicy", {
-    responseHeadersPolicyName: `Headers-Policy-${stage}`,
-    comment: "Add Security Headers",
-    securityHeadersBehavior: {
-      contentTypeOptions: {
-        override: true,
-      },
-      strictTransportSecurity: {
-        accessControlMaxAge: Duration.days(730),
-        includeSubdomains: true,
-        preload: true,
-        override: true,
-      },
-      frameOptions: {
-        frameOption: cloudfront.HeadersFrameOption.DENY,
-        override: true,
-      },
-      contentSecurityPolicy: {
-        contentSecurityPolicy:
-          "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
-        override: true,
-      },
-    },
-  });
-
-  setupWaf(scope, stage, project);
-  setupRoute53(scope, stage, distribution);
+  setupWaf(scope, stage, project, deploymentConfigParameters);
+  setupRoute53(scope, distribution, deploymentConfigParameters);
 
   createFirehoseLogging(
     scope,
@@ -138,20 +155,26 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   return {
     cloudfrontDistributionId: distribution.distributionId,
+    distribution,
     applicationEndpointUrl,
     s3BucketName: uiBucket.bucketName,
+    uiBucket,
   };
 }
 
-async function setupWaf(scope: Construct, stage: string, project: string) {
-  const vpnIpSetArn = await getDeploymentConfigParameter("vpnIpSetArn", stage);
-  const vpnIpv6SetArn = await getDeploymentConfigParameter(
-    "vpnIpv6SetArn",
-    stage
-  );
+function setupWaf(
+  scope: Construct,
+  stage: string,
+  project: string,
+  deploymentConfigParameter: { [name: string]: string | undefined }
+) {
   const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
-  if (vpnIpSetArn) {
+  const defaultAction = deploymentConfigParameter.vpnIpSetArn
+    ? { block: {} }
+    : { allow: {} };
+
+  if (deploymentConfigParameter.vpnIpSetArn) {
     const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
       name: `${stage}-gh-ipset`,
       scope: "CLOUDFRONT",
@@ -161,16 +184,18 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
 
     const statements = [
       {
-        ipSetReferenceStatement: { arn: vpnIpSetArn },
+        ipSetReferenceStatement: { arn: deploymentConfigParameter.vpnIpSetArn },
       },
       {
         ipSetReferenceStatement: { arn: githubIpSet.attrArn },
       },
     ];
 
-    if (vpnIpv6SetArn) {
+    if (deploymentConfigParameter.vpnIpv6SetArn) {
       statements.push({
-        ipSetReferenceStatement: { arn: vpnIpv6SetArn },
+        ipSetReferenceStatement: {
+          arn: deploymentConfigParameter.vpnIpv6SetArn,
+        },
       });
     }
 
@@ -189,30 +214,12 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
         },
       },
     });
-
-    wafRules.push({
-      name: "block-all-other-traffic",
-      priority: 3,
-      action: { block: { customResponse: { responseCode: 403 } } },
-      visibilityConfig: {
-        cloudWatchMetricsEnabled: true,
-        metricName: `${project}-${stage}-block-traffic`,
-        sampledRequestsEnabled: true,
-      },
-      statement: {
-        notStatement: {
-          statement: {
-            ipSetReferenceStatement: { arn: vpnIpSetArn },
-          },
-        },
-      },
-    });
   }
 
   new wafv2.CfnWebACL(scope, "WebACL", {
     name: `${project}-${stage}-webacl-waf`,
     scope: "CLOUDFRONT",
-    defaultAction: { allow: {} },
+    defaultAction,
     visibilityConfig: {
       sampledRequestsEnabled: true,
       cloudWatchMetricsEnabled: true,
@@ -222,24 +229,18 @@ async function setupWaf(scope: Construct, stage: string, project: string) {
   });
 }
 
-async function setupRoute53(
+function setupRoute53(
   scope: Construct,
-  stage: string,
-  distribution: cloudfront.Distribution
+  distribution: cloudfront.Distribution,
+  deploymentConfigParameters: { [name: string]: string | undefined }
 ) {
-  const hostedZoneId = await getDeploymentConfigParameter(
-    "route53/hostedZoneId",
-    stage
-  );
-  const domainName = await getDeploymentConfigParameter(
-    "route53/domainName",
-    stage
-  );
-
-  if (hostedZoneId && domainName) {
+  if (
+    deploymentConfigParameters.hostedZoneId &&
+    deploymentConfigParameters.domainName
+  ) {
     const zone = route53.HostedZone.fromHostedZoneAttributes(scope, "Zone", {
-      hostedZoneId,
-      zoneName: domainName,
+      hostedZoneId: deploymentConfigParameters.hostedZoneId,
+      zoneName: deploymentConfigParameters.domainName,
     });
 
     new route53.ARecord(scope, "AliasRecord", {
@@ -268,9 +269,7 @@ function createFirehoseLogging(
         statements: [
           new iam.PolicyStatement({
             actions: ["s3:PutObject"],
-            resources: [
-              `arn:aws:s3:::${project}-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}/*`,
-            ],
+            resources: [`${loggingBucket.bucketArn}/*`],
             effect: iam.Effect.ALLOW,
           }),
         ],

@@ -6,7 +6,6 @@ import {
   aws_events as events,
   aws_events_targets as targets,
   aws_iam as iam,
-  aws_lambda as lambda,
   aws_logs as logs,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
@@ -20,6 +19,7 @@ import { Lambda } from "../constructs/lambda";
 import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -157,7 +157,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       actions: [
         "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
-        "dynamodb:DescribeTable",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
@@ -217,7 +216,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  const postKafkaData = new Lambda(scope, "postKafkaData", {
+  new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
     handler: "handler",
     timeout: Duration.seconds(120),
@@ -227,36 +226,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: privateSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
+    tables: Object.values(tables),
   });
 
-  Object.entries(tables).forEach(([tableName, table]) => {
-    new lambda.CfnEventSourceMapping(
-      scope,
-      `postKafkaData${tableName}DynamoDBStreamEventSourceMapping`,
-      {
-        eventSourceArn: table.tableStreamArn,
-        functionName: postKafkaData.lambda.functionArn,
-        startingPosition: "TRIM_HORIZON",
-        maximumRetryAttempts: 2,
-        enabled: true,
-      }
-    );
-  });
-
-  const dataConnectSource = new Lambda(scope, "dataConnectSource", {
-    entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: privateSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-  });
-
-  for (const tableName in tables) {
-    if (
+  const dataConnectTables = Object.entries(tables)
+    .filter(([tableName]) =>
       [
         "form-questions",
         "auth-user",
@@ -266,20 +240,21 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "states",
         "form-answers",
       ].includes(tableName)
-    ) {
-      new lambda.CfnEventSourceMapping(
-        scope,
-        `dataConnectSource${tableName}DynamoDBStreamEventSourceMapping`,
-        {
-          eventSourceArn: tables[tableName].tableStreamArn,
-          functionName: dataConnectSource.lambda.functionArn,
-          startingPosition: "TRIM_HORIZON",
-          maximumRetryAttempts: 2,
-          enabled: true,
-        }
-      );
-    }
-  }
+    )
+    .map(([, table]) => table);
+
+  new LambdaDynamoEventSource(scope, "dataConnectSource", {
+    entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
+    handler: "handler",
+    timeout: Duration.seconds(120),
+    memorySize: 2048,
+    retryAttempts: 2,
+    vpc,
+    vpcSubnets: { subnets: privateSubnets },
+    securityGroups: [kafkaSecurityGroup],
+    ...commonProps,
+    tables: dataConnectTables,
+  });
 
   new Lambda(scope, "exportToExcel", {
     entry: "services/app-api/export/exportToExcel.js",
@@ -334,12 +309,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     handler: "adminCreateUser",
     path: "/users/admin-add",
     method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "deleteUser", {
-    entry: "services/app-api/handlers/users/post/deleteUser.js",
-    handler: "main",
     ...commonProps,
   });
 
@@ -546,5 +515,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     props.iamPath
   );
 
-  return { restApiId: api.restApiId, apiGatewayRestApiUrl: api.url };
+  return {
+    restApiId: api.restApiId,
+    apiGatewayRestApiUrl: api.url.slice(0, -1),
+  };
 }

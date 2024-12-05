@@ -4,6 +4,7 @@ import {
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
+  custom_resources as cr,
   Duration,
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
@@ -14,6 +15,7 @@ interface CreateDataComponentsProps {
   stage: string;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
+  customResourceRole: iam.Role;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
@@ -102,12 +104,12 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     entry: "services/database/handlers/seed/seed.js",
     handler: "handler",
     runtime: lambda.Runtime.NODEJS_20_X,
-    timeout: Duration.seconds(300),
+    timeout: Duration.seconds(900),
     role: lambdaApiRole,
     environment: {
       dynamoPrefix: stage,
       seedData: (!["production", "val", "master"].includes(stage)).toString(),
-      DYNAMODB_URL: process.env.DYNAMODB_URL || "",
+      // DYNAMODB_URL: process.env.DYNAMODB_URL || "",
     },
     bundling: {
       commandHooks: {
@@ -127,5 +129,36 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
   });
 
-  return { seedDataFunctionName: seedDataFunction.functionName, tables };
+  const seedDataInvoke = new cr.AwsCustomResource(
+    scope,
+    "InvokeSeedDataFunction",
+    {
+      onCreate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: seedDataFunction.functionName,
+          InvocationType: "Event",
+          Payload: JSON.stringify({}),
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(
+          `InvokeSeedDataFunction-${stage}`
+        ),
+      },
+      onUpdate: undefined,
+      onDelete: undefined,
+      policy: cr.AwsCustomResourcePolicy.fromStatements([
+        new iam.PolicyStatement({
+          actions: ["lambda:InvokeFunction"],
+          resources: [seedDataFunction.functionArn],
+        }),
+      ]),
+      role: props.customResourceRole,
+      resourceType: "Custom::InvokeSeedDataFunction",
+    }
+  );
+
+  seedDataInvoke.node.addDependency(seedDataFunction);
+
+  return { tables };
 }

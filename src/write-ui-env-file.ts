@@ -6,6 +6,8 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const outputPath = path.join(__dirname, "../../services/ui-src", "build");
+const configFilePath = path.resolve(outputPath, "env-config.js");
 
 const project = "seds";
 const region = "us-east-1";
@@ -36,10 +38,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
   //   userPoolClientId: "6lebne58mma8qgasbhj763on18",
   //   userPoolClientDomain:
   //     "jon-cdk2-login-user-pool-client.auth.us-east-1.amazoncognito.com",
-  //   bootstrapUsersFunctionName:
-  //     "seds-jon-cdk2-uiauthNestedS-bootstrapUsers9AF96131-2j29wPIx60Mb",
-  //   seedDataFunctionName:
-  //     "seds-jon-cdk2-databaseNestedStack-seedData88C4E515-4usR7jNnsDrs",
   // };
 
   const envVariables = {
@@ -60,9 +58,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
       : deploymentOutput.applicationEndpointUrl,
     STAGE: stage,
   };
-
-  const outputPath = path.join(__dirname, "../../services/ui-src", "build");
-  const configFilePath = path.resolve(outputPath, "env-config.js");
 
   await fs.rm(configFilePath, { force: true });
 
