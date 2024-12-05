@@ -139,9 +139,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
-    ...Object.fromEntries(tables.map(
-      table => [`${table.id}Name`, table.name]
-    )),
+    ...Object.fromEntries(
+      tables.map((table) => [`${table.id}Name`, table.name])
+    ),
   };
 
   const additionalPolicies = [
@@ -156,7 +156,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.map(table => table.arn),
+      resources: tables.map((table) => table.arn),
     }),
 
     new iam.PolicyStatement({
@@ -173,7 +173,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: tables.map(table => `${table.arn}/index/*`),
+      resources: tables.map((table) => `${table.arn}/index/*`),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -219,18 +219,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables,
   });
 
-  const dataConnectTables = tables
-    .filter((table) =>
-      [
-        "FormQuestions",
-        "AuthUser",
-        "StateForms",
-        "Forms",
-        "FormTemplates",
-        "States",
-        "FormAnswers",
-      ].includes(table.id)
-    );
+  const dataConnectTables = tables.filter((table) =>
+    [
+      "FormQuestions",
+      "AuthUser",
+      "StateForms",
+      "Forms",
+      "FormTemplates",
+      "States",
+      "FormAnswers",
+    ].includes(table.id)
+  );
 
   new LambdaDynamoEventSource(scope, "dataConnectSource", {
     entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
