@@ -173,7 +173,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: tables.map(table => table.indexArn).filter(isDefined),
+      resources: tables.map(table => `${table.arn}/index/*`),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,

@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
-export interface DynamoDBTableProps {
+interface DynamoDBTableProps {
   readonly stage: string;
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
@@ -20,8 +20,6 @@ export interface DynamoDBTableIdentifiers {
   arn: string,
   /** The table's TableStreamArn (if it has one) */
   streamArn: string | undefined,
-  /** The table's index's Arn (if the table has a global secondary index) */
-  indexArn?: string | undefined,
 }
 
 export class DynamoDBTable extends Construct {
@@ -53,7 +51,6 @@ export class DynamoDBTable extends Construct {
         partitionKey: props.gsi.partitionKey,
         projectionType: dynamodb.ProjectionType.ALL,
       });
-      this.identifiers.indexArn = `${this.table.tableArn}/index/*`;
     }
   }
 }
