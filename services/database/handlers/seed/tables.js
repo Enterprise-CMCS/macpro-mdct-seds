@@ -1,16 +1,8 @@
 module.exports = {
   tables: [
     {
-      filenames: ["data/initial_data_load/age_ranges.json"],
-      tableNameSuffix: "age-ranges",
-    },
-    {
       filenames: ["data/initial_data_load/auth_user.json"],
       tableNameSuffix: "auth-user",
-    },
-    {
-      filenames: ["data/initial_data_load/auth_user_roles.json"],
-      tableNameSuffix: "auth-user-roles",
     },
     {
       filenames: [
@@ -104,10 +96,6 @@ module.exports = {
     {
       filenames: ["data/initial_data_load/states.json"],
       tableNameSuffix: "states",
-    },
-    {
-      filenames: ["data/initial_data_load/status.json"],
-      tableNameSuffix: "status",
     },
   ],
 };

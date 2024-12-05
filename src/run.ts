@@ -8,16 +8,7 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import path from "path";
 import { writeUiEnvFile } from "./write-ui-env-file.js";
-import {
-  CloudFrontClient,
-  CreateInvalidationCommand,
-} from "@aws-sdk/client-cloudfront";
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import yaml from "js-yaml";
 
 // load .env
@@ -225,87 +216,6 @@ async function deploy(options: { stage: string }) {
   await prepare_services(runner);
   const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
-
-  await runner.run_command_and_output(
-    "build react app",
-    ["yarn", "run", "build"],
-    "services/ui-src"
-  );
-
-  await writeUiEnvFile(options.stage);
-
-  const {
-    s3BucketName,
-    cloudfrontDistributionId,
-    bootstrapUsersFunctionName,
-    seedDataFunctionName,
-  } = JSON.parse(
-    (
-      await new SSMClient({ region: "us-east-1" }).send(
-        new GetParameterCommand({
-          Name: `/${project}/${options.stage}/deployment-output`,
-        })
-      )
-    ).Parameter!.Value!
-  );
-
-  if (bootstrapUsersFunctionName) {
-    const client = new LambdaClient({ region });
-    const command = new InvokeCommand({
-      FunctionName: bootstrapUsersFunctionName,
-    });
-    await client.send(command);
-  }
-
-  if (seedDataFunctionName) {
-    const client = new LambdaClient({ region });
-    const command = new InvokeCommand({
-      FunctionName: seedDataFunctionName,
-    });
-    await client.send(command);
-  }
-
-  if (!s3BucketName || !cloudfrontDistributionId) {
-    throw new Error("Missing necessary CloudFormation exports");
-  }
-
-  console.log(s3BucketName, cloudfrontDistributionId);
-
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  const buildDir = path.join(__dirname, "../../services/ui-src", "build");
-
-  await runner.run_command_and_output(
-    "",
-    ["aws", "s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
-    "."
-  );
-  await runner.run_command_and_output(
-    "copy react app to s3 bucket",
-    ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`],
-    "."
-  );
-
-  const cloudfrontClient = new CloudFrontClient({
-    region,
-  });
-  const invalidationParams = {
-    DistributionId: cloudfrontDistributionId,
-    InvalidationBatch: {
-      CallerReference: `${Date.now()}`,
-      Paths: {
-        Quantity: 1,
-        Items: ["/*"],
-      },
-    },
-  };
-  await cloudfrontClient.send(
-    new CreateInvalidationCommand(invalidationParams)
-  );
-
-  console.log(
-    `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
-  );
 }
 
 const waitForStackDeleteComplete = async (
