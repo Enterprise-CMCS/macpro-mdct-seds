@@ -15,7 +15,6 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler: string;
@@ -25,7 +24,6 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
   method?: string;
   stackName: string;
-  tables: { [name: string]: dynamodb.Table };
   api: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
   iamPermissionsBoundary: IManagedPolicy;

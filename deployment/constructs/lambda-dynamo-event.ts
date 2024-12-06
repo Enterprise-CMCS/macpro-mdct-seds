@@ -1,11 +1,11 @@
 import { Construct } from "constructs";
 import {
-  aws_dynamodb as dynamodb,
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
   Duration,
 } from "aws-cdk-lib";
+import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
@@ -14,7 +14,7 @@ interface LambdaDynamoEventProps
   iamPath: string;
   iamPermissionsBoundary: iam.IManagedPolicy;
   stackName: string;
-  tables: dynamodb.Table[];
+  tables: DynamoDBTableIdentifiers[];
 }
 
 export class LambdaDynamoEventSource extends Construct {
@@ -82,18 +82,18 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps,
     });
 
-    Object.entries(tables).forEach(([tableName, table]) => {
+    for (let table of tables) {
       new lambda.CfnEventSourceMapping(
         scope,
-        `${id}${tableName}DynamoDBStreamEventSourceMapping`,
+        `${id}${table.id}DynamoDBStreamEventSourceMapping`,
         {
-          eventSourceArn: table.tableStreamArn,
+          eventSourceArn: table.streamArn,
           functionName: this.lambda.functionArn,
           startingPosition: "TRIM_HORIZON",
           maximumRetryAttempts: 2,
           enabled: true,
         }
       );
-    });
+    }
   }
 }
