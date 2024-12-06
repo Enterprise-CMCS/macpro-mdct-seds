@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_dynamodb as dynamodb,
   aws_ec2 as ec2,
   aws_events as events,
   aws_events_targets as targets,
@@ -9,10 +8,8 @@ import {
   aws_logs as logs,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
-  CfnElement,
   Duration,
   RemovalPolicy,
-  Stack,
   Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
@@ -20,6 +17,8 @@ import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
+import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
+import { isDefined } from "../utils/misc";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -28,7 +27,7 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpc: ec2.IVpc;
   privateSubnets: ec2.ISubnet[];
-  tables: { [name: string]: dynamodb.Table };
+  tables: DynamoDBTableIdentifiers[];
   brokerString: string;
   iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
@@ -140,15 +139,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
-    ...Object.values(tables).reduce((acc, table) => {
-      const currentTable = Stack.of(table)
-        .getLogicalId(table.node.defaultChild as CfnElement)
-        .slice(0, -8);
-
-      acc[`${currentTable}Name`] = table.tableName;
-
-      return acc;
-    }, {} as { [key: string]: string }),
+    ...Object.fromEntries(
+      tables.map((table) => [`${table.id}Name`, table.name])
+    ),
   };
 
   const additionalPolicies = [
@@ -163,7 +156,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: Object.entries(tables).map(([, table]) => table.tableArn),
+      resources: tables.map((table) => table.arn),
     }),
 
     new iam.PolicyStatement({
@@ -175,14 +168,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:ListShards",
         "dynamodb:ListStreams",
       ],
-      resources: Object.values(tables)
-        .map((table) => table.tableStreamArn)
-        .filter((arn): arn is string => arn !== undefined),
+      resources: tables.map((table) => table.streamArn).filter(isDefined),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: [`${tables["form-answers"].tableArn}/index/*`],
+      resources: tables.map((table) => `${table.arn}/index/*`),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -200,7 +191,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const commonProps = {
     brokerString,
     stackName: shortStackName,
-    tables,
     api,
     environment,
     additionalPolicies,
@@ -226,22 +216,20 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: privateSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    tables: Object.values(tables),
+    tables,
   });
 
-  const dataConnectTables = Object.entries(tables)
-    .filter(([tableName]) =>
-      [
-        "form-questions",
-        "auth-user",
-        "state-forms",
-        "forms",
-        "form-templates",
-        "states",
-        "form-answers",
-      ].includes(tableName)
-    )
-    .map(([, table]) => table);
+  const dataConnectTables = tables.filter((table) =>
+    [
+      "FormQuestions",
+      "AuthUser",
+      "StateForms",
+      "Forms",
+      "FormTemplates",
+      "States",
+      "FormAnswers",
+    ].includes(table.id)
+  );
 
   new LambdaDynamoEventSource(scope, "dataConnectSource", {
     entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
