@@ -129,15 +129,11 @@ function updateEnvFiles() {
 // run_api_locally uses AWS SAM Local to run the API lambdas locally
 // @ts-ignore
 async function run_api_locally(runner: LabeledProcessRunner) {
-  const synthOutput = await runner.run_command_and_output(
+  await runner.run_command_and_output(
     "api synth",
     ["cdk", "synth", "--no-staging", "--json", "--context", "stage=master"],
     "."
   );
-
-  const snythedApiTemplate = (yaml.load(synthOutput) as any)["Resources"][
-    "apiNestedStackapiNestedStackResourceDFDE5E1E"
-  ]["Metadata"]["aws:asset:path"];
 
   runner.run_command_and_output(
     "api",
@@ -146,7 +142,7 @@ async function run_api_locally(runner: LabeledProcessRunner) {
       "local",
       "start-api",
       "--template",
-      `./.cdk/cdk.out/${snythedApiTemplate}`,
+      ".cdk/cdk.out/seds-master.template.json",
       "--port",
       "3030",
       // "--warm-containers", // TODO: determine if this is helpful
