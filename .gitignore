@@ -17,3 +17,4 @@ tests/cypress/downloads
 /.serverless
 /.cdk
 cdk.context.json
+/.aws-sam
