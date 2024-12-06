@@ -155,12 +155,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "ui deps",
-    ["yarn", "install"],
-    "services/ui-src"
-  );
-
   await writeUiEnvFile("master", true);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
