@@ -9,7 +9,6 @@ import {
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import { writeUiEnvFile } from "./write-ui-env-file.js";
-import yaml from "js-yaml";
 
 // load .env
 dotenv.config();
@@ -138,7 +137,7 @@ async function run_api_locally(runner: LabeledProcessRunner) {
 
   const synthOutput = await runner.run_command_and_output(
     "api synth",
-    ["cdk", "synth", "--no-staging", "--context", "stage=master"],
+    ["cdk", "synth", "--no-staging", "--json", "--context", "stage=master"],
     "."
   );
 
