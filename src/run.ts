@@ -135,6 +135,8 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     "."
   );
 
+  // sam build --template .cdk/cdk.out/seds-master.template.json
+
   runner.run_command_and_output(
     "api",
     [
@@ -142,7 +144,7 @@ async function run_api_locally(runner: LabeledProcessRunner) {
       "local",
       "start-api",
       "--template",
-      ".cdk/cdk.out/seds-master.template.json",
+      ".aws-sam/build/template.yaml",
       "--port",
       "3030",
       // "--warm-containers", // TODO: determine if this is helpful
