@@ -129,12 +129,6 @@ function updateEnvFiles() {
 // run_api_locally uses AWS SAM Local to run the API lambdas locally
 // @ts-ignore
 async function run_api_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "api deps",
-    ["yarn", "install"],
-    "services/app-api"
-  );
-
   const synthOutput = await runner.run_command_and_output(
     "api synth",
     ["cdk", "synth", "--no-staging", "--json", "--context", "stage=master"],
