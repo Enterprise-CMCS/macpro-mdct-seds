@@ -1,14 +1,14 @@
 import { Construct } from "constructs";
 import {
   aws_cloudfront as cloudfront,
-  // aws_cloudfront_origins as cloudfrontOrigins,
+  aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_kinesisfirehose as firehose,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
-  // aws_certificatemanager as acm,
+  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -61,8 +61,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     })
   );
 
-  // const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
-  new cloudfront.ResponseHeadersPolicy(
+  const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
     "CloudFormationHeadersPolicy",
     {
@@ -133,97 +132,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
   distribution.applyRemovalPolicy(
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
-  )
+  );
 
-  // const dummyBucket = new s3.Bucket(scope, "DummyBucket", {
-  //   encryption: s3.BucketEncryption.S3_MANAGED,
-  //   // removalPolicy: RemovalPolicy.DESTROY,
-  //   // autoDeleteObjects: true,
-  //   // enforceSSL: true,
-  // });
-
-  // # CloudFrontOriginAccessIdentity:
-  // #   Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-  // #   DeletionPolicy: Retain
-  // #   Properties:
-  // #     CloudFrontOriginAccessIdentityConfig:
-  // #       Comment: OAI to prevent direct public access to the bucket
-
-  // const CloudFrontOriginAccessIdentity =
-  // new cloudfront.CfnCloudFrontOriginAccessIdentity(
-  //   scope, 'CloudFrontOriginAccessIdentity', {
-  //   cloudFrontOriginAccessIdentityConfig: {
-  //     comment: 'OAI to prevent direct public access to the bucket',
-  //   },
-  // });
-
-  // new cloudfront.Distribution(scope, "HelloWorldDistribution", {
-  //   defaultBehavior: {
-  //     origin: new cloudfrontOrigins.HttpOrigin("example.com"),
-  //     functionAssociations: [
-  //       {
-  //         function: new cloudfront.Function(scope, "HelloWorldFunction", {
-  //           code: cloudfront.FunctionCode.fromInline(`
-  //                 function handler(event) {
-  //                   var response = {
-  //                     statusCode: 200,
-  //                     statusDescription: 'OK',
-  //                     headers: {
-  //                       'content-type': { value: 'text/html; charset=utf-8' },
-  //                     },
-  //                     body: '<h1>Hello World</h1>',
-  //                   };
-  //                   return response;
-  //                 }
-  //               `),
-  //         }),
-  //         eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-  //       },
-  //     ],
-  //     viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-  //   },
-  // });
-
-  // const distribution = new cloudfront.Distribution(
-  //   scope,
-  //   "CloudFrontDistribution",
-  //   {
-  //     // certificate: deploymentConfigParameters.cloudfrontCertificateArn
-  //     //   ? acm.Certificate.fromCertificateArn(
-  //     //       scope,
-  //     //       "certArn",
-  //     //       deploymentConfigParameters.cloudfrontCertificateArn
-  //     //     )
-  //     //   : undefined,
-  //     // domainNames: deploymentConfigParameters.cloudfrontDomainName
-  //       // ? [deploymentConfigParameters.cloudfrontDomainName]
-  //       // : [],
-  //     domainNames: ['ui-cmdct-4184-sls-dummybucket-zss2xed1ezsv.s3-website-us-east-1.amazonaws.com'],
-  //     defaultBehavior: {
-  //       origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
-  //         dummyBucket
-  //       ),
-  //       // allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
-  //       // viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-  //       // cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-  //       // compress: true,
-  //       // responseHeadersPolicy: securityHeadersPolicy,
-  //     },
-  //     defaultRootObject: "index.html",
-  //     // enableLogging: true,
-  //     // logBucket: loggingBucket,
-  //     httpVersion: cloudfront.HttpVersion.HTTP2,
-  //     // errorResponses: [
-  //     //   {
-  //     //     httpStatus: 403,
-  //     //     responseHttpStatus: 200,
-  //     //     responsePagePath: "/index.html",
-  //     //   },
-  //     // ],
-  //   }
-  // );
-
-  // const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
+  const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   setupWaf(scope, stage, project, deploymentConfigParameters);
 
@@ -243,9 +154,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   return {
-    // cloudfrontDistributionId: distribution.distributionId,
-    // distribution,
-    // applicationEndpointUrl,
+    cloudfrontDistributionId: distribution.distributionId,
+    distribution,
+    applicationEndpointUrl,
     s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
