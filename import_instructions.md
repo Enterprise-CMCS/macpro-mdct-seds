@@ -1,25 +1,25 @@
 # Import Instructions
 
-From `pete-sls` branch:
+## From `pete-sls` branch:
 
-1. deploy sls to get it ready for deletion with retained resources configured for import
+1. Deploy sls to get it ready for deletion with retained resources configured for import
 
 ```
 ./run deploy --stage master
 ```
 
-2. destroy sls
+2. Destroy sls
 
 ```
 ./run destroy --stage master
 ```
 
-From `jon-cdk` branch:
+## From `jon-cdk` branch:
 
-1. comment out Cloudfront Distribution definition and dependent resources
+1. Comment out Cloudfront Distribution definition and dependent resources
 
 ```
-# ONCE YOU COMMENTED THEM OUT
+# ONLY RUN ONCE YOU COMMENTED THEM OUT
 ./run deploy --stage master
 ```
 
