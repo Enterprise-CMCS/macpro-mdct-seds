@@ -83,49 +83,6 @@ function updateEnvFiles() {
   }
 }
 
-// run_db_locally runs the local db
-// @ts-ignore
-// async function run_db_locally(runner: LabeledProcessRunner) {
-//   runner.run_command_and_output(
-//     "db",
-//     [
-//       "java",
-//       "-Djava.library.path=./DynamoDBLocal_lib",
-//       "-jar",
-//       "DynamoDBLocal.jar",
-//       "-sharedDb",
-//       "-inMemory",
-//       "-port",
-//       "8000",
-//     ],
-//     "services/database/.dynamodb"
-//   );
-//   await new Promise((res) => setTimeout(res, 10 * 1000)); // The above runners need to all finish, not all can be awaited, they block
-
-//   const synthOutput = await runner.run_command_and_output(
-//     "db synth",
-//     ["cdk", "synth", "--no-staging", "--context", "stage=local"],
-//     "."
-//   );
-
-//   const snythedDatabaseTemplate = (yaml.load(synthOutput) as any)["Resources"][
-//     "databaseNestedStackdatabaseNestedStackResourceF5AAE956"
-//   ]["Metadata"]["aws:asset:path"];
-
-//   runner.run_command_and_output(
-//     "db seed",
-//     [
-//       "sam",
-//       "local",
-//       "invoke",
-//       "seedData88C4E515",
-//       "--template",
-//       `./.cdk/cdk.out/${snythedDatabaseTemplate}`,
-//     ],
-//     "."
-//   );
-// }
-
 // run_api_locally uses AWS SAM Local to run the API lambdas locally
 // @ts-ignore
 async function run_api_locally(runner: LabeledProcessRunner) {
