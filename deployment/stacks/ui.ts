@@ -93,19 +93,23 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     }
   );
 
-  // new cloudfront.Distribution(scope, 'CloudFrontDistribution', {
-  //   defaultBehavior: {
-  //     origin: new cloudfrontOrigins.HttpOrigin(
-  //       'www.example.com',
-  //       { originId: 'Default'}
-  //     ),
-  //     cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
-  //   },
-  // });
+  // new cloudfront.Distribution(
+  //   scope,
+  //   'CloudFrontDistribution',
+  //   {
+  //     defaultBehavior: {
+  //       origin: new cloudfrontOrigins.HttpOrigin(
+  //         'www.example.com',
+  //         { originId: 'Default'}
+  //       ),
+  //       cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+  //     },
+  //   }
+  // );
 
   const distribution = new cloudfront.Distribution(
     scope,
-     "CloudFrontDistribution",
+    "CloudFrontDistribution",
     {
       certificate: deploymentConfigParameters.cloudfrontCertificateArn
         ? acm.Certificate.fromCertificateArn(
