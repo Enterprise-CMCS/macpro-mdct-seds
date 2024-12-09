@@ -83,34 +83,6 @@ function updateEnvFiles() {
   }
 }
 
-// run_api_locally uses AWS SAM Local to run the API lambdas locally
-// @ts-ignore
-async function run_api_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "api synth",
-    ["cdk", "synth", "--no-staging", "--json", "--context", "stage=master"],
-    "."
-  );
-
-  // sam build --template .cdk/cdk.out/seds-master.template.json
-
-  runner.run_command_and_output(
-    "api",
-    [
-      "sam",
-      "local",
-      "start-api",
-      "--template",
-      ".aws-sam/build/template.yaml",
-      "--port",
-      "3030",
-      // "--warm-containers", // TODO: determine if this is helpful
-      // "EAGER", // TODO: determine if this is helpful
-    ],
-    "."
-  );
-}
-
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner) {
