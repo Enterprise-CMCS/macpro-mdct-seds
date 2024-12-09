@@ -104,7 +104,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          // authorizationType: apigateway.AuthorizationType.IAM,
+          authorizationType: apigateway.AuthorizationType.IAM,
         }
       );
     }
