@@ -1,4 +1,3 @@
-SAM local
 
 CDK watch
 
