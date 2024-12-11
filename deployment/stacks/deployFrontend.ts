@@ -5,7 +5,6 @@ import {
   Duration,
   aws_s3 as s3,
   aws_s3_deployment as s3_deployment,
-  custom_resources as cr,
 } from "aws-cdk-lib";
 import path from "path";
 import { execSync } from "node:child_process";
@@ -109,55 +108,9 @@ export function deployFrontend(props: DeployFrontendProps) {
         userPoolId,
         userPoolClientId,
         userPoolClientDomain,
-        timestamp: new Date().toISOString(),
       },
     }
   );
 
   deployTimeConfig.node.addDependency(deployWebsite);
-
-  const invalidateEnvConfig = new cr.AwsCustomResource(
-    scope,
-    "InvalidateEnvConfig",
-    {
-      onCreate: {
-        service: "CloudFront",
-        action: "createInvalidation",
-        parameters: {
-          DistributionId: props.distribution.distributionId,
-          InvalidationBatch: {
-            Paths: {
-              Quantity: 1,
-              Items: ["/env-config.js"],
-            },
-            CallerReference: new Date().toISOString(),
-          },
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvalidateEnvConfig-${new Date().toISOString()}`
-        ),
-      },
-      onUpdate: {
-        service: "CloudFront",
-        action: "createInvalidation",
-        parameters: {
-          DistributionId: props.distribution.distributionId,
-          InvalidationBatch: {
-            Paths: {
-              Quantity: 1,
-              Items: ["/env-config.js"],
-            },
-            CallerReference: new Date().toISOString(),
-          },
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvalidateEnvConfig-${new Date().toISOString()}`
-        ),
-      },
-      role: props.customResourceRole,
-      resourceType: "Custom::InvalidateEnvConfig",
-    }
-  );
-
-  invalidateEnvConfig.node.addDependency(deployTimeConfig);
 }
