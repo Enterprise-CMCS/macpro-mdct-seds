@@ -1,14 +1,14 @@
 import { Construct } from "constructs";
 import {
   aws_cloudfront as cloudfront,
-  // aws_cloudfront_origins as cloudfrontOrigins,
+  aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_kinesisfirehose as firehose,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
-  // aws_certificatemanager as acm,
+  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -61,8 +61,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     })
   );
 
-  // const securityHeadersPolicy =
-  new cloudfront.ResponseHeadersPolicy(
+  const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
     "CloudFormationHeadersPolicy",
     {
@@ -120,7 +119,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
       defaultRootObject: "index.html",
       enableLogging: true,
+<<<<<<< HEAD
       logBucket: logBucket,
+=======
+      logBucket: loggingBucket,
+>>>>>>> 63e60e65 (Revert "CMDCT-4188 - comments out distribution with dependencies")
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
@@ -135,7 +138,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   );
 
-  // const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
+  const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   setupWaf(scope, stage, project, deploymentConfigParameters);
 
@@ -155,9 +158,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   return {
-    // cloudfrontDistributionId: distribution.distributionId,
-    // distribution,
-    // applicationEndpointUrl,
+    cloudfrontDistributionId: distribution.distributionId,
+    distribution,
+    applicationEndpointUrl,
     s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
