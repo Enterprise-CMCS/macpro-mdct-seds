@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import {
   aws_cloudfront as cloudfront,
-  aws_cloudfront_origins as cloudfrontOrigins,
+  // aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_kinesisfirehose as firehose,
   aws_s3 as s3,
@@ -9,7 +9,7 @@ import {
   Aws,
   Duration,
   RemovalPolicy,
-  aws_certificatemanager as acm,
+  // aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -64,7 +64,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     })
   );
 
-  const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
+  // const securityHeadersPolicy =
+  new cloudfront.ResponseHeadersPolicy(
     scope,
     "CloudFormationHeadersPolicy",
     {
@@ -107,45 +108,45 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   //   }
   // );
 
-  const distribution = new cloudfront.Distribution(
-    scope,
-    "CloudFrontDistribution",
-    {
-      certificate: deploymentConfigParameters.cloudfrontCertificateArn
-        ? acm.Certificate.fromCertificateArn(
-            scope,
-            "certArn",
-            deploymentConfigParameters.cloudfrontCertificateArn
-          )
-        : undefined,
-      domainNames: deploymentConfigParameters.cloudfrontDomainName
-        ? [deploymentConfigParameters.cloudfrontDomainName]
-        : [],
-      defaultBehavior: {
-        origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
-          uiBucket
-        ),
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-        compress: true,
-        responseHeadersPolicy: securityHeadersPolicy,
-      },
-      defaultRootObject: "index.html",
-      enableLogging: true,
-      logBucket: loggingBucket,
-      httpVersion: cloudfront.HttpVersion.HTTP2,
-      errorResponses: [
-        {
-          httpStatus: 403,
-          responseHttpStatus: 200,
-          responsePagePath: "/index.html",
-        },
-      ],
-    }
-  );
+  // const distribution = new cloudfront.Distribution(
+  //   scope,
+  //   "CloudFrontDistribution",
+  //   {
+  //     certificate: deploymentConfigParameters.cloudfrontCertificateArn
+  //       ? acm.Certificate.fromCertificateArn(
+  //           scope,
+  //           "certArn",
+  //           deploymentConfigParameters.cloudfrontCertificateArn
+  //         )
+  //       : undefined,
+  //     domainNames: deploymentConfigParameters.cloudfrontDomainName
+  //       ? [deploymentConfigParameters.cloudfrontDomainName]
+  //       : [],
+  //     defaultBehavior: {
+  //       origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
+  //         uiBucket
+  //       ),
+  //       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+  //       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+  //       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+  //       compress: true,
+  //       responseHeadersPolicy: securityHeadersPolicy,
+  //     },
+  //     defaultRootObject: "index.html",
+  //     enableLogging: true,
+  //     logBucket: loggingBucket,
+  //     httpVersion: cloudfront.HttpVersion.HTTP2,
+  //     errorResponses: [
+  //       {
+  //         httpStatus: 403,
+  //         responseHttpStatus: 200,
+  //         responsePagePath: "/index.html",
+  //       },
+  //     ],
+  //   }
+  // );
 
-  const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
+  // const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   setupWaf(scope, stage, project, deploymentConfigParameters);
 
@@ -165,9 +166,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   return {
-    cloudfrontDistributionId: distribution.distributionId,
-    distribution,
-    applicationEndpointUrl,
+    // cloudfrontDistributionId: distribution.distributionId,
+    // distribution,
+    // applicationEndpointUrl,
     s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
