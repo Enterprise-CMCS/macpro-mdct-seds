@@ -4,7 +4,7 @@
 
 Before deploying this AWS CDK project into an AWS account, the account must be bootstrapped. Bootstrapping is required to set up the necessary resources (like an S3 bucket and IAM roles) that CDK uses internally for deployments.
 
-Due to restrictions in our AWS accounts, the standard CDK bootstrap template cannot be used. Instead, we have a custom bootstrap template (`bootstrap.yml`) stored in this repository.
+Due to restrictions in our AWS accounts, the standard CDK bootstrap template cannot be used. Instead, we have a custom bootstrap template (`bootstrap-template.yaml`) stored in this repository.
 
 ### Bootstrapping Instructions
 
@@ -26,7 +26,7 @@ To bootstrap an AWS account using our custom template, follow these steps:
 3. Bootstrap the AWS account using the custom bootstrap template:
 
    ```bash
-   cdk bootstrap aws://<account number>/us-east-1 --template ../bootstrap.yml
+   cdk bootstrap aws://<account number>/us-east-1 --template ../bootstrap-template.yaml
    ```
 
    Replace `<account number>` with the target AWS account number.
