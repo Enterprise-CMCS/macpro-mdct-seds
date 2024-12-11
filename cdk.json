@@ -6,6 +6,7 @@
     "hot": true,
     "include": ["**"],
     "exclude": [
+      "deployment/stacks/deployFrontend.ts",
       "*.md",
       "cdk*.json",
       "**/*.d.ts",
