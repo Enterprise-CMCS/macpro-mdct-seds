@@ -6,7 +6,7 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const outputPath = path.join(__dirname, "../../services/ui-src", "build");
+const outputPath = path.join(__dirname, "../../services/ui-src", "public");
 const configFilePath = path.resolve(outputPath, "env-config.js");
 
 const project = "seds";
@@ -25,20 +25,6 @@ export async function writeUiEnvFile(stage: string, local = false) {
     throw Error(`Cannot find SSM parameter ${parameterName}`);
   }
   const deploymentOutput = JSON.parse(Parameter!.Value!);
-  // TODO: below is for reference when removing dependency on deployment output ssm parameter
-  // const deploymentOutput = {
-  //   apiGatewayRestApiUrl:
-  //     "https://g2mg8fv8k1.execute-api.us-east-1.amazonaws.com/jon-cdk2/",
-  //   applicationEndpointUrl: "https://d3m12fopymge82.cloudfront.net/",
-  //   s3BucketName:
-  //     "seds-jon-cdk2-uinestedstackuinest-s3bucket07682993-mb9i8dvcubw5",
-  //   cloudfrontDistributionId: "EGZ02V3J516SJ",
-  //   identityPoolId: "us-east-1:9b430ef4-1bee-4ed7-a94d-7854848335d1",
-  //   userPoolId: "us-east-1_1IfwcFGuo",
-  //   userPoolClientId: "6lebne58mma8qgasbhj763on18",
-  //   userPoolClientDomain:
-  //     "jon-cdk2-login-user-pool-client.auth.us-east-1.amazoncognito.com",
-  // };
 
   const envVariables = {
     LOCAL_LOGIN: "false",
@@ -51,10 +37,10 @@ export async function writeUiEnvFile(stage: string, local = false) {
     COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,
     COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
     COGNITO_REDIRECT_SIGNIN: local
-      ? "http://localhost:5000/"
+      ? "http://localhost:3000/"
       : deploymentOutput.applicationEndpointUrl,
     COGNITO_REDIRECT_SIGNOUT: local
-      ? "http://localhost:5000/"
+      ? "http://localhost:3000/"
       : deploymentOutput.applicationEndpointUrl,
     STAGE: stage,
   };
