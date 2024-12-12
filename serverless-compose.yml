@@ -59,23 +59,23 @@ services:
       AuthUserRolesTableStreamArn: ${database.AuthUserRolesTableStreamArn}
 
   # depends on app-api and ui
-  ui-auth:
-    path: services/ui-auth
-    params:
-      ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}
-      ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
+  # ui-auth:
+  #   path: services/ui-auth
+  #   params:
+  #     ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}
+  #     ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
 
   # depends on app-api, ui, and ui-auth
-  ui-src:
-    path: services/ui-src
-    params:
-      ApiRegion: ${app-api.Region}
-      ApiGatewayRestApiUrl: ${app-api.ApiGatewayRestApiUrl}
-      CognitoRegion: ${ui-auth.Region}
-      IdentityPoolId: ${ui-auth.IdentityPoolId}
-      UserPoolId: ${ui-auth.UserPoolId}
-      UserPoolClientId: ${ui-auth.UserPoolClientId}
-      UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
-      S3BucketName: ${ui.S3BucketName}
-      CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
-      ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
+  # ui-src:
+  #   path: services/ui-src
+  #   params:
+  #     ApiRegion: ${app-api.Region}
+  #     ApiGatewayRestApiUrl: ${app-api.ApiGatewayRestApiUrl}
+  #     CognitoRegion: ${ui-auth.Region}
+  #     IdentityPoolId: ${ui-auth.IdentityPoolId}
+  #     UserPoolId: ${ui-auth.UserPoolId}
+  #     UserPoolClientId: ${ui-auth.UserPoolClientId}
+  #     UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
+  #     S3BucketName: ${ui.S3BucketName}
+  #     CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
+  #     ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}

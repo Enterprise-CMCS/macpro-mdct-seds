@@ -201,21 +201,21 @@ resources:
       Properties:
         CloudFrontOriginAccessIdentityConfig:
           Comment: OAI to prevent direct public access to the bucket
-    CloudFrontDistribution:
-      Type: AWS::CloudFront::Distribution
-      DeletionPolicy: Retain
-      Properties:
-        DistributionConfig:
-          CustomOrigin:
-            DNSName: www.example.com
-            OriginProtocolPolicy: http-only
-            OriginSSLProtocols:
-              - TLSv1
-          Enabled: true
-          DefaultCacheBehavior:
-            CachePolicyId: Managed-CachingDisabled
-            TargetOriginId: some_target_origin_id
-            ViewerProtocolPolicy: allow-all
+    # CloudFrontDistribution:
+    #   Type: AWS::CloudFront::Distribution
+    #   DeletionPolicy: Retain
+    #   Properties:
+    #     DistributionConfig:
+    #       CustomOrigin:
+    #         DNSName: www.example.com
+    #         OriginProtocolPolicy: http-only
+    #         OriginSSLProtocols:
+    #           - TLSv1
+    #       Enabled: true
+    #       DefaultCacheBehavior:
+    #         CachePolicyId: Managed-CachingDisabled
+    #         TargetOriginId: some_target_origin_id
+    #         ViewerProtocolPolicy: allow-all
     CloudFormationHeadersPolicy:
       Type: AWS::CloudFront::ResponseHeadersPolicy
       Properties:
@@ -305,31 +305,31 @@ resources:
                     - /*
         Roles:
           - !Ref DeliveryRole
-    ApplicationEndpointUrl:
-      Type: AWS::SSM::Parameter
-      Properties:
-        Name: /${self:custom.stage}/ui/application_endpoint
-        Type: String
-        Value:
-          Fn::If:
-            - CreateCustomCloudFrontDomain
-            - https://${self:custom.cloudfrontDomainName, ""}/
-            - Fn::Join:
-                - ""
-                - - https://
-                  - Fn::GetAtt:
-                      - CloudFrontDistribution
-                      - DomainName
-                  - "/"
+    # ApplicationEndpointUrl:
+    #   Type: AWS::SSM::Parameter
+    #   Properties:
+    #     Name: /${self:custom.stage}/ui/application_endpoint
+    #     Type: String
+    #     Value:
+    #       Fn::If:
+    #         - CreateCustomCloudFrontDomain
+    #         - https://${self:custom.cloudfrontDomainName, ""}/
+    #         - Fn::Join:
+    #             - ""
+    #             - - https://
+    #               - Fn::GetAtt:
+    #                   - CloudFrontDistribution
+    #                   - DomainName
+    #               - "/"
   Outputs:
     S3BucketName:
       Value: !Ref S3Bucket
-    CloudFrontDistributionId:
-      Value: !Ref CloudFrontDistribution
-    CloudFrontEndpointUrl:
-      Value: !Sub https://${CloudFrontDistribution.DomainName}
-    ApplicationEndpointUrl:
-      Value: !GetAtt ApplicationEndpointUrl.Value
+    # CloudFrontDistributionId:
+      # Value: !Ref CloudFrontDistribution
+    # CloudFrontEndpointUrl:
+      # Value: !Sub https://${CloudFrontDistribution.DomainName}
+    # ApplicationEndpointUrl:
+    #   Value: !GetAtt ApplicationEndpointUrl.Value
     FirehoseArn:
       Value: !GetAtt Firehose.Arn
     CloudFrontWebAclArn:
