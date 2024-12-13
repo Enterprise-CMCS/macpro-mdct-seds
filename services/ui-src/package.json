@@ -17,7 +17,6 @@
     "@vitejs/plugin-react": "^4.2.1",
     "aws-amplify": "^5.3.4",
     "babel-jest": "^27.5.1",
-    "camelcase": "^5.3.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "file-loader": "4.3.0",
