@@ -31,7 +31,6 @@
     "react-data-table-component-extensions": "^1.5.0",
     "react-dom": "^16.13.1",
     "react-dropdown": "^1.9.2",
-    "react-ios-switch": "^0.1.19",
     "react-multi-select-component": "^4.3.4",
     "react-redux": "^7.2.2",
     "react-router-bootstrap": "^0.25.0",
