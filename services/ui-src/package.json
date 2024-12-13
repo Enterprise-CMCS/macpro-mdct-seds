@@ -152,7 +152,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
     "react-test-renderer": "^16.13.1",
     "redux-devtools": "^3.7.0",
