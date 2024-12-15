@@ -4,7 +4,8 @@
   "description": "",
   "resolutions": {
     "**/**/lodash": "^4.17.12",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "rollup": "^4.24.0"
   },
   "version": "1.0.0",
   "dependencies": {

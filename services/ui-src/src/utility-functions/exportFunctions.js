@@ -1,22 +1,6 @@
-import { exportToExcel } from "../libs/api";
 import { renderToString } from "react-dom/server";
-
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
-
-export const handleExcelExport = async (fileName, content) => {
-  let buffer, blob;
-
-  buffer = await exportToExcel(content);
-  // *** lambdas will convert buffer to Int32Array
-  // *** we are going to instantiate Uint8Array (binary) buffer
-  // *** to avoid having to care about MIME type of file we're saving
-  buffer = new Uint8Array(buffer.data).buffer;
-
-  // *** save file as blob
-  blob = new Blob([buffer]);
-  saveAs(blob, fileName);
-};
 
 /**
  * Converts the given data to CSV format, and saves it to file.
@@ -111,10 +95,6 @@ export const handleExport = async (
   let fileContents;
   let blob;
   switch (format) {
-    case "excel":
-      await handleExcelExport(fileName, content);
-      break;
-
     case "csv":
       fileContents = buildCsvContents(content);
       blob = new Blob([fileContents], {

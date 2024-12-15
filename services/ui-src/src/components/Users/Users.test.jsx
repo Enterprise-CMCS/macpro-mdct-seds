@@ -71,7 +71,7 @@ describe("Test Users.js", () => {
     )).toBeInTheDocument();
 
     expect(screen.getByText(
-      "Excel",
+      "CSV",
       { selector: "button" }
     )).toBeInTheDocument();
 
@@ -151,25 +151,6 @@ describe("Test Users.js", () => {
     userEvent.click(addButton);
 
     expect(mockHistory).toEqual(["/users/add"]);
-  });
-
-  it("should export to Excel probably", async () => {
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const excelButton = screen.getByText(
-      "Excel",
-      { selector: "button" }
-    );
-    userEvent.click(excelButton);
-    
-    expect(handleExport).toHaveBeenCalledWith(
-      "excel",
-      "MDCT Users Export.xlsx",
-      expect.objectContaining({
-        data: mockUsers,
-      })
-    );
   });
 
   it("should export to CSV somehow", async () => {
