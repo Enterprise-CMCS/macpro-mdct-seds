@@ -1,0 +1,29 @@
+table {
+  margin: 0.5rem;
+  border-collapse: collapse;
+
+  caption {
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: black; /* Bootstrap thinks all captions should be gray. Wild. */
+  }
+  td, th {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+  }
+  th {
+    color: white;
+    background-color: #1a4480;
+    border: thin solid #1a4480;
+    font-size: 1.3rem;
+  }
+  th:not(:first-of-type) {
+    border-left: thin solid white;
+  }
+  th:not(:last-of-type) {
+    border-right: thin solid white;
+  }
+  td {
+    border: thin solid gray;
+  }
+}
