@@ -80,11 +80,11 @@ describe("Test Users.js", () => {
       { selector: "button" }
     )).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText("Filter Table")).toBeInTheDocument();
+    expect(screen.getByRole("searchbox")).toBeInTheDocument();
   });
 
   it("should render the correct headers", async () => {
-    const { container } = renderComponent();
+    renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
     const expectedHeaders = [
@@ -97,7 +97,7 @@ describe("Test Users.js", () => {
       "Last Login",
       "States",
     ]
-    const headers = [...container.querySelectorAll(".rdt_TableHeadRow > div")];
+    const headers = screen.getAllByRole("columnheader");
     expect(headers.length).toBe(expectedHeaders.length);
     for (let i = 0; i < expectedHeaders.length; i += 1) {
       expect(headers[i].textContent).toBe(expectedHeaders[i]);
@@ -108,7 +108,7 @@ describe("Test Users.js", () => {
     const { container } = renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
-    const rows = [...container.querySelectorAll(".rdt_TableBody [role='row']")];
+    const rows = [...container.querySelectorAll("table tbody tr")];
     expect(rows.length).toBe(mockUsers.length);
 
     let row1cells = rows[0].childNodes;

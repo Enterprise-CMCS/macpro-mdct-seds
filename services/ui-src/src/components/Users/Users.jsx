@@ -40,6 +40,10 @@ const Users = () => {
 
   const loadUserData = async () => {
     const userList = await listUsers();
+    userList.sort((a, b) => a.username?.localeCompare(b.username));
+    for (let user of userList) {
+      user.states?.sort();
+    }
     setFilteredUsers(userList);
     setUsers(userList);
   };
@@ -86,7 +90,19 @@ const Users = () => {
           className="margin-left-3 action-button"
           primary="true"
           onClick={() =>
-            handleExport("csv", "MDCT Users Export.csv", tableData)
+            handleExport("csv", "MDCT Users Export.csv", {
+              columns: [
+                { name: "Username", selector: "username" },
+                { name: "First Name", selector: "firstName" },
+                { name: "Last Name", selector: "lastName" },
+                { name: "Email", selector: "email" },
+                { name: "Role", selector: "role" },
+                { name: "Registration Date", selector: "dateJoined" },
+                { name: "Last Login", selector: "lastLogin" },
+                { name: "States", selector: "states" },
+              ],
+              data: users,
+            })
           }
         >
           CSV
