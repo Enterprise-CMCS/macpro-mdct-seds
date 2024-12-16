@@ -36,7 +36,7 @@ const Header = () => {
 
   return (
     <div className="header" data-testid="Header">
-      <GovBanner className="react-transition swipe-right padding-y-1px" />
+      <GovBanner className="padding-y-1px" />
 
       <div className="logo">
         <Link to="/">
@@ -52,11 +52,11 @@ const Header = () => {
       <div className="navigation">
         {isAuthenticated ? (
           <Nav pullLeft={true}>
-            <NavList items={menuItems} type="primary" />
+            <NavList items={menuItems} />
           </Nav>
         ) : null}
         <Navbar.Collapse>
-          <Nav pullRight={true} className="padding-right-9">
+          <Nav pullRight={true}>
             {isAuthenticated ? (
               <>
                 <NavDropdown id="User" title="My Profile">

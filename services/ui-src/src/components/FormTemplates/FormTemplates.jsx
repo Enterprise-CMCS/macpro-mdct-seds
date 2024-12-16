@@ -134,7 +134,7 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3">
+        <div className="template-input margin-top-3 margin-bottom-3">
           <label htmlFor="templateInput">Enter or Modify Template</label>
           <Textarea
             id="templateInput"

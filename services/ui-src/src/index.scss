@@ -1,9 +1,11 @@
 html,
 body,
-#root,
-.App {
-  height: 100%;
+#root {
+  position: relative;
+  display: flex;
+  flex-flow: column;
   font-size: 16px; // sets the value of 1rem
+  height: 100%;
 }
 
 body {
@@ -40,6 +42,8 @@ input[type="file"] {
 }
 
 .App {
+  position: relative;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }

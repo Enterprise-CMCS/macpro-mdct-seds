@@ -127,7 +127,7 @@ const Quarterly = () => {
   ];
 
   return (
-    <div className="page-quarterly react-transition fade-in">
+    <div className="page-quarterly">
       <div className="breadcrumbs">
         <Link to="/">Enrollment Data Home</Link> &gt;{" "}
         {`${state} Q${quarter} ${year}`}
@@ -138,7 +138,7 @@ const Quarterly = () => {
           <Card>
             {stateFormsList ? (
               <DataTable
-                className="grid-display-table react-transition fade-in"
+                className="grid-display-table"
                 sortIcon={
                   <FontAwesomeIcon
                     icon={faArrowDown}

@@ -65,7 +65,7 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="react-transition fade-in" data-testid="AddUser">
+      <div data-testid="AddUser">
         <h1 className="page-header">Add User</h1>
         <div className="addUserMain padding-left-9">
           <p>

@@ -120,7 +120,7 @@ const CertificationTab = ({
     );
   }
   return (
-    <div className="react-transition fade-in">
+    <div>
       {isFinal ? (
         <div className="padding-y-2">
           <Alert

@@ -95,7 +95,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
       </div>
       <h1 className="page-header">FORM {form}</h1>
       <hr />
-      <div className="padding-x-5">
+      <div>
         <div className="margin-y-2">
           <h2 className="form-name">{formDescription.form_name}</h2>
           <p className="instructions"> {formDescription.form_text}</p>

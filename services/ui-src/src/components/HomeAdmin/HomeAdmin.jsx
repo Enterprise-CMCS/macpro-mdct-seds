@@ -83,7 +83,7 @@ const HomeAdmin = ({ stateList, user }) => {
       {role === "admin" ? (
         <>
           <h1 className="page-header">Home Admin User Page</h1>
-          <div className="padding-left-9 margin-left-9 list-display-container">
+          <div className="list-display-container">
             <ul>
               <li className="user-view-edit">
                 <Link to="/users" className="text-bold">

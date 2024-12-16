@@ -160,7 +160,7 @@ const EditUser = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user react-transition fade-in" data-testid="EditUser">
+    <div className="edit-user" data-testid="EditUser">
       <h1 className="page-header">Edit User</h1>
       <div className="page-subheader">
         <Link to="/users" className="userListLink text-bold">

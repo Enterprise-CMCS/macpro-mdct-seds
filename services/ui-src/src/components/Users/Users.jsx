@@ -143,7 +143,7 @@ const Users = () => {
   }
 
   return (
-    <div className="user-profiles react-transition fade-in" data-testid="users">
+    <div className="user-profiles" data-testid="users">
       <h1 className="page-header">Users</h1>
       <div className="page-subheader exclude-from-pdf">
         <Button
@@ -199,7 +199,7 @@ const Users = () => {
               selectableRows={false}
               responsive={true}
               striped={true}
-              className="grid-display-table react-transition fade-in"
+              className="grid-display-table"
             />
           </DataTableExtensions>
         ) : (
