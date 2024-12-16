@@ -5,21 +5,15 @@ import "./Footer.scss";
 const Footer = () => {
   return (
     <div className="footer position-relative z-bottom" data-testid="Footer">
-      <GridContainer className="container">
+      <GridContainer className="container" containerSize="none">
         <Grid row>
           <Grid col={6} tablet={{ col: true }}>
             <div className="logo">
               <ul>
                 <li>
                   <img
-                    src="/img/logo-cms.png"
+                    src="/img/seds-logo.svg"
                     alt="Centers for Medicare and Medicaid Services"
-                  />
-                </li>
-                <li>
-                  <img
-                    src="/img/logo-mdct.png"
-                    alt="Medicaid & CHIP Program System"
                   />
                 </li>
               </ul>

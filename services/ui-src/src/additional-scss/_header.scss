@@ -4,8 +4,7 @@
 
 .header {
   .logo {
-    @extend .padding-left-9;
-    @extend .padding-y-1;
+    @extend .padding-left-4;
     @extend .bg-primary;
   }
 }

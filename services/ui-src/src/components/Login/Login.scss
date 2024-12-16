@@ -7,9 +7,7 @@
   padding-bottom: 3em !important;
 }
 
-.login-wrapper form {
-  margin: auto;
-  input {
-    margin-left: 39%;
-  }
+.login-wrapper form label {
+  width: 100%;
+  text-align: left;
 }

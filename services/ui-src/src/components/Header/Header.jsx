@@ -41,15 +41,12 @@ const Header = () => {
       <div className="logo">
         <Link to="/">
           <img
-            src="/img/logo-cms.png"
+            src="/img/seds-logo-white.svg"
             alt="Centers for Medicare and Medicaid Services"
-            width={200}
+            width={250}
             height={90}
           />
         </Link>
-        <span className="app-title font-alt-xl">
-          CHIP Statistical Enrollment Data Reports
-        </span>
       </div>
 
       <div className="navigation">
