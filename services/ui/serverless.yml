@@ -216,6 +216,51 @@ resources:
             CachePolicyId: Managed-CachingDisabled
             TargetOriginId: some_target_origin_id
             ViewerProtocolPolicy: allow-all
+    # CloudFrontDistribution:
+    #   Type: AWS::CloudFront::Distribution
+    #   Properties:
+    #     DistributionConfig:
+    #       Comment: CloudFront Distro for the static website hosted in S3
+    #       Aliases:
+    #         Fn::If:
+    #           - CreateCustomCloudFrontDomain
+    #           - - ${self:custom.cloudfrontDomainName}
+    #           - !Ref AWS::NoValue
+    #       Origins:
+    #         - DomainName: !GetAtt S3Bucket.DomainName
+    #           Id: S3Origin
+    #           S3OriginConfig:
+    #             OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
+    #       Enabled: true
+    #       HttpVersion: "http2"
+    #       DefaultRootObject: index.html
+    #       DefaultCacheBehavior:
+    #         AllowedMethods:
+    #           - GET
+    #           - HEAD
+    #         Compress: true
+    #         TargetOriginId: S3Origin
+    #         ForwardedValues:
+    #           QueryString: true
+    #           Cookies:
+    #             Forward: none
+    #         ViewerProtocolPolicy: redirect-to-https
+    #         ResponseHeadersPolicyId: !GetAtt CloudFormationHeadersPolicy.Id
+    #       ViewerCertificate:
+    #         Fn::If:
+    #           - CreateCustomCloudFrontDomain
+    #           - AcmCertificateArn: ${self:custom.cloudfrontCertificateArn}
+    #             MinimumProtocolVersion: TLSv1.2_2021
+    #             SslSupportMethod: sni-only
+    #           - CloudFrontDefaultCertificate: true
+    #       CustomErrorResponses:
+    #         - ErrorCode: 403
+    #           ResponseCode: 200
+    #           ResponsePagePath: /index.html
+    #       WebACLId: !GetAtt WafPluginAcl.Arn
+    #       Logging:
+    #         Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
+    #         Prefix: AWSLogs/CLOUDFRONT/${self:custom.stage}/
     CloudFormationHeadersPolicy:
       Type: AWS::CloudFront::ResponseHeadersPolicy
       Properties:
