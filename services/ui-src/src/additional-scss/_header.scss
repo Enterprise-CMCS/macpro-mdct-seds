@@ -23,7 +23,7 @@
   @extend .text-bold;
   @extend .padding-left-9;
   @extend .padding-y-1;
-  box-shadow: 5px 10px 8px #888888;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px;
 
   a {
     @extend .text-white;
