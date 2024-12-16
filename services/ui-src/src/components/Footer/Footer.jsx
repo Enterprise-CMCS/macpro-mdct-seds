@@ -13,7 +13,7 @@ const Footer = () => {
                 <li>
                   <img
                     src="/img/seds-logo.svg"
-                    alt="Centers for Medicare and Medicaid Services"
+                    alt="MDCT SEDS: CHIP Statistical Enrollment Data Reports"
                   />
                 </li>
               </ul>
