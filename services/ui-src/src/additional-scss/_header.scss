@@ -5,7 +5,7 @@
 .header {
   .logo {
     @extend .padding-left-4;
-    background-color: #00395E;
+    background-color: #00395e;
   }
 }
 
@@ -17,7 +17,7 @@
 }
 
 .navigation {
-  background-color: #EEFBFF;
+  background-color: #eefbff;
   @extend .text-bold;
   @extend .padding-y-1;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px;
@@ -25,11 +25,11 @@
   justify-content: space-between;
   align-items: center;
 
-  a{
-    color: #00395E;
+  a {
+    color: #00395e;
   }
 
-  li{
+  li {
     list-style: none;
   }
 
@@ -41,4 +41,8 @@
     color: #fff !important;
     @extend .font-alt-lg;
   }
+}
+
+.usa-banner__inner {
+  margin: 0;
 }
