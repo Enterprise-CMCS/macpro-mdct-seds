@@ -8,6 +8,7 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
+import "./Quarterly.scss";
 
 const Quarterly = () => {
   // Determine values based on URI
@@ -31,6 +32,7 @@ const Quarterly = () => {
         let data = await recursiveGetStateForms({ state, year, quarter });
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
         data = data.filter(i => i.form !== "64.ECI");
+        data.sort((a, b) => a.form.localeCompare(b.form));
         setStateFormsList(data);
         setHasAccess(true);
       } else {
@@ -55,7 +57,7 @@ const Quarterly = () => {
         {hasAccess === true ? (
           <Card>
             {stateFormsList ? (
-              <table>
+              <table className="quarterly-forms">
                 <caption>
                   Start, complete, and print this quarter's CHIP Enrollment
                   Data Reports.
@@ -85,26 +87,17 @@ const Quarterly = () => {
                         </p>
                       </td>
                       <td>
-                        <div className="status-wrapper">
-                          <Button
-                            style={{
-                              outline: "none",
-                              cursor: "pointer"
-                            }}
-                            type="button"
-                            className={`usa-button status status-${form.status_code}`}
-                          >
+                        <div className="form-status-pill">
                             {form.status}
-                          </Button>
                         </div>
                       </td>
                       <td>
                         {dateFormatter(form.last_modified)}
                       </td>
-                      <td>
+                      <td style={{ textAlign: "center" }}>
                         <Link
                           to={`/print/${state}/${year}/${quarter}/${getFormSegment(form)}`}
-                          className="font-heading-2xl padding-left-5"
+                          className="font-heading-2xl"
                         >
                           <FontAwesomeIcon icon={faFilePdf} />
                         </Link>

@@ -150,7 +150,7 @@ const Users = () => {
                 </form>
               </div>
             </div>
-            <table className="exclude-from-pdf">
+            <table className="user-list exclude-from-pdf">
               <thead>
                 <tr>
                   <th scope="col">Username</th>
@@ -165,7 +165,7 @@ const Users = () => {
               </thead>
               <tbody>
                 {filteredUsers.map(user => (
-                  <tr key={user.username}>
+                  <tr key={user.userId}>
                     <td>
                       <Link to={`/users/${user.userId}/edit`}>
                         {user.username}
