@@ -1,12 +1,12 @@
 import { Construct } from "constructs";
 import {
-  // aws_cognito as cognito,
+  aws_cognito as cognito,
   aws_iam as iam,
   // aws_lambda as lambda,
   // aws_lambda_nodejs as lambda_nodejs,
   // aws_wafv2 as wafv2,
   // aws_ssm as ssm,
-  // RemovalPolicy,
+  RemovalPolicy,
   // Aws,
   // Duration,
   // custom_resources as cr,
@@ -38,35 +38,36 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     iamPermissionsBoundary,
   } = props;
 
-  // const userPool = new cognito.UserPool(scope, "UserPool", {
-  //   userPoolName: `${stage}-user-pool`,
-  //   removalPolicy: RemovalPolicy.DESTROY,
-  //   signInAliases: {
-  //     email: true,
-  //   },
-  //   autoVerify: {
-  //     email: true,
-  //   },
-  //   selfSignUpEnabled: false,
-  //   standardAttributes: {
-  //     givenName: {
-  //       required: false,
-  //       mutable: true,
-  //     },
-  //     familyName: {
-  //       required: false,
-  //       mutable: true,
-  //     },
-  //     phoneNumber: {
-  //       required: false,
-  //       mutable: true,
-  //     },
-  //   },
-  //   customAttributes: {
-  //     ismemberof: new cognito.StringAttribute({ mutable: true }),
-  //   },
-  //   advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
-  // });
+  // const userPool =
+  new cognito.UserPool(scope, "UserPool", {
+    userPoolName: `${stage}-user-pool`,
+    removalPolicy: RemovalPolicy.RETAIN,
+    signInAliases: {
+      email: true,
+    },
+    autoVerify: {
+      email: true,
+    },
+    selfSignUpEnabled: false,
+    standardAttributes: {
+      givenName: {
+        required: false,
+        mutable: true,
+      },
+      familyName: {
+        required: false,
+        mutable: true,
+      },
+      phoneNumber: {
+        required: false,
+        mutable: true,
+      },
+    },
+    customAttributes: {
+      ismemberof: new cognito.StringAttribute({ mutable: true }),
+    },
+    advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+  });
 
   // let supportedIdentityProviders:
   //   | cognito.UserPoolClientIdentityProvider[]
