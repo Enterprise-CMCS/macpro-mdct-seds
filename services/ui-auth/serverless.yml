@@ -153,12 +153,14 @@ resources:
     # Associate the WAF Web ACL with the Cognito User Pool
     CognitoUserPoolWAFAssociation:
       Type: 'AWS::WAFv2::WebACLAssociation'
+      DeletionPolicy: Retain
       Properties:
         ResourceArn: !GetAtt CognitoUserPool.Arn
         WebACLArn: !GetAtt WafPluginAcl.Arn
 
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
+      DeletionPolicy: Retain
       Properties:
         ClientName: ${self:custom.stage}-user-pool-client
         AllowedOAuthFlows:
@@ -189,6 +191,7 @@ resources:
 
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
+      DeletionPolicy: Retain
       Properties:
         Domain:
           Fn::Join:
@@ -201,6 +204,7 @@ resources:
     CognitoUserPoolIdentityProvider:
       Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
+      DeletionPolicy: Retain
       Properties:
         AttributeMapping:
           email: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
@@ -217,6 +221,7 @@ resources:
           Ref: CognitoUserPool
     CognitoIdentityPool:
       Type: AWS::Cognito::IdentityPool
+      DeletionPolicy: Retain
       Properties:
         IdentityPoolName: ${self:custom.stage}IdentityPool
         AllowUnauthenticatedIdentities: false
@@ -225,6 +230,7 @@ resources:
             ProviderName: !GetAtt CognitoUserPool.ProviderName
     CognitoIdentityPoolRoles:
       Type: AWS::Cognito::IdentityPoolRoleAttachment
+      DeletionPolicy: Retain
       Properties:
         IdentityPoolId: !Ref CognitoIdentityPool
         Roles:
