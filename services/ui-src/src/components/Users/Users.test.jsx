@@ -189,4 +189,18 @@ describe("Test Users.js", () => {
       "html-selector",
     );
   });
+
+  it("should instantly filter the user list based on the search input", async () => {
+    renderComponent();
+    await waitFor(() => expect(listUsers).toHaveBeenCalled());
+
+    expect(screen.getByText("Ascot", { exact: false })).toBeVisible();
+    expect(screen.getByText("Quentin", { exact: false })).toBeVisible();
+
+    const searchBox = screen.getByRole("searchbox");
+    userEvent.type(searchBox, "Ascot");
+
+    expect(screen.getByText("Ascot", { exact: false })).toBeVisible();
+    expect(screen.queryByText("Quentin", { exact: false })).not.toBeInTheDocument();
+  });
 });
