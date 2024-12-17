@@ -124,7 +124,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div class="fpl-input-container">
+            <div className="fpl-input-container">
               <div className="fpl-input">
                 <TextInput
                   id="max-fpl"
