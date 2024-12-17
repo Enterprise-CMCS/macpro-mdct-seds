@@ -83,7 +83,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage">
+    <div data-testid="FormPage" className="formPage">
       {save_error ? (
         <div className="save-error">
           <Alert type="error" heading="Save Error:" headingLevel="h1">

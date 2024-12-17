@@ -124,24 +124,26 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div className="fpl-input">
-              <TextInput
-                id="max-fpl"
-                name="max-fpl"
-                type="number"
-                onChange={e => validateFPL(e)}
-                value={maxFPL}
-              />
-            </div>
-            <div className="fpl-button">
-              <Button
-                type="button"
-                className="max-fpl-btn"
-                onClick={updateMaxFPL}
-                disabled={disabled}
-              >
-                Apply FPL Changes
-              </Button>
+            <div class="fpl-input-container">
+              <div className="fpl-input">
+                <TextInput
+                  id="max-fpl"
+                  name="max-fpl"
+                  type="number"
+                  onChange={e => validateFPL(e)}
+                  value={maxFPL}
+                />
+              </div>
+              <div className="fpl-button">
+                <Button
+                  type="button"
+                  className="max-fpl-btn"
+                  onClick={updateMaxFPL}
+                  disabled={disabled}
+                >
+                  Apply FPL Changes
+                </Button>
+              </div>
             </div>
           </div>
         ) : null}
