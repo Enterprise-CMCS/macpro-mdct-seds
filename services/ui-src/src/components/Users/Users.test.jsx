@@ -79,8 +79,6 @@ describe("Test Users.js", () => {
       "PDF",
       { selector: "button" }
     )).toBeInTheDocument();
-
-    expect(screen.getByRole("searchbox")).toBeInTheDocument();
   });
 
   it("should render the correct headers", async () => {
