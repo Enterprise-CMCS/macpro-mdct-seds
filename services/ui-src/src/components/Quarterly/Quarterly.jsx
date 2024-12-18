@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card } from "@trussworks/react-uswds";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
@@ -54,7 +53,7 @@ const Quarterly = () => {
       <h1 className="page-header">{title}</h1>
       <div className="quarterly-report-listing">
         {hasAccess === true ? (
-          <Card>
+          <div>
             {stateFormsList ? (
               <table className="quarterly-forms">
                 <caption>
@@ -106,7 +105,7 @@ const Quarterly = () => {
             ) : (
               <Preloader />
             )}
-          </Card>
+          </div>
         ) : null}
 
         {hasAccess === false ? <Unauthorized /> : null}

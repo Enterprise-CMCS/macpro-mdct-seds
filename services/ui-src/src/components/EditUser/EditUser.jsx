@@ -161,12 +161,11 @@ const EditUser = ({ stateList }) => {
 
   return (
     <div className="edit-user" data-testid="EditUser">
+      <Link to="/users" className="userListLink text-bold">
+        &laquo; Back to User List
+      </Link>
       <h1 className="page-header">Edit User</h1>
-      <div className="page-subheader">
-        <Link to="/users" className="userListLink text-bold">
-          &laquo; Back to User List
-        </Link>
-      </div>
+      <div className="page-subheader"></div>
       {user ? (
         <div className="center-content">
           <Table>

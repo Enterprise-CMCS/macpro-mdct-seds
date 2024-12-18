@@ -7,7 +7,7 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
 // * trussworks
-import { Button, Card } from "@trussworks/react-uswds";
+import { Button } from "@trussworks/react-uswds";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -98,7 +98,7 @@ const Users = () => {
           <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
         </Button>
       </div>
-      <Card>
+      <div>
         {users?.length ? (
           <table className="user-list">
             <thead>
@@ -143,7 +143,7 @@ const Users = () => {
         ) : (
           <Preloader />
         )}
-      </Card>
+      </div>
     </div>
   );
 };

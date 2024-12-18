@@ -1,9 +1,7 @@
 table.quarterly-forms, table.user-list {
-  margin: 0.5rem;
   border-collapse: collapse;
 
   caption {
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
     font-size: 1.1rem;
     font-weight: bold;
     color: black; /* Bootstrap thinks all captions should be gray. Wild. */
