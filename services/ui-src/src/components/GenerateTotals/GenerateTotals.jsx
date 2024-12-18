@@ -26,6 +26,7 @@ const GenerateTotals = () => {
 
   return (
     <div className="generate-totals-container">
+      <h1 className="page-header">Generate Total Enrollment Counts</h1>
       {loading ? (
         <div className="loader">
           <div className="loader-content">
@@ -41,7 +42,7 @@ const GenerateTotals = () => {
         </Alert>
       )}
 
-      <p className="margin-bottom-3">
+      <p className="margin-bottom-4">
         The CARTS system pulls live data from SEDS. This option allows for the
         creation/replacement of compiled totals for Separate and Expansion CHIP
         based on question 7 of forms 21E and 64.21E.
@@ -51,7 +52,6 @@ const GenerateTotals = () => {
         type="button"
         data-testid="generateTotalsButton"
         onClick={() => handleSubmit()}
-        className="margin-bottom-5"
       >
         Generate Enrollment Totals
       </Button>

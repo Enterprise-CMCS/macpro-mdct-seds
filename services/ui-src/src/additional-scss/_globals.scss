@@ -39,6 +39,10 @@ a:active {
 }
 
 .nav > li > a:focus,
-.nav > li > a:hover {
+.nav > li > a:hover,
+.nav .open > a,
+.nav .open > a:focus,
+.nav .open > a:hover {
+  background-color: transparent;
   text-decoration: underline;
 }

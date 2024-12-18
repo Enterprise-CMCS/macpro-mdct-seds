@@ -47,7 +47,7 @@ const TabContainer = ({
   }, [notApplicable, statusId]);
 
   return (
-    <Tabs className="tab-container-main padding-x-5">
+    <Tabs className="tab-container-main">
       <TabList>
         {currentTabs.map((tab, idx) => {
           const rangeDetails = tabDetails.find(
@@ -72,7 +72,7 @@ const TabContainer = ({
           element => tab === element.rangeId
         );
         return (
-          <TabPanel key={idx} className="react-transition fade-in">
+          <TabPanel key={idx}>
             {ageRangeDetails ? (
               <div className="age-range-description padding-y-2">
                 <h3>{ageRangeDetails.ageDescription}:</h3>

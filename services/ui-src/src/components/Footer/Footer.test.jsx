@@ -27,16 +27,10 @@ describe("Test Footer.js", () => {
     expect(getByTestId("Footer")).toBeVisible();
   });
 
-  test("Check for CMS Logo", () => {
+  test("Check for MDCT SEDS Logo", () => {
     const { getByAltText } = render(<Footer />);
-    const image = getByAltText("Centers for Medicare and Medicaid Services");
-    expect(image.src).toContain("/img/logo-cms.png");
-  });
-
-  test("Check for MDCT Logo", () => {
-    const { getByAltText } = render(<Footer />);
-    const image = getByAltText("Medicaid & CHIP Program System");
-    expect(image.src).toContain("/img/logo-mdct.png");
+    const image = getByAltText("MDCT SEDS: CHIP Statistical Enrollment Data Reports");
+    expect(image.src).toContain("/img/seds-logo.svg");
   });
 
   test("Check for CMS Home Page link", () => {

@@ -5,7 +5,8 @@
 .usa-button {
   background: $lochmara;
   width: 140px;
-  box-shadow: 5px 10px 8px #888888;
+  border: none;
+  margin: 0;
 
   &.hollow {
     background-color: $white;
