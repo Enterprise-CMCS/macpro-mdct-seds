@@ -1,11 +1,9 @@
 import { Construct } from "constructs";
-import {
-  Stack,
-  StackProps,
-} from "aws-cdk-lib";
+import { Stack, StackProps } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../../deployment-config";
 import { createUiComponents } from "./ui";
 import { createUiAuthComponents } from "./ui-auth";
+import { createDataComponents } from "./data";
 
 export class WithImportsParentStack extends Stack {
   constructor(
@@ -15,17 +13,16 @@ export class WithImportsParentStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const {
-      stage,
-      oktaMetadataUrl,
-    } = props;
+    const { stage, oktaMetadataUrl } = props;
 
-    createUiComponents({scope: this});
+    createUiComponents({ scope: this });
 
     createUiAuthComponents({
       scope: this,
       stage,
       oktaMetadataUrl,
     });
+
+    createDataComponents({ scope: this, stage });
   }
 }
