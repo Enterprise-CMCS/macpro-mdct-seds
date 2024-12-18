@@ -73,8 +73,8 @@ const GenerateForms = () => {
           {alert.message}
         </Alert>
       ) : null}
-
-      <p className="margin-bottom-3">
+      <h1 className="page-header">Generate Quarterly Forms</h1>
+      <p className="margin-bottom-4">
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
@@ -85,7 +85,7 @@ const GenerateForms = () => {
         value={selectedYear ?? ""}
         placeholder="Select a Year"
         autosize={false}
-        className="margin-bottom-3"
+        className="margin-bottom-4"
       />
       <p>Select the Quarter</p>
       <Dropdown
@@ -94,7 +94,7 @@ const GenerateForms = () => {
         value={selectedQuarter ?? ""}
         placeholder="Select a Quarter"
         autosize={false}
-        className="margin-bottom-2"
+        className="margin-bottom-4"
       />
 
       <Button

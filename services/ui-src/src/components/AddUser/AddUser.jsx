@@ -65,9 +65,9 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div data-testid="AddUser">
+      <div data-testid="AddUser" className="addUserMain">
         <h1 className="page-header">Add User</h1>
-        <div className="addUserMain padding-left-9">
+        <div>
           <p>
             To add a <b>state user</b>, enter their EUA Id, select their state,
             and click Add User.

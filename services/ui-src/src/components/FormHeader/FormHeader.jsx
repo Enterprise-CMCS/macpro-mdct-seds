@@ -100,7 +100,7 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
           <h2 className="form-name">{formDescription.form_name}</h2>
           <p className="instructions"> {formDescription.form_text}</p>
         </div>
-        <div className="unstyled padding-bottom-3 padding-top-1">
+        <div className="unstyled">
           <Table>
             <tbody>
               <tr>

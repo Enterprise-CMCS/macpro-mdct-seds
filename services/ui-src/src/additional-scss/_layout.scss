@@ -37,9 +37,24 @@
   z-index: 3;
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 2rem 2rem 4rem 2rem;
   flex-direction: column;
   align-items: center;
+
+  .Home,
+  .addUserMain,
+  .formTemplates,
+  .generate-forms-container,
+  .generate-totals-container {
+    max-width: $max-width-desktop;
+    width: 100%;
+  }
+
+  .user-profiles,
+  .page-quarterly,
+  .formPage {
+    max-width: 1200px;
+  }
 }
 
 .instructions {
