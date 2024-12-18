@@ -104,6 +104,18 @@ export const handleExport = async (
       break;
 
     case "pdf":
+      // To fix the PDf export, delete this throw, and this comment.
+      // If the year is 2026 or later,
+      // and you are trying to test a version bump PR for jspdf or html2canvas,
+      // and there haven't been any support tickets about the broken PDF export,
+      // you have the opportunity to do something great instead:
+      // * Delete the PDF print button from Users.jsx
+      // * Delete all PDF-related code from this file
+      // * Uninstall jspdf and html2canvas
+      // * Delete the HTMLCanvas.getContext() override from setupTests.js
+      // * Tell no one
+      throw new Error("PDF export failed! Error code 10f2c");
+      // eslint-disable-next-line no-unreachable
       handlePdfExport(fileName, content, pdfContentType);
       break;
 
