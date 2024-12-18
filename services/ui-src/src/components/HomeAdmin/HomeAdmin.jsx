@@ -81,7 +81,7 @@ const HomeAdmin = ({ stateList, user }) => {
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
-        <>
+        <div>
           <h1 className="page-header">Home Admin User Page</h1>
           <div className="list-display-container">
             <ul>
@@ -112,7 +112,7 @@ const HomeAdmin = ({ stateList, user }) => {
               </li>
             </ul>
           </div>
-        </>
+        </div>
       ) : (
         <h1 className="page-header">Home Business User Page</h1>
       )}
@@ -152,6 +152,7 @@ const HomeAdmin = ({ stateList, user }) => {
               </div>
             </>
           ) : (
+            accordionItems !== "" &&
             "There are no forms available for the selected state"
           )}
         </div>

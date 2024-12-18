@@ -3,11 +3,9 @@
 **********************/
 
 .page-header {
-  @extend .text-center;
-  @extend .text-bold;
-  @extend .font-alt-xl;
-  letter-spacing: 0.12em;
   border: none;
+  padding: 0;
+  margin-bottom: 5.5rem 0 1rem 0;
 }
 
 .page-subheader {
@@ -25,7 +23,12 @@
   li {
     @extend .padding-y-1;
     list-style-type: circle;
+
+    a {
+      font-weight: 600;
+    }
   }
+  margin-bottom: 2rem;
 }
 
 .main {

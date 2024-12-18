@@ -22,3 +22,17 @@ li.usa-card {
 .usa-textarea {
   max-width: 100% !important;
 }
+
+.usa-accordion {
+  button {
+    font-weight: normal;
+  }
+  .usa-accordion__content {
+    border-width: 1px;
+
+    ul {
+      padding: 0;
+      font-size: 16px;
+    }
+  }
+}

@@ -33,7 +33,7 @@ const Home = ({ user }) => {
   };
 
   return (
-    <div className="Home flip-in-x" data-testid="Home">
+    <div className="Home" data-testid="Home">
       {renderLander()}
     </div>
   );
