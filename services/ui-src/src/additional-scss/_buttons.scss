@@ -43,12 +43,6 @@
   color: $white;
 }
 
-.status-wrapper {
-  button {
-    cursor: default;
-  }
-}
-
 .status {
   @extend .radius-pill;
   @extend .font-body-sm;
