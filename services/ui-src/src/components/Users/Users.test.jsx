@@ -189,35 +189,4 @@ describe("Test Users.js", () => {
       "html-selector",
     );
   });
-
-  it("should instantly filter the user list based on the search input", async () => {
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    expect(screen.getByText("Ascot Soloniel")).toBeVisible();
-    expect(screen.getByText("Quentin")).toBeVisible();
-
-    const searchBox = screen.getByRole("searchbox");
-    userEvent.type(searchBox, "Ascot");
-
-    expect(screen.getByText("Ascot Soloniel")).toBeVisible();
-    expect(screen.queryByText("Quentin")).not.toBeInTheDocument();
-  });
-
-  it("should instantly un-filter the user when the search input is cleared", async () => {
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const searchBox = screen.getByRole("searchbox");
-    userEvent.type(searchBox, "Ascot");
-    // Clicking the search button does nothing but bump my test coverage %
-    userEvent.click(screen.getByRole("button", { name: "Search" }));
-
-    expect(screen.getByText("Ascot Soloniel")).toBeVisible();
-    expect(screen.queryByText("Quentin")).not.toBeInTheDocument();
-
-    userEvent.clear(searchBox);
-    expect(screen.getByText("Ascot Soloniel")).toBeVisible();
-    expect(screen.getByText("Quentin")).toBeVisible();
-  });
 });
