@@ -46,7 +46,7 @@ async function confirmDestroyCommand(stack: string) {
 
   const confirmation = await question(`
 ${orange}********************************* STOP *******************************
-You've requested a destroy for: 
+You've requested a destroy for:
 
     ${stack}
 
