@@ -15,17 +15,7 @@ export class WithImportsParentStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const {
-      stage,
-      oktaMetadataUrl,
-    } = props;
-
     createUiComponents({scope: this});
-
-    createUiAuthComponents({
-      scope: this,
-      stage,
-      oktaMetadataUrl,
-    });
+    createUiAuthComponents({scope: this});
   }
 }
