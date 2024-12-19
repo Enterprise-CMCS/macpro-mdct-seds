@@ -5,40 +5,20 @@ import {
 
 interface CreateUiAuthComponentsProps {
   scope: Construct;
-  stage: string;
-  oktaMetadataUrl: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const {
     scope,
-    // stage,
-    // oktaMetadataUrl,
   } = props;
 
-  const userPool = new cognito.UserPool(scope, "UserPool");
+  const userPool = new cognito.UserPool(scope, "UserPool", {
+    signInAliases: {
+      email: true,
+    },
+  });
 
-  // if (oktaMetadataUrl) {
-  //   new cognito.CfnUserPoolIdentityProvider(
-  //     scope,
-  //     "CognitoUserPoolIdentityProvider",
-  //     {
-  //       userPoolId: userPool.userPoolId,
-  //       providerName: "Okta",
-  //       providerType: "SAML",
-  //       providerDetails: {
-  //         MetadataURL: oktaMetadataUrl,
-  //       },
-  //     }
-  //   );
-  // }
-
-  const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", { userPool });
-
-  // const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
-  //   userPool,
-  //   cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
-  // });
+  new cognito.UserPoolClient(scope, "UserPoolClient", { userPool });
 
   const identityPool = new cognito.CfnIdentityPool(
     scope,
@@ -51,11 +31,4 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
     identityPoolId: identityPool.ref,
   });
-
-  return {
-    // userPoolDomainName: userPoolDomain.domainName,
-    identityPoolId: identityPool.ref,
-    userPoolId: userPool.userPoolId,
-    userPoolClientId: userPoolClient.userPoolClientId,
-  };
 }
