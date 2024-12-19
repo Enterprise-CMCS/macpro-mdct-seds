@@ -6,7 +6,6 @@ import {
   aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
   aws_ssm as ssm,
-  RemovalPolicy,
   Aws,
   Duration,
   custom_resources as cr,
@@ -40,7 +39,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
     userPoolName: `${stage}-user-pool`,
-    removalPolicy: RemovalPolicy.RETAIN,
     signInAliases: {
       email: true,
     },

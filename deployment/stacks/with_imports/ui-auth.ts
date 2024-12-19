@@ -6,13 +6,17 @@ import {
 interface CreateUiAuthComponentsProps {
   scope: Construct;
   stage: string;
+<<<<<<< HEAD
   oktaMetadataUrl: string;
+=======
+>>>>>>> 85799ee9f7516979d902b4574fbc59699700cb92
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const {
     scope,
     stage,
+<<<<<<< HEAD
     oktaMetadataUrl,
   } = props;
 
@@ -39,6 +43,40 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   //   userPool,
   //   cognitoDomain: { domainPrefix: `${stage}-login-user-pool-client` },
   // });
+=======
+  } = props;
+
+  const userPool = new cognito.UserPool(scope, "UserPool", {
+    userPoolName: `${stage}-user-pool`,
+    signInAliases: {
+      email: true,
+    },
+    autoVerify: {
+      email: true,
+    },
+    selfSignUpEnabled: false,
+    standardAttributes: {
+      givenName: {
+        required: false,
+        mutable: true,
+      },
+      familyName: {
+        required: false,
+        mutable: true,
+      },
+      phoneNumber: {
+        required: false,
+        mutable: true,
+      },
+    },
+    customAttributes: {
+      ismemberof: new cognito.StringAttribute({ mutable: true }),
+    },
+    advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+  });
+
+  new cognito.UserPoolClient(scope, "UserPoolClient", { userPool });
+>>>>>>> 85799ee9f7516979d902b4574fbc59699700cb92
 
   const identityPool = new cognito.CfnIdentityPool(
     scope,
@@ -51,6 +89,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
     identityPoolId: identityPool.ref,
   });
+<<<<<<< HEAD
 
   return {
     userPoolDomainName: userPoolDomain.domainName,
@@ -58,4 +97,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
   };
+=======
+>>>>>>> 85799ee9f7516979d902b4574fbc59699700cb92
 }
