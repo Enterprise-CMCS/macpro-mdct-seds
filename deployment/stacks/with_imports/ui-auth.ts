@@ -14,7 +14,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     stage,
   } = props;
 
-  const userPool = new cognito.UserPool(scope, "UserPool", {
+  new cognito.UserPool(scope, "UserPool", {
     userPoolName: `${stage}-user-pool`,
     signInAliases: {
       email: true,
@@ -41,19 +41,5 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
-  });
-
-  new cognito.UserPoolClient(scope, "UserPoolClient", { userPool });
-
-  const identityPool = new cognito.CfnIdentityPool(
-    scope,
-    "CognitoIdentityPool",
-    {
-      allowUnauthenticatedIdentities: false,
-    }
-  );
-
-  new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
-    identityPoolId: identityPool.ref,
   });
 }
