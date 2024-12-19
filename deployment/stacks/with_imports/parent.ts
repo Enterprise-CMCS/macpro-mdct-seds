@@ -20,7 +20,6 @@ export class WithImportsParentStack extends Stack {
     } = props;
 
     createUiComponents({scope: this});
-
     createUiAuthComponents({
       scope: this,
       stage,
