@@ -64,7 +64,6 @@ export class ParentStack extends Stack {
       ...commonProps,
       customResourceRole,
     });
-
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
       vpc,
