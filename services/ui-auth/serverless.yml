@@ -190,7 +190,6 @@ resources:
 
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
-      DeletionPolicy: Retain
       Properties:
         Domain:
           Fn::Join:
