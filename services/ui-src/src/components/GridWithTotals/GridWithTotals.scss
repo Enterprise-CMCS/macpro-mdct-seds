@@ -1,6 +1,6 @@
-$mdct-gray: #a9aeb1;
-$mdct-blue: #1a4480;
-$mdct-light-blue: #73b3e7;
+$mdct-gray: #f2f2f2;
+$mdct-dark-gray: #71767a;
+$mdct-light-blue: #e6f9fd;
 $mdct-white: #fff;
 
 .grid-header {
@@ -16,6 +16,7 @@ $mdct-white: #fff;
       width: 20%;
       min-width: 20%;
       word-break: break-all;
+      font-weight: bold;
     }
     tr th:last-child {
       width: 5%;
@@ -33,7 +34,7 @@ $mdct-white: #fff;
   }
 
   .total-header-cell {
-    background: $mdct-blue !important;
+    background: $mdct-dark-gray !important;
     color: $mdct-white;
   }
 

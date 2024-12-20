@@ -6,13 +6,6 @@ const Preloader = () => {
       <p className="center-content">
         <img src="preloaders/gears.gif" alt="Loading..." title="Loading" />
       </p>
-      <p className="center-content">
-        <img
-          src="preloaders/loading_text.gif"
-          alt="Loading..."
-          title="Loading"
-        />
-      </p>
     </div>
   );
 };

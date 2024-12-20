@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card } from "@trussworks/react-uswds";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
@@ -46,7 +45,7 @@ const Quarterly = () => {
   const getFormSegment = form => form.form?.replace(".", "-");
 
   return (
-    <div className="page-quarterly react-transition fade-in">
+    <div className="page-quarterly">
       <div className="breadcrumbs">
         <Link to="/">Enrollment Data Home</Link> &gt;{" "}
         {`${state} Q${quarter} ${year}`}
@@ -54,12 +53,12 @@ const Quarterly = () => {
       <h1 className="page-header">{title}</h1>
       <div className="quarterly-report-listing">
         {hasAccess === true ? (
-          <Card>
+          <div>
             {stateFormsList ? (
               <table className="quarterly-forms">
                 <caption>
-                  Start, complete, and print this quarter's CHIP Enrollment
-                  Data Reports.
+                  Start, complete, and print this quarter's CHIP Enrollment Data
+                  Reports.
                 </caption>
                 <thead>
                   <tr>
@@ -71,31 +70,29 @@ const Quarterly = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {stateFormsList.map((form) => (
+                  {stateFormsList.map(form => (
                     <tr key={form.form}>
                       <td>
                         <Link
-                          to={`/forms/${state}/${year}/${quarter}/${getFormSegment(form)}`}
+                          to={`/forms/${state}/${year}/${quarter}/${getFormSegment(
+                            form
+                          )}`}
                         >
                           {form.form}
                         </Link>
                       </td>
                       <td>
-                        <p>
-                          {form.form_name}
-                        </p>
+                        <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div className="form-status-pill">
-                            {form.status}
-                        </div>
+                        <div className="form-status-pill">{form.status}</div>
                       </td>
-                      <td>
-                        {dateFormatter(form.last_modified)}
-                      </td>
+                      <td>{dateFormatter(form.last_modified)}</td>
                       <td style={{ textAlign: "center" }}>
                         <Link
-                          to={`/print/${state}/${year}/${quarter}/${getFormSegment(form)}`}
+                          to={`/print/${state}/${year}/${quarter}/${getFormSegment(
+                            form
+                          )}`}
                           className="font-heading-2xl"
                         >
                           <FontAwesomeIcon icon={faFilePdf} />
@@ -108,7 +105,7 @@ const Quarterly = () => {
             ) : (
               <Preloader />
             )}
-          </Card>
+          </div>
         ) : null}
 
         {hasAccess === false ? <Unauthorized /> : null}

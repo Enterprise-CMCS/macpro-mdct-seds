@@ -7,7 +7,7 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
 // * trussworks
-import { Button, Card } from "@trussworks/react-uswds";
+import { Button } from "@trussworks/react-uswds";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,7 +47,7 @@ const Users = () => {
   };
 
   return (
-    <div className="user-profiles react-transition fade-in" data-testid="users">
+    <div className="user-profiles" data-testid="users">
       <h1 className="page-header">Users</h1>
       <div className="page-subheader exclude-from-pdf">
         <Button
@@ -72,9 +72,9 @@ const Users = () => {
                 { name: "Role", selector: "role" },
                 { name: "Registration Date", selector: "dateJoined" },
                 { name: "Last Login", selector: "lastLogin" },
-                { name: "States", selector: "states" },
+                { name: "States", selector: "states" }
               ],
-              data: users,
+              data: users
             })
           }
         >
@@ -98,7 +98,7 @@ const Users = () => {
           <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
         </Button>
       </div>
-      <Card>
+      <div>
         {users?.length ? (
           <table className="user-list">
             <thead>
@@ -129,13 +129,11 @@ const Users = () => {
                   <td>{user.role}</td>
                   <td>
                     {user.dateJoined &&
-                      new Date(user.dateJoined).toLocaleDateString("en-US")
-                    }
+                      new Date(user.dateJoined).toLocaleDateString("en-US")}
                   </td>
                   <td>
                     {user.lastLogin &&
-                      new Date(user.lastLogin).toLocaleDateString("en-US")
-                    }
+                      new Date(user.lastLogin).toLocaleDateString("en-US")}
                   </td>
                   <td>{user.states?.join(", ")}</td>
                 </tr>
@@ -145,7 +143,7 @@ const Users = () => {
         ) : (
           <Preloader />
         )}
-      </Card>
+      </div>
     </div>
   );
 };

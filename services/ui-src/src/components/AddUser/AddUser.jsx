@@ -65,17 +65,17 @@ const AddUser = ({ currentUser, stateList }) => {
 
   return (
     <>
-      <div className="react-transition fade-in" data-testid="AddUser">
+      <div data-testid="AddUser" className="addUserMain">
         <h1 className="page-header">Add User</h1>
-        <div className="addUserMain padding-left-9">
+        <div>
           <p>
             To add a <b>state user</b>, enter their EUA Id, select their state,
             and click Add User.
           </p>
           <p className="note">
-            <b className="margin-right-3 text-secondary-dark">Note:</b> Users
-            will not show up in the{" "}
-            <Link to="/users" className="userList text-bold margin-x-2">
+            <b className="text-secondary-dark">Note:</b> Users will not show up
+            in the{" "}
+            <Link to="/users" className="userList text-bold">
               User List
             </Link>{" "}
             until they have logged in.

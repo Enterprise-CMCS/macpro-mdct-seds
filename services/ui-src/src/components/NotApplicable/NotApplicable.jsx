@@ -21,7 +21,9 @@ const NotApplicable = ({
   saveForm,
   updatedApplicableThunk
 }) => {
-  const [applicableStatus, setApplicableStatus] = useState(notApplicable ? 1 : 0);
+  const [applicableStatus, setApplicableStatus] = useState(
+    notApplicable ? 1 : 0
+  );
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
   const determineUserRole = async () => {
@@ -78,14 +80,9 @@ const NotApplicable = ({
   };
 
   return (
-    <div className="padding-x-5" data-test="applicable-wrapper">
-      <h3 className="padding-x-5" data-test="applicable-prompt">
-        Does this form apply to your state?
-      </h3>
-      <div
-        className="padding-x-5 applicable-slider"
-        data-test="applicable-slider"
-      >
+    <div data-test="applicable-wrapper">
+      <h3 data-test="applicable-prompt">Does this form apply to your state?</h3>
+      <div className="applicable-slider" data-test="applicable-slider">
         <p
           className={
             applicableStatus === 0 ? "applicable-selected is-selected" : null

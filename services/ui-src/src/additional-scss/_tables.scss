@@ -1,29 +1,27 @@
-table.quarterly-forms, table.user-list {
-  margin: 0.5rem;
+table.quarterly-forms,
+table.user-list {
   border-collapse: collapse;
+  width: 100%;
 
   caption {
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
     font-size: 1.1rem;
     font-weight: bold;
     color: black; /* Bootstrap thinks all captions should be gray. Wild. */
   }
-  td, th {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-  }
+  td,
   th {
-    color: white;
-    background-color: #1a4480;
-    border: thin solid #1a4480;
-    font-size: 1.3rem;
+    padding: 1rem;
+    font-size: 16px;
+    border: thin solid $black;
   }
-  th:not(:first-of-type) {
-    border-left: thin solid white;
+
+  th {
+    background-color: $alto;
   }
-  th:not(:last-of-type) {
-    border-right: thin solid white;
-  }
+
   td {
-    border: thin solid gray;
+    p {
+      margin: 0;
+    }
   }
 }
