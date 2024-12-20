@@ -28,9 +28,13 @@ const Users = () => {
 
   const loadUserData = async () => {
     const userList = await listUsers();
-    userList.sort((a, b) => a.username?.localeCompare(b.username));
-    for (let user of userList) {
-      user.states?.sort();
+    if (userList) {
+      userList.sort((a, b) => a.username?.localeCompare(b.username));
+      for (let user of userList) {
+        if (Array.isArray(user.states)) {
+          user.states.sort();
+        }
+      }
     }
     setUsers(userList);
   };
