@@ -97,3 +97,12 @@
     }
   }
 }
+
+.question-component{
+  th, td{
+    font-size: 16px;
+  }
+  th{
+    background-color: $alto;
+  }
+}

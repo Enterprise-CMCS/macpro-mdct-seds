@@ -73,9 +73,9 @@ const AddUser = ({ currentUser, stateList }) => {
             and click Add User.
           </p>
           <p className="note">
-            <b className="margin-right-3 text-secondary-dark">Note:</b> Users
-            will not show up in the{" "}
-            <Link to="/users" className="userList text-bold margin-x-2">
+            <b className="text-secondary-dark">Note:</b> Users will not show up
+            in the{" "}
+            <Link to="/users" className="userList text-bold">
               User List
             </Link>{" "}
             until they have logged in.

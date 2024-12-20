@@ -50,7 +50,8 @@ label {
   .addUserMain,
   .formTemplates,
   .generate-forms-container,
-  .generate-totals-container {
+  .generate-totals-container,
+  .Profile {
     max-width: $max-width-desktop;
     width: 100%;
   }
@@ -84,16 +85,16 @@ label {
   .usa-table {
     margin: auto !important;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
+    border: thin solid $black;
     th {
-      @extend .bg-primary-dark;
-      @extend .text-white;
-      @extend .padding-x-3;
+      background-color: $alto;
       @extend .text-bold;
+      border: thin solid $black;
+      padding: 1rem;
     }
     td {
-      @extend .padding-x-5;
-      @extend .padding-y-2;
+      padding: 1rem;
     }
   }
 }
