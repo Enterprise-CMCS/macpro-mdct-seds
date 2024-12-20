@@ -6,6 +6,22 @@
   .logo {
     @extend .padding-left-4;
     background-color: #00395e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+
+    .dropdown-toggle {
+      color: white;
+      font-weight: bolder;
+      text-decoration: none;
+    }
+    .dropdown-menu {
+      margin-left: -20px;
+      a {
+        padding: 0.75rem 1rem;
+      }
+    }
   }
 }
 

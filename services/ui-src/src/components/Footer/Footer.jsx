@@ -57,13 +57,11 @@ const Footer = () => {
                 A federal government managed website by the Centers for Medicare
                 &amp; Medicaid Services
               </div>
-              <div className="address">
-                7500 Security Boulevard Baltimore, MD 21244
-              </div>
             </div>
           </Grid>
         </Grid>
       </GridContainer>
+      <div className="address">7500 Security Boulevard Baltimore, MD 21244</div>
     </div>
   );
 };

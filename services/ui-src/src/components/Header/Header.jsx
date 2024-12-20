@@ -47,6 +47,18 @@ const Header = () => {
             height={90}
           />
         </Link>
+        <Nav pullRight={true}>
+          {isAuthenticated ? (
+            <>
+              <NavDropdown id="User" title="My Profile">
+                <LinkContainer to="/profile">
+                  <NavItem>User Profile</NavItem>
+                </LinkContainer>
+                <NavItem onClick={handleLogout}>Logout</NavItem>
+              </NavDropdown>
+            </>
+          ) : null}
+        </Nav>
       </div>
 
       <div className="navigation">
@@ -55,20 +67,6 @@ const Header = () => {
             <NavList items={menuItems} />
           </Nav>
         ) : null}
-        <Navbar.Collapse>
-          <Nav pullRight={true}>
-            {isAuthenticated ? (
-              <>
-                <NavDropdown id="User" title="My Profile">
-                  <LinkContainer to="/profile">
-                    <NavItem>User Profile</NavItem>
-                  </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
-                </NavDropdown>
-              </>
-            ) : null}
-          </Nav>
-        </Navbar.Collapse>
       </div>
     </div>
   );
