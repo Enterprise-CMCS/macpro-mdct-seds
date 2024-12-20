@@ -175,7 +175,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="Signup flip-in-y" data-testid="parentComponent">
+    <div className="Signup" data-testid="parentComponent">
       {newUser === null ? renderForm() : renderConfirmationForm()}
     </div>
   );

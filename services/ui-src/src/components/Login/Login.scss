@@ -1,5 +1,5 @@
 .login-button {
-  width: 25em !important;
+  width: 100% !important;
 }
 
 .action-button-row {
@@ -8,6 +8,8 @@
 }
 
 .login-wrapper {
+  width: 100%;
+  max-width: 424px;
   form {
     label {
       width: 100%;

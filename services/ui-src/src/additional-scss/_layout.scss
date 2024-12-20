@@ -31,7 +31,7 @@
   margin-bottom: 2rem;
 }
 
-label{
+label {
   font-weight: bold;
 }
 
@@ -46,6 +46,7 @@ label{
   align-items: center;
 
   .Home,
+  .Signup,
   .addUserMain,
   .formTemplates,
   .generate-forms-container,
@@ -83,6 +84,7 @@ label{
   .usa-table {
     margin: auto !important;
     text-align: center;
+    font-size: 18px;
     th {
       @extend .bg-primary-dark;
       @extend .text-white;
