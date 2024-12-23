@@ -1,5 +1,4 @@
 @import "../../../node_modules/uswds/dist/css/uswds";
-@import "~react-data-table-component-extensions/dist/index";
 @import "../../additional-scss/uswds_overrides";
 
 @import "../../additional-scss/pdf_generator";
@@ -11,6 +10,7 @@
 @import "../../additional-scss/layout";
 @import "../../additional-scss/buttons";
 @import "../../additional-scss/tabs";
+@import "../../additional-scss/tables";
 @import "../../additional-scss/alerts";
 @import "../../additional-scss/icons";
 @import "../../additional-scss/header";
@@ -19,5 +19,3 @@
 @import "../../additional-scss/form";
 @import "../../additional-scss/main";
 @import "../../additional-scss/print";
-@import "../../additional-scss/react-datatable-component-override";
-@import "../../animations/transitions";

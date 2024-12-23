@@ -91,10 +91,9 @@ const FormTemplates = () => {
   }, []);
 
   return (
-    <>
-      <h1>Add/Edit Form Templates</h1>
-
-      <div className="formTemplates" data-testid="formTemplates">
+    <div className="formTemplates">
+      <h1 className="page-header">Add/Edit Form Templates</h1>
+      <div data-testid="formTemplates">
         {alert ? (
           <Alert
             className="margin-bottom-3"
@@ -105,10 +104,8 @@ const FormTemplates = () => {
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="year-selection-container margin-top-3">
-            <label htmlFor="year-select" className="margin-top-3">
-              Select Year or Create New
-            </label>
+          <div className="year-selection-container">
+            <label htmlFor="year-select">Select Year or Create New</label>
             <Dropdown
               id="year-select"
               options={formYears}
@@ -134,7 +131,7 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3">
+        <div className="template-input margin-top-3 margin-bottom-4">
           <label htmlFor="templateInput">Enter or Modify Template</label>
           <Textarea
             id="templateInput"
@@ -149,12 +146,11 @@ const FormTemplates = () => {
           primary="true"
           onClick={() => handleSave()}
           data-testid="saveButton"
-          className="margin-top-3 margin-bottom-2"
         >
           Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

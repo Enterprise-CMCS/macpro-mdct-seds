@@ -3,39 +3,63 @@
 **********************/
 
 .page-header {
-  @extend .bg-primary;
-  @extend .text-white;
-  @extend .padding-3;
-  @extend .text-center;
-  @extend .text-bold;
-  @extend .font-alt-xl;
-  box-shadow: 15px 5px 8px #888888;
-  letter-spacing: 0.2em;
+  border: none;
+  padding: 0;
+  margin-bottom: 5.5rem 0 1rem 0;
 }
 
 .page-subheader {
-  @extend .padding-left-9;
-  @extend .padding-bottom-2;
-}
+  @extend .padding-bottom-3;
 
-.list-display-container {
-  @extend .padding-y-9;
-
-  li {
-    @extend .padding-y-2;
-    @extend .padding-left-9;
-    list-style-type: circle;
+  button {
+    @extend .margin-right-2;
   }
 }
 
-.main {
-  max-width: 95%;
-  margin: 2% 0 0 2.5%;
-  position: relative;
-  z-index: 3;
+.list-display-container {
+  ul {
+    padding-left: 1.25rem;
+  }
+  li {
+    @extend .padding-y-1;
+    list-style-type: circle;
 
-  .container {
-    width: 100% !important;
+    a {
+      font-weight: 600;
+    }
+  }
+  margin-bottom: 2rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+.main {
+  position: relative;
+  display: flex;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 2rem 4rem 2rem;
+  flex-direction: column;
+  align-items: center;
+
+  .Home,
+  .Signup,
+  .addUserMain,
+  .formTemplates,
+  .generate-forms-container,
+  .generate-totals-container,
+  .Profile {
+    max-width: $max-width-desktop;
+    width: 100%;
+  }
+
+  .user-profiles,
+  .page-quarterly,
+  .formPage {
+    max-width: 1200px;
   }
 }
 
@@ -46,7 +70,6 @@
 }
 
 .breadcrumbs {
-  @extend .padding-left-5;
   @extend .font-heading-md;
   @extend .text-italic;
   @extend .text-base-dark;
@@ -62,15 +85,16 @@
   .usa-table {
     margin: auto !important;
     text-align: center;
+    font-size: 16px;
+    border: thin solid $black;
     th {
-      @extend .bg-primary-dark;
-      @extend .text-white;
-      @extend .padding-x-3;
+      background-color: $alto;
       @extend .text-bold;
+      border: thin solid $black;
+      padding: 1rem;
     }
     td {
-      @extend .padding-x-5;
-      @extend .padding-y-2;
+      padding: 1rem;
     }
   }
 }
@@ -84,4 +108,10 @@
       border: none !important;
     }
   }
+}
+
+.formTemplates,
+.formPage {
+  width: 100%;
+  max-width: $max-width-desktop;
 }

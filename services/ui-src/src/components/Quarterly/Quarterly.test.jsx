@@ -93,12 +93,12 @@ describe("Quarterly tests", () => {
       { selector: ".breadcrumbs a" }
     )).toBeInTheDocument();
 
-    const rows = container.querySelectorAll(".rdt_TableBody .rdt_TableRow");
+    const rows = container.querySelectorAll("table tbody tr");
     expect(rows.length).toBe(forms.length);
 
     for (let i = 0; i < forms.length; i += 1) {
       const row = rows[i];
-      const cells = [...row.querySelectorAll(".rdt_TableCell")];
+      const cells = [...row.querySelectorAll("td")];
       const [ idCell, nameCell, statusCell, lastUpdatedCell, printCell] = cells;
       const form = forms[i];
 

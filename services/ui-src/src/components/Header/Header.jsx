@@ -36,42 +36,37 @@ const Header = () => {
 
   return (
     <div className="header" data-testid="Header">
-      <GovBanner className="react-transition swipe-right padding-y-1px" />
+      <GovBanner className="padding-y-1px" />
 
       <div className="logo">
         <Link to="/">
           <img
-            src="/img/logo-cms.png"
+            src="/img/seds-logo-white.svg"
             alt="Centers for Medicare and Medicaid Services"
-            width={200}
+            width={250}
             height={90}
           />
         </Link>
-        <span className="app-title font-alt-xl">
-          CHIP Statistical Enrollment Data Reports
-        </span>
+        <Nav pullRight={true}>
+          {isAuthenticated ? (
+            <>
+              <NavDropdown id="User" title="My Profile">
+                <LinkContainer to="/profile">
+                  <NavItem>User Profile</NavItem>
+                </LinkContainer>
+                <NavItem onClick={handleLogout}>Logout</NavItem>
+              </NavDropdown>
+            </>
+          ) : null}
+        </Nav>
       </div>
 
       <div className="navigation">
         {isAuthenticated ? (
           <Nav pullLeft={true}>
-            <NavList items={menuItems} type="primary" />
+            <NavList items={menuItems} />
           </Nav>
         ) : null}
-        <Navbar.Collapse>
-          <Nav pullRight={true} className="padding-right-9">
-            {isAuthenticated ? (
-              <>
-                <NavDropdown id="User" title="My Profile">
-                  <LinkContainer to="/profile">
-                    <NavItem>User Profile</NavItem>
-                  </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
-                </NavDropdown>
-              </>
-            ) : null}
-          </Nav>
-        </Navbar.Collapse>
       </div>
     </div>
   );
