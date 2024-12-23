@@ -5,54 +5,58 @@
 1. Deploy sls to get it ready for deletion with retained resources configured for import
 
 ```
-./run deploy --stage master
+./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-2. Destroy sls
+2. Collect information about the resources we're going to be importing into the new cdk stack.
+```
+cloudfront.Distribution -
+cognito.UserPool -
+```
+
+3. Destroy sls
 
 ```
-./run destroy --stage master
+./run destroy --stage <YOUR_BRANCH_NAME>
 ```
 
 ## From `jon-cdk` branch:
 
-1. Comment out Cloudfront Distribution definition and dependent resources
 
-```
-# ONLY RUN ONCE YOU COMMENTED THEM OUT
-./run deploy --stage master
-```
+1. Create just the new cdk stack without anything inside of it.
 
-2. Restore Cloudfront Distribution definition in the simplified version (there are 2)
-
-```
-PROJECT=seds cdk import --context stage=master --force
+```bash
+WITHOUT_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-3. Answer questions as you import to make sure you get the SLS UI stack's retained Cloudfront Distribution
+2. Now import all the serverless ejected resources.
 
-4. Run a cdk deploy
-
+```bash
+WITH_IMPORTS=true PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
 ```
-./run deploy --stage master
+As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks.
+
+3. Run a deploy on that same imported resource set.
+
+```bash
+WITH_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-5. Comment out the simplified version of Cloudfront Distribution definition. Restore the complicated Cloudfront Distribution definition and dependent resources
+4. Run a full deploy by kicking off the full cdk deploy via Github Action. Permissions for individual developers are limited so you must use Github Action to do this part.
 
-6. Run a cdk deploy again
+5. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application. :tada: Congrats, you did it!
 
-```
-./run deploy --stage master
-```
 
 ## What if it all goes pear shaped?
 
 ### If during the middle of the migration, things begin to break and we need to reinstate the serverless stack, we need a way to bring the Cloudfront Distribution back into the newly rebuilt serverless stack. Fortunately this is possible if you follow these steps.
 
+:grey_exclamation: These instructions are specific to reimporting a Cloudfront Distribution but the same pattern should also apply to any other imported resources that need un-importing should the need arise.
+
 1) Get the Cloudfront Distribution unaffiliated with any Cloudformation stack. If it's already been successfully imported into the new cdk stack then you'll need to destroy the cdk stack to eject it from that stack.
 ```
 # this assumes you're on `jon-cdk` branch
-./run destroy --stage master
+./run destroy --stage <YOUR_BRANCH_NAME>
 ```
 
 2) Now you need switch to `pete-sls` branch and comment out any CloudfrontDistribution and dependent configuration.
