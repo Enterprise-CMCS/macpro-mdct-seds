@@ -34,7 +34,7 @@ WITHOUT_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```bash
 WITH_IMPORTS=true PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
 ```
-As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks.
+As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks. For the dynamo tables the default should be fine.
 
 3. Run a deploy on that same imported resource set.
 
