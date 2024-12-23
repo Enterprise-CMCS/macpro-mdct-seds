@@ -88,25 +88,28 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         "service-role/AWSLambdaVPCAccessExecutionRole"
       ),
     ],
+    inlinePolicies: {
+      DynamoPolicy: new iam.PolicyDocument({
+        statements: [
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            actions: [
+              "dynamodb:DescribeTable",
+              "dynamodb:Query",
+              "dynamodb:Scan",
+              "dynamodb:GetItem",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+            ],
+            resources: ["*"],
+          })
+        ]
+      })
+    },
     permissionsBoundary: props.iamPermissionsBoundary,
     path: props.iamPath,
   });
-
-  lambdaApiRole.addToPolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:DescribeTable",
-        "dynamodb:Query",
-        "dynamodb:Scan",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:UpdateItem",
-        "dynamodb:DeleteItem",
-      ],
-      resources: ["*"],
-    })
-  );
 
   // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
   const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {

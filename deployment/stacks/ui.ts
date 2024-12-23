@@ -119,11 +119,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
       defaultRootObject: "index.html",
       enableLogging: true,
-<<<<<<< HEAD
       logBucket: logBucket,
-=======
-      logBucket: loggingBucket,
->>>>>>> 63e60e65 (Revert "CMDCT-4188 - comments out distribution with dependencies")
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {

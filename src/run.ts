@@ -151,7 +151,7 @@ async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
-    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
+    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
     await runner.run_command_and_output("CDK deploy", deployCmd, ".");
   } else {
     console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
