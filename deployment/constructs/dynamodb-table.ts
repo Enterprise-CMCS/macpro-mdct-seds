@@ -29,7 +29,8 @@ export class DynamoDBTable extends Construct {
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
 
-    const tableName = `${props.stage}-${props.name}`;
+    // const tableName = `${props.stage}-${props.name}`;
+    const tableName = `cmdct-4186-sls-${props.name}`;
     this.table = new dynamodb.Table(this, "Table", {
       tableName,
       partitionKey: props.partitionKey,
