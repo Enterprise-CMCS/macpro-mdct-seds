@@ -14,6 +14,8 @@ interface CloudWatchToS3Props {
   readonly bucket: s3.Bucket;
   readonly filePrefix?: string;
   readonly filterPattern?: string;
+  iamPermissionsBoundary: iam.IManagedPolicy;
+  iamPath: string;
 }
 
 export class CloudWatchToS3 extends Construct {
@@ -27,6 +29,8 @@ export class CloudWatchToS3 extends Construct {
     // Create a Firehose role
     const firehoseRole = new iam.Role(this, "FirehoseRole", {
       assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
+      permissionsBoundary: props.iamPermissionsBoundary,
+      path: props.iamPath,
     });
 
     firehoseRole.addToPolicy(
@@ -74,6 +78,8 @@ export class CloudWatchToS3 extends Construct {
       "SubscriptionFilterRole",
       {
         assumedBy: new iam.ServicePrincipal("logs.amazonaws.com"),
+        permissionsBoundary: props.iamPermissionsBoundary,
+        path: props.iamPath,
         inlinePolicies: {
           PutRecordPolicy: new iam.PolicyDocument({
             statements: [

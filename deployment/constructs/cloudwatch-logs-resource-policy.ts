@@ -44,7 +44,7 @@ export class CloudWatchLogsResourcePolicy extends Construct {
       `CentralizedCloudWatchLogsResourcePolicy`,
       {
         policyName: `${props.project}-centralized-logs-policy-${id}`,
-        policyDocument: policyDocument.toJSON(),
+        policyDocument: JSON.stringify(policyDocument.toJSON()),
       }
     );
   }

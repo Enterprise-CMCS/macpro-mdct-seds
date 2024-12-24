@@ -494,6 +494,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
       logGroup: waf.logGroup,
       bucket: logBucket,
+      iamPermissionsBoundary: props.iamPermissionsBoundary,
+      iamPath: props.iamPath,
     });
   }
 
