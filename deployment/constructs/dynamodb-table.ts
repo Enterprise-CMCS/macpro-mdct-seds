@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
-interface DynamoDBTableProps {
+export interface DynamoDBTableProps {
   readonly stage: string;
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
@@ -23,22 +23,20 @@ export interface DynamoDBTableIdentifiers {
 }
 
 export class DynamoDBTable extends Construct {
-  public readonly table: dynamodb.Table;
+  public readonly table: dynamodb.TableV2;
   public readonly identifiers: DynamoDBTableIdentifiers;
 
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
 
-    // const tableName = `${props.stage}-${props.name}`;
-    const tableName = `cmdct-4186-sls-${props.name}`;
-    this.table = new dynamodb.Table(this, "Table", {
+    const tableName = `${props.stage}-${props.name}`;
+    this.table = new dynamodb.TableV2(this, "Table", {
       tableName,
       partitionKey: props.partitionKey,
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+      billing: dynamodb.Billing.onDemand(),
+      dynamoStream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       pointInTimeRecovery: true,
     });
-
     this.identifiers = {
       id,
       name: tableName,

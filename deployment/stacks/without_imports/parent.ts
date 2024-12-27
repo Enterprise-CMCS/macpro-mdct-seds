@@ -4,6 +4,7 @@ import {
   StackProps,
 } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../../deployment-config";
+import { createDataComponents } from "./data";
 
 export class WithoutImportsParentStack extends Stack {
   constructor(
@@ -12,5 +13,11 @@ export class WithoutImportsParentStack extends Stack {
     props: StackProps & DeploymentConfigProperties
   ) {
     super(scope, id, props);
+
+    const {
+      stage,
+    } = props;
+
+    createDataComponents(stage);
   }
 }
