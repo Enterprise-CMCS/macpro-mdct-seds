@@ -12,13 +12,6 @@
 ```
 cloudfront.Distribution -
 cognito.UserPool -
-dynamoTable.FORM_ANSWERS -
-dynamoTable.FORM_QUESTIONS -
-dynamoTable.FORM_TEMPLATES -
-dynamoTable.FORMS -
-dynamoTable.STATE_FORMS -
-dynamoTable.STATES -
-dynamoTable.AUTH_USER -
 ```
 
 3. Destroy sls
@@ -27,33 +20,34 @@ dynamoTable.AUTH_USER -
 ./run destroy --stage <YOUR_BRANCH_NAME>
 ```
 
+:warning: Make sure that all sls associated stacks have been fully destroyed before proceeding.
+
+
 ## From `jon-cdk` branch:
 
 
 1. Create just the new cdk stack without anything inside of it.
 
 ```bash
-WITHOUT_IMPORTS=true FORM_ANSWERS=FILL_IN_WITH_VALUES_ABOVE FORM_QUESTIONS=FILL_IN_WITH_VALUES_ABOVE FORM_TEMPLATES=FILL_IN_WITH_VALUES_ABOVE FORMS=FILL_IN_WITH_VALUES_ABOVE STATE_FORMS=FILL_IN_WITH_VALUES_ABOVE STATES=FILL_IN_WITH_VALUES_ABOVE AUTH_USER=FILL_IN_WITH_VALUES_ABOVE ./run deploy --stage <YOUR_BRANCH_NAME>
+WITHOUT_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-2. WAIT! :alert: Confirm that the tables that are finished creating and in an "Active" state before moving forward.
-
-3. Now import all the serverless ejected resources.
+2. Now import all the serverless ejected resources.
 
 ```bash
 WITH_IMPORTS=true PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
 ```
-As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks. For the dynamo tables the default will be correct because of things than happened during steps 1 and 2.
+As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks. For the dynamo tables the default should be correct but read closely to be sure.
 
-4. Run a deploy on that same imported resource set.
+3. Run a deploy on that same imported resource set.
 
 ```bash
 WITH_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-5. Run a full deploy by kicking off the full cdk deploy via Github Action. Permissions for individual developers are limited so you must use Github Action to do this part.
+4. Run a full deploy by kicking off the full cdk deploy via Github Action. Permissions for individual developers are limited so you must use Github Action to do this part.
 
-6. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application. :tada: Congrats, you did it!
+5. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application. :tada: Congrats, you did it!
 
 
 ## What if it all goes pear shaped?
