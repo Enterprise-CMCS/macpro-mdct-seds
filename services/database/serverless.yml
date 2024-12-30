@@ -91,7 +91,6 @@ resources:
   Resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-age-ranges
         PointInTimeRecoverySpecification:
@@ -213,7 +212,6 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StatusTable:
       Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-status
         PointInTimeRecoverySpecification:
@@ -246,7 +244,6 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserRolesTable:
       Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-auth-user-roles
         PointInTimeRecoverySpecification:
@@ -262,7 +259,6 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserStatesTable:
       Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-auth-user-states
         PointInTimeRecoverySpecification:
