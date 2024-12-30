@@ -4,6 +4,7 @@ import {
   StackProps,
 } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../../deployment-config";
+import { createDataComponents } from "./data";
 import { createUiComponents } from "./ui";
 import { createUiAuthComponents } from "./ui-auth";
 
@@ -19,6 +20,10 @@ export class WithImportsParentStack extends Stack {
       stage,
     } = props;
 
+    createDataComponents({
+      scope: this,
+      stage,
+    });
     createUiComponents({scope: this});
     createUiAuthComponents({
       scope: this,
