@@ -46,7 +46,7 @@ async function confirmDestroyCommand(stack: string) {
 
   const confirmation = await question(`
 ${orange}********************************* STOP *******************************
-You've requested a destroy for: 
+You've requested a destroy for:
 
     ${stack}
 
@@ -130,7 +130,7 @@ async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
+  const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 }
 
