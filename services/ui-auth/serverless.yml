@@ -14,9 +14,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   iam:
     role:
       # Even though we are creating our own IAM role that is used in each lambda function below
@@ -119,6 +119,7 @@ resources:
                   Resource: !GetAtt CognitoUserPool.Arn
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
+      DeletionPolicy: Retain
       Properties:
         UserPoolName: ${self:custom.stage}-user-pool
         UsernameAttributes:
@@ -155,7 +156,7 @@ resources:
       Properties:
         ResourceArn: !GetAtt CognitoUserPool.Arn
         WebACLArn: !GetAtt WafPluginAcl.Arn
-        
+
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:

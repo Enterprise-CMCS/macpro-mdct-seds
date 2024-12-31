@@ -48,9 +48,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   versionFunctions: true
   iam:
     role:
@@ -106,6 +106,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormAnswersTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-form-answers
         PointInTimeRecoverySpecification:
@@ -131,6 +132,7 @@ resources:
               ProjectionType: ALL
     FormQuestionsTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-form-questions
         PointInTimeRecoverySpecification:
@@ -146,6 +148,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormTemplatesTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-form-templates
         PointInTimeRecoverySpecification:
@@ -161,6 +164,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     FormsTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-forms
         PointInTimeRecoverySpecification:
@@ -176,6 +180,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StateFormsTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-state-forms
         PointInTimeRecoverySpecification:
@@ -191,6 +196,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     StatesTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-states
         PointInTimeRecoverySpecification:
@@ -221,6 +227,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.stage}-auth-user
         PointInTimeRecoverySpecification:
