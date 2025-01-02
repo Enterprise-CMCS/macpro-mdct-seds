@@ -26,7 +26,6 @@ export const determineDeploymentConfig = async (stage: string) => {
     project,
     stage,
     isDev,
-    terminationProtection: !isDev,
     ...secretConfigOptions,
   };
   validateConfig(config);

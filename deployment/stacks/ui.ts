@@ -8,7 +8,6 @@ import {
   aws_route53_targets as route53Targets,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
-  Aws,
   Duration,
   RemovalPolicy,
   aws_certificatemanager as acm,
@@ -44,25 +43,23 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     enforceSSL: true,
   });
 
-  const loggingBucket = new s3.Bucket(scope, "LoggingBucket", {
-    bucketName: `${project}-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
-    versioned: true,
+  const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
     encryption: s3.BucketEncryption.S3_MANAGED,
     publicReadAccess: false,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
-    removalPolicy: RemovalPolicy.DESTROY,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     autoDeleteObjects: isDev,
     enforceSSL: true,
   });
 
   // Add bucket policy to allow CloudFront to write logs
-  loggingBucket.addToResourcePolicy(
+  logBucket.addToResourcePolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
       actions: ["s3:PutObject"],
-      resources: [`${loggingBucket.bucketArn}/*`],
+      resources: [`${logBucket.bucketArn}/*`],
     })
   );
 
@@ -121,7 +118,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
       defaultRootObject: "index.html",
       enableLogging: true,
-      logBucket: loggingBucket,
+      logBucket: logBucket,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
@@ -142,7 +139,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     scope,
     stage,
     project,
-    loggingBucket,
+    logBucket,
     iamPermissionsBoundary,
     iamPath
   );
@@ -256,7 +253,7 @@ function createFirehoseLogging(
   scope: Construct,
   stage: string,
   project: string,
-  loggingBucket: s3.Bucket,
+  logBucket: s3.Bucket,
   iamPermissionsBoundary: IManagedPolicy,
   iamPath: string
 ) {
@@ -269,7 +266,7 @@ function createFirehoseLogging(
         statements: [
           new iam.PolicyStatement({
             actions: ["s3:PutObject"],
-            resources: [`${loggingBucket.bucketArn}/*`],
+            resources: [`${logBucket.bucketArn}/*`],
             effect: iam.Effect.ALLOW,
           }),
         ],
@@ -281,7 +278,7 @@ function createFirehoseLogging(
     deliveryStreamName: `aws-waf-logs-${project}-${stage}-firehose`,
     extendedS3DestinationConfiguration: {
       roleArn: firehoseRole.roleArn,
-      bucketArn: loggingBucket.bucketArn,
+      bucketArn: logBucket.bucketArn,
       prefix: `AWSLogs/WAF/${stage}/`,
       bufferingHints: {
         intervalInSeconds: 300,
