@@ -51,7 +51,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     publicReadAccess: false,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
-    removalPolicy: RemovalPolicy.DESTROY,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     autoDeleteObjects: isDev,
     enforceSSL: true,
   });

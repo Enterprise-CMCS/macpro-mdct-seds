@@ -125,16 +125,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ],
     }
   );
-  cloudWatchRole.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
-  const apiGatewayRestApiAccount = new apigateway.CfnAccount(
+  new apigateway.CfnAccount(
     scope,
     "ApiGatewayRestApiAccount",
     {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     }
   );
-  apiGatewayRestApiAccount.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
@@ -485,12 +483,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     versioned: true,
     encryption: s3.BucketEncryption.S3_MANAGED,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    removalPolicy: RemovalPolicy.DESTROY,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     autoDeleteObjects: isDev,
     enforceSSL: true,
   });
 
-  if (!isDev) {
+  if (!isDev) { // resources that must be in AWS account
     new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
       logGroup: waf.logGroup,
       bucket: logBucket,
