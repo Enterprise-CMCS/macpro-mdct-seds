@@ -13,7 +13,7 @@ import {
   Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
-import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
+// import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
@@ -479,7 +479,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     webAclArn: waf.webAcl.attrArn,
   });
 
-  const logBucket = new s3.Bucket(scope, "LogBucket", {
+  // const logBucket =
+  new s3.Bucket(scope, "LogBucket", {
     versioned: true,
     encryption: s3.BucketEncryption.S3_MANAGED,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -488,14 +489,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     enforceSSL: true,
   });
 
-  if (!isDev) { // resources that must be in AWS account
-    new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-      bucket: logBucket,
-      iamPermissionsBoundary: props.iamPermissionsBoundary,
-      iamPath: props.iamPath,
-    });
-  }
+  // if (!isDev) { // resources that must be in AWS account
+    // new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+    //   logGroup: waf.logGroup,
+    //   bucket: logBucket,
+    //   iamPermissionsBoundary: props.iamPermissionsBoundary,
+    //   iamPath: props.iamPath,
+    // });
+  // }
 
   addIamPropertiesToBucketAutoDeleteRole(
     scope,
