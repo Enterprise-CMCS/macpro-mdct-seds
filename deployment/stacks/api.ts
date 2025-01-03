@@ -61,8 +61,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   );
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
-    logGroupName: `/aws/api-gateway/${stage}-app-api`,
-    removalPolicy: RemovalPolicy.DESTROY,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
@@ -481,16 +480,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     webAclArn: waf.webAcl.attrArn,
   });
 
-  const logBucket = new s3.Bucket(scope, "LogBucket", {
-    versioned: true,
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: isDev,
-    enforceSSL: true,
-  });
 
-  if (!isDev) {
+  if (!isDev) { // resources that must be in AWS account
+    const logBucket = new s3.Bucket(scope, "WafLogBucket", {
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: RemovalPolicy.RETAIN,
+      enforceSSL: true,
+    });
+
     new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
       logGroup: waf.logGroup,
       bucket: logBucket,
