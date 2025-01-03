@@ -1,8 +1,10 @@
 import { Construct } from "constructs";
+import { RemovalPolicy } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
   readonly stage: string;
+  readonly isDev: boolean;
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
   readonly gsi?: {
@@ -36,6 +38,7 @@ export class DynamoDBTable extends Construct {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       pointInTimeRecovery: true,
+      removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
     });
 
     this.identifiers = {

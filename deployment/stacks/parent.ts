@@ -54,7 +54,7 @@ export class ParentStack extends Stack {
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
-    if (!isDev) {
+    if (!isDev) { // resources that must be in AWS account
       new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
     }
 
