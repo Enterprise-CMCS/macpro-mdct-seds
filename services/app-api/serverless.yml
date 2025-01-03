@@ -616,6 +616,9 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    ApiGatewayLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Retain
 
   Outputs:
     ApiGatewayRestApiName:
