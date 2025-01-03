@@ -124,14 +124,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ],
     }
   );
+  cloudWatchRole.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
-  new apigateway.CfnAccount(
+  const apiGatewayRestApiAccount = new apigateway.CfnAccount(
     scope,
     "ApiGatewayRestApiAccount",
     {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     }
   );
+  apiGatewayRestApiAccount.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
