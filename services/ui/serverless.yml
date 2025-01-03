@@ -170,6 +170,10 @@ resources:
         Bucket: !Ref S3Bucket
     LoggingBucket:
       Type: AWS::S3::Bucket
+<<<<<<< HEAD
+=======
+      DeletionPolicy: Retain
+>>>>>>> d28e9bce (CMDCT-4223 making sure important logs are retained (#15020))
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-cloudfront-logs-${AWS::AccountId}
         PublicAccessBlockConfiguration:
@@ -186,7 +190,6 @@ resources:
         OwnershipControls:
           Rules:
             - ObjectOwnership: BucketOwnerPreferred
-      DeletionPolicy: Delete
     LoggingBucketPolicy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
