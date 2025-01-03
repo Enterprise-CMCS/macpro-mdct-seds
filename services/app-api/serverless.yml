@@ -95,9 +95,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   tracing:
     apiGateway: true
   logs:
@@ -646,6 +646,9 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    ApiGatewayLogGroup:
+      Type: AWS::Logs::LogGroup
+      DeletionPolicy: Retain
 
   Outputs:
     ApiGatewayRestApiName:

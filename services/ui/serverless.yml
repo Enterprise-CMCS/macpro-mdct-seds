@@ -11,9 +11,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "seds"
@@ -168,7 +168,8 @@ resources:
                   aws:SecureTransport: false
         Bucket: !Ref S3Bucket
     LoggingBucket:
-      Type: "AWS::S3::Bucket"
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-cloudfront-logs-${AWS::AccountId}
         PublicAccessBlockConfiguration:
@@ -183,7 +184,6 @@ resources:
         OwnershipControls:
           Rules:
             - ObjectOwnership: BucketOwnerPreferred
-      DeletionPolicy: Delete
     LoggingBucketPolicy:
       Type: "AWS::S3::BucketPolicy"
       Properties:

@@ -10,9 +10,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "seds"
@@ -32,6 +32,7 @@ resources:
   Resources:
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
       Properties:
         BucketName: !Sub ${AWS::AccountId}-${self:custom.stage}-waflogs
         BucketEncryption:
