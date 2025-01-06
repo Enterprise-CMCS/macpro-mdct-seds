@@ -91,6 +91,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
     }
   );
+  securityHeadersPolicy.applyRemovalPolicy(
+    isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
+  )
 
   const distribution = new cloudfront.Distribution(
     scope,
@@ -129,6 +132,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       ],
     }
   );
+  distribution.applyRemovalPolicy(
+    isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
+  )
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
