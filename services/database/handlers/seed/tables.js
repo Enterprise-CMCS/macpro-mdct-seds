@@ -105,9 +105,5 @@ module.exports = {
       filenames: ["../../data/initial_data_load/states.json"],
       tableNameSuffix: "states",
     },
-    {
-      filenames: ["../../data/initial_data_load/status.json"],
-      tableNameSuffix: "status",
-    },
   ],
 };

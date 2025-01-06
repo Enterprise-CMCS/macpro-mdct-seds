@@ -18,13 +18,11 @@ export const statusData = {
   program_code: "PA",
   state_form: "PA-2021-1-21PW",
   state_id: "PA",
-  not_applicable: false,
   created_date: "2021-03-02T12:46:35.838Z",
   form_name: "Number of Pregnant Women Served",
   last_modified: "2021-04-09T12:46:35.838Z",
   quarter: 1,
   status_id: 1,
-  status: "In Progress"
 };
 
 export const answers = [

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
 import { saveSummaryNotes } from "../../store/actions/statusData";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus, UserRole } from "../../utility-functions/types";
 
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
@@ -35,10 +36,9 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
     setSummaryNotes(e.target.value);
   };
   if (
-    userRole === "admin" ||
-    userRole === "business" ||
-    statusData.status_id === 4 ||
-    statusData.status_id === 5
+    userRole === UserRole.Admin ||
+    userRole === UserRole.Business ||
+    statusData.status_id === FormStatus.FinalCertified
   ) {
     disabledNotes = true;
   }

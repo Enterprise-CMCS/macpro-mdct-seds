@@ -7,6 +7,7 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
+import { FormStatusDisplay } from "../../utility-functions/types";
 import "./Quarterly.scss";
 
 const Quarterly = () => {
@@ -85,7 +86,9 @@ const Quarterly = () => {
                         <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div className="form-status-pill">{form.status}</div>
+                        <div className="form-status-pill">
+                          {FormStatusDisplay[form.status_id]}
+                        </div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
                       <td style={{ textAlign: "center" }}>

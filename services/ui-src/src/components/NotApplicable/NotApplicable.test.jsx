@@ -6,12 +6,13 @@ import NotApplicable from "./NotApplicable";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../utility-functions/types";
 
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
 }));
 
-const renderComponent = (user, statusId, notApplicable) => {
+const renderComponent = (user, status_id) => {
   getUserInfo.mockResolvedValue({ Items: [user] });
   const initialStore = {
     ...fullStoreMock,
@@ -19,8 +20,7 @@ const renderComponent = (user, statusId, notApplicable) => {
       ...fullStoreMock.currentForm,
       statusData: {
         ...fullStoreMock.currentForm.statusData,
-        not_applicable: notApplicable,
-        status_id: statusId,
+        status_id,
       },
     }
   };
@@ -39,37 +39,43 @@ const adminUser = { role: "admin" };
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
-    renderComponent(stateUser, 1, false);
+    renderComponent(stateUser, FormStatus.NotStarted);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeEnabled();
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeEnabled();
+    const noOption = screen.getByRole("radio", { name: "Not Applicable" });
+    expect(noOption).toBeEnabled();
   });
 
   it("should be disabled for admin users", async () => {
-    renderComponent(adminUser, 1, false);
+    renderComponent(adminUser, FormStatus.NotStarted);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeDisabled();
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeDisabled();
+    const noOption = screen.getByRole("radio", { name: "Not Applicable" });
+    expect(noOption).toBeDisabled();
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
-    renderComponent(stateUser, 3, false);
+    renderComponent(stateUser, FormStatus.ProvisionalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeDisabled();
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeDisabled();
+    const noOption = screen.getByRole("radio", { name: "Not Applicable" });
+    expect(noOption).toBeDisabled();
   });
 
-  it("should initialize to Active when applicable", async () => {
-    renderComponent(stateUser, 1, false);
+  it("should initialize to Yes when appropriate", async () => {
+    renderComponent(stateUser, FormStatus.NotStarted);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input.value).toBe("0");
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeChecked();
   });
 
   it("should initialize to Not Applicable when appropriate", async () => {
-    renderComponent(stateUser, 1, true);
+    renderComponent(stateUser, FormStatus.NotApplicable);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input.value).toBe("1");
+    const noOption = screen.getByRole("radio", { name: "Not Applicable" });
+    expect(noOption).toBeChecked();
   });
 });

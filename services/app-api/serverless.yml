@@ -63,9 +63,6 @@ custom:
   StateTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StateTableStreamArn, cf:database-master.StateTableStreamArn}
   StatesTableName: ${env:STATES_TABLE_NAME, param:StatesTableName}
   StatesTableArn: ${env:STATES_TABLE_ARN, param:StatesTableArn}
-  StatusTableName: ${env:STATUS_TABLE_NAME, param:StatusTableName}
-  StatusTableArn: ${env:STATUS_TABLE_ARN, param:StatusTableArn}
-  StatusTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StatusTableStreamArn, cf:database-master.StatusTableStreamArn}
   AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, param:AuthUserTableName}
   AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, param:AuthUserTableArn}
   AuthUserTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN,param:AuthUserTableStreamArn, cf:database-master.AuthUserTableStreamArn}
@@ -127,8 +124,6 @@ provider:
     StateFormsTableArn: ${env:STATE_FORMS_TABLE_ARN, self:custom.StateFormsTableArn}
     StatesTableName: ${env:STATES_TABLE_NAME, self:custom.StatesTableName}
     StatesTableArn: ${env:STATES_TABLE_ARN, self:custom.StatesTableArn}
-    StatusTableName: ${env:STATUS_TABLE_NAME, self:custom.StatusTableName}
-    StatusTableArn: ${env:STATUS_TABLE_ARN, self:custom.StatusTableArn}
     AuthUserTableName: ${env:AUTH_USER_TABLE_NAME, self:custom.AuthUserTableName}
     AuthUserTableArn: ${env:AUTH_USER_TABLE_ARN, self:custom.AuthUserTableArn}
     AuthUserRolesTableName: ${env:AUTH_USER_ROLES_TABLE_NAME, self:custom.AuthUserRolesTableName}
@@ -173,12 +168,6 @@ functions:
       - stream:
           type: dynamodb
           arn: ${self:custom.StateTableStreamArn}
-          startingPosition: TRIM_HORIZON
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.StatusTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
@@ -253,12 +242,6 @@ functions:
       - stream:
           type: dynamodb
           arn: ${self:custom.StateTableStreamArn}
-          startingPosition: TRIM_HORIZON
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.StatusTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
@@ -565,7 +548,6 @@ resources:
                     - ${self:custom.FormsTableArn}
                     - ${self:custom.StateFormsTableArn}
                     - ${self:custom.StatesTableArn}
-                    - ${self:custom.StatusTableArn}
                     - ${self:custom.AuthUserTableArn}
                     - ${self:custom.AuthUserRolesTableArn}
                     - ${self:custom.AuthUserStatesTableArn}
@@ -584,19 +566,10 @@ resources:
                     - ${self:custom.FormsTableStreamArn}
                     - ${self:custom.StateTableStreamArn}
                     - ${self:custom.StateFormsTableStreamArn}
-                    - ${self:custom.StatusTableStreamArn}
                     - ${self:custom.AuthUserTableStreamArn}
                     - ${self:custom.AuthUserRolesTableStreamArn}
                     - ${self:custom.AuthUserStatesTableStreamArn}
                     - ${self:custom.FormTemplatesTableStreamArn}
-                    #- ${self:custom.AuthUserTableArn}
-                    #- ${self:custom.StatusTableArn}
-                    #- ${self:custom.AuthUserRolesTableArn}
-                    #- ${self:custom.StatesTableArn}
-                    #- ${self:custom.FormsTableArn}
-                    #- ${self:custom.FormQuestionsTableArn}
-                    #- ${self:custom.FormAnswersTableArn}
-                    #- ${self:custom.AuthUserStatesTableArn}
                 - Effect: "Allow"
                   Action:
                     - dynamodb:Query

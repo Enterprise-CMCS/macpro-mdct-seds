@@ -1,4 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib";
+import { FormStatus } from "../../types";
 
 export async function getUsersEmailByRole(role) {
   const params = {
@@ -29,23 +30,24 @@ export async function getUncertifiedStates(year, quarter) {
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status": "In Progress",
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+      "#theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
+  const uncertifiedForms = (result.Items ?? []).filter(form =>
+    [FormStatus.NotStarted, FormStatus.InProgress].includes(form.status_id)
+  );
 
-  if (result.Count === 0) {
+  if (uncertifiedForms.length === 0) {
     return [
       {
         message:
@@ -54,7 +56,7 @@ export async function getUncertifiedStates(year, quarter) {
     ];
   }
 
-  return result.Items.map((stateInfo) => stateInfo.state_id).filter(
+  return uncertifiedForms.map((stateInfo) => stateInfo.state_id).filter(
     (stateId, i, stateIds) => i === stateIds.indexOf(stateId)
   );
 }
@@ -68,23 +70,24 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
       process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status": "In Progress",
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+      "#theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
+  const uncertifiedForms = (result.Items ?? []).filter(form =>
+    [FormStatus.NotStarted, FormStatus.InProgress].includes(form.status_id)
+  );
 
-  if (result.Count === 0) {
+  if (uncertifiedForms.length === 0) {
     return [
       {
         message:
@@ -93,40 +96,23 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
     ];
   }
 
-  // Get list of states and forms (one per form)
-  const states = result.Items.map((stateInfo) => {
-    return { state: stateInfo.state_id, form: stateInfo.form };
-  }).filter((stateId, i, stateIds) => i === stateIds.indexOf(stateId));
-
-  // Reduce to one state with array of forms
-  let mergedObj = states.reduce((acc, obj) => {
-    if (acc[obj.state]) {
-      acc[obj.state].form.push(obj.form);
-    } else {
-      acc[obj.state] = { state: obj.state, form: [obj.form] };
+  let formsGroupedByState = {};
+  for (let formInfo of uncertifiedForms) {
+    const { state_id, form } = formInfo;
+    const group = formsGroupedByState[state_id];
+    if (group) {
+      group.push(form)
     }
-    return acc;
-  }, {});
-
-  // Build output in correct format
-  let output = [];
-  for (let prop in mergedObj) {
-    output.push(mergedObj[prop]);
+    else {
+      formsGroupedByState[state_id] = [form];
+    }
   }
 
-  // Sort alphabetically by state
-  output.sort((a, b) => {
-    let stateA = a.state.toUpperCase();
-    let stateB = b.state.toUpperCase();
-    return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
-  });
+  for (let group of Object.values(formsGroupedByState)) {
+    group.sort();
+  }
 
-  // Sort forms alphabetically
-  output.map((a) => {
-    return a.form.sort();
-  });
-
-  return output;
+  return formsGroupedByState;
 }
 
 export async function getQuestionsByYear(specifiedYear) {

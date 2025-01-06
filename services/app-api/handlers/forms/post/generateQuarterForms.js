@@ -9,6 +9,7 @@ import {
   getAnswersSet,
 } from "../../shared/sharedFunctions";
 import { authorizeAdmin } from "../../../auth/authConditions";
+import { FormStatus } from "../../../types";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -178,16 +179,14 @@ const generateQuarterForms = async (event) => {
               status_modified_by: "seed",
               created_by: "seed",
               validation_percent: "0.03",
-              status_id: 2,
+              status_id: FormStatus.NotStarted,
               form: allFormDescriptions[form].form,
               program_code: "All",
               state_id: allStates[state].state_id,
-              not_applicable: false,
               created_date: new Date().toISOString(),
               form_name: allFormDescriptions[form].form_name,
               last_modified: new Date().toISOString(),
               quarter: specifiedQuarter,
-              status: "In Progress",
             },
           },
         });

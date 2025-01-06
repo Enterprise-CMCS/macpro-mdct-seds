@@ -204,21 +204,6 @@ resources:
           - AttributeName: state_id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    StatusTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.stage}-status
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
-        AttributeDefinitions:
-          - AttributeName: status
-            AttributeType: S
-        KeySchema:
-          - AttributeName: status
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     AuthUserTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -308,12 +293,6 @@ resources:
       Value: !GetAtt FormTemplatesTable.Arn
     FormTemplatesTableStreamArn:
       Value: !GetAtt FormTemplatesTable.StreamArn
-    StatusTableName:
-      Value: !Ref StatusTable
-    StatusTableArn:
-      Value: !GetAtt StatusTable.Arn
-    StatusTableStreamArn:
-      Value: !GetAtt StatusTable.StreamArn
     AuthUserTableName:
       Value: !Ref AuthUserTable
     AuthUserTableArn:

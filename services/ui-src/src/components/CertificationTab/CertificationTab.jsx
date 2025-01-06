@@ -11,31 +11,29 @@ import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
+import { FormStatus, FormStatusDisplay } from "../../utility-functions/types";
 import { obtainUserByEmail } from "../../libs/api";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
-  status,
-  formStatus,
-  notApplicable,
+  status_id,
   lastModified,
   lastModifiedBy,
-  isFinal,
-  isProvisional,
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
   uncertify,
   saveForm,
-  disabled
 }) => {
-  const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
-    isFinal === true ? true : isProvisional
-  );
+  const isFinal = status_id === FormStatus.FinalCertified;
+  const isProvisional = status_id === FormStatus.ProvisionalCertified;
+
+  const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(isFinal || isProvisional);
   const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
   const [
     viewProvisionalAndFinalCertify,
     setViewProvisionalAndFinalCertify
   ] = useState(true);
+
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
       const userRole = await currentUserRole();
@@ -161,7 +159,7 @@ const CertificationTab = ({
         {isFinal || isProvisional ? (
           <div data-testid="statusText">
             <p>
-              This report was updated to <b>{status}</b> on{" "}
+              This report was updated to <b>{FormStatusDisplay[status_id]}</b> on{" "}
               <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
             </p>
           </div>
@@ -207,23 +205,16 @@ const CertificationTab = ({
 CertificationTab.propTypes = {
   certifyAndSubmitFinal: PropTypes.func.isRequired,
   certifyAndSubmitProvisional: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired,
-  notApplicable: PropTypes.bool.isRequired,
+  status_id: PropTypes.number.isRequired,
   lastModified: PropTypes.string.isRequired,
   lastModifiedBy: PropTypes.string,
-  isFinal: PropTypes.bool.isRequired,
-  isProvisional: PropTypes.bool.isRequired,
   saveForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
-  formStatus: state.currentForm.statusData,
-  status: state.currentForm.statusData.status,
-  notApplicable: state.currentForm.statusData.not_applicable,
+  status_id: state.currentForm.statusData.status_id,
   lastModified: state.currentForm.statusData.status_date,
   lastModifiedBy: state.currentForm.statusData.status_modified_by,
-  isFinal: state.currentForm.statusData.status_id === 4,
-  isProvisional: state.currentForm.statusData.status_id === 3
 });
 
 const mapDispatch = {
