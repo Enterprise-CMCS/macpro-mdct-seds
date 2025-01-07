@@ -3,11 +3,11 @@ import "source-map-support/register";
 import {
   aws_apigateway as apigateway,
   aws_iam as iam,
-App,
-   DefaultStackSynthesizer,
-   Stack,
-   StackProps,
-   Tags,
+  App,
+  DefaultStackSynthesizer,
+  Stack,
+  StackProps,
+  Tags,
 } from "aws-cdk-lib";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
