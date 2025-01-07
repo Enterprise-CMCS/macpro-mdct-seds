@@ -33,7 +33,7 @@ export const determineDeploymentConfig = async (stage: string) => {
   return config;
 };
 
-const loadDefaultSecret = async (project: string) => {
+export const loadDefaultSecret = async (project: string) => {
   return JSON.parse((await getSecret(`${project}-default`))!);
 };
 
