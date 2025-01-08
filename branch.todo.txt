@@ -6,10 +6,7 @@ search exclude (but go ahead and double check me)
 
 .env.tpl,README.md,nightwatch/*,cognito-auth.js,obtainFormTemplate.js,updateCreateFormTemplate.js,dataConnectSource.js, postKafkaData.js,businessUsers.js,stateUsers.js,uncertified.js,generateEnrollmentTotals.js,updateStateForms.js,getUserById.js,deleteUser.js,serviceWorker.js,_buttons.scss,initial_data_load/*.json,EditUser.jsx,EditUser.test.jsx,Example.jsx,FormFooter.test.jsx,FormPage.jsx,FormTemplates.jsx,GenerateForms.jsx,PrintPDF.scss,Quarterly.scss,StatusButton.jsx,StatusButton.test.jsx,provider-mocks/*.js,to-delete/*.json,schema_21E.json,schema_forms.json,SEDS Issue 2025-01-02.md
 
-TODO: automatically fix the seed data, because goddamn there's a lot
-
-TODO: make sure every form in every environment has a status_id. I removed some weird defaults in component props, but they may have been doing something.
-
 TODO: Go and actually remove the table. Probably CDK will have happened by the time you get this in, making this a non-issue.
 
 TODO: Make sure that all downstream consumers are aligned with the removal of `form.status` and `form.not_applicable`, and understand the new, official meanings of `status_id`. There are two downstream consumers: CARTS and... someone else. Brendan knows.
+  Note: CARTS doesn't care about these fields.
