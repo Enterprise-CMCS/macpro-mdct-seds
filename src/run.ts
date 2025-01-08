@@ -6,6 +6,7 @@ import readline from "node:readline";
 import {
   CloudFormationClient,
   DeleteStackCommand,
+  DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import { writeUiEnvFile } from "./write-ui-env-file.js";
@@ -206,12 +207,35 @@ async function prepare_services(runner: LabeledProcessRunner) {
   }
 }
 
+async function deploy_prerequisites() {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+  const deployPrequisitesCmd = ["cdk", "deploy", "--app", "\"npx tsx deployment/prerequisites.ts\""];
+  await runner.run_command_and_output("CDK prerequisite deploy", deployPrequisitesCmd, ".");
+}
+
+const stackExists = async (stackName: string): Promise<boolean> => {
+  const client = new CloudFormationClient({ region });
+  try {
+    await client.send(
+      new DescribeStacksCommand({ StackName: stackName })
+    );
+    return true;
+  } catch (error: any) {
+    return false;
+  }
+};
+
 async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
-  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  if (await stackExists("seds-prerequisites")) {
+    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
+    await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  } else {
+    console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
+  }
 }
 
 const waitForStackDeleteComplete = async (
@@ -281,12 +305,10 @@ yargs(process.argv.slice(2))
     run_local
   )
   .command(
-    "test",
-    "run all tests",
+    "deploy-prerequisites",
+    "deploy the app's AWS account prerequisites with cdk to the cloud",
     () => {},
-    () => {
-      console.log("Testing 1. 2. 3.");
-    }
+    deploy_prerequisites
   )
   .command(
     "deploy",

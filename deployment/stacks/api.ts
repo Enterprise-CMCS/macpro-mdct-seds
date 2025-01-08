@@ -110,31 +110,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
-  const cloudWatchRole = new iam.Role(
-    scope,
-    "ApiGatewayRestApiCloudWatchRole",
-    {
-      assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
-      permissionsBoundary: props.iamPermissionsBoundary,
-      path: props.iamPath,
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AmazonAPIGatewayPushToCloudWatchLogs"
-        ),
-      ],
-    }
-  );
-  cloudWatchRole.applyRemovalPolicy(RemovalPolicy.RETAIN);
-
-  const apiGatewayRestApiAccount = new apigateway.CfnAccount(
-    scope,
-    "ApiGatewayRestApiAccount",
-    {
-      cloudWatchRoleArn: cloudWatchRole.roleArn,
-    }
-  );
-  apiGatewayRestApiAccount.applyRemovalPolicy(RemovalPolicy.RETAIN);
-
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
@@ -480,8 +455,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     webAclArn: waf.webAcl.attrArn,
   });
 
-
-  if (!isDev) { // resources that must be in AWS account
+  if (!isDev) {
     const logBucket = new s3.Bucket(scope, "WafLogBucket", {
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,

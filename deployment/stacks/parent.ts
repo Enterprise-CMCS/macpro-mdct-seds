@@ -7,7 +7,6 @@ import {
   Stack,
   StackProps,
 } from "aws-cdk-lib";
-import { CloudWatchLogsResourcePolicy } from "../constructs/cloudwatch-logs-resource-policy";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -53,10 +52,6 @@ export class ParentStack extends Stack {
 
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
-
-    if (!isDev) { // resources that must be in AWS account
-      new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
-    }
 
     const { customResourceRole } = createCustomResourceRole({ ...commonProps });
 
