@@ -179,7 +179,7 @@ const generateQuarterForms = async (event) => {
               status_modified_by: "seed",
               created_by: "seed",
               validation_percent: "0.03",
-              status_id: FormStatus.NotStarted,
+              status_id: FormStatus.InProgress,
               form: allFormDescriptions[form].form,
               program_code: "All",
               state_id: allStates[state].state_id,

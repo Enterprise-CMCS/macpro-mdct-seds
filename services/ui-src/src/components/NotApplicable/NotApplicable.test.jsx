@@ -39,7 +39,7 @@ const adminUser = { role: "admin" };
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
-    renderComponent(stateUser, FormStatus.NotStarted);
+    renderComponent(stateUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeEnabled();
@@ -48,7 +48,7 @@ describe("NotApplicable", () => {
   });
 
   it("should be disabled for admin users", async () => {
-    renderComponent(adminUser, FormStatus.NotStarted);
+    renderComponent(adminUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeDisabled();
@@ -66,7 +66,7 @@ describe("NotApplicable", () => {
   });
 
   it("should initialize to Yes when appropriate", async () => {
-    renderComponent(stateUser, FormStatus.NotStarted);
+    renderComponent(stateUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeChecked();

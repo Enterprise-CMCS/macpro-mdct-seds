@@ -39,7 +39,7 @@ const NotApplicable = ({
 
   const handleApplicableChange = async (evt) => {
     const newStatus = evt.target.value === "Yes"
-      ? FormStatus.NotStarted // Displays as "In Progress"
+      ? FormStatus.InProgress // Displays as "In Progress"
       : FormStatus.NotApplicable; // Displays as "Not Required"
     
     if (newStatus === FormStatus.NotApplicable) {

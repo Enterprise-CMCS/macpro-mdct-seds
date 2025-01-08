@@ -44,7 +44,7 @@ export async function getUncertifiedStates(year, quarter) {
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
   const uncertifiedForms = (result.Items ?? []).filter(form =>
-    [FormStatus.NotStarted, FormStatus.InProgress].includes(form.status_id)
+    form.status_id === FormStatus.InProgress
   );
 
   if (uncertifiedForms.length === 0) {
@@ -84,7 +84,7 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
   const uncertifiedForms = (result.Items ?? []).filter(form =>
-    [FormStatus.NotStarted, FormStatus.InProgress].includes(form.status_id)
+    form.status_id === FormStatus.InProgress
   );
 
   if (uncertifiedForms.length === 0) {
