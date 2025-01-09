@@ -2,6 +2,7 @@ import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
+import { getCloudFormationTemplatesForStage } from "./getCloudFormationTemplatesForStage.js";
 import { execSync } from "child_process";
 
 // load .env
@@ -184,6 +185,57 @@ async function destroy_stage(options: {
       Key: "SERVICE",
       Value: `${options.service}`,
     });
+  }
+
+  const templates = await getCloudFormationTemplatesForStage(
+    `${process.env.REGION_A}`,
+    options.stage,
+    filters
+  );
+
+  const resourcesToCheck = [
+    {
+      templateKey: `database-${options.stage}`,
+      resourceKey: "FormAnswersTable",
+    },
+    {
+      templateKey: `database-${options.stage}`,
+      resourceKey: "FormQuestionsTable",
+    },
+    {
+      templateKey: `database-${options.stage}`,
+      resourceKey: "FormTemplatesTable",
+    },
+    { templateKey: `database-${options.stage}`, resourceKey: "FormsTable" },
+    {
+      templateKey: `database-${options.stage}`,
+      resourceKey: "StateFormsTable",
+    },
+    { templateKey: `database-${options.stage}`, resourceKey: "StatesTable" },
+    { templateKey: `database-${options.stage}`, resourceKey: "AuthUserTable" },
+    {
+      templateKey: `ui-${options.stage}`,
+      resourceKey: "CloudFrontDistribution",
+    },
+    { templateKey: `ui-auth-${options.stage}`, resourceKey: "CognitoUserPool" },
+  ];
+
+  const notRetained = resourcesToCheck.filter(
+    ({ templateKey, resourceKey }) => {
+      const policy =
+        templates?.[templateKey]?.Resources?.[resourceKey]?.DeletionPolicy;
+      return policy !== "Retain";
+    }
+  );
+
+  if (notRetained.length > 0) {
+    console.log(
+      "Will not destroy the stage because some important resources are not yet set to be retained:"
+    );
+    notRetained.forEach(({ templateKey, resourceKey }) =>
+      console.log(` - ${templateKey}/${resourceKey}`)
+    );
+    return;
   }
 
   await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
