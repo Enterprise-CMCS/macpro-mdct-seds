@@ -6,7 +6,6 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-dynamodb
   - serverless-stack-termination-protection
-  - serverless-iam-helper
   - serverless-plugin-scripts
   - serverless-offline
 
