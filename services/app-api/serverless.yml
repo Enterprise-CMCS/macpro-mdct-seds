@@ -12,6 +12,7 @@ plugins:
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
+  - serverless-iam-helper
   - serverless-offline-ssm
   - "@enterprise-cmcs/serverless-waf-plugin"
 
