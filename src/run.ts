@@ -254,8 +254,10 @@ async function destroy_stage(options: {
   );
 
   if (
-    ["master", "val", "production"].includes(options.stage) &&
-    notRetained.length > 0
+    ["master", "val", "production"].includes(options.stage) {
+    # all the code that gets notRetained
+      if (notRetained.length > 0) {
+       # then the code to bail
   ) {
     console.log(
       "Will not destroy the stage because its an important stage and some important resources are not yet set to be retained:"
