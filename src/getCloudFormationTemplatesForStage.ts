@@ -18,7 +18,7 @@ async function getAllStacksForRegion(region: string) {
   return stacks;
 }
 
-async function getAllStacksForStage(
+export async function getAllStacksForStage(
   region: string,
   stage: string,
   addFilters?: Tag[]

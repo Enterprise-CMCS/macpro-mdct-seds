@@ -2,7 +2,10 @@ import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
-import { getCloudFormationTemplatesForStage } from "./getCloudFormationTemplatesForStage.js";
+import {
+  getAllStacksForStage,
+  getCloudFormationTemplatesForStage,
+} from "./getCloudFormationTemplatesForStage.js";
 import { execSync } from "child_process";
 
 // load .env
@@ -185,6 +188,28 @@ async function destroy_stage(options: {
       Key: "SERVICE",
       Value: `${options.service}`,
     });
+  }
+
+  const stacks = await getAllStacksForStage(
+    `${process.env.REGION_A}`,
+    options.stage,
+    filters
+  );
+
+  const protectedStacks = stacks
+    .filter((i) => i.EnableTerminationProtection)
+    .map((i) => i.StackName);
+
+  if (protectedStacks.length > 0) {
+    console.log(
+      `We cannot proceed with the destroy because the following stacks have termination protection enabled:\n${protectedStacks.join(
+        "\n"
+      )}`
+    );
+  } else {
+    console.log(
+      "No stacks have termination protection enabled. Proceeding with the destroy."
+    );
   }
 
   const templates = await getCloudFormationTemplatesForStage(
