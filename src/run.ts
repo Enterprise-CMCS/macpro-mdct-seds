@@ -253,9 +253,12 @@ async function destroy_stage(options: {
     }
   );
 
-  if (notRetained.length > 0) {
+  if (
+    ["master", "val", "production"].includes(options.stage) &&
+    notRetained.length > 0
+  ) {
     console.log(
-      "Will not destroy the stage because some important resources are not yet set to be retained:"
+      "Will not destroy the stage because its an important stage and some important resources are not yet set to be retained:"
     );
     notRetained.forEach(({ templateKey, resourceKey }) =>
       console.log(` - ${templateKey}/${resourceKey}`)
