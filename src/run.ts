@@ -170,6 +170,44 @@ async function deploy(options: { stage: string }) {
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
 }
 
+async function getNotRetainedResources(
+  stage: string,
+  filters: { Key: string; Value: string }[] | undefined
+) {
+  const templates = await getCloudFormationTemplatesForStage(
+    `${process.env.REGION_A}`,
+    stage,
+    filters
+  );
+
+  const resourcesToCheck = {
+    [`database-${stage}`]: [
+      "FormAnswersTable",
+      "FormQuestionsTable",
+      "FormTemplatesTable",
+      "FormsTable",
+      "StateFormsTable",
+      "StatesTable",
+      "AuthUserTable",
+    ],
+    [`ui-${stage}`]: ["CloudFrontDistribution"],
+    [`ui-auth-${stage}`]: ["CognitoUserPool"],
+  };
+
+  const notRetained: { templateKey: string; resourceKey: string }[] = [];
+  for (const [templateKey, resourceKeys] of Object.entries(resourcesToCheck)) {
+    resourceKeys.forEach((resourceKey) => {
+      const policy =
+        templates?.[templateKey]?.Resources?.[resourceKey]?.DeletionPolicy;
+      if (policy !== "Retain") {
+        notRetained.push({ templateKey, resourceKey });
+      }
+    });
+  }
+
+  return notRetained;
+}
+
 async function destroy_stage(options: {
   stage: string;
   service: string | undefined;
@@ -206,61 +244,21 @@ async function destroy_stage(options: {
         "\n"
       )}`
     );
+    return;
   } else {
     console.log(
       "No stacks have termination protection enabled. Proceeding with the destroy."
     );
   }
 
-  const templates = await getCloudFormationTemplatesForStage(
-    `${process.env.REGION_A}`,
-    options.stage,
-    filters
-  );
+  let notRetained: { templateKey: string; resourceKey: string }[] = [];
+  if (["master", "val", "production"].includes(options.stage)) {
+    notRetained = await getNotRetainedResources(options.stage, filters);
+  }
 
-  const resourcesToCheck = [
-    {
-      templateKey: `database-${options.stage}`,
-      resourceKey: "FormAnswersTable",
-    },
-    {
-      templateKey: `database-${options.stage}`,
-      resourceKey: "FormQuestionsTable",
-    },
-    {
-      templateKey: `database-${options.stage}`,
-      resourceKey: "FormTemplatesTable",
-    },
-    { templateKey: `database-${options.stage}`, resourceKey: "FormsTable" },
-    {
-      templateKey: `database-${options.stage}`,
-      resourceKey: "StateFormsTable",
-    },
-    { templateKey: `database-${options.stage}`, resourceKey: "StatesTable" },
-    { templateKey: `database-${options.stage}`, resourceKey: "AuthUserTable" },
-    {
-      templateKey: `ui-${options.stage}`,
-      resourceKey: "CloudFrontDistribution",
-    },
-    { templateKey: `ui-auth-${options.stage}`, resourceKey: "CognitoUserPool" },
-  ];
-
-  const notRetained = resourcesToCheck.filter(
-    ({ templateKey, resourceKey }) => {
-      const policy =
-        templates?.[templateKey]?.Resources?.[resourceKey]?.DeletionPolicy;
-      return policy !== "Retain";
-    }
-  );
-
-  if (
-    ["master", "val", "production"].includes(options.stage) {
-    # all the code that gets notRetained
-      if (notRetained.length > 0) {
-       # then the code to bail
-  ) {
+  if (notRetained.length > 0) {
     console.log(
-      "Will not destroy the stage because its an important stage and some important resources are not yet set to be retained:"
+      "Will not destroy the stage because it's an important stage and some important resources are not yet set to be retained:"
     );
     notRetained.forEach(({ templateKey, resourceKey }) =>
       console.log(` - ${templateKey}/${resourceKey}`)
