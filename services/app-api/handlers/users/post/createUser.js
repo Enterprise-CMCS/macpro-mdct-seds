@@ -1,6 +1,5 @@
 import handler from "../../../libs/handler-lib";
 import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
 import { obtainUserByUsername } from "./obtainUserByUsername";
 import { getUserDetailsFromEvent } from "../../../libs/authorization";
 
