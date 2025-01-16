@@ -45,7 +45,12 @@ As this import occurs you'll have to provide the information you gathered just b
 WITH_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
-4. Run a full deploy by kicking off the full cdk deploy via Github Action. Permissions for individual developers are limited so you must use Github Action to do this part.
+4. Run a full deploy by kicking off the full cdk deploy.
+
+```bash
+./run deploy --stage <YOUR_BRANCH_NAME>
+```
+
 
 5. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application. :tada: Congrats, you did it!
 
