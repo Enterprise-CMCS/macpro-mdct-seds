@@ -18,16 +18,19 @@ export class WithImportsParentStack extends Stack {
 
     const {
       stage,
+      isDev,
     } = props;
 
     createDataComponents({
       scope: this,
       stage,
+      isDev,
     });
     createUiComponents({scope: this});
     createUiAuthComponents({
       scope: this,
       stage,
+      isDev,
     });
   }
 }

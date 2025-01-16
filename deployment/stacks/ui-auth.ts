@@ -9,6 +9,7 @@ import {
   Aws,
   Duration,
   custom_resources as cr,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -16,6 +17,7 @@ import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 interface CreateUiAuthComponentsProps {
   scope: Construct;
   stage: string;
+  isDev: boolean;
   oktaMetadataUrl: string;
   applicationEndpointUrl: string;
   restApiId: string;
@@ -29,6 +31,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const {
     scope,
     stage,
+    isDev,
     oktaMetadataUrl,
     applicationEndpointUrl,
     restApiId,
@@ -64,6 +67,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   });
 
   let supportedIdentityProviders:
