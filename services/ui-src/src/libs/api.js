@@ -49,14 +49,6 @@ export const createUser = async data => {
   return API.post("mdct-seds", `/users/add`, opts);
 };
 
-// *** create user - admin only
-export const adminCreateUser = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/users/admin-add`, opts);
-};
-
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
 export const getStateForms = async data => {

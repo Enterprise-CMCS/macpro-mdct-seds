@@ -10,14 +10,6 @@ export const main = handler(async (event, context) => {
   return await createUser(userData);
 });
 
-export const adminCreateUser = handler(async (event, context) => {
-  await authorizeAdmin(event);
-
-  const userData = JSON.parse(event.body);
-
-  return await createUser(userData);
-});
-
 const createUser = async (userData) => {
   if (!userData.username) {
     return `Please enter a username`;

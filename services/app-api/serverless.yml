@@ -336,15 +336,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-  adminCreateUser:
-    handler: handlers/users/post/createUser.adminCreateUser
-    role: LambdaApiRole
-    events:
-      - http:
-          path: users/admin-add
-          method: post
-          cors: true
-          authorizer: aws_iam
   deleteUser:
     handler: handlers/users/post/deleteUser.main
     role: LambdaApiRole
