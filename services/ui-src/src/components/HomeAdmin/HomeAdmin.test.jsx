@@ -42,7 +42,6 @@ describe("Tests for HomeAdmin.js", () => {
     const links = [...container.querySelectorAll("h1 ~ div ul li a")];
     expect(links.map(a => a.textContent)).toEqual([
       "View / Edit Users",
-      "Create User",
       "Add/Edit Form Templates",
       "Generate Quarterly Forms",
       "Generate Total Enrollment Counts",
