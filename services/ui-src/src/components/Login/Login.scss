@@ -1,5 +1,5 @@
 .login-button {
-  width: 25em !important;
+  width: 100% !important;
 }
 
 .action-button-row {
@@ -7,9 +7,16 @@
   padding-bottom: 3em !important;
 }
 
-.login-wrapper form {
-  margin: auto;
-  input {
-    margin-left: 39%;
+.login-wrapper {
+  width: 100%;
+  max-width: 424px;
+  form {
+    label {
+      width: 100%;
+      text-align: left;
+    }
+    .form-control {
+      width: 100%;
+    }
   }
 }

@@ -58,7 +58,7 @@ const PrintPDF = ({
   };
 
   return (
-    <div className="print-page">
+    <div className="print-page padding-x-5 ">
       {loading ? (
         <div className="loader">
           <div className="loader-content">
@@ -103,7 +103,7 @@ const PrintPDF = ({
 
           <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
 
-          <div id="TheDiv" className="tab-container-main padding-x-5 testClass">
+          <div id="TheDiv" className="tab-container-main testClass">
             {currentTabs.map((tab, tabIndex) => {
               // Filter out just the answer objects that belong in this tab
               const tabAnswers = answers.filter(

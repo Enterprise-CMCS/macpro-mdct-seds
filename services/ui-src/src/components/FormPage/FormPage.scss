@@ -11,3 +11,30 @@
 .action-button {
   margin: 0.6rem 0rem 2rem 5rem;
 }
+
+.fpl-input-container {
+  display: flex;
+  align-items: center;
+
+  input {
+    margin: 0;
+  }
+  button {
+    width: fit-content;
+    margin-left: 0.5rem;
+  }
+}
+
+.formfooter {
+  .grid-container {
+    max-width: none;
+    padding: 1rem 0 0 0;
+
+    .form-actions {
+      .grid-row {
+        text-align: right;
+        align-items: center;
+      }
+    }
+  }
+}

@@ -10,15 +10,6 @@ const requestOptions = async () => {
   return options;
 };
 
-/*************************** EXPORT API ***************************/
-// *** export to excel
-export const exportToExcel = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", "/export/export-to-excel", opts);
-};
-
 /*************************** USER API ***************************/
 // *** list all Users
 export const listUsers = async () => {
@@ -56,14 +47,6 @@ export const createUser = async data => {
   opts.body = data;
 
   return API.post("mdct-seds", `/users/add`, opts);
-};
-
-// *** create user - admin only
-export const adminCreateUser = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return API.post("mdct-seds", `/users/admin-add`, opts);
 };
 
 /*************************** FORMS API ***************************/

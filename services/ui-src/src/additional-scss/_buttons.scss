@@ -4,8 +4,9 @@
 
 .usa-button {
   background: $lochmara;
-  width: 140px;
-  box-shadow: 5px 10px 8px #888888;
+  width: fit-content;
+  border: none;
+  margin: 0;
 
   &.hollow {
     background-color: $white;
@@ -41,12 +42,6 @@
 .btn-secondary {
   background-color: $brand-quinary !important;
   color: $white;
-}
-
-.status-wrapper {
-  button {
-    cursor: default;
-  }
 }
 
 .status {

@@ -1,22 +1,6 @@
-import { exportToExcel } from "../libs/api";
 import { renderToString } from "react-dom/server";
-
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
-
-export const handleExcelExport = async (fileName, content) => {
-  let buffer, blob;
-
-  buffer = await exportToExcel(content);
-  // *** lambdas will convert buffer to Int32Array
-  // *** we are going to instantiate Uint8Array (binary) buffer
-  // *** to avoid having to care about MIME type of file we're saving
-  buffer = new Uint8Array(buffer.data).buffer;
-
-  // *** save file as blob
-  blob = new Blob([buffer]);
-  saveAs(blob, fileName);
-};
 
 /**
  * Converts the given data to CSV format, and saves it to file.
@@ -111,10 +95,6 @@ export const handleExport = async (
   let fileContents;
   let blob;
   switch (format) {
-    case "excel":
-      await handleExcelExport(fileName, content);
-      break;
-
     case "csv":
       fileContents = buildCsvContents(content);
       blob = new Blob([fileContents], {
@@ -124,6 +104,18 @@ export const handleExport = async (
       break;
 
     case "pdf":
+      // To fix the PDf export, delete this throw, and this comment.
+      // If the year is 2026 or later,
+      // and you are trying to test a version bump PR for jspdf or html2canvas,
+      // and there haven't been any support tickets about the broken PDF export,
+      // you have the opportunity to do something great instead:
+      // * Delete the PDF print button from Users.jsx
+      // * Delete all PDF-related code from this file
+      // * Uninstall jspdf and html2canvas
+      // * Delete the HTMLCanvas.getContext() override from setupTests.js
+      // * Tell no one
+      throw new Error("PDF export failed! Error code 10f2c");
+      // eslint-disable-next-line no-unreachable
       handlePdfExport(fileName, content, pdfContentType);
       break;
 
