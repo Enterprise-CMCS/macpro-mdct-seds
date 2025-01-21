@@ -176,6 +176,7 @@ const EditUser = ({ stateList }) => {
                     value={user.username}
                     type="text"
                     onChange={e => updateLocalUser(e, "username")}
+                    disabled={true}
                     name="username"
                     className="form-input"
                   />
