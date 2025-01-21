@@ -144,16 +144,17 @@ describe("Test EditUser.js", () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const table = screen.getByTestId("table");
-    const usernameInput = table.querySelector(".userName input");
-    userEvent.type(usernameInput, "TY");
+    const roleDropdown = screen.getByPlaceholderText("Select a Role");
+    userEvent.click(roleDropdown);
+    const adminOption = screen.getByText("Admin User");
+    userEvent.click(adminOption);
 
     const saveButton = screen.getByText("Update User", { selector: "button" });
     userEvent.click(saveButton);
 
     expect(updateUser).toHaveBeenCalledWith(
       expect.objectContaining({
-        username: "QWERTY"
+        role: "admin",
       })
     );
   });
