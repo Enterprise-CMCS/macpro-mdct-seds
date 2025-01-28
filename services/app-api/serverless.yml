@@ -1,19 +1,20 @@
 service: app-api
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 package:
   individually: true
 
+build:
+  esbuild:
+    packages: external
+
 plugins:
-  - serverless-s3-bucket-helper
-  - serverless-bundle
   - serverless-dotenv-plugin
   - serverless-offline
   - serverless-associate-waf
   - serverless-stack-termination-protection
   - serverless-iam-helper
-  - serverless-offline-ssm
   - "@enterprise-cmcs/serverless-waf-plugin"
 
 custom:
@@ -25,11 +26,6 @@ custom:
   wafExcludeRules:
     awsCommon:
       - "SizeRestrictions_BODY"
-  iamPath: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-  iamPermissionsBoundaryPolicy: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
-  serverless-offline-ssm:
-    stages:
-      - local
   dotenv:
     path: ../../.env
   serverlessTerminationProtection:
@@ -95,23 +91,18 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   tracing:
     apiGateway: true
   logs:
     restApi: true
   iam:
     role:
-      # Even though we are creating our own IAM role that is used in each lambda function below
-      # These values are used by the serverless-iam-helper and need to be set
-      path: ${self:custom.iamPath}
-      permissionsBoundary:
-        Fn::If:
-          - CreatePermissionsBoundary
-          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-          - !Ref AWS::NoValue
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
+
   environment: # Service wide environment variables
     AgeRangesTableName: ${env:AGE_RANGES_TABLE_NAME, self:custom.AgeRangesTableName}
     AgeRangesTableArn: ${env:AGE_RANGES_TABLE_ARN, self:custom.AgeRangesTableArn}
@@ -502,15 +493,9 @@ functions:
 
 resources:
   Description: ${self:service} ${self:custom.stage}
-  Conditions:
-    CreatePermissionsBoundary:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.iamPermissionsBoundaryPolicy}
   Resources:
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
-      Type: "AWS::IAM::Role"
+      Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
@@ -519,12 +504,6 @@ resources:
               Principal:
                 Service: "lambda.amazonaws.com"
               Action: "sts:AssumeRole"
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
         Policies:

@@ -1,8 +1,8 @@
-import * as cognitolib from "../libs/cognito-lib";
+import * as cognitolib from "../libs/cognito-lib.js";
 const userPoolId = process.env.userPoolId;
-const users = require("../libs/users.json");
+import users from "../libs/users.json" assert { type: "json" };
 
-async function myHandler(_event, _context, _callback) {
+export async function handler(_event, _context, _callback) {
   for (let user of users) {
     var poolData = {
       UserPoolId: userPoolId,
@@ -29,5 +29,3 @@ async function myHandler(_event, _context, _callback) {
     await cognitolib.updateUserAttributes(attributeData);
   }
 }
-
-exports.handler = myHandler;

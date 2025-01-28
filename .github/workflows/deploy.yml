@@ -13,6 +13,10 @@ permissions:
   id-token: write
   contents: read
   actions: read
+
+env:
+  SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

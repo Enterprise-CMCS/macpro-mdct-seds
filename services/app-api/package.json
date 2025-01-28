@@ -7,9 +7,7 @@
     "minimist": "^1.2.5"
   },
   "main": "handler.js",
-  "scripts": {
-    "test": "serverless-bundle test --unhandled-rejections=warn"
-  },
+  "scripts": {},
   "author": "",
   "license": "CC0-1.0",
   "repository": {
@@ -17,8 +15,7 @@
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
   "devDependencies": {
-    "serverless-associate-waf": "^1.2.1",
-    "serverless-offline-ssm": "^6.2.0"
+    "serverless-associate-waf": "^1.2.1"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.709.0",

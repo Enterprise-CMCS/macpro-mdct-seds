@@ -43,11 +43,6 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     ["serverless", "dynamodb", "install", "--stage=local"],
     "services/database"
   );
-  await runner.run_command_and_output(
-    "db svls doc",
-    ["serverless", "doctor"],
-    "services/database"
-  );
   runner.run_command_and_output(
     "db",
     [
@@ -91,11 +86,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/app-api"
   );
-  await runner.run_command_and_output(
-    "api svls doc",
-    ["serverless", "doctor"],
-    "services/app-api"
-  );
   runner.run_command_and_output(
     "api",
     [
@@ -122,11 +112,6 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
     "services/ui-src"
   );
   await runner.run_command_and_output(
-    "ui svls doc",
-    ["serverless", "doctor"],
-    "services/ui-src"
-  );
-  await runner.run_command_and_output(
     "ui conf",
     ["./env.sh", "local"],
     "services/ui-src"
@@ -139,9 +124,9 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
 async function run_all_locally() {
   const runner = new LabeledProcessRunner();
 
-  run_db_locally(runner);
-  run_api_locally(runner);
-  run_fe_locally(runner);
+  await run_db_locally(runner);
+  await run_api_locally(runner);
+  await run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
