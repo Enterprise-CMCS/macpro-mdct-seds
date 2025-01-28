@@ -7,6 +7,7 @@
     "minimist": "^1.2.5"
   },
   "main": "handler.js",
+  "type": "module",
   "scripts": {},
   "author": "",
   "license": "CC0-1.0",

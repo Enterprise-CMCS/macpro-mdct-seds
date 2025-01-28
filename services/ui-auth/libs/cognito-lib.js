@@ -1,6 +1,6 @@
-import { CognitoIdentityServiceProvider } from "@aws-sdk/client-cognito-identity-provider";
+import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 
-const COGNITO_CLIENT = new CognitoIdentityServiceProvider({
+const COGNITO_CLIENT = new CognitoIdentityProviderClient({
   apiVersion: "2016-04-19",
   region: "us-east-1",
 });

@@ -45,34 +45,20 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "db",
-    [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
-      "local",
-      "--lambdaPort",
-      "3003",
-    ],
-    "services/database"
-  );
-  runner.run_command_and_output(
-    "db",
     ["serverless", "dynamodb", "start", "--stage=local"],
     "services/database"
   );
-  await new Promise((res) => setTimeout(res, 10 * 1000)); // The above runners need to all finish, not all can be awaited, they block
+  await new Promise((res) => setTimeout(res, 8 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
-    "db",
+    "db-invoke",
     [
-      "aws",
-      "lambda",
+      "serverless",
       "invoke",
-      "/dev/null",
-      "--endpoint-url",
-      "http://localhost:3003",
-      "--function-name",
-      "database-local-seed",
+      "local",
+      "--function",
+      "seed",
+      "--stage",
+      "local"
     ],
     "services/database"
   );
@@ -124,9 +110,9 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
 async function run_all_locally() {
   const runner = new LabeledProcessRunner();
 
-  await run_db_locally(runner);
-  await run_api_locally(runner);
-  await run_fe_locally(runner);
+  run_db_locally(runner);
+  run_api_locally(runner);
+  run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
