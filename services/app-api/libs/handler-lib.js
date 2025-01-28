@@ -1,4 +1,4 @@
-import * as logger from "./debug-lib";
+import * as logger from "./debug-lib.js";
 
 export default function handler(lambda) {
   return async function (event, context) {

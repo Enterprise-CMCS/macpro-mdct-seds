@@ -1,6 +1,6 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeUserForState } from "../../../auth/authConditions";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeUserForState } from "../../../auth/authConditions.js";
 
 export const main = handler(async (event, context) => {
   // Get year and quarter from request
