@@ -203,6 +203,7 @@ jobs:
           working-directory: tests/cypress
           spec: integration/**/*
           browser: chrome
+          headed: true
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         if: failure()

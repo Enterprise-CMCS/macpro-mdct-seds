@@ -1,4 +1,4 @@
-[
+const users = [
   {
     "username": "adminuser@test.com",
     "attributes": [
@@ -100,3 +100,5 @@
     ]
   }
 ]
+
+export default users;
