@@ -24,7 +24,7 @@
     "@aws-sdk/client-dynamodb": "^3.709.0",
     "@aws-sdk/client-ses": "^3.709.0",
     "@aws-sdk/client-ssm": "^3.709.0",
-    "@aws-sdk/lib-dynamodb": "^3.709.0",
+    "@aws-sdk/lib-dynamodb": "^3.724.0",
     "aws-jwt-verify": "^4.0.1",
     "kafkajs": "^1.16.0",
     "uuid": "^7.0.3"
