@@ -1,4 +1,4 @@
-import KafkaSourceLib from "../../../libs/kafka-source-lib";
+import KafkaSourceLib from "../../../libs/kafka-source-lib.js";
 
 class PostKafkaData extends KafkaSourceLib {
   topicPrefix = "aws.mdct.seds.cdc";

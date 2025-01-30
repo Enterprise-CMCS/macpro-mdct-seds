@@ -1,12 +1,10 @@
 service: ui-auth
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
-  - serverless-s3-bucket-helper
   - serverless-stack-termination-protection
   - serverless-plugin-scripts
-  - serverless-bundle
   - serverless-iam-helper
   - "@enterprise-cmcs/serverless-waf-plugin"
 
@@ -14,19 +12,13 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   iam:
     role:
-      # Even though we are creating our own IAM role that is used in each lambda function below
-      # These values are used by the serverless-iam-helper and need to be set
-      path: ${self:custom.iamPath}
-      permissionsBoundary:
-        Fn::If:
-          - CreatePermissionsBoundary
-          - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-          - !Ref AWS::NoValue
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
 
 custom:
   project: "seds"
@@ -37,8 +29,6 @@ custom:
   wafExcludeRules:
     awsCommon:
       - "SizeRestrictions_BODY"
-  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed. You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -73,11 +63,6 @@ functions:
 
 resources:
   Conditions:
-    CreatePermissionsBoundary:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.iamPermissionsBoundaryPolicy}
     BackWithOkta:
       Fn::Not:
         - Fn::Equals:
@@ -85,7 +70,7 @@ resources:
             - ${self:custom.okta_metadata_url}
   Resources:
     LambdaApiRole: # Why isn't this with the function as an iamRoleStatements?  https://github.com/serverless/serverless/issues/6485
-      Type: "AWS::IAM::Role"
+      Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
@@ -94,12 +79,6 @@ resources:
               Principal:
                 Service: "lambda.amazonaws.com"
               Action: "sts:AssumeRole"
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
         Policies:
@@ -151,11 +130,11 @@ resources:
 
     # Associate the WAF Web ACL with the Cognito User Pool
     CognitoUserPoolWAFAssociation:
-      Type: 'AWS::WAFv2::WebACLAssociation'
+      Type: AWS::WAFv2::WebACLAssociation
       Properties:
         ResourceArn: !GetAtt CognitoUserPool.Arn
         WebACLArn: !GetAtt WafPluginAcl.Arn
-        
+
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -231,12 +210,6 @@ resources:
     CognitoAuthRole:
       Type: AWS::IAM::Role
       Properties:
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - !Sub arn:aws:iam::${AWS::AccountId}:policy${self:custom.iamPermissionsBoundaryPolicy}
-            - !Ref AWS::NoValue
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:

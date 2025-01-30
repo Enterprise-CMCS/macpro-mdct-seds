@@ -1060,6 +1060,11 @@ has-flag@^3.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
   integrity sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
 
+jwt-decode@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-4.0.0.tgz#2270352425fd413785b2faf11f6e755c5151bd4b"
+  integrity sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==
+
 kafkajs@^1.16.0:
   version "1.16.0"
   resolved "https://registry.yarnpkg.com/kafkajs/-/kafkajs-1.16.0.tgz#bfcc3ae2b69265ca8435b53a01ee9e8787b9fee5"
@@ -1093,11 +1098,6 @@ serverless-associate-waf@^1.2.1:
   integrity sha512-84FIjRsNJ4im+Q1rmlwc+7ofyZXB6D0AZr9tfbBCfh25/qwv/8Q9h78/aDrR7LZT5XAZzrM6qAbwHFyUD5wd+A==
   dependencies:
     chalk "^2.4.2"
-
-serverless-offline-ssm@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
-  integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
 strnum@^1.0.5:
   version "1.0.5"

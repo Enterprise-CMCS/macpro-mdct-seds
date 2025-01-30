@@ -1,19 +1,23 @@
 service: ui
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
-  - serverless-s3-bucket-helper
   - serverless-stack-termination-protection
   - "@enterprise-cmcs/serverless-waf-plugin"
+  - serverless-iam-helper
 
 provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
 
 custom:
   project: "seds"
@@ -33,8 +37,6 @@ custom:
   route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName, ""}
   cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
   cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
-  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   wafLoggingBucket: ${param:WaflogsUploadBucketArn, ""}
   vpnIpSetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpSetArn, ssm:/configuration/default/vpnIpSetArn, ""}
   vpnIpv6SetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpv6SetArn, ssm:/configuration/default/vpnIpv6SetArn, ""}
@@ -101,11 +103,6 @@ params:
 
 resources:
   Conditions:
-    CreatePermissionsBoundary:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.iamPermissionsBoundaryPolicy}
     CreateDnsRecord:
       Fn::And:
         - Fn::Not:
@@ -144,6 +141,13 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        VersioningConfiguration:
+          Status: Enabled
       DeletionPolicy: Delete
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -168,7 +172,7 @@ resources:
                   aws:SecureTransport: false
         Bucket: !Ref S3Bucket
     LoggingBucket:
-      Type: "AWS::S3::Bucket"
+      Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-cloudfront-logs-${AWS::AccountId}
         PublicAccessBlockConfiguration:
@@ -176,6 +180,8 @@ resources:
           BlockPublicPolicy: true
           IgnorePublicAcls: true
           RestrictPublicBuckets: true
+        VersioningConfiguration:
+          Status: Enabled
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
@@ -308,17 +314,6 @@ resources:
     DeliveryRole:
       Type: AWS::IAM::Role
       Properties:
-        Path: ${self:custom.iamPath}
-        PermissionsBoundary:
-          Fn::If:
-            - CreatePermissionsBoundary
-            - Fn::Join:
-                - ""
-                - - "arn:aws:iam::"
-                  - Ref: AWS::AccountId
-                  - ":policy"
-                  - '${self:custom.iamPermissionsBoundaryPolicy, ""}'
-            - Ref: AWS::NoValue
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:
