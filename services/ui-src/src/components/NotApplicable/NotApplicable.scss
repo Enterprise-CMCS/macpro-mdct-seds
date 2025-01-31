@@ -20,6 +20,10 @@
     border: 0.3rem solid #2491ff;
   }
 
+  #range-slider:disabled {
+    opacity: 0.3;
+  }
+
   p {
     display: inline-block;
     padding: 0 0.4rem;

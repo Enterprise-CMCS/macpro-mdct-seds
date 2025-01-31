@@ -66,12 +66,7 @@ describe("Test Users.js", () => {
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
     
     expect(screen.getByText(
-      "Add New User",
-      { selector: "button" }
-    )).toBeInTheDocument();
-
-    expect(screen.getByText(
-      "Excel",
+      "CSV",
       { selector: "button" }
     )).toBeInTheDocument();
 
@@ -79,12 +74,10 @@ describe("Test Users.js", () => {
       "PDF",
       { selector: "button" }
     )).toBeInTheDocument();
-
-    expect(screen.getByPlaceholderText("Filter Table")).toBeInTheDocument();
   });
 
   it("should render the correct headers", async () => {
-    const { container } = renderComponent();
+    renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
     const expectedHeaders = [
@@ -97,7 +90,7 @@ describe("Test Users.js", () => {
       "Last Login",
       "States",
     ]
-    const headers = [...container.querySelectorAll(".rdt_TableHeadRow > div")];
+    const headers = screen.getAllByRole("columnheader");
     expect(headers.length).toBe(expectedHeaders.length);
     for (let i = 0; i < expectedHeaders.length; i += 1) {
       expect(headers[i].textContent).toBe(expectedHeaders[i]);
@@ -108,7 +101,7 @@ describe("Test Users.js", () => {
     const { container } = renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
-    const rows = [...container.querySelectorAll(".rdt_TableBody [role='row']")];
+    const rows = [...container.querySelectorAll("table tbody tr")];
     expect(rows.length).toBe(mockUsers.length);
 
     let row1cells = rows[0].childNodes;
@@ -135,41 +128,6 @@ describe("Test Users.js", () => {
     expect(row1cells[6].textContent).toBe("4/18/2024");
 
     expect(row1cells[7].textContent).toBe("CO, TX, WI");
-  });
-
-  it("should navigate to the new user page when the add button is clicked", async () => {
-    const mockHistory = [];
-    useHistory.mockReturnValue(mockHistory);
-
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const addButton = screen.getByText(
-      "Add New User",
-      { selector: "button" }
-    );
-    userEvent.click(addButton);
-
-    expect(mockHistory).toEqual(["/users/add"]);
-  });
-
-  it("should export to Excel probably", async () => {
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const excelButton = screen.getByText(
-      "Excel",
-      { selector: "button" }
-    );
-    userEvent.click(excelButton);
-    
-    expect(handleExport).toHaveBeenCalledWith(
-      "excel",
-      "MDCT Users Export.xlsx",
-      expect.objectContaining({
-        data: mockUsers,
-      })
-    );
   });
 
   it("should export to CSV somehow", async () => {

@@ -3,14 +3,14 @@
 **********************/
 
 /* Colors */
-$black: #010101;
+$black: #262626;
 $white: #fff;
 
 $lily-white: #e1f3f8;
-$alto: #d8d8d8;
+$alto: #f2f2f2;
 
 $cerulean-blue: #3366cc;
-$endeavor: #205493;
+$endeavor: #00395e;
 $lochmara: #0071bc;
 $pacific-blue: #00a6d2;
 $cornflower: #86bce0;
@@ -27,7 +27,7 @@ $masala: #3f3f3f;
 
 $brand-primary: $endeavor;
 $brand-secondary: $cerulean-blue;
-$brand-tertiary: $lily-white;
+$brand-tertiary: $alto;
 $brand-quaternary: $sea-green;
 $brand-quinary: $pacific-blue;
 $brand-senary: $ocean-green;
@@ -56,4 +56,6 @@ $font-weight-normal: 400;
 $font-weight-semi-bold: 600;
 $font-weight-bold: 700;
 
-$bg-primary-light: #73b3e7;
+$bg-primary-light: #eefbff;
+
+$max-width-desktop: 46rem;

@@ -1,19 +1,10 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
-import { obtainUserByUsername } from "./obtainUserByUsername";
-import { getUserDetailsFromEvent } from "../../../libs/authorization";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { obtainUserByUsername } from "./obtainUserByUsername.js";
+import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
 
 export const main = handler(async (event, context) => {
   const userData = await getUserDetailsFromEvent(event);
-
-  return await createUser(userData);
-});
-
-export const adminCreateUser = handler(async (event, context) => {
-  await authorizeAdmin(event);
-
-  const userData = JSON.parse(event.body);
 
   return await createUser(userData);
 });

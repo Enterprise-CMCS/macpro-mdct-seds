@@ -4,9 +4,24 @@
 
 .header {
   .logo {
-    @extend .padding-left-9;
-    @extend .padding-y-1;
-    @extend .bg-primary;
+    @extend .padding-left-4;
+    background-color: #00395e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+
+    .dropdown-toggle {
+      color: white;
+      font-weight: bolder;
+      text-decoration: none;
+    }
+    .dropdown-menu {
+      margin-left: -20px;
+      a {
+        padding: 0.75rem 1rem;
+      }
+    }
   }
 }
 
@@ -18,20 +33,23 @@
 }
 
 .navigation {
-  @extend .bg-primary-light;
-  @extend .text-white;
+  background-color: #eefbff;
   @extend .text-bold;
-  @extend .padding-left-9;
   @extend .padding-y-1;
-  box-shadow: 5px 10px 8px #888888;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   a {
-    @extend .text-white;
+    color: #00395e;
+  }
+
+  li {
+    list-style: none;
   }
 
   .dropdown-toggle {
-    background: #73b3e7 !important;
-    @extend .text-white;
     @extend .text-bold;
   }
 

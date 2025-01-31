@@ -95,12 +95,12 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
       </div>
       <h1 className="page-header">FORM {form}</h1>
       <hr />
-      <div className="padding-x-5">
+      <div>
         <div className="margin-y-2">
           <h2 className="form-name">{formDescription.form_name}</h2>
           <p className="instructions"> {formDescription.form_text}</p>
         </div>
-        <div className="unstyled padding-bottom-3 padding-top-1">
+        <div className="unstyled">
           <Table>
             <tbody>
               <tr>
@@ -124,24 +124,26 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div className="fpl-input">
-              <TextInput
-                id="max-fpl"
-                name="max-fpl"
-                type="number"
-                onChange={e => validateFPL(e)}
-                value={maxFPL}
-              />
-            </div>
-            <div className="fpl-button">
-              <Button
-                type="button"
-                className="max-fpl-btn"
-                onClick={updateMaxFPL}
-                disabled={disabled}
-              >
-                Apply FPL Changes
-              </Button>
+            <div className="fpl-input-container">
+              <div className="fpl-input">
+                <TextInput
+                  id="max-fpl"
+                  name="max-fpl"
+                  type="number"
+                  onChange={e => validateFPL(e)}
+                  value={maxFPL}
+                />
+              </div>
+              <div className="fpl-button">
+                <Button
+                  type="button"
+                  className="max-fpl-btn"
+                  onClick={updateMaxFPL}
+                  disabled={disabled}
+                >
+                  Apply FPL Changes
+                </Button>
+              </div>
             </div>
           </div>
         ) : null}

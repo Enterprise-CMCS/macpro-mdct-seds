@@ -1,4 +1,4 @@
-import { getCurrentUserInfo } from "../auth/cognito-auth";
+import { getCurrentUserInfo } from "../auth/cognito-auth.js";
 
 /** Throws an exception unless the current user is authenticated. */
 export const authorizeAnyUser = async (event) => {

@@ -1,8 +1,8 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
 import cloneDeepWith from "lodash/cloneDeepWith";
-import { authorizeUserForState } from "../../../auth/authConditions";
-import { getCurrentUserInfo } from "../../../auth/cognito-auth";
+import { authorizeUserForState } from "../../../auth/authConditions.js";
+import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
 
 /**
  * This handler will loop through a question array and save each row

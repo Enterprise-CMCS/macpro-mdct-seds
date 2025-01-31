@@ -6,12 +6,18 @@
   width: 23em;
 }
 
+.Dropdown-control, .usa-input, .rmsc .multi-select{
+  border-color: $black;
+  border-width: 2px;
+}
+
 .searchable {
   .searchable-input {
+    border: none;;
     .searchable-input-control {
       input {
         background-color: $white;
-        border: 1px solid $color-gray-light;
+        border: 2px solid $black;
         color: $black;
         width: 25em;
       }
@@ -89,5 +95,14 @@
       background-color: black;
       height: 1px;
     }
+  }
+}
+
+.question-component{
+  th, td{
+    font-size: 16px;
+  }
+  th{
+    background-color: $alto;
   }
 }

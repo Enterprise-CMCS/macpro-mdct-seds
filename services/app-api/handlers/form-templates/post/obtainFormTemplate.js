@@ -1,6 +1,6 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeAdmin } from "../../../auth/authConditions.js";
 
 /**
  * Returns a single form template

@@ -7,9 +7,8 @@
     "minimist": "^1.2.5"
   },
   "main": "handler.js",
-  "scripts": {
-    "test": "serverless-bundle test --unhandled-rejections=warn"
-  },
+  "type": "module",
+  "scripts": {},
   "author": "",
   "license": "CC0-1.0",
   "repository": {
@@ -17,16 +16,15 @@
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
   "devDependencies": {
-    "serverless-associate-waf": "^1.2.1",
-    "serverless-offline-ssm": "^6.2.0"
+    "serverless-associate-waf": "^1.2.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.645.0",
-    "@aws-sdk/client-ses": "^3.645.0",
-    "@aws-sdk/client-ssm": "^3.645.0",
-    "@aws-sdk/lib-dynamodb": "^3.645.0",
+    "@aws-sdk/client-dynamodb": "^3.709.0",
+    "@aws-sdk/client-ses": "^3.709.0",
+    "@aws-sdk/client-ssm": "^3.709.0",
+    "@aws-sdk/lib-dynamodb": "^3.709.0",
     "aws-jwt-verify": "^4.0.1",
-    "exceljs": "^4.2.1",
+    "jwt-decode": "^4.0.0",
     "kafkajs": "^1.16.0",
     "uuid": "^7.0.3"
   }

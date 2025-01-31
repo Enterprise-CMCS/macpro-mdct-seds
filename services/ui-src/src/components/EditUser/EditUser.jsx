@@ -160,31 +160,30 @@ const EditUser = ({ stateList }) => {
   };
 
   return (
-    <div className="edit-user react-transition fade-in" data-testid="EditUser">
+    <div className="edit-user" data-testid="EditUser">
+      <Link to="/users" className="userListLink text-bold">
+        &laquo; Back to User List
+      </Link>
       <h1 className="page-header">Edit User</h1>
-      <div className="page-subheader">
-        <Link to="/users" className="userListLink text-bold">
-          &laquo; Back to User List
-        </Link>
-      </div>
       {user ? (
         <div className="center-content">
           <Table>
             <tbody>
               <tr className="userName">
-                <th>Username:</th>
+                <th>Username</th>
                 <td>
                   <TextInput
                     value={user.username}
                     type="text"
                     onChange={e => updateLocalUser(e, "username")}
+                    disabled={true}
                     name="username"
                     className="form-input"
                   />
                 </td>
               </tr>
               <tr>
-                <th>First Name:</th>
+                <th>First Name</th>
                 <td>
                   <TextInput
                     value={user.firstName}
@@ -197,7 +196,7 @@ const EditUser = ({ stateList }) => {
                 </td>
               </tr>
               <tr>
-                <th>Last Name:</th>
+                <th>Last Name</th>
                 <td>
                   <TextInput
                     value={user.lastName}
@@ -210,7 +209,7 @@ const EditUser = ({ stateList }) => {
                 </td>
               </tr>
               <tr>
-                <th>Email:</th>
+                <th>Email</th>
                 <td>
                   <TextInput
                     value={user.email}
@@ -223,7 +222,7 @@ const EditUser = ({ stateList }) => {
                 </td>
               </tr>
               <tr>
-                <th>Role:</th>
+                <th>Role</th>
                 <td>
                   <Searchable
                     options={roles}
@@ -237,7 +236,7 @@ const EditUser = ({ stateList }) => {
               {role === "state" ? (
                 <>
                   <tr>
-                    <th>State:</th>
+                    <th>State</th>
                     <td>
                       <Dropdown
                         options={stateList}
@@ -254,7 +253,7 @@ const EditUser = ({ stateList }) => {
               {role !== "state" && role !== null ? (
                 <>
                   <tr>
-                    <th>State:</th>
+                    <th>State</th>
                     <td>
                       <MultiSelect
                         options={stateList}
@@ -268,11 +267,11 @@ const EditUser = ({ stateList }) => {
                 </>
               ) : null}
               <tr>
-                <th>Registration Date:</th>
+                <th>Registration Date</th>
                 <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
               </tr>
               <tr>
-                <th>Last Login:</th>
+                <th>Last Login</th>
                 <td>
                   {user.lastLogin
                     ? new Date(user.lastLogin).toLocaleDateString("en-US")
@@ -281,7 +280,7 @@ const EditUser = ({ stateList }) => {
               </tr>
             </tbody>
           </Table>
-          <div className="action-buttons">
+          <div className="action-buttons margin-top-4">
             <Button
               type="button"
               className="form-button"

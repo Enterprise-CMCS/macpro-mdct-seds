@@ -1,6 +1,6 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdminOrUserForState } from "../../../auth/authConditions";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeAdminOrUserForState } from "../../../auth/authConditions.js";
 
 export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);

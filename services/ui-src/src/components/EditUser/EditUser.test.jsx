@@ -13,32 +13,31 @@ const store = mockStore({
     states: [
       { state_name: "Colorado", state_id: "CO" },
       { state_name: "Texas", state_id: "TX" },
-      { state_name: "Wisconsin", state_id: "WI" },
-    ],
-  },
+      { state_name: "Wisconsin", state_id: "WI" }
+    ]
+  }
 });
 
 jest.mock("../../libs/api", () => ({
   updateUser: jest.fn().mockResolvedValue({}),
-  getUserById: jest.fn(),
+  getUserById: jest.fn()
 }));
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({ id: "23" }),
+  useParams: jest.fn().mockReturnValue({ id: "23" })
 }));
 
-const renderComponent = (user) => {
+const renderComponent = user => {
   if (user) {
     getUserById.mockResolvedValue({
       status: "success",
-      data: user,
+      data: user
     });
-  }
-  else {
+  } else {
     getUserById.mockResolvedValue({
       status: "error",
-      message: "No user by specified id found",
+      message: "No user by specified id found"
     });
   }
 
@@ -51,7 +50,7 @@ const renderComponent = (user) => {
   );
 };
 
-const mockUser =   {
+const mockUser = {
   userId: 23,
   username: "QWER",
   firstName: "Quentin",
@@ -60,24 +59,23 @@ const mockUser =   {
   role: "state",
   dateJoined: "2024-01-15T12:34:45Z",
   lastLogin: "2024-02-16T12:34:45Z",
-  states: ["CO"],
+  states: ["CO"]
 };
 
 describe("Test EditUser.js", () => {
   it("should render header and button when user is found", async () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
-    
-    const backLink = screen.getByText(
-      "Back to User List",
-      { selector: "a", exact: false }
-    );
+
+    const backLink = screen.getByText("Back to User List", {
+      selector: "a",
+      exact: false
+    });
     expect(backLink).toBeInTheDocument();
 
-    const updateButton = screen.getByText(
-      "Update User",
-      { selector: "button" }
-    );
+    const updateButton = screen.getByText("Update User", {
+      selector: "button"
+    });
     expect(updateButton).toBeInTheDocument();
   });
 
@@ -85,42 +83,42 @@ describe("Test EditUser.js", () => {
     renderComponent(undefined);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const errorMessage = screen.getByText(
-      "Cannot find user with id 23",
-    );
+    const errorMessage = screen.getByText("Cannot find user with id 23");
     expect(errorMessage).toBeInTheDocument();
   });
 
   it("should render user details in a table", async () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
-    
+
     const table = screen.getByTestId("table");
     const rows = [...table.querySelectorAll("tr")];
     expect(rows.length).toBe(8);
 
-    expect(rows[0].querySelector("th")).toHaveTextContent("Username:");
+    expect(rows[0].querySelector("th")).toHaveTextContent("Username");
     expect(rows[0].querySelector("td input")).toHaveValue("QWER");
 
-    expect(rows[1].querySelector("th")).toHaveTextContent("First Name:");
+    expect(rows[1].querySelector("th")).toHaveTextContent("First Name");
     expect(rows[1].querySelector("td input")).toHaveValue("Quentin");
 
-    expect(rows[2].querySelector("th")).toHaveTextContent("Last Name:");
+    expect(rows[2].querySelector("th")).toHaveTextContent("Last Name");
     expect(rows[2].querySelector("td input")).toHaveValue("Werther");
 
-    expect(rows[3].querySelector("th")).toHaveTextContent("Email:");
+    expect(rows[3].querySelector("th")).toHaveTextContent("Email");
     expect(rows[3].querySelector("td input")).toHaveValue("qwer@email.test");
 
-    expect(rows[4].querySelector("th")).toHaveTextContent("Role:");
+    expect(rows[4].querySelector("th")).toHaveTextContent("Role");
     expect(rows[4].querySelector("td input")).toHaveValue("State User");
 
-    expect(rows[5].querySelector("th")).toHaveTextContent("State:");
-    expect(rows[5].querySelector("td .is-selected")).toHaveTextContent("Colorado");
+    expect(rows[5].querySelector("th")).toHaveTextContent("State");
+    expect(rows[5].querySelector("td .is-selected")).toHaveTextContent(
+      "Colorado"
+    );
 
-    expect(rows[6].querySelector("th")).toHaveTextContent("Registration Date:");
+    expect(rows[6].querySelector("th")).toHaveTextContent("Registration Date");
     expect(rows[6].querySelector("td")).toHaveTextContent("1/15/2024");
 
-    expect(rows[7].querySelector("th")).toHaveTextContent("Last Login:");
+    expect(rows[7].querySelector("th")).toHaveTextContent("Last Login");
     expect(rows[7].querySelector("td")).toHaveTextContent("2/16/2024");
   });
 
@@ -128,7 +126,7 @@ describe("Test EditUser.js", () => {
     const user = {
       ...mockUser,
       role: "admin",
-      states: ["WI", "TX"],
+      states: ["WI", "TX"]
     };
     renderComponent(user);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
@@ -136,27 +134,28 @@ describe("Test EditUser.js", () => {
     const table = screen.getByTestId("table");
     const rows = [...table.querySelectorAll("tr")];
 
-    expect(rows[5].querySelector("th")).toHaveTextContent("State:");
-    expect(rows[5].querySelector("td .dropdown-heading-value"))
-      .toHaveTextContent("Texas, Wisconsin");
+    expect(rows[5].querySelector("th")).toHaveTextContent("State");
+    expect(
+      rows[5].querySelector("td .dropdown-heading-value")
+    ).toHaveTextContent("Texas, Wisconsin");
   });
 
   it("should call the API to save updated user details", async () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const table = screen.getByTestId("table");
-    const usernameInput = table.querySelector(".userName input");
-    userEvent.type(usernameInput, "TY");
+    const roleDropdown = screen.getByPlaceholderText("Select a Role");
+    userEvent.click(roleDropdown);
+    const adminOption = screen.getByText("Admin User");
+    userEvent.click(adminOption);
 
-    const saveButton = screen.getByText(
-      "Update User",
-      { selector: "button" }
-    );
+    const saveButton = screen.getByText("Update User", { selector: "button" });
     userEvent.click(saveButton);
 
-    expect(updateUser).toHaveBeenCalledWith(expect.objectContaining({
-      username: "QWERTY",
-    }));
+    expect(updateUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        role: "admin",
+      })
+    );
   });
 });

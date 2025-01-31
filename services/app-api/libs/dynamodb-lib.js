@@ -8,7 +8,7 @@ import {
   ScanCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { logger } from "./debug-lib";
+import { logger } from "./debug-lib.js";
 
 const localConfig = {
   endpoint: process.env.DYNAMODB_URL,

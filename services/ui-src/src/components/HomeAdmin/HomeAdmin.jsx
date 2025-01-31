@@ -81,18 +81,13 @@ const HomeAdmin = ({ stateList, user }) => {
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
-        <>
+        <div>
           <h1 className="page-header">Home Admin User Page</h1>
-          <div className="padding-left-9 margin-left-9 list-display-container">
+          <div className="list-display-container">
             <ul>
               <li className="user-view-edit">
                 <Link to="/users" className="text-bold">
                   View / Edit Users
-                </Link>
-              </li>
-              <li className="user-add">
-                <Link to="/users/add" className="text-bold">
-                  Create User
                 </Link>
               </li>
               <li className="form-templates">
@@ -112,7 +107,7 @@ const HomeAdmin = ({ stateList, user }) => {
               </li>
             </ul>
           </div>
-        </>
+        </div>
       ) : (
         <h1 className="page-header">Home Business User Page</h1>
       )}
@@ -152,6 +147,7 @@ const HomeAdmin = ({ stateList, user }) => {
               </div>
             </>
           ) : (
+            accordionItems !== "" &&
             "There are no forms available for the selected state"
           )}
         </div>
