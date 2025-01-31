@@ -40,6 +40,7 @@
     "@types/node": "^20.12.7",
     "@types/readline-sync": "^1.4.8",
     "@types/yargs": "^15.0.10",
+    "aws-cdk": "2.161.1",
     "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
     "nightwatch": "3.1.2",
