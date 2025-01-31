@@ -98,6 +98,7 @@ resources:
                   Resource: !GetAtt CognitoUserPool.Arn
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
+      DeletionPolicy: Retain
       Properties:
         UserPoolName: ${self:custom.stage}-user-pool
         UsernameAttributes:
