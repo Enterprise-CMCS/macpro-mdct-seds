@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { WithoutImportsParentStack } from "./stacks/without_imports/parent";
-import { WithImportsParentStack} from "./stacks/with_imports/parent";
+import { EmptyParentStack } from "./stacks/empty/parent";
+import { ImportsIncludedParentStack} from "./stacks/imports_included/parent";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
 import { getSecret } from "./utils/secrets-manager";
@@ -42,10 +42,10 @@ async function main() {
   cdk.Tags.of(app).add("PROJECT", config.project);
 
   let correctParentStack;
-  if (process.env.WITHOUT_IMPORTS) {
-    correctParentStack = WithoutImportsParentStack
-  } else if (process.env.WITH_IMPORTS) {
-    correctParentStack = WithImportsParentStack
+  if (process.env.IMPORT_VARIANT == "empty") {
+    correctParentStack = EmptyParentStack
+  } else if (process.env.IMPORT_VARIANT == "imports_included") {
+    correctParentStack = ImportsIncludedParentStack
   } else {
     correctParentStack = ParentStack
   }

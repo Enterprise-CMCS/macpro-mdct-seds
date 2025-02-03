@@ -29,20 +29,20 @@ cognito.UserPool -
 1. Create just the new cdk stack without anything inside of it.
 
 ```bash
-WITHOUT_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
+IMPORT_VARIANT=empty ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
 2. Now import all the serverless ejected resources.
 
 ```bash
-WITH_IMPORTS=true PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
+IMPORT_VARIANT=imports_included PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
 ```
 As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks. For the dynamo tables the default should be correct but read closely to be sure.
 
 3. Run a deploy on that same imported resource set.
 
 ```bash
-WITH_IMPORTS=true ./run deploy --stage <YOUR_BRANCH_NAME>
+IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
 4. Run a full deploy by kicking off the full cdk deploy.

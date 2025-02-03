@@ -5,7 +5,7 @@ import {
 } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../../deployment-config";
 
-export class WithoutImportsParentStack extends Stack {
+export class EmptyParentStack extends Stack {
   constructor(
     scope: Construct,
     id: string,

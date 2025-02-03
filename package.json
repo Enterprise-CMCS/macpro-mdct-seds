@@ -16,9 +16,6 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "cdk": "cdk",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
     "smoke": "npm run test --tag smoke",
     "test:cypress": "cd tests/cypress && npm test && cd -",
@@ -65,6 +62,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "constructs": "^10.3.0",
     "jsonpath": "^1.1.0",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "source-map-support": "^0.5.21"
   }
 }

@@ -8,7 +8,7 @@ import { createDataComponents } from "./data";
 import { createUiComponents } from "./ui";
 import { createUiAuthComponents } from "./ui-auth";
 
-export class WithImportsParentStack extends Stack {
+export class ImportsIncludedParentStack extends Stack {
   constructor(
     scope: Construct,
     id: string,

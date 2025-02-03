@@ -30,7 +30,7 @@ export async function writeUiEnvFile(stage: string, local = false) {
     LOCAL_LOGIN: "false",
     SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
-    API_URL: deploymentOutput.apiGatewayRestApiUrl.slice(0, -1),
+    API_URL: deploymentOutput.apiGatewayRestApiUrl,
     COGNITO_REGION: region,
     COGNITO_IDENTITY_POOL_ID: deploymentOutput.identityPoolId,
     COGNITO_USER_POOL_ID: deploymentOutput.userPoolId,

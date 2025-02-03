@@ -218,14 +218,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables: dataConnectTables,
   });
 
-  new Lambda(scope, "exportToExcel", {
-    entry: "services/app-api/export/exportToExcel.js",
-    handler: "main",
-    path: "/export/export-to-excel",
-    method: "POST",
-    ...commonProps,
-  });
-
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/get/getUserById.js",
     handler: "main",
