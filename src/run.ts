@@ -86,8 +86,9 @@ function updateEnvFiles() {
 
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
-async function run_fe_locally(runner: LabeledProcessRunner) {
-  await writeUiEnvFile("master", true);
+async function run_fe_locally(runner: LabeledProcessRunner, options: { stage: string }) {
+  const stage = options.stage;
+  await writeUiEnvFile(stage, true);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
@@ -110,7 +111,7 @@ async function run_local(options: { stage: string }) {
   run_cdk_watch(options);
 
   const runner = new LabeledProcessRunner();
-  run_fe_locally(runner);
+  run_fe_locally(runner, options);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
