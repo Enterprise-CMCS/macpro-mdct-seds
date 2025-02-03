@@ -9,7 +9,7 @@ export const main = handler(async (event, context) => {
   await authorizeAnyUser(event);
   let data = JSON.parse(event.body);
   const result = await obtainUserByUsername(data.username);
-  authorizeAdminOrUserWithEmail(result.Items[0].email);
+  await authorizeAdminOrUserWithEmail(result.Items[0].email);
   return result;
 });
 
