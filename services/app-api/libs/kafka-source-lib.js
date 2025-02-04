@@ -1,5 +1,5 @@
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
-const { Kafka } = require("kafkajs");
+import { Kafka } from "kafkajs";
 
 const STAGE = process.env.stage;
 const kafka = new Kafka({
