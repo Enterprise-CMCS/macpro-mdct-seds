@@ -47,7 +47,7 @@ async function confirmDestroyCommand(stack: string) {
 
   const confirmation = await question(`
 ${orange}********************************* STOP *******************************
-You've requested a destroy for: 
+You've requested a destroy for:
 
     ${stack}
 
@@ -86,16 +86,15 @@ function updateEnvFiles() {
 
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
-async function run_fe_locally(runner: LabeledProcessRunner) {
-  await writeUiEnvFile("master", true);
+async function run_fe_locally(runner: LabeledProcessRunner, options: { stage: string }) {
+  const stage = options.stage;
+  await writeUiEnvFile(stage, true);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
 
-async function run_cdk_watch(options: { stage: string }) {
+async function run_cdk_watch(runner: LabeledProcessRunner, options: { stage: string }) {
   const stage = options.stage;
-  const runner = new LabeledProcessRunner();
-  await prepare_services(runner);
   const watchCmd = [
     "cdk",
     "watch",
@@ -107,10 +106,10 @@ async function run_cdk_watch(options: { stage: string }) {
 }
 
 async function run_local(options: { stage: string }) {
-  run_cdk_watch(options);
-
   const runner = new LabeledProcessRunner();
-  run_fe_locally(runner);
+  await prepare_services(runner);
+  run_cdk_watch(runner, options);
+  run_fe_locally(runner, options);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
@@ -151,7 +150,7 @@ async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
-    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--all"];
+    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
     await runner.run_command_and_output("CDK deploy", deployCmd, ".");
   } else {
     console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
@@ -208,14 +207,6 @@ async function destroy({
 // The command definitons in yargs
 // All valid arguments to dev should be enumerated here, this is the entrypoint to the script
 yargs(process.argv.slice(2))
-  .command(
-    "watch",
-    "run cdk watch",
-    {
-      stage: { type: "string", demandOption: true },
-    },
-    run_cdk_watch
-  )
   .command(
     "local",
     "run cdk watch and react together",

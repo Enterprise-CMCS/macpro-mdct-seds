@@ -4,8 +4,6 @@ import {
   aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_kinesisfirehose as firehose,
-  aws_route53 as route53,
-  aws_route53_targets as route53Targets,
   aws_s3 as s3,
   aws_wafv2 as wafv2,
   Duration,
@@ -134,12 +132,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
   distribution.applyRemovalPolicy(
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
-  )
+  );
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   setupWaf(scope, stage, project, deploymentConfigParameters);
-  setupRoute53(scope, distribution, deploymentConfigParameters);
 
   createFirehoseLogging(
     scope,
@@ -230,29 +227,6 @@ function setupWaf(
     },
     rules: wafRules,
   });
-}
-
-function setupRoute53(
-  scope: Construct,
-  distribution: cloudfront.Distribution,
-  deploymentConfigParameters: { [name: string]: string | undefined }
-) {
-  if (
-    deploymentConfigParameters.hostedZoneId &&
-    deploymentConfigParameters.domainName
-  ) {
-    const zone = route53.HostedZone.fromHostedZoneAttributes(scope, "Zone", {
-      hostedZoneId: deploymentConfigParameters.hostedZoneId,
-      zoneName: deploymentConfigParameters.domainName,
-    });
-
-    new route53.ARecord(scope, "AliasRecord", {
-      zone,
-      target: route53.RecordTarget.fromAlias(
-        new route53Targets.CloudFrontTarget(distribution)
-      ),
-    });
-  }
 }
 
 function createFirehoseLogging(

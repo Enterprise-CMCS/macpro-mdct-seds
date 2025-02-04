@@ -114,7 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Name`, table.name])
+      tables.map((table) => [`${table.id}TableName`, table.name])
     ),
   };
 
@@ -216,14 +216,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
     tables: dataConnectTables,
-  });
-
-  new Lambda(scope, "exportToExcel", {
-    entry: "services/app-api/export/exportToExcel.js",
-    handler: "main",
-    path: "/export/export-to-excel",
-    method: "POST",
-    ...commonProps,
   });
 
   new Lambda(scope, "getUserById", {

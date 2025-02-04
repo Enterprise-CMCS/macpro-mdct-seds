@@ -6,10 +6,10 @@ import {
   aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
   aws_ssm as ssm,
-  RemovalPolicy,
   Aws,
   Duration,
   custom_resources as cr,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
@@ -17,6 +17,7 @@ import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 interface CreateUiAuthComponentsProps {
   scope: Construct;
   stage: string;
+  isDev: boolean;
   oktaMetadataUrl: string;
   applicationEndpointUrl: string;
   restApiId: string;
@@ -30,6 +31,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const {
     scope,
     stage,
+    isDev,
     oktaMetadataUrl,
     applicationEndpointUrl,
     restApiId,
@@ -40,7 +42,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
     userPoolName: `${stage}-user-pool`,
-    removalPolicy: RemovalPolicy.DESTROY,
     signInAliases: {
       email: true,
     },
@@ -66,6 +67,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   });
 
   let supportedIdentityProviders:
@@ -208,35 +210,32 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
+      inlinePolicies: {
+        LambdaApiRolePolicy: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              resources: ["arn:aws:logs:*:*:*"],
+              effect: iam.Effect.ALLOW,
+            }),
+            new iam.PolicyStatement({
+              actions: ["*"],
+              resources: [userPool.userPoolArn],
+              effect: iam.Effect.ALLOW,
+            }),
+            new iam.PolicyStatement({
+              actions: ["ssm:GetParameter"],
+              resources: [bootstrapUsersPasswordArn],
+              effect: iam.Effect.ALLOW,
+            }),
+          ],
+        }),
+      },
     });
-
-    lambdaApiRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-        ],
-        resources: ["arn:aws:logs:*:*:*"],
-      })
-    );
-
-    lambdaApiRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["*"],
-        resources: [userPool.userPoolArn],
-      })
-    );
-
-    lambdaApiRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["ssm:GetParameter"],
-        resources: [bootstrapUsersPasswordArn],
-      })
-    );
 
     // TODO: test deploy and watch performance with scope using lambda.Function vs lambda_nodejs.NodejsFunction
     bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
