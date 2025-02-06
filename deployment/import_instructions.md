@@ -9,6 +9,7 @@
 ```
 
 2. Collect information about the resources we're going to be importing into the new cdk stack.
+
 ```
 cloudfront.Distribution -
 cognito.UserPool -
@@ -22,9 +23,7 @@ cognito.UserPool -
 
 :warning: Make sure that all sls associated stacks have been fully destroyed before proceeding.
 
-
 ## From `jon-cdk` branch:
-
 
 1. Create just the new cdk stack without anything inside of it.
 
@@ -37,6 +36,7 @@ IMPORT_VARIANT=empty ./run deploy --stage <YOUR_BRANCH_NAME>
 ```bash
 IMPORT_VARIANT=imports_included PROJECT=seds cdk import --context stage=<YOUR_BRANCH_NAME> --force
 ```
+
 As this import occurs you'll have to provide the information you gathered just before destroying the serverless stacks. For the dynamo tables the default should be correct but read closely to be sure.
 
 3. Run a deploy on that same imported resource set.
@@ -51,9 +51,9 @@ IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>
 ./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
+5. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application.
 
-5. Find the Cloudfront Url in the Github Action's logs (or in the outputs section of your Cloudformation Stack). Visit the site and confirm that you can login and use the application. :tada: Congrats, you did it!
-
+6. Verify that the EUA login via Okta works (only applies to dev/val/prod builds) :tada: Congrats, you did it!
 
 ## What if it all goes pear shaped?
 
@@ -61,23 +61,26 @@ IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>
 
 :grey_exclamation: These instructions are specific to reimporting a Cloudfront Distribution but the same pattern should also apply to any other imported resources that need un-importing should the need arise.
 
-1) Get the Cloudfront Distribution unaffiliated with any Cloudformation stack. If it's already been successfully imported into the new cdk stack then you'll need to destroy the cdk stack to eject it from that stack.
+1. Get the Cloudfront Distribution unaffiliated with any Cloudformation stack. If it's already been successfully imported into the new cdk stack then you'll need to destroy the cdk stack to eject it from that stack.
+
 ```
 # this assumes you're on `jon-cdk` branch
 ./run destroy --stage <YOUR_BRANCH_NAME>
 ```
 
-2) Now you need switch to `pete-sls` branch and comment out any CloudfrontDistribution and dependent configuration.
-These are the necessary changes: https://github.com/Enterprise-CMCS/macpro-mdct-seds/commit/8eb551f980a37355729dc1795f5d229987699c84
+2. Now you need switch to `pete-sls` branch and comment out any CloudfrontDistribution and dependent configuration.
+   These are the necessary changes: https://github.com/Enterprise-CMCS/macpro-mdct-seds/commit/8eb551f980a37355729dc1795f5d229987699c84
 
-3) Deploy serverless stack (without CloudfrontDistribution) via Github Action (necessary because of permissions limitations) by pushing up changes made in the last step.
+3. Deploy serverless stack (without CloudfrontDistribution) via Github Action (necessary because of permissions limitations) by pushing up changes made in the last step.
 
-4) Now you need to import the CloudfrontDistribution to the existing ui-XXXXX stack created by the last step. First you'll need to get the existing stack's template and save it to a local file.
+4. Now you need to import the CloudfrontDistribution to the existing ui-XXXXX stack created by the last step. First you'll need to get the existing stack's template and save it to a local file.
+
 ```
 aws cloudformation get-template --stack-name ui-cmdct-4188-sls | jq '.TemplateBody' > deployment/cfn_template.json
 ```
 
-5) Now open up the file you just created (deployment/cfn_template.json) and add the following Cloudfront Distribution config to it's resources section:
+5. Now open up the file you just created (deployment/cfn_template.json) and add the following Cloudfront Distribution config to it's resources section:
+
 ```json
     "CloudFrontDistribution": {
       "Type": "AWS::CloudFront::Distribution",
@@ -102,18 +105,19 @@ aws cloudformation get-template --stack-name ui-cmdct-4188-sls | jq '.TemplateBo
     },
 ```
 
-6) Now open up the AWS console and navigate to the Cloudformation console's show page for the particular ui-XXXXX stack.
+6. Now open up the AWS console and navigate to the Cloudformation console's show page for the particular ui-XXXXX stack.
 
-7) Import the stack by doing the following:
-    - Under `Stack Actions` select `Import resources into stack`
-    - In the `Specify template` section choose upload a template file and upload the one we just created: `deployment/cfn_template.json`
-    - In the `Identify resources` section you'll have to provide the ID of the incoming Cloudfront Distribution
-    - Next and confirm until it begins the import
+7. Import the stack by doing the following:
 
-8) Once the import is complete, take a breath.
+   - Under `Stack Actions` select `Import resources into stack`
+   - In the `Specify template` section choose upload a template file and upload the one we just created: `deployment/cfn_template.json`
+   - In the `Identify resources` section you'll have to provide the ID of the incoming Cloudfront Distribution
+   - Next and confirm until it begins the import
 
-9) Revert the changes where you commented out the Serverless definition of Cloudfront Distribution (undo step 2).
+8. Once the import is complete, take a breath.
 
-10) Verify that the Serverless definition now contains the Cloudfront Distribution then deploy via Github Action.
+9. Revert the changes where you commented out the Serverless definition of Cloudfront Distribution (undo step 2).
 
-11) Verify that Cloudfront Distribution is back into the stack and appropriately pointing at the application.
+10. Verify that the Serverless definition now contains the Cloudfront Distribution then deploy via Github Action.
+
+11. Verify that Cloudfront Distribution is back into the stack and appropriately pointing at the application.
