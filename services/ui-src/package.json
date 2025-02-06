@@ -47,8 +47,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "jest --setupFiles dotenv/config",
-    "coverage": "jest --coverage",
+    "test": "vitest",
+    "coverage": "vitest --run --coverage",
     "lint": "eslint ."
   },
   "eslintConfig": {
@@ -56,56 +56,6 @@
       "react-app",
       "eslint:recommended",
       "google"
-    ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/components/**/*.{js,jsx}",
-      "!src/components/Example/*",
-      "!src/components/LocalLogin/*"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
     ]
   },
   "browserslist": {
@@ -121,18 +71,13 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.24.6",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-transform-react-jsx": "^7.12.17",
-    "@babel/preset-env": "^7.24.7",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "6.4.6",
     "@testing-library/react": "12.1.5",
     "@testing-library/user-event": "13.5.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "^27.5.1",
+    "@vitest/coverage-v8": "3.0.5",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-react-app": "^5.2.1",
@@ -145,12 +90,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "history": "^4.9.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "jest-watch-typeahead": "0.4.2",
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
     "serverless-cloudfront-invalidate": "1.5.0",
-    "serverless-s3-sync": "^1.14.4"
+    "serverless-s3-sync": "^1.14.4",
+    "vitest": "^3.0.5"
   }
 }

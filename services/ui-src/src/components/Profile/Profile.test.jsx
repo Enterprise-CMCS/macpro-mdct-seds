@@ -1,18 +1,19 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import Profile from "./Profile";
 import { render, screen, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-jest.spyOn(window, "alert").mockImplementation();
+vi.spyOn(window, "alert").mockImplementation();
 
-jest.mock("react-router-dom", () => ({
-  useHistory: jest.fn().mockReturnValue({
-    push: jest.fn(),
+vi.mock("react-router-dom", () => ({
+  useHistory: vi.fn().mockReturnValue({
+    push: vi.fn(),
   })
 }));
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn().mockResolvedValue({
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn().mockResolvedValue({
     Items: [
       {
         email: "ben@example.com",

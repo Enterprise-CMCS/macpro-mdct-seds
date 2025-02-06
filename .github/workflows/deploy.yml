@@ -54,7 +54,7 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Jest setup
+      - name: Install node modules for tests
         working-directory: services/ui-src
         run: yarn install
       - name: unit test & publish coverage

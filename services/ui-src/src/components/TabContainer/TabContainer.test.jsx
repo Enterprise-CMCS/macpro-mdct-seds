@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import TabContainer from "./TabContainer";
@@ -7,20 +8,20 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { Provider } from "react-redux";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-jest.mock("../Question/Question", () =>
-  (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
-);
+vi.mock("../Question/Question", () => ({
+  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../SummaryTab/SummaryTab", () =>
-  (props) => (<div data-testid="summary-tab">{JSON.stringify(props)}</div>)
-);
+vi.mock("../SummaryTab/SummaryTab", () => ({
+  default: (props) => (<div data-testid="summary-tab">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../CertificationTab/CertificationTab", () =>
-  (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
-);
+vi.mock("../CertificationTab/CertificationTab", () => ({
+  default: (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
 const renderComponent = (userRole) => {
