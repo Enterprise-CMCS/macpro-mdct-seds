@@ -108,6 +108,7 @@ export function deployFrontend(props: DeployFrontendProps) {
         userPoolId,
         userPoolClientId,
         userPoolClientDomain,
+        timestamp: new Date().toISOString(),
       },
     }
   );
