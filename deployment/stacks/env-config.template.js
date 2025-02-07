@@ -11,4 +11,5 @@ window._env_ = {
   COGNITO_REDIRECT_SIGNIN: "{{applicationEndpointUrl}}",
   COGNITO_REDIRECT_SIGNOUT: "{{applicationEndpointUrl}}",
   STAGE: "{{stage}}",
+  TIMESTAMP: "{{timestamp}}",
 };
