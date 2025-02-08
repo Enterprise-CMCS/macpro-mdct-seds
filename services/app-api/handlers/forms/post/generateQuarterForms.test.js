@@ -158,8 +158,7 @@ describe("generateQuarterForms.js", () => {
     expect(mockBatchWrite).toHaveBeenCalled();
     const stateFormParams = mockBatchWrite.mock.calls[0][0];
     const stateFormPuts = stateFormParams.RequestItems["local-state-forms"];
-    expect(stateFormPuts.length).toBe(1);
-    expect(stateFormPuts[0].PutRequest.Item.state_form).toBe("TX-2025-1-B");
+    expect(stateFormPuts.map(p => p.PutRequest.Item.state_form)).toEqual(["TX-2025-1-B"]);
   });
 
   it("should create forms for the specified year and quarter if provided", async () => {
