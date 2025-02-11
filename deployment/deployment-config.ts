@@ -16,7 +16,9 @@ export interface DeploymentConfigProperties {
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev = !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+  const isDev =
+    process.env.CDK_DEFAULT_ACCOUNT === "000000000000" ||
+    !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
     ...(await loadStageSecret(project, stage)),
@@ -28,13 +30,19 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  validateConfig(config);
+  if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+    validateConfig(config);
+  }
 
   return config;
 };
 
 export const loadDefaultSecret = async (project: string) => {
-  return JSON.parse((await getSecret(`${project}-default`))!);
+  if (process.env.CDK_DEFAULT_ACCOUNT === "000000000000") {
+    return {};
+  } else {
+    return JSON.parse((await getSecret(`${project}-default`))!);
+  }
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
