@@ -19,8 +19,24 @@ function App() {
   const [user, setUser] = useState();
   async function onLoad() {
     try {
-      const token = (await Auth.currentSession()).getIdToken();
-      const apiUser = await ensureUserExistsInApi(token.payload.email);
+      // const token = (await Auth.currentSession()).getIdToken();
+      // const apiUser = await ensureUserExistsInApi(token.payload.email);
+      const apiUser = {
+        firstName: "Alice",
+        lastName: "Cooper",
+        lastLogin: "2021-10-01T12:46:35.838Z",
+        "custom:ismemberof": "admin",
+        dateJoined: "2021-10-01T12:46:35.838Z",
+        isSuperUser: "true",
+        userId: "1",
+        email: "alicecooper@collabralink.com",
+        identities: [{ userId: "AAAA" }],
+        states: ["TX", "MD", "PA"],
+        localLogin: true,
+        password: "password",
+        role: "admin"
+      };
+
       const user = { attributes: apiUser }; // ew
       user.attributes["app-role"] = user.attributes.role;
 

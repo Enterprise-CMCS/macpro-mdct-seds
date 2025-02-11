@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useAppContext } from "../../libs/contextLib";
-import { loginLocalUser } from "../../libs/user";
+// import { loginLocalUser } from "../../libs/user";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 export default function Login() {
@@ -23,10 +23,11 @@ export default function Login() {
       email: "alicecooper@collabralink.com",
       identities: [{ userId: "AAAA" }],
       states: ["TX", "MD", "PA"],
-      localLogin: true
+      localLogin: true,
+      password: "password"
     };
 
-    loginLocalUser(alice);
+    // loginLocalUser(alice);
     setIsAuthenticated(true);
     history.push("/");
     history.go(0);

@@ -6,10 +6,10 @@ import readline from "node:readline";
 import {
   CloudFormationClient,
   DeleteStackCommand,
-  DescribeStacksCommand,
+  // DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { writeUiEnvFile } from "./write-ui-env-file.js";
+// import { writeUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
 dotenv.config();
@@ -88,7 +88,9 @@ function updateEnvFiles() {
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner, options: { stage: string }) {
   const stage = options.stage;
-  await writeUiEnvFile(stage, true);
+  // THIS COMMAND MUST BE RUN UNDER CDKLOCAL like run local ts file for example
+  // await writeUiEnvFile(stage, true);
+  console.log(stage)
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
@@ -96,7 +98,7 @@ async function run_fe_locally(runner: LabeledProcessRunner, options: { stage: st
 async function run_cdk_watch(runner: LabeledProcessRunner, options: { stage: string }) {
   const stage = options.stage;
   const watchCmd = [
-    "cdk",
+    "cdklocal",
     "watch",
     "--context",
     `stage=${stage}`,
@@ -126,35 +128,51 @@ async function prepare_services(runner: LabeledProcessRunner) {
   }
 }
 
+
+async function prelocal() {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+  const deployPrelocal = ["cdklocal", "deploy", "--app", "\"npx tsx src/prelocal.ts\""];
+  await runner.run_command_and_output("CDK prelocal deploy", deployPrelocal, ".");
+}
+
+async function postlocal(options: { stage: string }) {
+  const stage = options.stage;
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+  const deployPostLocal = ["cdklocal", "deploy", "--context", `stage=${stage}`, "--app", "\"npx tsx src/postlocal.ts\""];
+  await runner.run_command_and_output("CDK postlocal deploy", deployPostLocal, ".");
+}
+
 async function deploy_prerequisites() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployPrequisitesCmd = ["cdk", "deploy", "--app", "\"npx tsx deployment/prerequisites.ts\""];
+  const deployPrequisitesCmd = ["cdklocal", "deploy", "--app", "\"npx tsx deployment/prerequisites.ts\""];
   await runner.run_command_and_output("CDK prerequisite deploy", deployPrequisitesCmd, ".");
 }
 
-const stackExists = async (stackName: string): Promise<boolean> => {
-  const client = new CloudFormationClient({ region });
-  try {
-    await client.send(
-      new DescribeStacksCommand({ StackName: stackName })
-    );
-    return true;
-  } catch (error: any) {
-    return false;
-  }
-};
+// const stackExists = async (stackName: string): Promise<boolean> => {
+//   const client = new CloudFormationClient({ region });
+//   try {
+//     await client.send(
+//       new DescribeStacksCommand({ StackName: stackName })
+//     );
+//     return true;
+//   } catch (error: any) {
+//     return false;
+//   }
+// };
 
 async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  if (await stackExists("seds-prerequisites")) {
-    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
-    await runner.run_command_and_output("CDK deploy", deployCmd, ".");
-  } else {
-    console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
-  }
+  // if (await stackExists("seds-prerequisites")) {
+  const deployCmd = ["cdklocal", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
+  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  // } else {
+    // console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
+  // }
 }
 
 const waitForStackDeleteComplete = async (
@@ -214,6 +232,20 @@ yargs(process.argv.slice(2))
       stage: { type: "string", demandOption: true },
     },
     run_local
+  )
+  .command(
+    "prelocal",
+    "things needed for localstack",
+    () => {},
+    prelocal
+  )
+  .command(
+    "postlocal",
+    "things needed for localstack",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    postlocal
   )
   .command(
     "deploy-prerequisites",

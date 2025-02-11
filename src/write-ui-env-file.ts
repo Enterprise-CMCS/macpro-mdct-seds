@@ -17,13 +17,13 @@ export async function writeUiEnvFile(stage: string, local = false) {
   const parameterName = `/${project}/${stage}/deployment-output`;
 
   let Parameter;
-  try {
-    Parameter = (
-      await ssmClient.send(new GetParameterCommand({ Name: parameterName }))
-    ).Parameter;
-  } catch {
-    throw Error(`Cannot find SSM parameter ${parameterName}`);
-  }
+  // try {
+  Parameter = (
+    await ssmClient.send(new GetParameterCommand({ Name: parameterName }))
+  ).Parameter;
+  // } catch {
+  //   throw Error(`Cannot find SSM parameter ${parameterName}`);
+  // }
   const deploymentOutput = JSON.parse(Parameter!.Value!);
 
   const envVariables = {
@@ -45,6 +45,8 @@ export async function writeUiEnvFile(stage: string, local = false) {
     STAGE: stage,
   };
 
+  const dir = path.dirname(configFilePath);
+  await fs.mkdir(dir, { recursive: true });
   await fs.rm(configFilePath, { force: true });
 
   const envConfigContent = [
@@ -54,6 +56,10 @@ export async function writeUiEnvFile(stage: string, local = false) {
     ),
     "};",
   ].join("\n");
+  console.log("GOT IT READY")
+  console.log(envConfigContent)
+  console.log(configFilePath)
+  // await fs.writeFile(configFilePath, envConfigContent);
+  await fs.writeFile(configFilePath, envConfigContent, { flag: 'w' });
 
-  await fs.writeFile(configFilePath, envConfigContent);
 }

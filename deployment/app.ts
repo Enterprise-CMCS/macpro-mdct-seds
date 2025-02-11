@@ -5,13 +5,20 @@ import { EmptyParentStack } from "./stacks/empty/parent";
 import { ImportsIncludedParentStack} from "./stacks/imports_included/parent";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
-import { getSecret } from "./utils/secrets-manager";
+// import { getSecret } from "./utils/secrets-manager";
 import { getDeploymentConfigParameters } from "./utils/systems-manager";
 
 async function main() {
   const app = new cdk.App({
     defaultStackSynthesizer: new cdk.DefaultStackSynthesizer(
-      JSON.parse((await getSecret("cdkSynthesizerConfig"))!)
+      {
+        "deployRoleArn": "somethin",
+        "fileAssetPublishingRoleArn": "somethin",
+        "imageAssetPublishingRoleArn": "somethin",
+        "cloudFormationExecutionRole": "somethin",
+        "lookupRoleArn": "somethin",
+        "qualifier": "somethins"
+      }
     ),
   });
 

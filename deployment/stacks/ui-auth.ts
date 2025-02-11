@@ -202,8 +202,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   if (bootstrapUsersPasswordArn) {
     const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
-      permissionsBoundary: iamPermissionsBoundary,
-      path: iamPath,
+      // permissionsBoundary: iamPermissionsBoundary,
+      // path: iamPath,
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -214,22 +214,25 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         LambdaApiRolePolicy: new iam.PolicyDocument({
           statements: [
             new iam.PolicyStatement({
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
+              actions: ["*"],
+              //   "logs:CreateLogGroup",
+              //   "logs:CreateLogStream",
+              //   "logs:PutLogEvents",
+              // ],
+              // resources: ["arn:aws:logs:*:*:*"],
+              resources: ["*"],
               effect: iam.Effect.ALLOW,
             }),
             new iam.PolicyStatement({
               actions: ["*"],
-              resources: [userPool.userPoolArn],
+              // resources: [userPool.userPoolArn],
+              resources: ["*"],
               effect: iam.Effect.ALLOW,
             }),
             new iam.PolicyStatement({
               actions: ["ssm:GetParameter"],
-              resources: [bootstrapUsersPasswordArn],
+              // resources: [bootstrapUsersPasswordArn],
+              resources: ["*"],
               effect: iam.Effect.ALLOW,
             }),
           ],

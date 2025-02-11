@@ -1,7 +1,7 @@
 import {React, useEffect} from "react";
 import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
 import Home from "../Home/Home";
-import Login from "../Login/Login";
+import Login from "../LocalLogin/LocalLogin";
 import NotFound from "../NotFound/NotFound";
 import Signup from "../Signup/Signup";
 import Profile from "../Profile/Profile";
@@ -20,6 +20,26 @@ import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
 
 export default function Routes({ user, isAuthorized }) {
+  console.log(user)
+  user = {
+    firstName: "Alice",
+    lastName: "Cooper",
+    lastLogin: "2021-10-01T12:46:35.838Z",
+    "custom:ismemberof": "admin",
+    dateJoined: "2021-10-01T12:46:35.838Z",
+    isSuperUser: "true",
+    userId: "1",
+    email: "alicecooper@collabralink.com",
+    identities: [{ userId: "AAAA" }],
+    states: ["TX", "MD", "PA"],
+    localLogin: true,
+    password: "password",
+    role: "admin",
+    attributes: {
+      "app-role": "admin",
+    }
+  };
+  console.log(user.attributes)
   const history = useHistory()
   const location = useLocation()
   // Preserve old hash style urls and route them to adjusted urls

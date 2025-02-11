@@ -20,6 +20,7 @@
     ]
   },
   "context": {
+    "stage": "some-stage",
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": ["aws"],
     "@aws-cdk/aws-apigateway:authorizerChangeDeploymentLogicalId": true,

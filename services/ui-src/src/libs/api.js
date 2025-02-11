@@ -1,11 +1,13 @@
-import { API, Auth } from "aws-amplify";
+// import { API, Auth } from "aws-amplify";
+import { API } from "aws-amplify";
 
 /*************************** HELPER FUNCTIONS ***************************/
 const requestOptions = async () => {
-  const session = await Auth.currentSession();
-  const token = await session.getIdToken().getJwtToken();
+  // const session = await Auth.currentSession();
+  // const token = await session.getIdToken().getJwtToken();
   const options = {
-    headers: { "x-api-key": token }
+    // headers: { "x-api-key": token }
+    headers: { "x-api-key": "madeuptoken" }
   };
   return options;
 };

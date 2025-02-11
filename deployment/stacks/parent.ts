@@ -120,6 +120,7 @@ export class ParentStack extends Stack {
       }),
       description: `Deployment output for the ${stage} environment.`,
     });
+    console.log(`BOOM CREATED: /${project}/${stage}/deployment-output`)
 
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,

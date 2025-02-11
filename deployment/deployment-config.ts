@@ -33,20 +33,20 @@ export const determineDeploymentConfig = async (stage: string) => {
   return config;
 };
 
-export const loadDefaultSecret = async (project: string) => {
-  return JSON.parse((await getSecret(`${project}-default`))!);
+export const loadDefaultSecret = async (_project: string) => {
+  return JSON.parse((await getSecret(`seds-default`))!);
 };
 
-const loadStageSecret = async (project: string, stage: string) => {
-  const secretName = `${project}-${stage}`;
-  try {
-    return JSON.parse((await getSecret(secretName))!);
-  } catch (error: any) {
-    console.warn(
-      `Optional stage secret "${secretName}" not found: ${error.message}`
-    );
-    return {};
-  }
+const loadStageSecret = async (_project: string, _stage: string) => {
+  // const secretName = `${project}-${stage}`;
+  // try {
+  //   return JSON.parse((await getSecret(secretName))!);
+  // } catch (error: any) {
+  //   console.warn(
+  //     `Optional stage secret "${secretName}" not found: ${error.message}`
+  //   );
+  return {};
+  // }
 };
 
 function validateConfig(config: {
@@ -62,6 +62,8 @@ function validateConfig(config: {
     "stage",
     "project",
   ];
+
+    console.log(config)
 
   const invalidKeys = expectedKeys.filter(
     (key) => !config[key] || typeof config[key] !== "string"

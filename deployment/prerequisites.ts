@@ -11,7 +11,7 @@ import {
 } from "aws-cdk-lib";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
-import { getSecret } from "./utils/secrets-manager";
+// import { getSecret } from "./utils/secrets-manager";
 import { Construct } from "constructs";
 
 interface PrerequisiteConfigProps {
@@ -68,7 +68,14 @@ export class PrerequisiteStack extends Stack {
 async function main() {
   const app = new App({
     defaultStackSynthesizer: new DefaultStackSynthesizer(
-      JSON.parse((await getSecret("cdkSynthesizerConfig"))!)
+      {
+        "deployRoleArn": "somethin",
+        "fileAssetPublishingRoleArn": "somethin",
+        "imageAssetPublishingRoleArn": "somethin",
+        "cloudFormationExecutionRole": "somethin",
+        "lookupRoleArn": "somethin",
+        "qualifier": "somethins"
+      }
     ),
   });
 
