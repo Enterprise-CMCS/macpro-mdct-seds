@@ -124,5 +124,9 @@ export class ParentStack extends Stack {
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,
     });
+    
+    new CfnOutput(this, "ApiUrl", {
+      value: apiGatewayRestApiUrl,
+    });
   }
 }
