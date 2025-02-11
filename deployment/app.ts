@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 import "source-map-support/register";
-import * as cdk from "aws-cdk-lib";
+import { Aws, App, DefaultStackSynthesizer, Tags } from "aws-cdk-lib";
 import { EmptyParentStack } from "./stacks/empty/parent";
 import { ImportsIncludedParentStack } from "./stacks/imports_included/parent";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
-import { getSecret } from "./utils/secrets-manager";
 import { getDeploymentConfigParameters } from "./utils/systems-manager";
 
 async function main() {
-  const app = new cdk.App({
-    defaultStackSynthesizer: new cdk.DefaultStackSynthesizer(
-      JSON.parse((await getSecret("cdkSynthesizerConfig"))!)
-    ),
+  const app = new App({
+    defaultStackSynthesizer: new DefaultStackSynthesizer({
+      deployRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-deploy-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      fileAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-file-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      imageAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-image-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      cloudFormationExecutionRole: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-cfn-exec-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      lookupRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-lookup-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      qualifier: "hnb659fds",
+    }),
   });
 
   const stage = app.node.getContext("stage");
@@ -38,8 +42,8 @@ async function main() {
     stage
   );
 
-  cdk.Tags.of(app).add("STAGE", stage);
-  cdk.Tags.of(app).add("PROJECT", config.project);
+  Tags.of(app).add("STAGE", stage);
+  Tags.of(app).add("PROJECT", config.project);
 
   let correctParentStack;
   if (process.env.IMPORT_VARIANT == "empty") {

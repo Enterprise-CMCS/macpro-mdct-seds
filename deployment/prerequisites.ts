@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import {
+  App,
   aws_apigateway as apigateway,
   aws_iam as iam,
-  App,
+  Aws,
   DefaultStackSynthesizer,
   Stack,
   StackProps,
@@ -11,7 +12,6 @@ import {
 } from "aws-cdk-lib";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
-import { getSecret } from "./utils/secrets-manager";
 import { Construct } from "constructs";
 
 interface PrerequisiteConfigProps {
@@ -28,11 +28,7 @@ export class PrerequisiteStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const {
-      project,
-      iamPermissionsBoundaryArn,
-      iamPath,
-    } = props;
+    const { project, iamPermissionsBoundaryArn, iamPath } = props;
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
@@ -55,21 +51,22 @@ export class PrerequisiteStack extends Stack {
       }
     );
 
-    new apigateway.CfnAccount(
-      this,
-      "ApiGatewayRestApiAccount",
-      {
-        cloudWatchRoleArn: cloudWatchRole.roleArn,
-      }
-    );
+    new apigateway.CfnAccount(this, "ApiGatewayRestApiAccount", {
+      cloudWatchRoleArn: cloudWatchRole.roleArn,
+    });
   }
 }
 
 async function main() {
   const app = new App({
-    defaultStackSynthesizer: new DefaultStackSynthesizer(
-      JSON.parse((await getSecret("cdkSynthesizerConfig"))!)
-    ),
+    defaultStackSynthesizer: new DefaultStackSynthesizer({
+      deployRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-deploy-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      fileAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-file-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      imageAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-image-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      cloudFormationExecutionRole: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-cfn-exec-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      lookupRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-lookup-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      qualifier: "hnb659fds",
+    }),
   });
 
   Tags.of(app).add("PROJECT", "SEDS");
