@@ -145,14 +145,12 @@ async function run_local() {
   if (!isLocalStackRunning()) {
     throw "LocalStack needs to be running.";
   }
+  process.env.AWS_DEFAULT_REGION = "us-east-1";
+  process.env.AWS_ACCESS_KEY_ID = "localstack";
+  process.env.AWS_SECRET_ACCESS_KEY = "localstack";
+  process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
 
   // TODO:
-  // export AWS_DEFAULT_REGION=us-east-1
-  // export AWS_ACCESS_KEY_ID=localstack
-  // export AWS_SECRET_ACCESS_KEY=localstack
-  // export AWS_ENDPOINT_URL=http://localhost:4566
-  // export PROJECT=seds
-
   // aws cloudformation deploy --stack-name local-prereqs --template-file deployment/local/prereqs.yaml --capabilities CAPABILITY_NAMED_IAM
 
   // cdklocal bootstrap aws://000000000000/us-east-1 -c stage=jon-cdk
