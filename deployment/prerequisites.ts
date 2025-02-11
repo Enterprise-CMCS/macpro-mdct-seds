@@ -4,7 +4,6 @@ import {
   App,
   aws_apigateway as apigateway,
   aws_iam as iam,
-  Aws,
   DefaultStackSynthesizer,
   Stack,
   StackProps,
@@ -60,11 +59,16 @@ export class PrerequisiteStack extends Stack {
 async function main() {
   const app = new App({
     defaultStackSynthesizer: new DefaultStackSynthesizer({
-      deployRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-deploy-role-${Aws.ACCOUNT_ID}-us-east-1`,
-      fileAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-file-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
-      imageAssetPublishingRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-image-publishing-role-${Aws.ACCOUNT_ID}-us-east-1`,
-      cloudFormationExecutionRole: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-cfn-exec-role-${Aws.ACCOUNT_ID}-us-east-1`,
-      lookupRoleArn: `arn:aws:iam::${Aws.ACCOUNT_ID}:role/delegatedadmin/developer/cdk-hnb659fds-lookup-role-${Aws.ACCOUNT_ID}-us-east-1`,
+      deployRoleArn:
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
+      fileAssetPublishingRoleArn:
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
+      imageAssetPublishingRoleArn:
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
+      cloudFormationExecutionRole:
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+      lookupRoleArn:
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
       qualifier: "hnb659fds",
     }),
   });
