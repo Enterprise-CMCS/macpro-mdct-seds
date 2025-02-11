@@ -9,8 +9,7 @@ export const main = handler(async (event) => {
   await authorizeAnyUser(event);
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AUTH_USER_TABLE,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":userId": event.pathParameters["id"],

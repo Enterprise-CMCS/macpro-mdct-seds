@@ -55,8 +55,7 @@ const getStateForms = async (forms) => {
     const [expressionAttributeValues, filterExpression] = getExpressions();
 
     const params = {
-      TableName:
-        process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+      TableName: process.env.STATE_FORMS_TABLE,
       Select: "ALL_ATTRIBUTES",
       ExpressionAttributeValues: { ...expressionAttributeValues },
       FilterExpression: filterExpression,
@@ -98,9 +97,7 @@ const generateTotals = async (stateForms, ageRange) => {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
 
         const questionParams = {
-          TableName:
-            process.env.FORM_ANSWERS_TABLE_NAME ??
-            process.env.FormAnswersTableName,
+          TableName: process.env.FORM_ANSWERS_TABLE,
           ExpressionAttributeValues: {
             ":answerEntry": answerEntry,
           },
@@ -227,15 +224,11 @@ const commitTotalsToDB = async (putRequests) => {
       batchArrayFormAnswers.push(putRequests.slice(i, i + batchSizeFA));
     }
 
-    // Get tableName
-    const formAnswersTableName =
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
-
     // Loop through batches and write to DB
     for (let i in batchArrayFormAnswers) {
       const batchRequest = {
         RequestItems: {
-          [formAnswersTableName]: batchArrayFormAnswers[i],
+          [process.env.STATE_FORMS_TABLE]: batchArrayFormAnswers[i],
         },
       };
 

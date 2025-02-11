@@ -7,8 +7,7 @@ export const main = handler(async (event, context) => {
   console.log(data);
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AUTH_USER_TABLE,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":usernameSub": data.usernameSub,

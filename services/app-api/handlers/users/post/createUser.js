@@ -22,8 +22,7 @@ const createUser = async (userData) => {
 
   // Query to get next available userId
   const paramsForId = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AUTH_USER_TABLE,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
@@ -41,8 +40,7 @@ const createUser = async (userData) => {
   }
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AUTH_USER_TABLE,
     Item: {
       dateJoined: new Date().toISOString(),
       email: userData.email,

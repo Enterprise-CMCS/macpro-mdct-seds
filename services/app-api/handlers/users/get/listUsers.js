@@ -6,8 +6,7 @@ export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AUTH_USER_TABLE,
   };
 
   const result = await dynamoDb.scan(params);

@@ -212,16 +212,13 @@ const generateQuarterForms = async (event) => {
     })
     .flat();
 
-  // Get tableName
-  const formDescriptionTableName =
-    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
   console.log(`Saving ${putRequestsStateForms.length} state forms`);
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormDescriptions) {
     const batchRequest = {
       RequestItems: {
-        [formDescriptionTableName]: batchArrayFormDescriptions[i],
+        [process.env.STATE_FORMS_TABLE]: batchArrayFormDescriptions[i],
       },
     };
 
@@ -333,15 +330,11 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Get tableName
-  const formAnswersTableName =
-    process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName;
-
   // Loop through batches and write to DB
   for (let i in batchArrayFormAnswers) {
     const batchRequest = {
       RequestItems: {
-        [formAnswersTableName]: batchArrayFormAnswers[i],
+        [process.env.FORM_ANSWERS_TABLE]: batchArrayFormAnswers[i],
       },
     };
 
