@@ -150,6 +150,19 @@ async function run_local() {
   process.env.AWS_SECRET_ACCESS_KEY = "localstack";
   process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
 
+  const cdklocalBootstrapCmd = [
+    "cdklocal",
+    "bootstrap",
+    "aws://000000000000/us-east-1",
+    "--context",
+    "stage=jon-cdk",
+  ];
+  await runner.run_command_and_output(
+    "CDK local bootstrap",
+    cdklocalBootstrapCmd,
+    "."
+  );
+
   // TODO:
   // aws cloudformation deploy --stack-name local-prereqs --template-file deployment/local/prereqs.yaml --capabilities CAPABILITY_NAMED_IAM
 
