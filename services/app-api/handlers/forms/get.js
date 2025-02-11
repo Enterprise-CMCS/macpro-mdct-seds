@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
   const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
 
   const answerParams = {
-    TableName: process.env.FormAnswersTableName,
+    TableName: process.env.FORM_ANSWERS_TABLE,
     IndexName: "state-form-index",
     /*Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
@@ -24,7 +24,7 @@ export const main = handler(async (event, context) => {
   };
 
   const questionParams = {
-    TableName: process.env.FormQuestionsTableName,
+    TableName: process.env.FORM_QUESTIONS_TABLE,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },

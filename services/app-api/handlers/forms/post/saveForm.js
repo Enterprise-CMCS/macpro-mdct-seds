@@ -151,7 +151,7 @@ const updateAnswers = async (answers, user) => {
 
     // Params for updating questions
     const questionParams = {
-      TableName: process.env.FormAnswersTableName,
+      TableName: process.env.FORM_ANSWERS_TABLE,
       Key: {
         answer_entry: answerEntry,
       },
