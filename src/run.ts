@@ -105,11 +105,75 @@ async function run_cdk_watch(
   await runner.run_command_and_output("CDK watch", watchCmd, ".");
 }
 
+function isDockerRunning() {
+  try {
+    execSync("docker info", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isLocalStackRunning() {
+  try {
+    const output = execSync("localstack status", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    }).trim();
+    return output.includes("running");
+  } catch {
+    return false;
+  }
+}
+
+async function run_watch(options: { stage: string }) {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+
+  run_cdk_watch(runner, options);
+  run_fe_locally(runner);
+}
+
 async function run_local() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
-  // TODO: confirm docker and localstack are running
+  if (!isDockerRunning()) {
+    throw "Docker needs to be running.";
+  }
+
+  if (!isLocalStackRunning()) {
+    throw "LocalStack needs to be running.";
+  }
+
+  // TODO:
+  // export AWS_DEFAULT_REGION=us-east-1
+  // export AWS_ACCESS_KEY_ID=localstack
+  // export AWS_SECRET_ACCESS_KEY=localstack
+  // export AWS_ENDPOINT_URL=http://localhost:4566
+  // export PROJECT=seds
+
+  // aws cloudformation deploy --stack-name local-prereqs --template-file deployment/local/prereqs.yaml --capabilities CAPABILITY_NAMED_IAM
+
+  // cdklocal bootstrap aws://000000000000/us-east-1 -c stage=jon-cdk
+
+  // ./run localdeploy-prerequisites
+
+  // (It seems like the command above may need to be run twice as it fails the first time)
+
+  // ./run localdeploy --stage jon-cdk
+
+  // Update src/write-ui-env-file.ts with the API gateway URL output from the above deployment without the / at the AWS_ENDPOINT_URL
+
+  // code src/write-ui-env-file.ts
+
+  // Run:
+
+  // ./run local
+
+  // and it login does not work!
+
+  // Useful URL to monitor local localstack instance: https://app.localstack.cloud/inst/default/status
 
   // TODO: put the below back after figuring out localstack
   // run_fe_locally(runner);
@@ -226,6 +290,12 @@ async function destroy({
 // The command definitons in yargs
 // All valid arguments to dev should be enumerated here, this is the entrypoint to the script
 yargs(process.argv.slice(2))
+  .command(
+    "watch",
+    "run cdk watch and react together",
+    { stage: { type: "string", demandOption: true } },
+    run_watch
+  )
   .command(
     "local",
     "run our app via cdk deployment to localstack locally and react locally together",
