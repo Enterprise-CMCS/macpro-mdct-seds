@@ -105,11 +105,14 @@ async function run_cdk_watch(
   await runner.run_command_and_output("CDK watch", watchCmd, ".");
 }
 
-async function run_local(options: { stage: string }) {
+async function run_local() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  run_cdk_watch(runner, options);
-  run_fe_locally(runner, options);
+
+  // TODO: confirm docker and localstack are running
+
+  // TODO: put the below back after figuring out localstack
+  // run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
@@ -225,10 +228,8 @@ async function destroy({
 yargs(process.argv.slice(2))
   .command(
     "local",
-    "run cdk watch and react together",
-    {
-      stage: { type: "string", demandOption: true },
-    },
+    "run our app via cdk deployment to localstack locally and react locally together",
+    {},
     run_local
   )
   .command(
