@@ -3,14 +3,12 @@ import dynamoDb from "../../../libs/dynamodb-lib.js";
 import chunk from "lodash/chunk";
 
 const tableNames = [
-  process.env.AGE_RANGES_TABLE,
   process.env.FORM_ANSWERS_TABLE,
   process.env.FORM_QUESTIONS_TABLE,
-  process.env.FORMS_TABLE,
   process.env.FORM_TEMPLATES_TABLE,
+  process.env.FORMS_TABLE,
   process.env.STATE_FORMS_TABLE,
   process.env.STATES_TABLE,
-  process.env.STATUS_TABLE,
   process.env.AUTH_USER_TABLE,
 ];
 
