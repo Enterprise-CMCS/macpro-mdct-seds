@@ -84,14 +84,16 @@ function updateEnvFiles() {
 
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
-async function run_fe_locally(runner: LabeledProcessRunner, options: { stage: string }) {
-  const stage = options.stage;
-  await writeUiEnvFile(stage, true);
+async function run_fe_locally(runner: LabeledProcessRunner) {
+  await writeUiEnvFile("jon-cdk", true);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
 
-async function run_cdk_watch(runner: LabeledProcessRunner, options: { stage: string }) {
+async function run_cdk_watch(
+  runner: LabeledProcessRunner,
+  options: { stage: string }
+) {
   const stage = options.stage;
   const watchCmd = [
     "cdk",
@@ -127,16 +129,23 @@ async function prepare_services(runner: LabeledProcessRunner) {
 async function deploy_prerequisites() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployPrequisitesCmd = ["cdk", "deploy", "--app", "\"npx tsx deployment/prerequisites.ts\""];
-  await runner.run_command_and_output("CDK prerequisite deploy", deployPrequisitesCmd, ".");
+  const deployPrequisitesCmd = [
+    "cdk",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK prerequisite deploy",
+    deployPrequisitesCmd,
+    "."
+  );
 }
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
   try {
-    await client.send(
-      new DescribeStacksCommand({ StackName: stackName })
-    );
+    await client.send(new DescribeStacksCommand({ StackName: stackName }));
     return true;
   } catch (error: any) {
     return false;
@@ -148,10 +157,19 @@ async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
-    const deployCmd = ["cdk", "deploy", "--context", `stage=${stage}`, "--method=direct", "--all"];
+    const deployCmd = [
+      "cdk",
+      "deploy",
+      "--context",
+      `stage=${stage}`,
+      "--method=direct",
+      "--all",
+    ];
     await runner.run_command_and_output("CDK deploy", deployCmd, ".");
   } else {
-    console.error("MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application.")
+    console.error(
+      "MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application."
+    );
   }
 }
 
