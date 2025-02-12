@@ -11,7 +11,7 @@ export class LocalPrerequisiteStack extends Stack {
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       enableDnsSupport: true,
       enableDnsHostnames: false,
-      subnetConfiguration: [], // No default subnets, we will define a custom one below
+      subnetConfiguration: [],
     });
 
     Tags.of(mdctVpcEastDev).add("Name", "mdct-vpc-east-dev");
