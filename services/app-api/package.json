@@ -23,10 +23,10 @@
     "vitest": "^3.0.4"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.709.0",
-    "@aws-sdk/client-ses": "^3.709.0",
-    "@aws-sdk/client-ssm": "^3.709.0",
-    "@aws-sdk/lib-dynamodb": "^3.709.0",
+    "@aws-sdk/client-dynamodb": "^3.744.0",
+    "@aws-sdk/client-ses": "^3.744.0",
+    "@aws-sdk/client-ssm": "^3.744.0",
+    "@aws-sdk/lib-dynamodb": "^3.744.0",
     "aws-jwt-verify": "^4.0.1",
     "aws-sdk-client-mock": "^4.1.0",
     "jwt-decode": "^4.0.0",

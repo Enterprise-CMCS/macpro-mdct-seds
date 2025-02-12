@@ -14,8 +14,8 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.709.0",
-    "@aws-sdk/client-sts": "^3.709.0"
+    "@aws-sdk/client-cognito-identity-provider": "^3.744.0",
+    "@aws-sdk/client-sts": "^3.744.0"
   },
   "devDependencies": {}
 }
