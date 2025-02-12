@@ -68,65 +68,75 @@ export class ParentStack extends Stack {
       brokerString,
     });
 
-    const {
-      applicationEndpointUrl,
-      cloudfrontDistributionId,
-      distribution,
-      s3BucketName,
-      uiBucket,
-    } = createUiComponents({
-      deploymentConfigParameters,
-      ...commonProps,
-    });
+    if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+      const {
+        applicationEndpointUrl,
+        cloudfrontDistributionId,
+        distribution,
+        s3BucketName,
+        uiBucket,
+      } = createUiComponents({
+        deploymentConfigParameters,
+        ...commonProps,
+      });
 
-    const {
-      userPoolDomainName,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-    } = createUiAuthComponents({
-      ...commonProps,
-      oktaMetadataUrl,
-      applicationEndpointUrl,
-      restApiId,
-      bootstrapUsersPasswordArn,
-      customResourceRole,
-    });
+      const {
+        userPoolDomainName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+      } = createUiAuthComponents({
+        ...commonProps,
+        oktaMetadataUrl,
+        applicationEndpointUrl,
+        restApiId,
+        bootstrapUsersPasswordArn,
+        customResourceRole,
+      });
 
-    deployFrontend({
-      ...commonProps,
-      uiBucket,
-      distribution,
-      apiGatewayRestApiUrl,
-      applicationEndpointUrl,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
-      customResourceRole,
-    });
-
-    new ssm.StringParameter(this, "DeploymentOutput", {
-      parameterName: `/${project}/${stage}/deployment-output`,
-      stringValue: JSON.stringify({
+      deployFrontend({
+        ...commonProps,
+        uiBucket,
+        distribution,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
-        s3BucketName,
-        cloudfrontDistributionId,
         identityPoolId,
         userPoolId,
         userPoolClientId,
         userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
-      }),
-      description: `Deployment output for the ${stage} environment.`,
-    });
+        customResourceRole,
+      });
 
-    new CfnOutput(this, "CloudFrontUrl", {
-      value: applicationEndpointUrl,
-    });
-    
-    new CfnOutput(this, "ApiUrl", {
-      value: apiGatewayRestApiUrl,
-    });
+      new ssm.StringParameter(this, "DeploymentOutput", {
+        parameterName: `/${project}/${stage}/deployment-output`,
+        stringValue: JSON.stringify({
+          apiGatewayRestApiUrl,
+          applicationEndpointUrl,
+          s3BucketName,
+          cloudfrontDistributionId,
+          identityPoolId,
+          userPoolId,
+          userPoolClientId,
+          userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
+        }),
+        description: `Deployment output for the ${stage} environment.`,
+      });
+
+      new CfnOutput(this, "CloudFrontUrl", {
+        value: applicationEndpointUrl,
+      });
+
+      new CfnOutput(this, "ApiUrl", {
+        value: apiGatewayRestApiUrl,
+      });
+    } else {
+      new ssm.StringParameter(this, "DeploymentOutput", {
+        parameterName: `/${project}/${stage}/deployment-output`,
+        stringValue: JSON.stringify({
+          apiGatewayRestApiUrl,
+        }),
+        description: `Deployment output for the ${stage} environment.`,
+      });
+    }
   }
 }
