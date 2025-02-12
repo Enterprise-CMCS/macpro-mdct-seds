@@ -30,10 +30,9 @@ export async function writeLocalUiEnvFile(stage: string) {
     LOCAL_LOGIN: "false",
     SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
-    API_URL: deploymentOutput.apiGatewayRestApiUrl.replace(
-      ".cloud",
-      ".cloud:4566"
-    ),
+    API_URL: deploymentOutput.apiGatewayRestApiUrl
+      .replace(".cloud", ".cloud:4566")
+      .replace("https", "http"),
     COGNITO_REGION: process.env.COGNITO_REGION,
     COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
     COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
