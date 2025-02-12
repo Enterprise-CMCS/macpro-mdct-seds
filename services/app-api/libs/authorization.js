@@ -9,8 +9,8 @@ export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
   const apiKey = event?.headers?.["x-api-key"];
 
-  // TODO, it seems that jwt_decode and verifier.verify may return the same object?
-  // Maybe we can remove the jwt_decode dependency.
+  // TODO, it seems that jwtDecode and verifier.verify may return the same object?
+  // Maybe we can remove the jwtDecode dependency.
 
   const token = jwtDecode(apiKey);
   const role = mapMembershipToRole(token["custom:ismemberof"]);
