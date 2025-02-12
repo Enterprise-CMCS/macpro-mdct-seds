@@ -9,7 +9,7 @@ import {
   DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { writeUiEnvFile } from "./write-ui-env-file.js";
+import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
 dotenv.config();
@@ -85,7 +85,7 @@ function updateEnvFiles() {
 // run_fe_locally runs the frontend and its dependencies locally
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner) {
-  await writeUiEnvFile("jon-cdk", true);
+  await writeLocalUiEnvFile("jon-cdk");
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }

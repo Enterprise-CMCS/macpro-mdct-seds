@@ -12,7 +12,7 @@ const configFilePath = path.resolve(outputPath, "env-config.js");
 const project = "seds";
 const region = "us-east-1";
 
-export async function writeUiEnvFile(stage: string, local = false) {
+export async function writeLocalUiEnvFile(stage: string) {
   const ssmClient = new SSMClient({ region });
   const parameterName = `/${project}/${stage}/deployment-output`;
 
@@ -34,17 +34,14 @@ export async function writeUiEnvFile(stage: string, local = false) {
       ".cloud",
       ".cloud:4566"
     ),
-    COGNITO_REGION: region,
-    COGNITO_IDENTITY_POOL_ID: deploymentOutput.identityPoolId,
-    COGNITO_USER_POOL_ID: deploymentOutput.userPoolId,
-    COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,
-    COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
-    COGNITO_REDIRECT_SIGNIN: local
-      ? "http://localhost:3000/"
-      : deploymentOutput.applicationEndpointUrl,
-    COGNITO_REDIRECT_SIGNOUT: local
-      ? "http://localhost:3000/"
-      : deploymentOutput.applicationEndpointUrl,
+    COGNITO_REGION: process.env.COGNITO_REGION,
+    COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
+    COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+    COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    COGNITO_USER_POOL_CLIENT_DOMAIN:
+      process.env.COGNITO_USER_POOL_CLIENT_DOMAIN,
+    COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
+    COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
     STAGE: stage,
   };
 
