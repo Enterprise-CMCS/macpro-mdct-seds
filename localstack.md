@@ -3,8 +3,7 @@
 pipx install awscli-local
 
 1st terminal tab
-SERVICES=cloudformation,serverless,sqs,ssm,secretsmanager localstack start
-
+SERVICES=events,firehose,logs,dynamodb,apigateway,ec2,iam,cloudformation,serverless,sqs,ssm,secretsmanager localstack start
 for some reason you must do this under ks
 
 2nd terminal tab
