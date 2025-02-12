@@ -55,7 +55,7 @@ const getStateForms = async (forms) => {
     const [expressionAttributeValues, filterExpression] = getExpressions();
 
     const params = {
-      TableName: process.env.STATE_FORMS_TABLE,
+      TableName: process.env.StateFormsTable,
       Select: "ALL_ATTRIBUTES",
       ExpressionAttributeValues: { ...expressionAttributeValues },
       FilterExpression: filterExpression,
@@ -97,7 +97,7 @@ const generateTotals = async (stateForms, ageRange) => {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
 
         const questionParams = {
-          TableName: process.env.FORM_ANSWERS_TABLE,
+          TableName: process.env.FormAnswersTable,
           ExpressionAttributeValues: {
             ":answerEntry": answerEntry,
           },
@@ -228,7 +228,7 @@ const commitTotalsToDB = async (putRequests) => {
     for (let i in batchArrayFormAnswers) {
       const batchRequest = {
         RequestItems: {
-          [process.env.STATE_FORMS_TABLE]: batchArrayFormAnswers[i],
+          [process.env.StateFormsTable]: batchArrayFormAnswers[i],
         },
       };
 

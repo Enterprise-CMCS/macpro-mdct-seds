@@ -33,7 +33,7 @@ export const main = handler(async (event, context) => {
 async function getBusinessUsersEmail() {
   const businessOwnersEmails = [];
   const params = {
-    TableName: process.env.AUTH_USER_TABLE,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: { "#r": "role" },
     ExpressionAttributeValues: { ":role": "business" },

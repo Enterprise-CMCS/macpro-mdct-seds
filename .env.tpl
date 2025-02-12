@@ -5,13 +5,13 @@ IAM_PERMISSIONS_BOUNDARY="bound"
 INFRASTRUCTURE_TYPE="development"
 LOCAL_DEFAULT_STRING=""
 
-FORM_ANSWERS_TABLE=local-form-answers
-FORM_QUESTIONS_TABLE=local-form-questions
-FORM_TEMPLATES_TABLE=local-form-templates
-FORMS_TABLE=local-forms
-STATE_FORMS_TABLE=local-state-forms
-STATES_TABLE=local-states
-AUTH_USER_TABLE=local-auth-user
+FormAnswersTable=local-form-answers
+FormQuestionsTable=local-form-questions
+FormTemplatesTable=local-form-templates
+FormsTable=local-forms
+StateFormsTable=local-state-forms
+StatesTable=local-states
+AuthUserTable=local-auth-user
 
 DYNAMODB_URL=http://host.docker.internal:8000
 API_URL=http://localhost:3030/local

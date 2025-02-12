@@ -114,10 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => {
-        const tableNameEnvCase = table.id.split(/\.?(?=[A-Z])/).join('_').toUpperCase() // FormAnswers -> FORM_ANSWERS
-        return [`${tableNameEnvCase}_TABLE`, table.name]
-      })
+      tables.map((table) => [`${table.id}Table`, table.name])
     ),
   };
 

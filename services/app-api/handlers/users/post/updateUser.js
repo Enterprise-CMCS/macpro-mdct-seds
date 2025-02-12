@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
   assertPayloadIsValid(data);
 
   const params = {
-    TableName: process.env.AUTH_USER_TABLE,
+    TableName: process.env.AuthUserTable,
     Key: {
       userId: currentUser["Items"][0].userId,
     },

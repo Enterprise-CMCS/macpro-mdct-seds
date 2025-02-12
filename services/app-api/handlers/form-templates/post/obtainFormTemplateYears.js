@@ -6,7 +6,7 @@ export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
 
   const params = {
-    TableName: process.env.FORM_TEMPLATES_TABLE,
+    TableName: process.env.FormTemplatesTable,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },

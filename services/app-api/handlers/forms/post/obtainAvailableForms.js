@@ -13,7 +13,7 @@ export const main = handler(async (event) => {
   await authorizeAdminOrUserForState(event, data.stateId);
 
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE,
+    TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":stateId": data.stateId,

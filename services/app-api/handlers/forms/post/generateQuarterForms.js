@@ -218,7 +218,7 @@ const generateQuarterForms = async (event) => {
   for (let i in batchArrayFormDescriptions) {
     const batchRequest = {
       RequestItems: {
-        [process.env.STATE_FORMS_TABLE]: batchArrayFormDescriptions[i],
+        [process.env.StateFormsTable]: batchArrayFormDescriptions[i],
       },
     };
 
@@ -334,7 +334,7 @@ const generateQuarterForms = async (event) => {
   for (let i in batchArrayFormAnswers) {
     const batchRequest = {
       RequestItems: {
-        [process.env.FORM_ANSWERS_TABLE]: batchArrayFormAnswers[i],
+        [process.env.FormAnswersTable]: batchArrayFormAnswers[i],
       },
     };
 

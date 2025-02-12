@@ -15,7 +15,7 @@ export const main = handler(async (event, context) => {
 
 export const obtainUserByUsername = async (username) => {
   const params = {
-    TableName: process.env.AUTH_USER_TABLE,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":username": username,

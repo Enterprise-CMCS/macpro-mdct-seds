@@ -10,7 +10,7 @@ export const main = handler(async (event, context) => {
   const startKey = data.startKey;
 
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE,
+    TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",

@@ -151,7 +151,7 @@ const updateAnswers = async (answers, user) => {
 
     // Params for updating questions
     const questionParams = {
-      TableName: process.env.FORM_ANSWERS_TABLE,
+      TableName: process.env.FormAnswersTable,
       Key: {
         answer_entry: answerEntry,
       },
@@ -177,7 +177,7 @@ const updateAnswers = async (answers, user) => {
 const updateStateForm = async (stateFormId, statusData, user) => {
   // Get existing form to compare changes
   const params = {
-    TableName: process.env.STATE_FORMS_TABLE,
+    TableName: process.env.StateFormsTable,
     ExpressionAttributeNames: {
       "#state_form": "state_form",
     },
