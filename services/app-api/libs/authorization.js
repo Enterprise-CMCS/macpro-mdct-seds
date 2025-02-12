@@ -7,29 +7,41 @@ import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
 export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
-  const apiKey = event?.headers?.["x-api-key"];
+
+  const apiKey =
+    event.requestContext.accountId === "000000000000"
+      ? "LOCAL_TESTING"
+      : event?.headers?.["x-api-key"];
 
   // TODO, it seems that jwtDecode and verifier.verify may return the same object?
   // Maybe we can remove the jwtDecode dependency.
 
-  const token = jwtDecode(apiKey);
-  const role = mapMembershipToRole(token["custom:ismemberof"]);
+  if (apiKey === "LOCAL_TESTING") {
+    return {};
+  } else {
+    const token = jwtDecode(apiKey);
+    const role = mapMembershipToRole(token["custom:ismemberof"]);
 
-  return {
-    email: token.email,
-    firstName: token.given_name,
-    lastName: token.family_name,
-    role,
-    username: token.identities?.[0]?.userId || token.email,
-    usernameSub: token.sub, // whatever that means.
-  };
+    return {
+      email: token.email,
+      firstName: token.given_name,
+      lastName: token.family_name,
+      role,
+      username: token.identities?.[0]?.userId || token.email,
+      usernameSub: token.sub, // whatever that means.
+    };
+  }
 }
 
 export async function verifyEventSignature(event) {
-  const apiKey = event?.headers?.["x-api-key"];
-  if (!apiKey) {
-    console.log("MISSING API KEY, ARE YOU TRYING TO CALL A HANDLER DIRECTLY?");
-    throw new Error("Forbidden");
+  if (event.requestContext.accountId !== "000000000000") {
+    const apiKey = event?.headers?.["x-api-key"];
+    if (!apiKey) {
+      console.log(
+        "MISSING API KEY, ARE YOU TRYING TO CALL A HANDLER DIRECTLY?"
+      );
+      throw new Error("Forbidden");
+    }
   }
 
   const { userPoolId, clientId } = await getCognitoValues();
@@ -50,7 +62,7 @@ export async function verifyEventSignature(event) {
             responseTimeout: 5000,
           },
         }),
-      })
+      }),
     }
   );
 
