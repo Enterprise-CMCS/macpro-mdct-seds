@@ -189,22 +189,18 @@ async function run_local() {
     "."
   );
 
-  // ./run localdeploy --stage jon-cdk
-
-  // Update src/write-ui-env-file.ts with the API gateway URL output from the above deployment without the / at the AWS_ENDPOINT_URL
-
-  // code src/write-ui-env-file.ts
-
-  // Run:
-
-  // ./run local
-
-  // and it login does not work!
-
-  // Useful URL to monitor local localstack instance: https://app.localstack.cloud/inst/default/status
+  const deployCmd = [
+    "cdklocal",
+    "deploy",
+    "--context",
+    "stage=jon-cdk",
+    "--all",
+    "--no-rollback",
+  ];
+  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
   // TODO: put the below back after figuring out localstack
-  // run_fe_locally(runner);
+  run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
