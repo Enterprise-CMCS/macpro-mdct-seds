@@ -102,7 +102,10 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: apigateway.AuthorizationType.IAM,
+          authorizationType:
+            process.env.CDK_DEFAULT_ACCOUNT !== "000000000000"
+              ? apigateway.AuthorizationType.IAM
+              : undefined,
         }
       );
     }
