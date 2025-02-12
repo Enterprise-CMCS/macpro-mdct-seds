@@ -114,7 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}TableName`, table.name])
+      tables.map((table) => [`${table.id}Table`, table.name])
     ),
   };
 

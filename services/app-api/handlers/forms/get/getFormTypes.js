@@ -6,7 +6,7 @@ export const main = handler(async (event, context) => {
   await authorizeAnyUser(event);
 
   const params = {
-    TableName: process.env.FormsTableName,
+    TableName: process.env.FormsTable,
     Select: "ALL_ATTRIBUTES",
   };
 

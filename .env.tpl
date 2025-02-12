@@ -5,30 +5,13 @@ IAM_PERMISSIONS_BOUNDARY="bound"
 INFRASTRUCTURE_TYPE="development"
 LOCAL_DEFAULT_STRING=""
 
-AGE_RANGES_TABLE_NAME=local-age-ranges
-AGE_RANGES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-FORM_ANSWERS_TABLE_NAME=local-form-answers
-FORM_ANSWERS_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-FORM_QUESTIONS_TABLE_NAME=local-form-questions
-FORM_QUESTIONS_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-FORM_TEMPLATES_TABLE_NAME=local-form-templates
-FORM_TEMPLATES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-FORMS_TABLE_NAME=local-forms
-FORMS_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-STATE_FORMS_TABLE_NAME=local-state-forms
-STATE_FORMS_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-STATES_TABLE_NAME=local-states
-STATES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-STATUS_TABLE_NAME=local-status
-STATUS_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-
-AUTH_USER_TABLE_NAME=local-auth-user
-AUTH_USER_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-AUTH_USER_ROLES_TABLE_NAME=local-auth-user-roles
-AUTH_USER_ROLES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-AUTH_USER_STATES_TABLE_NAME=local-auth-user-states
-AUTH_USER_STATES_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-
+FormAnswersTable=local-form-answers
+FormQuestionsTable=local-form-questions
+FormTemplatesTable=local-form-templates
+FormsTable=local-forms
+StateFormsTable=local-state-forms
+StatesTable=local-states
+AuthUserTable=local-auth-user
 
 DYNAMODB_URL=http://host.docker.internal:8000
 API_URL=http://localhost:3030/local

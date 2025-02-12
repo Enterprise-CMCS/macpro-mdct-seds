@@ -20,8 +20,7 @@ export const main = handler(async (event, context) => {
 
 export const obtainUserByEmail = async (email) => {
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":email": email,
