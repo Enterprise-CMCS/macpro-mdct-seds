@@ -125,10 +125,6 @@ export class ParentStack extends Stack {
       new CfnOutput(this, "CloudFrontUrl", {
         value: applicationEndpointUrl,
       });
-
-      new CfnOutput(this, "ApiUrl", {
-        value: apiGatewayRestApiUrl,
-      });
     } else {
       new ssm.StringParameter(this, "DeploymentOutput", {
         parameterName: `/${project}/${stage}/deployment-output`,
@@ -138,5 +134,8 @@ export class ParentStack extends Stack {
         description: `Deployment output for the ${stage} environment.`,
       });
     }
+    new CfnOutput(this, "ApiUrl", {
+      value: apiGatewayRestApiUrl,
+    });
   }
 }
