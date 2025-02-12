@@ -164,8 +164,18 @@ async function run_local() {
   );
 
   // TODO:
-  // aws cloudformation deploy --stack-name local-prereqs --template-file deployment/local/prereqs.yaml --capabilities CAPABILITY_NAMED_IAM
 
+  const deployLocalPrequisitesCmd = [
+    "cdklocal",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/local/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK local prerequisite deploy",
+    deployLocalPrequisitesCmd,
+    "."
+  );
 
   // ./run localdeploy-prerequisites
 
