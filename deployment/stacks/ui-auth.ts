@@ -67,7 +67,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
-    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
   let supportedIdentityProviders:
@@ -262,10 +262,12 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     "REGIONAL"
   ).webAcl;
 
-  new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
-    resourceArn: userPool.userPoolArn,
-    webAclArn: webAcl.attrArn,
-  });
+  if (webAcl) {
+    new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
+      resourceArn: userPool.userPoolArn,
+      webAclArn: webAcl.attrArn,
+    });
+  }
 
   new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
     parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,

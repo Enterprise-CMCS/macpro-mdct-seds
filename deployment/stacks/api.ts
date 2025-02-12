@@ -442,10 +442,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
     "REGIONAL"
   );
-  new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
-    resourceArn: api.deploymentStage.stageArn,
-    webAclArn: waf.webAcl.attrArn,
-  });
+  if (waf.webAcl) {
+    new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
+      resourceArn: api.deploymentStage.stageArn,
+      webAclArn: waf.webAcl.attrArn,
+    });
+  }
 
   if (!isDev) {
     const logBucket = new s3.Bucket(scope, "WafLogBucket", {
@@ -455,12 +457,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       enforceSSL: true,
     });
 
-    new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-      bucket: logBucket,
-      iamPermissionsBoundary: props.iamPermissionsBoundary,
-      iamPath: props.iamPath,
-    });
+    if (waf.logGroup) {
+      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+        iamPermissionsBoundary: props.iamPermissionsBoundary,
+        iamPath: props.iamPath,
+      });
+    }
   }
 
   addIamPropertiesToBucketAutoDeleteRole(

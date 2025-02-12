@@ -13,8 +13,8 @@ interface WafProps {
 }
 
 export class WafConstruct extends Construct {
-  public readonly webAcl: CfnWebACL;
-  public readonly logGroup: LogGroup;
+  public readonly webAcl: CfnWebACL | undefined;
+  public readonly logGroup: LogGroup | undefined;
 
   constructor(
     scope: Construct,
@@ -22,9 +22,9 @@ export class WafConstruct extends Construct {
     props: WafProps,
     scopeType: string
   ) {
-    if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
-      super(scope, id);
+    super(scope, id);
 
+    if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
       const { name, blockRequestBodyOver8KB = true } = props;
 
       const commonRuleOverrides: CfnWebACL.RuleActionOverrideProperty[] = [];
