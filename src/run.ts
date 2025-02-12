@@ -166,7 +166,6 @@ async function run_local() {
   // TODO:
   // aws cloudformation deploy --stack-name local-prereqs --template-file deployment/local/prereqs.yaml --capabilities CAPABILITY_NAMED_IAM
 
-  // cdklocal bootstrap aws://000000000000/us-east-1 -c stage=jon-cdk
 
   // ./run localdeploy-prerequisites
 
