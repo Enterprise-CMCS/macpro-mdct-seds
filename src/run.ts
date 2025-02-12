@@ -177,9 +177,17 @@ async function run_local() {
     "."
   );
 
-  // ./run localdeploy-prerequisites
-
-  // (It seems like the command above may need to be run twice as it fails the first time)
+  const deployPrequisitesCmd = [
+    "cdklocal",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK prerequisite deploy",
+    deployPrequisitesCmd,
+    "."
+  );
 
   // ./run localdeploy --stage jon-cdk
 
