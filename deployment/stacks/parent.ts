@@ -71,9 +71,7 @@ export class ParentStack extends Stack {
     if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
       const {
         applicationEndpointUrl,
-        cloudfrontDistributionId,
         distribution,
-        s3BucketName,
         uiBucket,
       } = createUiComponents({
         deploymentConfigParameters,
@@ -107,20 +105,6 @@ export class ParentStack extends Stack {
         customResourceRole,
       });
 
-      new ssm.StringParameter(this, "DeploymentOutput", {
-        parameterName: `/${project}/${stage}/deployment-output`,
-        stringValue: JSON.stringify({
-          apiGatewayRestApiUrl,
-          applicationEndpointUrl,
-          s3BucketName,
-          cloudfrontDistributionId,
-          identityPoolId,
-          userPoolId,
-          userPoolClientId,
-          userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
-        }),
-        description: `Deployment output for the ${stage} environment.`,
-      });
 
       new CfnOutput(this, "CloudFrontUrl", {
         value: applicationEndpointUrl,
