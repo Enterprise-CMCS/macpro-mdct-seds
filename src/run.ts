@@ -9,6 +9,7 @@ import {
   DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
+import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
@@ -199,7 +200,23 @@ async function run_local() {
   ];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
-  // TODO: put the below back after figuring out localstack
+  const cloudFormationClient = new CloudFormationClient({
+    region: "us-east-1",
+  });
+  const command = new DescribeStacksCommand({ StackName: "seds-jon-cdk" });
+  const response = await cloudFormationClient.send(command);
+  const seedDataFunctionName = response.Stacks?.[0]?.Outputs?.find(
+    (output) => output.OutputKey === "SeedDataFunctionName"
+  )?.OutputValue;
+
+  const lambdaClient = new LambdaClient({ region: "us-east-1" });
+  const lambdaCommand = new InvokeCommand({
+    FunctionName: seedDataFunctionName,
+    InvocationType: "Event",
+    Payload: Buffer.from(JSON.stringify({})),
+  });
+  await lambdaClient.send(lambdaCommand);
+
   run_fe_locally(runner);
 }
 

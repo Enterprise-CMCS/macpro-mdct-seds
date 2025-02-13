@@ -5,6 +5,7 @@ import {
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
   custom_resources as cr,
+  CfnOutput,
   Duration,
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
@@ -103,9 +104,9 @@ export function createDataComponents(props: CreateDataComponentsProps) {
               "dynamodb:DeleteItem",
             ],
             resources: ["*"],
-          })
-        ]
-      })
+          }),
+        ],
+      }),
     },
     permissionsBoundary: props.iamPermissionsBoundary,
     path: props.iamPath,
@@ -169,6 +170,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
       resourceType: "Custom::InvokeSeedDataFunction",
     }
   );
+
+  new CfnOutput(scope, "SeedDataFunctionName", {
+    value: seedDataFunction.functionName,
+  });
 
   seedDataInvoke.node.addDependency(seedDataFunction);
 
