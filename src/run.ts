@@ -224,10 +224,8 @@ async function run_local() {
     "--no-rollback",
   ];
 
-  await Promise.allSettled([
-    runner.run_command_and_output("CDK watch", watchCmd, "."),
-    run_fe_locally(runner),
-  ]);
+  runner.run_command_and_output("CDK watch", watchCmd, ".");
+  run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
