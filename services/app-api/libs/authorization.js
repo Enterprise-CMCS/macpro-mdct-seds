@@ -14,9 +14,6 @@ export async function getUserDetailsFromEvent(event) {
   // TODO, it seems that jwtDecode and verifier.verify may return the same object?
   // Maybe we can remove the jwtDecode dependency.
 
-  if (apiKey === "LOCAL_TESTING") {
-    return {};
-  } else {
   const token = jwtDecode(apiKey);
   const role = mapMembershipToRole(token["custom:ismemberof"]);
 
