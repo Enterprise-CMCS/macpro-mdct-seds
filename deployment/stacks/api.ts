@@ -433,37 +433,38 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  const waf = new WafConstruct(
-    scope,
-    "ApiWafConstruct",
-    {
-      name: `${project}-${stage}-${shortStackName}`,
-      blockRequestBodyOver8KB: false,
-    },
-    "REGIONAL"
-  );
-  if (waf.webAcl) {
+  if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+    const waf = new WafConstruct(
+      scope,
+      "ApiWafConstruct",
+      {
+        name: `${project}-${stage}-${shortStackName}`,
+        blockRequestBodyOver8KB: false,
+      },
+      "REGIONAL"
+    );
+
     new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
       resourceArn: api.deploymentStage.stageArn,
       webAclArn: waf.webAcl.attrArn,
     });
-  }
 
-  if (!isDev) {
-    const logBucket = new s3.Bucket(scope, "WafLogBucket", {
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: RemovalPolicy.RETAIN,
-      enforceSSL: true,
-    });
-
-    if (waf.logGroup) {
-      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-        logGroup: waf.logGroup,
-        bucket: logBucket,
-        iamPermissionsBoundary: props.iamPermissionsBoundary,
-        iamPath: props.iamPath,
+    if (!isDev) {
+      const logBucket = new s3.Bucket(scope, "WafLogBucket", {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: RemovalPolicy.RETAIN,
+        enforceSSL: true,
       });
+
+      if (waf.logGroup) {
+        new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+          logGroup: waf.logGroup,
+          bucket: logBucket,
+          iamPermissionsBoundary: props.iamPermissionsBoundary,
+          iamPath: props.iamPath,
+        });
+      }
     }
   }
 

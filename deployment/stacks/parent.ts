@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import {
   aws_ec2 as ec2,
   aws_iam as iam,
-  aws_ssm as ssm,
   CfnOutput,
   Stack,
   StackProps,
@@ -108,14 +107,6 @@ export class ParentStack extends Stack {
 
       new CfnOutput(this, "CloudFrontUrl", {
         value: applicationEndpointUrl,
-      });
-    } else {
-      new ssm.StringParameter(this, "DeploymentOutput", {
-        parameterName: `/${project}/${stage}/deployment-output`,
-        stringValue: JSON.stringify({
-          apiGatewayRestApiUrl,
-        }),
-        description: `Deployment output for the ${stage} environment.`,
       });
     }
     new CfnOutput(this, "ApiUrl", {

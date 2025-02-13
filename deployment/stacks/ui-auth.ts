@@ -262,12 +262,10 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     "REGIONAL"
   ).webAcl;
 
-  if (webAcl) {
-    new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
-      resourceArn: userPool.userPoolArn,
-      webAclArn: webAcl.attrArn,
-    });
-  }
+  new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
+    resourceArn: userPool.userPoolArn,
+    webAclArn: webAcl.attrArn,
+  });
 
   new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
     parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
