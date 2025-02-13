@@ -1,19 +1,10 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { obtainUserByUsername } from "./obtainUserByUsername.js";
-// import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
+import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
 
 export const main = handler(async (event, context) => {
-  const userData = {
-    email: "stateuser@test.com",
-    firstName: "Alicia",
-    lastName: "States",
-    role: "state",
-    username: "stateuser@test.com",
-    usernameSub: "04685448-a0d1-7064-101f-a164437229fd",
-  };
-
-  // await getUserDetailsFromEvent(event);
+  const userData = await getUserDetailsFromEvent(event);
   return await createUser(userData);
 });
 
@@ -50,8 +41,7 @@ const createUser = async (userData) => {
 
   const params = {
     TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName
-      ,
+      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
     Item: {
       dateJoined: new Date().toISOString(),
       email: userData.email,
