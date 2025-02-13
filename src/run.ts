@@ -135,6 +135,21 @@ async function run_watch(options: { stage: string }) {
   run_fe_locally(runner);
 }
 
+async function getCloudFormationStackOutputValue(
+  stackName: string,
+  outputName: string
+) {
+  const cloudFormationClient = new CloudFormationClient({
+    region: "us-east-1",
+  });
+  const command = new DescribeStacksCommand({ StackName: stackName });
+  const response = cloudFormationClient.send(command);
+
+  return (await response).Stacks?.[0]?.Outputs?.find(
+    (output) => output.OutputKey === outputName
+  )?.OutputValue;
+}
+
 async function run_local() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
@@ -199,22 +214,20 @@ async function run_local() {
   ];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
-  const cloudFormationClient = new CloudFormationClient({
-    region: "us-east-1",
-  });
-  const command = new DescribeStacksCommand({ StackName: "seds-jon-cdk" });
-  const response = await cloudFormationClient.send(command);
-  const seedDataFunctionName = response.Stacks?.[0]?.Outputs?.find(
-    (output) => output.OutputKey === "SeedDataFunctionName"
-  )?.OutputValue;
+  const seedDataFunctionName = await getCloudFormationStackOutputValue(
+    "seds-jon-cdk",
+    "SeedDataFunctionName"
+  );
 
-  const lambdaClient = new LambdaClient({ region: "us-east-1" });
-  const lambdaCommand = new InvokeCommand({
-    FunctionName: seedDataFunctionName,
-    InvocationType: "Event",
-    Payload: Buffer.from(JSON.stringify({})),
-  });
-  await lambdaClient.send(lambdaCommand);
+  if (seedDataFunctionName) {
+    const lambdaClient = new LambdaClient({ region: "us-east-1" });
+    const lambdaCommand = new InvokeCommand({
+      FunctionName: seedDataFunctionName,
+      InvocationType: "Event",
+      Payload: Buffer.from(JSON.stringify({})),
+    });
+    await lambdaClient.send(lambdaCommand);
+  }
 
   const watchCmd = [
     "cdklocal",
