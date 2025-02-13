@@ -5,6 +5,7 @@ import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
 
 export const main = handler(async (event, context) => {
   const userData = await getUserDetailsFromEvent(event);
+
   return await createUser(userData);
 });
 
