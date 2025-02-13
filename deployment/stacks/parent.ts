@@ -14,6 +14,7 @@ import { createApiComponents } from "./api";
 import { sortSubnets } from "../utils/vpc";
 import { deployFrontend } from "./deployFrontend";
 import { createCustomResourceRole } from "./customResourceRole";
+import { isLocalStack } from "../local/util";
 
 export class ParentStack extends Stack {
   constructor(
@@ -67,7 +68,7 @@ export class ParentStack extends Stack {
       brokerString,
     });
 
-    if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+    if (!isLocalStack()) {
       const {
         applicationEndpointUrl,
         distribution,
@@ -103,7 +104,6 @@ export class ParentStack extends Stack {
         userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
         customResourceRole,
       });
-
 
       new CfnOutput(this, "CloudFrontUrl", {
         value: applicationEndpointUrl,

@@ -19,6 +19,7 @@ import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
+import { isLocalStack } from "../local/util";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -433,7 +434,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+  if (!isLocalStack()) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

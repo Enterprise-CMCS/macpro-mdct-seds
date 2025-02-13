@@ -1,3 +1,4 @@
+import { isLocalStack } from "./local/util";
 import { getSecret } from "./utils/secrets-manager";
 
 export interface DeploymentConfigProperties {
@@ -17,7 +18,7 @@ export interface DeploymentConfigProperties {
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
-    process.env.CDK_DEFAULT_ACCOUNT === "000000000000" ||
+    isLocalStack() ||
     !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
@@ -30,7 +31,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  if (process.env.CDK_DEFAULT_ACCOUNT !== "000000000000") {
+  if (!isLocalStack()) {
     validateConfig(config);
   }
 
@@ -38,7 +39,7 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 export const loadDefaultSecret = async (project: string) => {
-  if (process.env.CDK_DEFAULT_ACCOUNT === "000000000000") {
+  if (isLocalStack()) {
     return {};
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
