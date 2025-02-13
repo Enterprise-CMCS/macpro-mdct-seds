@@ -146,6 +146,7 @@ async function run_local() {
   if (!isLocalStackRunning()) {
     throw "LocalStack needs to be running.";
   }
+
   process.env.AWS_DEFAULT_REGION = "us-east-1";
   process.env.AWS_ACCESS_KEY_ID = "localstack";
   process.env.AWS_SECRET_ACCESS_KEY = "localstack";
@@ -163,8 +164,6 @@ async function run_local() {
     cdklocalBootstrapCmd,
     "."
   );
-
-  // TODO:
 
   const deployLocalPrequisitesCmd = [
     "cdklocal",
@@ -217,7 +216,18 @@ async function run_local() {
   });
   await lambdaClient.send(lambdaCommand);
 
-  run_fe_locally(runner);
+  const watchCmd = [
+    "cdklocal",
+    "watch",
+    "--context",
+    "stage=jon-cdk",
+    "--no-rollback",
+  ];
+
+  await Promise.allSettled([
+    runner.run_command_and_output("CDK watch", watchCmd, "."),
+    run_fe_locally(runner),
+  ]);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {
