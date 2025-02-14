@@ -87,7 +87,7 @@ function updateEnvFiles() {
 // @ts-ignore
 async function run_fe_locally(runner: LabeledProcessRunner) {
   const apiUrl = await getCloudFormationStackOutputValue(
-    "seds-jon-cdk",
+    "seds-localstack",
     "ApiUrl"
   );
 
@@ -179,7 +179,7 @@ async function run_local() {
     "bootstrap",
     "aws://000000000000/us-east-1",
     "--context",
-    "stage=jon-cdk",
+    "stage=localstack",
   ];
   await runner.run_command_and_output(
     "CDK local bootstrap",
@@ -215,14 +215,14 @@ async function run_local() {
     "cdklocal",
     "deploy",
     "--context",
-    "stage=jon-cdk",
+    "stage=localstack",
     "--all",
     "--no-rollback",
   ];
   await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
   const seedDataFunctionName = await getCloudFormationStackOutputValue(
-    "seds-jon-cdk",
+    "seds-localstack",
     "SeedDataFunctionName"
   );
 
@@ -240,7 +240,7 @@ async function run_local() {
     "cdklocal",
     "watch",
     "--context",
-    "stage=jon-cdk",
+    "stage=localstack",
     "--no-rollback",
   ];
 
