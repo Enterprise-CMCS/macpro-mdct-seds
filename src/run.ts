@@ -224,15 +224,13 @@ async function run_local() {
     "SeedDataFunctionName"
   );
 
-  if (seedDataFunctionName) {
-    const lambdaClient = new LambdaClient({ region: "us-east-1" });
-    const lambdaCommand = new InvokeCommand({
-      FunctionName: seedDataFunctionName,
-      InvocationType: "Event",
-      Payload: Buffer.from(JSON.stringify({})),
-    });
-    await lambdaClient.send(lambdaCommand);
-  }
+  const lambdaClient = new LambdaClient({ region: "us-east-1" });
+  const lambdaCommand = new InvokeCommand({
+    FunctionName: seedDataFunctionName,
+    InvocationType: "Event",
+    Payload: Buffer.from(JSON.stringify({})),
+  });
+  await lambdaClient.send(lambdaCommand);
 
   const watchCmd = [
     "cdklocal",
