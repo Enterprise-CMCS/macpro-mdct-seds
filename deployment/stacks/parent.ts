@@ -68,7 +68,7 @@ export class ParentStack extends Stack {
       brokerString,
     });
 
-    if (!isLocalStack()) {
+    if (!isLocalStack) {
       const {
         applicationEndpointUrl,
         distribution,

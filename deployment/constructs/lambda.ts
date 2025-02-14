@@ -103,9 +103,9 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: !isLocalStack()
-            ? apigateway.AuthorizationType.IAM
-            : undefined,
+          authorizationType: isLocalStack
+            ? undefined
+            : apigateway.AuthorizationType.IAM,
         }
       );
     }

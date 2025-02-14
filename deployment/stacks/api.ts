@@ -434,7 +434,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalStack()) {
+  if (!isLocalStack) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",
@@ -458,14 +458,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         enforceSSL: true,
       });
 
-      if (waf.logGroup) {
-        new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-          logGroup: waf.logGroup,
-          bucket: logBucket,
-          iamPermissionsBoundary: props.iamPermissionsBoundary,
-          iamPath: props.iamPath,
-        });
-      }
+      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+        iamPermissionsBoundary: props.iamPermissionsBoundary,
+        iamPath: props.iamPath,
+      });
     }
   }
 

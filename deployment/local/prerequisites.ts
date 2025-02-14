@@ -29,7 +29,7 @@ export class LocalPrerequisiteStack extends Stack {
 async function main() {
   const app = new App();
 
-  new LocalPrerequisiteStack(app, "seds-LocalPrerequisites");
+  new LocalPrerequisiteStack(app, "seds-local-prerequisites");
 }
 
 main();

@@ -6,7 +6,8 @@ import { SimpleJwksCache } from "aws-jwt-verify/jwk";
 import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
 export async function getUserDetailsFromEvent(event) {
-  if (event.requestContext.accountId !== "000000000000") {
+  const isLocalStack = event.requestContext.accountId === "000000000000";
+  if (!isLocalStack) {
     await verifyEventSignature(event);
   }
   const apiKey = event?.headers?.["x-api-key"];

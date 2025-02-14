@@ -18,7 +18,7 @@ export interface DeploymentConfigProperties {
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
-    isLocalStack() ||
+    isLocalStack ||
     !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
@@ -31,7 +31,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  if (!isLocalStack()) {
+  if (!isLocalStack) {
     validateConfig(config);
   }
 
@@ -39,7 +39,7 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 export const loadDefaultSecret = async (project: string) => {
-  if (isLocalStack()) {
+  if (isLocalStack) {
     return {};
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
