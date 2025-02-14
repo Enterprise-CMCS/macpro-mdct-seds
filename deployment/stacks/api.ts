@@ -19,6 +19,7 @@ import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
+import { isLocalStack } from "../local/util";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -433,34 +434,37 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  const waf = new WafConstruct(
-    scope,
-    "ApiWafConstruct",
-    {
-      name: `${project}-${stage}-${shortStackName}`,
-      blockRequestBodyOver8KB: false,
-    },
-    "REGIONAL"
-  );
-  new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
-    resourceArn: api.deploymentStage.stageArn,
-    webAclArn: waf.webAcl.attrArn,
-  });
+  if (!isLocalStack) {
+    const waf = new WafConstruct(
+      scope,
+      "ApiWafConstruct",
+      {
+        name: `${project}-${stage}-${shortStackName}`,
+        blockRequestBodyOver8KB: false,
+      },
+      "REGIONAL"
+    );
 
-  if (!isDev) {
-    const logBucket = new s3.Bucket(scope, "WafLogBucket", {
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: RemovalPolicy.RETAIN,
-      enforceSSL: true,
+    new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
+      resourceArn: api.deploymentStage.stageArn,
+      webAclArn: waf.webAcl.attrArn,
     });
 
-    new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-      bucket: logBucket,
-      iamPermissionsBoundary: props.iamPermissionsBoundary,
-      iamPath: props.iamPath,
-    });
+    if (!isDev) {
+      const logBucket = new s3.Bucket(scope, "WafLogBucket", {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: RemovalPolicy.RETAIN,
+        enforceSSL: true,
+      });
+
+      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+        iamPermissionsBoundary: props.iamPermissionsBoundary,
+        iamPath: props.iamPath,
+      });
+    }
   }
 
   addIamPropertiesToBucketAutoDeleteRole(

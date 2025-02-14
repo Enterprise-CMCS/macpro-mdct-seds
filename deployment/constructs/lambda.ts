@@ -15,6 +15,7 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { isLocalStack } from "../local/util";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler: string;
@@ -102,7 +103,9 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: apigateway.AuthorizationType.IAM,
+          authorizationType: isLocalStack
+            ? undefined
+            : apigateway.AuthorizationType.IAM,
         }
       );
     }

@@ -1,3 +1,4 @@
+import { isLocalStack } from "./local/util";
 import { getSecret } from "./utils/secrets-manager";
 
 export interface DeploymentConfigProperties {
@@ -16,7 +17,9 @@ export interface DeploymentConfigProperties {
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev = !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+  const isDev =
+    isLocalStack ||
+    !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
     ...(await loadStageSecret(project, stage)),
@@ -28,13 +31,19 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  validateConfig(config);
+  if (!isLocalStack) {
+    validateConfig(config);
+  }
 
   return config;
 };
 
 export const loadDefaultSecret = async (project: string) => {
-  return JSON.parse((await getSecret(`${project}-default`))!);
+  if (isLocalStack) {
+    return {};
+  } else {
+    return JSON.parse((await getSecret(`${project}-default`))!);
+  }
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
