@@ -49,7 +49,7 @@ export async function verifyEventSignature(event) {
           defaultRequestOptions: {
             // The default timeout is 1.5s, but we have increased it to 5s after seeing errors
             // such as "Failed to fetch https://[...]/.well-known/jwks.json"
-            // due to "write EPIPE" or "socked hang up"
+            // due to "write EPIPE" or "socket hang up"
             responseTimeout: 5000,
           },
         }),

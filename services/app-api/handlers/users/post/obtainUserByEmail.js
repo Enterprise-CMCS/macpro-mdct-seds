@@ -13,7 +13,7 @@ export const main = handler(async (event, context) => {
   const result = await obtainUserByEmail(data.email);
 
   if (!result) return result;
-  authorizeAdminOrUserWithEmail(event, result.Items[0].email);
+  await authorizeAdminOrUserWithEmail(event, result.Items[0].email);
 
   return result;
 });

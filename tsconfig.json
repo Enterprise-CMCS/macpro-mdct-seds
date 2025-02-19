@@ -1,4 +1,11 @@
+/* Visit https://www.typescriptlang.org/tsconfig/ to read more about this file. */
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  /*
+   * This config is only used for coordinating runs & other repo-level stuff.
+   * The individual services have their own tsconfig files.
+   */
+  "include": ["src"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */
