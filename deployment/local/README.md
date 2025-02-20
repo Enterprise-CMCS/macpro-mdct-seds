@@ -8,9 +8,41 @@ Before running the application locally, ensure the following dependencies are in
 
 ### Required Installations
 
-1. **Docker** - LocalStack runs inside a Docker container.
+1. **Colima/Docker** - LocalStack runs inside a Colima container that uses docker as it's runtime.
 
-   - Install Docker from [Docker's official website](https://www.docker.com/get-started).
+Links:
+
+- Docker - https://www.docker.com/get-started
+- Colima - https://github.com/abiosoft/colima
+
+```sh
+# Install Docker
+brew install docker
+# now this should print something out:
+docker -v
+
+# Install Colima
+brew install colima
+# now this should print something out:
+colima --version
+# this should keep colima running better when you log on and off:
+brew services start colima
+# start colima with specific vm-type (this prevents crashing which shows up as "socket hang up")
+colima start --vm-type=vz
+colima start --cpu 4
+# verify colima is started
+colima status
+# should now include the phrase "colima is running"
+```
+
+Now add this line to the bottom of your bash/zsh rc/profile:
+
+```sh
+# this tells docker that you're using colima and to look at colima to answer questions like: are any containers running?
+export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
+```
+
+Close and reopen your terminal.
 
 2. **LocalStack** - Provides a local AWS emulating environment.
 
@@ -31,10 +63,6 @@ Before running the application locally, ensure the following dependencies are in
    npm install -g aws-cdk-local aws-cdk
    ```
 
-## Open Docker
-
-On your macbook open the Docker Desktop application.
-
 ## Running LocalStack
 
 Start the LocalStack service before deploying the application:
@@ -51,10 +79,21 @@ Once LocalStack is running, deploy the application with:
 ./run local
 ```
 
-The script will verify that both Docker and LocalStack are running before proceeding. If either service is unavailable, the script will exit with an error.
+The script will verify that both Docker and Colima and LocalStack are running before proceeding. If either service is unavailable, the script will exit with an error.
 
 ## Monitoring LocalStack
 
 You can monitor your LocalStack instance via:
 
 - [LocalStack Cloud Dashboard](https://app.localstack.cloud/inst/default/status)
+
+## Accessing Lambda Environment Variables (:point_up: not included in the dashboard)
+
+Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
+
+But if you want to query to see what environment variables a lambda is being given, you can always run queries directly at your local aws like this:
+
+```sh
+# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
+awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
+```
