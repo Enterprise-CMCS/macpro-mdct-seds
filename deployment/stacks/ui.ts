@@ -20,7 +20,10 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
-  deploymentConfigParameters: { [name: string]: string | undefined };
+  cloudfrontCertificateArn: string;
+  cloudfrontDomainName: string;
+  vpnIpSetArn: string;
+  vpnIpv6SetArn: string;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -31,7 +34,10 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev,
     iamPermissionsBoundary,
     iamPath,
-    deploymentConfigParameters,
+    cloudfrontCertificateArn,
+    cloudfrontDomainName,
+    vpnIpSetArn,
+    vpnIpv6SetArn,
   } = props;
   // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -97,15 +103,15 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     scope,
     "CloudFrontDistribution",
     {
-      certificate: deploymentConfigParameters.cloudfrontCertificateArn
+      certificate: cloudfrontCertificateArn
         ? acm.Certificate.fromCertificateArn(
             scope,
             "certArn",
-            deploymentConfigParameters.cloudfrontCertificateArn
+            cloudfrontCertificateArn
           )
         : undefined,
-      domainNames: deploymentConfigParameters.cloudfrontDomainName
-        ? [deploymentConfigParameters.cloudfrontDomainName]
+      domainNames: cloudfrontDomainName
+        ? [cloudfrontDomainName]
         : [],
       defaultBehavior: {
         origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
@@ -136,7 +142,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
-  setupWaf(scope, stage, project, deploymentConfigParameters);
+  setupWaf(scope, stage, project, vpnIpSetArn, vpnIpv6SetArn);
 
   createFirehoseLogging(
     scope,
@@ -166,15 +172,16 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string,
-  deploymentConfigParameter: { [name: string]: string | undefined }
+  vpnIpSetArn: string,
+  vpnIpv6SetArn: string,
 ) {
   const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
-  const defaultAction = deploymentConfigParameter.vpnIpSetArn
+  const defaultAction = vpnIpSetArn
     ? { block: {} }
     : { allow: {} };
 
-  if (deploymentConfigParameter.vpnIpSetArn) {
+  if (vpnIpSetArn) {
     const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
       name: `${stage}-gh-ipset`,
       scope: "CLOUDFRONT",
@@ -184,17 +191,17 @@ function setupWaf(
 
     const statements = [
       {
-        ipSetReferenceStatement: { arn: deploymentConfigParameter.vpnIpSetArn },
+        ipSetReferenceStatement: { arn: vpnIpSetArn },
       },
       {
         ipSetReferenceStatement: { arn: githubIpSet.attrArn },
       },
     ];
 
-    if (deploymentConfigParameter.vpnIpv6SetArn) {
+    if (vpnIpv6SetArn) {
       statements.push({
         ipSetReferenceStatement: {
-          arn: deploymentConfigParameter.vpnIpv6SetArn,
+          arn: vpnIpv6SetArn,
         },
       });
     }

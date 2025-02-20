@@ -7,14 +7,6 @@ const userPoolId = process.env.userPoolId;
 import users from "../libs/users.json" assert { type: "json" };
 
 export async function handler(_event, _context, _callback) {
-  const command = new GetParameterCommand({
-    Name: process.env.bootstrapUsersPasswordArn,
-    WithDecryption: true,
-  });
-  const ssmClient = new SSMClient({});
-  const result = await ssmClient.send(command);
-  const password = result.Parameter?.Value;
-
   for (let user of users) {
     var poolData = {
       UserPoolId: userPoolId,
@@ -23,7 +15,7 @@ export async function handler(_event, _context, _callback) {
       UserAttributes: user.attributes,
     };
     var passwordData = {
-      Password: password,
+      Password: process.env.bootstrapUsersPassword,
       UserPoolId: userPoolId,
       Username: user.username,
       Permanent: true,

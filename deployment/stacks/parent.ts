@@ -24,33 +24,18 @@ export class ParentStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const {
-      stage,
-      project,
-      isDev,
-      vpcName,
-      bootstrapUsersPasswordArn,
-      oktaMetadataUrl,
-      brokerString,
-      iamPermissionsBoundaryArn,
-      iamPath,
-      deploymentConfigParameters,
-    } = props;
-
     const commonProps = {
       scope: this,
-      stage,
-      project,
-      isDev,
+      ...props,
       iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
         this,
         "iamPermissionsBoundary",
-        iamPermissionsBoundaryArn
+        "arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy"
       ),
-      iamPath,
+      iamPath: "/delegatedadmin/developer/",
     };
 
-    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName: commonProps.vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
     const { customResourceRole } = createCustomResourceRole({ ...commonProps });
@@ -64,8 +49,7 @@ export class ParentStack extends Stack {
       ...commonProps,
       vpc,
       privateSubnets,
-      tables,
-      brokerString,
+      tables
     });
 
     if (!isLocalStack) {
@@ -73,10 +57,7 @@ export class ParentStack extends Stack {
         applicationEndpointUrl,
         distribution,
         uiBucket,
-      } = createUiComponents({
-        deploymentConfigParameters,
-        ...commonProps,
-      });
+      } = createUiComponents({ ...commonProps });
 
       const {
         userPoolDomainName,
@@ -85,11 +66,9 @@ export class ParentStack extends Stack {
         userPoolClientId,
       } = createUiAuthComponents({
         ...commonProps,
-        oktaMetadataUrl,
         applicationEndpointUrl,
         restApiId,
-        bootstrapUsersPasswordArn,
-        customResourceRole,
+        customResourceRole
       });
 
       deployFrontend({
