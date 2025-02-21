@@ -2,9 +2,6 @@
   "name": "ui-auth",
   "description": "",
   "version": "1.0.0",
-  "resolutions": {
-    "minimist": "^1.2.5"
-  },
   "main": "index.js",
   "type": "module",
   "scripts": {

@@ -1,9 +1,6 @@
 {
   "name": "database",
   "description": "",
-  "resolutions": {
-    "minimist": "^1.2.5"
-  },
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

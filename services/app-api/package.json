@@ -2,9 +2,6 @@
   "name": "app-api",
   "description": "",
   "version": "1.0.0",
-  "resolutions": {
-    "minimist": "^1.2.5"
-  },
   "main": "handler.js",
   "type": "module",
   "scripts": {
