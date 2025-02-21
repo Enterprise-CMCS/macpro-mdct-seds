@@ -8,12 +8,12 @@ interface CreateCustomResourceRoleProps {
 }
 
 export function createCustomResourceRole(props: CreateCustomResourceRoleProps) {
-  const { scope } = props;
+  const { scope, iamPermissionsBoundary, iamPath } = props;
 
   const customResourceRole = new iam.Role(scope, "CustomResourceRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    path: props.iamPath,
-    permissionsBoundary: props.iamPermissionsBoundary,
+    path: iamPath,
+    permissionsBoundary: iamPermissionsBoundary,
   });
 
   customResourceRole.addToPolicy(

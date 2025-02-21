@@ -24,15 +24,18 @@ export class ParentStack extends Stack {
   ) {
     super(scope, id, props);
 
+    const iamPermissionsBoundaryArn = `arn:aws:iam::${process.env.CDK_DEFAULT_ACCOUNT}:policy/cms-cloud-admin/developer-boundary-policy`
+    const iamPath = "/delegatedadmin/developer/"
+
     const commonProps = {
       scope: this,
       ...props,
       iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
         this,
         "iamPermissionsBoundary",
-        "arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy"
+        iamPermissionsBoundaryArn
       ),
-      iamPath: "/delegatedadmin/developer/",
+      iamPath,
     };
 
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName: commonProps.vpcName });

@@ -7,9 +7,9 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   vpcName: string;
   oktaMetadataUrl: string;
-  bootstrapUsersPassword: string;
-  cloudfrontCertificateArn: string;
-  cloudfrontDomainName: string;
+  bootstrapUsersPassword?: string;
+  cloudfrontCertificateArn?: string;
+  cloudfrontDomainName?: string;
   vpnIpSetArn: string;
   vpnIpv6SetArn: string;
   brokerString: string;
@@ -66,9 +66,6 @@ function validateConfig(config: {
     "stage",
     "vpcName",
     "oktaMetadataUrl",
-    "bootstrapUsersPassword",
-    "cloudfrontCertificateArn",
-    "cloudfrontDomainName",
     "vpnIpSetArn",
     "vpnIpv6SetArn",
     "brokerString",

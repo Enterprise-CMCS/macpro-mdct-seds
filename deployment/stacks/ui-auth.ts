@@ -24,7 +24,7 @@ interface CreateUiAuthComponentsProps {
   iamPath: string;
   iamPermissionsBoundary: IManagedPolicy;
   oktaMetadataUrl: string;
-  bootstrapUsersPassword: string;
+  bootstrapUsersPassword?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {

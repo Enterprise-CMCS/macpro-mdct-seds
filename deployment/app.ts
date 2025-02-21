@@ -5,7 +5,6 @@ import { EmptyParentStack } from "./stacks/empty/parent";
 import { ImportsIncludedParentStack } from "./stacks/imports_included/parent";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
-import { getDeploymentConfigParameters } from "./utils/systems-manager";
 
 async function main() {
   const app = new App({

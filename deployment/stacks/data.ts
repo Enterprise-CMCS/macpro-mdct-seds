@@ -21,7 +21,14 @@ interface CreateDataComponentsProps {
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const { scope, stage, isDev } = props;
+  const {
+    scope,
+    stage,
+    isDev,
+    iamPermissionsBoundary,
+    iamPath,
+    customResourceRole,
+   } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {
@@ -108,8 +115,8 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         ],
       }),
     },
-    permissionsBoundary: props.iamPermissionsBoundary,
-    path: props.iamPath,
+    permissionsBoundary: iamPermissionsBoundary,
+    path: iamPath,
   });
 
   // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
@@ -166,7 +173,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           resources: [seedDataFunction.functionArn],
         }),
       ]),
-      role: props.customResourceRole,
+      role: customResourceRole,
       resourceType: "Custom::InvokeSeedDataFunction",
     }
   );
