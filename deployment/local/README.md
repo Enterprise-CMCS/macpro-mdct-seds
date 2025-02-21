@@ -29,13 +29,13 @@ colima --version
 brew services start colima
 # start colima with specific vm-type (this prevents crashing which shows up as "socket hang up")
 colima start --vm-type=vz
-colima start --cpu 4
 # verify colima is started
 colima status
 # should now include the phrase "colima is running"
 ```
 
 Now add this line to the bottom of your bash/zsh rc/profile:
+This is probably the file: `~/.zprofile` if you're using the standard mac setup.
 
 ```sh
 # this tells docker that you're using colima and to look at colima to answer questions like: are any containers running?
@@ -55,7 +55,8 @@ Close and reopen your terminal.
 3. **AWS CLI Local** - Required for interacting with LocalStack.
 
    ```sh
-   pip install awscli-local
+   brew install pipx
+   pipx install awscli-local
    ```
 
 4. **AWS CDK Local**
