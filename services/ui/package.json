@@ -2,10 +2,6 @@
   "name": "ui",
   "description": "",
   "version": "1.0.0",
-  "resolutions": {
-    "**/**/lodash": "^4.17.12",
-    "minimist": "^1.2.5"
-  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -22,7 +22,7 @@ describe("forceKafkaSync", () => {
     vi.clearAllMocks();
   });
 
-  it("read literally everything from every table, then write it back with slight modifications", async () => {
+  it("should read literally everything from every table, then write it back with slight modifications", async () => {
     // We will mock only the first scan
     mockScan.mockResolvedValueOnce({ Count: 1, Items: [{ foo: "bar" }]});
 
@@ -41,5 +41,22 @@ describe("forceKafkaSync", () => {
       foo: "bar",
       lastSynced: expect.stringMatching(ISO_DATE_REGEX),
     });
+  });
+
+  it("should limit batch writes to 25 items or less", async () => {
+    // We will mock only the first scan
+    mockScan.mockResolvedValueOnce({
+      Count: 60,
+      Items: new Array(60).fill({ foo: "bar" }, 0, 60),
+    });
+
+    await forceKafkaSync({});
+
+    expect(mockScan).toHaveBeenCalledTimes(9);
+    expect(mockBatchWrite).toHaveBeenCalledTimes(3);
+    const batchSizes = mockBatchWrite.mock.calls.map(call =>
+      Object.values(call[0].RequestItems)[0].length
+    );
+    expect(batchSizes).toEqual([25, 25, 10]);
   });
 });
