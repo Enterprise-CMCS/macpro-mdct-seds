@@ -2,10 +2,6 @@
   "name": "app-api",
   "description": "",
   "version": "1.0.0",
-  "resolutions": {
-    "**/**/lodash": "^4.17.12",
-    "minimist": "^1.2.5"
-  },
   "main": "handler.js",
   "type": "module",
   "scripts": {
