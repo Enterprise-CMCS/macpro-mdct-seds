@@ -1,6 +1,5 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
-import chunk from "lodash/chunk";
 
 const tableNames = [
   process.env.AgeRangesTableName,
@@ -21,11 +20,7 @@ const batchWrite = async (tableName, items) => {
   console.log(
     `Performing batchwrite for ${items.length} items in table: ${tableName}`
   );
-  // split items into chunks of 25
-  const itemChunks = chunk(items, 25);
-  console.log(
-    `Items split into ${itemChunks.length} chunk(s) of not more than 25 items`
-  );
+  const itemChunks = [...batchItemsIntoGroupsOfTwentyFive(items)];
   for (const index in itemChunks) {
     // Construct the request params for batchWrite
     const itemArray = itemChunks[index].map((item) => {
@@ -86,3 +81,11 @@ export const main = handler(async (event, context) => {
     }
   }
 });
+
+function* batchItemsIntoGroupsOfTwentyFive(items) {
+  /** This is the max number of requests in a DynamoDB BatchWriteCommand */
+  const TWENTY_FIVE = 25;
+  for (let index = 0; index < items.length; index += TWENTY_FIVE) {
+    yield items.slice(index, index + TWENTY_FIVE);
+  }
+}

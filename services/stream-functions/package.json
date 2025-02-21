@@ -3,7 +3,6 @@
   "description": "",
   "license": "CC0-1.0",
   "resolutions": {
-    "**/**/lodash": "^4.17.12",
     "minimist": "^1.2.5"
   },
   "version": "1.0.0",
