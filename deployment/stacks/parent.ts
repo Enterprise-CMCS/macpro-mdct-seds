@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import {
+  Aws,
   aws_ec2 as ec2,
   aws_iam as iam,
   CfnOutput,
@@ -24,8 +25,10 @@ export class ParentStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const iamPermissionsBoundaryArn = `arn:aws:iam::${process.env.CDK_DEFAULT_ACCOUNT}:policy/cms-cloud-admin/developer-boundary-policy`
+    const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`
     const iamPath = "/delegatedadmin/developer/"
+
+    const { vpcName } = props;
 
     const commonProps = {
       scope: this,
@@ -38,7 +41,7 @@ export class ParentStack extends Stack {
       iamPath,
     };
 
-    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName: commonProps.vpcName });
+    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
     const { customResourceRole } = createCustomResourceRole({ ...commonProps });
