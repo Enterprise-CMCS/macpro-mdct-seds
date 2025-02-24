@@ -5,14 +5,14 @@ export interface DeploymentConfigProperties {
   project: string;
   stage: string;
   isDev: boolean;
-  terminationProtection: boolean;
-  bootstrapUsersPasswordArn: string;
-  oktaMetadataUrl: string;
-  brokerString: string;
-  iamPath: string;
-  iamPermissionsBoundaryArn: string;
   vpcName: string;
-  deploymentConfigParameters: { [name: string]: string | undefined };
+  oktaMetadataUrl: string;
+  bootstrapUsersPassword?: string;
+  cloudfrontCertificateArn?: string;
+  cloudfrontDomainName?: string;
+  vpnIpSetArn: string;
+  vpnIpv6SetArn: string;
+  brokerString: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
@@ -62,14 +62,13 @@ function validateConfig(config: {
   [key: string]: any;
 }): asserts config is DeploymentConfigProperties {
   const expectedKeys = [
-    "bootstrapUsersPasswordArn",
-    "oktaMetadataUrl",
-    "brokerString",
-    "iamPermissionsBoundaryArn",
-    "iamPath",
-    "vpcName",
-    "stage",
     "project",
+    "stage",
+    "vpcName",
+    "oktaMetadataUrl",
+    "vpnIpSetArn",
+    "vpnIpv6SetArn",
+    "brokerString",
   ];
 
   const invalidKeys = expectedKeys.filter(

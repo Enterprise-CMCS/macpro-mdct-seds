@@ -18,13 +18,13 @@ interface CreateUiAuthComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  oktaMetadataUrl: string;
   applicationEndpointUrl: string;
   restApiId: string;
-  bootstrapUsersPasswordArn: string;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   customResourceRole: iam.Role;
+  iamPath: string;
+  iamPermissionsBoundary: IManagedPolicy;
+  oktaMetadataUrl: string;
+  bootstrapUsersPassword?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
@@ -32,12 +32,13 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     scope,
     stage,
     isDev,
-    oktaMetadataUrl,
     applicationEndpointUrl,
     restApiId,
-    bootstrapUsersPasswordArn,
+    customResourceRole,
     iamPath,
     iamPermissionsBoundary,
+    oktaMetadataUrl,
+    bootstrapUsersPassword,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
@@ -200,7 +201,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   let bootstrapUsersFunction;
 
-  if (bootstrapUsersPasswordArn) {
+  if (bootstrapUsersPassword) {
     const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
       permissionsBoundary: iamPermissionsBoundary,
       path: iamPath,
@@ -227,11 +228,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
               resources: [userPool.userPoolArn],
               effect: iam.Effect.ALLOW,
             }),
-            new iam.PolicyStatement({
-              actions: ["ssm:GetParameter"],
-              resources: [bootstrapUsersPasswordArn],
-              effect: iam.Effect.ALLOW,
-            }),
           ],
         }),
       },
@@ -249,7 +245,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         role: lambdaApiRole,
         environment: {
           userPoolId: userPool.userPoolId,
-          bootstrapUsersPasswordArn: bootstrapUsersPasswordArn,
+          bootstrapUsersPassword,
         },
       }
     );
@@ -301,7 +297,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
             resources: [bootstrapUsersFunction.functionArn],
           }),
         ]),
-        role: props.customResourceRole,
+        role: customResourceRole,
         resourceType: "Custom::InvokeBootstrapUsersFunction",
       }
     );

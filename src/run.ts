@@ -111,10 +111,13 @@ async function run_cdk_watch(
   await runner.run_command_and_output("CDK watch", watchCmd, ".");
 }
 
-function isDockerRunning() {
+function isColimaRunning() {
   try {
-    execSync("docker info", { stdio: "ignore" });
-    return true;
+    const output = execSync("colima status 2>&1", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    }).trim();
+    return output.includes("running");
   } catch {
     return false;
   }
@@ -159,8 +162,8 @@ async function run_local() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
-  if (!isDockerRunning()) {
-    throw "Docker needs to be running.";
+  if (!isColimaRunning()) {
+    throw "Colima needs to be running.";
   }
 
   if (!isLocalStackRunning()) {

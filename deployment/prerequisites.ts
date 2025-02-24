@@ -12,11 +12,10 @@ import {
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
+import { isLocalStack } from "./local/util";
 
 interface PrerequisiteConfigProps {
   project: string;
-  iamPath: string;
-  iamPermissionsBoundaryArn: string;
 }
 
 export class PrerequisiteStack extends Stack {
@@ -27,7 +26,7 @@ export class PrerequisiteStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const { project, iamPermissionsBoundaryArn, iamPath } = props;
+    const { project } = props;
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
@@ -36,12 +35,14 @@ export class PrerequisiteStack extends Stack {
       "ApiGatewayRestApiCloudWatchRole",
       {
         assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
-        permissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
-          this,
-          "iamPermissionsBoundary",
-          iamPermissionsBoundaryArn
-        ),
-        path: iamPath,
+        permissionsBoundary: isLocalStack
+          ? undefined
+          : iam.ManagedPolicy.fromManagedPolicyArn(
+              this,
+              "iamPermissionsBoundary",
+              "arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy"
+            ),
+        path: "/delegatedadmin/developer/",
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
             "service-role/AmazonAPIGatewayPushToCloudWatchLogs"
