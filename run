@@ -31,11 +31,29 @@ if ! which yarn > /dev/null ; then
 	exit 1
 fi
 
-# check serverless is installed globally.
-if ! which serverless > /dev/null || ! serverless --version 2>&1 | grep -q "Framework 4."; then
-    echo "installing serverless v4 globally"
-    yarn global add serverless@4.4.18
-    export PATH="$PATH:$(yarn global bin)"
+if ! which op > /dev/null; then
+    echo "The MDCT team uses 1Password to store and retrieve development credentials. On macOS, you can install it with 'brew install --cask 1password-cli'"
+    exit 1
+fi
+
+if ! which docker > /dev/null ; then
+	echo "docker not found on the system. On macOS, you can install it with 'brew install docker'"
+	exit 1
+fi
+
+if ! which colima > /dev/null ; then
+	echo "colima not found on the system. On macOS, you can install it with 'brew install colima'"
+	exit 1
+fi
+
+if ! which localstack > /dev/null ; then
+	echo "localstack not found on the system. On macOS, you can install it with 'brew install localstack/tap/localstack-cli'"
+	exit 1
+fi
+
+if ! which awslocal > /dev/null ; then
+	echo "awslocal not found on the system. On macOS, you can install it with 'brew install pipx && pipx install awscli-local'"
+	exit 1
 fi
 
 # have to ensure that yarn install is up to date.
@@ -46,33 +64,29 @@ if [ "yarn.lock" -nt ".yarn_install" ]; then
 fi
 
 # Parse arguments
-UPDATE_ENV=false
+LOCAL_ENV=false
 ARGS=()
 
 for arg in "$@"; do
     case $arg in
-        --update-env)
-        UPDATE_ENV=true
-        ;;
-        *)
-        ARGS+=("$arg")
+        local)
+        LOCAL_ENV=true
         ;;
     esac
+    ARGS+=("$arg")
 done
 
-# Inject secrets to .env if the flag is set
-if [ "$UPDATE_ENV" = true ]; then
-    # Check if 1Password CLI is installed
-    if ! which op > /dev/null; then
-        echo "The MDCT team uses 1Password to store and retrieve development credentials. If you do not have a 1Password account please request one."
-        exit 1
+if [ "$LOCAL_ENV" = true ]; then
+    if ! colima status 2>&1 | grep -q "colima is running" ; then
+        echo "colima installed but not running. We'll start it up for you now."
+        colima start --vm-type=vz
     fi
 
-    # call 1password vault to retrieve secrets
-    op inject -i .env.tpl -o .env -f
-    sed -i "" -e "s/# pragma: allowlist secret//g" .env
+    if ! localstack status | grep -q "running" ; then
+        echo "localstack is installed but not running. Open another terminal window and start it up like this: 'localstack start'"
+        exit 1
+    fi
 fi
-
 
 # build and run run.ts
 # tsc is configured to build what we expect in tsconfig.json
