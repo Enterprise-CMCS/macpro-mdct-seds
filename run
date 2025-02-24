@@ -51,11 +51,6 @@ if ! which localstack > /dev/null ; then
 	exit 1
 fi
 
-if ! which awslocal > /dev/null ; then
-	echo "awslocal not found on the system. On macOS, you can install it with 'brew install pipx && pipx install awscli-local'"
-	exit 1
-fi
-
 # have to ensure that yarn install is up to date.
 # we use .yarn_install as a marker for the last time `yarn install` was run. Rerun the command when yarn.lock is updated
 if [ "yarn.lock" -nt ".yarn_install" ]; then
@@ -79,12 +74,12 @@ done
 if [ "$LOCAL_ENV" = true ]; then
     if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
-        colima start --vm-type=vz
+        colima start --cpu 4 --memory 10
     fi
 
     if ! localstack status | grep -q "running" ; then
-        echo "localstack is installed but not running. Open another terminal window and start it up like this: 'localstack start'"
-        exit 1
+        echo "localstack is installed but not running. We'll start it up for you now."
+        localstack start &
     fi
 fi
 
