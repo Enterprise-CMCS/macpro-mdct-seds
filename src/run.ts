@@ -102,6 +102,7 @@ async function run_cdk_watch(
 ) {
   const stage = options.stage;
   const watchCmd = [
+    "yarn",
     "cdk",
     "watch",
     "--context",
@@ -176,6 +177,7 @@ async function run_local() {
   process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
 
   const cdklocalBootstrapCmd = [
+    "yarn",
     "cdklocal",
     "bootstrap",
     "aws://000000000000/us-east-1",
@@ -189,6 +191,7 @@ async function run_local() {
   );
 
   const deployLocalPrequisitesCmd = [
+    "yarn",
     "cdklocal",
     "deploy",
     "--app",
@@ -201,6 +204,7 @@ async function run_local() {
   );
 
   const deployPrequisitesCmd = [
+    "yarn",
     "cdklocal",
     "deploy",
     "--app",
@@ -213,6 +217,7 @@ async function run_local() {
   );
 
   const deployCmd = [
+    "yarn",
     "cdklocal",
     "deploy",
     "--context",
@@ -236,6 +241,7 @@ async function run_local() {
   await lambdaClient.send(lambdaCommand);
 
   const watchCmd = [
+    "yarn",
     "cdklocal",
     "watch",
     "--context",
@@ -265,6 +271,7 @@ async function deploy_prerequisites() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   const deployPrequisitesCmd = [
+    "yarn",
     "cdk",
     "deploy",
     "--app",
@@ -293,6 +300,7 @@ async function deploy(options: { stage: string }) {
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
     const deployCmd = [
+      "yarn",
       "cdk",
       "deploy",
       "--context",

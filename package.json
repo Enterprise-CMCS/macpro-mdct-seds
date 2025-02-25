@@ -30,7 +30,9 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "@types/yargs": "^15.0.10",
-    "aws-cdk": "2.161.1",
+    "aws-cdk": "^2.161.1",
+    "aws-cdk-local": "^2.19.2",
+    "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
     "typescript": "^5.7.3",
     "yargs": "^16.1.1"
