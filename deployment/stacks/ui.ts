@@ -20,10 +20,10 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
-  cloudfrontCertificateArn: string;
-  cloudfrontDomainName: string;
-  vpnIpSetArn: string;
-  vpnIpv6SetArn: string;
+  cloudfrontCertificateArn?: string;
+  cloudfrontDomainName?: string;
+  vpnIpSetArn?: string;
+  vpnIpv6SetArn?: string;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -172,8 +172,8 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string,
-  vpnIpSetArn: string,
-  vpnIpv6SetArn: string,
+  vpnIpSetArn?: string,
+  vpnIpv6SetArn?: string,
 ) {
   const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
