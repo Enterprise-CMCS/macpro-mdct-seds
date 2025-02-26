@@ -73,7 +73,7 @@ custom:
   StateFormsTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:StateFormsTableStreamArn, cf:database-master.StateFormsTableStreamArn}
   AuthUserRolesTableStreamArn: ${env:LOCAL_PLACEHOLDER_ARN, param:AuthUserRolesTableStreamArn, cf:database-master.AuthUserRolesTableStreamArn}
   bootstrapBrokerStringTls: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/seds/bootstrapBrokerStringTls, ssm:/configuration/default/seds/bootstrapBrokerStringTls, ""}
-  vpcId: ${env:LOCAL_DEFAULT_STRING, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id, ""}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id, ""}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
