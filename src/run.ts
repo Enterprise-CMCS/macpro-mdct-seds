@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { execSync } from "child_process";
+import { addSlsBucketPolicies } from "./slsV4BucketPolicies.js";
 
 // load .env
 dotenv.config();
@@ -43,41 +44,22 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     ["serverless", "dynamodb", "install", "--stage=local"],
     "services/database"
   );
-  await runner.run_command_and_output(
-    "db svls doc",
-    ["serverless", "doctor"],
-    "services/database"
-  );
-  runner.run_command_and_output(
-    "db",
-    [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
-      "local",
-      "--lambdaPort",
-      "3003",
-    ],
-    "services/database"
-  );
   runner.run_command_and_output(
     "db",
     ["serverless", "dynamodb", "start", "--stage=local"],
     "services/database"
   );
-  await new Promise((res) => setTimeout(res, 10 * 1000)); // The above runners need to all finish, not all can be awaited, they block
+  await new Promise((res) => setTimeout(res, 8 * 1000)); // The above runners need to all finish, not all can be awaited, they block
   await runner.run_command_and_output(
-    "db",
+    "db-invoke",
     [
-      "aws",
-      "lambda",
+      "serverless",
       "invoke",
-      "/dev/null",
-      "--endpoint-url",
-      "http://localhost:3003",
-      "--function-name",
-      "database-local-seed",
+      "local",
+      "--function",
+      "seed",
+      "--stage",
+      "local"
     ],
     "services/database"
   );
@@ -89,11 +71,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
     "api deps",
     ["yarn", "install"],
-    "services/app-api"
-  );
-  await runner.run_command_and_output(
-    "api svls doc",
-    ["serverless", "doctor"],
     "services/app-api"
   );
   runner.run_command_and_output(
@@ -119,11 +96,6 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
     "ui deps",
     ["yarn", "install"],
-    "services/ui-src"
-  );
-  await runner.run_command_and_output(
-    "ui svls doc",
-    ["serverless", "doctor"],
     "services/ui-src"
   );
   await runner.run_command_and_output(
@@ -164,6 +136,7 @@ async function deploy(options: { stage: string }) {
   await prepare_services(runner);
   const deployCmd = ["sls", "deploy", "--stage", stage];
   await runner.run_command_and_output("Serverless deploy", deployCmd, ".");
+  await addSlsBucketPolicies();
 }
 
 async function destroy_stage(options: {
@@ -196,9 +169,7 @@ async function destroy_stage(options: {
 // The command definitons in yargs
 // All valid arguments to dev should be enumerated here, this is the entrypoint to the script
 yargs(process.argv.slice(2))
-  .command("local", "run system locally", {}, () => {
-    run_all_locally();
-  })
+  .command("local", "run system locally", {}, run_all_locally)
   .command(
     "test",
     "run all tests",

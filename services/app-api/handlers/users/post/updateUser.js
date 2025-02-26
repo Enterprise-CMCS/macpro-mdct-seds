@@ -1,11 +1,11 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { obtainUserByEmail } from "./obtainUserByEmail";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { obtainUserByEmail } from "./obtainUserByEmail.js";
 import {
   authorizeAdmin,
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
-} from "../../../auth/authConditions";
+} from "../../../auth/authConditions.js";
 
 export const main = handler(async (event, context) => {
   await authorizeAnyUser(event);

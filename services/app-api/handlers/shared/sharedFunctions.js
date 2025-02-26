@@ -1,4 +1,4 @@
-import dynamoDb from "../../libs/dynamodb-lib";
+import dynamoDb from "../../libs/dynamodb-lib.js";
 
 export async function getUsersEmailByRole(role) {
   const params = {

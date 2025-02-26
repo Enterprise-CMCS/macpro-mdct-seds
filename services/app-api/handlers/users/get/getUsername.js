@@ -1,5 +1,5 @@
-import handler from "../../../libs/handler-lib";
-import { getCurrentUserInfo } from "../../../auth/cognito-auth";
+import handler from "../../../libs/handler-lib.js";
+import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
 
 export const main = handler(async (event) => {
   let currentUser = await getCurrentUserInfo(event);

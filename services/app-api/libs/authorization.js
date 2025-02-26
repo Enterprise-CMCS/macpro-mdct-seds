@@ -1,7 +1,7 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import * as logger from "./debug-lib";
+import * as logger from "./debug-lib.js";
 import { SimpleJwksCache } from "aws-jwt-verify/jwk";
 import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
@@ -9,10 +9,10 @@ export async function getUserDetailsFromEvent(event) {
   await verifyEventSignature(event);
   const apiKey = event?.headers?.["x-api-key"];
 
-  // TODO, it seems that jwt_decode and verifier.verify may return the same object?
-  // Maybe we can remove the jwt_decode dependency.
+  // TODO, it seems that jwtDecode and verifier.verify may return the same object?
+  // Maybe we can remove the jwtDecode dependency.
 
-  const token = jwt_decode(apiKey);
+  const token = jwtDecode(apiKey);
   const role = mapMembershipToRole(token["custom:ismemberof"]);
 
   return {
@@ -46,7 +46,7 @@ export async function verifyEventSignature(event) {
           defaultRequestOptions: {
             // The default timeout is 1.5s, but we have increased it to 5s after seeing errors
             // such as "Failed to fetch https://[...]/.well-known/jwks.json"
-            // due to "write EPIPE" or "socked hang up"
+            // due to "write EPIPE" or "socket hang up"
             responseTimeout: 5000,
           },
         }),

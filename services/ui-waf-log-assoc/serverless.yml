@@ -1,7 +1,6 @@
 service: ui-waf-log-assoc
 
 plugins:
-  - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-stack-termination-protection
 
@@ -10,9 +9,9 @@ provider:
   runtime: nodejs20.x
   region: us-east-1
   stage: dev
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "seds"
@@ -27,7 +26,6 @@ custom:
       - impl
       - val
       - prod
-  iamPath: ${env:IAM_PATH, "/"}
   wafAclArn: ${param:CloudFrontWebAclArn}
   firehoseStreamArn: ${param:FirehoseArn}
   scripts:
@@ -37,3 +35,11 @@ custom:
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=${self:custom.wafAclArn},LogDestinationConfigs=${self:custom.firehoseStreamArn} \
           --region ${self:provider.region}
+
+resources:
+  Resources:
+    Honk: # this is just because it won't deploy unless we have some resource being created
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Value: "honk"

@@ -1,6 +1,6 @@
-import { authorizeAdminOrUserForState } from "../../../auth/authConditions";
-import dynamodbLib from "../../../libs/dynamodb-lib";
-import handler from "../../../libs/handler-lib";
+import { authorizeAdminOrUserForState } from "../../../auth/authConditions.js";
+import dynamodbLib from "../../../libs/dynamodb-lib.js";
+import handler from "../../../libs/handler-lib.js";
 
 /**
  * Returns list of all forms based on state
