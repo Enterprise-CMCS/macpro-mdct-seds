@@ -10,6 +10,7 @@ export interface DeploymentConfigProperties {
   bootstrapUsersPassword?: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
+  secureCloudfrontDomainName?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
   brokerString: string;
@@ -31,6 +32,10 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
+  if (config.cloudfrontDomainName) {
+    config.secureCloudfrontDomainName = `https://${cloudfrontDomainName}/`
+  }
+
   if (!isLocalStack) {
     validateConfig(config);
   }

@@ -25,7 +25,7 @@ interface CreateUiAuthComponentsProps {
   iamPermissionsBoundary: IManagedPolicy;
   oktaMetadataUrl: string;
   bootstrapUsersPassword?: string;
-  cloudfrontDomainName?: string;
+  secureCloudfrontDomainName?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
@@ -40,7 +40,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     iamPermissionsBoundary,
     oktaMetadataUrl,
     bootstrapUsersPassword,
-    cloudfrontDomainName,
+    secureCloudfrontDomainName,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
@@ -107,8 +107,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       cognito.UserPoolClientIdentityProvider.custom(providerName),
     ];
   }
+
   const appUrl =
-    cloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
+  secureCloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,

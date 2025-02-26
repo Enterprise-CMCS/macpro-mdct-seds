@@ -82,7 +82,7 @@ export class ParentStack extends Stack {
         uiBucket,
         distribution,
         apiGatewayRestApiUrl,
-        applicationEndpointUrl: props.cloudfrontDomainName || applicationEndpointUrl,
+        applicationEndpointUrl: props.secureCloudfrontDomainName || applicationEndpointUrl,
         identityPoolId,
         userPoolId,
         userPoolClientId,
