@@ -5,7 +5,7 @@ import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-de
 import {
   getAllStacksForStage,
   getCloudFormationTemplatesForStage,
-} from "./getCloudFormationTemplatesForStage.js";
+} from "./getCloudFormationTemplateForStage.js";
 import { execSync } from "child_process";
 import { addSlsBucketPolicies } from "./slsV4BucketPolicies.js";
 
@@ -208,8 +208,8 @@ async function destroy_stage(options: {
   );
 
   const protectedStacks = stacks
-    .filter((i) => i.EnableTerminationProtection)
-    .map((i) => i.StackName);
+    .filter((i: any) => i.EnableTerminationProtection)
+    .map((i: any) => i.StackName);
 
   if (protectedStacks.length > 0) {
     console.log(
