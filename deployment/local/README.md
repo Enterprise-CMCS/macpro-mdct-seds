@@ -17,16 +17,6 @@ Links for the curious:
 - Docker - https://www.docker.com/get-started
 - Colima - https://github.com/abiosoft/colima
 
-Now add this line to the bottom of your bash/zsh rc/profile:
-This is probably the file: `~/.zprofile` if you're using the standard mac setup.
-
-```sh
-# this tells docker that you're using colima and to look at colima to answer questions like: are any containers running?
-export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
-```
-
-Close and reopen your terminal.
-
 2. **LocalStack** - Provides a local AWS emulating environment.
 
 _The install is handled by the run script._
