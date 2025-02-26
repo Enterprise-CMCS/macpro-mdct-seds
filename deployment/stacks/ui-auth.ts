@@ -39,6 +39,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     iamPermissionsBoundary,
     oktaMetadataUrl,
     bootstrapUsersPassword,
+    cloudfrontDomainName,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
@@ -68,7 +69,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
     advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
-    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
   let supportedIdentityProviders:
@@ -105,7 +106,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       cognito.UserPoolClientIdentityProvider.custom(providerName),
     ];
   }
-
+  const appUrl =
+    cloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
@@ -121,19 +123,20 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         cognito.OAuthScope.OPENID,
         cognito.OAuthScope.PROFILE,
       ],
-      callbackUrls: [applicationEndpointUrl || "https://localhost:3000/"],
-      defaultRedirectUri: applicationEndpointUrl,
-      logoutUrls: [applicationEndpointUrl || "https://localhost:3000/"],
+      callbackUrls: [appUrl],
+      defaultRedirectUri: appUrl,
+      logoutUrls: [appUrl],
     },
     supportedIdentityProviders,
     generateSecret: false,
   });
 
-  (userPoolClient.node
-    .defaultChild as cognito.CfnUserPoolClient).addPropertyOverride(
-    "ExplicitAuthFlows",
-    ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
-  );
+  (
+    userPoolClient.node.defaultChild as cognito.CfnUserPoolClient
+  ).addPropertyOverride("ExplicitAuthFlows", [
+    "ADMIN_NO_SRP_AUTH",
+    "USER_PASSWORD_AUTH",
+  ]);
 
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
