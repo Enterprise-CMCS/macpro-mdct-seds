@@ -37,9 +37,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName:
-      process.env.FORM_TEMPLATES_TABLE_NAME ??
-      process.env.FormTemplatesTableName,
+    TableName: process.env.FormTemplatesTable,
     Item: {
       year: parseInt(data.year),
       template: data.template,

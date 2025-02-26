@@ -105,6 +105,10 @@ class KafkaSourceLib {
   }
 
   async handler(event) {
+    if (process.env.BOOTSTRAP_BROKER_STRING_TLS === "localstack") {
+      return;
+    }
+
     if (!connected) {
       await producer.connect();
       connected = true;

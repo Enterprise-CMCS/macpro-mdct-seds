@@ -7,12 +7,12 @@ const {
 
 /*
  * ENVIRONMENT VARIABLES TO SET:
- * AUTH_USER_TABLE_NAME: the name of the table in Dynamo
+ * AuthUserTable: the name of the table in Dynamo
  * DYNAMODB_URL: the local URL if local; undefined otherwise
  * [anything needed for AWS auth, if not local]
  */
 const {
-  AUTH_USER_TABLE_NAME,
+  AuthUserTable,
   DYNAMODB_URL,
 } = process.env;
 
@@ -48,7 +48,7 @@ const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
   let scannedCount = 0;
   let updatedCount = 0;
   console.log("Scanning...");
-  for await (let page of paginateScan({ client }, { TableName: AUTH_USER_TABLE_NAME })) {
+  for await (let page of paginateScan({ client }, { TableName: AuthUserTable })) {
     if (!page.Items) continue;
     for (let user of page.Items) {
       scannedCount += 1;
@@ -56,7 +56,7 @@ const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
 
       delete user.isActive;
       await client.send(new PutCommand({
-        TableName: AUTH_USER_TABLE_NAME,
+        TableName: AuthUserTable,
         Item: user,
       }));
 

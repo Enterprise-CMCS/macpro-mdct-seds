@@ -6,7 +6,10 @@ import { SimpleJwksCache } from "aws-jwt-verify/jwk";
 import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 
 export async function getUserDetailsFromEvent(event) {
-  await verifyEventSignature(event);
+  const isLocalStack = event.requestContext.accountId === "000000000000";
+  if (!isLocalStack) {
+    await verifyEventSignature(event);
+  }
   const apiKey = event?.headers?.["x-api-key"];
 
   // TODO, it seems that jwtDecode and verifier.verify may return the same object?
@@ -50,7 +53,7 @@ export async function verifyEventSignature(event) {
             responseTimeout: 5000,
           },
         }),
-      })
+      }),
     }
   );
 
