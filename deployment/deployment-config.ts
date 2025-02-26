@@ -33,7 +33,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     ...secretConfigOptions,
   };
   if (config.cloudfrontDomainName) {
-    config.secureCloudfrontDomainName = `https://${cloudfrontDomainName}/`
+    config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
   if (!isLocalStack) {
