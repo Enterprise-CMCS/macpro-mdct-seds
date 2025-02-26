@@ -25,6 +25,7 @@ interface CreateUiAuthComponentsProps {
   iamPermissionsBoundary: IManagedPolicy;
   oktaMetadataUrl: string;
   bootstrapUsersPassword?: string;
+  cloudfrontDomainName?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
