@@ -266,6 +266,14 @@ This repository uses 3 webhooks to publish to 3 different channels all in CMS Sl
 - Secrets are added to GitHub secrets by GitHub Admins
 - Development secrets are maintained in a 1Password vault
 
+## Deployment
+
+While application deployment is generally handled by Github Actions, when you initially set up a new AWS account to host this application, you'll need to deploy a prerequisite stack like so:
+```bash
+./run deploy-prerequisites
+```
+That will create a stack called `seds-prerequisites` which will contain resources needed by any application stacks.
+
 ## License
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)

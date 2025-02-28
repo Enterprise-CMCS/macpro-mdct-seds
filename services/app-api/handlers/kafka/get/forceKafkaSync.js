@@ -2,15 +2,13 @@ import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 
 const tableNames = [
-  process.env.AgeRangesTableName,
-  process.env.FormAnswersTableName,
-  process.env.FormQuestionsTableName,
-  process.env.FormsTableName,
-  process.env.FormTemplatesTableName,
-  process.env.StateFormsTableName,
-  process.env.StatesTableName,
-  process.env.StatusTableName,
-  process.env.AuthUserTableName,
+  process.env.FormAnswersTable,
+  process.env.FormQuestionsTable,
+  process.env.FormTemplatesTable,
+  process.env.FormsTable,
+  process.env.StateFormsTable,
+  process.env.StatesTable,
+  process.env.AuthUserTable,
 ];
 
 const mergeLastSynced = (items, syncDateTime) =>
