@@ -23,12 +23,15 @@ export class ParentStack extends Stack {
     id: string,
     props: StackProps & DeploymentConfigProperties
   ) {
-    super(scope, id, props);
+    const { vpcName, isDev } = props;
+
+    super(scope, id, {
+      ...props,
+      terminationProtection: !isDev,
+    });
 
     const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`
     const iamPath = "/delegatedadmin/developer/"
-
-    const { vpcName } = props;
 
     const commonProps = {
       scope: this,
