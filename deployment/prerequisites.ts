@@ -2,6 +2,7 @@
 import "source-map-support/register";
 import {
   App,
+  Aws,
   aws_apigateway as apigateway,
   aws_iam as iam,
   DefaultStackSynthesizer,
@@ -40,7 +41,7 @@ export class PrerequisiteStack extends Stack {
           : iam.ManagedPolicy.fromManagedPolicyArn(
               this,
               "iamPermissionsBoundary",
-              "arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy"
+              `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`
             ),
         path: "/delegatedadmin/developer/",
         managedPolicies: [
