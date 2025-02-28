@@ -15,16 +15,6 @@ const mockConnect = Kafka().producer().connect;
 const mockSendBatch = Kafka().producer().sendBatch;
 const mockDisconnect = Kafka().producer().disconnect;
 
-// The file under test has some one-time behavior on load,
-// which we test one time here.
-expect(Kafka).toHaveBeenCalledWith({
-  clientId: "seds-local",
-  brokers: ["broker1", "broker2"],
-  retry: { initialRetryTime: 300 , retries: 8 },
-  ssl: { rejectUnauthorized: false },
-});
-expect(mockConnect).not.toHaveBeenCalled();
-
 describe("Post Kafka Data", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -68,9 +58,16 @@ describe("Post Kafka Data", () => {
         },
       ]
     }
+    expect(mockConnect).not.toHaveBeenCalled();
 
     await postKafkaData(mockEvent);
 
+    expect(Kafka).toHaveBeenCalledWith({
+      clientId: "seds-local",
+      brokers: ["broker1", "broker2"],
+      retry: { initialRetryTime: 300 , retries: 8 },
+      ssl: { rejectUnauthorized: false },
+    });
     expect(mockConnect).toHaveBeenCalled();
     expect(mockSendBatch).toHaveBeenCalledWith({
       topicMessages: [
