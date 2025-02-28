@@ -78,37 +78,38 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   let supportedIdentityProviders:
     | cognito.UserPoolClientIdentityProvider[]
     | undefined = undefined;
+  let oktaIdp:
+    | cognito.CfnUserPoolIdentityProvider
+    | undefined = undefined;
 
-  if (oktaMetadataUrl) {
-    const providerName = "Okta";
+  const providerName = "Okta";
 
-    new cognito.CfnUserPoolIdentityProvider(
-      scope,
-      "CognitoUserPoolIdentityProvider",
-      {
-        providerName,
-        providerType: "SAML",
-        userPoolId: userPool.userPoolId,
-        providerDetails: {
-          MetadataURL: oktaMetadataUrl,
-        },
-        attributeMapping: {
-          email:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-          family_name:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-          given_name:
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-          "custom:ismemberof": "ismemberof",
-        },
-        idpIdentifiers: ["IdpIdentifier"],
-      }
-    );
+  oktaIdp = new cognito.CfnUserPoolIdentityProvider(
+    scope,
+    "CognitoUserPoolIdentityProvider",
+    {
+      providerName,
+      providerType: "SAML",
+      userPoolId: userPool.userPoolId,
+      providerDetails: {
+        MetadataURL: oktaMetadataUrl,
+      },
+      attributeMapping: {
+        email:
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+        family_name:
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+        given_name:
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+        "custom:ismemberof": "ismemberof",
+      },
+      idpIdentifiers: ["IdpIdentifier"],
+    }
+  );
 
-    supportedIdentityProviders = [
-      cognito.UserPoolClientIdentityProvider.custom(providerName),
-    ];
-  }
+  supportedIdentityProviders = [
+    cognito.UserPoolClientIdentityProvider.custom(providerName),
+  ];
 
   const appUrl =
   secureCloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
@@ -134,6 +135,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     supportedIdentityProviders,
     generateSecret: false,
   });
+
+  userPoolClient.node.addDependency(oktaIdp);
 
   (
     userPoolClient.node.defaultChild as cognito.CfnUserPoolClient
