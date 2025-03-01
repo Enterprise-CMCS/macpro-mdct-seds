@@ -43,7 +43,7 @@
     "@aws-sdk/client-lambda": "^3.678.0",
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/client-secrets-manager": "^3.670.0",
-    "aws-cdk-lib": "^2.161.1",
+    "aws-cdk-lib": "^2.177.0",
     "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"
   }
