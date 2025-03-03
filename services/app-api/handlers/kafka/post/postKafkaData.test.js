@@ -126,7 +126,6 @@ describe("Post Kafka Data", () => {
   });
 
   it("should ignore events for irrelevant tables", async () => {
-    // This test fails, because we happily send events with `topic: undefined`
     const mockEvent = {
       Records: [
         {
