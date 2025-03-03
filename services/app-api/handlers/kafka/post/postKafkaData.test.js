@@ -8,12 +8,22 @@ vi.mock("kafkajs", () => ({
       disconnect: vi.fn().mockResolvedValue(),
       connect: vi.fn().mockResolvedValue(),
       sendBatch: vi.fn().mockResolvedValue(),
+      on: vi.fn().mockResolvedValue(),
     }),
   }),
 }));
 const mockConnect = Kafka().producer().connect;
 const mockSendBatch = Kafka().producer().sendBatch;
 const mockDisconnect = Kafka().producer().disconnect;
+const mockOn = Kafka().producer().on;
+
+let disconnectCallback = () => {};
+mockOn.mockImplementation((eventId, callback) => {
+  if (eventId === "producer.disconnect") {
+    disconnectCallback = callback;
+  }
+});
+
 
 describe("Post Kafka Data", () => {
   beforeEach(() => {
@@ -115,7 +125,7 @@ describe("Post Kafka Data", () => {
     });
   });
 
-  it.skip("should ignore events for irrelevant tables", async () => {
+  it("should ignore events for irrelevant tables", async () => {
     // This test fails, because we happily send events with `topic: undefined`
     const mockEvent = {
       Records: [
@@ -144,5 +154,37 @@ describe("Post Kafka Data", () => {
     process.emit("beforeExit");
 
     expect(mockDisconnect).toHaveBeenCalled();
+  });
+
+  it("should construct a new producer after receiving a disconnect event", async () => {
+    const mockEvent = {
+      Records: [
+        {
+          eventSourceARN: "foo/local-state-forms/bar",
+          eventID: "change-a1",
+          eventName: "ChangeAlpha1",
+          dynamodb: {
+            NewImage: { id: { "S": "a1" }, value: { "N": 5 }},
+            OldImage: { id: { "S": "a1" }, value: { "N": 6 }},
+            Keys: { id: { "S": "a1" } },
+          }
+        },
+      ]
+    };
+
+    // Event 1: We either get or create a producer.
+    // We don't know which, due to the global variables in kafkaUtils.js
+    await postKafkaData(mockEvent);
+    const kafkaInstantiations = Kafka.mock.calls.length;
+
+    // Event 2: That producer is re-used because it is still connected
+    await postKafkaData(mockEvent);
+    expect(Kafka).toHaveBeenCalledTimes(kafkaInstantiations);
+
+    disconnectCallback();
+
+    // Event 3: A new producer is created
+    await postKafkaData(mockEvent);
+    expect(Kafka).toHaveBeenCalledTimes(1 + kafkaInstantiations);
   });
 });
