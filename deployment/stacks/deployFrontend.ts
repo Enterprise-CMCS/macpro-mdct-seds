@@ -5,6 +5,7 @@ import {
   Duration,
   aws_s3 as s3,
   aws_s3_deployment as s3_deployment,
+  custom_resources as cr,
 } from "aws-cdk-lib";
 import path from "path";
 import { execSync } from "node:child_process";
@@ -29,12 +30,15 @@ export function deployFrontend(props: DeployFrontendProps) {
   const {
     scope,
     stage,
+    distribution,
     apiGatewayRestApiUrl,
     applicationEndpointUrl,
     identityPoolId,
     userPoolId,
     userPoolClientId,
     userPoolClientDomain,
+    iamPermissionsBoundary,
+    iamPath
   } = props;
 
   const reactAppPath = "./services/ui-src/";
@@ -48,8 +52,8 @@ export function deployFrontend(props: DeployFrontendProps) {
 
   const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    path: props.iamPath,
-    permissionsBoundary: props.iamPermissionsBoundary,
+    path: iamPath,
+    permissionsBoundary: iamPermissionsBoundary,
   });
 
   deploymentRole.addToPolicy(
@@ -114,4 +118,31 @@ export function deployFrontend(props: DeployFrontendProps) {
   );
 
   deployTimeConfig.node.addDependency(deployWebsite);
+
+  const invalidateCloudfront = new cr.AwsCustomResource(
+    scope,
+    "InvalidateCloudfront",
+    {
+      onCreate: undefined,
+      onDelete: undefined,
+      onUpdate: {
+        service: "CloudFront",
+        action: "createInvalidation",
+        parameters: {
+          DistributionId: distribution.distributionId,
+          InvalidationBatch: {
+            Paths: {
+              Quantity: 1,
+              Items: ["/*"],
+            },
+            CallerReference: new Date().toISOString(),
+          },
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(`InvalidateCloudfront-${stage}`),
+      },
+      role: deploymentRole,
+    }
+  );
+
+  invalidateCloudfront.node.addDependency(deployTimeConfig);
 }
