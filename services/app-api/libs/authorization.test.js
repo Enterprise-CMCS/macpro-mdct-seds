@@ -35,6 +35,9 @@ const mockEvent = {
   headers: {
     "x-api-key": "mockApiKey",
   },
+  requestContext: {
+    accountId: "not-localstack",
+  },
 };
 
 const mockToken = {
@@ -81,7 +84,9 @@ describe("authorization", () => {
     });
 
     it("should throw if the event has no API key", async () => {
-      await expect(getUserDetailsFromEvent({})).rejects
+      const noKeyEvent = structuredClone(mockEvent);
+      delete noKeyEvent.headers["x-api-key"];
+      await expect(getUserDetailsFromEvent(noKeyEvent)).rejects
         .toThrow("Forbidden");
     });
 
