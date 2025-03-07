@@ -8,10 +8,7 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 
 interface WafProps {
   readonly name: string;
-  /**
-   * Should requests with large bodies be blocked?
-   * @default true
-   */
+  readonly blockByDefault?: boolean;
   readonly blockRequestBodyOver8KB?: boolean;
 }
 
@@ -29,6 +26,7 @@ export class WafConstruct extends Construct {
 
     const {
       name,
+      blockByDefault = true,
       blockRequestBodyOver8KB = true
     } = props;
 
@@ -47,7 +45,7 @@ export class WafConstruct extends Construct {
 
     this.webAcl = new CfnWebACL(this, "WebACL", {
       scope: scopeType,
-      defaultAction: { block: {} },
+      defaultAction: blockByDefault ? { block: {} } : { allow: {} },
       visibilityConfig: {
         cloudWatchMetricsEnabled: true,
         sampledRequestsEnabled: true,

@@ -13,9 +13,11 @@ import {
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
+import { isLocalStack } from "../local/util";
 
 interface CreateUiAuthComponentsProps {
   scope: Construct;
+  project: string;
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
@@ -32,6 +34,7 @@ interface CreateUiAuthComponentsProps {
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const {
     scope,
+    project,
     stage,
     isDev,
     applicationEndpointUrl,
@@ -71,7 +74,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     customAttributes: {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
-    advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+    // advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED, DEPRECATED WE NEED FEATURE_PLAN.plus if we want to use StandardThreatProtectionMode.FULL_FUNCTION which I think is the new way to do this
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
@@ -261,17 +264,19 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     );
   }
 
-  const webAcl = new WafConstruct(
-    scope,
-    "CognitoWafConstruct",
-    { name: `ui-auth-${stage}-webacl-waf` },
-    "REGIONAL"
-  ).webAcl;
+  if (!isLocalStack) {
+    const waf = new WafConstruct(
+      scope,
+      "CognitoWafConstruct",
+      { name: `${project}-${stage}-ui-auth` },
+      "REGIONAL"
+    );
 
-  new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
-    resourceArn: userPool.userPoolArn,
-    webAclArn: webAcl.attrArn,
-  });
+    new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
+      resourceArn: userPool.userPoolArn,
+      webAclArn: waf.webAcl.attrArn,
+    });
+  }
 
   new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
     parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,

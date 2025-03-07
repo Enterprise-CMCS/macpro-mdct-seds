@@ -13,7 +13,6 @@ import {
   Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
-import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
@@ -44,10 +43,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     privateSubnets,
     tables,
     brokerString,
+    iamPermissionsBoundary,
+    iamPath,
   } = props;
 
   const service = "app-api";
-  const shortStackName = `${service}-${stage}`;
   Tags.of(scope).add("SERVICE", service);
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
@@ -165,12 +165,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const commonProps = {
     brokerString,
-    stackName: shortStackName,
+    stackName: `${service}-${stage}`,
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary: props.iamPermissionsBoundary,
-    iamPath: props.iamPath,
+    iamPermissionsBoundary,
+    iamPath,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -439,7 +439,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       scope,
       "ApiWafConstruct",
       {
-        name: `${project}-${stage}-${shortStackName}`,
+        name: `${project}-${stage}-${service}`,
         blockRequestBodyOver8KB: false,
       },
       "REGIONAL"
@@ -449,28 +449,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       resourceArn: api.deploymentStage.stageArn,
       webAclArn: waf.webAcl.attrArn,
     });
-
-    if (!isDev) {
-      const logBucket = new s3.Bucket(scope, "WafLogBucket", {
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: RemovalPolicy.RETAIN,
-        enforceSSL: true,
-      });
-
-      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-        logGroup: waf.logGroup,
-        bucket: logBucket,
-        iamPermissionsBoundary: props.iamPermissionsBoundary,
-        iamPath: props.iamPath,
-      });
-    }
   }
 
   addIamPropertiesToBucketAutoDeleteRole(
     scope,
-    props.iamPermissionsBoundary.managedPolicyArn,
-    props.iamPath
+    iamPermissionsBoundary.managedPolicyArn,
+    iamPath
   );
 
   return {
