@@ -12,7 +12,6 @@ import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
-import { it } from "node:test";
 
 interface CreateUiComponentsProps {
   scope: Construct;
