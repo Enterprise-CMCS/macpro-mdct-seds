@@ -1,8 +1,7 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import cloneDeepWith from "lodash/cloneDeepWith";
-import { authorizeUserForState } from "../../../auth/authConditions";
-import { getCurrentUserInfo } from "../../../auth/cognito-auth";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeUserForState } from "../../../auth/authConditions.js";
+import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
 
 /**
  * This handler will loop through a question array and save each row
@@ -139,19 +138,11 @@ const updateAnswers = async (answers, user) => {
       "-" +
       questionNumber;
 
-    //replace null values with 0
-    const rowsWithZeroWhereBlank = cloneDeepWith(
-      answers[answer].rows,
-      (value) => {
-        if (value === null) {
-          return 0;
-        }
-      }
-    );
+    const rowsWithZeroWhereBlank = replaceNullsWithZeros(answers[answer].rows);
 
     // Params for updating questions
     const questionParams = {
-      TableName: process.env.FormAnswersTableName,
+      TableName: process.env.FormAnswersTable,
       Key: {
         answer_entry: answerEntry,
       },
@@ -177,8 +168,7 @@ const updateAnswers = async (answers, user) => {
 const updateStateForm = async (stateFormId, statusData, user) => {
   // Get existing form to compare changes
   const params = {
-    TableName:
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    TableName: process.env.StateFormsTable,
     ExpressionAttributeNames: {
       "#state_form": "state_form",
     },
@@ -200,8 +190,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
   }
   // Params for updating for statusData;
   const formParams = {
-    TableName:
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    TableName: params.TableName,
     Key: {
       state_form: stateFormId,
     },
@@ -230,3 +219,27 @@ const updateStateForm = async (stateFormId, statusData, user) => {
     throw ("Form params update failed", e);
   }
 };
+
+/**
+ * Replace all null values with zero values, anywhere in the object.
+ * Guaranteed to work on state forms.
+ * Not guaranteed to work with _any_ object in the universe.
+ */
+function replaceNullsWithZeros (obj) {
+  if (obj === null) {
+    return 0;
+  }
+  else if (Array.isArray(obj)) {
+    return obj.map((x) => replaceNullsWithZeros(x));
+  }
+  else if (typeof obj === "object") {
+    return Object.fromEntries(
+      Object.entries(obj).map(
+        ([key, val]) => [key, replaceNullsWithZeros(val)]
+      )
+    );
+  }
+  else {
+    return obj;
+  }
+}

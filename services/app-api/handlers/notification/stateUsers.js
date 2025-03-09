@@ -1,8 +1,8 @@
-import handler from "./../../libs/handler-lib";
+import handler from "./../../libs/handler-lib.js";
 import {
   getUsersEmailByRole,
   getUncertifiedStates,
-} from "../shared/sharedFunctions";
+} from "../shared/sharedFunctions.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 const client = new SESClient({ region: "us-east-1" });

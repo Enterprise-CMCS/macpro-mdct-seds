@@ -1,16 +1,15 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
-} from "../../../auth/authConditions";
+} from "../../../auth/authConditions.js";
 
 export const main = handler(async (event) => {
   await authorizeAnyUser(event);
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
       ":userId": event.pathParameters["id"],

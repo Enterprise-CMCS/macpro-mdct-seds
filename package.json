@@ -1,9 +1,5 @@
 {
   "name": "macpro-mdct-seds",
-  "resolutions": {
-    "**/**/lodash": "^4.17.12",
-    "minimist": "^1.2.5"
-  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,6 +9,9 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
     "smoke": "npm run test --tag smoke",
     "test:cypress": "cd tests/cypress && npm test && cd -",
@@ -29,30 +28,23 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "devDependencies": {
-    "@serverless/compose": "^1.3.0",
-    "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
-    "@types/dotenv": "^8.2.0",
     "@types/node": "^20.12.7",
     "@types/yargs": "^15.0.10",
+    "aws-cdk": "^2.182.0",
+    "aws-cdk-local": "^2.19.2",
     "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
-    "nightwatch": "3.1.2",
-    "prettier": "2.2.1",
-    "serverless": "^3.39.0",
-    "serverless-bundle": "^6.0.0",
-    "serverless-dotenv-plugin": "^4.0.0",
-    "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",
-    "serverless-offline": "^13.5.0",
-    "serverless-online": "Enterprise-CMCS/macpro-serverless-online",
-    "serverless-plugin-scripts": "^1.0.2",
-    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#0.1.1",
-    "serverless-stack-termination-protection": "^2.0.2",
-    "typescript": "^4.0.5",
+    "typescript": "^5.7.3",
     "yargs": "^16.1.1"
   },
   "dependencies": {
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "jsonpath": "^1.1.0"
+    "@aws-sdk/client-cloudformation": "^3.678.0",
+    "@aws-sdk/client-cloudfront": "^3.678.0",
+    "@aws-sdk/client-lambda": "^3.678.0",
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/client-secrets-manager": "^3.670.0",
+    "aws-cdk-lib": "^2.182.0",
+    "constructs": "^10.3.0",
+    "source-map-support": "^0.5.21"
   }
 }

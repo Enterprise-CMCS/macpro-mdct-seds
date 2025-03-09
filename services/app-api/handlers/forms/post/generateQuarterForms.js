@@ -1,5 +1,5 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
   getFormDescriptions,
   getQuestionsByYear,
@@ -7,8 +7,8 @@ import {
   findExistingStateForms,
   fetchOrCreateQuestions,
   getAnswersSet,
-} from "../../shared/sharedFunctions";
-import { authorizeAdmin } from "../../../auth/authConditions";
+} from "../../shared/sharedFunctions.js";
+import { authorizeAdmin } from "../../../auth/authConditions.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -212,16 +212,13 @@ const generateQuarterForms = async (event) => {
     })
     .flat();
 
-  // Get tableName
-  const formDescriptionTableName =
-    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
   console.log(`Saving ${putRequestsStateForms.length} state forms`);
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormDescriptions) {
     const batchRequest = {
       RequestItems: {
-        [formDescriptionTableName]: batchArrayFormDescriptions[i],
+        [process.env.StateFormsTable]: batchArrayFormDescriptions[i],
       },
     };
 
@@ -333,15 +330,11 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Get tableName
-  const formAnswersTableName =
-    process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName;
-
   // Loop through batches and write to DB
   for (let i in batchArrayFormAnswers) {
     const batchRequest = {
       RequestItems: {
-        [formAnswersTableName]: batchArrayFormAnswers[i],
+        [process.env.FormAnswersTable]: batchArrayFormAnswers[i],
       },
     };
 

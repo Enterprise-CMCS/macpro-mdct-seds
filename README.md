@@ -5,11 +5,12 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/test_coverage)](https://codeclimate.com/repos/64497017eab34100ce938fe6/test_coverage)
 
 ### Integration Environment Deploy Status:
-| Branch  | Build Status |
-| ------------- | ------------- |
-| master  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)  |
-| val  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)  |
-| production  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production)  |
+
+| Branch     | Build Status                                                                                                            |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| master     | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)                   |
+| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)        |
+| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production) |
 
 SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
@@ -40,19 +41,21 @@ On each PR, a linter and prettier check runs. These checks must pass for a PR to
 - Run Eslint using `yarn lint`
 - Run Prettier using `npx prettier --write .`
 
-
 ## Local Dev
 
 ### Running MDCT Workspace Setup
-Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally. 
+
+Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally.
 
 #### For developers that have run workspace setup running the applicaiton locally please run the following
-1) cd ~/Projects/macpro-mdct-seds/
-2) `./run local --update-env` or `./run local` 
+
+1. cd ~/Projects/macpro-mdct-seds/
+2. `./run local --update-env` or `./run local`
 
    note: the `./run local --update-env` command will reach out to 1Password to bring in secret values and populate .env files that are git ignored. If you use the `./run local` command you will need to have either previously run with the `--update-env flag` or provide your own .env files.
 
 #### For developers that cannot run the workspace setup script or wish to only run SEDS see steps below.
+
 If you do not set don't have yarn, nvm, or java installed, see [Requirements](#requirements)
 
 Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files.
@@ -134,9 +137,9 @@ export function listUsers() {
 
 ### Adding New Forms (quarterly)
 
-1. If necessary, create a new form template for the year in [src/database/initial_data_load/](src/database/initial_data_load/)
+1. If necessary, create a new form template for the year in [services/database/data/initial_data_load/](services/database/data/initial_data_load/)
    1. Example: `form_questions_2022.json`
-2. Add the new form to seed > form-questions > sources in [services/data-deployment/serverless.yml](./services/data-deployment/serverless.yml)
+2. Add the new form to seed > form-questions > sources in [services/database/handlers/seed](./services/database/handlers/seed/)
 
    Example:
 
@@ -144,10 +147,10 @@ export function listUsers() {
     table: ${self:custom.stage}-form-questions
     sources:
     [
-    ../../src/database/initial_data_load/form_questions_2022.json,
-    ../../src/database/initial_data_load/form_questions_2021.json,
-    ../../src/database/initial_data_load/form_questions_2020.json,
-    ../../src/database/initial_data_load/form_questions_2019.json,
+    data/initial_data_load/form_questions_2022.json,
+    data/initial_data_load/form_questions_2021.json,
+    data/initial_data_load/form_questions_2020.json,
+    data/initial_data_load/form_questions_2019.json,
     ]
    ```
 
@@ -182,7 +185,7 @@ found in [src/dms](src/dms).
 Validate json files against schema to ensure accuracy before each commit.
 
 - Schema Location: [src/database/schema/](src/database/schema/)
-- Initial Data Location: [src/database/initial_data_load](src/database/initial_data_load)
+- Initial Data Location: [services/database/data/initial_data_load](services/database/data/initial_data_load)
 
 1. Install AJV globally in your environment
    1. `npm install -g ajv-cli`
@@ -248,7 +251,7 @@ Pull requests are being accepted.
 
 ## Slack Webhooks:
 
-This repository uses 3 webhooks to publish to  3 different channels all in CMS Slack.
+This repository uses 3 webhooks to publish to 3 different channels all in CMS Slack.
 
 - SLACK_WEBHOOK: This pubishes to the `macpro-mdct-seds-alerts` channel. Alerts published there are for deploy or test failures to the `master`, `val`, or `production` branches.
 
@@ -256,11 +259,20 @@ This repository uses 3 webhooks to publish to  3 different channels all in CMS S
 
 - PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of Seds to production.
 
-    - Webhooks are created by CMS tickets, populated into GitHub Secrets
+  - Webhooks are created by CMS tickets, populated into GitHub Secrets
 
 ## GitHub Actions Secret Management:
-- Secrets are added to GitHub secrets by GitHub Admins 
+
+- Secrets are added to GitHub secrets by GitHub Admins
 - Development secrets are maintained in a 1Password vault
+
+## Deployment
+
+While application deployment is generally handled by Github Actions, when you initially set up a new AWS account to host this application, you'll need to deploy a prerequisite stack like so:
+```bash
+./run deploy-prerequisites
+```
+That will create a stack called `seds-prerequisites` which will contain resources needed by any application stacks.
 
 ## License
 
@@ -278,5 +290,4 @@ work worldwide through the CC0 1.0 Universal public domain dedication.
 
 ### Contributors
 
-This project made possible by the [Serverless Stack](https://serverless-stack.com/) and its authors/contributors. The extremely detailed tutorial, code examples, and serverless pattern is where this project started. 
-
+This project made possible by the [Serverless Stack](https://serverless-stack.com/) and its authors/contributors. The extremely detailed tutorial, code examples, and serverless pattern is where this project started.

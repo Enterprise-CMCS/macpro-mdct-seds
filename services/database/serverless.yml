@@ -1,11 +1,13 @@
 service: database
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
-  - serverless-s3-bucket-helper
   - serverless-dynamodb
   - serverless-stack-termination-protection
+  - serverless-plugin-scripts
+  - serverless-offline
+
 custom:
   project: "seds"
   stage: ${opt:stage, self:provider.stage}
@@ -20,123 +22,59 @@ custom:
       - impl
       - val
       - prod
-
+  seedDataMap:
+    production: false
+    val: false
+    master: false
+    default: true
+  seedData: ${self:custom.seedDataMap.${self:custom.stage}, self:custom.seedDataMap.default}
+  localDynamoEndpoint: ${env:DYNAMODB_URL, ""}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${self:custom.stage}-seed --invocation-type RequestResponse /dev/null
   dynamodb:
     stages:
       - local
-      - master
     start:
       port: 8000
       inMemory: true
       migrate: true
-      seed: true
-    seed:
-      domain:
-        sources:
-          - table: ${self:custom.stage}-forms
-            sources: [../../src/database/initial_data_load/forms.json]
-          - table: ${self:custom.stage}-age-ranges
-            sources: [../../src/database/initial_data_load/age_ranges.json]
-          - table: ${self:custom.stage}-status
-            sources: [../../src/database/initial_data_load/status.json]
-          - table: ${self:custom.stage}-states
-            sources: [../../src/database/initial_data_load/states.json]
-          - table: ${self:custom.stage}-state-forms
-            sources:
-              [
-                ../../src/database/initial_data_load/state_forms.json,
-                ../../src/database/initial_data_load/state_forms_2021Q1.json,
-                ../../src/database/initial_data_load/state_forms_2020.json,
-              ]
-          - table: ${self:custom.stage}-form-questions
-            sources:
-              [
-                ../../src/database/initial_data_load/form_questions_2021.json,
-                ../../src/database/initial_data_load/form_questions_2020.json,
-              ]
-          - table: ${self:custom.stage}-form-templates
-            sources:
-              [
-                ../../src/database/initial_data_load/form_template_2019.json,
-                ../../src/database/initial_data_load/form_template_2020.json,
-                ../../src/database/initial_data_load/form_template_2021.json,
-              ]
-          - table: ${self:custom.stage}-form-answers
-            sources:
-              [
-                ../../src/database/initial_data_load/form_answers_AL.json,
-                ../../src/database/initial_data_load/form_answers_AK.json,
-                ../../src/database/initial_data_load/form_answers_AZ.json,
-                ../../src/database/initial_data_load/form_answers_AR.json,
-                ../../src/database/initial_data_load/form_answers_CA.json,
-                ../../src/database/initial_data_load/form_answers_CO.json,
-                ../../src/database/initial_data_load/form_answers_CT.json,
-                ../../src/database/initial_data_load/form_answers_DE.json,
-                ../../src/database/initial_data_load/form_answers_DC.json,
-                ../../src/database/initial_data_load/form_answers_FL.json,
-                ../../src/database/initial_data_load/form_answers_GA.json,
-                ../../src/database/initial_data_load/form_answers_HI.json,
-                ../../src/database/initial_data_load/form_answers_ID.json,
-                ../../src/database/initial_data_load/form_answers_IL.json,
-                ../../src/database/initial_data_load/form_answers_IN.json,
-                ../../src/database/initial_data_load/form_answers_IA.json,
-                ../../src/database/initial_data_load/form_answers_KS.json,
-                ../../src/database/initial_data_load/form_answers_KY.json,
-                ../../src/database/initial_data_load/form_answers_LA.json,
-                ../../src/database/initial_data_load/form_answers_ME.json,
-                ../../src/database/initial_data_load/form_answers_MD.json,
-                ../../src/database/initial_data_load/form_answers_MA.json,
-                ../../src/database/initial_data_load/form_answers_MI.json,
-                ../../src/database/initial_data_load/form_answers_MN.json,
-                ../../src/database/initial_data_load/form_answers_MO.json,
-                ../../src/database/initial_data_load/form_answers_MS.json,
-                ../../src/database/initial_data_load/form_answers_MT.json,
-                ../../src/database/initial_data_load/form_answers_NE.json,
-                ../../src/database/initial_data_load/form_answers_NV.json,
-                ../../src/database/initial_data_load/form_answers_NH.json,
-                ../../src/database/initial_data_load/form_answers_NJ.json,
-                ../../src/database/initial_data_load/form_answers_NM.json,
-                ../../src/database/initial_data_load/form_answers_NY.json,
-                ../../src/database/initial_data_load/form_answers_NC.json,
-                ../../src/database/initial_data_load/form_answers_ND.json,
-                ../../src/database/initial_data_load/form_answers_OH.json,
-                ../../src/database/initial_data_load/form_answers_OK.json,
-                ../../src/database/initial_data_load/form_answers_OR.json,
-                ../../src/database/initial_data_load/form_answers_PA.json,
-                ../../src/database/initial_data_load/form_answers_RI.json,
-                ../../src/database/initial_data_load/form_answers_SC.json,
-                ../../src/database/initial_data_load/form_answers_SD.json,
-                ../../src/database/initial_data_load/form_answers_TN.json,
-                ../../src/database/initial_data_load/form_answers_TX.json,
-                ../../src/database/initial_data_load/form_answers_UT.json,
-                ../../src/database/initial_data_load/form_answers_VT.json,
-                ../../src/database/initial_data_load/form_answers_VA.json,
-                ../../src/database/initial_data_load/form_answers_WA.json,
-                ../../src/database/initial_data_load/form_answers_WV.json,
-                ../../src/database/initial_data_load/form_answers_WI.json,
-                ../../src/database/initial_data_load/form_answers_WY.json,
-                ../../src/database/initial_data_load/form_answers_AL_2021Q1.json,
-                ../../src/database/initial_data_load/form_answers_MD_2021Q1.json,
-                ../../src/database/initial_data_load/form_answers_PA_2021Q1.json,
-                ../../src/database/initial_data_load/form_answers_AL_2020.json,
-                ../../src/database/initial_data_load/form_answers_MD_2020.json,
-                ../../src/database/initial_data_load/form_answers_PA_2020.json,
-              ]
-          - table: ${self:custom.stage}-auth-user
-            sources: [../../src/database/initial_data_load/auth_user.json]
-          - table: ${self:custom.stage}-auth-user-roles
-            sources: [../../src/database/initial_data_load/auth_user_roles.json]
 
 provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   versionFunctions: true
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+functions:
+  seed:
+    handler: handlers/seed/seed.handler
+    environment:
+      dynamoPrefix: ${self:custom.stage}
+      seedData: ${self:custom.seedData}
+      DYNAMODB_URL: ${self:custom.localDynamoEndpoint}
+    timeout: 120
 
 resources:
+  Description: ${self:service} ${self:custom.stage}
   Resources:
     AgeRangesTable:
       Type: AWS::DynamoDB::Table

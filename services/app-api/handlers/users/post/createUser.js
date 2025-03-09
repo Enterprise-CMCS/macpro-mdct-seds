@@ -1,19 +1,10 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
-import { obtainUserByUsername } from "./obtainUserByUsername";
-import { getUserDetailsFromEvent } from "../../../libs/authorization";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { obtainUserByUsername } from "./obtainUserByUsername.js";
+import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
 
 export const main = handler(async (event, context) => {
   const userData = await getUserDetailsFromEvent(event);
-
-  return await createUser(userData);
-});
-
-export const adminCreateUser = handler(async (event, context) => {
-  await authorizeAdmin(event);
-
-  const userData = JSON.parse(event.body);
 
   return await createUser(userData);
 });
@@ -31,8 +22,7 @@ const createUser = async (userData) => {
 
   // Query to get next available userId
   const paramsForId = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
   };
   const allResults = await dynamoDb.scan(paramsForId);
 
@@ -50,8 +40,7 @@ const createUser = async (userData) => {
   }
 
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
     Item: {
       dateJoined: new Date().toISOString(),
       email: userData.email,

@@ -56,7 +56,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
         onChange={e => updateTempSummaryNotes(e)}
         onBlur={e => saveSummaryNotes(e.target.value)}
         disabled={disabledNotes}
-        className=" margin-left-3 width-widescreen"
+        className="width-widescreen"
       />
     </>
   );

@@ -83,7 +83,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
     }
   }, [last_modified]);
   return (
-    <div className="react-transition fade-in" data-testid="FormPage">
+    <div data-testid="FormPage" className="formPage">
       {save_error ? (
         <div className="save-error">
           <Alert type="error" heading="Save Error:" headingLevel="h1">
@@ -107,7 +107,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
       ) : null}
       {hasAccess === true && !loadError ? (
         <>
-          <div className="margin-x-5 margin-bottom-3">
+          <div className="margin-bottom-3">
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}
@@ -124,7 +124,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
             <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
           </Button>
           <NotApplicable />
-          <div className="tab-container margin-x-5 margin-y-3">
+          <div className="tab-container margin-y-3">
             <TabContainer quarter={quarter} />
           </div>
 
@@ -141,7 +141,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
       {hasAccess === false ? <Unauthorized /> : null}
       {loadError ? (
         <>
-          <div className="margin-x-5 margin-bottom-3">
+          <div className="margin-bottom-3">
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}

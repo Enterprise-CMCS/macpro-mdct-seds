@@ -1,9 +1,19 @@
+html,
+body,
+#root {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  font-size: 16px; // sets the value of 1rem
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
-  color: #333;
+  color: #262626;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -14,7 +24,12 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Serif", serif;
+  font-family: "Open Sans", sans-serif;
+}
+
+label {
+  font-family: "Open Sans", sans-serif;
+  color: #262626;
 }
 
 select.form-control,
@@ -24,4 +39,11 @@ input.form-control {
 }
 input[type="file"] {
   width: 100%;
+}
+
+.App {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

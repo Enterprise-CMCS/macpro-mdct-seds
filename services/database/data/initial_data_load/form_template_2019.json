@@ -1,0 +1,2830 @@
+[
+  {
+    "year": 2019,
+    "template": [
+      {
+        "question": "2019-21E-01",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-02",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-03",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-04",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-05",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "readonly": true,
+        "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[1].col2",
+                  "$..[?(@.question=='2019-21E-01')].rows[1].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[1].col3",
+                  "$..[?(@.question=='2019-21E-01')].rows[1].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[1].col4",
+                  "$..[?(@.question=='2019-21E-01')].rows[1].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[1].col5",
+                  "$..[?(@.question=='2019-21E-01')].rows[1].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[1].col6",
+                  "$..[?(@.question=='2019-21E-01')].rows[1].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[2].col2",
+                  "$..[?(@.question=='2019-21E-01')].rows[2].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[2].col3",
+                  "$..[?(@.question=='2019-21E-01')].rows[2].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[2].col4",
+                  "$..[?(@.question=='2019-21E-01')].rows[2].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[2].col5",
+                  "$..[?(@.question=='2019-21E-01')].rows[2].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[2].col6",
+                  "$..[?(@.question=='2019-21E-01')].rows[2].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[3].col2",
+                  "$..[?(@.question=='2019-21E-01')].rows[3].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[3].col3",
+                  "$..[?(@.question=='2019-21E-01')].rows[3].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[3].col4",
+                  "$..[?(@.question=='2019-21E-01')].rows[3].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[3].col5",
+                  "$..[?(@.question=='2019-21E-01')].rows[3].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21E-04')].rows[3].col6",
+                  "$..[?(@.question=='2019-21E-01')].rows[3].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-06",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-07",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-08",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21E-09",
+        "form_id": "1",
+        "form": "21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0000", "label": "Under Age 0" },
+          { "key": "0001", "label": "Ages 0 - 1" },
+          { "key": "0105", "label": "Ages 1 - 5" },
+          { "key": "0612", "label": "Ages 6 - 12" },
+          { "key": "1318", "label": "Ages 13 - 18" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-01",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of pregnant women ever enrolled during the quarter?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-02",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of new enrollees in the quarter?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-03",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of disenrollees in the quarter?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-04",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of member-months of enrollment for pregnant women in the quarter?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-05",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the average number of months of enrollment for pregnant women ever enrolled during the quarter?",
+        "readonly": true,
+        "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[1].col2",
+                  "$..[?(@.question=='2019-21PW-01')].rows[1].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[1].col3",
+                  "$..[?(@.question=='2019-21PW-01')].rows[1].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[1].col4",
+                  "$..[?(@.question=='2019-21PW-01')].rows[1].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[1].col5",
+                  "$..[?(@.question=='2019-21PW-01')].rows[1].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[1].col6",
+                  "$..[?(@.question=='2019-21PW-01')].rows[1].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[2].col2",
+                  "$..[?(@.question=='2019-21PW-01')].rows[2].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[2].col3",
+                  "$..[?(@.question=='2019-21PW-01')].rows[2].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[2].col4",
+                  "$..[?(@.question=='2019-21PW-01')].rows[2].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[2].col5",
+                  "$..[?(@.question=='2019-21PW-01')].rows[2].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[2].col6",
+                  "$..[?(@.question=='2019-21PW-01')].rows[2].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[3].col2",
+                  "$..[?(@.question=='2019-21PW-01')].rows[3].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[3].col3",
+                  "$..[?(@.question=='2019-21PW-01')].rows[3].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[3].col4",
+                  "$..[?(@.question=='2019-21PW-01')].rows[3].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[3].col5",
+                  "$..[?(@.question=='2019-21PW-01')].rows[3].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-21PW-04')].rows[3].col6",
+                  "$..[?(@.question=='2019-21PW-01')].rows[3].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-06",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of pregnant women enrolled at the end of the quarter?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-07",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of pregnant women ever enrolled during the year?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-08",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of new enrollees during the year?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-21PW-09",
+        "form_id": "6",
+        "form": "21PW",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of disenrollees during the year?",
+        "age_ranges": [
+          { "key": "1964", "label": "Age 19 years through age 64 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-01",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-02",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-03",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-04",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-05",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "readonly": true,
+        "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[1].col2",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[1].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[1].col3",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[1].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[1].col4",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[1].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[1].col5",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[1].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[1].col6",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[1].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[2].col2",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[2].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[2].col3",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[2].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[2].col4",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[2].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[2].col5",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[2].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[2].col6",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[2].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[3].col2",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[3].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[3].col3",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[3].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[3].col4",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[3].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[3].col5",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[3].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.21E-04')].rows[3].col6",
+                  "$..[?(@.question=='2019-64.21E-01')].rows[3].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-06",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-07",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-08",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.21E-09",
+        "form_id": "3",
+        "form": "64.21E",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-01-15T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-01-15T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-64.EC-01",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-02",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-03",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-04",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the number of member-months of enrollment for children &&&VARIABLE&&& in the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-05",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the average number of months of enrollment for children &&&VARIABLE&&& ever enrolled during the quarter?",
+        "readonly": true,
+        "comment": "Divide the entries in Question 4 by the entries in Question 1.",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[1].col2",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[1].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[1].col3",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[1].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[1].col4",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[1].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[1].col5",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[1].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[1].col6",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[1].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[2].col2",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[2].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[2].col3",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[2].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[2].col4",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[2].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[2].col5",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[2].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[2].col6",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[2].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[3].col2",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[3].col2"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col3": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[3].col3",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[3].col3"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col4": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[3].col4",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[3].col4"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col5": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[3].col5",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[3].col5"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ],
+            "col6": [
+              {
+                "targets": [
+                  "$..[?(@.question=='2019-64.EC-04')].rows[3].col6",
+                  "$..[?(@.question=='2019-64.EC-01')].rows[3].col6"
+                ],
+                "actions": ["formula"],
+                "formula": "<0> / <1>"
+              }
+            ]
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-06",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "label": "What is the number of children &&&VARIABLE&&& enrolled at the end of the quarter?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-07",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of children &&&VARIABLE&&& ever enrolled during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-08",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of new enrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-64.EC-09",
+        "form": "64.EC",
+        "year": 2019,
+        "type": "datagridwithtotals",
+        "rowTotal": true,
+        "columnTotal": true,
+        "context_data": {
+          "show_if_quarter_in": ["4"]
+        },
+        "label": "What is the unduplicated number of disenrollees &&&VARIABLE&&& during the year?",
+        "age_ranges": [
+          { "key": "0001", "label": "Birth through age 12 months" },
+          { "key": "0105", "label": "Age 1 year through age 5 years" },
+          { "key": "0612", "label": "Age 6 years through age 12 years" },
+          { "key": "1318", "label": "Age 13 years through age 18 years" },
+          { "key": "1920", "label": "Age 19 years through age 20 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "% of FPL 0-133",
+            "col3": "% of FPL 134-200",
+            "col4": "% of FPL 201-250",
+            "col5": "% of FPL 251-300",
+            "col6": "% of FPL 301-317"
+          },
+          {
+            "col1": "A. Fee-for-Service",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "B. Managed Care Arrangements",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "C. Primary Care Case Management",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "lastModified": "2019-01-15T12:46:35.838Z",
+        "lastModifiedBY": "seed",
+        "createdDate": "2019-01-15T12:46:35.838Z",
+        "createdBY": "seed"
+      },
+      {
+        "question": "2019-GRE-01",
+        "form_id": "5",
+        "form": "GRE",
+        "year": 2019,
+        "type": "gregridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of enrollees by gender?",
+        "age_ranges": [
+          { "key": "0018", "label": "Conception through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "21E Enrolled",
+            "col3": "64.21E Enrolled",
+            "col4": "Total CHIP Enrolled",
+            "col5": "64.EC Enrolled",
+            "col6": "21PW Enrolled"
+          },
+          {
+            "col1": "1. Female",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "2. Male",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "3. Unspecified Gender",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-GRE-02",
+        "form_id": "5",
+        "form": "GRE",
+        "year": 2019,
+        "type": "gregridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of enrollees by race?",
+        "age_ranges": [
+          { "key": "0018", "label": "Conception through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "21E Enrolled",
+            "col3": "64.21E Enrolled",
+            "col4": "Total CHIP Enrolled",
+            "col5": "64.EC Enrolled",
+            "col6": "21PW Enrolled"
+          },
+          {
+            "col1": "1. White",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "2. Black or African American",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "3. American Indian or Alaska Native",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "4. Asian Indian",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "5. Chinese",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "6. Filipino",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "7. Japanese",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "8. Korean",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "9. Vietnamese",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "10. Other Asian",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "11. Asian Unknown",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "12. Native Hawaiian",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "13. Guamanian or Chamorro",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "14. Samoan",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "15. Other Pacific Islander",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "16. Native Hawaiian or Other Pacific Islander Unknown",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "17. Some other race",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "18. Two or more races (regardless of ethnicity)",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "19. Unspecified Race",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      },
+      {
+        "question": "2019-GRE-03",
+        "form_id": "5",
+        "form": "GRE",
+        "year": 2019,
+        "type": "gregridwithtotals",
+        "row_total": true,
+        "column_total": true,
+        "label": "What is the number of enrollees by ethnicity?",
+        "age_ranges": [
+          { "key": "0018", "label": "Conception through age 18 years" }
+        ],
+        "rows": [
+          {
+            "col1": "",
+            "col2": "21E Enrolled",
+            "col3": "64.21E Enrolled",
+            "col4": "Total CHIP Enrolled",
+            "col5": "64.EC Enrolled",
+            "col6": "21PW Enrolled"
+          },
+          {
+            "col1": "1. Not of Hispanic, Latino/a, or Spanish origin",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "2. Mexican, Mexican American, Chicano/a",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "3. Puerto Rican",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "4. Cuban",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "5. Another Hispanic, Latino, or Spanish Origin",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "6. Hispanic or Latino Unknown",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          },
+          {
+            "col1": "7. Unspecified Ethnicity",
+            "col2": null,
+            "col3": null,
+            "col4": null,
+            "col5": null,
+            "col6": null
+          }
+        ],
+        "last_modified": "2019-10-01T12:46:35.838Z",
+        "last_modified_by": "seed",
+        "created_date": "2019-10-01T12:46:35.838Z",
+        "created_by": "seed"
+      }
+    ]
+  }
+]

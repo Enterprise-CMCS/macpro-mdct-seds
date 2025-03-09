@@ -1,5 +1,5 @@
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
-const { Kafka } = require("kafkajs");
+import { Kafka } from "kafkajs";
 
 const STAGE = process.env.stage;
 const kafka = new Kafka({
@@ -105,6 +105,10 @@ class KafkaSourceLib {
   }
 
   async handler(event) {
+    if (process.env.BOOTSTRAP_BROKER_STRING_TLS === "localstack") {
+      return;
+    }
+
     if (!connected) {
       await producer.connect();
       connected = true;

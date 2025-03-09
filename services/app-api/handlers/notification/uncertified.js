@@ -1,6 +1,6 @@
-import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
-import { authorizeStateUser } from "../../auth/authConditions";
+import handler from "./../../libs/handler-lib.js";
+import dynamoDb from "./../../libs/dynamodb-lib.js";
+import { authorizeStateUser } from "../../auth/authConditions.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 const client = new SESClient({ region: "us-east-1" });
@@ -33,8 +33,7 @@ export const main = handler(async (event, context) => {
 async function getBusinessUsersEmail() {
   const businessOwnersEmails = [];
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: { "#r": "role" },
     ExpressionAttributeValues: { ":role": "business" },

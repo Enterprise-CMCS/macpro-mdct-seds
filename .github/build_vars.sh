@@ -4,8 +4,6 @@ var_list=(
   'AWS_OIDC_ROLE_TO_ASSUME'
   'AWS_DEFAULT_REGION'
   'CODE_CLIMATE_ID'
-  'STAGE_PREFIX'
-  'SEED_DATABASE'
 )
 
 set_value() {

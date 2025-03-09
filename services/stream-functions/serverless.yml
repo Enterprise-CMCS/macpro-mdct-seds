@@ -1,12 +1,11 @@
 service: stream-functions
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 package:
   individually: true
 
 plugins:
-  - serverless-s3-bucket-helper
   - serverless-dotenv-plugin
   - serverless-stack-termination-protection
 
@@ -14,16 +13,14 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "seds"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  iamPath: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-  iamPermissionsBoundaryPolicy: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
   serverlessTerminationProtection:
     stages: # This is a list of common names for important envs that should not be destroyed.  You can remove the stage names your project doesn't use; this list is meant to be inclusive.
       - master
@@ -34,3 +31,10 @@ custom:
       - impl
       - val
       - prod
+resources:
+  Resources:
+    Honk: # this is just because it won't deploy unless we have some resource being created
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Value: "honk"
