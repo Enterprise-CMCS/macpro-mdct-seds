@@ -1,7 +1,8 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
-import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
+// import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
+import { ServerlessStageDestroyer } from "./serverless-stage-destroyer.js";
 import {
   getAllStacksForStage,
   getCloudFormationTemplatesForStage,
