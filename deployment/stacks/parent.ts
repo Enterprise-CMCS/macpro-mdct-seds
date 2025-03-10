@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   Aws,
-  aws_ec2 as ec2,
   aws_iam as iam,
   CfnOutput,
   Stack,
@@ -12,7 +11,6 @@ import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
-import { sortSubnets } from "../utils/vpc";
 import { deployFrontend } from "./deployFrontend";
 import { createCustomResourceRole } from "./customResourceRole";
 import { isLocalStack } from "../local/util";
@@ -23,7 +21,7 @@ export class ParentStack extends Stack {
     id: string,
     props: StackProps & DeploymentConfigProperties
   ) {
-    const { vpcName, isDev } = props;
+    const { isDev } = props;
 
     super(scope, id, {
       ...props,
@@ -44,9 +42,6 @@ export class ParentStack extends Stack {
       iamPath,
     };
 
-    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
-    const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
-
     const { customResourceRole } = createCustomResourceRole({ ...commonProps });
 
     const { tables } = createDataComponents({
@@ -56,8 +51,6 @@ export class ParentStack extends Stack {
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
-      vpc,
-      privateSubnets,
       tables
     });
 

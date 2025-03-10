@@ -4,7 +4,6 @@ class PostKafkaData extends KafkaSourceLib {
   topicPrefix = "aws.mdct.seds.cdc";
   version = "v0";
   tables = [
-    "age-ranges",
     "auth-user",
     "form-answers",
     "form-questions",
@@ -12,7 +11,6 @@ class PostKafkaData extends KafkaSourceLib {
     "forms",
     "state-forms",
     "states",
-    "status",
   ];
 }
 
