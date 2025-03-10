@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "@types/yargs": "^15.0.10",
-    "aws-cdk": "^2.182.0",
+    "aws-cdk": "2.179.0",
     "aws-cdk-local": "^2.19.2",
     "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
@@ -43,7 +43,7 @@
     "@aws-sdk/client-lambda": "^3.678.0",
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/client-secrets-manager": "^3.670.0",
-    "aws-cdk-lib": "^2.182.0",
+    "aws-cdk-lib": "2.179.0",
     "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"
   }

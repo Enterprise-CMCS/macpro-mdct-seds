@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@aws-cdk/asset-node-proxy-agent-v6/-/asset-node-proxy-agent-v6-2.1.0.tgz#6d3c7860354d4856a7e75375f2f0ecab313b4989"
   integrity sha512-7bY3J8GCVxLupn/kNmpPc5VJz8grx+4RKfnnJiO1LG+uxkZfANZG3RMHhE+qQxxwkyQ9/MfPtTpf748UhR425A==
 
-"@aws-cdk/cloud-assembly-schema@^40.6.0":
-  version "40.7.0"
-  resolved "https://registry.yarnpkg.com/@aws-cdk/cloud-assembly-schema/-/cloud-assembly-schema-40.7.0.tgz#1d53d55fc616477965338f0de98192ec3a3ed9bc"
-  integrity sha512-00wVKn9pOOGXbeNwA4E8FUFt0zIB4PmSO7PvIiDWgpaFX3G/sWyy0A3s6bg/n2Yvkghu8r4a8ckm+mAzkAYmfA==
+"@aws-cdk/cloud-assembly-schema@^39.2.0":
+  version "39.2.20"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/cloud-assembly-schema/-/cloud-assembly-schema-39.2.20.tgz#38aa92ba98c21b8e04f2d4c788969e567fd5921a"
+  integrity sha512-RI7S8jphGA8mak154ElnEJQPNTTV4PZmA7jgqnBBHQGyOPJIXxtACubNQ5m4YgjpkK3UJHsWT+/cOAfM/Au/Wg==
   dependencies:
     jsonschema "~1.4.1"
     semver "^7.7.1"
@@ -2443,14 +2443,14 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-aws-cdk-lib@^2.182.0:
-  version "2.182.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.182.0.tgz#9b2d51f41d1c7846a62c1d6f6a7da5e677db43d3"
-  integrity sha512-emymzTJiCpPz8oF++oiFvFuLH1QZjv6NRNQGn7VuDrEewZFTM4VpiVco5NrxH+KCWnXquDBPF5sQIUo6HY7jLg==
+aws-cdk-lib@2.179.0:
+  version "2.179.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.179.0.tgz#18d1989de157fb21fe280fce3fb63feced5dfe5c"
+  integrity sha512-fwkoEzvh3TXYj+GPkyq/GSQt63JJV1dBgDKwr3xRdb8lQaPntSclmisa+ARO8tjPfkru1NqxAFQTtiqtAE83cA==
   dependencies:
     "@aws-cdk/asset-awscli-v1" "^2.2.208"
     "@aws-cdk/asset-node-proxy-agent-v6" "^2.1.0"
-    "@aws-cdk/cloud-assembly-schema" "^40.6.0"
+    "@aws-cdk/cloud-assembly-schema" "^39.2.0"
     "@balena/dockerignore" "^1.0.2"
     case "1.6.3"
     fs-extra "^11.2.0"
@@ -2470,10 +2470,10 @@ aws-cdk-local@^2.19.2:
   dependencies:
     diff "^5.0.0"
 
-aws-cdk@^2.182.0:
-  version "2.1003.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.1003.0.tgz#db3bcd839f86b9b7f0f3d2d3359cefb768458462"
-  integrity sha512-FORPDGW8oUg4tXFlhX+lv/j+152LO9wwi3/CwNr1WY3c3HwJUtc0fZGb2B3+Fzy6NhLWGHJclUsJPEhjEt8Nhg==
+aws-cdk@2.179.0:
+  version "2.179.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.179.0.tgz#4caa93c54df4c9a586d03afb7423dfbf23f5997c"
+  integrity sha512-aA2+8S2g4UBQHkUEt0mYd16VLt/ucR+QfyUJi34LDKRAhOCNDjPCZ4z9z/JEDyuni0BdzsYA55pnpDN9tMULpA==
   optionalDependencies:
     fsevents "2.3.2"
 
