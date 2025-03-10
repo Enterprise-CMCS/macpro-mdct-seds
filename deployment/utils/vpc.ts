@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { aws_ec2 as ec2 } from "aws-cdk-lib";
 
 export function getSubnets(
   scope: Construct,
