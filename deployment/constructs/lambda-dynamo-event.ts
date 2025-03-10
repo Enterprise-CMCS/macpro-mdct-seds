@@ -30,6 +30,9 @@ export class LambdaDynamoEventSource extends Construct {
       handler,
       memorySize = 1024,
       tables,
+      iamPermissionsBoundary,
+      iamPath,
+      stackName,
       timeout = Duration.seconds(6),
       ...restProps
     } = props;
@@ -41,8 +44,8 @@ export class LambdaDynamoEventSource extends Construct {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
-      permissionsBoundary: props.iamPermissionsBoundary,
-      path: props.iamPath,
+      permissionsBoundary: iamPermissionsBoundary,
+      path: iamPath,
       inlinePolicies: {
         LambdaPolicy: new iam.PolicyDocument({
           statements: [
@@ -68,7 +71,7 @@ export class LambdaDynamoEventSource extends Construct {
 
     // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
-      functionName: `${props.stackName}-${id}`,
+      functionName: `${stackName}-${id}`,
       handler,
       runtime: lambda.Runtime.NODEJS_20_X,
       timeout,
