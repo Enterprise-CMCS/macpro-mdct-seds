@@ -9,7 +9,7 @@ import {
   DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
+// import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
@@ -182,7 +182,7 @@ async function run_local() {
     "bootstrap",
     "aws://000000000000/us-east-1",
     "--context",
-    "stage=localstack",
+    "stage=bootstrap",
   ];
   await runner.run_command_and_output(
     "CDK local bootstrap",
@@ -190,67 +190,67 @@ async function run_local() {
     "."
   );
 
-  const deployLocalPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/local/prerequisites.ts"',
-  ];
-  await runner.run_command_and_output(
-    "CDK local prerequisite deploy",
-    deployLocalPrequisitesCmd,
-    "."
-  );
+  // const deployLocalPrequisitesCmd = [
+  //   "yarn",
+  //   "cdklocal",
+  //   "deploy",
+  //   "--app",
+  //   '"npx tsx deployment/local/prerequisites.ts"',
+  // ];
+  // await runner.run_command_and_output(
+  //   "CDK local prerequisite deploy",
+  //   deployLocalPrequisitesCmd,
+  //   "."
+  // );
 
-  const deployPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/prerequisites.ts"',
-  ];
-  await runner.run_command_and_output(
-    "CDK prerequisite deploy",
-    deployPrequisitesCmd,
-    "."
-  );
+  // const deployPrequisitesCmd = [
+  //   "yarn",
+  //   "cdklocal",
+  //   "deploy",
+  //   "--app",
+  //   '"npx tsx deployment/prerequisites.ts"',
+  // ];
+  // await runner.run_command_and_output(
+  //   "CDK prerequisite deploy",
+  //   deployPrequisitesCmd,
+  //   "."
+  // );
 
-  const deployCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--context",
-    "stage=localstack",
-    "--all",
-    "--no-rollback",
-  ];
-  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  // const deployCmd = [
+  //   "yarn",
+  //   "cdklocal",
+  //   "deploy",
+  //   "--context",
+  //   "stage=localstack",
+  //   "--all",
+  //   "--no-rollback",
+  // ];
+  // await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
-  const seedDataFunctionName = await getCloudFormationStackOutputValue(
-    "seds-localstack",
-    "SeedDataFunctionName"
-  );
+  // const seedDataFunctionName = await getCloudFormationStackOutputValue(
+  //   "seds-localstack",
+  //   "SeedDataFunctionName"
+  // );
 
-  const lambdaClient = new LambdaClient({ region: "us-east-1" });
-  const lambdaCommand = new InvokeCommand({
-    FunctionName: seedDataFunctionName,
-    InvocationType: "Event",
-    Payload: Buffer.from(JSON.stringify({})),
-  });
-  await lambdaClient.send(lambdaCommand);
+  // const lambdaClient = new LambdaClient({ region: "us-east-1" });
+  // const lambdaCommand = new InvokeCommand({
+  //   FunctionName: seedDataFunctionName,
+  //   InvocationType: "Event",
+  //   Payload: Buffer.from(JSON.stringify({})),
+  // });
+  // await lambdaClient.send(lambdaCommand);
 
-  const watchCmd = [
-    "yarn",
-    "cdklocal",
-    "watch",
-    "--context",
-    "stage=localstack",
-    "--no-rollback",
-  ];
+  // const watchCmd = [
+  //   "yarn",
+  //   "cdklocal",
+  //   "watch",
+  //   "--context",
+  //   "stage=localstack",
+  //   "--no-rollback",
+  // ];
 
-  runner.run_command_and_output("CDK watch", watchCmd, ".");
-  run_fe_locally(runner);
+  // runner.run_command_and_output("CDK watch", watchCmd, ".");
+  // run_fe_locally(runner);
 }
 
 async function install_deps(runner: LabeledProcessRunner, service: string) {

@@ -51,7 +51,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const service = "app-api";
   Tags.of(scope).add("SERVICE", service);
 
+  console.log("vpcName")
+  console.log(vpcName)
   const vpc = ec2.Vpc.fromLookup(scope, "Vpc", { vpcName });
+  console.log(vpc)
   const kafkaAuthorizedSubnets = getSubnets(scope, kafkaAuthorizedSubnetIds)
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
