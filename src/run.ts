@@ -182,7 +182,7 @@ async function run_local() {
     "bootstrap",
     "aws://000000000000/us-east-1",
     "--context",
-    "stage=localstack",
+    "stage=bootstrap",
   ];
   await runner.run_command_and_output(
     "CDK local bootstrap",
