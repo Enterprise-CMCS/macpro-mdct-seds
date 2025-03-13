@@ -5,7 +5,6 @@ import {
   SecretValue,
   Stack,
   StackProps,
-  Tags,
   aws_ec2 as ec2,
   aws_secretsmanager as secretsmanager,
 } from "aws-cdk-lib";
@@ -20,10 +19,7 @@ export class LocalPrerequisiteStack extends Stack {
       enableDnsSupport: true,
       enableDnsHostnames: false,
       subnetConfiguration: [],
-      vpcName: "localstack",
     });
-
-    Tags.of(localstackVpc).add("Name", "localstack");
 
     const subnet1 = new ec2.Subnet(this, "Subnet1", {
       vpcId: localstackVpc.vpcId,
