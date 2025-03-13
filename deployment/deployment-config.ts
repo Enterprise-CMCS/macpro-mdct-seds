@@ -23,14 +23,10 @@ export const determineDeploymentConfig = async (stage: string) => {
   const isDev =
     isLocalStack ||
     !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
-  const isBootstrap = stage === "bootstrap";
-  let secretConfigOptions = {}
-  if(!isBootstrap){
-    secretConfigOptions = {
+  const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
     ...(await loadStageSecret(project, stage)),
-    };
-  }
+  };
 
   const config = {
     project,
@@ -50,7 +46,11 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 export const loadDefaultSecret = async (project: string) => {
-  return JSON.parse((await getSecret(`${project}-default`))!);
+  if (isLocalStack) {
+    return { brokerString: "localstack" };
+  } else {
+    return JSON.parse((await getSecret(`${project}-default`))!);
+  }
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
