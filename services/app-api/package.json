@@ -5,7 +5,8 @@
   "main": "handler.js",
   "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest --run --coverage"
   },
   "author": "",
   "license": "CC0-1.0",
