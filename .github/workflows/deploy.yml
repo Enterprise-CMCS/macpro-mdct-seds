@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: set variable values
+        run: echo "CODE_CLIMATE_ID=${{ secrets.CODE_CLIMATE_ID }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
@@ -38,7 +40,7 @@ jobs:
       - name: run unit tests
         run: ./scripts/test-unit.sh
       - name: publish test coverage to code climate
-        if: ${{ secrets.CODE_CLIMATE_ID }} != ''
+        if: env.CODE_CLIMATE_ID != ''
         uses: paambaati/codeclimate-action@v6
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
