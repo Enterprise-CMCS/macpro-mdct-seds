@@ -57,6 +57,17 @@
     "roots": [
       "<rootDir>/src"
     ],
+    "coverageReporters": [
+      "json",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
+      ],
+      "text",
+      "text-summary"
+    ],
     "collectCoverageFrom": [
       "src/components/**/*.{js,jsx}",
       "!src/components/Example/*",

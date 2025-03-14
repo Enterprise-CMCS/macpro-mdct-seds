@@ -18,7 +18,48 @@ env:
   SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
 
 jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: set variable values
+        run: echo "CODE_CLIMATE_ID=${{ secrets.CODE_CLIMATE_ID }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to code climate
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v6
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14
+
   deploy:
+    needs: unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -53,28 +94,6 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Jest setup
-        working-directory: services/ui-src
-        run: yarn install
-      - name: unit test & publish coverage
-        if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v6
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-        with:
-          debug: true
-          workingDirectory: ${{github.workspace}}/services/ui-src
-          coverageCommand: npm run-script coverage
-          coverageLocations: |
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-      - name: Store unit test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: |
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-          retention-days: 14
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.

@@ -35,6 +35,9 @@ const mockEvent = {
   headers: {
     "x-api-key": "mockApiKey",
   },
+  requestContext: {
+    accountId: "123",
+  },
 };
 
 const mockToken = {
@@ -81,7 +84,11 @@ describe("authorization", () => {
     });
 
     it("should throw if the event has no API key", async () => {
-      await expect(getUserDetailsFromEvent({})).rejects
+      const noKeyEvent = {
+        ...mockEvent,
+        headers: {},
+      };
+      await expect(getUserDetailsFromEvent(noKeyEvent)).rejects
         .toThrow("Forbidden");
     });
 
