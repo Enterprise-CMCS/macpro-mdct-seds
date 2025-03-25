@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "3.0.4",
-    "serverless-associate-waf": "^1.2.1",
     "vitest": "^3.0.4"
   },
   "dependencies": {

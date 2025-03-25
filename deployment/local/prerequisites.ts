@@ -19,6 +19,7 @@ export class LocalPrerequisiteStack extends Stack {
       enableDnsSupport: true,
       enableDnsHostnames: false,
       subnetConfiguration: [],
+      vpcName: "localstack"
     });
 
     const subnet1 = new ec2.Subnet(this, "Subnet1", {

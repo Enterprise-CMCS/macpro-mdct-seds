@@ -17,20 +17,6 @@ vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(),
 }));
 
-const mockGetParameter = vi.fn().mockImplementation(request => {
-  if (request.Name === "/local/ui-auth/cognito_user_pool_id") {
-    return Promise.resolve({ Parameter: { Value: "poolIdFromSsm" } });
-  }
-  else if (request.Name === "/local/ui-auth/cognito_user_pool_client_id") {
-    return Promise.resolve({ Parameter: { Value: "clientIdFromSsm" } });
-  }
-  else {
-    throw new Error(`Unmocked parameter name: ${request.Name}`);
-  }
-});
-const mockSsm = mockClient(SSMClient);
-mockSsm.on(GetParameterCommand).callsFake(mockGetParameter);
-
 const mockEvent = {
   headers: {
     "x-api-key": "mockApiKey",
@@ -90,37 +76,6 @@ describe("authorization", () => {
       };
       await expect(getUserDetailsFromEvent(noKeyEvent)).rejects
         .toThrow("Forbidden");
-    });
-
-    it("should fetch Cognito IDs from SSM if they are not found in process.env", async () => {
-      delete process.env.COGNITO_USER_POOL_ID;
-      delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-
-      const result = await getUserDetailsFromEvent(mockEvent);
-
-      expect(result).toBeDefined();
-
-      expect(CognitoJwtVerifier.create).toHaveBeenCalledWith(
-        {
-          tokenUse: "id",
-          userPoolId: "poolIdFromSsm",
-          clientId: "clientIdFromSsm",
-        },
-        expect.any(Object)
-      );
-
-      // We should also have cached the Cognito IDs in process.env now
-      expect(process.env.COGNITO_USER_POOL_ID).toBe("poolIdFromSsm");
-      expect(process.env.COGNITO_USER_POOL_CLIENT_ID).toBe("clientIdFromSsm");
-    });
-
-    it("should throw if Cognito IDs cannot be found", async () => {
-      delete process.env.COGNITO_USER_POOL_ID;
-      delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-      mockGetParameter.mockResolvedValueOnce({ Parameter: { } });
-      
-      await expect(getUserDetailsFromEvent(mockEvent)).rejects
-        .toThrow("cannot load cognito values");
     });
 
     it("should map job codes to user roles correctly", async () => {

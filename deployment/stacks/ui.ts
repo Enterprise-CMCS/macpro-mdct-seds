@@ -96,9 +96,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
     }
   );
-  securityHeadersPolicy.applyRemovalPolicy(
-    isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
-  )
 
   const distribution = new cloudfront.Distribution(
     scope,

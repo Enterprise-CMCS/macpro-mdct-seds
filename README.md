@@ -20,9 +20,9 @@ SEDS is the CMCS MDCT application for collecting state data related to Medicaid 
 
 ## Git Policies, Activities and Notes
 
-Serverless Name Requirements: A service name should only contain alphanumeric characters (case sensitive) and hyphens. The should start with an alphanumeric character and shouldn't exceed 128 characters.
+Stack Name Requirements: A service name should only contain alphanumeric characters (case sensitive) and hyphens. The should start with an alphanumeric character and shouldn't exceed 128 characters.
 
-Please push your code to a new branch with a name that meets the Serverless Name Requirements above. Any other variations and the GitHub Actions will fail.
+Please push your code to a new branch with a name that meets the Stack Name Requirements above. Any other variations and the GitHub Actions will fail.
 
 After creating a branch, if you need to rename it because it does not follow the rules above, use
 
@@ -30,7 +30,7 @@ After creating a branch, if you need to rename it because it does not follow the
 
 `git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
 
-This project uses a combination of Gitflow and Serverless naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
+This project uses a combination of Gitflow and Stack naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
 
 - master > feature-my-feature-name
 - master > bugfix-my-bugfix-name

@@ -22,7 +22,7 @@ export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
     isLocalStack ||
-    !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+    !["master", "main", "val", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -45,7 +45,7 @@ export const determineDeploymentConfig = async (stage: string) => {
   return config;
 };
 
-export const loadDefaultSecret = async (project: string, stage: string) => {
+export const loadDefaultSecret = async (project: string, stage?: string) => {
   if (stage === "bootstrap") {
     return {};
   } else {

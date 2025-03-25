@@ -37,7 +37,9 @@ export class DynamoDBTable extends Construct {
       partitionKey: props.partitionKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-      pointInTimeRecovery: true,
+      pointInTimeRecoverySpecification: {
+        pointInTimeRecoveryEnabled: true,
+      },
       removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
     });
 

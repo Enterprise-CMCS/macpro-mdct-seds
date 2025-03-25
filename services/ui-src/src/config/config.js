@@ -12,5 +12,4 @@ export default {
     REDIRECT_SIGNIN: window._env_.COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT
   },
-  LOCAL_LOGIN: window._env_.LOCAL_LOGIN
 };
