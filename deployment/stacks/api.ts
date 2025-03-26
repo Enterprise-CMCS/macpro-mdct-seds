@@ -6,11 +6,9 @@ import {
   aws_events_targets as targets,
   aws_iam as iam,
   aws_logs as logs,
-  aws_s3 as s3,
   aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
-  Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
@@ -53,7 +51,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
-  Tags.of(scope).add("SERVICE", service);
 
   const vpc = ec2.Vpc.fromLookup(scope, "Vpc", { vpcName });
   const kafkaAuthorizedSubnets = getSubnets(
