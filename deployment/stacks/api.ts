@@ -124,9 +124,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-    COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
+    COGNITO_USER_POOL_ID: (userPoolId || process.env.COGNITO_USER_POOL_ID) as string,
     COGNITO_USER_POOL_CLIENT_ID:
-      userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
+      (userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID) as string,
     stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])

@@ -50,9 +50,9 @@ Team members are encouraged to setup all MDCT Products using the script located 
 #### For developers that have run workspace setup running the applicaiton locally please run the following
 
 1. cd ~/Projects/macpro-mdct-seds/
-2. `./run local --update-env` or `./run local`
+2. `./run update-env` or `./run local`
 
-   note: the `./run local --update-env` command will reach out to 1Password to bring in secret values and populate .env files that are git ignored. If you use the `./run local` command you will need to have either previously run with the `--update-env flag` or provide your own .env files.
+   note: the `./run update-env` command will reach out to 1Password to bring in secret values and populate .env files that are git ignored. If you use the `./run local` command you will need to have either previously run with the `--update-env flag` or provide your own .env files.
 
 #### For developers that cannot run the workspace setup script or wish to only run SEDS see steps below.
 
@@ -72,15 +72,13 @@ From the root directory run:
 
 `cd ../../`
 
-`./run local --update-env` or `./run local` if you do not have a 1password account and have a .env file populated by hand.
+`./run update-env` or `./run local` if you do not have a 1password account and have a .env file populated by hand.
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
-Local dev is configured in typescript project in [src/](src/). The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+Local dev is configured using Localstack. The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
-Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). This plugin runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every file save. The plugin [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) stands up the local Database in a similar fashion.
-
-Local authentication bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
+Local dev is built around the [Localstack](https://www.localstack.cloud/). For more information check out [docs on local dev](./deployment/local/README.md)
 
 ### Logging in
 
@@ -103,24 +101,20 @@ To avoid this issue, the IDP now filters the roles passed through by the prefix 
 
 ### Adding New Endpoints
 
-1. In [services/app-api/serverless.yml](services/app-api/serverless.yml), add a new entry to `functions` describing the new endpoint. Make sure your http method is set correctly. For example:
+1. In `deployment/stacks/api.ts`, add a new entry for a lambda connected to the api. Make sure your http method is set correctly. For example:
 
 ```
-functions:
-    getUsers:
-        handler: handlers/users/list.main
-        role: LambdaApiRole
-        events:
-        - http:
-            path: users
-            method: get
-            cors: true
-            authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  new Lambda(scope, "getUserById", {
+    entry: "services/app-api/handlers/users/get/getUserById.js",
+    handler: "main",
+    path: "/users/{id}",
+    method: "GET",
+    ...commonProps,
+  });
 ```
 
 2. Create a handler in [services/app-api/handlers](services/app-api/handlers)
-   1. Note: For Table names use the custom variables located in [services/app-api/serverless.yml](services/app-api/serverless.yml)
-   2. Conventions:
+   1. Conventions:
       1. Each file in the handler directory should contain a single function called 'main'
       2. The handlers are organized by API, each with their own folder. Within those folders should be separate files per HTTP verb.
          For instance: There is a `users` folder in handlers, ([services/app-api/handlers/users/](services/app-api/handlers/users/)). That folder would have individual files corresponding to an HTTP verb (e.g. `get.js` `create.js` `update.js` `delete.js`, etc.).
@@ -198,8 +192,6 @@ Node - seds enforces using a specific version of node, specified in the file `.n
 
 **The remaining steps in this section are not needed if you have the MDCT Workspace Setup Script**
 
-Serverless - Get help installing it here: [Serverless Getting Started page](https://www.serverless.com/framework/docs/providers/aws/guide/installation/)
-
 Yarn - in order to install dependencies, you need to [install yarn](https://classic.yarnpkg.com/en/docs/install/).
 
 You'll also need to have java installed to run the database locally. M1 Mac users can download [from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`
@@ -234,20 +226,6 @@ None.
 ## Examples
 
 None.
-
-## Contributing / To-Do
-
-See current open [issues](https://github.com/mdial89f/quickstart-serverless/issues) or check out the [project board](https://github.com/mdial89f/quickstart-serverless/projects/1).
-
-Please feel free to open new issues for defects or enhancements.
-
-To contribute:
-
-- Fork this repository
-- Make changes in your fork
-- Open a pull request targeting this repository
-
-Pull requests are being accepted.
 
 ## Slack Webhooks:
 
@@ -287,7 +265,3 @@ in the public domain within the United States.
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
 ```
-
-### Contributors
-
-This project made possible by the [Serverless Stack](https://serverless-stack.com/) and its authors/contributors. The extremely detailed tutorial, code examples, and serverless pattern is where this project started.
