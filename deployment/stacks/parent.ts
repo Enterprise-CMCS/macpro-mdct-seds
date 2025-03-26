@@ -57,7 +57,7 @@ export class ParentStack extends Stack {
       identityPoolId: string | undefined,
       userPoolId: string | undefined,
       userPoolClientId: string | undefined,
-      cognitoAuthRole: iam.Role | undefined = undefined;
+      createAuthRole: ((restApiId: string) => void) | undefined = undefined;
 
     if (!isLocalStack) {
       ({
@@ -71,7 +71,7 @@ export class ParentStack extends Stack {
         identityPoolId,
         userPoolId,
         userPoolClientId,
-        cognitoAuthRole,
+        createAuthRole,
       } = createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl,
@@ -87,15 +87,7 @@ export class ParentStack extends Stack {
     });
 
     if (!isLocalStack) {
-      cognitoAuthRole!.addToPolicy(
-        new iam.PolicyStatement({
-          actions: ["execute-api:Invoke"],
-          resources: [
-            `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
-          ],
-          effect: iam.Effect.ALLOW,
-        })
-      );
+      createAuthRole?.(restApiId)
 
       deployFrontend({
         ...commonProps,

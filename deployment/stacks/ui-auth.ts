@@ -5,6 +5,7 @@ import {
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
+  Aws,
   Duration,
   custom_resources as cr,
   RemovalPolicy,
@@ -164,43 +165,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }
   );
 
-  const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
-    permissionsBoundary: iamPermissionsBoundary,
-    path: iamPath,
-    assumedBy: new iam.FederatedPrincipal(
-      "cognito-identity.amazonaws.com",
-      {
-        StringEquals: {
-          "cognito-identity.amazonaws.com:aud": identityPool.ref,
-        },
-        "ForAnyValue:StringLike": {
-          "cognito-identity.amazonaws.com:amr": "authenticated",
-        },
-      },
-      "sts:AssumeRoleWithWebIdentity"
-    ),
-    inlinePolicies: {
-      CognitoAuthorizedPolicy: new iam.PolicyDocument({
-        statements: [
-          new iam.PolicyStatement({
-            actions: [
-              "mobileanalytics:PutEvents",
-              "cognito-sync:*",
-              "cognito-identity:*",
-            ],
-            resources: ["*"],
-            effect: iam.Effect.ALLOW,
-          }),
-        ],
-      }),
-    },
-  });
-
-  new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
-    identityPoolId: identityPool.ref,
-    roles: { authenticated: cognitoAuthRole.roleArn },
-  });
-
   let bootstrapUsersFunction;
 
   if (bootstrapUsersPassword) {
@@ -300,11 +264,57 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }
 
+  function createAuthRole(restApiId: string) {
+    const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
+      permissionsBoundary: iamPermissionsBoundary,
+      path: iamPath,
+      assumedBy: new iam.FederatedPrincipal(
+        "cognito-identity.amazonaws.com",
+        {
+          StringEquals: {
+            "cognito-identity.amazonaws.com:aud": identityPool.ref,
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated",
+          },
+        },
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+      inlinePolicies: {
+        CognitoAuthorizedPolicy: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: [
+                "mobileanalytics:PutEvents",
+                "cognito-sync:*",
+                "cognito-identity:*",
+              ],
+              resources: ["*"],
+              effect: iam.Effect.ALLOW,
+            }),
+            new iam.PolicyStatement({
+              actions: ["execute-api:Invoke"],
+              resources: [
+                `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
+              ],
+              effect: iam.Effect.ALLOW,
+            }),
+          ],
+        }),
+      },
+    });
+
+    new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
+      identityPoolId: identityPool.ref,
+      roles: { authenticated: cognitoAuthRole.roleArn },
+    });
+  }
+
   return {
     userPoolDomainName: userPoolDomain.domainName,
     identityPoolId: identityPool.ref,
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
-    cognitoAuthRole,
+    createAuthRole,
   };
 }
