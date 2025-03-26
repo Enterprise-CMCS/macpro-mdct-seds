@@ -108,13 +108,10 @@ export function createUiComponents(props: CreateUiComponentsProps) {
             cloudfrontCertificateArn
           )
         : undefined,
-      domainNames: cloudfrontDomainName
-        ? [cloudfrontDomainName]
-        : [],
+      domainNames: cloudfrontDomainName ? [cloudfrontDomainName] : [],
       defaultBehavior: {
-        origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
-          uiBucket
-        ),
+        origin:
+          cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
@@ -141,7 +138,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   if (!isLocalStack) {
     const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
-    distribution.attachWebAclId(waf.webAcl.attrArn)
+    distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
@@ -164,7 +161,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 function setupWaf(
   scope: Construct,
   stage: string,
-  project: string,
+  project: string
   // vpnIpSetArn?: string,
   // vpnIpv6SetArn?: string,
 ) {

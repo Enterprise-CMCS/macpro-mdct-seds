@@ -28,7 +28,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     iamPermissionsBoundary,
     iamPath,
     customResourceRole,
-   } = props;
+  } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {

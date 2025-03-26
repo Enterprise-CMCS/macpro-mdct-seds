@@ -27,8 +27,8 @@ async function main() {
   Tags.of(app).add("STAGE", stage);
   Tags.of(app).add("PROJECT", config.project);
 
-  if(stage == "bootstrap"){
-    new Stack(app, `${config.project}-${stage}`, {})
+  if (stage == "bootstrap") {
+    new Stack(app, `${config.project}-${stage}`, {});
   } else {
     new ParentStack(app, `${config.project}-${stage}`, {
       ...config,
