@@ -51,11 +51,6 @@ export class LambdaDynamoEventSource extends Construct {
           statements: [
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
-              actions: ["ssm:GetParameter"],
-              resources: ["*"],
-            }),
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
               actions: [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",

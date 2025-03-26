@@ -171,7 +171,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "ses:SendEmail",
         "ses:SendRawEmail",
         "lambda:InvokeFunction",
-        "ssm:GetParameter",
       ],
       resources: ["*"],
     }),

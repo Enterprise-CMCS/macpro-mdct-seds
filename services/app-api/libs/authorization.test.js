@@ -1,9 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getUserDetailsFromEvent } from "./authorization.js";
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { jwtDecode } from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("aws-jwt-verify", () => ({
   CognitoJwtVerifier: {

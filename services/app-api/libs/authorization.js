@@ -1,7 +1,5 @@
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { jwtDecode } from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import * as logger from "./debug-lib.js";
 import { SimpleJwksCache } from "aws-jwt-verify/jwk";
 import { SimpleJsonFetcher } from "aws-jwt-verify/https";
 

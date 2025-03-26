@@ -1,7 +1,3 @@
-import {
-  SSMClient,
-  GetParameterCommand,
-} from "@aws-sdk/client-ssm";
 import * as cognitolib from "../libs/cognito-lib.js";
 const userPoolId = process.env.userPoolId;
 import users from "../libs/users.json" assert { type: "json" };
