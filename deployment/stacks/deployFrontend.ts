@@ -38,7 +38,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     userPoolClientId,
     userPoolClientDomain,
     iamPermissionsBoundary,
-    iamPath
+    iamPath,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
@@ -138,7 +138,9 @@ export function deployFrontend(props: DeployFrontendProps) {
             CallerReference: new Date().toISOString(),
           },
         },
-        physicalResourceId: cr.PhysicalResourceId.of(`InvalidateCloudfront-${stage}`),
+        physicalResourceId: cr.PhysicalResourceId.of(
+          `InvalidateCloudfront-${stage}`
+        ),
       },
       role: deploymentRole,
     }

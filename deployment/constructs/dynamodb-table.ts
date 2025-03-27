@@ -15,13 +15,13 @@ interface DynamoDBTableProps {
 
 export interface DynamoDBTableIdentifiers {
   /** The invariant identifier for the table. Example: "FormAnswers" */
-  id: string,
+  id: string;
   /** The name of the table within the environment. Example: "production-form-answers" */
-  name: string,
+  name: string;
   /** The table's TableArn */
-  arn: string,
+  arn: string;
   /** The table's TableStreamArn (if it has one) */
-  streamArn: string | undefined,
+  streamArn: string | undefined;
 }
 
 export class DynamoDBTable extends Construct {
@@ -40,7 +40,7 @@ export class DynamoDBTable extends Construct {
       pointInTimeRecoverySpecification: {
         pointInTimeRecoveryEnabled: true,
       },
-      removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
+      removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
 
     this.identifiers = {

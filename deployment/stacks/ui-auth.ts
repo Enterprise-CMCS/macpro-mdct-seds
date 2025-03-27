@@ -78,9 +78,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   let supportedIdentityProviders:
     | cognito.UserPoolClientIdentityProvider[]
     | undefined = undefined;
-  let oktaIdp:
-    | cognito.CfnUserPoolIdentityProvider
-    | undefined = undefined;
+  let oktaIdp: cognito.CfnUserPoolIdentityProvider | undefined = undefined;
 
   const providerName = "Okta";
 
@@ -112,7 +110,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   ];
 
   const appUrl =
-  secureCloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
+    secureCloudfrontDomainName ||
+    applicationEndpointUrl ||
+    "https://localhost:3000/";
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
@@ -147,7 +147,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
-    cognitoDomain: { domainPrefix: userPoolDomainPrefix || `${stage}-login-user-pool-client` },
+    cognitoDomain: {
+      domainPrefix: userPoolDomainPrefix || `${stage}-login-user-pool-client`,
+    },
   });
 
   const identityPool = new cognito.CfnIdentityPool(
@@ -304,10 +306,14 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       },
     });
 
-    new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
-      identityPoolId: identityPool.ref,
-      roles: { authenticated: cognitoAuthRole.roleArn },
-    });
+    new cognito.CfnIdentityPoolRoleAttachment(
+      scope,
+      "CognitoIdentityPoolRoles",
+      {
+        identityPoolId: identityPool.ref,
+        roles: { authenticated: cognitoAuthRole.roleArn },
+      }
+    );
   }
 
   return {
