@@ -76,7 +76,6 @@ export class Lambda extends Construct {
       },
     });
 
-    // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${props.stackName}-${id}`,
       handler,

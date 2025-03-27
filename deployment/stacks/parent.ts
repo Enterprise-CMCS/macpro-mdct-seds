@@ -43,65 +43,56 @@ export class ParentStack extends Stack {
       customResourceRole,
     });
 
-    let createAuthRole: ((restApiId: string) => void) | undefined;
-    let apiGatewayRestApiUrl: string;
-    let restApiId: string;
-
-    if (!isLocalStack) {
-      const { applicationEndpointUrl, distribution, uiBucket } =
-        createUiComponents({
-          ...commonProps,
-        });
-
-      const {
-        userPoolDomainName,
-        identityPoolId,
-        userPoolId,
-        userPoolClientId,
-        createAuthRole,
-      } = createUiAuthComponents({
+    if (isLocalStack) {
+      createApiComponents({
         ...commonProps,
-        applicationEndpointUrl,
-        customResourceRole,
-      });
-
-      ({ apiGatewayRestApiUrl, restApiId } = createApiComponents({
-        ...commonProps,
-        userPoolId,
-        userPoolClientId,
         tables,
-      }));
-
-      createAuthRole?.(restApiId);
-
-      deployFrontend({
-        ...commonProps,
-        uiBucket,
-        distribution,
-        apiGatewayRestApiUrl,
-        applicationEndpointUrl:
-          secureCloudfrontDomainName || applicationEndpointUrl!,
-        identityPoolId,
-        userPoolId,
-        userPoolClientId,
-        userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-        customResourceRole,
       });
-
-      new CfnOutput(this, "CloudFrontUrl", {
-        value: applicationEndpointUrl!,
-      });
-    } else {
-      ({ apiGatewayRestApiUrl, restApiId } = createApiComponents({
-        ...commonProps,
-        userPoolId: undefined,
-        userPoolClientId: undefined,
-        tables,
-      }));
+      return;
     }
 
-    new CfnOutput(this, "ApiUrl", {
-      value: apiGatewayRestApiUrl,
+    const { applicationEndpointUrl, distribution, uiBucket } =
+      createUiComponents({
+        ...commonProps,
+      });
+
+    const {
+      userPoolDomainName,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      createAuthRole,
+    } = createUiAuthComponents({
+      ...commonProps,
+      applicationEndpointUrl,
+      customResourceRole,
+    });
+
+    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
+      ...commonProps,
+      userPoolId,
+      userPoolClientId,
+      tables,
+    });
+
+    createAuthRole(restApiId);
+
+    deployFrontend({
+      ...commonProps,
+      uiBucket,
+      distribution,
+      apiGatewayRestApiUrl,
+      applicationEndpointUrl:
+        secureCloudfrontDomainName || applicationEndpointUrl,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+      customResourceRole,
+    });
+
+    new CfnOutput(this, "CloudFrontUrl", {
+      value: applicationEndpointUrl,
     });
   }
 }
