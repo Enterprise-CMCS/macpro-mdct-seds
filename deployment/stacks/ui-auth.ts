@@ -75,14 +75,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
-  let supportedIdentityProviders:
-    | cognito.UserPoolClientIdentityProvider[]
-    | undefined = undefined;
-  let oktaIdp: cognito.CfnUserPoolIdentityProvider | undefined = undefined;
-
   const providerName = "Okta";
 
-  oktaIdp = new cognito.CfnUserPoolIdentityProvider(
+  const oktaIdp = new cognito.CfnUserPoolIdentityProvider(
     scope,
     "CognitoUserPoolIdentityProvider",
     {
@@ -105,13 +100,13 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }
   );
 
-  supportedIdentityProviders = [
+  const supportedIdentityProviders = [
     cognito.UserPoolClientIdentityProvider.custom(providerName),
   ];
 
   const appUrl =
-    secureCloudfrontDomainName ||
-    applicationEndpointUrl ||
+    secureCloudfrontDomainName ??
+    applicationEndpointUrl ??
     "https://localhost:3000/";
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
@@ -148,7 +143,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
     cognitoDomain: {
-      domainPrefix: userPoolDomainPrefix || `${stage}-login-user-pool-client`,
+      domainPrefix: userPoolDomainPrefix ?? `${stage}-login-user-pool-client`,
     },
   });
 

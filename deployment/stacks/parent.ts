@@ -89,7 +89,7 @@ export class ParentStack extends Stack {
       distribution,
       apiGatewayRestApiUrl,
       applicationEndpointUrl:
-        secureCloudfrontDomainName || applicationEndpointUrl,
+        secureCloudfrontDomainName ?? applicationEndpointUrl,
       identityPoolId,
       userPoolId,
       userPoolClientId,
