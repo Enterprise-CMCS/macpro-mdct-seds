@@ -17,7 +17,7 @@ Any records without a matching partition key will be inserted into the table.
 
 When new data needs to be added to the VAL or PROD environments, it can be pushed as part of the deployment using the deployment/stacks/data.ts file.
 
-Seeding data will only occur for !isDev environments like dev, val, and prod. However, because of the way the cdk is setup it will only happen on creation, not on updates to the custom resource that seeds the data.
+Seeding data will only occur for `isDev` environments; never for master, val, or production. However, because of the way the cdk is setup it will only happen on environment creation, not on updates to the custom resource that seeds the data.
 
 This process is most relevant to the form-answers and state-forms tables which house user entered data.
 Most other tables contain master data which would not be impacted or impede user experience by being updated on every deployment.
