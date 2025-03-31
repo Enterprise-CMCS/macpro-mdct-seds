@@ -14,18 +14,8 @@ const buildDynamoClient = () => {
       info: console.info,
       warn: console.warn,
     },
+    region: "us-east-1",
   };
-  const endpoint = process.env.DYNAMODB_URL;
-  if (endpoint) {
-    dynamoConfig.endpoint = endpoint;
-    dynamoConfig.region = "localhost";
-    dynamoConfig.credentials = {
-      accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-      secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-    };
-  } else {
-    dynamoConfig["region"] = "us-east-1";
-  }
 
   const bareBonesClient = new DynamoDBClient(dynamoConfig);
   return DynamoDBDocumentClient.from(bareBonesClient);

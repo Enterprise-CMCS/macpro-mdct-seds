@@ -28,7 +28,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     iamPermissionsBoundary,
     iamPath,
     customResourceRole,
-   } = props;
+  } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {
@@ -128,8 +128,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     role: lambdaApiRole,
     environment: {
       dynamoPrefix: stage,
-      seedData: (!["production", "val", "master"].includes(stage)).toString(),
-      // DYNAMODB_URL: process.env.DYNAMODB_URL || "",
+      seedData: isDev.toString(),
     },
     bundling: {
       commandHooks: {

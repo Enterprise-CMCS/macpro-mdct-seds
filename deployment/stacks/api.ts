@@ -6,11 +6,10 @@ import {
   aws_events_targets as targets,
   aws_iam as iam,
   aws_logs as logs,
-  aws_s3 as s3,
   aws_wafv2 as wafv2,
+  CfnOutput,
   Duration,
   RemovalPolicy,
-  Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
@@ -26,6 +25,8 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
+  userPoolId?: string;
+  userPoolClientId?: string;
   vpcName: string;
   kafkaAuthorizedSubnetIds: string;
   tables: DynamoDBTableIdentifiers[];
@@ -40,6 +41,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stage,
     project,
     isDev,
+    userPoolId,
+    userPoolClientId,
     vpcName,
     kafkaAuthorizedSubnetIds,
     tables,
@@ -49,7 +52,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
-  Tags.of(scope).add("SERVICE", service);
 
   const vpc = ec2.Vpc.fromLookup(scope, "Vpc", { vpcName });
   const kafkaAuthorizedSubnets = getSubnets(
@@ -120,6 +122,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    COGNITO_USER_POOL_ID: userPoolId ?? process.env.COGNITO_USER_POOL_ID!,
+    COGNITO_USER_POOL_CLIENT_ID:
+      userPoolClientId ?? process.env.COGNITO_USER_POOL_CLIENT_ID!,
     stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
@@ -164,7 +169,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "ses:SendEmail",
         "ses:SendRawEmail",
         "lambda:InvokeFunction",
-        "ssm:GetParameter",
       ],
       resources: ["*"],
     }),
@@ -464,8 +468,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     iamPath
   );
 
+  const apiGatewayRestApiUrl = api.url.slice(0, -1);
+
+  new CfnOutput(scope, "ApiUrl", {
+    value: apiGatewayRestApiUrl,
+  });
+
   return {
     restApiId: api.restApiId,
-    apiGatewayRestApiUrl: api.url.slice(0, -1),
+    apiGatewayRestApiUrl,
   };
 }

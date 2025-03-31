@@ -1,5 +1,4 @@
 window._env_ = {
-  LOCAL_LOGIN: "false",
   SKIP_PREFLIGHT_CHECK: "true",
   API_REGION: "us-east-1",
   API_URL: "{{apiGatewayRestApiUrl}}",

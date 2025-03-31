@@ -83,7 +83,7 @@ async function main() {
     ...(await loadDefaultSecret(project)),
     env: {
       account: process.env.CDK_DEFAULT_ACCOUNT,
-      region: process.env.CDK_DEFAULT_REGION,
+      region: "us-east-1",
     },
   });
 }
