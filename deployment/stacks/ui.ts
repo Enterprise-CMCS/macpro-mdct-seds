@@ -1,12 +1,13 @@
 import { Construct } from "constructs";
 import {
+  aws_certificatemanager as acm,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_s3 as s3,
+  Aws,
   Duration,
   RemovalPolicy,
-  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
@@ -24,6 +25,7 @@ interface CreateUiComponentsProps {
   cloudfrontDomainName?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -38,17 +40,22 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     cloudfrontDomainName,
     // vpnIpSetArn,
     // vpnIpv6SetArn,
+    loggingBucket,
   } = props;
 
-  // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
     encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
     enforceSSL: true,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    versioned: true,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
   const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+    bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
     encryption: s3.BucketEncryption.S3_MANAGED,
     publicReadAccess: false,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -56,9 +63,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     autoDeleteObjects: isDev,
     enforceSSL: true,
+    versioned: true,
   });
 
-  // Add bucket policy to allow CloudFront to write logs
   logBucket.addToResourcePolicy(
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -120,7 +127,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
       defaultRootObject: "index.html",
       enableLogging: true,
-      logBucket: logBucket,
+      logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {

@@ -76,7 +76,7 @@ function updateEnvFiles() {
       stdio: "inherit",
     });
     execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
-  } catch (error) {
+  } catch {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
     process.exit(1);
@@ -100,16 +100,18 @@ async function run_cdk_watch(
   runner: LabeledProcessRunner,
   options: { stage: string }
 ) {
-  const stage = options.stage;
-  const watchCmd = [
-    "yarn",
-    "cdk",
-    "watch",
-    "--context",
-    `stage=${stage}`,
-    "--no-rollback",
-  ];
-  await runner.run_command_and_output("CDK watch", watchCmd, ".");
+  await runner.run_command_and_output(
+    "CDK watch",
+    [
+      "yarn",
+      "cdk",
+      "watch",
+      "--context",
+      `stage=${options.stage}`,
+      "--no-rollback",
+    ],
+    "."
+  );
 }
 
 function isColimaRunning() {
@@ -126,11 +128,10 @@ function isColimaRunning() {
 
 function isLocalStackRunning() {
   try {
-    const output = execSync("localstack status", {
+    return execSync("localstack status", {
       encoding: "utf-8",
       stdio: "pipe",
-    }).trim();
-    return output.includes("running");
+    }).includes("running");
   } catch {
     return false;
   }
@@ -148,13 +149,10 @@ async function getCloudFormationStackOutputValue(
   stackName: string,
   outputName: string
 ) {
-  const cloudFormationClient = new CloudFormationClient({
-    region: "us-east-1",
-  });
+  const cloudFormationClient = new CloudFormationClient({ region });
   const command = new DescribeStacksCommand({ StackName: stackName });
-  const response = cloudFormationClient.send(command);
-
-  return (await response).Stacks?.[0]?.Outputs?.find(
+  const response = await cloudFormationClient.send(command);
+  return response.Stacks?.[0]?.Outputs?.find(
     (output) => output.OutputKey === outputName
   )?.OutputValue;
 }
@@ -173,59 +171,63 @@ async function run_local() {
 
   process.env.AWS_DEFAULT_REGION = "us-east-1";
   process.env.AWS_ACCESS_KEY_ID = "localstack";
-  process.env.AWS_SECRET_ACCESS_KEY = "localstack";
+  process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
   process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
 
-  const cdklocalBootstrapCmd = [
-    "yarn",
-    "cdklocal",
-    "bootstrap",
-    "aws://000000000000/us-east-1",
-    "--context",
-    "stage=bootstrap",
-  ];
   await runner.run_command_and_output(
     "CDK local bootstrap",
-    cdklocalBootstrapCmd,
+    [
+      "yarn",
+      "cdklocal",
+      "bootstrap",
+      "aws://000000000000/us-east-1",
+      "--context",
+      "stage=bootstrap",
+    ],
     "."
   );
 
-  const deployLocalPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/local/prerequisites.ts"',
-  ];
+  await runner.run_command_and_output(
+    "CDK local local-prerequisite deploy",
+    [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--context",
+      "stage=prerequisites",
+      "--app",
+      '"npx tsx deployment/local/prerequisites.ts"',
+    ],
+    "."
+  );
+
   await runner.run_command_and_output(
     "CDK local prerequisite deploy",
-    deployLocalPrequisitesCmd,
+    [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--context",
+      "stage=prerequisites",
+      "--app",
+      '"npx tsx deployment/prerequisites.ts"',
+    ],
     "."
   );
 
-  const deployPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/prerequisites.ts"',
-  ];
   await runner.run_command_and_output(
-    "CDK prerequisite deploy",
-    deployPrequisitesCmd,
+    "CDK local deploy",
+    [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--context",
+      "stage=localstack",
+      "--all",
+      "--no-rollback",
+    ],
     "."
   );
-
-  const deployCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--context",
-    "stage=localstack",
-    "--all",
-    "--no-rollback",
-  ];
-  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 
   const seedDataFunctionName = await getCloudFormationStackOutputValue(
     "seds-localstack",
@@ -240,16 +242,18 @@ async function run_local() {
   });
   await lambdaClient.send(lambdaCommand);
 
-  const watchCmd = [
-    "yarn",
-    "cdklocal",
-    "watch",
-    "--context",
-    "stage=localstack",
-    "--no-rollback",
-  ];
-
-  runner.run_command_and_output("CDK watch", watchCmd, ".");
+  runner.run_command_and_output(
+    "CDK local watch",
+    [
+      "yarn",
+      "cdklocal",
+      "watch",
+      "--context",
+      "stage=localstack",
+      "--no-rollback",
+    ],
+    "."
+  );
   run_fe_locally(runner);
 }
 
@@ -289,7 +293,7 @@ const stackExists = async (stackName: string): Promise<boolean> => {
   try {
     await client.send(new DescribeStacksCommand({ StackName: stackName }));
     return true;
-  } catch (error: any) {
+  } catch {
     return false;
   }
 };
@@ -299,16 +303,19 @@ async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
-    const deployCmd = [
-      "yarn",
-      "cdk",
-      "deploy",
-      "--context",
-      `stage=${stage}`,
-      "--method=direct",
-      "--all",
-    ];
-    await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+    await runner.run_command_and_output(
+      "CDK deploy",
+      [
+        "yarn",
+        "cdk",
+        "deploy",
+        "--context",
+        `stage=${options.stage}`,
+        "--method=direct",
+        "--all",
+      ],
+      "."
+    );
   } else {
     console.error(
       "MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application."
@@ -397,7 +404,6 @@ yargs(process.argv.slice(2))
     "destroy a cdk stage in AWS",
     {
       stage: { type: "string", demandOption: true },
-      service: { type: "string", demandOption: false },
       wait: { type: "boolean", demandOption: false, default: true },
       verify: { type: "boolean", demandOption: false, default: true },
     },
@@ -407,9 +413,7 @@ yargs(process.argv.slice(2))
     "update-env",
     "update environment variables using 1Password",
     () => {},
-    () => {
-      updateEnvFiles();
-    }
+    updateEnvFiles
   )
   .scriptName("run")
   .strict()

@@ -36,7 +36,7 @@ export class ParentStack extends Stack {
       iamPath,
     };
 
-    const { customResourceRole } = createCustomResourceRole({ ...commonProps });
+    const customResourceRole = createCustomResourceRole({ ...commonProps });
 
     const { tables } = createDataComponents({
       ...commonProps,
