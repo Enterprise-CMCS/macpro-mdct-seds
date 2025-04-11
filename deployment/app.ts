@@ -29,9 +29,6 @@ async function main() {
 
   if (stage == "bootstrap") {
     new Stack(app, `${config.project}-${stage}`, {});
-    return;
-  }
-
   } else {
     new ParentStack(app, `${config.project}-${stage}`, {
       ...config,
