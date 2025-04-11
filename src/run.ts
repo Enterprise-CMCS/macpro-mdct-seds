@@ -299,7 +299,6 @@ const stackExists = async (stackName: string): Promise<boolean> => {
 };
 
 async function deploy(options: { stage: string }) {
-  const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("seds-prerequisites")) {
