@@ -49,9 +49,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     autoDeleteObjects: true,
     enforceSSL: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    versioned: true,
-    serverAccessLogsBucket: loggingBucket,
-    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
   const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
