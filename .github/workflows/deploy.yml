@@ -15,48 +15,48 @@ permissions:
   actions: read
 
 jobs:
-  # unit-tests:
-  #   name: Unit Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: set variable values
-  #       run: echo "CODE_CLIMATE_ID=${{ secrets.CODE_CLIMATE_ID }}" >> $GITHUB_ENV
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version-file: ".nvmrc"
-  #     - uses: actions/cache@v4
-  #       with:
-  #         path: |
-  #           **/node_modules
-  #           ~/.cache/Cypress
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-  #     - name: set path
-  #       run: |
-  #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-  #     - name: run unit tests
-  #       run: ./scripts/test-unit.sh
-  #     - name: publish test coverage to code climate
-  #       if: env.CODE_CLIMATE_ID != ''
-  #       uses: paambaati/codeclimate-action@v6
-  #       env:
-  #         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #       with:
-  #         coverageLocations: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-  #     - name: Store unit test results
-  #       if: failure()
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: unit-test-results
-  #         path: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info
-  #         retention-days: 14
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: set variable values
+        run: echo "CODE_CLIMATE_ID=${{ secrets.CODE_CLIMATE_ID }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to code climate
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v6
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14
 
   deploy:
-    # needs: unit-tests
+    needs: unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
