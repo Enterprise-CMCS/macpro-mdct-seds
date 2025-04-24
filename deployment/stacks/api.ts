@@ -13,7 +13,6 @@ import {
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
@@ -31,8 +30,6 @@ interface CreateApiComponentsProps {
   kafkaAuthorizedSubnetIds: string;
   tables: DynamoDBTableIdentifiers[];
   brokerString: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -47,8 +44,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnetIds,
     tables,
     brokerString,
-    iamPermissionsBoundary,
-    iamPath,
   } = props;
 
   const service = "app-api";
@@ -180,8 +175,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary,
-    iamPath,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -461,12 +454,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       webAclArn: waf.webAcl.attrArn,
     });
   }
-
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   const apiGatewayRestApiUrl = api.url.slice(0, -1);
 
