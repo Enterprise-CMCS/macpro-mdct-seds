@@ -9,8 +9,6 @@ import {
   aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
 interface CreateUiComponentsProps {
@@ -18,8 +16,6 @@ interface CreateUiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   vpnIpSetArn?: string;
@@ -32,8 +28,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     stage,
     project,
     isDev,
-    iamPermissionsBoundary,
-    iamPath,
     cloudfrontCertificateArn,
     cloudfrontDomainName,
     // vpnIpSetArn,
@@ -142,12 +136,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
-
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   return {
     cloudfrontDistributionId: distribution.distributionId,
