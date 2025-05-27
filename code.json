@@ -1,0 +1,77 @@
+{
+  "name": "macpro-mdct-seds",
+  "description": "SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.",
+  "longDescription": "The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.",
+  "status": "Production",
+  "permissions": {
+    "licenses": [
+      {
+        "name": "CC0-1.0",
+        "URL": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/blob/main/LICENSE"
+      }
+    ],
+    "usageType": "openSource",
+    "exemptionText": ""
+  },
+  "organization": "Centers for Medicare & Medicaid Services",
+  "repositoryURL": "https://github.com/Enterprise-CMCS/macpro-mdct-seds",
+  "projectURL": "https://mdctseds.cms.gov",
+  "repositoryHost": "github.com/Enterprise-CMCS",
+  "repositoryVisibility": "public",
+  "vcs": "git",
+  "laborHours": 35026,
+  "reuseFrequency": {
+    "forks": 4
+  },
+  "platforms": [
+    "web"
+  ],
+  "categories": [
+    "data-collection"
+  ],
+  "softwareType": "standalone/web",
+  "languages": [
+    "JavaScript",
+    "TypeScript",
+    "SCSS",
+    "Python",
+    "HTML",
+    "Shell",
+    "Smarty",
+    "Gherkin"
+  ],
+  "maintenance": "contract",
+  "contractNumber": "123456789",
+  "date": {
+    "created": "2020-12-04T19:41:29Z",
+    "lastModified": "2025-05-13T21:03:01Z",
+    "metaDataLastUpdated": "2025-05-27T14:04:05.009Z"
+  },
+  "tags": [
+    "mdct"
+  ],
+  "contact": {
+    "email": "brendan.myers@coforma.com",
+    "name": "Brendan Myers"
+  },
+  "feedbackMechanisms": [
+    "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues"
+  ],
+  "localisation": false,
+  "repositoryType": "application",
+  "userInput": true,
+  "fismaLevel": "Low",
+  "group": "MDCT",
+  "projects": [
+    "MDCT"
+  ],
+  "systems": [],
+  "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/network/dependencies",
+  "subsetInHealthcare": [
+    "Medicaid"
+  ],
+  "userType": [
+    "Government"
+  ],
+  "maturityModelTier": 3
+}
