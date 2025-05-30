@@ -39,6 +39,7 @@ jobs:
 
       - name: Approve and enable auto-merge PR
         run: |
+          echo "${{github.actor}}"
           PR_URL=$(gh pr list --state open --json url,headRefName \
             --jq '.[] | select(.headRefName | startswith("code-json-")) | .url' \
             | head -n 1)
