@@ -1,0 +1,17 @@
+name: Code JSON auto-merge
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  merge-code-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print out who it is
+        run: |
+          echo ${{github.actor}}
+          echo ${{github.event.pull_request.html_url}}
