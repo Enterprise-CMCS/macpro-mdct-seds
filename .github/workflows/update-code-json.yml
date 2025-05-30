@@ -39,8 +39,14 @@ jobs:
 
       - name: Approve and enable auto-merge PR
         run: |
+          PR_URL=$(gh pr list --state open --json url,headRefName \
+            --jq '.[] | select(.headRefName | startswith("code-json-")) | .url' \
+            | head -n 1)
+
+          echo "Found PR: $PR_URL"
+
+          # Approve and auto-merge
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"
         env:
-          PR_URL: ${{steps.update.outputs.pr_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
