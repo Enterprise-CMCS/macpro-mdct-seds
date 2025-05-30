@@ -1,8 +1,9 @@
 name: Code JSON auto-merge
 on:
-  pull_request:
-  workflow_dispatch:
-
+  workflow_run:
+    workflows: ["Update Code.json"]
+    types:
+      - completed
 permissions:
   pull-requests: write
   contents: write
