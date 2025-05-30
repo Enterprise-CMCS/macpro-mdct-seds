@@ -36,18 +36,3 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: "master"
-
-      - name: Approve and enable auto-merge PR
-        run: |
-          echo "${{github.actor}}"
-          PR_URL=$(gh pr list --state open --json url,headRefName \
-            --jq '.[] | select(.headRefName | startswith("code-json-")) | .url' \
-            | head -n 1)
-
-          echo "Found PR: $PR_URL"
-
-          # Approve and auto-merge
-          gh pr review --approve "$PR_URL"
-          gh pr merge --auto --squash "$PR_URL"
-        env:
-          GH_TOKEN: ${{secrets.GLOBAL_GH_PAT}}

@@ -2,8 +2,10 @@ name: Deploy
 
 on:
   push:
-    branches-ignore:
-      - skipci*
+    branches:
+      - "*"
+      - "!skipci*"
+      - "!code-json-*"
 
 concurrency:
   group: ${{ github.ref_name }}
