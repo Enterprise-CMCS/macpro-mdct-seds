@@ -31,7 +31,16 @@ jobs:
         run: go install github.com/boyter/scc/v3@v3.5.0
 
       - name: Update code.json
+        id: update
         uses: DSACMS/automated-codejson-generator@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: "master"
+
+      - name: Approve and enable auto-merge PR
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{steps.update.outputs.pr_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
