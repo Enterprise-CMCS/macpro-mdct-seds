@@ -23,8 +23,12 @@
   "reuseFrequency": {
     "forks": 4
   },
-  "platforms": ["web"],
-  "categories": ["data-collection"],
+  "platforms": [
+    "web"
+  ],
+  "categories": [
+    "data-collection"
+  ],
   "softwareType": "standalone/web",
   "languages": [
     "JavaScript",
@@ -40,10 +44,12 @@
   "contractNumber": "75FCMC24F0027",
   "date": {
     "created": "2020-12-04T19:41:29Z",
-    "lastModified": "2025-05-13T21:03:01Z",
-    "metaDataLastUpdated": "2025-05-27T13:25:49.310Z"
+    "lastModified": "2025-05-30T18:38:22Z",
+    "metaDataLastUpdated": "2025-05-30T18:39:17.501Z"
   },
-  "tags": ["mdct"],
+  "tags": [
+    "mdct"
+  ],
   "contact": {
     "email": "brendan.myers@coforma.com",
     "name": "Brendan Myers"
@@ -56,10 +62,16 @@
   "userInput": true,
   "fismaLevel": "Moderate",
   "group": "MDCT",
-  "projects": ["MDCT"],
+  "projects": [
+    "MDCT"
+  ],
   "systems": [],
   "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/network/dependencies",
-  "subsetInHealthcare": ["Medicaid"],
-  "userType": ["Government"],
+  "subsetInHealthcare": [
+    "Medicaid"
+  ],
+  "userType": [
+    "Government"
+  ],
   "maturityModelTier": 3
 }
