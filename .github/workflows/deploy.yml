@@ -2,9 +2,8 @@ name: Deploy
 
 on:
   push:
-    branches:
-      - "*"
-      - "!skipci*"
+    branches-ignore:
+      - skipci*
 
 concurrency:
   group: ${{ github.ref_name }}
