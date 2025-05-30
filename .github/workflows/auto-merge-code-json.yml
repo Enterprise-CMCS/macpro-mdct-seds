@@ -1,0 +1,22 @@
+name: Code JSON auto-merge
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  merge-code-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print out who it is
+        run: ${{github.actor}}
+      # - name: Approve and enable auto-merge PR
+      #   run: |
+      #     gh pr review --approve "$PR_URL"
+      #     gh pr merge --auto --squash "$PR_URL"
+      #   env:
+      #     PR_URL: ${{github.event.pull_request.html_url}}
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
