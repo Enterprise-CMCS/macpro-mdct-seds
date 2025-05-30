@@ -51,4 +51,4 @@ jobs:
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"
         env:
-          GITHUB_TOKEN: ${{secrets.GLOBAL_GH_PAT}}
+          GH_TOKEN: ${{secrets.GLOBAL_GH_PAT}}
