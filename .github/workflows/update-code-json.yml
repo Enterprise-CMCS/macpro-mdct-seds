@@ -2,7 +2,7 @@ name: Update Code.json
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "*/5 * * * *"
     # - cron: "0 0 1 * *" # monthly on day 1
 
 permissions:
