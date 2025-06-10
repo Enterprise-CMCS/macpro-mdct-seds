@@ -1,8 +1,8 @@
 # MDCT SEDS (CHIP Statistical Enrollment Data System)
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/maintainability)](https://codeclimate.com/repos/64497017eab34100ce938fe6/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6dd9a7765a10a72867f2/test_coverage)](https://codeclimate.com/repos/64497017eab34100ce938fe6/test_coverage)
+[![Maintainability](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
+[![Code Coverage](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 
 ### Integration Environment Deploy Status:
 

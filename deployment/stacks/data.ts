@@ -9,26 +9,16 @@ import {
   Duration,
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   customResourceRole: iam.Role;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const {
-    scope,
-    stage,
-    isDev,
-    iamPermissionsBoundary,
-    iamPath,
-    customResourceRole,
-  } = props;
+  const { scope, stage, isDev, customResourceRole } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {
@@ -115,8 +105,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         ],
       }),
     },
-    permissionsBoundary: iamPermissionsBoundary,
-    path: iamPath,
   });
 
   const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {
