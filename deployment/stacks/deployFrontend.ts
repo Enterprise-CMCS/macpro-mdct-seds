@@ -35,6 +35,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     userPoolId,
     userPoolClientId,
     userPoolClientDomain,
+    uiBucket,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
