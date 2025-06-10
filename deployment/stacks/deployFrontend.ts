@@ -49,8 +49,6 @@ export function deployFrontend(props: DeployFrontendProps) {
 
   const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    path: iamPath,
-    permissionsBoundary: iamPermissionsBoundary,
     inlinePolicies: {
       InlinePolicy: new iam.PolicyDocument({
         statements: [

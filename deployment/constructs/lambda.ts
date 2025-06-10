@@ -44,8 +44,6 @@ export class Lambda extends Construct {
       path,
       method,
       additionalPolicies = [],
-      iamPath,
-      iamPermissionsBoundary,
       stackName,
       ...restProps
     } = props;
