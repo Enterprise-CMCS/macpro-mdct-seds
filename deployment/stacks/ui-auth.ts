@@ -147,7 +147,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     scope,
     "CognitoIdentityPool",
     {
-      identityPoolName: `${stage}IdentityPool`,
+      identityPoolName: `${stage}-IdentityPool`,
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
@@ -190,7 +190,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       },
     });
 
-    // TODO: test deploy and watch performance with scope using lambda.Function vs lambda_nodejs.NodejsFunction
     bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
       scope,
       "bootstrapUsers",

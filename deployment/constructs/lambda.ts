@@ -40,9 +40,11 @@ export class Lambda extends Construct {
       memorySize = 1024,
       brokerString = "",
       environment = {},
+      api,
       path,
       method,
       additionalPolicies = [],
+      stackName,
       ...restProps
     } = props;
 
@@ -72,7 +74,7 @@ export class Lambda extends Construct {
     });
 
     this.lambda = new NodejsFunction(this, id, {
-      functionName: `${props.stackName}-${id}`,
+      functionName: `${stackName}-${id}`,
       handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
@@ -87,7 +89,7 @@ export class Lambda extends Construct {
     });
 
     if (path && method) {
-      const resource = props.api.root.resourceForPath(path);
+      const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,
         new apigateway.LambdaIntegration(this.lambda),

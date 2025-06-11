@@ -28,8 +28,8 @@ export class LocalPrerequisiteStack extends Stack {
       cidrBlock: "10.0.1.0/24",
     });
 
-    new secretsmanager.Secret(this, "SedsDefaultSecret", {
-      secretName: "seds-default",
+    new secretsmanager.Secret(this, "DefaultSecret", {
+      secretName: "seds-default", // pragma: allowlist-secret
       secretObjectValue: {
         vpcName: SecretValue.unsafePlainText("localstack"),
         brokerString: SecretValue.unsafePlainText("localstack"),

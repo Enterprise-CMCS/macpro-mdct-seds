@@ -107,7 +107,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
   });
 
-  // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
   const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {
     entry: "services/database/handlers/seed/seed.js",
     handler: "handler",

@@ -58,7 +58,6 @@ export class LambdaDynamoEventSource extends Construct {
       },
     });
 
-    // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       handler,
