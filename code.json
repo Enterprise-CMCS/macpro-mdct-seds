@@ -19,7 +19,7 @@
   "repositoryHost": "github.com/Enterprise-CMCS",
   "repositoryVisibility": "public",
   "vcs": "git",
-  "laborHours": 35026,
+  "laborHours": 35027,
   "reuseFrequency": {
     "forks": 4
   },
@@ -44,8 +44,8 @@
   "contractNumber": "75FCMC24F0027",
   "date": {
     "created": "2020-12-04T19:41:29Z",
-    "lastModified": "2025-05-30T20:17:11Z",
-    "metaDataLastUpdated": "2025-06-01T00:26:07.693Z"
+    "lastModified": "2025-06-18T12:50:19Z",
+    "metaDataLastUpdated": "2025-07-01T00:25:10.164Z"
   },
   "tags": [
     "mdct"
