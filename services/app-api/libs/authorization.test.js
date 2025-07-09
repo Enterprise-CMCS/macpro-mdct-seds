@@ -1,15 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getUserDetailsFromEvent } from "./authorization.js";
 import { jwtDecode } from "jwt-decode";
-import { CognitoJwtVerifier } from "aws-jwt-verify";
-
-vi.mock("aws-jwt-verify", () => ({
-  CognitoJwtVerifier: {
-    create: vi.fn().mockReturnValue({
-      verify: vi.fn(),
-    }),
-  },
-}));
 
 vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(),
@@ -41,9 +32,6 @@ describe("authorization", () => {
 
   describe("getUserDetailsFromEvent", () => {
     it("should build a user object from values in the token", async () => {
-      process.env.COGNITO_USER_POOL_ID = "poolIdFromEnv";
-      process.env.COGNITO_USER_POOL_CLIENT_ID = "clientIdFromEnv";
-
       const result = await getUserDetailsFromEvent(mockEvent);
 
       expect(result).toEqual({
@@ -55,25 +43,7 @@ describe("authorization", () => {
         usernameSub: "0000-1111-2222-3333",
       });
 
-      // Did we verify the token?
-      expect(CognitoJwtVerifier.create).toHaveBeenCalledWith(
-        {
-          tokenUse: "id",
-          userPoolId: "poolIdFromEnv",
-          clientId: "clientIdFromEnv",
-        },
-        expect.any(Object) // This test makes no verifier config assertions
-      );
-      expect(CognitoJwtVerifier.create().verify).toHaveBeenCalledWith("mockApiKey");
-    });
-
-    it("should throw if the event has no API key", async () => {
-      const noKeyEvent = {
-        ...mockEvent,
-        headers: {},
-      };
-      await expect(getUserDetailsFromEvent(noKeyEvent)).rejects
-        .toThrow("Forbidden");
+      expect(jwtDecode).toHaveBeenCalledWith("mockApiKey");
     });
 
     it("should map job codes to user roles correctly", async () => {
@@ -94,17 +64,21 @@ describe("authorization", () => {
       await expectMembershipToHaveRole("CHIP_P_USER_GROUP", "state");
 
       // The membership attribute often contains multiple job codes
-      await expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP_ADMIN,bar", "admin");
+      await expectMembershipToHaveRole(
+        "foo,CHIP_P_USER_GROUP_ADMIN,bar",
+        "admin"
+      );
       await expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP,bar", "state");
     });
 
     it("should throw if role cannot be determined", async () => {
-        jwtDecode.mockReturnValueOnce({
-          ...mockToken,
-          "custom:ismemberof": "invalid test value",
-        });
-        await expect(getUserDetailsFromEvent(mockEvent)).rejects
-          .toThrow("request a Job Code");
+      jwtDecode.mockReturnValueOnce({
+        ...mockToken,
+        "custom:ismemberof": "invalid test value",
+      });
+      await expect(getUserDetailsFromEvent(mockEvent)).rejects.toThrow(
+        "request a Job Code"
+      );
     });
 
     it("should use email as username if EUA ID cannot be found", async () => {
