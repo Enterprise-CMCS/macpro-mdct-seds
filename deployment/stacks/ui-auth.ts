@@ -203,9 +203,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
           userPoolId: userPool.userPoolId,
           bootstrapUsersPassword,
         },
-        bundling: {
-          forceDockerBundling: true,
-        },
       }
     );
   }
