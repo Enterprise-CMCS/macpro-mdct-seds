@@ -29,7 +29,7 @@ describe("Test Footer.js", () => {
 
   test("Check for MDCT SEDS Logo", () => {
     const { getByAltText } = render(<Footer />);
-    const image = getByAltText("MDCT SEDS: CHIP Statistical Enrollment Data Reports");
+    const image = getByAltText("MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool");
     expect(image.src).toContain("/img/seds-logo.svg");
   });
 

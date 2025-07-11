@@ -42,7 +42,7 @@ const Header = () => {
         <Link to="/">
           <img
             src="/img/seds-logo-white.svg"
-            alt="Centers for Medicare and Medicaid Services"
+            alt="MDCT SEDS: Statistical Enrollment Data Systems"
             width={250}
             height={90}
           />
