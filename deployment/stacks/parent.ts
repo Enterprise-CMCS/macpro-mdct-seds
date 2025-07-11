@@ -39,13 +39,13 @@ export class ParentStack extends Stack {
       tables,
     });
 
-    if (isLocalStack) return;
     /*
      * For local dev, the LocalStack container will host the database and API.
      * The UI will self-host, so we don't need to tell CDK anything about it.
      * Also, we skip authorization locally. So we don't set up Cognito,
      * or configure the API to interact with it. Therefore, we're done.
      */
+    if (isLocalStack) return;
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({
