@@ -31,7 +31,6 @@ jobs:
         run: go install github.com/boyter/scc/v3@v3.5.0
 
       - name: Update code.json
-        id: update
         uses: DSACMS/automated-codejson-generator@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
