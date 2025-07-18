@@ -13,6 +13,7 @@ import { logger } from "./debug-lib.js";
 const awsConfig = {
   region: "us-east-1",
   logger,
+  endpoint: process.env.AWS_ENDPOINT_URL,
 };
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
