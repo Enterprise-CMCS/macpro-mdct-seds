@@ -97,5 +97,43 @@ export class ParentStack extends Stack {
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,
     });
+
+    if (isDev) {
+      applyDenyCreateLogGroupPolicy(this);
+    }
   }
+}
+
+function applyDenyCreateLogGroupPolicy(stack: Stack) {
+  const denyCreateLogGroupPolicy = {
+    PolicyName: "DenyCreateLogGroup",
+    PolicyDocument: {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: "Deny",
+          Action: "logs:CreateLogGroup",
+          Resource: "*",
+        },
+      ],
+    },
+  };
+
+  const provider = stack.node.tryFindChild(
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider"
+  );
+  const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
+  if (role) {
+    role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+  }
+
+  stack.node.findAll().forEach((c) => {
+    if (!c.node.id.startsWith("BucketNotificationsHandler")) return;
+
+    const role = c.node.tryFindChild("Role");
+    const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
+    if (cfnRole) {
+      cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+    }
+  });
 }
