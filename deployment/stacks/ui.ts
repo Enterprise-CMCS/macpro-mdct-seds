@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_certificatemanager as acm,
@@ -6,6 +7,7 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
+  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
@@ -19,8 +21,9 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  // vpnIpSetArn?: string;
+  // vpnIpv6SetArn?: string;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -33,6 +36,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     cloudfrontDomainName,
     // vpnIpSetArn,
     // vpnIpv6SetArn,
+    loggingBucket,
   } = props;
 
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -41,15 +45,19 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     autoDeleteObjects: true,
     enforceSSL: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    versioned: true,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
   let loggingConfig:
-    | { enableLogging: boolean; logBucket: s3.Bucket }
+    | { enableLogging: boolean; logBucket: s3.Bucket; logFilePrefix: string }
     | undefined;
   if (!isDev) {
     // this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
     // should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
     const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+      bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -57,6 +65,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       removalPolicy: RemovalPolicy.RETAIN,
       enforceSSL: true,
       versioned: true,
+      serverAccessLogsBucket: loggingBucket,
+      serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
     });
 
     logBucket.addToResourcePolicy(
@@ -71,6 +81,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     loggingConfig = {
       enableLogging: true,
       logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
     };
   }
 
