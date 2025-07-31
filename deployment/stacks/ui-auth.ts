@@ -133,13 +133,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   userPoolClient.node.addDependency(oktaIdp);
 
-  (
-    userPoolClient.node.defaultChild as cognito.CfnUserPoolClient
-  ).addPropertyOverride("ExplicitAuthFlows", [
-    "ADMIN_NO_SRP_AUTH",
-    "USER_PASSWORD_AUTH",
-  ]);
-
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
     cognitoDomain: {
