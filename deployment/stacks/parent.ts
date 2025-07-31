@@ -64,22 +64,13 @@ export class ParentStack extends Stack {
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({ ...commonProps, loggingBucket });
 
+    const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
+      createUiAuthComponents({
         ...commonProps,
+        applicationEndpointUrl,
+        customResourceRole,
+        restApiId,
       });
-
-    const {
-      userPoolDomainName,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      createAuthRole,
-    } = createUiAuthComponents({
-      ...commonProps,
-      applicationEndpointUrl,
-      customResourceRole,
-    });
-
-    createAuthRole(restApiId);
 
     deployFrontend({
       ...commonProps,
