@@ -126,6 +126,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     },
     supportedIdentityProviders,
     generateSecret: false,
+    accessTokenValidity: Duration.minutes(30),
+    idTokenValidity: Duration.minutes(30),
+    refreshTokenValidity: Duration.hours(24),
   });
 
   userPoolClient.node.addDependency(oktaIdp);
