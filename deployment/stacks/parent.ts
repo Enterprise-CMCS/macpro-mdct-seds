@@ -62,7 +62,8 @@ export class ParentStack extends Stack {
     if (isLocalStack) return;
 
     const { applicationEndpointUrl, distribution, uiBucket } =
-      createUiComponents({
+      createUiComponents({ ...commonProps, loggingBucket });
+
         ...commonProps,
       });
 
