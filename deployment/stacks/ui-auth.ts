@@ -193,6 +193,11 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     },
   });
 
+  new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
+    identityPoolId: identityPool.ref,
+    roles: { authenticated: cognitoAuthRole.roleArn },
+  });
+
   let bootstrapUsersFunction;
 
   if (bootstrapUsersPassword) {
