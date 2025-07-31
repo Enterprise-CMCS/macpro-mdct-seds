@@ -299,6 +299,5 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     identityPoolId: identityPool.ref,
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
-    createAuthRole,
   };
 }
