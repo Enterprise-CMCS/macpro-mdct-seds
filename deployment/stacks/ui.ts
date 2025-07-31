@@ -103,6 +103,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     }
   );
 
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+  });
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
@@ -120,7 +125,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },
@@ -142,17 +147,21 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   if (!isLocalStack) {
-    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
+    const waf = setupWaf(
+      scope,
+      stage,
+      project
+      // vpnIpSetArn,
+      // vpnIpv6SetArn
+    );
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   return {
-    cloudfrontDistributionId: distribution.distributionId,
     distribution,
     applicationEndpointUrl,
-    s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
 }
@@ -161,64 +170,15 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string
-  // vpnIpSetArn?: string,
-  // vpnIpv6SetArn?: string,
+  //  vpnIpSetArn?: string,
+  //  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,
     "CloudfrontWafConstruct",
     {
       name: `${project}-${stage}-ui`,
-      blockByDefault: false,
     },
     "CLOUDFRONT"
   );
-  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
-  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
-
-  // const defaultAction = vpnIpSetArn
-  //   ? { block: {} }
-  //   : { allow: {} };
-
-  // if (vpnIpSetArn) {
-  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
-  //     name: `${stage}-gh-ipset`,
-  //     scope: "CLOUDFRONT",
-  //     addresses: [],
-  //     ipAddressVersion: "IPV4",
-  //   });
-
-  //   const statements = [
-  //     {
-  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
-  //     },
-  //     {
-  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-  //     },
-  //   ];
-
-  //   if (vpnIpv6SetArn) {
-  //     statements.push({
-  //       ipSetReferenceStatement: {
-  //         arn: vpnIpv6SetArn,
-  //       },
-  //     });
-  //   }
-
-  //   wafRules.push({
-  //     name: "vpn-only",
-  //     priority: 0,
-  //     action: { allow: {} },
-  //     visibilityConfig: {
-  //       cloudWatchMetricsEnabled: true,
-  //       metricName: `${project}-${stage}-webacl-vpn-only`,
-  //       sampledRequestsEnabled: true,
-  //     },
-  //     statement: {
-  //       orStatement: {
-  //         statements,
-  //       },
-  //     },
-  //   });
-  // }
 }
