@@ -201,50 +201,26 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   let bootstrapUsersFunction;
 
   if (bootstrapUsersPassword) {
-    const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaApiRolePolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-              effect: iam.Effect.ALLOW,
-            }),
-            new iam.PolicyStatement({
-              actions: ["*"],
-              resources: [userPool.userPoolArn],
-              effect: iam.Effect.ALLOW,
-            }),
-          ],
+    const service = "ui-auth";
+    bootstrapUsersFunction = new Lambda(scope, "bootstrapUsers", {
+      stackName: `${service}-${stage}`,
+      entry: "services/ui-auth/handlers/createUsers.js",
+      handler: "handler",
+      memorySize: 1024,
+      timeout: Duration.seconds(60),
+      additionalPolicies: [
+        new iam.PolicyStatement({
+          actions: ["*"],
+          resources: [userPool.userPoolArn],
+          effect: iam.Effect.ALLOW,
         }),
+      ],
+      environment: {
+        userPoolId: userPool.userPoolId,
+        bootstrapUsersPassword,
       },
-    });
-
-    bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
-      scope,
-      "bootstrapUsers",
-      {
-        entry: "services/ui-auth/handlers/createUsers.js",
-        handler: "handler",
-        runtime: lambda.Runtime.NODEJS_20_X,
-        timeout: Duration.seconds(60),
-        role: lambdaApiRole,
-        environment: {
-          userPoolId: userPool.userPoolId,
-          bootstrapUsersPassword,
-        },
-      }
-    );
+      isDev,
+    }).lambda;
   }
 
   if (!isLocalStack) {
