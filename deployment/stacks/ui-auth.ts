@@ -294,18 +294,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }
 
-  function createAuthRole(restApiId: string) {
-
-    new cognito.CfnIdentityPoolRoleAttachment(
-      scope,
-      "CognitoIdentityPoolRoles",
-      {
-        identityPoolId: identityPool.ref,
-        roles: { authenticated: cognitoAuthRole.roleArn },
-      }
-    );
-  }
-
   return {
     userPoolDomainName: userPoolDomain.domainName,
     identityPoolId: identityPool.ref,
