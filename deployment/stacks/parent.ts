@@ -1,5 +1,12 @@
 import { Construct } from "constructs";
-import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import {
+  Aws,
+  aws_s3 as s3,
+  aws_iam as iam,
+  CfnOutput,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -25,9 +32,16 @@ export class ParentStack extends Stack {
     const commonProps = {
       scope: this,
       ...props,
+      isDev,
     };
 
-    const customResourceRole = createCustomResourceRole({ ...commonProps });
+    const customResourceRole = createCustomResourceRole(commonProps);
+
+    const loggingBucket = s3.Bucket.fromBucketName(
+      this,
+      "LoggingBucket",
+      `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
+    );
 
     const { tables } = createDataComponents({
       ...commonProps,
