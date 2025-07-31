@@ -76,7 +76,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
-    "CloudFormationHeadersPolicy",
+    "CloudFrontHeadersPolicy",
     {
       responseHeadersPolicyName: `Headers-Policy-${stage}`,
       comment: "Add Security Headers",
