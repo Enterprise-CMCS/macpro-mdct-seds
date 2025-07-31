@@ -3,7 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -14,18 +14,16 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler: string;
-  timeout?: Duration;
-  memorySize?: number;
-  brokerString?: string;
   path?: string;
   method?: string;
   stackName: string;
-  api: apigateway.RestApi;
+  api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
+  isDev: boolean;
 }
 
 export class Lambda extends Construct {
@@ -35,16 +33,15 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      brokerString = "",
       environment = {},
       api,
       path,
       method,
       additionalPolicies = [],
       stackName,
+      isDev,
       ...restProps
     } = props;
 
@@ -75,7 +72,6 @@ export class Lambda extends Construct {
 
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
@@ -83,12 +79,19 @@ export class Lambda extends Construct {
       bundling: {
         minify: true,
         sourceMap: true,
+        nodeModules: ["jsdom"],
       },
       environment,
       ...restProps,
     });
 
-    if (path && method) {
+    new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
+    if (api && path && method) {
       const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,
