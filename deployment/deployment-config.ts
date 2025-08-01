@@ -13,6 +13,7 @@ export interface DeploymentConfigProperties {
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   secureCloudfrontDomainName?: string;
+  userPoolName?: string;
   userPoolDomainPrefix?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
