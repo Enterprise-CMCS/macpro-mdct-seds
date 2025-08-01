@@ -21,7 +21,6 @@ interface DeployFrontendProps {
   userPoolId: string;
   userPoolClientId: string;
   userPoolClientDomain: string;
-  customResourceRole: iam.Role;
 }
 
 export function deployFrontend(props: DeployFrontendProps) {
@@ -80,7 +79,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     {
       sources: [s3_deployment.Source.asset(buildOutputPath)],
       destinationBucket: uiBucket,
-      distribution: distribution,
+      distribution,
       distributionPaths: ["/*"],
       prune: true,
       cacheControl: [

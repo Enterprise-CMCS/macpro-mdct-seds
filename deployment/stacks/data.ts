@@ -2,13 +2,12 @@ import { Construct } from "constructs";
 import {
   aws_dynamodb as dynamodb,
   aws_iam as iam,
-  aws_lambda as lambda,
-  aws_lambda_nodejs as lambda_nodejs,
   custom_resources as cr,
   CfnOutput,
   Duration,
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
+import { Lambda } from "../constructs/lambda";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -79,44 +78,31 @@ export function createDataComponents(props: CreateDataComponentsProps) {
   ];
 
   // seed data
-  const lambdaApiRole = new iam.Role(scope, "SeedDataLambdaApiRole", {
-    assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    managedPolicies: [
-      iam.ManagedPolicy.fromAwsManagedPolicyName(
-        "service-role/AWSLambdaVPCAccessExecutionRole"
-      ),
-    ],
-    inlinePolicies: {
-      DynamoPolicy: new iam.PolicyDocument({
-        statements: [
-          new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            actions: [
-              "dynamodb:DescribeTable",
-              "dynamodb:Query",
-              "dynamodb:Scan",
-              "dynamodb:GetItem",
-              "dynamodb:PutItem",
-              "dynamodb:UpdateItem",
-              "dynamodb:DeleteItem",
-            ],
-            resources: ["*"],
-          }),
-        ],
-      }),
-    },
-  });
-
-  const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {
+  const seedDataFunction = new Lambda(scope, "seedData", {
+    stackName: `data-${stage}`,
     entry: "services/database/handlers/seed/seed.js",
     handler: "handler",
-    runtime: lambda.Runtime.NODEJS_20_X,
     timeout: Duration.seconds(900),
-    role: lambdaApiRole,
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          "dynamodb:DescribeTable",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+        ],
+        resources: ["*"],
+      }),
+    ],
     environment: {
       dynamoPrefix: stage,
       seedData: isDev.toString(),
     },
+    isDev,
     bundling: {
       commandHooks: {
         beforeBundling(inputDir: string, outputDir: string): string[] {
@@ -133,7 +119,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         },
       },
     },
-  });
+  }).lambda;
 
   const seedDataInvoke = new cr.AwsCustomResource(
     scope,

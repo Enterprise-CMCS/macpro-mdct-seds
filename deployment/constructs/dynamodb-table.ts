@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy, Tags } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
@@ -7,6 +7,11 @@ interface DynamoDBTableProps {
   readonly isDev: boolean;
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
+  readonly sortKey?: { name: string; type: dynamodb.AttributeType };
+  readonly lsi?: {
+    indexName: string;
+    sortKey: { name: string; type: dynamodb.AttributeType };
+  }[];
   readonly gsi?: {
     indexName: string;
     partitionKey: { name: string; type: dynamodb.AttributeType };
@@ -30,18 +35,22 @@ export class DynamoDBTable extends Construct {
 
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
+    const { stage, isDev, name, partitionKey, sortKey, lsi, gsi } = props;
 
-    const tableName = `${props.stage}-${props.name}`;
+    const tableName = `${stage}-${name}`;
     this.table = new dynamodb.Table(this, "Table", {
       tableName,
-      partitionKey: props.partitionKey,
+      partitionKey,
+      sortKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       pointInTimeRecoverySpecification: {
         pointInTimeRecoveryEnabled: true,
       },
-      removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
+
+    Tags.of(this.table).add("AWS_Backup", "d35");
 
     this.identifiers = {
       id,
@@ -50,10 +59,20 @@ export class DynamoDBTable extends Construct {
       streamArn: this.table.tableStreamArn,
     };
 
-    if (props.gsi) {
+    if (lsi) {
+      lsi.forEach((index) => {
+        this.table.addLocalSecondaryIndex({
+          indexName: index.indexName,
+          sortKey: index.sortKey,
+          projectionType: dynamodb.ProjectionType.ALL,
+        });
+      });
+    }
+
+    if (gsi) {
       this.table.addGlobalSecondaryIndex({
-        indexName: props.gsi.indexName,
-        partitionKey: props.gsi.partitionKey,
+        indexName: gsi.indexName,
+        partitionKey: gsi.partitionKey,
         projectionType: dynamodb.ProjectionType.ALL,
       });
     }
