@@ -7,6 +7,8 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   vpcName: string;
   oktaMetadataUrl: string;
+  brokerString: string;
+  kafkaAuthorizedSubnetIds: string;
   bootstrapUsersPassword?: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
@@ -14,8 +16,7 @@ export interface DeploymentConfigProperties {
   userPoolDomainPrefix?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
-  brokerString: string;
-  kafkaAuthorizedSubnetIds: string;
+  kafkaClientId?: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
