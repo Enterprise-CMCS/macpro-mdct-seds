@@ -35,7 +35,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     customAttributes: {
       ismemberof: new cognito.StringAttribute({ mutable: true }),
     },
-    advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+    // advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
     removalPolicy: RemovalPolicy.RETAIN,
   });
 }

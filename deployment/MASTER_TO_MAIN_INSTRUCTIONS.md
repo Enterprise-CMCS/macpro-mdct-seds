@@ -15,7 +15,7 @@ IMPORT_VARIANT=imports_included ./run deploy --stage master
 ### Collect retained resource value ids:
 
 cloudfront distribution id -
-user pool name - master-user-pool
+user pool id -
 
 ### Use PITR to make correctly named tables which we import with other stuff
 
@@ -27,6 +27,8 @@ user pool name - master-user-pool
 `master-states` -> `main-states`
 `master-auth-user` -> `main-auth-user`
 
+Manually turn on new and old image streaming for each restored table.
+
 ### Copy secret for `seds-master` to `seds-main`
 
 add 2 new secret values inside `seds-main`
@@ -34,7 +36,7 @@ add 2 new secret values inside `seds-main`
 - kafkaClientId: `seds-master`
 - userPoolName: `master-user-pool`
 
-### Remove if statement in getBranchName to changes main to master
+### Remove if statement in setBranchName to changes main to master
 
 ```sh
 IMPORT_VARIANT=empty ./run deploy --stage main
@@ -52,4 +54,5 @@ IMPORT_VARIANT=imports_included ./run deploy --stage main
 - remove `seds-master` secret
 - update the cognito secrets in the 1password for seds_secrets
 - clean out isDev's definition
+- remove reference to master in `deployment-config.ts`
 - update readmes and scripts to use stage as main
