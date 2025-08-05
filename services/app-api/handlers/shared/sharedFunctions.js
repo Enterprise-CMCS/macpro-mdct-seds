@@ -1,10 +1,9 @@
-import dynamoDb from "../../libs/dynamodb-lib";
-import { FormStatus } from "../../types";
+import dynamoDb from "../../libs/dynamodb-lib.js";
+import { FormStatus } from "../../types.js";
 
 export async function getUsersEmailByRole(role) {
   const params = {
-    TableName:
-      process.env.AUTH_USER_TABLE_NAME ?? process.env.AuthUserTableName,
+    TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: { "#r": "role" },
     ExpressionAttributeValues: { ":role": role },
@@ -26,8 +25,7 @@ export async function getUsersEmailByRole(role) {
 export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
   const params = {
-    TableName:
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
@@ -66,8 +64,7 @@ export async function getUncertifiedStates(year, quarter) {
 export async function getUncertifiedStatesAndForms(year, quarter) {
   // house the list of states from the state forms
   const params = {
-    TableName:
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
       "#theYear": "year",
@@ -119,9 +116,7 @@ export async function getQuestionsByYear(specifiedYear) {
   const parsedYear = parseInt(specifiedYear);
 
   const questionParams = {
-    TableName:
-      process.env.FORM_QUESTIONS_TABLE_NAME ??
-      process.env.FormQuestionsTableName,
+    TableName: process.env.FormQuestionsTable,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },
@@ -145,7 +140,7 @@ export async function getQuestionsByYear(specifiedYear) {
 
 export async function getStatesList() {
   const stateParams = {
-    TableName: process.env.STATES_TABLE_NAME ?? process.env.StatesTableName,
+    TableName: process.env.StatesTable,
   };
 
   let stateResult;
@@ -161,9 +156,7 @@ export async function getStatesList() {
 }
 
 export async function getFormDescriptions() {
-  const formDescriptionParams = {
-    TableName: process.env.FORMS_TABLE_NAME ?? process.env.FormsTableName,
-  };
+  const formDescriptionParams = { TableName: process.env.FormsTable };
 
   let formDescription;
   try {
@@ -178,8 +171,7 @@ export async function getFormDescriptions() {
 
 export async function getFormResultByStateString(stateFormString) {
   const params = {
-    TableName:
-      process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+    TableName: process.env.FormAnswersTable,
     ExpressionAttributeValues: {
       ":state_form": stateFormString,
     },
@@ -195,8 +187,7 @@ export async function getFormResultByStateString(stateFormString) {
 export async function getAnswersSet() {
   console.log("Building set of state forms with answers");
   const params = {
-    TableName:
-      process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName,
+    TableName: process.env.FormAnswersTable,
   };
 
   const result = await dynamoDb.scan(params);
@@ -205,8 +196,7 @@ export async function getAnswersSet() {
 
 export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
   const params = {
-    TableName:
-      process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName,
+    TableName: process.env.StateFormsTable,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },
@@ -237,9 +227,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 
   // GET QUESTIONS FROM TEMPLATE
   const templateParams = {
-    TableName:
-      process.env.FORM_TEMPLATES_TABLE_NAME ??
-      process.env.FormTemplatesTableName,
+    TableName: process.env.FormTemplatesTable,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },
@@ -260,9 +248,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     const previousYear = parsedYear - 1;
 
     const previousYearParams = {
-      TableName:
-        process.env.FORM_TEMPLATES_TABLE_NAME ??
-        process.env.FormTemplatesTableName,
+      TableName: process.env.FormTemplatesTable,
       ExpressionAttributeNames: {
         "#theYear": "year",
       },
@@ -359,8 +345,7 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
   const secondBatch = questionsFromTemplate.slice(mid);
   const splitQuestions = [firstBatch, secondBatch];
 
-  const questionTableName =
-    process.env.FORM_QUESTIONS_TABLE_NAME ?? process.env.FormQuestionsTableName;
+  const questionTableName = process.env.FormQuestionsTable;
 
   // Add the questions found in the template to the form-questions table
   // this can/should be done recursively to better account for unprocessed items
@@ -423,9 +408,7 @@ export async function createFormTemplate(year, questions) {
   }
 
   const params = {
-    TableName:
-      process.env.FORM_TEMPLATES_TABLE_NAME ??
-      process.env.FormTemplatesTableName,
+    TableName: process.env.FormTemplatesTable,
     Item: {
       year: parseInt(year),
       template: validatedJSON,

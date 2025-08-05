@@ -1,6 +1,6 @@
-import handler from "./../../libs/handler-lib";
-import dynamoDb from "./../../libs/dynamodb-lib";
-import { authorizeAdminOrUserForState } from "../../auth/authConditions";
+import handler from "./../../libs/handler-lib.js";
+import dynamoDb from "./../../libs/dynamodb-lib.js";
+import { authorizeAdminOrUserForState } from "../../auth/authConditions.js";
 
 export const main = handler(async (event, context) => {
   // Deconstruct variables from URL string
@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
   const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
 
   const answerParams = {
-    TableName: process.env.FormAnswersTableName,
+    TableName: process.env.FormAnswersTable,
     IndexName: "state-form-index",
     /*Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
@@ -24,7 +24,7 @@ export const main = handler(async (event, context) => {
   };
 
   const questionParams = {
-    TableName: process.env.FormQuestionsTableName,
+    TableName: process.env.FormQuestionsTable,
     ExpressionAttributeNames: {
       "#theYear": "year",
     },

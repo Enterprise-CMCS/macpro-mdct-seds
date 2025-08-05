@@ -9,6 +9,5 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#0.1.1"
   }
 }

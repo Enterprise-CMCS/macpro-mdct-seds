@@ -1,6 +1,6 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeAdmin } from "../../../auth/authConditions.js";
 
 /**
  * Returns a single form template
@@ -13,9 +13,7 @@ export const main = handler(async (event, context) => {
   let data = JSON.parse(event.body);
 
   const params = {
-    TableName:
-      process.env.FORM_TEMPLATES_TABLE_NAME ??
-      process.env.FormTemplatesTableName,
+    TableName: process.env.FormTemplatesTable,
     // IndexName: "year",
     ExpressionAttributeNames: {
       "#theYear": "year",

@@ -1,5 +1,5 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
   getFormDescriptions,
   getQuestionsByYear,
@@ -8,8 +8,9 @@ import {
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions";
-import { authorizeAdmin } from "../../../auth/authConditions";
-import { FormStatus } from "../../../types";
+import { authorizeAdmin } from "../../../auth/authConditions.js";
+import { FormStatus } from "../../../types.js";
+import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -211,16 +212,13 @@ const generateQuarterForms = async (event) => {
     })
     .flat();
 
-  // Get tableName
-  const formDescriptionTableName =
-    process.env.STATE_FORMS_TABLE_NAME ?? process.env.StateFormsTableName;
   console.log(`Saving ${putRequestsStateForms.length} state forms`);
 
   // Loop through batches and write to DB
   for (let i in batchArrayFormDescriptions) {
     const batchRequest = {
       RequestItems: {
-        [formDescriptionTableName]: batchArrayFormDescriptions[i],
+        [process.env.StateFormsTable]: batchArrayFormDescriptions[i],
       },
     };
 
@@ -332,15 +330,11 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Get tableName
-  const formAnswersTableName =
-    process.env.FORM_ANSWERS_TABLE_NAME ?? process.env.FormAnswersTableName;
-
   // Loop through batches and write to DB
   for (let i in batchArrayFormAnswers) {
     const batchRequest = {
       RequestItems: {
-        [formAnswersTableName]: batchArrayFormAnswers[i],
+        [process.env.FormAnswersTable]: batchArrayFormAnswers[i],
       },
     };
 
@@ -359,30 +353,4 @@ const generateQuarterForms = async (event) => {
     status: 200,
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
-};
-
-/**
- * We run an automated process at the start of each quarter,
- * which generates forms for the previous quarter.
- * For example: on Jan 1 2024, we would generate forms for Oct-Dec 2023.
- * Those forms would be due for completion by Jan 31, 2024.
- *
- * A potential source of confusion is that Oct-Dec 2023 represents the
- * federal fiscal quarter 2024 Q1; a quarter ahead of what you may expect.
- * Another potential source is that we want to generate forms for the
- * _previous_ quarter, to report on data from the recent past.
- *
- * Happily, these off-by-one issues cancel each other out. So this
- * function returns the more common quarter number of the current date.
- *
- * @param { Date } date - The current date
- * @returns { Object } { year, quarter } -
- *          The Federal Fiscal Quarter for which forms should be generated
- */
-export const calculateFormQuarterFromDate = (date) => {
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let quarter = Math.floor(month / 3) + 1;
-
-  return { year, quarter };
 };

@@ -1,10 +1,6 @@
 {
   "name": "database",
   "description": "",
-  "resolutions": {
-    "**/**/lodash": "^4.17.12",
-    "minimist": "^1.2.5"
-  },
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,12 +8,9 @@
   },
   "author": "",
   "license": "CC0-1.0",
-  "devDependencies": {
-    "aws-dynamodb-local": "0.0.10",
-    "serverless-dynamodb": "^0.2.53"
-  },
+  "devDependencies": {},
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.709.0",
-    "@aws-sdk/lib-dynamodb": "^3.709.0"
+    "@aws-sdk/client-dynamodb": "^3.744.0",
+    "@aws-sdk/lib-dynamodb": "^3.744.0"
   }
 }

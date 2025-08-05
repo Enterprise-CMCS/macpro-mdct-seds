@@ -3,12 +3,12 @@ name: "CodeQL"
 on:
   push:
     branches:
-      - master
+      - main
       - val
       - production
   pull_request:
     branches:
-      - master
+      - main
       - val
       - production
   schedule:

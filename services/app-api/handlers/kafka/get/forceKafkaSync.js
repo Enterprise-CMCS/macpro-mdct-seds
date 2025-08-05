@@ -1,17 +1,14 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import chunk from "lodash/chunk";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
 
 const tableNames = [
-  process.env.AgeRangesTableName,
-  process.env.FormAnswersTableName,
-  process.env.FormQuestionsTableName,
-  process.env.FormsTableName,
-  process.env.FormTemplatesTableName,
-  process.env.StateFormsTableName,
-  process.env.StatesTableName,
-  process.env.StatusTableName,
-  process.env.AuthUserTableName,
+  process.env.FormAnswersTable,
+  process.env.FormQuestionsTable,
+  process.env.FormTemplatesTable,
+  process.env.FormsTable,
+  process.env.StateFormsTable,
+  process.env.StatesTable,
+  process.env.AuthUserTable,
 ];
 
 const mergeLastSynced = (items, syncDateTime) =>
@@ -21,11 +18,7 @@ const batchWrite = async (tableName, items) => {
   console.log(
     `Performing batchwrite for ${items.length} items in table: ${tableName}`
   );
-  // split items into chunks of 25
-  const itemChunks = chunk(items, 25);
-  console.log(
-    `Items split into ${itemChunks.length} chunk(s) of not more than 25 items`
-  );
+  const itemChunks = [...batchItemsIntoGroupsOfTwentyFive(items)];
   for (const index in itemChunks) {
     // Construct the request params for batchWrite
     const itemArray = itemChunks[index].map((item) => {
@@ -86,3 +79,11 @@ export const main = handler(async (event, context) => {
     }
   }
 });
+
+function* batchItemsIntoGroupsOfTwentyFive(items) {
+  /** This is the max number of requests in a DynamoDB BatchWriteCommand */
+  const TWENTY_FIVE = 25;
+  for (let index = 0; index < items.length; index += TWENTY_FIVE) {
+    yield items.slice(index, index + TWENTY_FIVE);
+  }
+}

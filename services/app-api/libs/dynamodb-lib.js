@@ -8,28 +8,15 @@ import {
   ScanCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { logger } from "./debug-lib";
-
-const localConfig = {
-  endpoint: process.env.DYNAMODB_URL,
-  region: "localhost",
-  credentials: {
-    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-  },
-  logger,
-};
+import { logger } from "./debug-lib.js";
 
 const awsConfig = {
   region: "us-east-1",
   logger,
+  endpoint: process.env.AWS_ENDPOINT_URL,
 };
 
-export const getConfig = () => {
-  return process.env.DYNAMODB_URL ? localConfig : awsConfig;
-};
-
-const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 export default {
   update: async (params) => await client.send(new UpdateCommand(params)),

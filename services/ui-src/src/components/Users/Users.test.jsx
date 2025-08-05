@@ -66,11 +66,6 @@ describe("Test Users.js", () => {
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
     
     expect(screen.getByText(
-      "Add New User",
-      { selector: "button" }
-    )).toBeInTheDocument();
-
-    expect(screen.getByText(
       "CSV",
       { selector: "button" }
     )).toBeInTheDocument();
@@ -133,22 +128,6 @@ describe("Test Users.js", () => {
     expect(row1cells[6].textContent).toBe("4/18/2024");
 
     expect(row1cells[7].textContent).toBe("CO, TX, WI");
-  });
-
-  it("should navigate to the new user page when the add button is clicked", async () => {
-    const mockHistory = [];
-    useHistory.mockReturnValue(mockHistory);
-
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const addButton = screen.getByText(
-      "Add New User",
-      { selector: "button" }
-    );
-    userEvent.click(addButton);
-
-    expect(mockHistory).toEqual(["/users/add"]);
   });
 
   it("should export to CSV somehow", async () => {

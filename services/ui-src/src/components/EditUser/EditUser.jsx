@@ -176,6 +176,7 @@ const EditUser = ({ stateList }) => {
                     value={user.username}
                     type="text"
                     onChange={e => updateLocalUser(e, "username")}
+                    disabled={true}
                     name="username"
                     className="form-input"
                   />
@@ -279,7 +280,7 @@ const EditUser = ({ stateList }) => {
               </tr>
             </tbody>
           </Table>
-          <div className="action-buttons">
+          <div className="action-buttons margin-top-4">
             <Button
               type="button"
               className="form-button"

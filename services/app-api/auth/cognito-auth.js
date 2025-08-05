@@ -1,5 +1,5 @@
-import { getUserDetailsFromEvent } from "../libs/authorization";
-import { obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail";
+import { getUserDetailsFromEvent } from "../libs/authorization.js";
+import { obtainUserByEmail } from "../handlers/users/post/obtainUserByEmail.js";
 
 export const getCurrentUserInfo = async (event) => {
   const user = await getUserDetailsFromEvent(event);

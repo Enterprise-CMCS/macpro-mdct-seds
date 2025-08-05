@@ -12,7 +12,6 @@ import Users from "../Users/Users";
 import EditUser from "../EditUser/EditUser";
 import Example from "../Example/Example";
 import Quarterly from "../Quarterly/Quarterly";
-import UserAdd from "../AddUser/AddUser";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormPage from "../FormPage/FormPage";
 import StateSelector from "../StateSelector/StateSelector";
@@ -84,9 +83,6 @@ export default function Routes({ user, isAuthorized }) {
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/form-templates">
             <FormTemplates />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/users/add">
-            <UserAdd />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/users/:id/edit">
             <EditUser />

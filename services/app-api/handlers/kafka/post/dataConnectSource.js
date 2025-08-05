@@ -1,9 +1,8 @@
-import KafkaSourceLib from "../../../libs/kafka-source-lib";
+import KafkaSourceLib from "../../../libs/kafka-source-lib.js";
 
 class DataConnectTransform extends KafkaSourceLib {
   topicPrefix = "aws.mdct.seds.cdc";
   tables = [
-    "age-ranges",
     "auth-user",
     "form-answers",
     "form-questions",
@@ -11,7 +10,6 @@ class DataConnectTransform extends KafkaSourceLib {
     "forms",
     "state-forms",
     "states",
-    "status",
   ];
 
   createPayload(record) {

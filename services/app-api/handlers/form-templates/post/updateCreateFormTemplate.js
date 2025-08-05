@@ -1,6 +1,6 @@
-import handler from "../../../libs/handler-lib";
-import dynamoDb from "../../../libs/dynamodb-lib";
-import { authorizeAdmin } from "../../../auth/authConditions";
+import handler from "../../../libs/handler-lib.js";
+import dynamoDb from "../../../libs/dynamodb-lib.js";
+import { authorizeAdmin } from "../../../auth/authConditions.js";
 
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
@@ -37,9 +37,7 @@ export const main = handler(async (event, context) => {
   }
 
   const params = {
-    TableName:
-      process.env.FORM_TEMPLATES_TABLE_NAME ??
-      process.env.FormTemplatesTableName,
+    TableName: process.env.FormTemplatesTable,
     Item: {
       year: parseInt(data.year),
       template: data.template,

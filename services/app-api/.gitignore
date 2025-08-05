@@ -40,10 +40,6 @@ jspm_packages
 .*.sw*
 Session.vim
 
-# Serverless
-.webpack
-.serverless
-
 # env
 env.yml
 .env

@@ -48,23 +48,10 @@ const Users = () => {
     fetchData().then();
   }, []);
 
-  const handleAddNewUser = () => {
-    history.push("/users/add");
-  };
-
   return (
     <div className="user-profiles" data-testid="users">
       <h1 className="page-header">Users</h1>
       <div className="page-subheader exclude-from-pdf">
-        <Button
-          onClick={() => handleAddNewUser()}
-          className="action-button"
-          primary="true"
-          data-testid="handleAddNewUser"
-        >
-          Add New User
-          <FontAwesomeIcon icon={faUserPlus} className="margin-left-2" />
-        </Button>
         <Button
           className="margin-left-3 action-button"
           primary="true"
