@@ -41,6 +41,10 @@ async function certifiedStateUsersEmail() {
   const allStateEmails = await getUsersEmailByRole("state");
   const uncertifiedStateList = await getUncertifiedStates(year, quarter);
 
+  if (!uncertifiedStateList) {
+    console.info("At this time, There are no states which is currrently status: In Progress in this current quarter");
+  }
+
   let stateUsersToEmail = [];
   allStateEmails.map((e) => {
     if (uncertifiedStateList.includes(e.state[0])) {

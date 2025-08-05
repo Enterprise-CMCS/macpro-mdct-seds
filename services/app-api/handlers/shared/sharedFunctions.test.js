@@ -23,6 +23,7 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { FormStatus } from "../../types.js";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockBatchWrite = vi.fn().mockResolvedValue({ UnprocessedItems: {} });
@@ -78,9 +79,10 @@ describe("sharedFunctions.js", () => {
       mockScan.mockResolvedValueOnce({
         Count: 3,
         Items: [
-          { state_id: "CO" },
-          { state_id: "TX" },
-          { state_id: "CO" },
+          { state_id: "CO", status_id: FormStatus.InProgress },
+          { state_id: "TX", status_id: FormStatus.InProgress },
+          { state_id: "CO", status_id: FormStatus.InProgress },
+          { state_id: "WI", status_id: FormStatus.ProvisionalCertified },
         ],
       });
 
@@ -91,29 +93,23 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status": "In Progress",
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
-    it("should return an explanatory mesage if no uncertified forms can be found", async () => {
+    it("should return undefined if no uncertified forms can be found", async () => {
       mockScan.mockResolvedValueOnce({ Count: 0 });
 
       const result = await getUncertifiedStates(2025, 1);
 
-      expect(result).toEqual([
-        {
-          message: expect.stringMatching(/There are no states .* In Progress/),
-        },
-      ]);
+      expect(result).toBeUndefined();
     });
   });
 
@@ -122,32 +118,30 @@ describe("sharedFunctions.js", () => {
       mockScan.mockResolvedValueOnce({
         Count: 3,
         Items: [
-          { state_id: "CO", form: "F1" },
-          { state_id: "TX", form: "F1" },
-          { state_id: "CO", form: "F2" },
+          { state_id: "CO", form: "F1", status_id: FormStatus.InProgress },
+          { state_id: "TX", form: "F1", status_id: FormStatus.InProgress },
+          { state_id: "CO", form: "F2", status_id: FormStatus.InProgress },
         ],
       });
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual([
-        { state: "CO", form: ["F1", "F2"]},
-        { state: "TX", form: ["F1"]},
-      ]);
+      expect(result).toEqual({
+        "CO": ["F1", "F2"],
+        "TX": ["F1"],
+      });
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status": "In Progress",
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -155,29 +149,25 @@ describe("sharedFunctions.js", () => {
       mockScan.mockResolvedValueOnce({
         Count: 3,
         Items: [
-          { state_id: "CO", form: "F2" },
-          { state_id: "CO", form: "F3" },
-          { state_id: "CO", form: "F1" },
+          { state_id: "CO", form: "F2", status_id: FormStatus.InProgress },
+          { state_id: "CO", form: "F3", status_id: FormStatus.InProgress },
+          { state_id: "CO", form: "F1", status_id: FormStatus.InProgress },
         ],
       });
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual([
-        { state: "CO", form: ["F1", "F2", "F3"]},
-      ]);
+      expect(result).toEqual({
+        CO: ["F1", "F2", "F3"]
+      });
     });
 
-    it("should return an explanatory mesage if no uncertified forms can be found", async () => {
+    it("should return undefined if no uncertified forms can be found", async () => {
       mockScan.mockResolvedValueOnce({ Count: 0 });
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual([
-        {
-          message: expect.stringMatching(/There are no states .* In Progress/),
-        },
-      ]);
+      expect(result).toBeUndefined();
     });
   });
 

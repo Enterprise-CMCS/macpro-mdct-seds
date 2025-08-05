@@ -39,6 +39,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
     userRole === UserRole.Admin ||
     userRole === UserRole.Business ||
     statusData.status_id === FormStatus.FinalCertified
+    // TODO should notes be disabled for NotApplicable?
   ) {
     disabledNotes = true;
   }

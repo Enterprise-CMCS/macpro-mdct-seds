@@ -19,7 +19,8 @@ const {
  *
  * More specifically, the migration will make these changes:
  * - In Progress will move from id 1 or 2, to just id 1.
- * - Provisional & Final Certified will move from ids 3 and 4, to ids 2 and 3.
+ * - Provisional Certified will move from id 3 to id 2.
+ * - Final Certified will move from id 4 to 3.
  * - 4 will become the dedicated status_id for Not Required.
  * - Forms with indications that someone intended to mark them as Not Required
  *   will be be moved to Not Required. Note that state users can, and will still
@@ -61,6 +62,7 @@ const logger = {
   error: console.error,
 };
 
+// TODO: This config workd under Serverless. Does it still work under CDK?
 const localConfig = {
   endpoint: DYNAMODB_URL,
   region: "localhost",
@@ -116,13 +118,14 @@ function updateStatusFields (stateForm) {
     stateForm.status_id = 1;
   }
   else if (status_id === 3) {
-    stateForm.status_id = 2
+    stateForm.status_id = 2;
   }
   else if (status_id === 4) {
     stateForm.status_id = 3;
   }
   delete stateForm.status;
   delete stateForm.not_applicable;
+  // TODO maybe also add an explicit `wasMigratedForStatusId` flag, which we can track now & delete later?
   return true;
 }
 
@@ -150,8 +153,9 @@ async function * iterateStateForms () {
       const didUpdate = updateStatusFields(stateForm);
       if (didUpdate) {
         await client.send(new PutCommand({
-          TableName: AUTH_USER_TABLE_NAME,
-          Item: user,
+          // TODO double check
+          TableName: STATE_FORMS_TABLE_NAME,
+          Item: stateForm,
         }));
         updatedCount += 1;
       }

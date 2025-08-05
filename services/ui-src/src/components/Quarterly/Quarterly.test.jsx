@@ -7,6 +7,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
+import { FormStatusDisplay } from "../../utility-functions/types";
 
 const mockStore = configureStore([]);
 let store = mockStore(mockStore);
@@ -31,7 +32,7 @@ jest.mock("../../utility-functions/dbFunctions", () => ({
 }));
 recursiveGetStateForms.mockResolvedValue(quarterlyDataMock);
 
-const forms = [
+const expectedDisplayedForms = [
   {
     id: "GRE",
     name: "Gender, Race & Ethnicity",
@@ -94,13 +95,13 @@ describe("Quarterly tests", () => {
     )).toBeInTheDocument();
 
     const rows = container.querySelectorAll("table tbody tr");
-    expect(rows.length).toBe(forms.length);
+    expect(rows.length).toBe(expectedDisplayedForms.length);
 
-    for (let i = 0; i < forms.length; i += 1) {
+    for (let i = 0; i < expectedDisplayedForms.length; i += 1) {
       const row = rows[i];
       const cells = [...row.querySelectorAll("td")];
       const [ idCell, nameCell, statusCell, lastUpdatedCell, printCell] = cells;
-      const form = forms[i];
+      const form = expectedDisplayedForms[i];
 
       expect(idCell.textContent).toBe(form.id);
       const idHref = idCell.querySelector("a").href;

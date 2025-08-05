@@ -41,6 +41,10 @@ async function businessOwnersTemplate() {
   const sendToEmail = sendToEmailArry.map((e) => e.email);
   const uncertifiedStates = await getUncertifiedStatesAndForms(year, quarter);
 
+  if (!uncertifiedStates) {
+    console.info("At this time, There are no states which is currrently status: In Progress in this current quarter");
+  }
+
   // Build string of all states and forms
   let uncertifiedStatesList = Object.entries(uncertifiedStates)
     .sort(([stateA, _as], [stateB, _bs]) => stateA.localeCompare(stateB))

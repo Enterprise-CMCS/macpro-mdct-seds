@@ -1,12 +1,9 @@
 search regex:
 
-\b(status|status_id|not_applicable)\b
+\b(status|status_?id|not_?applicable)\b
 
-search exclude (but go ahead and double check me)
+TODO: search the codebase for all the TODOs you just wrote. May have to ask Brendan, Cam, and/or Anna.
 
-.env.tpl,README.md,nightwatch/*,cognito-auth.js,obtainFormTemplate.js,updateCreateFormTemplate.js,dataConnectSource.js, postKafkaData.js,businessUsers.js,stateUsers.js,uncertified.js,generateEnrollmentTotals.js,updateStateForms.js,getUserById.js,deleteUser.js,serviceWorker.js,_buttons.scss,initial_data_load/*.json,EditUser.jsx,EditUser.test.jsx,Example.jsx,FormFooter.test.jsx,FormPage.jsx,FormTemplates.jsx,GenerateForms.jsx,PrintPDF.scss,Quarterly.scss,StatusButton.jsx,StatusButton.test.jsx,provider-mocks/*.js,to-delete/*.json,schema_21E.json,schema_forms.json,SEDS Issue 2025-01-02.md
+TODO: Test from the frontend
 
-TODO: Go and actually remove the table. Probably CDK will have happened by the time you get this in, making this a non-issue.
-
-TODO: Make sure that all downstream consumers are aligned with the removal of `form.status` and `form.not_applicable`, and understand the new, official meanings of `status_id`. There are two downstream consumers: CARTS and... someone else. Brendan knows.
-  Note: CARTS doesn't care about these fields.
+TODO: Coordinate SEDS deployment, migration with DataConnect

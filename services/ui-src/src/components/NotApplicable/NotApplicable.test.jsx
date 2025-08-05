@@ -65,8 +65,15 @@ describe("NotApplicable", () => {
     expect(noOption).toBeDisabled();
   });
 
-  it("should initialize to Yes when appropriate", async () => {
+  it("should initialize to Yes for an In-Progress form", async () => {
     renderComponent(stateUser, FormStatus.InProgress);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeChecked();
+  });
+
+  it("should initialize to Yes for a Certified form", async () => {
+    renderComponent(stateUser, FormStatus.ProvisionalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeChecked();

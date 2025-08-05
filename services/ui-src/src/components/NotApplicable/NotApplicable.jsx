@@ -19,6 +19,7 @@ const NotApplicable = ({
   const [disableInput, setDisableInput] = useState(true);
 
   useEffect(() => {
+    // TODO should this disable for FinalCertified actually?
     if (status_id === FormStatus.ProvisionalCertified) {
       setDisableInput(true);
       return;
@@ -91,7 +92,7 @@ const NotApplicable = ({
             name="applicable-radio"
             value="Not Applicable"
             disabled={disableInput}
-            checked={status_id == FormStatus.NotApplicable}
+            checked={status_id === FormStatus.NotApplicable}
             onChange={handleApplicableChange}
           />
           <label

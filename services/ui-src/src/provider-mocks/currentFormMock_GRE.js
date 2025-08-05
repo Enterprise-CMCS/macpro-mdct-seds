@@ -1,3 +1,5 @@
+import { FormStatus } from "../utility-functions/types";
+
 const currentFormMock_GRE = {
   currentForm: {
     questions: [
@@ -620,12 +622,11 @@ const currentFormMock_GRE = {
       program_code: "AL",
       state_form: "AL-2021-1-GRE",
       state_id: "AL",
-      not_applicable: false,
+      status_id: FormStatus.InProgress,
       created_date: "01-15-2021",
       form_name: "Gender, Race & Ethnicity",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status: "In Progress"
     },
     tabs: ["0018"]
   }

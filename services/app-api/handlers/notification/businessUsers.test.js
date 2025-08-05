@@ -6,6 +6,7 @@ import {
 } from "../shared/sharedFunctions.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
+import { FormStatus } from "../../types.js";
 
 // TODO: remove this mock, once we've moved getQuarter to a different file
 vi.mock("./businessUsers.js", async (importOriginal) => ({
@@ -19,7 +20,7 @@ vi.mock("../shared/sharedFunctions.js", () => ({
 }));
 
 const mockSes = mockClient(SESClient);
-const mockSendEmail = vi.fn();
+const mockSendEmail = vi.fn().mockReturnValue({ MessageId: 123 });
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
 const mockUser1 = { email: "bizuserCO@test.com" };
@@ -28,10 +29,10 @@ const mockUser2 = { email: "bizuserTX@test.com" };
 describe("notification/businessUsers", () => {
   it("should send emails to business users regarding not-yet-certified forms", async () => {
     getUsersEmailByRole.mockResolvedValueOnce([mockUser1, mockUser2]);
-    getUncertifiedStatesAndForms.mockResolvedValueOnce([
-      { state: "CO", form: ["21E", "GRE"] },
-      { state: "TX", form: ["64.21E"]},
-    ]);
+    getUncertifiedStatesAndForms.mockResolvedValueOnce({
+      "CO": ["21E", "GRE"],
+      "TX": ["64.21E"],
+    });
 
     await notifyBusinessUsers({});
 

@@ -18,12 +18,12 @@ const TabContainer = ({
   quarter,
   status_id
 }) => {
-  const [disabledStatus, setDisabledStatus] = useState();
+  const [isDisabled, setIsDisabled] = useState();
 
   useEffect(() => {
     const establishStatus = async () => {
       let userRole;
-      let statusBoolean = false;
+      let shouldBeDisabled = false;
 
       let existingUser = await getUserInfo();
 
@@ -37,9 +37,9 @@ const TabContainer = ({
         userRole === UserRole.Admin ||
         userRole === UserRole.Business
       ) {
-        statusBoolean = true;
+        shouldBeDisabled = true;
       }
-      setDisabledStatus(statusBoolean);
+      setIsDisabled(shouldBeDisabled);
     };
     establishStatus();
   }, [status_id]);
@@ -104,7 +104,7 @@ const TabContainer = ({
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
-                    disabled={disabledStatus}
+                    disabled={isDisabled}
                   />
                 );
               }

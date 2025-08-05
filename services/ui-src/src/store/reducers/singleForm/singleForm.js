@@ -72,12 +72,12 @@ export const gotAnswer = (answerArray, questionID) => {
 
 export const updateFormStatus = (
   username,
-  statusId
+  status_id
 ) => {
   return {
     type: UPDATE_FORM_STATUS,
     username,
-    statusId,
+    status_id,
     timeStamp: new Date().toISOString()
   };
 };
@@ -92,10 +92,10 @@ export const updatedLastSaved = username => {
 // THUNKS
 
 export const updateFormStatusThunk = (
-  statusId
+  status_id
 ) => async dispatch => {
   const username = await getUsername();
-  dispatch(updateFormStatus(username, statusId));
+  dispatch(updateFormStatus(username, status_id));
 };
 
 export const updateFPL = newFPL => {

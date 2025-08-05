@@ -1,3 +1,5 @@
+import { FormStatus } from "../../../utility-functions/types";
+
 export const tabs = ["0000", "0001", "0105", "0612"];
 
 export const statusData = {
@@ -22,7 +24,7 @@ export const statusData = {
   form_name: "Number of Pregnant Women Served",
   last_modified: "2021-04-09T12:46:35.838Z",
   quarter: 1,
-  status_id: 1,
+  status_id: FormStatus.InProgress,
 };
 
 export const answers = [

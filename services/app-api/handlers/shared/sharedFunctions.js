@@ -9,7 +9,7 @@ export async function getUsersEmailByRole(role) {
     ExpressionAttributeValues: { ":role": role },
     FilterExpression: "#r = :role",
   };
-  const result = await dynamoDb.scan(params);
+  const result = await dynamoDb.scan(params); // TODO: Make this a query & optimize it
   if (result.Count === 0) {
     return [];
   }
@@ -40,18 +40,13 @@ export async function getUncertifiedStates(year, quarter) {
   };
 
   // data returned from the database which contains the database Items
-  const result = await dynamoDb.scan(params);
+  const result = await dynamoDb.scan(params); // TODO: Make this a query & optimize it
   const uncertifiedForms = (result.Items ?? []).filter(form =>
     form.status_id === FormStatus.InProgress
   );
 
   if (uncertifiedForms.length === 0) {
-    return [
-      {
-        message:
-          "At this time, There are no states which is currrently status: In Progress in this current quarter",
-      },
-    ];
+    return undefined;
   }
 
   return uncertifiedForms.map((stateInfo) => stateInfo.state_id).filter(
@@ -85,12 +80,7 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
   );
 
   if (uncertifiedForms.length === 0) {
-    return [
-      {
-        message:
-          "At this time, There are no states which is currently status: In Progress in this current quarter",
-      },
-    ];
+    return undefined;
   }
 
   let formsGroupedByState = {};
