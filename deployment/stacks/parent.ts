@@ -52,19 +52,13 @@ export class ParentStack extends Stack {
         ...commonProps,
       });
 
-    const {
-      userPoolDomainName,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      createAuthRole,
-    } = createUiAuthComponents({
-      ...commonProps,
-      applicationEndpointUrl,
-      customResourceRole,
-    });
-
-    createAuthRole(restApiId);
+    const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
+      createUiAuthComponents({
+        ...commonProps,
+        applicationEndpointUrl,
+        customResourceRole,
+        restApiId,
+      });
 
     deployFrontend({
       ...commonProps,

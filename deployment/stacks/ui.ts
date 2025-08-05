@@ -5,7 +5,6 @@ import {
   aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_s3 as s3,
-  Aws,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
