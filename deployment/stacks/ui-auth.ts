@@ -18,7 +18,6 @@ interface CreateUiAuthComponentsProps {
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
-  restApiId: string;
   customResourceRole: iam.Role;
   oktaMetadataUrl: string;
   restApiId: string;
@@ -38,7 +37,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     restApiId,
     customResourceRole,
     oktaMetadataUrl,
-    restApiId,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
