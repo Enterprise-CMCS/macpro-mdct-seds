@@ -32,7 +32,7 @@
     "@types/yargs": "^15.0.10",
     "aws-cdk": "^2.1002.0",
     "aws-cdk-local": "^2.19.2",
-    "chromedriver": ">=88.0.0",
+    "chromedriver": ">=138.0.5",
     "dotenv": "^8.2.0",
     "typescript": "^5.7.3",
     "yargs": "^16.1.1"
@@ -43,7 +43,7 @@
     "@aws-sdk/client-lambda": "^3.678.0",
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/client-secrets-manager": "^3.670.0",
-    "aws-cdk-lib": "^2.185.0",
+    "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.3.0",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21"
