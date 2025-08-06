@@ -1,18 +1,19 @@
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
 import time
 
-# This script writes out text files of all state forms missing answers. Notably 64.ECI forms and 2020/2019 forms
+# This script writes out text files of all state forms missing answers.
+# Notably 64.ECI forms and 2020/2019 forms
 
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
+#    * Set the aws environment config file with the
+#       temporary values in [default] within ~/.aws/config
 #    * `pip install boto3` or `python3 -m pip install boto3`
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 pitr_recovery.py`)
 # Target localhost:8000, won't go up to AWS if True
 RUN_LOCAL = True
-# Prefix for the environment (master/val/production)
-STAGE = "master"
+# Prefix for the environment (main/val/production)
+STAGE = "main"
 STATE_FORMS_TABLE = "-state-forms"  # 5.3 k forms, 2.6MB
 ANSWERS_TABLE = "-form-answers"  # 120k answers, 97MB
 FILENAME = STAGE + "-missing"
@@ -36,7 +37,7 @@ def main():
     else:
         dynamodb = boto3.resource('dynamodb')
 
-    missing = find_missing_answers(stage, dynamodb)
+    find_missing_answers(stage, dynamodb)
 
 
 def find_missing_answers(stage, dynamodb):
