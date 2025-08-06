@@ -1,5 +1,12 @@
 import { Construct } from "constructs";
-import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import {
+  Aws,
+  aws_s3 as s3,
+  aws_iam as iam,
+  CfnOutput,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -25,9 +32,16 @@ export class ParentStack extends Stack {
     const commonProps = {
       scope: this,
       ...props,
+      isDev,
     };
 
-    const customResourceRole = createCustomResourceRole({ ...commonProps });
+    const customResourceRole = createCustomResourceRole(commonProps);
+
+    const loggingBucket = s3.Bucket.fromBucketName(
+      this,
+      "LoggingBucket",
+      `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
+    );
 
     const { tables } = createDataComponents({
       ...commonProps,
@@ -48,9 +62,7 @@ export class ParentStack extends Stack {
     if (isLocalStack) return;
 
     const { applicationEndpointUrl, distribution, uiBucket } =
-      createUiComponents({
-        ...commonProps,
-      });
+      createUiComponents({ ...commonProps, loggingBucket });
 
     const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
       createUiAuthComponents({
@@ -71,11 +83,48 @@ export class ParentStack extends Stack {
       userPoolId,
       userPoolClientId,
       userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-      customResourceRole,
     });
 
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,
     });
+
+    if (isDev) {
+      applyDenyCreateLogGroupPolicy(this);
+    }
   }
+}
+
+function applyDenyCreateLogGroupPolicy(stack: Stack) {
+  const denyCreateLogGroupPolicy = {
+    PolicyName: "DenyCreateLogGroup",
+    PolicyDocument: {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: "Deny",
+          Action: "logs:CreateLogGroup",
+          Resource: "*",
+        },
+      ],
+    },
+  };
+
+  const provider = stack.node.tryFindChild(
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider"
+  );
+  const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
+  if (role) {
+    role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+  }
+
+  stack.node.findAll().forEach((c) => {
+    if (!c.node.id.startsWith("BucketNotificationsHandler")) return;
+
+    const role = c.node.tryFindChild("Role");
+    const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
+    if (cfnRole) {
+      cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+    }
+  });
 }
