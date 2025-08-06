@@ -1,19 +1,22 @@
 import boto3
 import time
 
-# This script was created to address null values in the seds reports, and set them as 0 for accessibility reasons.
+# This script was created to address null values in the seds
+# reports, and set them as 0 for accessibility reasons.
 # Items should display as 0 for screen readers, and not have a heap of empty cells
-# This script will modify every entry in the row column with "rows.col*" entries from {"NULL": True} -> {"N": "0"}
+# This script will modify every entry in the row column
+#  with "rows.col*" entries from {"NULL": True} -> {"N": "0"}
 #
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
+#    * Set the aws environment config file with the temporary
+#       values in [default] within ~/.aws/config
 #    * pip install boto3
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 correct_null_responses.py`)
 
 RUN_LOCAL = True                        # Target localhost:8000
 RUN_UPDATE = False                       # Dispatch updates for detected changes
-STAGE = "master"                        # Prefix for the environment
+STAGE = "main"                        # Prefix for the environment
 TABLE = "-form-answers"
 BAD_VALUE = None  # {"NULL": True}
 GOOD_VALUE = 0  # {"N": "0"}
@@ -59,7 +62,7 @@ def process_response(response):
     items = response['Items']
     corrections = [correct_responses(i) for i in items]
     changed = [updated_item for (
-        updated_item, modified) in corrections if modified == True]
+        updated_item, modified) in corrections if modified]
 
     return changed
 
