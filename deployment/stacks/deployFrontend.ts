@@ -99,7 +99,6 @@ export function deployFrontend(props: DeployFrontendProps) {
       destinationKey: "env-config.js",
       source: path.join("./deployment/stacks/", "env-config.template.js"),
       substitutions: {
-        stage,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
         identityPoolId,

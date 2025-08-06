@@ -3,7 +3,7 @@ import { Kafka } from "kafkajs";
 
 const STAGE = process.env.stage;
 const kafka = new Kafka({
-  clientId: `seds-${STAGE}`,
+  clientId: process.env.KAFKA_CLIENT_ID,
   brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
   retry: {
     initialRetryTime: 300,

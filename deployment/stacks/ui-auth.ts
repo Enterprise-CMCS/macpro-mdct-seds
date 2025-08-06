@@ -21,9 +21,11 @@ interface CreateUiAuthComponentsProps {
   restApiId: string;
   customResourceRole: iam.Role;
   oktaMetadataUrl: string;
+  restApiId: string;
   bootstrapUsersPassword?: string;
   secureCloudfrontDomainName?: string;
   userPoolDomainPrefix?: string;
+  userPoolName?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
@@ -36,13 +38,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     restApiId,
     customResourceRole,
     oktaMetadataUrl,
+    restApiId,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
+    userPoolName,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
-    userPoolName: `${stage}-user-pool`,
+    userPoolName: userPoolName ?? `${stage}-user-pool`,
     signInAliases: {
       email: true,
     },

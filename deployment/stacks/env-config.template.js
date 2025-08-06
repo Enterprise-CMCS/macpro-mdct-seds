@@ -9,6 +9,5 @@ window._env_ = {
   COGNITO_USER_POOL_CLIENT_DOMAIN: "{{userPoolClientDomain}}",
   COGNITO_REDIRECT_SIGNIN: "{{applicationEndpointUrl}}",
   COGNITO_REDIRECT_SIGNOUT: "{{applicationEndpointUrl}}",
-  STAGE: "{{stage}}",
   TIMESTAMP: "{{timestamp}}",
 };

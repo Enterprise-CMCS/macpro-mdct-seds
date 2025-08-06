@@ -28,6 +28,7 @@ interface CreateApiComponentsProps {
   kafkaAuthorizedSubnetIds: string;
   tables: DynamoDBTableIdentifiers[];
   brokerString: string;
+  kafkaClientId?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -40,6 +41,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnetIds,
     tables,
     brokerString,
+    kafkaClientId,
   } = props;
 
   const service = "app-api";
@@ -114,6 +116,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])

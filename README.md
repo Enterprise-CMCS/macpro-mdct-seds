@@ -1,6 +1,6 @@
 # MDCT SEDS (CHIP Statistical Enrollment Data System)
 
-[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
 [![Maintainability](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 [![Code Coverage](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 
@@ -8,7 +8,7 @@
 
 | Branch     | Build Status                                                                                                            |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------- |
-| master     | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)                   |
+| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)                   |
 | val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)        |
 | production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production) |
 
@@ -32,9 +32,9 @@ After creating a branch, if you need to rename it because it does not follow the
 
 This project uses a combination of Gitflow and Stack naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
 
-- master > feature-my-feature-name
-- master > bugfix-my-bugfix-name
-- master > hotfix-my-hotfix-name
+- main > feature-my-feature-name
+- main > bugfix-my-bugfix-name
+- main > hotfix-my-hotfix-name
 
 On each PR, a linter and prettier check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the linter and prettier against the work you have done.
 
@@ -231,7 +231,7 @@ None.
 
 This repository uses 3 webhooks to publish to 3 different channels all in CMS Slack.
 
-- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-seds-alerts` channel. Alerts published there are for deploy or test failures to the `master`, `val`, or `production` branches.
+- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-seds-alerts` channel. Alerts published there are for deploy or test failures to the `main`, `val`, or `production` branches.
 
 - INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `mdct-integrations-channel`
 
@@ -247,9 +247,11 @@ This repository uses 3 webhooks to publish to 3 different channels all in CMS Sl
 ## Deployment
 
 While application deployment is generally handled by Github Actions, when you initially set up a new AWS account to host this application, you'll need to deploy a prerequisite stack like so:
+
 ```bash
 ./run deploy-prerequisites
 ```
+
 That will create a stack called `seds-prerequisites` which will contain resources needed by any application stacks.
 
 ## License
