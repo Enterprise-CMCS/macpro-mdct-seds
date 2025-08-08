@@ -98,7 +98,7 @@ const NotApplicable = ({
             className="usa-radio__label"
             htmlFor="applicable-no"
           >
-            Not Applicable
+            No
           </label>
         </div>
       </fieldset>
