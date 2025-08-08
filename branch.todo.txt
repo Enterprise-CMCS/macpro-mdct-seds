@@ -1,9 +1,5 @@
-search regex:
+search regex: \b(status|status_?id|not_?applicable)\b
 
-\b(status|status_?id|not_?applicable)\b
-
-TODO: search the codebase for all the TODOs you just wrote. May have to ask Brendan, Cam, and/or Anna.
-
-TODO: Test from the frontend
-
-TODO: Coordinate SEDS deployment, migration with DataConnect
+Still to be done:
+- Make the radio button look nicer
+- Coordinate SEDS deployment, migration with DataConnect

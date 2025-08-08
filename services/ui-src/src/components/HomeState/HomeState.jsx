@@ -23,6 +23,7 @@ const HomeState = () => {
     if (currentUserInfo["Items"]) {
       // Get list of all state forms
       try {
+        console.log("currentUserInfo", currentUserInfo);
         const availableForms = await obtainAvailableForms({
           stateId: currentUserInfo["Items"][0].states[0]
         });

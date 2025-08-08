@@ -1,4 +1,4 @@
-import { FormStatus } from "utility-functions/types";
+import { FormStatus } from "../utility-functions/types";
 
 const currentFormMock_21E = {
   currentForm: {

@@ -6,7 +6,6 @@ import {
 } from "../shared/sharedFunctions.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
-import { FormStatus } from "../../types.js";
 
 // TODO: remove this mock, once we've moved getQuarter to a different file
 vi.mock("./businessUsers.js", async (importOriginal) => ({

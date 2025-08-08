@@ -300,7 +300,7 @@ export default (state = initialState, action) => {
           ...state.statusData,
           last_modified_by: action.username,
           last_modified: action.timeStamp,
-          status_id: action.statusId,
+          status_id: action.status_id,
           status_date: action.timeStamp,
           status_modified_by: action.username
         }

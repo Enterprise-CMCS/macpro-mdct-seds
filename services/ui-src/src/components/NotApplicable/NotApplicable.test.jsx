@@ -57,7 +57,7 @@ describe("NotApplicable", () => {
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
-    renderComponent(stateUser, FormStatus.ProvisionalCertified);
+    renderComponent(stateUser, FormStatus.FinalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeDisabled();

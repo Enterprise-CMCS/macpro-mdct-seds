@@ -19,8 +19,7 @@ const NotApplicable = ({
   const [disableInput, setDisableInput] = useState(true);
 
   useEffect(() => {
-    // TODO should this disable for FinalCertified actually?
-    if (status_id === FormStatus.ProvisionalCertified) {
+    if (status_id === FormStatus.FinalCertified) {
       setDisableInput(true);
       return;
     }
