@@ -17,10 +17,6 @@ import { mockClient } from "aws-sdk-client-mock";
 
 /*
  * Coverage notes:
- *   * The function calculateFormQuarterFromDate is untested,
- *     because doing so in place would require shimming `new Date()`
- *     TODO: move this function to a different file,
- *     and test it later in its new home.
  *   * The inner function batchWriteAll has retry logic that is untested here,
  *     because that logic is broken. It checked UnprocessedItems.length,
  *     but UnprocessedItems is an object and not an array.
@@ -30,9 +26,7 @@ import { mockClient } from "aws-sdk-client-mock";
  *     value in unit testing that logic.
  */
 
-// TODO: remove this mock, once we've moved calculateFormQuarterFromDate
-vi.mock("./generateQuarterForms.js", async (importOriginal) => ({
-  ...(await importOriginal()),
+vi.mock("../../../libs/time.js", () => ({
   calculateFormQuarterFromDate: vi.fn().mockReturnValue({ year: 2025, quarter: 1 }),
 }));
 
@@ -410,7 +404,7 @@ describe("generateQuarterForms.js", () => {
       statusCode: 200,
       body: JSON.stringify({
         status: 200,
-        message: "Forms successfully created for Quarter 1 of 2025",
+        message: "Forms successfully created for Quarter 1 of 2025"
       }),
     }));
 

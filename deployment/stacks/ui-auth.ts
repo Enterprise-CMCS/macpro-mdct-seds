@@ -2,18 +2,15 @@ import { Construct } from "constructs";
 import {
   aws_cognito as cognito,
   aws_iam as iam,
-  aws_lambda as lambda,
-  aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
-  aws_ssm as ssm,
   Aws,
   Duration,
   custom_resources as cr,
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
+import { Lambda } from "../constructs/lambda";
 
 interface CreateUiAuthComponentsProps {
   scope: Construct;
@@ -21,14 +18,13 @@ interface CreateUiAuthComponentsProps {
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
-  restApiId: string;
   customResourceRole: iam.Role;
-  iamPath: string;
-  iamPermissionsBoundary: IManagedPolicy;
   oktaMetadataUrl: string;
+  restApiId: string;
   bootstrapUsersPassword?: string;
   secureCloudfrontDomainName?: string;
   userPoolDomainPrefix?: string;
+  userPoolName?: string;
 }
 
 export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
@@ -40,16 +36,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     applicationEndpointUrl,
     restApiId,
     customResourceRole,
-    iamPath,
-    iamPermissionsBoundary,
     oktaMetadataUrl,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
+    userPoolName,
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
-    userPoolName: `${stage}-user-pool`,
+    userPoolName: userPoolName ?? `${stage}-user-pool`,
     signInAliases: {
       email: true,
     },
@@ -78,16 +73,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
-  let supportedIdentityProviders:
-    | cognito.UserPoolClientIdentityProvider[]
-    | undefined = undefined;
-  let oktaIdp:
-    | cognito.CfnUserPoolIdentityProvider
-    | undefined = undefined;
-
   const providerName = "Okta";
 
-  oktaIdp = new cognito.CfnUserPoolIdentityProvider(
+  const oktaIdp = new cognito.CfnUserPoolIdentityProvider(
     scope,
     "CognitoUserPoolIdentityProvider",
     {
@@ -110,12 +98,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }
   );
 
-  supportedIdentityProviders = [
+  const supportedIdentityProviders = [
     cognito.UserPoolClientIdentityProvider.custom(providerName),
   ];
 
   const appUrl =
-  secureCloudfrontDomainName || applicationEndpointUrl || "https://localhost:3000/";
+    secureCloudfrontDomainName ??
+    applicationEndpointUrl ??
+    "http://localhost:3000/";
+
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
@@ -137,27 +128,26 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     },
     supportedIdentityProviders,
     generateSecret: false,
+    accessTokenValidity: Duration.minutes(30),
+    idTokenValidity: Duration.minutes(30),
+    refreshTokenValidity: Duration.hours(24),
   });
 
   userPoolClient.node.addDependency(oktaIdp);
 
-  (
-    userPoolClient.node.defaultChild as cognito.CfnUserPoolClient
-  ).addPropertyOverride("ExplicitAuthFlows", [
-    "ADMIN_NO_SRP_AUTH",
-    "USER_PASSWORD_AUTH",
-  ]);
-
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
-    cognitoDomain: { domainPrefix: userPoolDomainPrefix || `${stage}-login-user-pool-client` },
+    cognitoDomain: {
+      domainPrefix:
+        userPoolDomainPrefix ?? `${project}-${stage}-login-user-pool-client`,
+    },
   });
 
   const identityPool = new cognito.CfnIdentityPool(
     scope,
     "CognitoIdentityPool",
     {
-      identityPoolName: `${stage}IdentityPool`,
+      identityPoolName: `${stage}-IdentityPool`,
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
@@ -169,8 +159,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   );
 
   const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
-    permissionsBoundary: iamPermissionsBoundary,
-    path: iamPath,
     assumedBy: new iam.FederatedPrincipal(
       "cognito-identity.amazonaws.com",
       {
@@ -215,53 +203,26 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   let bootstrapUsersFunction;
 
   if (bootstrapUsersPassword) {
-    const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
-      permissionsBoundary: iamPermissionsBoundary,
-      path: iamPath,
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaApiRolePolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-              effect: iam.Effect.ALLOW,
-            }),
-            new iam.PolicyStatement({
-              actions: ["*"],
-              resources: [userPool.userPoolArn],
-              effect: iam.Effect.ALLOW,
-            }),
-          ],
+    const service = "ui-auth";
+    bootstrapUsersFunction = new Lambda(scope, "bootstrapUsers", {
+      stackName: `${service}-${stage}`,
+      entry: "services/ui-auth/handlers/createUsers.js",
+      handler: "handler",
+      memorySize: 1024,
+      timeout: Duration.seconds(60),
+      additionalPolicies: [
+        new iam.PolicyStatement({
+          actions: ["*"],
+          resources: [userPool.userPoolArn],
+          effect: iam.Effect.ALLOW,
         }),
+      ],
+      environment: {
+        userPoolId: userPool.userPoolId,
+        bootstrapUsersPassword,
       },
-    });
-
-    // TODO: test deploy and watch performance with scope using lambda.Function vs lambda_nodejs.NodejsFunction
-    bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
-      scope,
-      "bootstrapUsers",
-      {
-        entry: "services/ui-auth/handlers/createUsers.js",
-        handler: "handler",
-        runtime: lambda.Runtime.NODEJS_20_X,
-        timeout: Duration.seconds(60),
-        role: lambdaApiRole,
-        environment: {
-          userPoolId: userPool.userPoolId,
-          bootstrapUsersPassword,
-        },
-      }
-    );
+      isDev,
+    }).lambda;
   }
 
   if (!isLocalStack) {
@@ -277,15 +238,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       webAclArn: waf.webAcl.attrArn,
     });
   }
-
-  new ssm.StringParameter(scope, "CognitoUserPoolIdParameter", {
-    parameterName: `/${stage}/ui-auth/cognito_user_pool_id`,
-    stringValue: userPool.userPoolId,
-  });
-  new ssm.StringParameter(scope, "CognitoUserPoolClientIdParameter", {
-    parameterName: `/${stage}/ui-auth/cognito_user_pool_client_id`,
-    stringValue: userPoolClient.userPoolClientId,
-  });
 
   if (bootstrapUsersFunction) {
     const bootstrapUsersInvoke = new cr.AwsCustomResource(

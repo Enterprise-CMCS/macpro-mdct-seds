@@ -6,15 +6,13 @@ import {
   aws_events_targets as targets,
   aws_iam as iam,
   aws_logs as logs,
-  aws_s3 as s3,
   aws_wafv2 as wafv2,
+  CfnOutput,
   Duration,
   RemovalPolicy,
-  Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
@@ -30,8 +28,7 @@ interface CreateApiComponentsProps {
   kafkaAuthorizedSubnetIds: string;
   tables: DynamoDBTableIdentifiers[];
   brokerString: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
+  kafkaClientId?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -44,15 +41,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnetIds,
     tables,
     brokerString,
-    iamPermissionsBoundary,
-    iamPath,
+    kafkaClientId,
   } = props;
 
   const service = "app-api";
-  Tags.of(scope).add("SERVICE", service);
 
   const vpc = ec2.Vpc.fromLookup(scope, "Vpc", { vpcName });
-  const kafkaAuthorizedSubnets = getSubnets(scope, kafkaAuthorizedSubnetIds)
+  const kafkaAuthorizedSubnets = getSubnets(
+    scope,
+    kafkaAuthorizedSubnetIds ?? ""
+  );
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -67,6 +65,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
@@ -117,6 +116,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
@@ -161,7 +161,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "ses:SendEmail",
         "ses:SendRawEmail",
         "lambda:InvokeFunction",
-        "ssm:GetParameter",
       ],
       resources: ["*"],
     }),
@@ -173,8 +172,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary,
-    iamPath,
+    isDev,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -455,14 +453,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     });
   }
 
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
+  const apiGatewayRestApiUrl = api.url.slice(0, -1);
+
+  new CfnOutput(scope, "ApiUrl", {
+    value: apiGatewayRestApiUrl,
+  });
 
   return {
     restApiId: api.restApiId,
-    apiGatewayRestApiUrl: api.url.slice(0, -1),
+    apiGatewayRestApiUrl,
   };
 }

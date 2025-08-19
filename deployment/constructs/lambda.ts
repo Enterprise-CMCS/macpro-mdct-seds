@@ -3,11 +3,10 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
-  IManagedPolicy,
   ManagedPolicy,
   PolicyDocument,
   PolicyStatement,
@@ -15,20 +14,16 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler: string;
-  timeout?: Duration;
-  memorySize?: number;
-  brokerString?: string;
   path?: string;
   method?: string;
   stackName: string;
-  api: apigateway.RestApi;
+  api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
+  isDev: boolean;
 }
 
 export class Lambda extends Construct {
@@ -38,14 +33,15 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      brokerString = "",
       environment = {},
+      api,
       path,
       method,
       additionalPolicies = [],
+      stackName,
+      isDev,
       ...restProps
     } = props;
 
@@ -56,16 +52,9 @@ export class Lambda extends Construct {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
-      permissionsBoundary: props.iamPermissionsBoundary,
-      path: props.iamPath,
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
           statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: ["ssm:GetParameter"],
-              resources: ["*"],
-            }),
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
@@ -81,10 +70,8 @@ export class Lambda extends Construct {
       },
     });
 
-    // TODO: test deploy and watch performance with this using lambda.Function vs lambda_nodejs.NodejsFunction
     this.lambda = new NodejsFunction(this, id, {
-      functionName: `${props.stackName}-${id}`,
-      handler,
+      functionName: `${stackName}-${id}`,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
@@ -92,13 +79,20 @@ export class Lambda extends Construct {
       bundling: {
         minify: true,
         sourceMap: true,
+        nodeModules: ["jsdom"],
       },
       environment,
       ...restProps,
     });
 
-    if (path && method) {
-      const resource = props.api.root.resourceForPath(path);
+    new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
+    if (api && path && method) {
+      const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,
         new apigateway.LambdaIntegration(this.lambda),

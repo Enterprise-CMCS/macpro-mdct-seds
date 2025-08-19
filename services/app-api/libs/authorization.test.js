@@ -1,39 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getUserDetailsFromEvent } from "./authorization.js";
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { jwtDecode } from "jwt-decode";
-import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { mockClient } from "aws-sdk-client-mock";
-
-vi.mock("aws-jwt-verify", () => ({
-  CognitoJwtVerifier: {
-    create: vi.fn().mockReturnValue({
-      verify: vi.fn(),
-    }),
-  },
-}));
 
 vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(),
 }));
 
-const mockGetParameter = vi.fn().mockImplementation(request => {
-  if (request.Name === "/local/ui-auth/cognito_user_pool_id") {
-    return Promise.resolve({ Parameter: { Value: "poolIdFromSsm" } });
-  }
-  else if (request.Name === "/local/ui-auth/cognito_user_pool_client_id") {
-    return Promise.resolve({ Parameter: { Value: "clientIdFromSsm" } });
-  }
-  else {
-    throw new Error(`Unmocked parameter name: ${request.Name}`);
-  }
-});
-const mockSsm = mockClient(SSMClient);
-mockSsm.on(GetParameterCommand).callsFake(mockGetParameter);
-
 const mockEvent = {
   headers: {
     "x-api-key": "mockApiKey",
+  },
+  requestContext: {
+    accountId: "123",
   },
 };
 
@@ -54,9 +32,6 @@ describe("authorization", () => {
 
   describe("getUserDetailsFromEvent", () => {
     it("should build a user object from values in the token", async () => {
-      process.env.COGNITO_USER_POOL_ID = "poolIdFromEnv";
-      process.env.COGNITO_USER_POOL_CLIENT_ID = "clientIdFromEnv";
-
       const result = await getUserDetailsFromEvent(mockEvent);
 
       expect(result).toEqual({
@@ -68,52 +43,7 @@ describe("authorization", () => {
         usernameSub: "0000-1111-2222-3333",
       });
 
-      // Did we verify the token?
-      expect(CognitoJwtVerifier.create).toHaveBeenCalledWith(
-        {
-          tokenUse: "id",
-          userPoolId: "poolIdFromEnv",
-          clientId: "clientIdFromEnv",
-        },
-        expect.any(Object) // This test makes no verifier config assertions
-      );
-      expect(CognitoJwtVerifier.create().verify).toHaveBeenCalledWith("mockApiKey");
-    });
-
-    it("should throw if the event has no API key", async () => {
-      await expect(getUserDetailsFromEvent({})).rejects
-        .toThrow("Forbidden");
-    });
-
-    it("should fetch Cognito IDs from SSM if they are not found in process.env", async () => {
-      delete process.env.COGNITO_USER_POOL_ID;
-      delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-
-      const result = await getUserDetailsFromEvent(mockEvent);
-
-      expect(result).toBeDefined();
-
-      expect(CognitoJwtVerifier.create).toHaveBeenCalledWith(
-        {
-          tokenUse: "id",
-          userPoolId: "poolIdFromSsm",
-          clientId: "clientIdFromSsm",
-        },
-        expect.any(Object)
-      );
-
-      // We should also have cached the Cognito IDs in process.env now
-      expect(process.env.COGNITO_USER_POOL_ID).toBe("poolIdFromSsm");
-      expect(process.env.COGNITO_USER_POOL_CLIENT_ID).toBe("clientIdFromSsm");
-    });
-
-    it("should throw if Cognito IDs cannot be found", async () => {
-      delete process.env.COGNITO_USER_POOL_ID;
-      delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-      mockGetParameter.mockResolvedValueOnce({ Parameter: { } });
-      
-      await expect(getUserDetailsFromEvent(mockEvent)).rejects
-        .toThrow("cannot load cognito values");
+      expect(jwtDecode).toHaveBeenCalledWith("mockApiKey");
     });
 
     it("should map job codes to user roles correctly", async () => {
@@ -134,17 +64,21 @@ describe("authorization", () => {
       await expectMembershipToHaveRole("CHIP_P_USER_GROUP", "state");
 
       // The membership attribute often contains multiple job codes
-      await expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP_ADMIN,bar", "admin");
+      await expectMembershipToHaveRole(
+        "foo,CHIP_P_USER_GROUP_ADMIN,bar",
+        "admin"
+      );
       await expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP,bar", "state");
     });
 
     it("should throw if role cannot be determined", async () => {
-        jwtDecode.mockReturnValueOnce({
-          ...mockToken,
-          "custom:ismemberof": "invalid test value",
-        });
-        await expect(getUserDetailsFromEvent(mockEvent)).rejects
-          .toThrow("request a Job Code");
+      jwtDecode.mockReturnValueOnce({
+        ...mockToken,
+        "custom:ismemberof": "invalid test value",
+      });
+      await expect(getUserDetailsFromEvent(mockEvent)).rejects.toThrow(
+        "request a Job Code"
+      );
     });
 
     it("should use email as username if EUA ID cannot be found", async () => {

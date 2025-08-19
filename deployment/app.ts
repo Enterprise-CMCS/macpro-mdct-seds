@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import "source-map-support/register";
-import { App, DefaultStackSynthesizer, Tags } from "aws-cdk-lib";
-import { EmptyParentStack } from "./stacks/empty/parent";
-import { ImportsIncludedParentStack } from "./stacks/imports_included/parent";
+import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
 
@@ -29,21 +27,17 @@ async function main() {
   Tags.of(app).add("STAGE", stage);
   Tags.of(app).add("PROJECT", config.project);
 
-  let correctParentStack;
-  if (process.env.IMPORT_VARIANT == "empty") {
-    correctParentStack = EmptyParentStack;
-  } else if (process.env.IMPORT_VARIANT == "imports_included") {
-    correctParentStack = ImportsIncludedParentStack;
+  if (stage == "bootstrap") {
+    new Stack(app, `${config.project}-${stage}`, {});
   } else {
-    correctParentStack = ParentStack;
+    new ParentStack(app, `${config.project}-${stage}`, {
+      ...config,
+      env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: "us-east-1",
+      },
+    });
   }
-  new correctParentStack(app, `${config.project}-${stage}`, {
-    ...config,
-    env: {
-      account: process.env.CDK_DEFAULT_ACCOUNT,
-      region: process.env.CDK_DEFAULT_REGION,
-    },
-  });
 }
 
 main();

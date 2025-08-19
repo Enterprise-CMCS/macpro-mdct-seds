@@ -5,7 +5,8 @@
   "main": "handler.js",
   "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest --run --coverage"
   },
   "author": "",
   "license": "CC0-1.0",
@@ -15,15 +16,12 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "3.0.4",
-    "serverless-associate-waf": "^1.2.1",
     "vitest": "^3.0.4"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.744.0",
     "@aws-sdk/client-ses": "^3.744.0",
-    "@aws-sdk/client-ssm": "^3.744.0",
     "@aws-sdk/lib-dynamodb": "^3.744.0",
-    "aws-jwt-verify": "^4.0.1",
     "aws-sdk-client-mock": "^4.1.0",
     "jwt-decode": "^4.0.0",
     "kafkajs": "^1.16.0",

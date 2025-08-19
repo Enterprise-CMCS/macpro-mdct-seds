@@ -1,7 +1,6 @@
-import path from "path";
+import path, { dirname } from "path";
 import { promises as fs } from "fs";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,11 +11,10 @@ const region = "us-east-1";
 
 export async function writeLocalUiEnvFile(apiUrl: string) {
   const envVariables = {
-    LOCAL_LOGIN: "false",
     SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
     API_URL: apiUrl.replace("https", "http"),
-    COGNITO_REGION: process.env.COGNITO_REGION,
+    COGNITO_REGION: region,
     COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
     COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
     COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,

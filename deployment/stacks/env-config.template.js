@@ -1,5 +1,4 @@
 window._env_ = {
-  LOCAL_LOGIN: "false",
   SKIP_PREFLIGHT_CHECK: "true",
   API_REGION: "us-east-1",
   API_URL: "{{apiGatewayRestApiUrl}}",
@@ -10,6 +9,5 @@ window._env_ = {
   COGNITO_USER_POOL_CLIENT_DOMAIN: "{{userPoolClientDomain}}",
   COGNITO_REDIRECT_SIGNIN: "{{applicationEndpointUrl}}",
   COGNITO_REDIRECT_SIGNOUT: "{{applicationEndpointUrl}}",
-  STAGE: "{{stage}}",
   TIMESTAMP: "{{timestamp}}",
 };
