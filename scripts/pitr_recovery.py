@@ -1,19 +1,22 @@
 import boto3
 import time
 
-# This script was created to load data from a PITR-created table after data loss on 3/23/23-3/24/23.
+# This script was created to load data from a PITR-created
+# table after data loss on 3/23/23-3/24/23.
 
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
+#    * Set the aws environment config file with the
+#       temporary values in [default] within ~/.aws/config
 #    * `pip install boto3` or `python3 -m pip install boto3`
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 pitr_recovery.py`)
 # Target localhost:8000, won't go up to AWS if True
 RUN_LOCAL = True
-# Prefix for the environment (master/val/production)
-STAGE = "master"
+# Prefix for the environment (main/val/production)
+STAGE = "main"
 TABLE_MAP = [("-state-forms-recovered", "-state-forms"),
-             ("-form-answers-recovered", "-form-answers")]  # (source, destination), aka (backup, original)
+             ("-form-answers-recovered", "-form-answers")]
+            # (source, destination), aka (backup, original)
 # If True, will execute the changes in the database, rather than just logging them.
 COMMIT_CHANGES = False
 

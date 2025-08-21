@@ -2,19 +2,22 @@ import boto3
 from boto3.dynamodb.conditions import Attr
 import time
 
-# This script was created to address null values in the seds reports, and set them as 0 for accessibility reasons.
+# This script was created to address null values in the seds reports,
+#  and set them as 0 for accessibility reasons.
 # Items should display as 0 for screen readers, and not have a heap of empty cells
-# This script will modify every entry in the row column with "rows.col*" entries from {"NULL": True} -> {"N": "0"}
+# This script will modify every entry in the row column with
+# "rows.col*" entries from {"NULL": True} -> {"N": "0"}
 #
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/config
+#    * Set the aws environment config file with the
+#       temporary values in [default] within ~/.aws/config
 #    * pip install boto3
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 correct_null_responses.py`)
 
 RUN_LOCAL = True                        # Target localhost:8000
 RUN_UPDATE = False                       # Dispatch updates for detected changes
-STAGE = "master"                        # Prefix for the environment
+STAGE = "main"                        # Prefix for the environment
 TABLE = "-form-answers"  # "-form-answers" and "-form-questions" should be corrected
 TARGET_YEAR = "2019"     # "$..[?(@.question=='2020-21E-04')].rows[1].col2",
 INCORRECT_YEAR = "2021"  # "$..[?(@.question=='2021-21E-04')].rows[1].col2",
@@ -65,7 +68,7 @@ def process_response(response):
     items = response['Items']
     corrections = [correct_responses(i) for i in items]
     changed = [updated_item for (
-        updated_item, modified) in corrections if modified == True]
+        updated_item, modified) in corrections if modified]
     return changed
 
 
@@ -73,7 +76,8 @@ def correct_responses(item):
     changes = False
     for row in item["rows"]:
         for key in [k for k in row]:
-            # Check that the entry in the row object for a key is actually a column, and not a header string
+            # Check that the entry in the row object for a key
+            #  is actually a column, and not a header string
             if type(key) != str or not key.startswith('col') or type(row[key]) == str:
                 continue
             for entry in row[key]:

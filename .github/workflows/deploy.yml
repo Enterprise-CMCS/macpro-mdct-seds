@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - "*"
+      - "dependabot/**"
       - "!skipci*"
+      - "!code-json-*"
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -14,24 +16,60 @@ permissions:
   contents: read
   actions: read
 
-env:
-  SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
-
 jobs:
-  deploy:
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: set branch_name # Some integrations (Snyk) build very long branch names. This is a switch to make long branch names shorter.
+      - name: set variable values
+        run: echo "CODE_CLIMATE_ID=${{ secrets.CODE_CLIMATE_ID }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to qlty
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          oidc: true
+          files: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+      - name: Store unit test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14
+
+  deploy:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
         run: ./.github/branchNameValidation.sh $branch_name
       - name: set branch specific variable names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/buildVars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/buildVars.sh set_values
         env:
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
@@ -53,28 +91,6 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Jest setup
-        working-directory: services/ui-src
-        run: yarn install
-      - name: unit test & publish coverage
-        if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v6
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-        with:
-          debug: true
-          workingDirectory: ${{github.workspace}}/services/ui-src
-          coverageCommand: npm run-script coverage
-          coverageLocations: |
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-      - name: Store unit test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: |
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-          retention-days: 14
       - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
@@ -84,11 +100,10 @@ jobs:
           SKIP_PREFLIGHT_CHECK: true
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./output.sh seds-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(./scripts/output.sh seds-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
-        working-directory: services
     outputs:
       application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
       BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
@@ -96,7 +111,7 @@ jobs:
 
   # register-runner:
   #   name: Register GitHub Runner
-  #   if: ${{ github.ref_name != 'master' && github.ref_name != 'val' && github.ref_name != 'production' }}
+  #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
   #   runs-on: ubuntu-latest
   #   needs: deploy
   #   env:
@@ -112,11 +127,11 @@ jobs:
 
   #     - name: set branch specific variable names
   #       id: set_names
-  #       run: ./.github/build_vars.sh set_names
+  #       run: ./.github/buildVars.sh set_names
 
   #     - name: set variable values
   #       id: set_values
-  #       run: ./.github/build_vars.sh set_values
+  #       run: ./.github/buildVars.sh set_values
   #       env:
   #         AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
   #         AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
@@ -173,7 +188,7 @@ jobs:
 
   #     - name: Update IP Set
   #       id: update-ip-set
-  #       run: ./.github/waf-controller.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
+  #       run: ./.github/wafController.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
   #       env:
   #         AWS_RETRY_MODE: adaptive
   #         AWS_MAX_ATTEMPTS: 10
@@ -214,7 +229,7 @@ jobs:
 
   # cleanup:
   #   name: Delist GHA Runner CIDR Blocks
-  #   if: ${{ github.ref_name != 'master' && github.ref_name != 'val' && github.ref_name != 'production' }}
+  #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
   #   runs-on: ubuntu-latest
   #   needs:
   #     - register-runner
@@ -236,7 +251,7 @@ jobs:
   #         echo "Current Account ID: ${AWS_ACCOUNT_ID}"
   #     - name: cleanup-ip-list
   #       id: reset-ip-set
-  #       # run: ./.github/waf-controller.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
+  #       # run: ./.github/wafController.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
   #       env:
   #         AWS_RETRY_MODE: adaptive
   #         AWS_MAX_ATTEMPTS: 10

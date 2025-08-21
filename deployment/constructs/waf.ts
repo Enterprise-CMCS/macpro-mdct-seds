@@ -1,10 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import {
-  CfnWebACL,
-  CfnLoggingConfiguration,
-} from "aws-cdk-lib/aws-wafv2";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { CfnWebACL, CfnLoggingConfiguration } from "aws-cdk-lib/aws-wafv2";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 
 interface WafProps {
   readonly name: string;
@@ -20,27 +17,28 @@ export class WafConstruct extends Construct {
     scope: Construct,
     id: string,
     props: WafProps,
-    scopeType: string,
+    scopeType: string
   ) {
     super(scope, id);
 
     const {
       name,
       blockByDefault = true,
-      blockRequestBodyOver8KB = true
+      blockRequestBodyOver8KB = true,
     } = props;
 
     const commonRuleOverrides: CfnWebACL.RuleActionOverrideProperty[] = [];
     if (!blockRequestBodyOver8KB) {
       commonRuleOverrides.push({
         name: "SizeRestrictions_BODY",
-        actionToUse: { count: {} }
+        actionToUse: { count: {} },
       });
     }
 
     this.logGroup = new LogGroup(this, "LogGroup", {
       logGroupName: `aws-waf-logs-${name}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     this.webAcl = new CfnWebACL(this, "WebACL", {

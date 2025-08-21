@@ -8,13 +8,8 @@ const {
 /*
  * ENVIRONMENT VARIABLES TO SET:
  * AuthUserTable: the name of the table in Dynamo
- * DYNAMODB_URL: the local URL if local; undefined otherwise
- * [anything needed for AWS auth, if not local]
  */
-const {
-  AuthUserTable,
-  DYNAMODB_URL,
-} = process.env;
+const { AuthUserTable } = process.env;
 
 const logger = {
   debug: () => {},
@@ -23,26 +18,13 @@ const logger = {
   error: console.error,
 };
 
-const localConfig = {
-  endpoint: DYNAMODB_URL,
-  region: "localhost",
-  credentials: {
-    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-  },
-  logger,
-};
-
 const awsConfig = {
   region: "us-east-1",
   logger,
 };
 
-const getConfig = () => {
-  return DYNAMODB_URL ? localConfig : awsConfig;
-};
 
-const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 (async function () {
   let scannedCount = 0;

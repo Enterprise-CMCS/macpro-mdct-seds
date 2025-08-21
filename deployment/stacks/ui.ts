@@ -1,16 +1,17 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
+  aws_certificatemanager as acm,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as cloudfrontOrigins,
   aws_iam as iam,
   aws_s3 as s3,
+  Aws,
+  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
-  aws_certificatemanager as acm,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
 interface CreateUiComponentsProps {
@@ -18,12 +19,11 @@ interface CreateUiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  // vpnIpSetArn?: string;
+  // vpnIpv6SetArn?: string;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -32,45 +32,62 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     stage,
     project,
     isDev,
-    iamPermissionsBoundary,
-    iamPath,
     cloudfrontCertificateArn,
     cloudfrontDomainName,
     // vpnIpSetArn,
     // vpnIpv6SetArn,
+    loggingBucket,
   } = props;
 
-  // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
     encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
     enforceSSL: true,
-  });
-
-  const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    publicReadAccess: false,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
-    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-    autoDeleteObjects: isDev,
-    enforceSSL: true,
+    versioned: true,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
-  // Add bucket policy to allow CloudFront to write logs
-  logBucket.addToResourcePolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-      actions: ["s3:PutObject"],
-      resources: [`${logBucket.bucketArn}/*`],
-    })
-  );
+  let loggingConfig:
+    | { enableLogging: boolean; logBucket: s3.Bucket; logFilePrefix: string }
+    | undefined;
+  if (!isDev) {
+    // this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
+    // should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
+    const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+      bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
+      removalPolicy: RemovalPolicy.RETAIN,
+      enforceSSL: true,
+      versioned: true,
+      serverAccessLogsBucket: loggingBucket,
+      serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+    });
+
+    logBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
+        actions: ["s3:PutObject"],
+        resources: [`${logBucket.bucketArn}/*`],
+      })
+    );
+
+    loggingConfig = {
+      enableLogging: true,
+      logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
+    };
+  }
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
-    "CloudFormationHeadersPolicy",
+    "CloudFrontHeadersPolicy",
     {
       responseHeadersPolicyName: `Headers-Policy-${stage}`,
       comment: "Add Security Headers",
@@ -96,9 +113,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
     }
   );
-  securityHeadersPolicy.applyRemovalPolicy(
-    isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
-  )
+
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+  });
 
   const distribution = new cloudfront.Distribution(
     scope,
@@ -111,22 +130,18 @@ export function createUiComponents(props: CreateUiComponentsProps) {
             cloudfrontCertificateArn
           )
         : undefined,
-      domainNames: cloudfrontDomainName
-        ? [cloudfrontDomainName]
-        : [],
+      domainNames: cloudfrontDomainName ? [cloudfrontDomainName] : [],
       defaultBehavior: {
-        origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(
-          uiBucket
-        ),
+        origin:
+          cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },
       defaultRootObject: "index.html",
-      enableLogging: true,
-      logBucket: logBucket,
+      ...loggingConfig,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
@@ -143,23 +158,21 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   if (!isLocalStack) {
-    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
-    distribution.attachWebAclId(waf.webAcl.attrArn)
+    const waf = setupWaf(
+      scope,
+      stage,
+      project
+      // vpnIpSetArn,
+      // vpnIpv6SetArn
+    );
+    distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
-
   return {
-    cloudfrontDistributionId: distribution.distributionId,
     distribution,
     applicationEndpointUrl,
-    s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
 }
@@ -167,65 +180,16 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 function setupWaf(
   scope: Construct,
   stage: string,
-  project: string,
-  // vpnIpSetArn?: string,
-  // vpnIpv6SetArn?: string,
+  project: string
+  //  vpnIpSetArn?: string,
+  //  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,
     "CloudfrontWafConstruct",
     {
       name: `${project}-${stage}-ui`,
-      blockByDefault: false,
     },
     "CLOUDFRONT"
   );
-  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
-  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
-
-  // const defaultAction = vpnIpSetArn
-  //   ? { block: {} }
-  //   : { allow: {} };
-
-  // if (vpnIpSetArn) {
-  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
-  //     name: `${stage}-gh-ipset`,
-  //     scope: "CLOUDFRONT",
-  //     addresses: [],
-  //     ipAddressVersion: "IPV4",
-  //   });
-
-  //   const statements = [
-  //     {
-  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
-  //     },
-  //     {
-  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-  //     },
-  //   ];
-
-  //   if (vpnIpv6SetArn) {
-  //     statements.push({
-  //       ipSetReferenceStatement: {
-  //         arn: vpnIpv6SetArn,
-  //       },
-  //     });
-  //   }
-
-  //   wafRules.push({
-  //     name: "vpn-only",
-  //     priority: 0,
-  //     action: { allow: {} },
-  //     visibilityConfig: {
-  //       cloudWatchMetricsEnabled: true,
-  //       metricName: `${project}-${stage}-webacl-vpn-only`,
-  //       sampledRequestsEnabled: true,
-  //     },
-  //     statement: {
-  //       orStatement: {
-  //         statements,
-  //       },
-  //     },
-  //   });
-  // }
 }

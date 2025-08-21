@@ -7,24 +7,24 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   vpcName: string;
   oktaMetadataUrl: string;
+  brokerString: string;
+  kafkaAuthorizedSubnetIds: string;
   bootstrapUsersPassword?: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   secureCloudfrontDomainName?: string;
+  userPoolName?: string;
   userPoolDomainPrefix?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
-  brokerString: string;
-  kafkaAuthorizedSubnetIds: string;
+  kafkaClientId?: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev =
-    isLocalStack ||
-    !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+  const isDev = isLocalStack || !["main", "val", "production"].includes(stage);
   const secretConfigOptions = {
-    ...(await loadDefaultSecret(project)),
+    ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
   };
 
@@ -45,9 +45,9 @@ export const determineDeploymentConfig = async (stage: string) => {
   return config;
 };
 
-export const loadDefaultSecret = async (project: string) => {
-  if (isLocalStack) {
-    return { brokerString: "localstack" };
+export const loadDefaultSecret = async (project: string, stage?: string) => {
+  if (stage === "bootstrap") {
+    return {};
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
   }
@@ -58,6 +58,7 @@ const loadStageSecret = async (project: string, stage: string) => {
   try {
     return JSON.parse((await getSecret(secretName))!);
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Optional stage secret "${secretName}" not found: ${error.message}`
     );
