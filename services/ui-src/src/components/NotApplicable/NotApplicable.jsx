@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import {
-  updatedApplicableStatus,
-  updatedApplicableThunk,
+  updateFormStatusThunk,
   clearFormData,
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
@@ -12,17 +11,13 @@ import "./NotApplicable.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const NotApplicable = ({
-  notApplicable,
-  status,
-  statusId,
-  updatedApplicableStatus,
+  status_id,
   resetData,
-  statusTypes,
   saveForm,
-  updatedApplicableThunk
+  updateFormStatusThunk
 }) => {
   const [applicableStatus, setApplicableStatus] = useState(
-    notApplicable ? 1 : 0
+    (status_id === 4) ? 1 : 0
   );
   const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
 
@@ -42,14 +37,14 @@ const NotApplicable = ({
   // TRUE = the form is NOT APPLICABLE (1)
 
   useEffect(() => {
-    const booleanToInteger = notApplicable ? 1 : 0;
+    const booleanToInteger = (status_id === 4) ? 1 : 0;
     setApplicableStatus(booleanToInteger);
     determineUserRole().then();
 
-    if (statusId === 3) {
+    if (status_id === 3) {
       setDisableSlider(true);
     }
-  }, [notApplicable, status, statusId, updatedApplicableStatus]);
+  }, [status_id]);
 
   const changeStatus = async () => {
     if (applicableStatus === 0) {
@@ -63,17 +58,10 @@ const NotApplicable = ({
       }
     }
 
-    const invertIntegerToBoolean = applicableStatus === 0 ? true : false;
-    const invertedStatus = statusId === 4 ? 1 : 4;
-
-    const newStatusObject = statusTypes.find(
-      element => element.status_id === invertedStatus
-    );
+    const invertedStatus = status_id === 4 ? 1 : 4;
 
     setApplicableStatus(applicableStatus === 0 ? 1 : 0);
-    await updatedApplicableThunk(
-      invertIntegerToBoolean,
-      newStatusObject.status,
+    await updateFormStatusThunk(
       invertedStatus
     );
     saveForm();
@@ -119,28 +107,20 @@ const NotApplicable = ({
 };
 
 NotApplicable.propTypes = {
-  notApplicable: PropTypes.bool,
-  status: PropTypes.string.isRequired,
-  statusId: PropTypes.number.isRequired,
-  statusTypes: PropTypes.array.isRequired,
-  updatedApplicableStatus: PropTypes.func.isRequired,
+  status_id: PropTypes.number.isRequired,
   resetData: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired,
-  updatedApplicableThunk: PropTypes.func.isRequired
+  updateFormStatusThunk: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
-  notApplicable: state.currentForm.statusData.not_applicable,
-  status: state.currentForm.statusData.status || "",
-  statusId: state.currentForm.statusData.status_id || "",
-  statusTypes: state.global.status
+  status_id: state.currentForm.statusData.status_id,
 });
 
 const mapDispatch = {
-  updatedApplicableStatus: updatedApplicableStatus,
   resetData: clearFormData,
   saveForm: saveForm,
-  updatedApplicableThunk: updatedApplicableThunk
+  updateFormStatusThunk: updateFormStatusThunk
 };
 
 export default connect(mapState, mapDispatch)(NotApplicable);

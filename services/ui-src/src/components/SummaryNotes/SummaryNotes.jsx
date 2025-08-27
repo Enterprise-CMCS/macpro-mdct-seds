@@ -37,8 +37,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   if (
     userRole === "admin" ||
     userRole === "business" ||
-    statusData.status_id === 4 ||
-    statusData.status_id === 5
+    statusData.status_id === 3
   ) {
     disabledNotes = true;
   }

@@ -45,9 +45,7 @@ const mockFormAnswer3 = {
   rows: [{ rowNumber: 1 }],
 };
 const mockStatusData = {
-  status_id: 2,
-  status: "In Progress",
-  not_applicable: false,
+  status_id: 1,
   state_comments: ["mock state comment"],
   last_modified: new Date().toISOString(),
 };
@@ -62,7 +60,7 @@ const mockBusinessUser = {
   states: ["CO", "etc"],
 };
 const mockStateForm = {
-  status_id: 2,
+  status_id: 1,
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 };
@@ -112,18 +110,15 @@ describe("saveForm.js", () => {
     expect(mockUpdate).toHaveBeenCalledWith({
       TableName: "local-state-forms",
       Key: { state_form: "CO-2025-F1-A" },
-      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable, state_comments = :state_comments",
+      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
       ExpressionAttributeValues: {
         ":last_modified_by": "COLO",
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status": "In Progress",
-        ":status_id": 2,
-        ":not_applicable": false,
+        ":status_id": 1,
         ":state_comments": ["mock state comment"],
       },
-      ExpressionAttributeNames: { "#s": "status" },
       ReturnValues: "ALL_NEW",
     }, expect.any(Function));
   });
@@ -211,7 +206,7 @@ describe("saveForm.js", () => {
     const mockEvent = {
       body: JSON.stringify({
         formAnswers: [mockFormAnswer1],
-        statusData: { ...mockStatusData, status_id: 1 },
+        statusData: { ...mockStatusData, status_id: 2 },
       }),
     };
     getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
@@ -225,7 +220,7 @@ describe("saveForm.js", () => {
 
     expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
       ExpressionAttributeValues: expect.objectContaining({
-        ":status_id": 1,
+        ":status_id": 2,
         ":status_modified_by": "COLO",
         ":status_date": expect.stringMatching(ISO_DATE_REGEX),
       }),

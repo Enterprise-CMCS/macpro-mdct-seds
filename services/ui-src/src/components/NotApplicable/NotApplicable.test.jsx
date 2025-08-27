@@ -11,16 +11,14 @@ jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
 }));
 
-const renderComponent = (user, statusId, notApplicable) => {
+const renderComponent = (user, status_id) => {
   getUserInfo.mockResolvedValue({ Items: [user] });
   const initialStore = {
     ...fullStoreMock,
     currentForm: {
       ...fullStoreMock.currentForm,
       statusData: {
-        ...fullStoreMock.currentForm.statusData,
-        not_applicable: notApplicable,
-        status_id: statusId,
+        status_id: status_id,
       },
     }
   };
@@ -39,35 +37,35 @@ const adminUser = { role: "admin" };
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
-    renderComponent(stateUser, 1, false);
+    renderComponent(stateUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeEnabled();
   });
 
   it("should be disabled for admin users", async () => {
-    renderComponent(adminUser, 1, false);
+    renderComponent(adminUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeDisabled();
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
-    renderComponent(stateUser, 3, false);
+    renderComponent(stateUser, 3);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input).toBeDisabled();
   });
 
   it("should initialize to Active when applicable", async () => {
-    renderComponent(stateUser, 1, false);
+    renderComponent(stateUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input.value).toBe("0");
   });
 
   it("should initialize to Not Applicable when appropriate", async () => {
-    renderComponent(stateUser, 1, true);
+    renderComponent(stateUser, 4);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const input = screen.getByTestId("range");
     expect(input.value).toBe("1");

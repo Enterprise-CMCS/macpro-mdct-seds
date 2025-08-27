@@ -27,17 +27,17 @@ export async function getUncertifiedStates(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
+      "#Unceritifiedstatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status": "In Progress",
+      ":status_id": 1,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+      "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
@@ -65,17 +65,17 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status",
+      "#Unceritifiedstatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status": "In Progress",
+      ":status_id": 1,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+      "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items

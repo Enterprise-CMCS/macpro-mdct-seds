@@ -69,7 +69,7 @@ describe("Test SummaryNotes.js", () => {
   });
 
   it("should disable the input for certified forms", async () => {
-    renderComponent("state", 4);
+    renderComponent("state", 3);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();

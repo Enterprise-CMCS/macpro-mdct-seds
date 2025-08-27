@@ -113,7 +113,6 @@ describe("generateQuarterForms.js", () => {
             form_name: expect.stringMatching(/^Form [AB]$/),
             last_modified: expect.stringMatching(ISO_DATE_REGEX),
             last_modified_by: "seed",
-            not_applicable: false,
             program_code: "All",
             quarter: 1,
             state_comments: [
@@ -124,9 +123,8 @@ describe("generateQuarterForms.js", () => {
             ],
             state_form: expect.stringMatching(/^(CO|TX)-2025-1-[AB]$/),
             state_id: expect.stringMatching(/^(CO|TX)$/),
-            status: "In Progress",
             status_date: expect.stringMatching(ISO_DATE_REGEX),
-            status_id: 2,
+            status_id: 1,
             status_modified_by: "seed",
             validation_percent: "0.03",
             year: 2025,

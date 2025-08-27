@@ -91,16 +91,16 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status",
+          "#Unceritifiedstatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status": "In Progress",
+          ":status_id": 1,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -138,16 +138,16 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status",
+          "#Unceritifiedstatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status": "In Progress",
+          ":status_id": 1,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 

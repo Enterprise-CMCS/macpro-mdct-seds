@@ -42,18 +42,15 @@ const renderWithStatus = (statusData) => {
 };
 
 const inProgress = {
-  status_id: 2,
-  status: "In Progress",
+  status_id: 1,
 };
 
 const provisional = {
-  status_id: 3,
-  status: "Provisional Data Certified and Submitted",
+  status_id: 2,
 };
 
 const final = {
-  status_id: 4,
-  status: "Final Data Certified and Submitted",
+  status_id: 3,
 };
 
 describe("Test CertificationTab.js", () => {
