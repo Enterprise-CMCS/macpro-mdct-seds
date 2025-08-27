@@ -28,28 +28,32 @@ export async function getUncertifiedStates(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
+      "#UncertifiedStatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
+      ":status_id": FormStatus.InProgress,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#theYear = :year AND #theQuarter = :quarter",
+      "#UncertifiedStatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
-  const result = await dynamoDb.scan(params); // TODO: Make this a query & optimize it
-  const uncertifiedForms = (result.Items ?? []).filter(form =>
-    form.status_id === FormStatus.InProgress
-  );
+  const result = await dynamoDb.scan(params);
 
-  if (uncertifiedForms.length === 0) {
-    return undefined;
+  if (result.Count === 0) {
+    return [
+      {
+        message:
+          "At this time, There are no states which is currrently status: In Progress in this current quarter",
+      },
+    ];
   }
 
-  return uncertifiedForms.map((stateInfo) => stateInfo.state_id).filter(
+  return result.Items.map((stateInfo) => stateInfo.state_id).filter(
     (stateId, i, stateIds) => i === stateIds.indexOf(stateId)
   );
 }
@@ -62,44 +66,65 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
+      "#UncertifiedStatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
+      ":status_id": FormStatus.InProgress,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#theYear = :year AND #theQuarter = :quarter",
+      "#UncertifiedStatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
   const result = await dynamoDb.scan(params);
-  const uncertifiedForms = (result.Items ?? []).filter(form =>
-    form.status_id === FormStatus.InProgress
-  );
 
-  if (uncertifiedForms.length === 0) {
-    return undefined;
+  if (result.Count === 0) {
+    return [
+      {
+        message:
+          "At this time, There are no states which is currently status: In Progress in this current quarter",
+      },
+    ];
   }
 
-  let formsGroupedByState = {};
-  for (let formInfo of uncertifiedForms) {
-    const { state_id, form } = formInfo;
-    const group = formsGroupedByState[state_id];
-    if (group) {
-      group.push(form)
+    // Get list of states and forms (one per form)
+  const states = result.Items.map((stateInfo) => {
+    return { state: stateInfo.state_id, form: stateInfo.form };
+  }).filter((stateId, i, stateIds) => i === stateIds.indexOf(stateId));
+
+  // Reduce to one state with array of forms
+  let mergedObj = states.reduce((acc, obj) => {
+    if (acc[obj.state]) {
+      acc[obj.state].form.push(obj.form);
+    } else {
+      acc[obj.state] = { state: obj.state, form: [obj.form] };
     }
-    else {
-      formsGroupedByState[state_id] = [form];
-    }
+    return acc;
+  }, {});
+
+  // Build output in correct format
+  let output = [];
+  for (let prop in mergedObj) {
+    output.push(mergedObj[prop]);
   }
 
-  for (let group of Object.values(formsGroupedByState)) {
-    group.sort();
-  }
+  // Sort alphabetically by state
+  output.sort((a, b) => {
+    let stateA = a.state.toUpperCase();
+    let stateB = b.state.toUpperCase();
+    return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
+  });
 
-  return formsGroupedByState;
+  // Sort forms alphabetically
+  output.map((a) => {
+    return a.form.sort();
+  });
+
+  return output;
 }
 
 export async function getQuestionsByYear(specifiedYear) {

@@ -82,7 +82,6 @@ describe("sharedFunctions.js", () => {
           { state_id: "CO", status_id: FormStatus.InProgress },
           { state_id: "TX", status_id: FormStatus.InProgress },
           { state_id: "CO", status_id: FormStatus.InProgress },
-          { state_id: "WI", status_id: FormStatus.ProvisionalCertified },
         ],
       });
 
@@ -93,14 +92,16 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
+          "#UncertifiedStatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
+          ":status_id": FormStatus.InProgress,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#UncertifiedStatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -109,7 +110,7 @@ describe("sharedFunctions.js", () => {
 
       const result = await getUncertifiedStates(2025, 1);
 
-      expect(result).toBeUndefined();
+      expect(result).toEqual([{ message: expect.stringContaining("no states") }]);
     });
   });
 
@@ -126,22 +127,30 @@ describe("sharedFunctions.js", () => {
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual({
-        "CO": ["F1", "F2"],
-        "TX": ["F1"],
-      });
+      expect(result).toEqual([
+        {
+          form: ["F1", "F2"],
+          state: "CO",
+        },
+        {
+          form: ["F1"],
+          state: "TX",
+        }
+      ]);
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
+          "#UncertifiedStatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
+          ":status_id": FormStatus.InProgress,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "#UncertifiedStatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -157,9 +166,12 @@ describe("sharedFunctions.js", () => {
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual({
-        CO: ["F1", "F2", "F3"]
-      });
+      expect(result).toEqual([
+        {
+          form: ["F1", "F2", "F3"],
+          state: "CO",
+        }
+      ]);
     });
 
     it("should return undefined if no uncertified forms can be found", async () => {
@@ -167,7 +179,7 @@ describe("sharedFunctions.js", () => {
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toBeUndefined();
+      expect(result).toEqual([{ message: expect.stringContaining("no states") }]);
     });
   });
 
