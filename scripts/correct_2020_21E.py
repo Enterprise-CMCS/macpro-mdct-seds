@@ -1,18 +1,21 @@
 import boto3
 import time
 
-# Created this to correct all the 21E Question 5 settings for a question with a bad year reference.
+# Created this to correct all the 21E Question 5
+# settings for a question with a bad year reference.
 # Copied the scaffolding from the null responses script
-# Maine 2020 Q4 is pointing at 2021, and breaking. Wanted to save the script in case any other states have the issue
+# Maine 2020 Q4 is pointing at 2021, and breaking.
+# Wanted to save the script in case any other states have the issue
 
 # Running this script:
-#    * Set the aws environment config file with the temporary values in [default] within ~/.aws/credentials
+#    * Set the aws environment config file with the
+#       temporary values in [default] within ~/.aws/credentials
 #    * pip install boto3
 #    * Set RUN_LOCAL, RUN_UPDATE, and STAGE appropriately
 #    * run the script (`python3 correct_2020_21E.py`)
 
 RUN_LOCAL = True                        # Target localhost:8000
-STAGE = "master"                        # Prefix for the environment
+STAGE = "main"                        # Prefix for the environment
 ANSWER_TABLE = "-form-answers"
 STATE_TABLE = "-states"
 COMMIT_CHANGES = False

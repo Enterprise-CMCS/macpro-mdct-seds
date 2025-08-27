@@ -7,21 +7,22 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   vpcName: string;
   oktaMetadataUrl: string;
+  brokerString: string;
+  kafkaAuthorizedSubnetIds: string;
   bootstrapUsersPassword?: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   secureCloudfrontDomainName?: string;
+  userPoolName?: string;
   userPoolDomainPrefix?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
-  brokerString: string;
-  kafkaAuthorizedSubnetIds: string;
+  kafkaClientId?: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev =
-    isLocalStack || !["master", "main", "val", "production"].includes(stage);
+  const isDev = isLocalStack || !["main", "val", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),

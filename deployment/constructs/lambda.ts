@@ -3,7 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -15,17 +15,16 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { isLocalStack } from "../local/util";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { createHash } from "crypto";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler: string;
-  timeout?: Duration;
-  memorySize?: number;
-  brokerString?: string;
   path?: string;
   method?: string;
   stackName: string;
-  api: apigateway.RestApi;
+  api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
+  isDev: boolean;
 }
 
 export class Lambda extends Construct {
@@ -35,16 +34,14 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      brokerString = "",
-      environment = {},
       api,
       path,
       method,
       additionalPolicies = [],
       stackName,
+      isDev,
       ...restProps
     } = props;
 
@@ -73,22 +70,31 @@ export class Lambda extends Construct {
       },
     });
 
+    const logGroup = new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
       role,
       bundling: {
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
         minify: true,
         sourceMap: true,
+        nodeModules: ["jsdom"],
       },
-      environment,
+      logGroup,
       ...restProps,
     });
 
-    if (path && method) {
+    if (api && path && method) {
       const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,

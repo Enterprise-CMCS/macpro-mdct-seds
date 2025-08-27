@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_certificatemanager as acm,
@@ -6,6 +7,7 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
+  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
@@ -19,8 +21,9 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  // vpnIpSetArn?: string;
+  // vpnIpv6SetArn?: string;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -33,6 +36,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     cloudfrontDomainName,
     // vpnIpSetArn,
     // vpnIpv6SetArn,
+    loggingBucket,
   } = props;
 
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -41,15 +45,19 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     autoDeleteObjects: true,
     enforceSSL: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    versioned: true,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
   let loggingConfig:
-    | { enableLogging: boolean; logBucket: s3.Bucket }
+    | { enableLogging: boolean; logBucket: s3.Bucket; logFilePrefix: string }
     | undefined;
   if (!isDev) {
     // this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
     // should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
     const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+      bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -57,6 +65,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       removalPolicy: RemovalPolicy.RETAIN,
       enforceSSL: true,
       versioned: true,
+      serverAccessLogsBucket: loggingBucket,
+      serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
     });
 
     logBucket.addToResourcePolicy(
@@ -71,12 +81,13 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     loggingConfig = {
       enableLogging: true,
       logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
     };
   }
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
-    "CloudFormationHeadersPolicy",
+    "CloudFrontHeadersPolicy",
     {
       responseHeadersPolicyName: `Headers-Policy-${stage}`,
       comment: "Add Security Headers",
@@ -103,6 +114,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     }
   );
 
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+  });
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
@@ -120,7 +136,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },
@@ -142,17 +158,21 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   if (!isLocalStack) {
-    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
+    const waf = setupWaf(
+      scope,
+      stage,
+      project
+      // vpnIpSetArn,
+      // vpnIpv6SetArn
+    );
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   return {
-    cloudfrontDistributionId: distribution.distributionId,
     distribution,
     applicationEndpointUrl,
-    s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
 }
@@ -161,64 +181,15 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string
-  // vpnIpSetArn?: string,
-  // vpnIpv6SetArn?: string,
+  //  vpnIpSetArn?: string,
+  //  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,
     "CloudfrontWafConstruct",
     {
       name: `${project}-${stage}-ui`,
-      blockByDefault: false,
     },
     "CLOUDFRONT"
   );
-  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
-  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
-
-  // const defaultAction = vpnIpSetArn
-  //   ? { block: {} }
-  //   : { allow: {} };
-
-  // if (vpnIpSetArn) {
-  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
-  //     name: `${stage}-gh-ipset`,
-  //     scope: "CLOUDFRONT",
-  //     addresses: [],
-  //     ipAddressVersion: "IPV4",
-  //   });
-
-  //   const statements = [
-  //     {
-  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
-  //     },
-  //     {
-  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-  //     },
-  //   ];
-
-  //   if (vpnIpv6SetArn) {
-  //     statements.push({
-  //       ipSetReferenceStatement: {
-  //         arn: vpnIpv6SetArn,
-  //       },
-  //     });
-  //   }
-
-  //   wafRules.push({
-  //     name: "vpn-only",
-  //     priority: 0,
-  //     action: { allow: {} },
-  //     visibilityConfig: {
-  //       cloudWatchMetricsEnabled: true,
-  //       metricName: `${project}-${stage}-webacl-vpn-only`,
-  //       sampledRequestsEnabled: true,
-  //     },
-  //     statement: {
-  //       orStatement: {
-  //         statements,
-  //       },
-  //     },
-  //   });
-  // }
 }
