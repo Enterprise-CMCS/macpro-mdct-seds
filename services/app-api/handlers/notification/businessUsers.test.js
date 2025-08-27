@@ -28,10 +28,10 @@ const mockUser2 = { email: "bizuserTX@test.com" };
 describe("notification/businessUsers", () => {
   it("should send emails to business users regarding not-yet-certified forms", async () => {
     getUsersEmailByRole.mockResolvedValueOnce([mockUser1, mockUser2]);
-    getUncertifiedStatesAndForms.mockResolvedValueOnce({
-      "CO": ["21E", "GRE"],
-      "TX": ["64.21E"],
-    });
+    getUncertifiedStatesAndForms.mockResolvedValueOnce([
+      { state: "CO", form: ["21E", "GRE"] },
+      { state: "TX", form: ["64.21E"]},
+    ]);
 
     await notifyBusinessUsers({});
 

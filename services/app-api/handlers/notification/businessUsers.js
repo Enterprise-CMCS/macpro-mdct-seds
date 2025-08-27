@@ -42,10 +42,12 @@ async function businessOwnersTemplate() {
   const uncertifiedStates = await getUncertifiedStatesAndForms(year, quarter);
 
   // Build string of all states and forms
-  let uncertifiedStatesList = Object.entries(uncertifiedStates)
-    .sort(([stateA, _as], [stateB, _bs]) => stateA.localeCompare(stateB))
-    .map(([state, forms]) => `${state} - ${forms.join(", ")}`)
-    .join("\n");
+  let uncertifiedStatesList = "";
+  uncertifiedStates.map((item) => {
+    uncertifiedStatesList += `${item.state} -${item.form.map(
+      (form) => ` ${form}`
+    )}\n`;
+  });
 
   const todayDate = new Date().toISOString().split("T")[0];
   const fromEmail = "mdct@cms.hhs.gov";
