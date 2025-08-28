@@ -23,7 +23,7 @@ const quarterlyDataMock = [
     form_name: "Gender, Race & Ethnicity",
     last_modified: "2021-04-08T12:46:35.838Z",
     quarter: 1,
-    status_id: FormStatus.InProgress,
+    status_id: FormStatus.InProgress
   },
   {
     status_modified_by: "seed",
@@ -47,7 +47,7 @@ const quarterlyDataMock = [
     form_name: "Number of Pregnant Women Served",
     last_modified: "2021-04-07T12:46:35.838Z",
     quarter: 1,
-    status_id: FormStatus.InProgress,
+    status_id: FormStatus.InProgress
   },
   {
     status_modified_by: "seed",
@@ -71,7 +71,7 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Medicaid Expansion Program",
     last_modified: "2021-04-06T12:46:35.838Z",
     quarter: 1,
-    status_id: FormStatus.ProvisionalCertified,
+    status_id: FormStatus.ProvisionalCertified
   },
   {
     status_modified_by: "seed",
@@ -95,7 +95,7 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Separate CHIP Program",
     last_modified: "2021-04-05T12:46:35.838Z",
     quarter: 1,
-    status_id: FormStatus.FinalCertified,
+    status_id: FormStatus.FinalCertified
   },
   {
     status_modified_by: "seed",
@@ -119,7 +119,7 @@ const quarterlyDataMock = [
     form_name: "Number of Children Served in Medicaid Program",
     last_modified: "2021-04-04T12:46:35.838Z",
     quarter: 1,
-    status_id: FormStatus.FinalCertified,
+    status_id: FormStatus.FinalCertified
   }
 ];
 

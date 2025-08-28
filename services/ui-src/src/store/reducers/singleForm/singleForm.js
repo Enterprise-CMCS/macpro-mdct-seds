@@ -69,10 +69,7 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updateFormStatus = (
-  username,
-  status_id
-) => {
+export const updateFormStatus = (username, status_id) => {
   return {
     type: UPDATE_FORM_STATUS,
     username,
@@ -90,9 +87,7 @@ export const updatedLastSaved = username => {
 
 // THUNKS
 
-export const updateFormStatusThunk = (
-  status_id
-) => async dispatch => {
+export const updateFormStatusThunk = (status_id) => async dispatch => {
   const username = await getUsername();
   dispatch(updateFormStatus(username, status_id));
 };

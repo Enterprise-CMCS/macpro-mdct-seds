@@ -62,7 +62,7 @@ export const getStates = () => {
 const initialState = {
   formTypes: [],
   age_ranges: [...age_ranges.default],
-  states: [...states.default],
+  states: [...states.default]
 };
 
 // REDUCER

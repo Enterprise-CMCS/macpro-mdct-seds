@@ -24,7 +24,7 @@ export const statusData = {
   form_name: "Number of Pregnant Women Served",
   last_modified: "2021-04-09T12:46:35.838Z",
   quarter: 1,
-  status_id: FormStatus.InProgress,
+  status_id: FormStatus.InProgress
 };
 
 export const answers = [
