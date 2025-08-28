@@ -47,42 +47,21 @@ const {
 /*
  * ENVIRONMENT VARIABLES TO SET:
  * STATE_FORMS_TABLE_NAME: the name of the table in Dynamo
- * DYNAMODB_URL: the local URL if local; undefined otherwise
  * [anything needed for AWS auth, if not local]
  */
-const {
-  STATE_FORMS_TABLE_NAME,
-  DYNAMODB_URL,
-} = process.env;
-
-const logger = {
-  debug: () => {},
-  info: console.info,
-  warn: console.warn,
-  error: console.error,
-};
-
-// TODO: This config workd under Serverless. Does it still work under CDK?
-const localConfig = {
-  endpoint: DYNAMODB_URL,
-  region: "localhost",
-  credentials: {
-    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-  },
-  logger,
-};
+const { STATE_FORMS_TABLE_NAME } = process.env;
 
 const awsConfig = {
   region: "us-east-1",
-  logger,
+  logger: {
+    debug: () => {},
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
+  },
 };
 
-const getConfig = () => {
-  return DYNAMODB_URL ? localConfig : awsConfig;
-};
-
-const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 function updateStatusFields (stateForm) {
   const { state_form, status_id, status, not_applicable } = stateForm;
@@ -125,7 +104,6 @@ function updateStatusFields (stateForm) {
   }
   delete stateForm.status;
   delete stateForm.not_applicable;
-  // TODO maybe also add an explicit `wasMigratedForStatusId` flag, which we can track now & delete later?
   return true;
 }
 
@@ -153,7 +131,6 @@ async function * iterateStateForms () {
       const didUpdate = updateStatusFields(stateForm);
       if (didUpdate) {
         await client.send(new PutCommand({
-          // TODO double check
           TableName: STATE_FORMS_TABLE_NAME,
           Item: stateForm,
         }));
