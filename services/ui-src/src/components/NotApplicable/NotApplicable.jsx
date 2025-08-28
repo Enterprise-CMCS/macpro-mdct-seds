@@ -39,10 +39,10 @@ const NotApplicable = ({
 
   const handleApplicableChange = async (evt) => {
     const newStatus = evt.target.value === "Yes"
-      ? 1 // "In Progress"
-      : 4; // "Not Applicable"
+      ? FormStatus.InProgress
+      : FormStatus.NotApplicable;
 
-    if (newStatus === 4) {
+    if (newStatus === FormStatus.NotApplicable) {
       const confirm = window.confirm(
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );

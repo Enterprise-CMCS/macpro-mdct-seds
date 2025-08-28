@@ -6,6 +6,7 @@ import NotApplicable from "./NotApplicable";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
@@ -37,7 +38,7 @@ const adminUser = { role: "admin" };
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
-    renderComponent(stateUser, 1);
+    renderComponent(stateUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesButton = screen.getByRole("radio", { name: "Yes" });
     const noButton = screen.getByRole("radio", { name: "No" });
@@ -46,7 +47,7 @@ describe("NotApplicable", () => {
   });
 
   it("should be disabled for admin users", async () => {
-    renderComponent(adminUser, 1);
+    renderComponent(adminUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesButton = screen.getByRole("radio", { name: "Yes" });
     const noButton = screen.getByRole("radio", { name: "No" });
@@ -55,7 +56,7 @@ describe("NotApplicable", () => {
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
-    renderComponent(stateUser, 3);
+    renderComponent(stateUser, FormStatus.FinalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesButton = screen.getByRole("radio", { name: "Yes" });
     const noButton = screen.getByRole("radio", { name: "No" });
@@ -64,21 +65,21 @@ describe("NotApplicable", () => {
   });
 
   it("should initialize to Active when applicable", async () => {
-    renderComponent(stateUser, 1);
+    renderComponent(stateUser, FormStatus.InProgress);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesButton = screen.getByRole("radio", { name: "Yes" });
     expect(yesButton).toBeChecked();
   });
 
   it("should initialize to Yes for a Certified form", async () => {
-    renderComponent(stateUser, 2);
+    renderComponent(stateUser, FormStatus.ProvisionalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     expect(yesOption).toBeChecked();
   });
 
   it("should initialize to Not Applicable when appropriate", async () => {
-    renderComponent(stateUser, 4);
+    renderComponent(stateUser, FormStatus.NotApplicable);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const yesButton = screen.getByRole("radio", { name: "No" });
     expect(yesButton).toBeChecked();

@@ -6,8 +6,8 @@ export const FormStatus = {
 };
 
 export const FormStatusDisplay = {
-  1: "In Progress",
-  2: "Provisional Data Certified and Submitted",
-  3: "Final Data Certified and Submitted",
-  4: "Not Required",
+  [FormStatus.InProgress]: "In Progress",
+  [FormStatus.ProvisionalCertified]: "Provisional Data Certified and Submitted",
+  [FormStatus.FinalCertified]: "Final Data Certified and Submitted",
+  [FormStatus.NotApplicable]: "Not Required",
 };

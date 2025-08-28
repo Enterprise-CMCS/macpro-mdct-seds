@@ -58,7 +58,7 @@ describe("Test SummaryNotes.js", () => {
   });
 
   it("should render existing notes", async () => {
-    renderComponent("state", 3, "existing comment");
+    renderComponent("state", FormStatus.FinalCertified, "existing comment");
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
@@ -74,7 +74,7 @@ describe("Test SummaryNotes.js", () => {
   });
 
   it("should disable the input for certified forms", async () => {
-    renderComponent("state", 3);
+    renderComponent("state", FormStatus.FinalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
