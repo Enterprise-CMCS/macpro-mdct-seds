@@ -16,38 +16,32 @@ const NotApplicable = ({
   saveForm,
   updateFormStatusThunk
 }) => {
-  const [applicableStatus, setApplicableStatus] = useState(
-    (status_id === 4) ? 1 : 0
-  );
-  const [disableSlider, setDisableSlider] = useState(); // Should the slider be disabled?
-
-  const determineUserRole = async () => {
-    const currentUser = await getUserInfo();
-
-    if (
-      currentUser.Items &&
-      (currentUser.Items[0].role === "admin" ||
-        currentUser.Items[0].role === "business")
-    ) {
-      setDisableSlider(true);
-    }
-  };
-
-  // FALSE = the form APPLIES TO THIS STATE (0)
-  // TRUE = the form is NOT APPLICABLE (1)
+  const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
-    const booleanToInteger = (status_id === 4) ? 1 : 0;
-    setApplicableStatus(booleanToInteger);
-    determineUserRole().then();
-
     if (status_id === 3) {
-      setDisableSlider(true);
+      // This cannot be changed after a form is Final Certified.
+      setInputDisabled(true);
+      return;
     }
+
+    (async () => {
+      const currentUser = await getUserInfo();
+      if (currentUser.Items?.[0].role === "state") {
+        // This cannot be changed by admin or business users.
+        setInputDisabled(false);
+      } else {
+        setInputDisabled(true);
+      }
+    })()
   }, [status_id]);
 
-  const changeStatus = async () => {
-    if (applicableStatus === 0) {
+  const handleApplicableChange = async (evt) => {
+    const newStatus = evt.target.value === "Yes"
+      ? 1 // "In Progress"
+      : 4; // "Not Applicable"
+
+    if (newStatus === 4) {
       const confirm = window.confirm(
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
@@ -58,50 +52,41 @@ const NotApplicable = ({
       }
     }
 
-    const invertedStatus = status_id === 4 ? 1 : 4;
-
-    setApplicableStatus(applicableStatus === 0 ? 1 : 0);
-    await updateFormStatusThunk(
-      invertedStatus
-    );
+    await updateFormStatusThunk(newStatus);
     saveForm();
   };
 
   return (
-    <div data-test="applicable-wrapper">
-      <h3 data-test="applicable-prompt">Does this form apply to your state?</h3>
-      <div className="applicable-slider" data-test="applicable-slider">
-        <p
-          className={
-            applicableStatus === 0 ? "applicable-selected is-selected" : null
-          }
-        >
-          Active
-        </p>
-
-        <RangeInput
-          onInput={() => changeStatus()}
-          id="range-slider"
-          name="range"
-          min={0}
-          max={1}
-          value={applicableStatus}
-          color="red"
-          list="range-list-id"
-          disabled={disableSlider}
-        />
-
-        <p
-          className={
-            applicableStatus === 1
-              ? "not-applicable-selected is-selected"
-              : null
-          }
-        >
-          {" "}
-          Not Applicable
-        </p>
-      </div>
+    <div className="applicable-wrapper">
+      <fieldset className="usa-fieldset">
+        <legend className="usa-legend usa-legend">Does this form apply to your state?</legend>
+        <div className="usa-radio">
+          <input
+            className="usa-radio__input"
+            id="applicable-yes"
+            type="radio"
+            name="not-applicable"
+            value="Yes"
+            disabled={inputDisabled}
+            checked={status_id !== 4}
+            onChange={handleApplicableChange}
+          />
+          <label className="usa-radio__label" htmlFor="applicable-yes">Yes</label>
+        </div>
+        <div className="usa-radio">
+          <input
+            className="usa-radio__input"
+            id="applicable-no"
+            type="radio"
+            name="not-applicable"
+            value="No"
+            disabled={inputDisabled}
+            checked={status_id === 4}
+            onChange={handleApplicableChange}
+          />
+          <label className="usa-radio__label" htmlFor="applicable-no">No</label>
+        </div>
+      </fieldset>
     </div>
   );
 };

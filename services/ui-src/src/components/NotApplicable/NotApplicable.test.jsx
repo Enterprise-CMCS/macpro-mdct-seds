@@ -39,35 +39,48 @@ describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
     renderComponent(stateUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeEnabled();
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
+    const noButton = screen.getByRole("radio", { name: "No" });
+    expect(yesButton).toBeEnabled();
+    expect(noButton).toBeEnabled();
   });
 
   it("should be disabled for admin users", async () => {
     renderComponent(adminUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeDisabled();
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
+    const noButton = screen.getByRole("radio", { name: "No" });
+    expect(yesButton).toBeDisabled();
+    expect(noButton).toBeDisabled();
   });
 
   it("should be disabled for state users viewing a certified form", async () => {
     renderComponent(stateUser, 3);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input).toBeDisabled();
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
+    const noButton = screen.getByRole("radio", { name: "No" });
+    expect(yesButton).toBeDisabled();
+    expect(noButton).toBeDisabled();
   });
 
   it("should initialize to Active when applicable", async () => {
     renderComponent(stateUser, 1);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input.value).toBe("0");
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
+    expect(yesButton).toBeChecked();
+  });
+
+  it("should initialize to Yes for a Certified form", async () => {
+    renderComponent(stateUser, 2);
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const yesOption = screen.getByRole("radio", { name: "Yes" });
+    expect(yesOption).toBeChecked();
   });
 
   it("should initialize to Not Applicable when appropriate", async () => {
     renderComponent(stateUser, 4);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const input = screen.getByTestId("range");
-    expect(input.value).toBe("1");
+    const yesButton = screen.getByRole("radio", { name: "No" });
+    expect(yesButton).toBeChecked();
   });
 });
