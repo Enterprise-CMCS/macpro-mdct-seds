@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import {
+  aws_dynamodb as dynamodb,
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
@@ -8,7 +9,6 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-import { isDefined } from "../utils/misc";
 import { createHash } from "crypto";
 
 interface LambdaDynamoEventProps
@@ -35,43 +35,6 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps
     } = props;
 
-    const role = new iam.Role(this, `${id}LambdaExecutionRole`, {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaPolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-            }),
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
-              actions: [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:ListStreams",
-              ],
-              resources: tables
-                .map((table) => table.streamArn)
-                .filter(isDefined),
-            }),
-            ...additionalPolicies,
-          ],
-        }),
-      },
-    });
-
     const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
       logGroupName: `/aws/lambda/${stackName}-${id}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -83,7 +46,6 @@ export class LambdaDynamoEventSource extends Construct {
       runtime: lambda.Runtime.NODEJS_20_X,
       timeout,
       memorySize,
-      role,
       bundling: {
         assetHash: createHash("sha256")
           .update(`${Date.now()}-${id}`)
@@ -95,6 +57,19 @@ export class LambdaDynamoEventSource extends Construct {
       logGroup,
       ...restProps,
     });
+
+    const importedTables = tables
+      .filter((t) => !!t.streamArn)
+      .map((t, i) =>
+        dynamodb.Table.fromTableAttributes(this, `${id}ImportedTable${i}`, {
+          tableArn: t.arn,
+          tableStreamArn: t.streamArn!,
+        })
+      );
+
+    for (const table of importedTables) table.grantStreamRead(this.lambda);
+
+    for (const stmt of additionalPolicies) this.lambda.addToRolePolicy(stmt);
 
     for (let table of tables) {
       new lambda.CfnEventSourceMapping(
