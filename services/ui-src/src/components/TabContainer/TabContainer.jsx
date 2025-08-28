@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 const TabContainer = ({
   tabDetails,
@@ -31,8 +32,8 @@ const TabContainer = ({
         userRole = userInfo.role;
       });
       if (
-        status_id === 3 ||
-        status_id === 4 ||
+        status_id === FormStatus.FinalCertified ||
+        status_id === FormStatus.NotApplicable ||
         userRole === "admin" ||
         userRole === "business"
       ) {

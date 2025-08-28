@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { obtainUserByEmail } from "../../libs/api";
-import { FormStatusDisplay } from "../../libs/types";
+import { FormStatus, FormStatusDisplay } from "../../libs/types";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
@@ -217,8 +217,8 @@ const mapState = state => ({
   status_id: state.currentForm.statusData.status_id,
   lastModified: state.currentForm.statusData.status_date,
   lastModifiedBy: state.currentForm.statusData.status_modified_by,
-  isFinal: state.currentForm.statusData.status_id === 3,
-  isProvisional: state.currentForm.statusData.status_id === 2
+  isFinal: state.currentForm.statusData.status_id === FormStatus.FinalCertified,
+  isProvisional: state.currentForm.statusData.status_id === FormStatus.ProvisionalCertified,
 });
 
 const mapDispatch = {

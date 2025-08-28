@@ -9,6 +9,7 @@ import {
 } from "../../store/reducers/singleForm/singleForm";
 import "./NotApplicable.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 const NotApplicable = ({
   status_id,
@@ -19,7 +20,7 @@ const NotApplicable = ({
   const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
-    if (status_id === 3) {
+    if (status_id === FormStatus.FinalCertified) {
       // This cannot be changed after a form is Final Certified.
       setInputDisabled(true);
       return;
@@ -68,7 +69,7 @@ const NotApplicable = ({
             name="not-applicable"
             value="Yes"
             disabled={inputDisabled}
-            checked={status_id !== 4}
+            checked={status_id !== FormStatus.NotApplicable}
             onChange={handleApplicableChange}
           />
           <label className="usa-radio__label" htmlFor="applicable-yes">Yes</label>
@@ -81,7 +82,7 @@ const NotApplicable = ({
             name="not-applicable"
             value="No"
             disabled={inputDisabled}
-            checked={status_id === 4}
+            checked={status_id === FormStatus.NotApplicable}
             onChange={handleApplicableChange}
           />
           <label className="usa-radio__label" htmlFor="applicable-no">No</label>

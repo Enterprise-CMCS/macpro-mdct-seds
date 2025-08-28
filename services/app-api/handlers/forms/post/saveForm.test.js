@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as saveForm } from "./saveForm.js";
 import { authorizeUserForState } from "../../../auth/authConditions.js";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
+import { FormStatus } from "../../../libs/types.js";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -45,7 +46,7 @@ const mockFormAnswer3 = {
   rows: [{ rowNumber: 1 }],
 };
 const mockStatusData = {
-  status_id: 1,
+  status_id: FormStatus.InProgress,
   state_comments: ["mock state comment"],
   last_modified: new Date().toISOString(),
 };
@@ -60,7 +61,7 @@ const mockBusinessUser = {
   states: ["CO", "etc"],
 };
 const mockStateForm = {
-  status_id: 1,
+  status_id: FormStatus.InProgress,
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 };
@@ -116,7 +117,7 @@ describe("saveForm.js", () => {
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status_id": 1,
+        ":status_id": FormStatus.InProgress,
         ":state_comments": ["mock state comment"],
       },
       ReturnValues: "ALL_NEW",
@@ -206,7 +207,10 @@ describe("saveForm.js", () => {
     const mockEvent = {
       body: JSON.stringify({
         formAnswers: [mockFormAnswer1],
-        statusData: { ...mockStatusData, status_id: 2 },
+        statusData: {
+          ...mockStatusData,
+          status_id: FormStatus.ProvisionalCertified
+        },
       }),
     };
     getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
@@ -220,7 +224,7 @@ describe("saveForm.js", () => {
 
     expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
       ExpressionAttributeValues: expect.objectContaining({
-        ":status_id": 2,
+        ":status_id": FormStatus.ProvisionalCertified,
         ":status_modified_by": "COLO",
         ":status_date": expect.stringMatching(ISO_DATE_REGEX),
       }),

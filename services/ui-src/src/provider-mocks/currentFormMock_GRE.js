@@ -1,3 +1,5 @@
+import { FormStatus } from "../libs/types";
+
 const currentFormMock_GRE = {
   currentForm: {
     questions: [
@@ -624,7 +626,7 @@ const currentFormMock_GRE = {
       form_name: "Gender, Race & Ethnicity",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status_id: 1,
+      status_id: FormStatus.InProgress,
     },
     tabs: ["0018"]
   }

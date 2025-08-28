@@ -1,4 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib.js";
+import { FormStatus } from "../../libs/types.js";
 
 export async function getUsersEmailByRole(role) {
   const params = {
@@ -32,7 +33,7 @@ export async function getUncertifiedStates(year, quarter) {
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status_id": 1,
+      ":status_id": FormStatus.InProgress,
       ":year": year,
       ":quarter": quarter,
     },
@@ -70,7 +71,7 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status_id": 1,
+      ":status_id": FormStatus.InProgress,
       ":year": year,
       ":quarter": quarter,
     },

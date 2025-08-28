@@ -3,6 +3,7 @@ import { getDefaultNormalizer, render, screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import CertificationTab from "../CertificationTab/CertificationTab";
+import { FormStatus } from "../../libs/types";
 import CertificationTabMock from "../../provider-mocks/certificationTabMock";
 
 const mockStore = configureStore([]);
@@ -42,15 +43,15 @@ const renderWithStatus = (statusData) => {
 };
 
 const inProgress = {
-  status_id: 1,
+  status_id: FormStatus.InProgress,
 };
 
 const provisional = {
-  status_id: 2,
+  status_id: FormStatus.ProvisionalCertified,
 };
 
 const final = {
-  status_id: 3,
+  status_id: FormStatus.FinalCertified,
 };
 
 describe("Test CertificationTab.js", () => {

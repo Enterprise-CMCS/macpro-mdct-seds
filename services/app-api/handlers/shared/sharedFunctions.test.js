@@ -15,6 +15,7 @@ import {
   getUsersEmailByRole,
   replaceFormYear,
 } from "./sharedFunctions.js";
+import { FormStatus } from "../../libs/types.js";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
@@ -96,7 +97,7 @@ describe("sharedFunctions.js", () => {
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status_id": 1,
+          ":status_id": FormStatus.InProgress,
           ":year": 2025,
           ":quarter": 1,
         },
@@ -143,7 +144,7 @@ describe("sharedFunctions.js", () => {
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status_id": 1,
+          ":status_id": FormStatus.InProgress,
           ":year": 2025,
           ":quarter": 1,
         },

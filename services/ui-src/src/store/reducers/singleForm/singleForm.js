@@ -2,6 +2,7 @@
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
 import { generateDateForDB } from "../../../utility-functions/transformFunctions";
+import { FormStatus } from "../../../libs/types";
 
 // HELPER FUNCTIONS
 import {
@@ -309,7 +310,7 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status_date: new Date().toISOString(), // Need to update this with coming soon helper function
-          status_id: 3,
+          status_id: FormStatus.FinalCertified,
           status_modified_by: action.username,
           last_modified_by: action.username,
           last_modified: new Date().toISOString() // Need to update this with coming soon helper function
@@ -321,7 +322,7 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status_date: new Date().toISOString(), // Need to update this with coming soon helper function
-          status_id: 2,
+          status_id: FormStatus.ProvisionalCertified,
           status_modified_by: action.username,
           last_modified_by: action.username,
           last_modified: new Date().toISOString() // Need to update this with coming soon helper function
@@ -340,7 +341,7 @@ export default (state = initialState, action) => {
         ...state,
         statusData: {
           ...state.statusData,
-          status_id: 1,
+          status_id: FormStatus.InProgress,
           status_modified_by: action.username,
           last_modified_by: action.username,
           last_modified: new Date().toISOString(), // Need to update this with coming soon helper function

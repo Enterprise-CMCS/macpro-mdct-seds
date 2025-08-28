@@ -5,6 +5,7 @@ import SummaryNotes from "./SummaryNotes";
 import { render, screen, waitFor } from "@testing-library/react";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
@@ -15,7 +16,11 @@ jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
 
-const renderComponent = (userRole, status_id = 1, initialComment = "") => {
+const renderComponent = (
+  userRole,
+  status_id = FormStatus.InProgress,
+  initialComment = ""
+) => {
   getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
   const state_comments = initialComment
     ? [{ entry: initialComment }]
