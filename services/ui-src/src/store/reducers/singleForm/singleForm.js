@@ -87,7 +87,7 @@ export const updatedLastSaved = username => {
 
 // THUNKS
 
-export const updateFormStatusThunk = (status_id) => async dispatch => {
+export const updateFormStatusThunk = status_id => async dispatch => {
   const username = await getUsername();
   dispatch(updateFormStatus(username, status_id));
 };
