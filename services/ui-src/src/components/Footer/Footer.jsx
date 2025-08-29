@@ -19,9 +19,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div className="tagline">
-              Centers for Medicare &amp; Medicaid Services
-            </div>
           </Grid>
           <Grid col={6} tablet={{ col: true }}>
             <div className="footer-nav">
