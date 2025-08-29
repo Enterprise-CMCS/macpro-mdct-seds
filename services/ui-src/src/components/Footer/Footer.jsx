@@ -1,4 +1,3 @@
-import React from "react";
 import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
 import "./Footer.scss";
 
@@ -19,9 +18,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div className="tagline">
-              Centers for Medicare &amp; Medicaid Services
-            </div>
           </Grid>
           <Grid col={6} tablet={{ col: true }}>
             <div className="footer-nav">
@@ -42,6 +38,12 @@ const Footer = () => {
             </div>
             <div className="info">
               <div className="help">
+                <div className="medicaidLogo">
+                  <img
+                      src="/img/logo_medicaid.svg"
+                      alt="Medicaid.gov: Keeping America Healthy"
+                  />
+                </div>
                 <p>
                   Email{" "}
                   <a
