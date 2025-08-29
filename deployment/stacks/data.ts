@@ -35,25 +35,25 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           type: dynamodb.AttributeType.STRING,
         },
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "FormQuestions", {
       stage,
       isDev,
       name: "form-questions",
       partitionKey: { name: "question", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "FormTemplates", {
       stage,
       isDev,
       name: "form-templates",
       partitionKey: { name: "year", type: dynamodb.AttributeType.NUMBER },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "Forms", {
       stage,
       isDev,
       name: "forms",
       partitionKey: { name: "form", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "StateForms", {
       stage,
       isDev,
@@ -62,19 +62,19 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "state_form",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "States", {
       stage,
       isDev,
       name: "states",
       partitionKey: { name: "state_id", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "AuthUser", {
       stage,
       isDev,
       name: "auth-user",
       partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
   ];
 
   // seed data

@@ -15,9 +15,9 @@ import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -26,7 +26,7 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpcName: string;
   kafkaAuthorizedSubnetIds: string;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   brokerString: string;
   kafkaClientId?: string;
 }
@@ -119,7 +119,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
@@ -135,7 +135,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.map((table) => table.arn),
+      resources: tables.map((table) => table.table.tableArn),
     }),
 
     new iam.PolicyStatement({
@@ -147,12 +147,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:ListShards",
         "dynamodb:ListStreams",
       ],
-      resources: tables.map((table) => table.streamArn).filter(isDefined),
+      resources: tables
+        .map((table) => table.table.tableStreamArn)
+        .filter(isDefined),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: tables.map((table) => `${table.arn}/index/*`),
+      resources: tables.map((table) => `${table.table.tableArn}/index/*`),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -205,7 +207,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "FormTemplates",
       "States",
       "FormAnswers",
-    ].includes(table.id)
+    ].includes(table.node.id)
   );
 
   new LambdaDynamoEventSource(scope, "dataConnectSource", {

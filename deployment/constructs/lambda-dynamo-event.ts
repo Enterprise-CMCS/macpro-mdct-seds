@@ -8,14 +8,14 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { createHash } from "crypto";
+import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   stackName: string;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   isDev: boolean;
 }
 
@@ -58,25 +58,16 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps,
     });
 
-    const importedTables = tables
-      .filter((t) => !!t.streamArn)
-      .map((t, i) =>
-        dynamodb.Table.fromTableAttributes(this, `${id}ImportedTable${i}`, {
-          tableArn: t.arn,
-          tableStreamArn: t.streamArn!,
-        })
-      );
-
-    for (const table of importedTables) table.grantStreamRead(this.lambda);
+    for (const table of tables) table.table.grantStreamRead(this.lambda);
 
     for (const stmt of additionalPolicies) this.lambda.addToRolePolicy(stmt);
 
     for (let table of tables) {
       new lambda.CfnEventSourceMapping(
         scope,
-        `${id}${table.id}DynamoDBStreamEventSourceMapping`,
+        `${id}${table.node.id}DynamoDBStreamEventSourceMapping`,
         {
-          eventSourceArn: table.streamArn,
+          eventSourceArn: table.table.tableStreamArn,
           functionName: this.lambda.functionArn,
           startingPosition: "TRIM_HORIZON",
           maximumRetryAttempts: 2,
