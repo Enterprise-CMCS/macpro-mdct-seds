@@ -69,14 +69,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
     });
 
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-        actions: ["s3:PutObject"],
-        resources: [`${logBucket.bucketArn}/*`],
-      })
-    );
+    logBucket.grantPut(new iam.ServicePrincipal("cloudfront.amazonaws.com"));
 
     loggingConfig = {
       enableLogging: true,

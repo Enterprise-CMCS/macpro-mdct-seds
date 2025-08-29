@@ -15,9 +15,8 @@ import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -26,7 +25,7 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpcName: string;
   kafkaAuthorizedSubnetIds: string;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   brokerString: string;
   kafkaClientId?: string;
 }
@@ -119,41 +118,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
   const additionalPolicies = [
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:BatchWriteItem",
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:Query",
-        "dynamodb:Scan",
-        "dynamodb:UpdateItem",
-      ],
-      resources: tables.map((table) => table.arn),
-    }),
-
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:DescribeStream",
-        "dynamodb:GetRecords",
-        "dynamodb:GetShardIterator",
-        "dynamodb:ListShards",
-        "dynamodb:ListStreams",
-      ],
-      resources: tables.map((table) => table.streamArn).filter(isDefined),
-    }),
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: tables.map((table) => `${table.arn}/index/*`),
-    }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
@@ -173,6 +142,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     environment,
     additionalPolicies,
     isDev,
+    grantTables: tables,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -193,7 +163,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    tables,
+    eventSourceTables: tables,
   });
 
   const dataConnectTables = tables.filter((table) =>
@@ -205,7 +175,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "FormTemplates",
       "States",
       "FormAnswers",
-    ].includes(table.id)
+    ].includes(table.node.id)
   );
 
   new LambdaDynamoEventSource(scope, "dataConnectSource", {
@@ -218,7 +188,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    tables: dataConnectTables,
+    eventSourceTables: dataConnectTables,
+    grantTables: dataConnectTables,
   });
 
   new Lambda(scope, "getUserById", {

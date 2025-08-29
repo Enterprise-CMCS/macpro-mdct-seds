@@ -18,7 +18,6 @@ interface CreateUiAuthComponentsProps {
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
-  customResourceRole: iam.Role;
   oktaMetadataUrl: string;
   restApiId: string;
   bootstrapUsersPassword?: string;
@@ -35,7 +34,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     isDev,
     applicationEndpointUrl,
     restApiId,
-    customResourceRole,
     oktaMetadataUrl,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
@@ -256,18 +254,14 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
             `InvokeBootstrapUsersFunction-${stage}`
           ),
         },
-        onUpdate: undefined,
-        onDelete: undefined,
-        policy: cr.AwsCustomResourcePolicy.fromStatements([
-          new iam.PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [bootstrapUsersFunction.functionArn],
-          }),
-        ]),
-        role: customResourceRole,
+        policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+          resources: [bootstrapUsersFunction.functionArn],
+        }),
         resourceType: "Custom::InvokeBootstrapUsersFunction",
       }
     );
+
+    bootstrapUsersFunction.grantInvoke(bootstrapUsersInvoke.grantPrincipal);
 
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }

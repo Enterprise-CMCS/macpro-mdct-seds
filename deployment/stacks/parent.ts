@@ -13,7 +13,6 @@ import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { deployFrontend } from "./deployFrontend";
-import { createCustomResourceRole } from "./customResourceRole";
 import { isLocalStack } from "../local/util";
 
 export class ParentStack extends Stack {
@@ -35,7 +34,6 @@ export class ParentStack extends Stack {
       isDev,
     };
 
-    const customResourceRole = createCustomResourceRole(commonProps);
 
     const loggingBucket = s3.Bucket.fromBucketName(
       this,
@@ -45,7 +43,6 @@ export class ParentStack extends Stack {
 
     const { tables } = createDataComponents({
       ...commonProps,
-      customResourceRole,
     });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
@@ -68,7 +65,6 @@ export class ParentStack extends Stack {
       createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl,
-        customResourceRole,
         restApiId,
       });
 
