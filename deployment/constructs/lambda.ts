@@ -5,14 +5,7 @@ import {
 } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
-import {
-  Effect,
-  ManagedPolicy,
-  PolicyDocument,
-  PolicyStatement,
-  Role,
-  ServicePrincipal,
-} from "aws-cdk-lib/aws-iam";
+import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { isLocalStack } from "../local/util";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
@@ -45,31 +38,6 @@ export class Lambda extends Construct {
       ...restProps
     } = props;
 
-    const role = new Role(this, `${id}LambdaExecutionRole`, {
-      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaPolicy: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-            }),
-            ...additionalPolicies,
-          ],
-        }),
-      },
-    });
-
     const logGroup = new LogGroup(this, `${id}LogGroup`, {
       logGroupName: `/aws/lambda/${stackName}-${id}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -81,7 +49,6 @@ export class Lambda extends Construct {
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
-      role,
       bundling: {
         assetHash: createHash("sha256")
           .update(`${Date.now()}-${id}`)
@@ -93,6 +60,10 @@ export class Lambda extends Construct {
       logGroup,
       ...restProps,
     });
+
+    for (const stmt of additionalPolicies) {
+      this.lambda.addToRolePolicy(stmt);
+    }
 
     if (api && path && method) {
       const resource = api.root.resourceForPath(path);
