@@ -139,5 +139,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     }
   );
 
+  distribution.grantCreateInvalidation(invalidateCloudfront.grantPrincipal);
+
   invalidateCloudfront.node.addDependency(deployTimeConfig);
 }
