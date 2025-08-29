@@ -82,21 +82,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     entry: "services/database/handlers/seed/seed.js",
     handler: "handler",
     timeout: Duration.seconds(900),
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:DescribeTable",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem",
-        ],
-        resources: ["*"],
-      }),
-    ],
     environment: {
       dynamoPrefix: stage,
       seedData: isDev.toString(),
@@ -119,6 +104,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
       },
     },
   }).lambda;
+
+  for (const t of tables) {
+    t.table.grantReadWriteData(seedDataFunction);
+  }
 
   const seedDataInvoke = new cr.AwsCustomResource(
     scope,
