@@ -13,11 +13,10 @@ interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  customResourceRole: iam.Role;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const { scope, stage, isDev, customResourceRole } = props;
+  const { scope, stage, isDev } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {
@@ -145,7 +144,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           resources: [seedDataFunction.functionArn],
         }),
       ]),
-      role: customResourceRole,
       resourceType: "Custom::InvokeSeedDataFunction",
     }
   );
