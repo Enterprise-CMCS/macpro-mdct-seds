@@ -5,7 +5,7 @@
 node_modules
 testcafe_results
 .DS_Store
-build_dev
+build_run
 tsconfig.tsbuildinfo
 /.env
 tests_output
@@ -16,3 +16,4 @@ tests/cypress/downloads
 .vscode
 /.cdk
 cdk.context.json
+/cli/dist

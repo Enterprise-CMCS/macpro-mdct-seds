@@ -60,6 +60,10 @@ export default class LabeledProcessRunner {
     cmd: string[],
     cwd: string | null
   ) {
+    console.log("prefix:", prefix);
+
+    cmd.unshift(prefix);
+
     const proc_opts: Record<string, any> = {};
 
     if (cwd) {
@@ -108,3 +112,7 @@ export default class LabeledProcessRunner {
     });
   }
 }
+
+const runner = new LabeledProcessRunner();
+const runCommand = runner.run_command_and_output.bind(runner);
+export { runCommand };
