@@ -82,9 +82,9 @@ export class Lambda extends Construct {
     }
 
     for (const ddbTable of tables) {
-      t.table.grantReadWriteData(this.lambda);
-      if (t.table.tableStreamArn) {
-        t.table.grantStreamRead(this.lambda);
+      ddbTable.table.grantReadWriteData(this.lambda);
+      if (ddbTable.table.tableStreamArn) {
+        ddbTable.table.grantStreamRead(this.lambda);
       }
     }
   }
