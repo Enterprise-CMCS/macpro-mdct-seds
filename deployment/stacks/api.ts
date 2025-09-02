@@ -142,7 +142,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     environment,
     additionalPolicies,
     isDev,
-    grantTables: tables,
+    tables,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -151,19 +151,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     timeout: Duration.minutes(15),
     memorySize: 3072,
     ...commonProps,
-  });
-
-  new LambdaDynamoEventSource(scope, "postKafkaData", {
-    entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    eventSourceTables: tables,
   });
 
   const dataConnectTables = tables.filter((table) =>
@@ -178,6 +165,19 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ].includes(table.node.id)
   );
 
+  new LambdaDynamoEventSource(scope, "postKafkaData", {
+    entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
+    handler: "handler",
+    timeout: Duration.seconds(120),
+    memorySize: 2048,
+    retryAttempts: 2,
+    vpc,
+    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
+    securityGroups: [kafkaSecurityGroup],
+    ...commonProps,
+    tables: dataConnectTables,
+  });
+
   new LambdaDynamoEventSource(scope, "dataConnectSource", {
     entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
     handler: "handler",
@@ -188,8 +188,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    eventSourceTables: dataConnectTables,
-    grantTables: dataConnectTables,
+    tables: dataConnectTables,
   });
 
   new Lambda(scope, "getUserById", {

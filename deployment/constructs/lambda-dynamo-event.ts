@@ -15,8 +15,7 @@ interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   stackName: string;
-  eventSourceTables: DynamoDBTable[];
-  grantTables?: DynamoDBTable[];
+  tables: DynamoDBTable[];
   isDev: boolean;
 }
 
@@ -29,8 +28,7 @@ export class LambdaDynamoEventSource extends Construct {
     const {
       additionalPolicies = [],
       memorySize = 1024,
-      eventSourceTables,
-      grantTables = [],
+      tables,
       stackName,
       timeout = Duration.seconds(6),
       isDev,
@@ -60,13 +58,13 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps,
     });
 
-    for (const t of eventSourceTables) {
-      t.table.grantStreamRead(this.lambda);
+    for (const ddbTable of tables) {
+      ddbTable.table.grantStreamRead(this.lambda);
       new lambda.CfnEventSourceMapping(
         scope,
-        `${id}${t.node.id}DynamoDBStreamEventSourceMapping`,
+        `${id}${ddbTable.node.id}DynamoDBStreamEventSourceMapping`,
         {
-          eventSourceArn: t.table.tableStreamArn,
+          eventSourceArn: ddbTable.table.tableStreamArn,
           functionName: this.lambda.functionArn,
           startingPosition: "TRIM_HORIZON",
           maximumRetryAttempts: 2,
@@ -80,10 +78,10 @@ export class LambdaDynamoEventSource extends Construct {
       this.lambda.addToRolePolicy(stmt);
     }
 
-    for (const t of grantTables) {
-      t.table.grantReadWriteData(this.lambda);
-      if (t.table.tableStreamArn) {
-        t.table.grantStreamRead(this.lambda);
+    for (const ddbTable of tables) {
+      ddbTable.table.grantReadWriteData(this.lambda);
+      if (ddbTable.table.tableStreamArn) {
+        ddbTable.table.grantStreamRead(this.lambda);
       }
     }
   }
