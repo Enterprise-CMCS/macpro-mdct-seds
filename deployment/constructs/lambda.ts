@@ -18,7 +18,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   stackName: string;
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
-  grantTables?: DynamoDBTable[];
+  tables?: DynamoDBTable[];
   isDev: boolean;
 }
 
@@ -35,7 +35,7 @@ export class Lambda extends Construct {
       path,
       method,
       additionalPolicies = [],
-      grantTables = [],
+      tables = [],
       stackName,
       isDev,
       ...restProps
@@ -81,7 +81,7 @@ export class Lambda extends Construct {
       );
     }
 
-    for (const t of grantTables) {
+    for (const ddbTable of tables) {
       t.table.grantReadWriteData(this.lambda);
       if (t.table.tableStreamArn) {
         t.table.grantStreamRead(this.lambda);
