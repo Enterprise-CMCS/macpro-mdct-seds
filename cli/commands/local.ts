@@ -1,5 +1,4 @@
-// import { runCommand } from "../lib/runner.js";
-import { runCommand } from "../lib/oldRunner.js";
+import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { region } from "../lib/consts.js";
@@ -52,8 +51,9 @@ export const local = {
     process.env.AWS_ENDPOINT_URL = "https://localhost.localstack.cloud:4566";
 
     await runCommand(
-      "yarn",
+      "CDK local bootstrap",
       [
+        "yarn",
         "cdklocal",
         "bootstrap",
         "aws://000000000000/us-east-1",
@@ -64,8 +64,9 @@ export const local = {
     );
 
     await runCommand(
-      "yarn",
+      "CDK local local-prerequisite deploy",
       [
+        "yarn",
         "cdklocal",
         "deploy",
         "--context",
@@ -77,8 +78,9 @@ export const local = {
     );
 
     await runCommand(
-      "yarn",
+      "CDK local prerequisite deploy",
       [
+        "yarn",
         "cdklocal",
         "deploy",
         "--context",
@@ -90,8 +92,9 @@ export const local = {
     );
 
     await runCommand(
-      "yarn",
+      "CDK local deploy",
       [
+        "yarn",
         "cdklocal",
         "deploy",
         "--context",
@@ -102,10 +105,10 @@ export const local = {
       "."
     );
 
-    const SeedDataFunctionName = await getCloudFormationStackOutputValues(
+    const { SeedDataFunctionName } = await getCloudFormationStackOutputValues(
       "seds-localstack",
       ["SeedDataFunctionName"]
-    )["SeedDataFunctionName"];
+    );
 
     const lambdaClient = new LambdaClient({ region });
     const lambdaCommand = new InvokeCommand({
@@ -116,8 +119,15 @@ export const local = {
     await lambdaClient.send(lambdaCommand);
 
     runCommand(
-      "yarn",
-      ["cdklocal", "watch", "--context", "stage=localstack", "--no-rollback"],
+      "CDK local deploy",
+      [
+        "yarn",
+        "cdklocal",
+        "watch",
+        "--context",
+        "stage=localstack",
+        "--no-rollback",
+      ],
       "."
     );
 

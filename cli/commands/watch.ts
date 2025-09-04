@@ -5,8 +5,15 @@ import { runFrontendLocally } from "../lib/utils.js";
 
 async function runCdkWatch(options: { stage: string }) {
   await runCommand(
-    "yarn",
-    ["cdk", "watch", "--context", `stage=${options.stage}`, "--no-rollback"],
+    "CDK watch",
+    [
+      "yarn",
+      "cdk",
+      "watch",
+      "--context",
+      `stage=${options.stage}`,
+      "--no-rollback",
+    ],
     "."
   );
 }

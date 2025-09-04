@@ -17,10 +17,18 @@ export const install = {
   command: "install",
   describe: "install all project dependencies",
   handler: async () => {
-    await runCommand("yarn", ["install", "--frozen-lockfile"], ".");
+    await runCommand(
+      "yarn install root",
+      ["yarn", "install", "--frozen-lockfile"],
+      "."
+    );
 
     for (const dir of directories) {
-      await runCommand("yarn", ["install", "--frozen-lockfile"], dir);
+      await runCommand(
+        `yarn install ${dir}`,
+        ["yarn", "install", "--frozen-lockfile"],
+        dir
+      );
     }
   },
 };

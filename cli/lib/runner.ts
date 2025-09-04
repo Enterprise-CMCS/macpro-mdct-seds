@@ -1,39 +1,66 @@
-import { spawn, SpawnOptions } from "child_process";
+/* eslint-disable multiline-comment-style */
+import { spawn } from "child_process";
 import path from "path";
 
-export async function runCommand(
-  command: string,
-  args: string[],
-  cwd: string | null,
-): Promise<void> {
-  // Resolve the full path of the working directory
-  const fullPath = cwd ? path.resolve(cwd) : null;
+const prefixes = new Set<string>();
+let maxPrefixLength = 0;
 
-  // Print the command and arguments
-  console.log(`Executing command: ${command} ${args.join(" ")}`);
-  if (fullPath) {
-    console.log(`Working directory: ${fullPath}`);
+function formattedPrefix(prefix: string): string {
+  if (!prefixes.has(prefix)) {
+    prefixes.add(prefix);
+    if (prefix.length > maxPrefixLength) {
+      maxPrefixLength = prefix.length;
+    }
   }
+  return ` ${prefix.padStart(maxPrefixLength)}|`;
+}
+
+export async function runCommand(
+  prefix: string,
+  cmd: string[],
+  cwd: string | null
+): Promise<void> {
+  const fullPath = cwd ? path.resolve(cwd) : null;
+  const options = fullPath ? { cwd: fullPath } : {};
+
+  const startingPrefix = formattedPrefix(prefix);
+  process.stdout.write(
+    `${startingPrefix} Running: ${cmd.join(" ")}\n` +
+      (fullPath ? `\n${startingPrefix} CWD: ${fullPath}` : "") +
+      "\n"
+  );
 
   return new Promise((resolve, reject) => {
-    const options: SpawnOptions = fullPath
-      ? { cwd: fullPath, stdio: ["inherit", "inherit", "inherit"] }
-      : { stdio: ["inherit", "inherit", "inherit"] };
+    const proc = spawn(cmd[0], cmd.slice(1), options);
 
-    const proc = spawn(command, args, options);
+    proc.stdout.on("data", (data) => {
+      const paddedPrefix = formattedPrefix(prefix);
+      for (const line of data.toString().split("\n")) {
+        process.stdout.write(`${paddedPrefix} ${line}\n`);
+      }
+    });
+
+    proc.stderr.on("data", (data) => {
+      const paddedPrefix = formattedPrefix(prefix);
+      for (const line of data.toString().split("\n")) {
+        process.stdout.write(`${paddedPrefix} ${line}\n`);
+      }
+    });
 
     proc.on("error", (error) => {
-      console.error(`Error: ${error.message}`);
+      const paddedPrefix = formattedPrefix(prefix);
+      process.stdout.write(`${paddedPrefix} Error: ${error}\n`);
       reject(error);
     });
 
     proc.on("close", (code) => {
+      const paddedPrefix = formattedPrefix(prefix);
+      process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
       if (code !== 0) {
-        reject(new Error(`Command failed with exit code ${code}`));
-      } else {
-        resolve();
+        reject(code);
+        return;
       }
+      resolve();
     });
   });
 }
-

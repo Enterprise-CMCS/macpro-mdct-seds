@@ -28,8 +28,9 @@ export const deploy = {
 
     if (await stackExists("seds-prerequisites")) {
       await runCommand(
-        "yarn",
+        "CDK deploy",
         [
+          "yarn",
           "cdk",
           "deploy",
           "--context",

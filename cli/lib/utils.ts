@@ -9,7 +9,7 @@ import { region } from "./consts.js";
 export async function getCloudFormationStackOutputValues(
   stackName: string,
   outputNames: string[]
-) {
+): Promise<{ [key: string]: string }> {
   const cloudFormationClient = new CloudFormationClient({ region });
   const command = new DescribeStacksCommand({ StackName: stackName });
   const response = await cloudFormationClient.send(command);
@@ -27,12 +27,12 @@ export async function getCloudFormationStackOutputValues(
 }
 
 export async function runFrontendLocally(stage: string) {
-  let apiUrl: string;
   if (stage === "localstack") {
-    apiUrl = await getCloudFormationStackOutputValues(`seds-${stage}`, [
-      "ApiUrl",
-    ])["ApiUrl"];
-    await writeLocalUiEnvFile(apiUrl);
+    const { ApiUrl } = await getCloudFormationStackOutputValues(
+      `seds-${stage}`,
+      ["ApiUrl"]
+    );
+    await writeLocalUiEnvFile(ApiUrl);
   } else {
     const outputValues = await getCloudFormationStackOutputValues(
       `seds-${stage}`,
@@ -49,5 +49,5 @@ export async function runFrontendLocally(stage: string) {
     await writeLocalUiEnvFile("", outputValues);
   }
 
-  runCommand("yarn", ["start"], "services/ui-src");
+  runCommand("ui", ["yarn", "start"], "services/ui-src");
 }

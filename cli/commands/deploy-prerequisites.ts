@@ -7,8 +7,14 @@ export const deployPrerequisites = {
   handler: async () => {
     await checkIfAuthenticated();
     await runCommand(
-      "yarn",
-      ["cdk", "deploy", "--app", '"npx tsx deployment/prerequisites.ts"'],
+      "CDK local prerequisite deploy",
+      [
+        "yarn",
+        "cdk",
+        "deploy",
+        "--app",
+        '"npx tsx deployment/prerequisites.ts"',
+      ],
       "."
     );
   },
