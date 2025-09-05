@@ -4,8 +4,9 @@ import {
   aws_iam as iam,
   aws_wafv2 as wafv2,
   Aws,
-  Duration,
+  CfnOutput,
   custom_resources as cr,
+  Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
@@ -265,6 +266,22 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }
+
+  new CfnOutput(scope, "CognitoIdentityPoolId", {
+    value: identityPool.ref,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolId", {
+    value: userPool.userPoolId,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolClientId", {
+    value: userPoolClient.userPoolClientId,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolClientDomain", {
+    value: userPoolDomain.domainName,
+  });
 
   return {
     userPoolDomainName: userPoolDomain.domainName,

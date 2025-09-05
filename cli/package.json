@@ -1,0 +1,20 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build:cli": "tsc"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.744.0",
+    "@aws-sdk/client-lambda": "3.744.0",
+    "@aws-sdk/client-sts": "^3.744.0",
+    "dotenv": "^16.0.3",
+    "readline-sync": "^1.4.10",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
