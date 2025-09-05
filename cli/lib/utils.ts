@@ -32,7 +32,7 @@ export async function runFrontendLocally(stage: string) {
       `seds-${stage}`,
       ["ApiUrl"]
     );
-    await writeLocalUiEnvFile(ApiUrl);
+    await writeLocalUiEnvFile({ ApiUrl });
   } else {
     const outputValues = await getCloudFormationStackOutputValues(
       `seds-${stage}`,
@@ -46,7 +46,7 @@ export async function runFrontendLocally(stage: string) {
       ]
     );
 
-    await writeLocalUiEnvFile("", outputValues);
+    await writeLocalUiEnvFile(outputValues);
   }
 
   runCommand("ui", ["yarn", "start"], "services/ui-src");

@@ -4,48 +4,50 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const outputPath = path.join(__dirname, "../../../services/ui-src", "public");
-const configFilePath = path.resolve(outputPath, "env-config.js");
+const configFilePath = path.resolve(
+  path.join(__dirname, "../../../services/ui-src/public/env-config.js")
+);
 
 const region = "us-east-1";
 
-export async function writeLocalUiEnvFile(
-  apiUrl?: string,
-  outputValues?: { [key: string]: string }
-) {
-  if (!apiUrl && !outputValues) {
-    throw new Error("Either apiUrl or outputValues must be provided");
-  }
+export async function writeLocalUiEnvFile(values: { [key: string]: string }) {
+  const apiUrl = values["ApiUrl"];
+  if (!apiUrl) throw new Error("ApiUrl is required");
 
-  let envVariables = {};
-  if (apiUrl) {
-    envVariables = {
-      SKIP_PREFLIGHT_CHECK: "true",
-      API_REGION: region,
-      API_URL: apiUrl.replace("https", "http"),
-      COGNITO_REGION: region,
-      COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
-      COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-      COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
-      COGNITO_USER_POOL_CLIENT_DOMAIN:
-        process.env.COGNITO_USER_POOL_CLIENT_DOMAIN,
-      COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
-      COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
-    };
-  } else if (outputValues) {
-    envVariables = {
-      SKIP_PREFLIGHT_CHECK: "true",
-      API_REGION: region,
-      API_URL: outputValues["ApiUrl"],
-      COGNITO_REGION: region,
-      COGNITO_IDENTITY_POOL_ID: outputValues["CognitoIdentityPoolId"],
-      COGNITO_USER_POOL_ID: outputValues["CognitoUserPoolId"],
-      COGNITO_USER_POOL_CLIENT_ID: outputValues["CognitoUserPoolClientId"],
-      COGNITO_USER_POOL_CLIENT_DOMAIN: `${outputValues["CognitoUserPoolClientDomain"]}.auth.us-east-1.amazoncognito.com`,
-      COGNITO_REDIRECT_SIGNIN: outputValues["CloudFrontUrl"],
-      COGNITO_REDIRECT_SIGNOUT: outputValues["CloudFrontUrl"],
-    };
-  }
+  const hasFullOutputs = [
+    "CognitoIdentityPoolId",
+    "CognitoUserPoolId",
+    "CognitoUserPoolClientId",
+    "CognitoUserPoolClientDomain",
+    "CloudFrontUrl",
+  ].every((k) => Boolean(values[k]));
+
+  const envVariables = hasFullOutputs
+    ? {
+        SKIP_PREFLIGHT_CHECK: "true",
+        API_REGION: region,
+        API_URL: values["ApiUrl"],
+        COGNITO_REGION: region,
+        COGNITO_IDENTITY_POOL_ID: values["CognitoIdentityPoolId"],
+        COGNITO_USER_POOL_ID: values["CognitoUserPoolId"],
+        COGNITO_USER_POOL_CLIENT_ID: values["CognitoUserPoolClientId"],
+        COGNITO_USER_POOL_CLIENT_DOMAIN: `${values["CognitoUserPoolClientDomain"]}.auth.${region}.amazoncognito.com`,
+        COGNITO_REDIRECT_SIGNIN: values["CloudFrontUrl"],
+        COGNITO_REDIRECT_SIGNOUT: values["CloudFrontUrl"],
+      }
+    : {
+        SKIP_PREFLIGHT_CHECK: "true",
+        API_REGION: region,
+        API_URL: apiUrl.replace("https", "http"),
+        COGNITO_REGION: region,
+        COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
+        COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+        COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
+        COGNITO_USER_POOL_CLIENT_DOMAIN:
+          process.env.COGNITO_USER_POOL_CLIENT_DOMAIN,
+        COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
+        COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
+      };
 
   await fs.rm(configFilePath, { force: true });
 

@@ -1355,11 +1355,6 @@
   dependencies:
     undici-types "~6.19.2"
 
-"@types/readline-sync@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.npmjs.org/@types/readline-sync/-/readline-sync-1.4.8.tgz"
-  integrity sha512-BL7xOf0yKLA6baAX6MMOnYkoflUyj/c7y3pqMRfU0va7XlwHAOTOIo4x55P/qLfMsuaYdJJKubToLqRVmRtRZA==
-
 "@types/uuid@^9.0.1":
   version "9.0.8"
   resolved "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.8.tgz"
@@ -2127,11 +2122,6 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
-
-readline-sync@^1.4.10:
-  version "1.4.10"
-  resolved "https://registry.npmjs.org/readline-sync/-/readline-sync-1.4.10.tgz"
-  integrity sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==
 
 require-directory@^2.1.1:
   version "2.1.1"

@@ -29,7 +29,6 @@
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "@types/readline-sync": "^1.4.8",
     "@types/yargs": "^15.0.10",
     "aws-cdk": "^2.1002.0",
     "aws-cdk-local": "^2.19.2",
@@ -47,7 +46,6 @@
     "aws-cdk-lib": "^2.185.0",
     "constructs": "^10.3.0",
     "jsdom": "^26.1.0",
-    "readline-sync": "^1.4.10",
     "source-map-support": "^0.5.21"
   }
 }
