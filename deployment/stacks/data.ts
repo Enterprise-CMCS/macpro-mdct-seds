@@ -105,8 +105,8 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
   }).lambda;
 
-  for (const t of tables) {
-    t.table.grantReadWriteData(seedDataFunction);
+  for (const ddbTable of tables) {
+    ddbTable.table.grantReadWriteData(seedDataFunction);
   }
 
   const seedDataInvoke = new cr.AwsCustomResource(
