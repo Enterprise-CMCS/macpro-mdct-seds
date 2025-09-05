@@ -1,35 +1,17 @@
-.applicable-slider {
-  #range-slider {
-    all: unset;
-    -webkit-appearance: none;
-    appearance: none;
-    width: 50px;
-    display: inline-block;
-    overflow: visible;
-    margin: 0;
-  }
+.applicable-wrapper {
+  legend {
+    /* This style is overriding bootstrap's legend rules. */
+    border-bottom: initial;
+    /* This style is overriding bootstrap's legend rules. */
+    margin-bottom: initial;
 
-  #range-slider::-webkit-slider-thumb {
-    background: #2491ff;
-    border: 0.3rem solid #2491ff;
-  }
+    /*
+     * This style is here because the .usa-legend margin-top isn't
+     * actually giving me any space between this and the Print button.
+     */
+    padding-top: 1.5rem;
 
-  // for mozilla
-  #range-slider::-moz-range-thumb {
-    background: #2491ff;
-    border: 0.3rem solid #2491ff;
-  }
-
-  #range-slider:disabled {
-    opacity: 0.3;
-  }
-
-  p {
-    display: inline-block;
-    padding: 0 0.4rem;
-  }
-
-  .is-selected {
+    /* All of our form questions are bold, so this one is too. */
     font-weight: bold;
   }
 }

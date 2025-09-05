@@ -1,3 +1,5 @@
+import { FormStatus } from "../libs/types";
+
 const currentFormMock_21E = {
   currentForm: {
     questions: [
@@ -3302,11 +3304,9 @@ const currentFormMock_21E = {
       year: 2021,
       quarter: 1,
       validation_percent: 0.03,
-      status: "In Progress",
-      status_id: 1,
+      status_id: FormStatus.InProgress,
       status_modified_by: "seed",
       status_date: "01-15-2021",
-      not_applicable: false,
       state_comments: [
         {
           type: "text_multiline",
