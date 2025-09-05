@@ -13,11 +13,10 @@ interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  customResourceRole: iam.Role;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const { scope, stage, isDev, customResourceRole } = props;
+  const { scope, stage, isDev } = props;
 
   const tables = [
     new DynamoDBTable(scope, "FormAnswers", {
@@ -35,25 +34,25 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           type: dynamodb.AttributeType.STRING,
         },
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "FormQuestions", {
       stage,
       isDev,
       name: "form-questions",
       partitionKey: { name: "question", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "FormTemplates", {
       stage,
       isDev,
       name: "form-templates",
       partitionKey: { name: "year", type: dynamodb.AttributeType.NUMBER },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "Forms", {
       stage,
       isDev,
       name: "forms",
       partitionKey: { name: "form", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "StateForms", {
       stage,
       isDev,
@@ -62,19 +61,19 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "state_form",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "States", {
       stage,
       isDev,
       name: "states",
       partitionKey: { name: "state_id", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "AuthUser", {
       stage,
       isDev,
       name: "auth-user",
       partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
-    }).identifiers,
+    }),
   ];
 
   // seed data
@@ -83,21 +82,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     entry: "services/database/handlers/seed/seed.js",
     handler: "handler",
     timeout: Duration.seconds(900),
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:DescribeTable",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem",
-        ],
-        resources: ["*"],
-      }),
-    ],
     environment: {
       dynamoPrefix: stage,
       seedData: isDev.toString(),
@@ -120,6 +104,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
       },
     },
   }).lambda;
+
+  for (const ddbTable of tables) {
+    ddbTable.table.grantReadWriteData(seedDataFunction);
+  }
 
   const seedDataInvoke = new cr.AwsCustomResource(
     scope,
@@ -145,7 +133,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
           resources: [seedDataFunction.functionArn],
         }),
       ]),
-      role: customResourceRole,
       resourceType: "Custom::InvokeSeedDataFunction",
     }
   );
