@@ -3,25 +3,22 @@ import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footer position-relative z-bottom" data-testid="Footer">
-      <GridContainer className="container" containerSize="none">
-        <Grid row>
-          <Grid col={6} tablet={{ col: true }}>
-            <div className="logo">
-              <ul>
-                <li>
-                  <img
-                    src="/img/seds-logo.svg"
-                    alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
-                  />
-                </li>
-              </ul>
+    <div className="footer" data-testid="Footer">
+      <GridContainer className="footerTop" containerSize="none">
+        <Grid row className="footerTopContainer">
+          <Grid col={6} tablet={{ col: true }} className="footerTopFlex">
+            <div className="footerTopLeftContainer">
+              <img
+                className="sedsLogo"
+                src="/img/seds-logo.svg"
+                alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
+              />
             </div>
 
           </Grid>
           <Grid col={6} tablet={{ col: true }}>
-            <div className="info">
-              <div className="help">
+            <div className="footerTopContainer">
+              <div className="footerTopRightTopFlex">
                 <div className="hhsLogo">
                   <img
                       src="/img/logo_hhs.svg"
@@ -35,7 +32,7 @@ const Footer = () => {
                   />
                 </div>
               </div>
-              <div className="title">
+              <div className="hhsCopyText">
                 A federal government managed website by the Centers for Medicare
                 &amp; Medicaid Services
               </div>

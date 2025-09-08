@@ -7,36 +7,47 @@
   flex-direction: column;
   z-index: 2;
 
-  .container {
-    width: 100%;
-    padding: 2rem;
-  }
-
-  .logo {
-    margin-bottom: 1.2rem;
-
-    ul {
-      padding: 0;
-
-      li {
-        display: inline-block;
-        list-style-type: none;
-        margin-left: 0;
-        padding-right: 0.4rem;
-
-        img {
-          max-height: 50px;
-        }
-
-        &:last-of-type {
-          img {
-            max-height: 80px;
-          }
-        }
-      }
+  .footerTopContainer {
+    display: flex;
+    flex: 0 0 50%;
+    min-width: 100%;
+    .desktop & {
+      min-width: auto;
     }
   }
 
+  
+  .footerTopLeftContainer {
+    display: flex;
+    max-width: 100%;
+    min-width: 100%;
+    margin-bottom: 1em;
+    .desktop & {
+      margin-bottom: 0;
+      max-width: 50%;
+      min-width: auto;
+    }
+  }
+  
+  .sedsLogo {
+    max-height: 4.875rem;
+    margin: 0 auto;
+    .desktop & {
+      margin: 0;
+    }
+  }
+
+  .footerTopRightTopFlex {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .desktop & {
+      justify-content: flex-end;
+      flex-direction: row;
+    }
+  }
+  
   .tagline {
     color: $brand-primary;
     font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman",
@@ -47,11 +58,6 @@
     clear: both;
     font-size: 0.75rem;
     text-align: right;
-
-    .title {
-      float: right;
-      max-width: 274px;
-    }
 
     .address {
       float: right;
@@ -95,5 +101,20 @@
     flex: 0 0 75%;
     max-width: 75%;
     margin-top: 0.25rem;
+  }
+
+  .hhsLogo { 
+    display: inline-block;
+    width: 4.375rem;
+  }
+
+  .hhsCopyText {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    font-size: sm;
+    line-height: 21px;
+    margin-top: 0;
+    max-width: 274px;
   }
 }
