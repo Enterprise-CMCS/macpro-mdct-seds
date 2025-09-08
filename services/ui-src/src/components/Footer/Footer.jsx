@@ -20,7 +20,30 @@ const Footer = () => {
 
           </Grid>
           <Grid col={6} tablet={{ col: true }}>
-            <div className="footer-nav">
+            <div className="info">
+              <div className="help">
+                <div className="hhsLogo">
+                  <img
+                      src="/img/logo_hhs.svg"
+                      alt="Department of Health and Human Services, USA"
+                  />
+                </div>
+                <div className="medicaidLogo">
+                  <img
+                      src="/img/logo_medicaid.svg"
+                      alt="Medicaid.gov: Keeping America Healthy"
+                  />
+                </div>
+              </div>
+              <div className="title">
+                A federal government managed website by the Centers for Medicare
+                &amp; Medicaid Services
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      </GridContainer>
+      {/* <div className="footer-nav">
               <FooterNav
                 aria-label="Footer navigation"
                 size="slim"
@@ -35,34 +58,7 @@ const Footer = () => {
                   </a>
                 ]}
               />
-            </div>
-            <div className="info">
-              <div className="help">
-                <div className="medicaidLogo">
-                  <img
-                      src="/img/logo_medicaid.svg"
-                      alt="Medicaid.gov: Keeping America Healthy"
-                  />
-                </div>
-                <p>
-                  Email{" "}
-                  <a
-                    data-test="attribute-email"
-                    href="mailto:mdct_help@cms.hhs.gov"
-                  >
-                    MDCT_Help@cms.hhs.gov
-                  </a>{" "}
-                  for help or feedback.
-                </p>
-              </div>
-              <div className="title">
-                A federal government managed website by the Centers for Medicare
-                &amp; Medicaid Services
-              </div>
-            </div>
-          </Grid>
-        </Grid>
-      </GridContainer>
+            </div> */}
       <div className="address">7500 Security Boulevard Baltimore, MD 21244</div>
     </div>
   );
