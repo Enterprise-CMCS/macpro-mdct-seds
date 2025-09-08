@@ -3,7 +3,7 @@ import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footer" data-testid="Footer">
+    <div className="footer" data-testid="Footer" role="contentinfo">
       <GridContainer className="footerTop" containerSize="none">
         <Grid row className="footerTopContainer">
           <Grid col={6} tablet={{ col: true }} className="footerTopFlex">

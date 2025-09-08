@@ -4,8 +4,16 @@
 .footer {
   background: $brand-tertiary;
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   z-index: 2;
+  .desktop & {
+    position: sticky;
+    z-index: sticky;
+  }
+  @media print {
+    display: none;
+  }
 
   .footerTopContainer {
     display: flex;
@@ -15,7 +23,6 @@
       min-width: auto;
     }
   }
-
   
   .footerTopLeftContainer {
     display: flex;
