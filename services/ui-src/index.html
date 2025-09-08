@@ -33,13 +33,7 @@
       "mdctsedsval.cms.gov": "qa"
     };
     const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-    const tealiumDomainMap = {
-      "prod": "tags.tiqcdn.com",
-      "qa": "tags.tiqcdn.com",
-      "dev": "tealium-tags.cms.gov",
-    }
-    const tealiumDomain = tealiumDomainMap[tealiumEnv];
-    const tealiumPath = `https://${tealiumDomain}/cms-general/${tealiumEnv}`;
+    const tealiumPath = `https://tealium-tags.cms.gov/cms-general/${tealiumEnv}`;
     document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
     document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
   </script>
