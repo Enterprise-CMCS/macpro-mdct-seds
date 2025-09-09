@@ -7,7 +7,7 @@ import {
   runFrontendLocally,
 } from "../lib/utils.js";
 
-function isColimaRunning() {
+const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
       encoding: "utf-8",
@@ -17,9 +17,9 @@ function isColimaRunning() {
   } catch {
     return false;
   }
-}
+};
 
-function isLocalStackRunning() {
+const isLocalStackRunning = () => {
   try {
     return execSync("localstack status", {
       encoding: "utf-8",
@@ -28,7 +28,7 @@ function isLocalStackRunning() {
   } catch {
     return false;
   }
-}
+};
 
 export const local = {
   command: "local",
@@ -45,7 +45,7 @@ export const local = {
       throw "LocalStack needs to be running.";
     }
 
-    process.env.AWS_DEFAULT_REGION = "us-east-1";
+    process.env.AWS_DEFAULT_REGION = region;
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "https://localhost.localstack.cloud:4566";
@@ -56,7 +56,7 @@ export const local = {
         "yarn",
         "cdklocal",
         "bootstrap",
-        "aws://000000000000/us-east-1",
+        `aws://000000000000/${region}`,
         "--context",
         "stage=bootstrap",
       ],

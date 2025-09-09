@@ -5,7 +5,7 @@ import path from "path";
 const prefixes = new Set<string>();
 let maxPrefixLength = 0;
 
-function formattedPrefix(prefix: string): string {
+const formattedPrefix = async (prefix: string) => {
   if (!prefixes.has(prefix)) {
     prefixes.add(prefix);
     if (prefix.length > maxPrefixLength) {
@@ -13,13 +13,13 @@ function formattedPrefix(prefix: string): string {
     }
   }
   return ` ${prefix.padStart(maxPrefixLength)}|`;
-}
+};
 
-export async function runCommand(
+export const runCommand = async (
   prefix: string,
   cmd: string[],
   cwd: string | null
-): Promise<void> {
+) => {
   const fullPath = cwd ? path.resolve(cwd) : null;
   const options = fullPath ? { cwd: fullPath } : {};
 
@@ -30,31 +30,31 @@ export async function runCommand(
       "\n"
   );
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const proc = spawn(cmd[0], cmd.slice(1), options);
 
-    proc.stdout.on("data", (data) => {
-      const paddedPrefix = formattedPrefix(prefix);
+    proc.stdout.on("data", async (data) => {
+      const paddedPrefix = await formattedPrefix(prefix);
       for (const line of data.toString().split("\n")) {
         process.stdout.write(`${paddedPrefix} ${line}\n`);
       }
     });
 
-    proc.stderr.on("data", (data) => {
-      const paddedPrefix = formattedPrefix(prefix);
+    proc.stderr.on("data", async (data) => {
+      const paddedPrefix = await formattedPrefix(prefix);
       for (const line of data.toString().split("\n")) {
         process.stdout.write(`${paddedPrefix} ${line}\n`);
       }
     });
 
-    proc.on("error", (error) => {
-      const paddedPrefix = formattedPrefix(prefix);
+    proc.on("error", async (error) => {
+      const paddedPrefix = await formattedPrefix(prefix);
       process.stdout.write(`${paddedPrefix} Error: ${error}\n`);
       reject(error);
     });
 
-    proc.on("close", (code) => {
-      const paddedPrefix = formattedPrefix(prefix);
+    proc.on("close", async (code) => {
+      const paddedPrefix = await formattedPrefix(prefix);
       process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
       if (code !== 0) {
         reject(code);
@@ -63,4 +63,4 @@ export async function runCommand(
       resolve();
     });
   });
-}
+};

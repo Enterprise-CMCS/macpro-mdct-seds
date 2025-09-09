@@ -13,7 +13,7 @@ const directories = [
   "./services/ui-waflog-s3-bucket",
 ];
 
-export async function installDeps() {
+export const installDeps = async () => {
   await runCommand(
     "yarn install root",
     ["yarn", "install", "--frozen-lockfile"],
@@ -27,7 +27,7 @@ export async function installDeps() {
       dir
     );
   }
-}
+};
 
 export const install = {
   command: "install",

@@ -1,6 +1,7 @@
 import path, { dirname } from "path";
 import { promises as fs } from "fs";
 import { fileURLToPath } from "url";
+import { region } from "./consts.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -8,9 +9,9 @@ const configFilePath = path.resolve(
   path.join(__dirname, "../../../services/ui-src/public/env-config.js")
 );
 
-const region = "us-east-1";
-
-export async function writeLocalUiEnvFile(values: { [key: string]: string }) {
+export const writeLocalUiEnvFile = async (values: {
+  [key: string]: string;
+}) => {
   const apiUrl = values["ApiUrl"];
   if (!apiUrl) throw new Error("ApiUrl is required");
 
@@ -19,7 +20,6 @@ export async function writeLocalUiEnvFile(values: { [key: string]: string }) {
     "CognitoUserPoolId",
     "CognitoUserPoolClientId",
     "CognitoUserPoolClientDomain",
-    "CloudFrontUrl",
   ].every((k) => Boolean(values[k]));
 
   const envVariables = hasFullOutputs
@@ -32,8 +32,8 @@ export async function writeLocalUiEnvFile(values: { [key: string]: string }) {
         COGNITO_USER_POOL_ID: values["CognitoUserPoolId"],
         COGNITO_USER_POOL_CLIENT_ID: values["CognitoUserPoolClientId"],
         COGNITO_USER_POOL_CLIENT_DOMAIN: `${values["CognitoUserPoolClientDomain"]}.auth.${region}.amazoncognito.com`,
-        COGNITO_REDIRECT_SIGNIN: values["CloudFrontUrl"],
-        COGNITO_REDIRECT_SIGNOUT: values["CloudFrontUrl"],
+        COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
+        COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
       }
     : {
         SKIP_PREFLIGHT_CHECK: "true",
@@ -60,4 +60,4 @@ export async function writeLocalUiEnvFile(values: { [key: string]: string }) {
   ].join("\n");
 
   await fs.writeFile(configFilePath, envConfigContent);
-}
+};

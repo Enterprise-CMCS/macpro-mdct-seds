@@ -52,7 +52,7 @@ export class LambdaDynamoEventSource extends Construct {
           .digest("hex"),
         minify: true,
         sourceMap: true,
-        nodeModules: ["kafkajs", "jsdom"],
+        nodeModules: ["kafkajs"],
       },
       logGroup,
       ...restProps,

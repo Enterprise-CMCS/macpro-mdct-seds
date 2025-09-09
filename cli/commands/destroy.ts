@@ -8,7 +8,7 @@ import { checkIfAuthenticated } from "../lib/sts.js";
 import { project, region } from "../lib/consts.js";
 import readlineSync from "readline-sync";
 
-function confirmDestroyCommand(stack: string) {
+const confirmDestroyCommand = (stack: string) => {
   const orange = "\x1b[38;5;208m";
   const reset = "\x1b[0m";
 
@@ -33,7 +33,7 @@ The destroy operation has been aborted.
 **********************************************************************${reset}
 `);
   }
-}
+};
 
 const waitForStackDeleteComplete = async (
   client: CloudFormationClient,

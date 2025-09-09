@@ -6,27 +6,27 @@ import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 import { runCommand } from "../lib/runner.js";
 import { region } from "./consts.js";
 
-export async function getCloudFormationStackOutputValues(
+export const getCloudFormationStackOutputValues = async (
   stackName: string,
   outputNames: string[]
-): Promise<{ [key: string]: string }> {
+): Promise<{ [key: string]: string }> => {
   const cloudFormationClient = new CloudFormationClient({ region });
   const command = new DescribeStacksCommand({ StackName: stackName });
   const response = await cloudFormationClient.send(command);
 
   const outputs = response.Stacks?.[0]?.Outputs!;
+  const result: { [key: string]: string } = {};
 
-  const result = {};
   for (const outputName of outputNames) {
     result[outputName] = outputs.find(
       (output) => output.OutputKey === outputName
-    )?.OutputValue;
+    )?.OutputValue!;
   }
 
   return result;
-}
+};
 
-export async function runFrontendLocally(stage: string) {
+export const runFrontendLocally = async (stage: string) => {
   if (stage === "localstack") {
     const { ApiUrl } = await getCloudFormationStackOutputValues(
       `seds-${stage}`,
@@ -42,7 +42,6 @@ export async function runFrontendLocally(stage: string) {
         "CognitoUserPoolId",
         "CognitoUserPoolClientId",
         "CognitoUserPoolClientDomain",
-        "CloudFrontUrl",
       ]
     );
 
@@ -50,4 +49,4 @@ export async function runFrontendLocally(stage: string) {
   }
 
   runCommand("ui", ["yarn", "start"], "services/ui-src");
-}
+};

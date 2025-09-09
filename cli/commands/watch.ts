@@ -3,7 +3,7 @@ import { checkIfAuthenticated } from "../lib/sts.js";
 import { runCommand } from "../lib/runner.js";
 import { runFrontendLocally } from "../lib/utils.js";
 
-async function runCdkWatch(options: { stage: string }) {
+const runCdkWatch = async (options: { stage: string }) => {
   await runCommand(
     "CDK watch",
     [
@@ -16,7 +16,7 @@ async function runCdkWatch(options: { stage: string }) {
     ],
     "."
   );
-}
+};
 
 export const watch = {
   command: "watch",
