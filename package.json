@@ -35,9 +35,7 @@
     "chromedriver": ">=88.0.0",
     "dotenv": "^8.2.0",
     "typescript": "^5.7.3",
-    "yargs": "^16.1.1"
-  },
-  "dependencies": {
+    "yargs": "^16.1.1",
     "@aws-sdk/client-secrets-manager": "^3.744.0",
     "aws-cdk-lib": "^2.185.0",
     "constructs": "^10.3.0",
