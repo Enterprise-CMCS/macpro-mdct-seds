@@ -15,7 +15,8 @@
       "yarn.lock",
       "node_modules",
       "test",
-      "services/ui-src/**"
+      "services/ui-src/src/**",
+      "services/ui-src/build/**"
     ]
   },
   "context": {
