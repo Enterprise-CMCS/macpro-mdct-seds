@@ -72,7 +72,7 @@ export const local = {
         "--context",
         "stage=prerequisites",
         "--app",
-        '"npx tsx deployment/local/prerequisites.ts"',
+        '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
       ],
       "."
     );
@@ -86,7 +86,7 @@ export const local = {
         "--context",
         "stage=prerequisites",
         "--app",
-        '"npx tsx deployment/prerequisites.ts"',
+        '"npx --prefix deployment tsx deployment/prerequisites.ts"',
       ],
       "."
     );
