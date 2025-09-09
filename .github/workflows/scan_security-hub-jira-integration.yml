@@ -9,7 +9,21 @@ permissions:
   id-token: write
 
 jobs:
+  trigger-action-on-deploy-production:
+    if: github.refs != 'refs/head/production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Trigger production workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run .github/workflows/scan_security-hub-jira-integration.yml \
+            --ref production
+
   sync:
+    if: github.refs == 'refs/heads/production'
     name: Run sync
     runs-on: ubuntu-latest
     steps:
