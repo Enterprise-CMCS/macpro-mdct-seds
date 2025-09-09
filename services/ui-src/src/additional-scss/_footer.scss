@@ -1,7 +1,7 @@
 /**********************
   FOOTER
 **********************/
-.footer {
+.root {
   background: $brand-tertiary;
   display: flex;
   flex-shrink: 0;
@@ -44,34 +44,99 @@
     }
   }
 
-  .footerTopRightTopFlex {
+  .footerTopRightContainer {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    flex: 0 0 50%;
+    max-width: 100%;
+    min-width: 100%;
     .desktop & {
-      justify-content: flex-end;
-      flex-direction: row;
+      min-width: auto;
     }
   }
+
+.footerTopRightTopFlex {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .desktop & {
+    justify-content: flex-end;
+    flex-direction: row;
+  }
+}
+
+.footerCMSBrandingRight {
+  display: flex;
+  flex: 0 0 75%;
+  max-width: 25rem;
+}
+
+.footerBottom {
+  min-height: 3rem;
+  // bg: "palette.primary_darkest",
+  // background-color:
+  font-size: 14;
+}
+
+// .footerBottomContainer {
   
-  .tagline {
-    color: $brand-primary;
-    font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman",
-      "Times", serif;
+// }
+
+.footerBottomFlex {
+  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  justify-content: space-between;
+  align-items: normal;
+  flex-direction: column;
+  .desktop & {
+    align-items: initial;
+    flex-direction: row;
   }
+}
 
-  .info {
-    clear: both;
-    font-size: 0.75rem;
-    text-align: right;
+.footerBottomLinkFlex {
+  display: flex;
+  flex-direction: column;
+  .desktop & {
+    flex-direction: row;
+  }
+  a:first-of-type > p {
+    margin-left: 0;
+  }
+}
 
-    .address {
-      float: right;
-      font-weight: $font-weight-light;
-      clear: both;
+.link {
+  margin: 0.5rem 0;
+  .desktop & {
+    &first-of-type {
+      padding-right: .5rem;
+      border-right: 1px solid;
+      border-color: white;
+    }
+    &:last-child {
+      padding-left: .5rem;
     }
   }
+}
+  
+.tagline {
+  color: $brand-primary;
+  font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman",
+    "Times", serif;
+}
+
+.info {
+clear: both;
+font-size: 0.75rem;
+text-align: right;
+
+  .address {
+    float: right;
+    font-weight: $font-weight-light;
+    clear: both;
+  }
+}
 
   .footer-nav {
     float: right;
@@ -80,28 +145,18 @@
       font-size: 0.85rem;
       padding-right: 0;
       text-align: right;
-
-      li {
-        border-left: 1px solid $black;
-
-        &:first-of-type {
-          border-left: none;
-        }
-
-        a {
-          font-weight: $font-weight-normal;
-          padding: 0;
-          text-decoration: underline;
-        }
-      }
     }
   }
+
   .address {
     background-color: $brand-primary;
     color: white;
-    padding: 0.75rem 2rem;
-    text-align: right;
     font-weight: bold;
+    align-self: right;
+    margin: 2.25rem 0 0;
+    .desktop & {
+      margin: 0;
+    }
   }
 
   .medicaidLogo {
