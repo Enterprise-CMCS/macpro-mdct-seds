@@ -1,6 +1,7 @@
 import { runCommand } from "../lib/runner.js";
 
 const directories = [
+  "./deployment",
   "./tests/cypress",
   "./nightwatch",
   "./services/app-api",
