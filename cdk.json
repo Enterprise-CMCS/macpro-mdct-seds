@@ -1,5 +1,5 @@
 {
-  "app": "npx tsx deployment/app.ts",
+  "app": "npx --prefix deployment tsx deployment/app.ts",
   "requireApproval": "never",
   "output": ".cdk/cdk.out",
   "watch": {
