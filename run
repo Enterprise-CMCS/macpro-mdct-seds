@@ -85,9 +85,6 @@ pushd cli
 yarn install --frozen-lockfile
 popd 
 
-# Ensure packages are up to date.
-yarn install --frozen-lockfile
-
 # build the CLI and run it from cli/dist
 yarn --cwd cli tsc -p tsconfig.json
 node ./cli/dist/run.js "${ARGS[@]-}"
