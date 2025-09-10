@@ -103,10 +103,9 @@ export const local = {
       "."
     );
 
-    const { SeedDataFunctionName } = await getCloudFormationStackOutputValues(
-      "seds-localstack",
-      ["SeedDataFunctionName"]
-    );
+    const SeedDataFunctionName = (
+      await getCloudFormationStackOutputValues("seds-localstack")
+    )["SeedDataFunctionName"];
 
     const lambdaClient = new LambdaClient({ region });
     const lambdaCommand = new InvokeCommand({
