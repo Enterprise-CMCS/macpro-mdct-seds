@@ -6,13 +6,18 @@ import {
 } from "@aws-sdk/client-cloudformation";
 import { checkIfAuthenticated } from "../lib/sts.js";
 import { project, region } from "../lib/consts.js";
-import readlineSync from "readline-sync";
+import { createInterface } from "node:readline/promises";
 
-const confirmDestroyCommand = (stack: string) => {
+const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";
   const reset = "\x1b[0m";
 
-  const confirmation = readlineSync.question(`
+  const readline = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const confirmation = await readline.question(`
 ${orange}********************************* STOP *******************************
 You've requested a destroy for:
 

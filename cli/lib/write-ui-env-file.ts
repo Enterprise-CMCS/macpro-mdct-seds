@@ -1,7 +1,7 @@
 import path, { dirname } from "path";
 import { promises as fs } from "fs";
 import { fileURLToPath } from "url";
-import { region } from "./consts.js";
+import { region } from "./consts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

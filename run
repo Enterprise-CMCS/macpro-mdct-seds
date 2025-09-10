@@ -85,5 +85,7 @@ pushd cli
 yarn install --frozen-lockfile
 popd 
 
+yarn install --frozen-lockfile
+
 # run the CLI
-./cli/node_modules/.bin/tsx cli/run.ts "${ARGS[@]-}"
+yarn tsx cli/run.ts "${ARGS[@]-}"

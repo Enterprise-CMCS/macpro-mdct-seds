@@ -1,11 +1,11 @@
-import { runCommand } from "../lib/runner.js";
+import { runCommand } from "../lib/runner";
 import { execSync } from "child_process";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { region } from "../lib/consts.js";
+import { region } from "../lib/consts";
 import {
   getCloudFormationStackOutputValues,
   runFrontendLocally,
-} from "../lib/utils.js";
+} from "../lib/utils";
 
 const isColimaRunning = () => {
   try {
@@ -35,8 +35,6 @@ export const local = {
   describe:
     "run our app via cdk deployment to localstack locally and react locally together",
   handler: async () => {
-    // const runner = new LabeledProcessRunner();
-
     if (!isColimaRunning()) {
       throw "Colima needs to be running.";
     }

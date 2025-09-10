@@ -1,4 +1,4 @@
-import { runCommand } from "../lib/runner.js";
+import { runCommand } from "../lib/runner";
 
 const directories = [
   "./deployment",
