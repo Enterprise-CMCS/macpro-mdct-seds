@@ -5,7 +5,7 @@ import path from "path";
 const prefixes = new Set<string>();
 let maxPrefixLength = 0;
 
-const formattedPrefix = async (prefix: string) => {
+const formattedPrefix = (prefix: string) => {
   if (!prefixes.has(prefix)) {
     prefixes.add(prefix);
     if (prefix.length > maxPrefixLength) {
@@ -34,27 +34,27 @@ export const runCommand = async (
     const proc = spawn(cmd[0], cmd.slice(1), options);
 
     proc.stdout.on("data", async (data) => {
-      const paddedPrefix = await formattedPrefix(prefix);
+      const paddedPrefix = formattedPrefix(prefix);
       for (const line of data.toString().split("\n")) {
         process.stdout.write(`${paddedPrefix} ${line}\n`);
       }
     });
 
     proc.stderr.on("data", async (data) => {
-      const paddedPrefix = await formattedPrefix(prefix);
+      const paddedPrefix = formattedPrefix(prefix);
       for (const line of data.toString().split("\n")) {
         process.stdout.write(`${paddedPrefix} ${line}\n`);
       }
     });
 
     proc.on("error", async (error) => {
-      const paddedPrefix = await formattedPrefix(prefix);
+      const paddedPrefix = formattedPrefix(prefix);
       process.stdout.write(`${paddedPrefix} Error: ${error}\n`);
       reject(error);
     });
 
     proc.on("close", async (code) => {
-      const paddedPrefix = await formattedPrefix(prefix);
+      const paddedPrefix = formattedPrefix(prefix);
       process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
       if (code !== 0) {
         reject(code);
