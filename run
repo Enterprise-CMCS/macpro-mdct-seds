@@ -10,11 +10,29 @@ set -eu -o pipefail
 export REGION_A=us-east-1
 export PROJECT=seds
 
+# Utilities
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "$1 not found on the system. $2" >&2
+    exit 1
+  fi
+}
+
+wait_until() {
+  local timeout="$1"; shift
+  local interval=1
+  while ! eval "$*" >/dev/null 2>&1; do
+    if [ "$timeout" -le 0 ]; then
+      echo "Timed out waiting for: $*" >&2
+      return 1
+    fi
+    sleep "$interval"
+    timeout=$((timeout - interval))
+  done
+}
+
 # check node exists
-if ! which node > /dev/null ; then
-	echo "node not found on the system. Install version in .nvmrc based on instructions in README"
-	exit 1
-fi
+require_cmd node "Install version in .nvmrc. If using nvm, run 'nvm use'"
 
 # check node version
 if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
@@ -24,10 +42,7 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
 fi
 
 # check yarn exists
-if ! which yarn > /dev/null ; then
-	echo "yarn not found on the system. On macOS, you can install it with 'brew install yarn'"
-	exit 1
-fi
+require_cmd yarn "On macOS, install with 'brew install yarn'"
 
 
 # Parse arguments
@@ -48,36 +63,32 @@ for arg in "$@"; do
 done
 
 if [ "$UPDATE_ENV" = true ]; then
-    if ! which op > /dev/null; then
-        echo "The MDCT team uses 1Password to store and retrieve development credentials. On macOS, you can install it with 'brew install --cask 1password-cli'"
-        exit 1
-    fi
+    require_cmd op "Install 1Password CLI: 'brew install --cask 1password-cli'"
 fi
 
 if [ "$LOCAL" = true ]; then
-    if ! which docker > /dev/null ; then
-        echo "docker not found on the system. On macOS, you can install it with 'brew install docker'"
-        exit 1
-    fi
-
-    if ! which colima > /dev/null ; then
-        echo "colima not found on the system. On macOS, you can install it with 'brew install colima'"
-        exit 1
-    fi
-
-    if ! which localstack > /dev/null ; then
-        echo "localstack not found on the system. On macOS, you can install it with 'brew install localstack/tap/localstack-cli'"
-        exit 1
-    fi
+    require_cmd docker "On macOS, install with 'brew install docker'"
+    require_cmd colima "On macOS, install with 'brew install colima'"
+    require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
 
     if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
+        wait_until 60 "colima status | grep -q 'colima is running'" || {
+          echo "Failed to start colima within timeout" >&2
+          exit 1
+        }
     fi
 
     if ! localstack status | grep -q "running" ; then
         echo "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
+
+        if localstack --help 2>&1 | grep -q "\bwait\b" ; then
+          localstack wait -t 60 || true
+          exit 1
+        fi
+        }
     fi
 fi
 
