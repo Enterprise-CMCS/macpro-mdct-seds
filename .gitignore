@@ -16,4 +16,3 @@ tests/cypress/downloads
 .vscode
 /.cdk
 cdk.context.json
-/cli/dist
