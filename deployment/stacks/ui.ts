@@ -67,16 +67,15 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       versioned: true,
       serverAccessLogsBucket: loggingBucket,
       serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+      lifecycleRules: [
+        {
+          expiration: Duration.days(1095),
+          noncurrentVersionExpiration: Duration.days(1095),
+        },
+      ],
     });
 
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-        actions: ["s3:PutObject"],
-        resources: [`${logBucket.bucketArn}/*`],
-      })
-    );
+    logBucket.grantPut(new iam.ServicePrincipal("cloudfront.amazonaws.com"));
 
     loggingConfig = {
       enableLogging: true,
@@ -107,7 +106,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         },
         contentSecurityPolicy: {
           contentSecurityPolicy:
-            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://tealium-tags.cms.gov tealium-tags.cms.gov https://dap.digitalgov.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net https://dap.digitalgov.gov; frame-ancestors 'none'; object-src 'none'",
           override: true,
         },
       },
