@@ -115,19 +115,20 @@ export const local = {
     });
     await lambdaClient.send(lambdaCommand);
 
-    runCommand(
-      "CDK local deploy",
-      [
-        "yarn",
-        "cdklocal",
-        "watch",
-        "--context",
-        "stage=localstack",
-        "--no-rollback",
-      ],
-      "."
-    );
-
-    runFrontendLocally("localstack");
+    await Promise.all([
+      runCommand(
+        "CDK local deploy",
+        [
+          "yarn",
+          "cdklocal",
+          "watch",
+          "--context",
+          "stage=localstack",
+          "--no-rollback",
+        ],
+        "."
+      ),
+      runFrontendLocally("localstack"),
+    ]);
   },
 };
