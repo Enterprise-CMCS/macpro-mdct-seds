@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -11,23 +12,23 @@ import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 const mockStore = configureStore([]);
 let store = mockStore(mockStore);
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     state: "AL",
     year: "2021",
     quarter: "01"
   }),
 }));
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn().mockResolvedValue({
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn().mockResolvedValue({
     Items: [{ states: ["AL"] }],
   }),
 }));
 
-jest.mock("../../utility-functions/dbFunctions", () => ({
-  recursiveGetStateForms: jest.fn(),
+vi.mock("../../utility-functions/dbFunctions", () => ({
+  recursiveGetStateForms: vi.fn(),
 }));
 recursiveGetStateForms.mockResolvedValue(quarterlyDataMock);
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import SummaryNotes from "./SummaryNotes";
@@ -6,13 +7,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: jest.fn(),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useHistory: vi.fn(),
 }));
 
 const renderComponent = (userRole, status_id = 1, initialComment = "") => {
