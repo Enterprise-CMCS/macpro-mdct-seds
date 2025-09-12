@@ -1,0 +1,27 @@
+{
+  "include": ["./commands/**/*.ts", "./lib/**/*.ts", "./run.ts"],
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2023",
+    "module": "nodenext",
+    "lib": ["ES2023"],
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
