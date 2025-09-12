@@ -7,7 +7,7 @@ export const deployPrerequisites = {
   handler: async () => {
     await checkIfAuthenticated();
     await runCommand(
-      "CDK local prerequisite deploy",
+      "CDK prerequisite deploy",
       [
         "yarn",
         "cdk",

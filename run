@@ -18,19 +18,6 @@ require_cmd() {
   fi
 }
 
-wait_until() {
-  local timeout="$1"; shift
-  local interval=1
-  while ! eval "$*" >/dev/null 2>&1; do
-    if [ "$timeout" -le 0 ]; then
-      echo "Timed out waiting for: $*" >&2
-      return 1
-    fi
-    sleep "$interval"
-    timeout=$((timeout - interval))
-  done
-}
-
 # check node exists
 require_cmd node "Install version in .nvmrc. If using nvm, run 'nvm use'"
 
@@ -74,20 +61,11 @@ if [ "$LOCAL" = true ]; then
     if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
-        wait_until 60 "colima status | grep -q 'colima is running'" || {
-          echo "Failed to start colima within timeout" >&2
-          exit 1
-        }
     fi
 
     if ! localstack status | grep -q "running" ; then
         echo "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
-
-        if localstack --help 2>&1 | grep -q "\bwait\b" ; then
-          localstack wait -t 60 || true
-          exit 1
-        fi
     fi
 fi
 
