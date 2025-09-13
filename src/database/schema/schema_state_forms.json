@@ -11,7 +11,7 @@
         "description": "State id as form year and quarter"
       },
       "status_id": {
-        "type": "string",
+        "type": "number",
         "description": "ID of the current status"
       },
       "status_modified_by": {
@@ -42,17 +42,9 @@
         "type": "number",
         "description": "Percentage complete (.03)"
       },
-      "status": {
-        "type": "string",
-        "description": "Form status"
-      },
       "status_date": {
         "type": "string",
         "description": "Date of last status change"
-      },
-      "not_applicable": {
-        "type": "boolean",
-        "description": "true or false; default to false"
       },
       "last_modified": {
         "type": "string",
@@ -81,9 +73,7 @@
       "year",
       "quarter",
       "validation_percent",
-      "status",
       "status_date",
-      "not_applicable",
       "last_modified",
       "last_modified_by",
       "created_date",
