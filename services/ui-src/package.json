@@ -88,5 +88,8 @@
     "redux-devtools": "^3.7.0",
     "redux-mock-store": "^1.5.4",
     "vitest": "^3.0.5"
+  },
+  "resolutions": {
+    "form-data": "^4.0.4"
   }
 }

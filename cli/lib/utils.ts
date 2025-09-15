@@ -25,7 +25,7 @@ export const getCloudFormationStackOutputValues = async (
   );
 };
 
-export const buildUiEnvObject = (
+const buildUiEnvObject = (
   stage: string,
   cfnOutputs: Record<string, string | undefined>
 ): Record<string, string> => {
