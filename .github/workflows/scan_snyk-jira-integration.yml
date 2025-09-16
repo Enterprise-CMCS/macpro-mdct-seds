@@ -48,7 +48,7 @@ jobs:
           jira-host: "jiraent.cms.gov"
           jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40102", "value": "SEDS"}] }'
+          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "${{ vars.JIRA_APP_CUSTOM_FIELD_ID }}", "value": "${{ vars.APP_NAME_UPPER }}"}] }'
           jira-labels: "SEDS,snyk"
           jira-title-prefix: "[SEDS] - Snyk :"
           is_jira_enterprise: true
