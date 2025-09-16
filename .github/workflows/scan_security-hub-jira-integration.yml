@@ -41,6 +41,6 @@ jobs:
           jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
           jira-project-key: CMDCT
           jira-ignore-statuses: Done, Closed, Canceled
-          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40102", "value": "SEDS"}] }'
+          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "${{ vars.JIRA_APP_CUSTOM_FIELD_ID }}", "value": "${{ vars.APP_NAME_UPPER }}"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
           jira-assignee: "MWTW"
