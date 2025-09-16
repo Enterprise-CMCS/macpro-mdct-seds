@@ -34,14 +34,13 @@ const {
  * | 1, false, "In Progress" | 1 (In Progress)    | ~1500 |
  * | 2, false, "In Progress" | 1 (In Progress)    | ~2600 |
  * | 3, false, "Prov. Cert." | 2 (Prov. Cert.)    |  ~150 |
- * | 4, false, "Final Cert." | 3 (Final Cert.)    | ~3000 |
+ * | 4, false, "Final Cert." | 3 (Final Cert.)    | ~3600 |
  * | 4, false, "Not Req."    | 4 (Not Required)   |     3 |
- * | 1, true, "In Progress"  | 4 (Not Required)   |     7 |
+ * | 1, true, "In Progress"  | 4 (Not Required)   |     9 |
  * | 2, true, "In Progress"  | 4 (Not Required)   |     0 |
  * | 3, true, "Prov. Cert."  | 4 (Not Required)   |     0 |
- * | 4, true, "Final Cert."  | 4 (Not Required)   |     4 |
- * | 4, true, "Not Req."     | 4 (Not Required)   |  ~300 |
- * 
+ * | 4, true, "Final Cert."  | 4 (Not Required)   |     5 |
+ * | 4, true, "Not Req."     | 4 (Not Required)   |  ~350 |
  */
 
 /*
@@ -85,8 +84,27 @@ function updateStatusFields (stateForm) {
   if ((not_applicable && status !== "Not Required") ||
     (!not_applicable && status === "Not Required")
   ) {
-    // This is an odd one; make a note of it before updating.
+    /*
+     * This is an odd one; make a note of it before updating.
+     * We expect to see fewer than 20 of these,
+     * and we want all of their IDs logged out.
+     */
     console.warn(`Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
+  }
+
+  if (state_form === "MA-2021-1-64.21E") {
+    /*
+     * This is our one form with contradictory status info,
+     * but which actually has some answers filled in.
+     * The rest will go to Not Required, but this one stays In Progress.
+     */
+    if (status_id !== 1 || not_applicable !== true || status !== "In Progress") {
+      throw new Error(`Form MA-2021-1-64.21E has changed since we last checked it! Re-examine and re-evaluate.`);
+    }
+    stateForm.status_id = 1;
+    delete stateForm.status;
+    delete stateForm.not_applicable;
+    return true;
   }
 
   // Let's make the update.
