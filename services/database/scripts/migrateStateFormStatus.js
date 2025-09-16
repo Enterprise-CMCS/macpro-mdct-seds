@@ -54,7 +54,7 @@ const awsConfig = {
   region: "us-east-1",
   logger: {
     debug: () => {},
-    info: console.info,
+    info: () => {},
     warn: console.warn,
     error: console.error,
   },
