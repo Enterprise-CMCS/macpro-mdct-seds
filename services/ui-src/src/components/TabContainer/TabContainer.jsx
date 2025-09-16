@@ -6,18 +6,17 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
-
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 const TabContainer = ({
   tabDetails,
   questions,
   answers,
-  notApplicable,
   currentTabs,
   quarter,
-  statusId
+  status_id
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
 
@@ -33,9 +32,8 @@ const TabContainer = ({
         userRole = userInfo.role;
       });
       if (
-        notApplicable === true ||
-        statusId === 4 ||
-        statusId === 5 ||
+        status_id === FormStatus.FinalCertified ||
+        status_id === FormStatus.NotApplicable ||
         userRole === "admin" ||
         userRole === "business"
       ) {
@@ -44,7 +42,7 @@ const TabContainer = ({
       setDisabledStatus(statusBoolean);
     };
     establishStatus();
-  }, [notApplicable, statusId]);
+  }, [status_id]);
 
   return (
     <Tabs className="tab-container-main">
@@ -131,8 +129,7 @@ TabContainer.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  notApplicable: PropTypes.bool.isRequired,
-  statusId: PropTypes.number.isRequired
+  status_id: PropTypes.number.isRequired
 };
 
 const mapState = state => ({
@@ -140,8 +137,7 @@ const mapState = state => ({
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
-  notApplicable: state.currentForm.statusData.not_applicable || false,
-  statusId: state.currentForm.statusData.status_id || ""
+  status_id: state.currentForm.statusData.status_id,
 });
 
 export default connect(mapState)(TabContainer);

@@ -1,3 +1,5 @@
+import { FormStatus } from "../libs/types";
+
 const currentFormMock_21E = {
   currentForm: {
     questions: [
@@ -3311,13 +3313,11 @@ const currentFormMock_21E = {
       program_code: "AL",
       state_form: "AL-2021-1-21E",
       state_id: "AL",
-      not_applicable: false,
       created_date: "01-15-2021",
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status_id: 1,
-      status: "In Progress"
+      status_id: FormStatus.InProgress
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   }

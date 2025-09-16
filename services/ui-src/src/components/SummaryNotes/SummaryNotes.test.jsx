@@ -5,6 +5,7 @@ import SummaryNotes from "./SummaryNotes";
 import { render, screen, waitFor } from "@testing-library/react";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { FormStatus } from "../../libs/types";
 
 jest.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: jest.fn(),
@@ -15,7 +16,11 @@ jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
 
-const renderComponent = (userRole, status_id = 1, initialComment = "") => {
+const renderComponent = (
+  userRole,
+  status_id = FormStatus.InProgress,
+  initialComment = ""
+) => {
   getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
   const state_comments = initialComment
     ? [{ entry: initialComment }]
@@ -53,7 +58,7 @@ describe("Test SummaryNotes.js", () => {
   });
 
   it("should render existing notes", async () => {
-    renderComponent("state", 3, "existing comment");
+    renderComponent("state", FormStatus.FinalCertified, "existing comment");
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
@@ -69,7 +74,7 @@ describe("Test SummaryNotes.js", () => {
   });
 
   it("should disable the input for certified forms", async () => {
-    renderComponent("state", 4);
+    renderComponent("state", FormStatus.FinalCertified);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
