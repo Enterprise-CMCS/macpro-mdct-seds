@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk",
+    "cdk": "npx --prefix deployment cdk",
+    "cdklocal": "npx --prefix deployment cdklocal",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
     "smoke": "npm run test --tag smoke",
     "test:cypress": "cd tests/cypress && npm test && cd -",
@@ -28,24 +29,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "devDependencies": {
-    "@types/node": "^20.12.7",
-    "@types/yargs": "^15.0.10",
-    "aws-cdk": "^2.1002.0",
-    "aws-cdk-local": "^2.19.2",
-    "chromedriver": ">=88.0.0",
-    "dotenv": "^8.2.0",
-    "typescript": "^5.7.3",
-    "yargs": "^16.1.1"
-  },
-  "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.678.0",
-    "@aws-sdk/client-cloudfront": "^3.678.0",
-    "@aws-sdk/client-lambda": "^3.678.0",
-    "@aws-sdk/client-s3": "^3.670.0",
-    "@aws-sdk/client-secrets-manager": "^3.670.0",
-    "aws-cdk-lib": "^2.185.0",
-    "constructs": "^10.3.0",
-    "jsdom": "^26.1.0",
-    "source-map-support": "^0.5.21"
+    "esbuild": "^0.25.9",
+    "tsx": "^4.20.5"
   }
 }
