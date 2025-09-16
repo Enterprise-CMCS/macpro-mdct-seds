@@ -61,6 +61,13 @@ const awsConfig = {
 };
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    fractionalSecondDigits: 3
+});
+const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
 function updateStatusFields (stateForm) {
   const { state_form, status_id, status, not_applicable } = stateForm;
@@ -89,7 +96,7 @@ function updateStatusFields (stateForm) {
      * We expect to see fewer than 20 of these,
      * and we want all of their IDs logged out.
      */
-    console.warn(`Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
+    console.warn(`${logPrefix()}Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
   }
 
   if (state_form === "MA-2021-1-64.21E") {
@@ -126,7 +133,7 @@ function updateStatusFields (stateForm) {
 }
 
 async function * iterateStateForms () {
-  console.log("Scanning...");
+  console.log(`${logPrefix()}Scanning...`);
   let pageNumber = 0;
   let totalFormCount = 0;
   for await (let page of paginateScan({ client }, { TableName: STATE_FORMS_TABLE_NAME })) {
@@ -137,9 +144,9 @@ async function * iterateStateForms () {
       totalFormCount += 1;
       yield stateForm;
     }
-    console.log(`Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`);
+    console.log(`${logPrefix()}Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`);
   }
-  console.log(`Scan complete; ${totalFormCount} forms in all.`);
+  console.log(`${logPrefix()}Scan complete; ${totalFormCount} forms in all.`);
 }
 
 (async function () {
@@ -155,11 +162,11 @@ async function * iterateStateForms () {
         updatedCount += 1;
       }
     }
-    console.log(`Found ${updatedCount} state forms in need of update.`);
-    console.log("All updates successful.");
+    console.log(`${logPrefix()}Found ${updatedCount} state forms in need of update.`);
+    console.log(`${logPrefix()}All updates successful.`);
   }
   catch (err) {
     console.error(err);
-    console.log(`Updated ${updatedCount} state forms before exiting.`);
+    console.log(`${logPrefix()}Updated ${updatedCount} state forms before exiting.`);
   }
 })();
