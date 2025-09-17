@@ -27,7 +27,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - name: set branch_name
+      - name: Set branch_name
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
