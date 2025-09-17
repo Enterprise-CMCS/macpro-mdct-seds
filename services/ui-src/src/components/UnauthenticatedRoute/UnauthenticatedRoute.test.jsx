@@ -1,12 +1,13 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { render, screen } from "@testing-library/react"
 import { useAppContext } from "../../libs/contextLib";
 
-jest.mock("../../libs/contextLib", () => ({
-  useAppContext: jest.fn(),
+vi.mock("../../libs/contextLib", () => ({
+  useAppContext: vi.fn(),
 }));
 
 const renderComponent = (isAuthenticated, initialRoute) => {

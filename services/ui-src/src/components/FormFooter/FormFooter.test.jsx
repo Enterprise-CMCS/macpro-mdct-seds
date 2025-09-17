@@ -1,4 +1,5 @@
 import React from "react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
@@ -20,11 +21,11 @@ const mockUser = {
   ]
 };
 
-jest.mock("../../utility-functions/userFunctions", () => ({
+vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
 
-jest.mock("../../libs/api", () => ({
+vi.mock("../../libs/api", () => ({
   obtainUserByEmail: () => mockUser
 }));
 

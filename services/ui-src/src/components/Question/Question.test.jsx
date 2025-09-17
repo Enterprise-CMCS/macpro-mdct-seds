@@ -1,18 +1,19 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import QuestionComponent from "./Question";
 import { render, screen } from "@testing-library/react";
 
-jest.mock("../GridWithTotals/GridWithTotals", () =>
-  (props) => (<div data-testid="grid-with-totals">{JSON.stringify(props)}</div>)
-);
+vi.mock("../GridWithTotals/GridWithTotals", () => ({
+  default: (props) => (<div data-testid="grid-with-totals">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../GREGridWithTotals/GREGridWithTotals", () =>
-  (props) => (<div data-testid="gre-grid-with-totals">{JSON.stringify(props)}</div>)
-);
+vi.mock("../GREGridWithTotals/GREGridWithTotals", () => ({
+  default: (props) => (<div data-testid="gre-grid-with-totals">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../SynthesizedGrid/SynthesizedGrid", () =>
-  (props) => (<div data-testid="synthesized-grid">{JSON.stringify(props)}</div>)
-);
+vi.mock("../SynthesizedGrid/SynthesizedGrid", () => ({
+  default: (props) => (<div data-testid="synthesized-grid">{JSON.stringify(props)}</div>)
+}));
 
 const mockQuestionData = {
   label: "Mock Question: &&&VARIABLE&&&",

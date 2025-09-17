@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import HomeAdmin from "./HomeAdmin";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -7,12 +8,12 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { render, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-jest.mock("../../libs/contextLib", () => ({
-  useAppContext: jest.fn()
+vi.mock("../../libs/contextLib", () => ({
+  useAppContext: vi.fn()
 }));
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
 const mockStore = configureStore([]);

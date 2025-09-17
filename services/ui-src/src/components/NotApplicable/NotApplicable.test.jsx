@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { Provider } from "react-redux";
 import { render, screen, waitFor } from "@testing-library/react";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
@@ -8,8 +9,8 @@ import { BrowserRouter } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { FormStatus } from "../../libs/types";
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
 const renderComponent = (user, status_id) => {

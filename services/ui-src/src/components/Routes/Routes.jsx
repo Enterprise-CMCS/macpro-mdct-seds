@@ -10,7 +10,6 @@ import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
 import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
 import Users from "../Users/Users";
 import EditUser from "../EditUser/EditUser";
-import Example from "../Example/Example";
 import Quarterly from "../Quarterly/Quarterly";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormPage from "../FormPage/FormPage";
@@ -56,9 +55,6 @@ export default function Routes({ user, isAuthorized }) {
       {/*************** AUTHENTICATED ROUTES ***************/}
       <AuthenticatedRoute exact path="/">
         <Home user={user} />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/example">
-        <Example />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter/:formName">
         <FormPage />

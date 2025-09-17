@@ -1,12 +1,22 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom";
+import * as matchers from "@testing-library/jest-dom/matchers";
+import { afterEach, expect, vi } from "vitest";
+import { cleanup } from "@testing-library/react";
 
-jest.mock("aws-amplify", () => ({
+// @testing-library defines custom matchers for DOM nodes.
+// It allows us to assert things like:
+//     expect(element).toHaveTextContent(/react/i)
+// Learn more: https://github.com/testing-library/jest-dom
+// Since vitest is so jest-like, there is no separate TL package for it.
+expect.extend(matchers);
+
+// Explicitly instruct TL to tear down the DOM between each test
+afterEach(() => {
+  cleanup();
+});
+
+vi.mock("aws-amplify", () => ({
   Auth: {
-    currentSession: jest.fn().mockReturnValue({
+    currentSession: vi.fn().mockReturnValue({
       getIdToken: () => ({
         getJwtToken: () => "eyJLongToken"
       }),
@@ -30,11 +40,11 @@ jest.mock("aws-amplify", () => ({
     configure: () => {}
   },
   Hub: {
-    listen: jest.fn()
+    listen: vi.fn()
   }
 }));
 
-jest.mock("./utility-functions/constants", () => ({
+vi.mock("./utility-functions/constants", () => ({
   MODE: "production",
   BASE_URL: "mdctcartsdev.cms.gov"
 }));

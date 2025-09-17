@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import EditUser from "./EditUser";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -18,14 +19,14 @@ const store = mockStore({
   }
 });
 
-jest.mock("../../libs/api", () => ({
-  updateUser: jest.fn().mockResolvedValue({}),
-  getUserById: jest.fn()
+vi.mock("../../libs/api", () => ({
+  updateUser: vi.fn().mockResolvedValue({}),
+  getUserById: vi.fn()
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({ id: "23" })
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({ id: "23" })
 }));
 
 const renderComponent = user => {

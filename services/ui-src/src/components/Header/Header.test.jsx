@@ -1,4 +1,5 @@
 import React from "react";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import Header from "./Header";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
@@ -9,7 +10,7 @@ let useContextMock;
 // *** set up mocks
 beforeEach(() => {
   realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
+  useContextMock = React.useContext = vi.fn();
 });
 
 // *** garbage clean up (mocks)

@@ -1,11 +1,12 @@
 import React from "react";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import Login from "./Login";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("aws-amplify", () => ({
+vi.mock("aws-amplify", () => ({
   Auth: {
-    configure: jest.fn().mockReturnValue({
+    configure: vi.fn().mockReturnValue({
       oauth: {
         domain: "mock-domain",
         redirectSignIn: "mock-redirect",
@@ -29,7 +30,7 @@ describe("Test Login.js", () => {
     delete window.location;
     window.location = {
       ...originalLocation,
-      assign: jest.fn(),
+      assign: vi.fn(),
     }
   });
 
@@ -52,7 +53,7 @@ describe("Test Login.js", () => {
   });
 
   it("should redirect to Okta for login", () => {
-    jest.spyOn(window, "alert").mockImplementation(console.error);
+    vi.spyOn(window, "alert").mockImplementation(console.error);
 
     render(<Login/>);
 

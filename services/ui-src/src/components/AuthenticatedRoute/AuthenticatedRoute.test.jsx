@@ -1,12 +1,13 @@
 import React from "react";
+import { describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import * as AppContext from "../../libs/contextLib";
 import { BrowserRouter, Route } from "react-router-dom";
 
 // Mock for useLocation
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useLocation: () => ({
     pathname: "localhost:3000/"
   })
@@ -22,7 +23,7 @@ const testRoute = (
 
 describe("AuthenticatedRoute tests", () => {
   test("Check that a route is available", () => {
-    jest
+    vi
       .spyOn(AppContext, "useAppContext")
       .mockImplementation(() => ({ isAuthenticated: true }));
 
@@ -32,11 +33,11 @@ describe("AuthenticatedRoute tests", () => {
   });
 
   test("Check that unauthenticated users are redirected", () => {
-    jest
+    vi
       .spyOn(AppContext, "useAppContext")
       .mockImplementation(() => ({ isAuthenticated: false }));
 
-      render(testRoute);
+    render(testRoute);
 
     expect(screen.queryByText("Hello, world!")).not.toBeInTheDocument();
   });
