@@ -53,7 +53,7 @@ jobs:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Destroy
-        run: ./run destroy --stage $BRANCH_NAME --verify false
+        run: ./run destroy --stage $branch_name --verify false
 
   notify_on_destroy_failure:
     name: Destroy failure notification
