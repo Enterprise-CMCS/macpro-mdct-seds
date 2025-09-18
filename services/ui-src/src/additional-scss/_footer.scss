@@ -25,7 +25,6 @@
   }
   
   .footerTopLeftContainer {
-    display: flex;
     max-width: 100%;
     min-width: 100%;
     margin-bottom: 1em;
@@ -83,12 +82,12 @@
 // }
 
 .footerBottomFlex {
+  background-color: $brand-primary;
+  color: white;
   display: flex;
   padding-top: 1rem;
   padding-bottom: 1rem;
   justify-content: space-between;
-  align-items: normal;
-  flex-direction: column;
   .desktop & {
     align-items: initial;
     flex-direction: row;
@@ -97,7 +96,7 @@
 
 .footerBottomLinkFlex {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   .desktop & {
     flex-direction: row;
   }
@@ -127,15 +126,9 @@
 }
 
 .info {
-clear: both;
-font-size: 0.75rem;
-text-align: right;
-
-  .address {
-    float: right;
-    font-weight: $font-weight-light;
-    clear: both;
-  }
+  clear: both;
+  font-size: 0.75rem;
+  text-align: right;
 }
 
   .footer-nav {
@@ -149,8 +142,6 @@ text-align: right;
   }
 
   .address {
-    background-color: $brand-primary;
-    color: white;
     font-weight: bold;
     align-self: right;
     margin: 2.25rem 0 0;

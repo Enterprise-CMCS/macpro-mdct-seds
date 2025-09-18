@@ -33,18 +33,22 @@ describe("Test Footer.js", () => {
     expect(image.src).toContain("/img/seds-logo.svg");
   });
 
-  test("Check for CMS Home Page link", () => {
-    const { getByText } = render(<Footer />);
-    expect(
-      getByText("Centers for Medicare & Medicaid Services Website")
-    ).toHaveAttribute("href", "https://www.cms.gov/");
+  test("Check for HHS Logo", () => {
+    const { getByAltText } = render(<Footer />);
+    const image = getByAltText("Department of Health and Human Services, USA");
+  expect(image.src).toContain("/img/logo_hhs.svg");
   });
 
-  test("Check for SEDS Help Desk email link", () => {
+  test("Check for Medicaid Logo", () => {
+    const { getByAltText } = render(<Footer />);
+    const image = getByAltText("Medicaid.gov: Keeping America Healthy");
+  expect(image.src).toContain("/img/logo_medicaid.svg");
+  });
+
+  test("Check for CMS Contact Us link", () => {
     const { getByText } = render(<Footer />);
-    expect(getByText("MDCT_Help@cms.hhs.gov")).toHaveAttribute(
-      "href",
-      "mailto:mdct_help@cms.hhs.gov"
-    );
+    expect(
+      getByText("Contact Us")
+    ).toHaveAttribute("href", "https://www.cms.gov/help");
   });
 });
