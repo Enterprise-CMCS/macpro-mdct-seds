@@ -3,7 +3,7 @@
 **********************/
 .footerRoot {
   flex-shrink: 0;
-  @media (min-width: 55.0625em) and (max-width: 100em) {
+  @media (min-width: 55.0625em)  {
       position: sticky;
       z-index: 1000;
     }
@@ -17,7 +17,7 @@
   }
   .footerTopContainer {
     max-width: 100vw;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       padding: 0 2rem;
     }
   }
@@ -30,7 +30,7 @@
     max-width: 100%;
     min-width: 100%;
     margin-bottom: 1em;
-      @media (min-width: 55.0625em) and (max-width: 100em) {
+      @media (min-width: 55.0625em)  {
       margin-bottom: 0;
       max-width: 50%;
       min-width: auto;
@@ -40,7 +40,7 @@
     flex: 0 0 50%;
     max-width: 100%;
     min-width: 100%;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       min-width: auto;
     }
   }
@@ -49,7 +49,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       justify-content: flex-end;
       flex-direction: row;
     }
@@ -62,7 +62,7 @@
     padding: 0 1rem;
     min-width: 100%;
     margin-bottom: 1rem;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       margin-bottom: 0;
       display: block;
       width: auto;
@@ -78,7 +78,7 @@
     max-height: 4.875rem;
     margin: 0 auto;
     display: block;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       margin: 0;
     }
   }
@@ -91,7 +91,7 @@
     max-width: 12.5rem;
     margin-left: 1.25rem;
     // desktop view
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       display: none;
     }
   }
@@ -108,7 +108,7 @@
     display: none;
     justify-content: flex-end;
     // desktop view
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       display: flex;
       max-width: 100%;
       padding: 0 1rem;
@@ -120,7 +120,7 @@
     flex: 0 0 75%;
     max-width: 75%;
     margin-top: 0.25rem;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+     @media (min-width: 55.0625em) {
       max-width: 25rem;
     }
   }
@@ -132,7 +132,7 @@
   .footerBottomContainer {
     max-width: 100vw;
     padding: 0 1rem;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       padding: 0 2rem;
     }
   }
@@ -143,7 +143,7 @@
     justify-content: space-between;
     align-items: normal;
     flex-direction: column;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       align-items: initial;
       flex-direction: row;
     }
@@ -151,7 +151,7 @@
   .footerBottomLinkFlex {
     display: flex;
     flex-direction: column;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       flex-direction: row;
     }
     a:first-of-type > p {
@@ -161,7 +161,7 @@
   .link {
     color: $white;
     margin: 0.5rem 0;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       &:first-of-type {
         padding-right: .5rem;
         border-right: 1px solid;
@@ -176,7 +176,7 @@
     font-weight: bold;
     align-self: center;
     margin: 2.25rem 0 0;
-    @media (min-width: 55.0625em) and (max-width: 100em) {
+    @media (min-width: 55.0625em)  {
       margin: 0;
     }
   }
