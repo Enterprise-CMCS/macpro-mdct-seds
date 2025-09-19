@@ -2,7 +2,7 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DynamoDBDocumentClient,
   paginateScan,
-  PutCommand,
+  BatchWriteCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
 /**
@@ -54,13 +54,20 @@ const awsConfig = {
   region: "us-east-1",
   logger: {
     debug: () => {},
-    info: console.info,
+    info: () => {},
     warn: console.warn,
     error: console.error,
   },
 };
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    fractionalSecondDigits: 3
+});
+const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
 function updateStatusFields (stateForm) {
   const { state_form, status_id, status, not_applicable } = stateForm;
@@ -89,7 +96,7 @@ function updateStatusFields (stateForm) {
      * We expect to see fewer than 20 of these,
      * and we want all of their IDs logged out.
      */
-    console.warn(`Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
+    console.warn(`${logPrefix()}Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
   }
 
   if (state_form === "MA-2021-1-64.21E") {
@@ -126,7 +133,7 @@ function updateStatusFields (stateForm) {
 }
 
 async function * iterateStateForms () {
-  console.log("Scanning...");
+  console.log(`${logPrefix()}Scanning...`);
   let pageNumber = 0;
   let totalFormCount = 0;
   for await (let page of paginateScan({ client }, { TableName: STATE_FORMS_TABLE_NAME })) {
@@ -137,29 +144,67 @@ async function * iterateStateForms () {
       totalFormCount += 1;
       yield stateForm;
     }
-    console.log(`Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`);
+    console.log(`${logPrefix()}Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`);
   }
-  console.log(`Scan complete; ${totalFormCount} forms in all.`);
+  console.log(`${logPrefix()}Scan complete; ${totalFormCount} forms in all.`);
+}
+
+async function * formsToUpdate () {
+  for await (let stateForm of iterateStateForms()) {
+    const needsUpdate = updateStatusFields(stateForm);
+    if (needsUpdate) {
+      yield stateForm;
+    }
+  }
+}
+
+/**
+ * Send a BatchWriteCommand to Put the given array of StateForm objects.
+ * @param {object[]} batch 
+ */
+async function sendBatch (batch) {
+  const command = new BatchWriteCommand({
+    RequestItems: {
+      [STATE_FORMS_TABLE_NAME]: batch.map((Item) => ({
+        PutRequest: { Item }
+      }))
+    }
+  });
+  const response = await client.send(command);
+  const unprocessedItems = response.UnprocessedItems?.[STATE_FORMS_TABLE_NAME];
+  if (unprocessedItems && unprocessedItems.length > 0) {
+    const ids = unprocessedItems.map((putRequest) => putRequest.Item.state_form);
+    throw new Error(
+      `Batch write failed! The following forms were not updated: ${ids.join(", ")}`
+    );
+  }
 }
 
 (async function () {
   let updatedCount = 0;
   try {
-    for await (let stateForm of iterateStateForms()) {
-      const didUpdate = updateStatusFields(stateForm);
-      if (didUpdate) {
-        await client.send(new PutCommand({
-          TableName: STATE_FORMS_TABLE_NAME,
-          Item: stateForm,
-        }));
-        updatedCount += 1;
+    let batch = [];
+
+    for await (let stateForm of formsToUpdate()) {
+      batch.push(stateForm);
+      if (batch.length === 25) {
+        await sendBatch(batch);
+        updatedCount += 25;
+        batch = [];
       }
     }
-    console.log(`Found ${updatedCount} state forms in need of update.`);
-    console.log("All updates successful.");
+
+    if (batch.length > 0) {
+      await sendBatch(batch);
+      updatedCount += batch.length;
+    }
+
+    console.log(`${logPrefix()}Found ${updatedCount} state forms in need of update.`);
+    console.log(`${logPrefix()}All updates successful.`);
   }
   catch (err) {
     console.error(err);
-    console.log(`Updated ${updatedCount} state forms before exiting.`);
+    // The updatedCount may be short by up to 24 items, depending on how much of a batch failed.
+    console.log(`${logPrefix()}Updated at least ${updatedCount} state forms before exiting.`);
   }
 })();
