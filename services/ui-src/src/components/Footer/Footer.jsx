@@ -55,7 +55,7 @@ const Footer = () => {
         <div className="footerBottomContainer">
           <div className="footerBottomFlex">
             <div className="footerBottomLinkFlex">
-              <a href="https://www.cms.gov/help" target="_blank" className="link">
+              <a href="mdct_help@cms.hhs.gov" target="_blank" className="link">
                 Contact Us
               </a>
               <a

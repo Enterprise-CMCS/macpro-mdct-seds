@@ -51,7 +51,7 @@ describe("Footer Component", () => {
     const { getByText } = render(<Footer />);
     const contactLink = getByText("Contact Us");
     expect(contactLink).toBeVisible();
-    expect(contactLink).toHaveAttribute("href", "https://www.cms.gov/help");
+    expect(contactLink).toHaveAttribute("href", "mdct_help@cms.hhs.gov");
     expect(contactLink).toHaveAttribute("target", "_blank");
   });
 
