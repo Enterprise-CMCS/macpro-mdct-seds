@@ -155,7 +155,7 @@ export function listUsers() {
 
 ### SEDS & CARTS
 
-SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/stream-functions](services/stream-functions) for the implentation.
+SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/app-api/handlers/kafka](services/app-api/handlers/kafka) for the implentation.
 
 ### Legacy SEDS import SQL Files
 
