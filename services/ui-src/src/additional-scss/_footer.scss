@@ -2,6 +2,11 @@
   FOOTER
 **********************/
 .footerRoot {
+  flex-shrink: 0;
+  @media (55em < width <= 100em) {
+      position: sticky;
+      z-index: 1000;
+    }
   @media print {
     display: none;
   }
@@ -21,7 +26,6 @@
     flex-wrap: wrap;
   }
   .footerTopLeftContainer {
-    display: flex;
     flex: 0 0 50%;
     max-width: 100%;
     min-width: 100%;
@@ -33,7 +37,6 @@
     }
   }
   .footerTopRightContainer {
-    display: flex;
     flex: 0 0 50%;
     max-width: 100%;
     min-width: 100%;
@@ -53,22 +56,21 @@
   }
   .footerCMSBrandingLeft {
     display: flex;
-      justify-content: center;
-      align-items: center;
-      max-width: 100%;
-      padding: 0 1rem;
-      min-width: 100%;
-      margin-bottom: 1rem;
-      @media (55em < width <= 100em) {
-        margin-bottom: 0;
-        display: block;
-        width: auto;
-        max-width: auto;
-        min-width: auto;
-      }
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    padding: 0 1rem;
+    min-width: 100%;
+    margin-bottom: 1rem;
+    @media (55em < width <= 100em) {
+      margin-bottom: 0;
+      display: block;
+      width: auto;
+      max-width: auto;
+      min-width: auto;
+    }
   }
   .footerCMSBrandingRight {
-    display: flex;
     flex: 0 0 75%;
     max-width: 25rem;
   }
@@ -84,8 +86,13 @@
     width: 4.375rem;
   }
   .hhsMedicaidLogoMobile {
+    display: block;
     max-width: 12.5rem;
     margin-left: 1.25rem;
+    // desktop view
+    @media (55em < width <= 100em) {
+      display: none;
+    }
   }
   .hhsCopyText {
     display: inline-block;
@@ -94,13 +101,20 @@
     font-size: 0.875rem; // 14px
     line-height: 21px;
     margin-top: 0;
+    margin-block: 0;
   }
   .footerCMSMedicaid {
     display: flex;
     justify-content: flex-end;
+    // desktop view
+    @media (55em < width <= 100em) {
+      max-width: 100%;
+      padding: 0 1rem;
+      min-width: 100%;
+      margin-bottom: 1rem;
+    }
   }
   .medicaidLogo {
-    display: flex;
     flex: 0 0 75%;
     max-width: 75%;
     margin-top: 0.25rem;
@@ -145,7 +159,7 @@
     color: $white;
     margin: 0.5rem 0;
     @media (55em < width <= 100em) {
-      &first-of-type {
+      &:first-of-type {
         padding-right: .5rem;
         border-right: 1px solid;
         border-color: white;

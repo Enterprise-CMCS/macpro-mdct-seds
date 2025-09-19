@@ -5,8 +5,8 @@ import "./Footer.scss";
 const Footer = () => {
   return (
     <div className="footerRoot" data-testid="Footer" role="contentinfo">
-      <GridContainer className="footerTop" containerSize="none">
-        <Grid row className="footerTopContainer">
+      <div className="footerTop">
+        <GridContainer className="footerTopContainer" containerSize="none">
           <Grid col={6} tablet={{ col: true }} className="footerTopFlex">
             <div className="footerTopLeftContainer">
               <img
@@ -16,25 +16,21 @@ const Footer = () => {
               />
             </div>
           </Grid>
-          <Grid col={6} tablet={{ col: true }}>
-            <div className="footerTopRightContainer">
-              <div className="footerTopRightTopFlex">
-                <div className="footerCMSBrandingLeft">
-                  <div className="hhsLogo">
-                    <img
-                        src="/img/logo_hhs.svg"
-                        alt="Department of Health and Human Services, USA"
-                    />
-                  </div>
+          <Grid col={6} tablet={{ col: true }}  className="footerTopRightContainer">
+            <div className="footerTopRightTopFlex">
+              <div className="footerCMSBrandingLeft">
+                <div className="hhsLogo">
+                  <img
+                      src="/img/logo_hhs.svg"
+                      alt="Department of Health and Human Services, USA"
+                  />
                 </div>
-                {/* {!isDesktop && ( */}
-                  <div className="hhsMedicaidLogoMobile">
-                    <img
-                        src="/img/logo_medicaid.svg"
-                        alt="Medicaid.gov: Keeping America Healthy"
-                    />
-                  </div>
-                {/* )} */}
+                <div className="hhsMedicaidLogoMobile">
+                  <img
+                      src="/img/logo_medicaid.svg"
+                      alt="Medicaid.gov: Keeping America Healthy"
+                  />
+                </div>
               </div>
               <div className="footerCMSBrandingRight">
                 <p className="hhsCopyText">
@@ -43,20 +39,18 @@ const Footer = () => {
                   the MDCT suite.
                 </p>
               </div>
-              {/* {isDesktop && ( */}
-              <div className="footerCMSMedicaid">
-                <div className="medicaidLogo">
-                  <img
-                      src="/img/logo_medicaid.svg"
-                      alt="Medicaid.gov: Keeping America Healthy"
-                  />
-                </div>
+            </div>
+            <div className="footerCMSMedicaid">
+              <div className="medicaidLogo">
+                <img
+                    src="/img/logo_medicaid.svg"
+                    alt="Medicaid.gov: Keeping America Healthy"
+                />
               </div>
-              {/* )} */}
             </div>
           </Grid>
-        </Grid>
-      </GridContainer>
+        </GridContainer>
+      </div>
       <div className="footerBottom">
         <div className="footerBottomContainer">
           <div className="footerBottomFlex">
