@@ -178,19 +178,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables: dataConnectTables,
   });
 
-  new LambdaDynamoEventSource(scope, "dataConnectSource", {
-    entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    tables: dataConnectTables,
-  });
-
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/get/getUserById.js",
     handler: "main",
