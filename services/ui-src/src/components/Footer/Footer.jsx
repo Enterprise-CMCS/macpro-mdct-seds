@@ -66,7 +66,7 @@ const Footer = () => {
                 Accessibility Statement
               </a>
             </div>
-            <div>
+            <div className="addressDiv">
               <p className="address">
                 7500 Security Boulevard Baltimore, MD 21244
               </p>
