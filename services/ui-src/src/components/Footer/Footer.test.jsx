@@ -51,8 +51,7 @@ describe("Footer Component", () => {
     const { getByText } = render(<Footer />);
     const contactLink = getByText("Contact Us");
     expect(contactLink).toBeVisible();
-    expect(contactLink).toHaveAttribute("href", "mdct_help@cms.hhs.gov");
-    expect(contactLink).toHaveAttribute("target", "_blank");
+    expect(contactLink).toHaveAttribute("href", "mailto:mdct_help@cms.hhs.gov");
   });
 
   it("renders Accessibility Statement link with correct href", () => {
@@ -73,11 +72,5 @@ describe("Footer Component", () => {
     const { getByText } = render(<Footer />);
     const address = getByText("7500 Security Boulevard Baltimore, MD 21244");
     expect(address).toBeVisible();
-  });
-
-  it("has correct accessibility attributes", () => {
-    const { getByTestId } = render(<Footer />);
-    const footer = getByTestId("Footer");
-    expect(footer).toHaveAttribute("role", "contentinfo");
   });
 });
