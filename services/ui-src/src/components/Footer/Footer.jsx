@@ -4,7 +4,7 @@ import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footerRoot" data-testid="Footer" role="contentinfo">
+    <footer className="footerRoot" data-testid="Footer">
       <div className="footerTop">
         <GridContainer className="footerTopContainer" containerSize="none">
           <Grid row className="footerTopFlex">
@@ -74,7 +74,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
