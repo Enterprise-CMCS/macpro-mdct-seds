@@ -1,11 +1,12 @@
 import { Argv } from "yargs";
 import { checkIfAuthenticated } from "../lib/sts";
-import { runCommand } from "../lib/runner";
 import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
 import { region } from "../lib/consts";
+import downloadClamAvLayer from "../lib/clam";
+import { runCommand } from "../lib/runner";
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
@@ -27,6 +28,8 @@ export const deploy = {
     await checkIfAuthenticated();
 
     if (await stackExists("seds-prerequisites")) {
+      await downloadClamAvLayer();
+
       await runCommand(
         "CDK deploy",
         [

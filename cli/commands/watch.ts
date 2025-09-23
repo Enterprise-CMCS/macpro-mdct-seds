@@ -3,21 +3,6 @@ import { checkIfAuthenticated } from "../lib/sts";
 import { runCommand } from "../lib/runner";
 import { runFrontendLocally } from "../lib/utils";
 
-const runCdkWatch = async (options: { stage: string }) => {
-  await runCommand(
-    "CDK watch",
-    [
-      "yarn",
-      "cdk",
-      "watch",
-      "--context",
-      `stage=${options.stage}`,
-      "--no-rollback",
-    ],
-    "."
-  );
-};
-
 export const watch = {
   command: "watch",
   describe: "run cdk watch and react together",
@@ -26,7 +11,21 @@ export const watch = {
   },
   handler: async (options: { stage: string }) => {
     checkIfAuthenticated();
-    runCdkWatch(options);
-    runFrontendLocally(options.stage);
+
+    await Promise.all([
+      runCommand(
+        "CDK watch",
+        [
+          "yarn",
+          "cdk",
+          "watch",
+          "--context",
+          `stage=${options.stage}`,
+          "--no-rollback",
+        ],
+        "."
+      ),
+      runFrontendLocally(options.stage),
+    ]);
   },
 };
