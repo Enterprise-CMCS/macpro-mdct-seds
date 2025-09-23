@@ -18,6 +18,8 @@ const seedDataHandlerPath = join(
   "../../services/database/handlers/seed/seed.js"
 );
 const shouldTriggerSeedDataFunction = existsSync(seedDataHandlerPath);
+const uploadsStackPath = join(__dirname, "../../deployment/stacks/uploads.ts");
+const shouldDownloadClamAvDefs = existsSync(uploadsStackPath);
 
 const isColimaRunning = () => {
   try {
@@ -101,7 +103,10 @@ export const local = {
       "."
     );
 
-    await downloadClamAvLayer();
+    if (shouldDownloadClamAvDefs) {
+      await downloadClamAvLayer();
+    }
+
     await runCommand(
       "CDK local deploy",
       [
