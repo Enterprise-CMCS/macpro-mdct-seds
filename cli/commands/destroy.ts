@@ -4,9 +4,18 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { checkIfAuthenticated } from "../lib/sts.js";
-import { project, region } from "../lib/consts.js";
+import { checkIfAuthenticated } from "../lib/sts";
+import { project, region } from "../lib/consts";
 import { createInterface } from "node:readline/promises";
+import { delete_topics } from "./delete-topics";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const topicsStackPath = join(__dirname, "../deployment/stacks/topics.ts");
+const shouldIncludeTopicCommands = existsSync(topicsStackPath);
 
 const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";
@@ -30,6 +39,8 @@ Do you really want to destroy it?
 Re-enter the stack name (${stack}) to continue:
 **********************************************************************${reset}
 `);
+
+  readline.close();
 
   if (confirmation !== stack) {
     throw new Error(`
@@ -80,14 +91,16 @@ export const destroy = {
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    const client = new CloudFormationClient({ region });
+    if (shouldIncludeTopicCommands) {
+      await delete_topics({ stage });
+    }
 
+    const client = new CloudFormationClient({ region });
     await client.send(new DeleteStackCommand({ StackName: stackName }));
     console.log(`Stack ${stackName} delete initiated.`);
 
     if (wait) {
       console.log(`Waiting for stack ${stackName} to be deleted...`);
-
       const result = await waitForStackDeleteComplete(client, stackName);
       console.log(
         result.state === "SUCCESS"

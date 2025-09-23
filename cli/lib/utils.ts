@@ -21,13 +21,13 @@ export const getCloudFormationStackOutputValues = async (
       .map(
         (o) => [o.OutputKey ?? (o as any).OutputName, o.OutputValue] as const
       )
-      .filter(([k]) => Boolean(k)) as [string, string | undefined][]
+      .filter(([k]) => Boolean(k)) as [string, string][]
   );
 };
 
 const buildUiEnvObject = (
   stage: string,
-  cfnOutputs: Record<string, string | undefined>
+  cfnOutputs: Record<string, string>
 ): Record<string, string> => {
   if (stage === "localstack") {
     return {
