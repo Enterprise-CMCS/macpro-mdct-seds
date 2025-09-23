@@ -55,13 +55,12 @@ const Footer = () => {
         <div className="footerBottomContainer">
           <div className="footerBottomFlex">
             <div className="footerBottomLinkFlex">
-              <a href="mailto:mdct_help@cms.hhs.gov" className="link">
+              <a href="mailto:mdct_help@cms.hhs.gov">
                 Contact Us
               </a>
               <a
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
-                className="link"
               >
                 Accessibility Statement
               </a>
