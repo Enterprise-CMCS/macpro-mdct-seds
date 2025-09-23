@@ -7,6 +7,14 @@ import {
 import { region } from "../lib/consts";
 import downloadClamAvLayer from "../lib/clam";
 import { runCommand } from "../lib/runner";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const uploadsStackPath = join(__dirname, "../../deployment/stacks/uploads.ts");
+const shouldDownloadClamAvDefs = existsSync(uploadsStackPath);
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
@@ -28,7 +36,9 @@ export const deploy = {
     await checkIfAuthenticated();
 
     if (await stackExists("seds-prerequisites")) {
-      await downloadClamAvLayer();
+      if (shouldDownloadClamAvDefs) {
+        await downloadClamAvLayer();
+      }
 
       await runCommand(
         "CDK deploy",
