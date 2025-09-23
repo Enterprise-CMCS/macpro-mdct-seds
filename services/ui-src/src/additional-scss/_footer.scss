@@ -3,10 +3,6 @@
 **********************/
 .footerRoot {
   flex-shrink: 0;
-  @media (min-width: 55.0625em)  {
-      position: sticky;
-      z-index: 1000;
-    }
   @media print {
     display: none;
   }
