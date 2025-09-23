@@ -8,6 +8,14 @@ import { checkIfAuthenticated } from "../lib/sts";
 import { project, region } from "../lib/consts";
 import { createInterface } from "node:readline/promises";
 import { delete_topics } from "./delete-topics";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const topicsStackPath = join(__dirname, "../deployment/stacks/topics.ts");
+const shouldIncludeTopicCommands = existsSync(topicsStackPath);
 
 const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";
@@ -83,7 +91,9 @@ export const destroy = {
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    await delete_topics({ stage });
+    if (shouldIncludeTopicCommands) {
+      await delete_topics({ stage });
+    }
 
     const client = new CloudFormationClient({ region });
     await client.send(new DeleteStackCommand({ StackName: stackName }));
