@@ -13,8 +13,11 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const topicsStackPath = join(__dirname, "../../services/database/handlers/seed/seed.js");
-const shouldTriggerSeedDataFunction = existsSync(topicsStackPath);
+const seedDataHandlerPath = join(
+  __dirname,
+  "../../services/database/handlers/seed/seed.js"
+);
+const shouldTriggerSeedDataFunction = existsSync(seedDataHandlerPath);
 
 const isColimaRunning = () => {
   try {
@@ -114,18 +117,18 @@ export const local = {
     );
 
     if (shouldTriggerSeedDataFunction) {
-    const SeedDataFunctionName = (
-      await getCloudFormationStackOutputValues("seds-localstack")
-    )["SeedDataFunctionName"];
+      const SeedDataFunctionName = (
+        await getCloudFormationStackOutputValues("seds-localstack")
+      )["SeedDataFunctionName"];
 
-    const lambdaClient = new LambdaClient({ region });
-    const lambdaCommand = new InvokeCommand({
-      FunctionName: SeedDataFunctionName,
-      InvocationType: "Event",
-      Payload: Buffer.from(JSON.stringify({})),
-    });
-    await lambdaClient.send(lambdaCommand);
-  }
+      const lambdaClient = new LambdaClient({ region });
+      const lambdaCommand = new InvokeCommand({
+        FunctionName: SeedDataFunctionName,
+        InvocationType: "Event",
+        Payload: Buffer.from(JSON.stringify({})),
+      });
+      await lambdaClient.send(lambdaCommand);
+    }
 
     await Promise.all([
       runCommand(
