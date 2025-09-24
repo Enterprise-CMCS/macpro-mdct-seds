@@ -1,4 +1,5 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "cli",
   "version": "1.0.0",
   "type": "module",
@@ -13,7 +14,7 @@
     "@types/node": "^24.3.1",
     "@types/yargs": "^17.0.33",
     "dotenv": "^16.0.3",
-    "typescript": "^5.0.4",
+    "typescript": "^4.9.5",
     "yargs": "^17.7.1"
   }
 }

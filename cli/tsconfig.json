@@ -1,10 +1,11 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "include": ["./commands/**/*.ts", "./lib/**/*.ts", "./run.ts"],
   "compilerOptions": {
     "incremental": true,
-    "target": "ES2023",
+    "target": "es2022",
     "module": "nodenext",
-    "lib": ["ES2023"],
+    "lib": ["es2022"],
     "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
@@ -19,7 +20,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
