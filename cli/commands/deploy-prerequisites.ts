@@ -1,5 +1,6 @@
-import { runCommand } from "../lib/runner";
-import { checkIfAuthenticated } from "../lib/sts";
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+import { runCommand } from "../lib/runner.js";
+import { checkIfAuthenticated } from "../lib/sts.js";
 
 export const deployPrerequisites = {
   command: "deploy-prerequisites",

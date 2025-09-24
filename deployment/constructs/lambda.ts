@@ -1,9 +1,10 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { Duration, RemovalPolicy, aws_s3 as s3 } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
@@ -19,6 +20,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
   tables?: DynamoDBTable[];
+  buckets?: s3.IBucket[];
   isDev: boolean;
 }
 
@@ -36,6 +38,7 @@ export class Lambda extends Construct {
       method,
       additionalPolicies = [],
       tables = [],
+      buckets = [],
       stackName,
       isDev,
       ...restProps
@@ -58,7 +61,7 @@ export class Lambda extends Construct {
           .digest("hex"),
         minify: true,
         sourceMap: true,
-        nodeModules: [],
+        nodeModules: ["jsdom"],
       },
       logGroup,
       ...restProps,
@@ -86,6 +89,10 @@ export class Lambda extends Construct {
       if (ddbTable.table.tableStreamArn) {
         ddbTable.table.grantStreamRead(this.lambda);
       }
+    }
+
+    for (const bucket of buckets) {
+      bucket.grantReadWrite(this.lambda);
     }
   }
 }
