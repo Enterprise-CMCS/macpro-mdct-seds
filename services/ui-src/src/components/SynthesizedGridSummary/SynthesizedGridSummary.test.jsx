@@ -1,11 +1,12 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import SynthesizedGridSummary from "./SynthesizedGridSummary";
 import { render, screen } from "@testing-library/react";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 
-jest.mock("../GridWithTotals/GridWithTotals", () =>
-  (props) => (<div data-testid="grid-with-totals">{JSON.stringify(props)}</div>)
-)
+vi.mock("../GridWithTotals/GridWithTotals", () => ({
+  default: (props) => (<div data-testid="grid-with-totals">{JSON.stringify(props)}</div>)
+}));
 
 const renderComponent = () => {
   return render(

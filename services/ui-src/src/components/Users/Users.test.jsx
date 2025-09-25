@@ -1,23 +1,23 @@
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import Users from "./Users";
 import { BrowserRouter } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { listUsers } from "../../libs/api";
 import { handleExport } from "../../utility-functions/exportFunctions";
 
-jest.mock("../../libs/api", () => ({
-  listUsers: jest.fn().mockResolvedValue([]),
+vi.mock("../../libs/api", () => ({
+  listUsers: vi.fn().mockResolvedValue([]),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: jest.fn(),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useHistory: vi.fn(),
 }));
 
-jest.mock("../../utility-functions/exportFunctions", () => ({
-  handleExport: jest.fn()
+vi.mock("../../utility-functions/exportFunctions", () => ({
+  handleExport: vi.fn()
 }));
 
 // Note that the default sort is by username,
@@ -58,7 +58,7 @@ const renderComponent = () => {
 
 describe("Test Users.js", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render the correct controls", async () => {

@@ -1,26 +1,27 @@
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
 import { BrowserRouter, useHistory } from "react-router-dom";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { obtainAvailableForms } from "../../libs/api";
 
 const store = configureStore([])(fullStoreMock);
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
-jest.mock("../../libs/api", () => ({
-  obtainAvailableForms: jest.fn(),
+vi.mock("../../libs/api", () => ({
+  obtainAvailableForms: vi.fn(),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: jest.fn(),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useHistory: vi.fn(),
 }));
 
 const renderComponent = (...userStates) => {
@@ -41,7 +42,7 @@ const renderComponent = (...userStates) => {
 }
 
 describe("Test HomeState.js", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   it("should redirect users with no state", async () => {
     const history = [];

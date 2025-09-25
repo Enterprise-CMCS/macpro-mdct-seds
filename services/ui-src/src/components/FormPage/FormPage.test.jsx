@@ -1,49 +1,50 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import FormPage from "./FormPage";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
-jest.mock("../FormHeader/FormHeader", () =>
-  (props) => <div className="form-header">{JSON.stringify(props)}</div>,
+vi.mock("../FormHeader/FormHeader", () => ({
+    default: (props) => <div className="form-header">{JSON.stringify(props)}</div>,
+  })
 );
 
-jest.mock("../NotApplicable/NotApplicable", () =>
-  (props) => <div className="not-applicable">{JSON.stringify(props)}</div>,
-);
-
-jest.mock("../TabContainer/TabContainer", () =>
-  (props) => <div className="tab-container">{JSON.stringify(props)}</div>,
-);
-
-jest.mock("../FormFooter/FormFooter", () =>
-  (props) => <div className="form-footer">{JSON.stringify(props)}</div>,
-);
-
-jest.mock("../FormLoadError/FormLoadError", () =>
-  (props) => <div className="form-load-error">{JSON.stringify(props)}</div>,
-);
-
-jest.mock("../Unauthorized/Unauthorized", () =>
-  (props) => <div className="unauth-cmpt">{JSON.stringify(props)}</div>,
-);
-
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../NotApplicable/NotApplicable", () => ({
+  default: (props) => <div className="not-applicable">{JSON.stringify(props)}</div>,
 }));
 
-jest.mock("../../store/reducers/singleForm/singleForm", () => ({
-  getFormData: jest.fn().mockReturnValue({
+vi.mock("../TabContainer/TabContainer", () => ({
+  default: (props) => <div className="tab-container">{JSON.stringify(props)}</div>,
+}));
+
+vi.mock("../FormFooter/FormFooter", () => ({
+  default: (props) => <div className="form-footer">{JSON.stringify(props)}</div>,
+}));
+
+vi.mock("../FormLoadError/FormLoadError", () => ({
+  default: (props) => <div className="form-load-error">{JSON.stringify(props)}</div>,
+}));
+
+vi.mock("../Unauthorized/Unauthorized", () => ({
+  default: (props) => <div className="unauth-cmpt">{JSON.stringify(props)}</div>,
+}));
+
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
+}));
+
+vi.mock("../../store/reducers/singleForm/singleForm", () => ({
+  getFormData: vi.fn().mockReturnValue({
     type: "SAVING A FORM HERE, BOSS",
   }),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     state: "CO",
     year: "2024",
     quarter: "3",
