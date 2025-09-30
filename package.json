@@ -28,7 +28,12 @@
     "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues"
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
+  "dependencies": {
+    "jsdom": "^26.1.0"
+  },
   "devDependencies": {
+    "@octokit/auth-action": "^6.0.1",
+    "@octokit/rest": "^22.0.0",
     "esbuild": "^0.25.9",
     "tsx": "^4.20.5"
   }
