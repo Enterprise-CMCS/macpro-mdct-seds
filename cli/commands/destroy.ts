@@ -4,10 +4,10 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { checkIfAuthenticated } from "../lib/sts";
-import { project, region } from "../lib/consts";
+import { checkIfAuthenticated } from "../lib/sts.js";
+import { project, region } from "../lib/consts.js";
 import { createInterface } from "node:readline/promises";
-import { delete_topics } from "./delete-topics";
+import { delete_topics } from "./delete-topics.js";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -91,9 +91,7 @@ export const destroy = {
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    if (shouldIncludeTopicCommands) {
-      await delete_topics({ stage });
-    }
+    await delete_topics({ stage });
 
     const client = new CloudFormationClient({ region });
     await client.send(new DeleteStackCommand({ StackName: stackName }));

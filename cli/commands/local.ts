@@ -1,11 +1,11 @@
-import { runCommand } from "../lib/runner";
+import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
-import { region } from "../lib/consts";
+import { region } from "../lib/consts.js";
 import {
   runFrontendLocally,
   getCloudFormationStackOutputValues,
-} from "../lib/utils";
-import downloadClamAvLayer from "../lib/clam";
+} from "../lib/utils.js";
+import downloadClamAvLayer from "../lib/clam.js";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";

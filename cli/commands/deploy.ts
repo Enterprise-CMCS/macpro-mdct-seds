@@ -1,12 +1,12 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated } from "../lib/sts";
+import { checkIfAuthenticated } from "../lib/sts.js";
 import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { region } from "../lib/consts";
-import downloadClamAvLayer from "../lib/clam";
-import { runCommand } from "../lib/runner";
+import { project, region } from "../lib/consts.js";
+import downloadClamAvLayer from "../lib/clam.js";
+import { runCommand } from "../lib/runner.js";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -35,10 +35,8 @@ export const deploy = {
   handler: async (options: { stage: string }) => {
     await checkIfAuthenticated();
 
-    if (await stackExists("seds-prerequisites")) {
-      if (shouldDownloadClamAvDefs) {
+    if (await stackExists(`${project}-prerequisites`)) {
         await downloadClamAvLayer();
-      }
 
       await runCommand(
         "CDK deploy",

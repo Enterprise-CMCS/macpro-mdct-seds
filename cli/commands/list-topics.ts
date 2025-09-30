@@ -1,7 +1,7 @@
 import { Argv } from "yargs";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { project, region } from "../lib/consts";
-import { getCloudFormationStackOutputValues } from "../lib/utils";
+import { project, region } from "../lib/consts.js";
+import { getCloudFormationStackOutputValues } from "../lib/utils.js";
 
 export const list_topics = async (options: { stage: string }) => {
   const lambdaClient = new LambdaClient({ region });
