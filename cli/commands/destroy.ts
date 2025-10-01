@@ -1,3 +1,4 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Argv } from "yargs";
 import {
   CloudFormationClient,
@@ -7,6 +8,7 @@ import {
 import { checkIfAuthenticated } from "../lib/sts.js";
 import { project, region } from "../lib/consts.js";
 import { createInterface } from "node:readline/promises";
+import { delete_topics } from "./delete-topics.js";
 
 const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";
@@ -30,6 +32,8 @@ Do you really want to destroy it?
 Re-enter the stack name (${stack}) to continue:
 **********************************************************************${reset}
 `);
+
+  readline.close();
 
   if (confirmation !== stack) {
     throw new Error(`
@@ -80,14 +84,14 @@ export const destroy = {
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    const client = new CloudFormationClient({ region });
+    await delete_topics({ stage });
 
+    const client = new CloudFormationClient({ region });
     await client.send(new DeleteStackCommand({ StackName: stackName }));
     console.log(`Stack ${stackName} delete initiated.`);
 
     if (wait) {
       console.log(`Waiting for stack ${stackName} to be deleted...`);
-
       const result = await waitForStackDeleteComplete(client, stackName);
       console.log(
         result.state === "SUCCESS"
