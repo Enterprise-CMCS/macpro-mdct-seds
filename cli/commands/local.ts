@@ -4,6 +4,7 @@ import { execSync } from "child_process";
 import { region } from "../lib/consts.js";
 import { runFrontendLocally } from "../lib/utils.js";
 import downloadClamAvLayer from "../lib/clam.js";
+import { seedData } from "../lib/seedData.js";
 
 const isColimaRunning = () => {
   try {
@@ -98,6 +99,8 @@ export const local = {
       ],
       "."
     );
+
+    await seedData();
 
     await Promise.all([
       runCommand(
