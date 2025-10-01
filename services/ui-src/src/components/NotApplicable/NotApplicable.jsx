@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { RangeInput } from "@trussworks/react-uswds";
 import PropTypes from "prop-types";
 import {
   updateFormStatusThunk,
@@ -9,10 +8,15 @@ import {
 } from "../../store/reducers/singleForm/singleForm";
 import "./NotApplicable.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { FormStatus } from "../../libs/types";
+import {
+  InProgressStatusFields,
+  isFinalCertified,
+  isNotRequired,
+  NotRequiredStatusFields,
+} from "../../utility-functions/formStatus";
 
 const NotApplicable = ({
-  status_id,
+  statusData,
   resetData,
   saveForm,
   updateFormStatusThunk
@@ -20,7 +24,7 @@ const NotApplicable = ({
   const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
-    if (status_id === FormStatus.FinalCertified) {
+    if (isFinalCertified(statusData)) {
       // This cannot be changed after a form is Final Certified.
       setInputDisabled(true);
       return;
@@ -35,14 +39,14 @@ const NotApplicable = ({
         setInputDisabled(true);
       }
     })()
-  }, [status_id]);
+  }, [statusData]);
 
   const handleApplicableChange = async (evt) => {
-    const newStatus = evt.target.value === "Yes"
-      ? FormStatus.InProgress
-      : FormStatus.NotApplicable;
+    const newStatusData = evt.target.value === "Yes"
+      ? InProgressStatusFields()
+      : NotRequiredStatusFields();
 
-    if (newStatus === FormStatus.NotApplicable) {
+    if (isNotRequired(newStatusData)) {
       const confirm = window.confirm(
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
@@ -53,7 +57,7 @@ const NotApplicable = ({
       }
     }
 
-    await updateFormStatusThunk(newStatus);
+    await updateFormStatusThunk(newStatusData);
     saveForm();
   };
 
@@ -69,7 +73,7 @@ const NotApplicable = ({
             name="not-applicable"
             value="Yes"
             disabled={inputDisabled}
-            checked={status_id !== FormStatus.NotApplicable}
+            checked={!isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
           <label className="usa-radio__label" htmlFor="applicable-yes">Yes</label>
@@ -82,7 +86,7 @@ const NotApplicable = ({
             name="not-applicable"
             value="No"
             disabled={inputDisabled}
-            checked={status_id === FormStatus.NotApplicable}
+            checked={isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
           <label className="usa-radio__label" htmlFor="applicable-no">No</label>
@@ -93,14 +97,14 @@ const NotApplicable = ({
 };
 
 NotApplicable.propTypes = {
-  status_id: PropTypes.number.isRequired,
+  statusData: PropTypes.object.isRequired,
   resetData: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired,
   updateFormStatusThunk: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
-  status_id: state.currentForm.statusData.status_id,
+  statusData: state.currentForm.statusData,
 });
 
 const mapDispatch = {

@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
 import { saveSummaryNotes } from "../../store/actions/statusData";
+import { isFinalCertified } from "../../utility-functions/formStatus";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { FormStatus } from "../../libs/types";
 
 const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   const [summaryNotes, setSummaryNotes] = useState([]);
@@ -38,7 +38,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   if (
     userRole === "admin" ||
     userRole === "business" ||
-    statusData.status_id === FormStatus.FinalCertified
+    isFinalCertified(statusData)
   ) {
     disabledNotes = true;
   }

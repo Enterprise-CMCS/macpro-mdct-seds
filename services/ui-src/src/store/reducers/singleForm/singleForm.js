@@ -2,7 +2,6 @@
 import { Auth } from "aws-amplify";
 import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
 import { generateDateForDB } from "../../../utility-functions/transformFunctions";
-import { FormStatus } from "../../../libs/types";
 
 // HELPER FUNCTIONS
 import {
@@ -24,6 +23,11 @@ import {
 
 import { SUMMARY_NOTES_SUCCESS } from "../../actions/statusData";
 import { recursiveGetStateForms } from "../../../utility-functions/dbFunctions";
+import {
+  FinalCertifiedStatusFields,
+  InProgressStatusFields,
+  ProvisionalCertifiedStatusFields
+} from "../../../utility-functions/formStatus";
 
 // ACTION TYPES
 export const LOAD_SINGLE_FORM = "LOAD_SINGLE_FORM";
@@ -69,11 +73,13 @@ export const gotAnswer = (answerArray, questionID) => {
     questionID
   };
 };
-export const updateFormStatus = (username, status_id) => {
+export const updateFormStatus = (username, statusData) => {
   return {
     type: UPDATE_FORM_STATUS,
     username,
-    status_id,
+    status_id: statusData.status_id,
+    not_applicable: statusData.not_applicable,
+    status: statusData.status,
     timeStamp: new Date().toISOString()
   };
 };
@@ -87,9 +93,9 @@ export const updatedLastSaved = username => {
 
 // THUNKS
 
-export const updateFormStatusThunk = status_id => async dispatch => {
+export const updateFormStatusThunk = statusData => async dispatch => {
   const username = await getUsername();
-  dispatch(updateFormStatus(username, status_id));
+  dispatch(updateFormStatus(username, statusData));
 };
 
 export const updateFPL = newFPL => {
@@ -295,6 +301,8 @@ export default (state = initialState, action) => {
           last_modified_by: action.username,
           last_modified: action.timeStamp,
           status_id: action.status_id,
+          not_applicable: action.not_applicable,
+          status: action.status,
           status_date: action.timeStamp,
           status_modified_by: action.username
         }
@@ -305,10 +313,10 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status_date: new Date().toISOString(), // Need to update this with coming soon helper function
-          status_id: FormStatus.FinalCertified,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+          last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
+          ...FinalCertifiedStatusFields()
         }
       };
     case CERTIFY_AND_SUBMIT_PROVISIONAL:
@@ -317,10 +325,10 @@ export default (state = initialState, action) => {
         statusData: {
           ...state.statusData,
           status_date: new Date().toISOString(), // Need to update this with coming soon helper function
-          status_id: FormStatus.ProvisionalCertified,
           status_modified_by: action.username,
           last_modified_by: action.username,
-          last_modified: new Date().toISOString() // Need to update this with coming soon helper function
+          last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
+          ...ProvisionalCertifiedStatusFields()
         }
       };
     case SUMMARY_NOTES_SUCCESS:
@@ -336,11 +344,11 @@ export default (state = initialState, action) => {
         ...state,
         statusData: {
           ...state.statusData,
-          status_id: FormStatus.InProgress,
           status_modified_by: action.username,
           last_modified_by: action.username,
           last_modified: new Date().toISOString(), // Need to update this with coming soon helper function
-          status_date: new Date().toISOString() // Need to update this with coming soon helper function
+          status_date: new Date().toISOString(), // Need to update this with coming soon helper function
+          ...InProgressStatusFields()
         }
       };
     case SAVE_FORM:

@@ -1,4 +1,4 @@
-import { FormStatus } from "../libs/types";
+import { InProgressStatusFields } from "../utility-functions/formStatus";
 
 const currentFormMock_21E = {
   currentForm: {
@@ -3304,7 +3304,7 @@ const currentFormMock_21E = {
       year: 2021,
       quarter: 1,
       validation_percent: 0.03,
-      status_id: FormStatus.InProgress,
+      ...InProgressStatusFields(),
       status_modified_by: "seed",
       status_date: "01-15-2021",
       state_comments: [

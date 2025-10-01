@@ -12,24 +12,25 @@ import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { obtainUserByEmail } from "../../libs/api";
-import { FormStatus, FormStatusDisplay } from "../../libs/types";
+import {
+  isFinalCertified,
+  isProvisionalCertified,
+  getStatusDisplay
+} from "../../utility-functions/formStatus";
 import { saveForm } from "../../store/reducers/singleForm/singleForm";
 
 const CertificationTab = ({
-  status_id,
-  lastModified,
-  lastModifiedBy,
-  isFinal,
-  isProvisional,
+  statusData,
   certifyAndSubmitFinal,
   certifyAndSubmitProvisional,
   uncertify,
   saveForm
 }) => {
-  const [provisionalButtonStatus, setprovisionalButtonStatus] = useState(
-    isFinal === true ? true : isProvisional
-  );
-  const [finalButtonStatus, setfinalButtonStatus] = useState(isFinal);
+  const isProvisional = isProvisionalCertified(statusData);
+  const isFinal = isFinalCertified(statusData);
+
+  const [provCertDisabled, setProvCertDisabled] = useState(isFinal || isProvisional);
+  const [finalCertDisabled, setFinalCertDisabled] = useState(isFinal);
   const [
     viewProvisionalAndFinalCertify,
     setViewProvisionalAndFinalCertify
@@ -47,21 +48,21 @@ const CertificationTab = ({
   const submitProvisional = async () => {
     await certifyAndSubmitProvisional();
     saveForm();
-    setprovisionalButtonStatus(true);
+    setProvCertDisabled(true);
   };
   const submitFinal = async () => {
     await certifyAndSubmitFinal();
     saveForm();
-    setprovisionalButtonStatus(true);
-    setfinalButtonStatus(true);
+    setProvCertDisabled(true);
+    setFinalCertDisabled(true);
   };
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       await uncertify();
       saveForm();
       // await sendEmailtoBo();
-      setprovisionalButtonStatus(false);
-      setfinalButtonStatus(false);
+      setProvCertDisabled(false);
+      setFinalCertDisabled(false);
     }
   };
 
@@ -117,6 +118,17 @@ const CertificationTab = ({
       </div>
     );
   }
+
+  const statusText = (
+    <div data-testid="statusText">
+      <p>
+        This report was updated to <b>{getStatusDisplay(statusData)}</b>{" "}
+        on <b>{dateFormatter(statusData.status_date)}</b>{" "}
+        by <b>{statusData.status_modified_by}</b>
+      </p>
+    </div>
+  );
+
   return (
     <div>
       {isFinal ? (
@@ -156,28 +168,21 @@ const CertificationTab = ({
           compliance with Title XXI of the Social Security Act (Section 2109(a)
           and Section 2108(e)).
         </p>
-        {isFinal || isProvisional ? (
-          <div data-testid="statusText">
-            <p>
-              This report was updated to <b>{FormStatusDisplay[status_id]}</b> on{" "}
-              <b>{dateFormatter(lastModified)}</b> by <b>{lastModifiedBy}</b>
-            </p>
-          </div>
-        ) : null}
+        {isFinal || isProvisional ? statusText : null}
       </div>
       {viewProvisionalAndFinalCertify ? (
         <div className="certify-btn ">
           <Button
             onClick={() => submitProvisional()}
             type="button"
-            disabled={provisionalButtonStatus}
+            disabled={provCertDisabled}
           >
             {"Certify & Submit Provisional Data"}
           </Button>
           <Button
             onClick={() => submitFinal()}
             type="button"
-            disabled={finalButtonStatus}
+            disabled={finalCertDisabled}
           >
             {"Certify & Submit Final Data"}
           </Button>
@@ -203,22 +208,15 @@ const CertificationTab = ({
 };
 
 CertificationTab.propTypes = {
+  statusData: PropTypes.object.isRequired,
   certifyAndSubmitFinal: PropTypes.func.isRequired,
   certifyAndSubmitProvisional: PropTypes.func.isRequired,
-  status_id: PropTypes.number.isRequired,
-  lastModified: PropTypes.string.isRequired,
-  lastModifiedBy: PropTypes.string,
-  isFinal: PropTypes.bool.isRequired,
-  isProvisional: PropTypes.bool.isRequired,
+  uncertify: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired
 };
 
 const mapState = state => ({
-  status_id: state.currentForm.statusData.status_id,
-  lastModified: state.currentForm.statusData.status_date,
-  lastModifiedBy: state.currentForm.statusData.status_modified_by,
-  isFinal: state.currentForm.statusData.status_id === FormStatus.FinalCertified,
-  isProvisional: state.currentForm.statusData.status_id === FormStatus.ProvisionalCertified,
+  statusData: state.currentForm.statusData,
 });
 
 const mapDispatch = {

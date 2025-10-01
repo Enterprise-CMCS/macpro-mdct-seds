@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { FormStatus } from "../../libs/types";
+import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
 
 const TabContainer = ({
   tabDetails,
@@ -16,7 +16,7 @@ const TabContainer = ({
   answers,
   currentTabs,
   quarter,
-  status_id
+  statusData
 }) => {
   const [disabledStatus, setDisabledStatus] = useState();
 
@@ -32,8 +32,8 @@ const TabContainer = ({
         userRole = userInfo.role;
       });
       if (
-        status_id === FormStatus.FinalCertified ||
-        status_id === FormStatus.NotApplicable ||
+        isFinalCertified(statusData) ||
+        isNotRequired(statusData) ||
         userRole === "admin" ||
         userRole === "business"
       ) {
@@ -42,7 +42,7 @@ const TabContainer = ({
       setDisabledStatus(statusBoolean);
     };
     establishStatus();
-  }, [status_id]);
+  }, [statusData]);
 
   return (
     <Tabs className="tab-container-main">
@@ -129,7 +129,7 @@ TabContainer.propTypes = {
   tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
-  status_id: PropTypes.number.isRequired
+  statusData: PropTypes.object.isRequired
 };
 
 const mapState = state => ({
@@ -137,7 +137,7 @@ const mapState = state => ({
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
-  status_id: state.currentForm.statusData.status_id,
+  statusData: state.currentForm.statusData,
 });
 
 export default connect(mapState)(TabContainer);

@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as saveForm } from "./saveForm.js";
 import { authorizeUserForState } from "../../../auth/authConditions.js";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
-import { FormStatus } from "../../../libs/types.js";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { InProgressStatusFields } from "../../../libs/formStatus.js";
 
 vi.mock("../../../auth/authConditions.js", () => ({
   authorizeUserForState: vi.fn(),
@@ -46,7 +46,7 @@ const mockFormAnswer3 = {
   rows: [{ rowNumber: 1 }],
 };
 const mockStatusData = {
-  status_id: FormStatus.InProgress,
+  ...InProgressStatusFields(),
   state_comments: ["mock state comment"],
   last_modified: new Date().toISOString(),
 };
@@ -61,7 +61,7 @@ const mockBusinessUser = {
   states: ["CO", "etc"],
 };
 const mockStateForm = {
-  status_id: FormStatus.InProgress,
+  ...InProgressStatusFields(),
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 };
@@ -111,13 +111,18 @@ describe("saveForm.js", () => {
     expect(mockUpdate).toHaveBeenCalledWith({
       TableName: "local-state-forms",
       Key: { state_form: "CO-2025-F1-A" },
-      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
+      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, not_applicable = :not_applicable, #status = :status, state_comments = :state_comments",
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
       ExpressionAttributeValues: {
         ":last_modified_by": "COLO",
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status_id": FormStatus.InProgress,
+        ":status_id": 2,
+        ":not_applicable": false,
+        ":status": "In Progress",
         ":state_comments": ["mock state comment"],
       },
       ReturnValues: "ALL_NEW",
@@ -209,7 +214,7 @@ describe("saveForm.js", () => {
         formAnswers: [mockFormAnswer1],
         statusData: {
           ...mockStatusData,
-          status_id: FormStatus.ProvisionalCertified
+          status_id: 3
         },
       }),
     };
@@ -224,7 +229,7 @@ describe("saveForm.js", () => {
 
     expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
       ExpressionAttributeValues: expect.objectContaining({
-        ":status_id": FormStatus.ProvisionalCertified,
+        ":status_id": 3,
         ":status_modified_by": "COLO",
         ":status_date": expect.stringMatching(ISO_DATE_REGEX),
       }),

@@ -1,4 +1,4 @@
-import { FormStatus } from "../libs/types";
+import { InProgressStatusFields } from "../utility-functions/formStatus";
 
 const fullStoreMock = {
   currentForm: {
@@ -3316,7 +3316,7 @@ const fullStoreMock = {
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
-      status_id: FormStatus.InProgress
+      ...InProgressStatusFields()
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   },
