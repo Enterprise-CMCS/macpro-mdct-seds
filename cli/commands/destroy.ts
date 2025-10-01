@@ -1,3 +1,4 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Argv } from "yargs";
 import {
   CloudFormationClient,
@@ -8,14 +9,6 @@ import { checkIfAuthenticated } from "../lib/sts.js";
 import { project, region } from "../lib/consts.js";
 import { createInterface } from "node:readline/promises";
 import { delete_topics } from "./delete-topics.js";
-import { existsSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const topicsStackPath = join(__dirname, "../deployment/stacks/topics.ts");
-const shouldIncludeTopicCommands = existsSync(topicsStackPath);
 
 const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";

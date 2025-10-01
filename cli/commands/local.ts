@@ -1,25 +1,12 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
-import { region } from "../lib/consts.js";
-import {
-  runFrontendLocally,
-  getCloudFormationStackOutputValues,
-} from "../lib/utils.js";
-import downloadClamAvLayer from "../lib/clam.js";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { existsSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const seedDataHandlerPath = join(
-  __dirname,
-  "../../services/database/handlers/seed/seed.js"
-);
-const shouldTriggerSeedDataFunction = existsSync(seedDataHandlerPath);
-const uploadsStackPath = join(__dirname, "../../deployment/stacks/uploads.ts");
-const shouldDownloadClamAvDefs = existsSync(uploadsStackPath);
+import { region } from "../lib/consts";
+import {
+  getCloudFormationStackOutputValues,
+  runFrontendLocally,
+} from "../lib/utils";
 
 const isColimaRunning = () => {
   try {
@@ -99,10 +86,6 @@ export const local = {
       "."
     );
 
-    if (shouldDownloadClamAvDefs) {
-      await downloadClamAvLayer();
-    }
-
     await runCommand(
       "CDK local deploy",
       [
@@ -117,19 +100,17 @@ export const local = {
       "."
     );
 
-    if (shouldTriggerSeedDataFunction) {
-      const SeedDataFunctionName = (
-        await getCloudFormationStackOutputValues("seds-localstack")
-      )["SeedDataFunctionName"];
+    const SeedDataFunctionName = (
+      await getCloudFormationStackOutputValues("seds-localstack")
+    )["SeedDataFunctionName"];
 
-      const lambdaClient = new LambdaClient({ region });
-      const lambdaCommand = new InvokeCommand({
-        FunctionName: SeedDataFunctionName,
-        InvocationType: "Event",
-        Payload: Buffer.from(JSON.stringify({})),
-      });
-      await lambdaClient.send(lambdaCommand);
-    }
+    const lambdaClient = new LambdaClient({ region });
+    const lambdaCommand = new InvokeCommand({
+      FunctionName: SeedDataFunctionName,
+      InvocationType: "Event",
+      Payload: Buffer.from(JSON.stringify({})),
+    });
+    await lambdaClient.send(lambdaCommand);
 
     await Promise.all([
       runCommand(
