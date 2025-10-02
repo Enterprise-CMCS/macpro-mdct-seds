@@ -14,9 +14,9 @@
  */
 
 /** Is this form In Progress? */
-export const isInProgress = (stateForm) => {
+export const isInProgress = stateForm => {
   return stateForm.status_id === 1 || stateForm.status_id === 2;
-}
+};
 
 export const InProgressStatusFields = () => {
   const statusFields = { status_id: 2, not_applicable: false };
@@ -27,9 +27,9 @@ export const InProgressStatusFields = () => {
 };
 
 /** Has the state Certified this form? */
-export const isProvisionalCertified = (stateForm) => {
+export const isProvisionalCertified = stateForm => {
   return stateForm.status_id === 3;
-}
+};
 
 export const ProvisionalCertifiedStatusFields = () => {
   const statusFields = { status_id: 3, not_applicable: false };
@@ -40,9 +40,9 @@ export const ProvisionalCertifiedStatusFields = () => {
 };
 
 /** Has CMS Certified this form? */
-export const isFinalCertified = (stateForm) => {
+export const isFinalCertified = stateForm => {
   return stateForm.status_id === 4 && !stateForm.not_applicable;
-}
+};
 
 export const FinalCertifiedStatusFields = () => {
   const statusFields = { status_id: 4, not_applicable: false };
@@ -53,9 +53,9 @@ export const FinalCertifiedStatusFields = () => {
 };
 
 /** Has the state marked this form as Not Applicable? */
-export const isNotRequired = (stateForm) => {
+export const isNotRequired = stateForm => {
   return stateForm.status_id === 4 && stateForm.not_applicable;
-}
+};
 
 export const NotRequiredStatusFields = () => {
   const statusFields = { status_id: 4, not_applicable: true };
@@ -70,7 +70,7 @@ export const NotRequiredStatusFields = () => {
  * @param stateForm {{ status_id: number, not_applicable: boolean }}
  * @returns {string}
  */
-export const getStatusDisplay = (stateForm) => {
+export const getStatusDisplay = stateForm => {
   /*
    * I know this looks inefficient. "Why not just return stateForm.status?"
    * You make a good point, but hear me out.
@@ -95,6 +95,8 @@ export const getStatusDisplay = (stateForm) => {
   } else if (isNotRequired(stateForm)) {
     return "Not Required";
   } else {
-    throw new Error(`Unrecognized status fields: ${stateForm.status_id}, ${stateForm.not_applicable}`);
+    throw new Error(
+      `Unrecognized status fields: ${stateForm.status_id}, ${stateForm.not_applicable}`
+    );
   }
-}
+};
