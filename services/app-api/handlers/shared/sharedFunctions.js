@@ -31,13 +31,13 @@ export async function getUncertifiedStates(year, quarter) {
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":in_prog_1": 1,
-      ":in_prod_2": 2,
+      ":in_progress_1": 1,
+      ":in_progress_2": 2,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "(status_id = :in_prog_1 OR status_id = :in_prog_2) AND #theYear = :year AND #theQuarter = :quarter",
+      "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
@@ -69,13 +69,13 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":in_prog_1": 1,
-      ":in_prod_2": 2,
+      ":in_progress_1": 1,
+      ":in_progress_2": 2,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "(status_id = :in_prog_1 OR status_id = :in_prog_2) AND #theYear = :year AND #theQuarter = :quarter",
+      "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
