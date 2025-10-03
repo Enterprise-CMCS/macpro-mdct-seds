@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
-import { FormStatus, FormStatusDisplay, InProgressStatusFields } from "../../../libs/formStatus.js";
+import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import {
   getFormDescriptions,
   getQuestionsByYear,
