@@ -11,8 +11,16 @@
         "description": "State id as form year and quarter"
       },
       "status_id": {
-        "type": "string",
+        "type": "number",
         "description": "ID of the current status"
+      },
+      "not_applicable": {
+        "type": "boolean",
+        "description": "True if the form status is 'Not Required'"
+      },
+      "status": {
+        "type": "string",
+        "description": "Translates status_id and not_applicable to a human-readable string"
       },
       "status_modified_by": {
         "type": "string",
@@ -42,17 +50,9 @@
         "type": "number",
         "description": "Percentage complete (.03)"
       },
-      "status": {
-        "type": "string",
-        "description": "Form status"
-      },
       "status_date": {
         "type": "string",
         "description": "Date of last status change"
-      },
-      "not_applicable": {
-        "type": "boolean",
-        "description": "true or false; default to false"
       },
       "last_modified": {
         "type": "string",
@@ -76,14 +76,14 @@
       "state_id",
       "status_modified_by",
       "status_id",
+      "not_applicable",
+      "status",
       "form",
       "program_code",
       "year",
       "quarter",
       "validation_percent",
-      "status",
       "status_date",
-      "not_applicable",
       "last_modified",
       "last_modified_by",
       "created_date",

@@ -9,11 +9,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -35,11 +35,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -61,11 +61,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -87,11 +87,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -113,11 +113,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -139,11 +139,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -165,11 +165,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -191,11 +191,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -217,11 +217,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -243,11 +243,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -269,11 +269,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -295,11 +295,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -321,11 +321,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -347,11 +347,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -373,11 +373,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -399,11 +399,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -425,11 +425,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -451,11 +451,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -477,11 +477,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -503,11 +503,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -529,11 +529,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -555,11 +555,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -581,11 +581,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -607,11 +607,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -633,11 +633,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -659,11 +659,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -685,11 +685,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -711,11 +711,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -737,11 +737,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -763,11 +763,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -789,11 +789,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -815,11 +815,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -841,11 +841,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -867,11 +867,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -893,11 +893,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -919,11 +919,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -945,11 +945,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -971,11 +971,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -997,11 +997,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1023,11 +1023,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1049,11 +1049,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1075,11 +1075,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1101,11 +1101,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1127,11 +1127,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1153,11 +1153,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1179,11 +1179,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1205,11 +1205,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1231,11 +1231,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1257,11 +1257,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1283,11 +1283,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1309,11 +1309,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1335,11 +1335,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1361,11 +1361,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1387,11 +1387,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1413,11 +1413,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1439,11 +1439,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1465,11 +1465,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1491,11 +1491,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1517,11 +1517,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1543,11 +1543,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1569,11 +1569,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1595,11 +1595,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1621,11 +1621,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1647,11 +1647,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1673,11 +1673,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1699,11 +1699,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1725,11 +1725,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1751,11 +1751,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1777,11 +1777,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1803,11 +1803,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1829,11 +1829,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1855,11 +1855,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1881,11 +1881,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1907,11 +1907,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1933,11 +1933,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1959,11 +1959,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -1985,11 +1985,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2011,11 +2011,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2037,11 +2037,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2063,11 +2063,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2089,11 +2089,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2115,11 +2115,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2141,11 +2141,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2167,11 +2167,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2193,11 +2193,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2219,11 +2219,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2245,11 +2245,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2271,11 +2271,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2297,11 +2297,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2323,11 +2323,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2349,11 +2349,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2375,11 +2375,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2401,11 +2401,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2427,11 +2427,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2453,11 +2453,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2479,11 +2479,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2505,11 +2505,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2531,11 +2531,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2557,11 +2557,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2583,11 +2583,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2609,11 +2609,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2635,11 +2635,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2661,11 +2661,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2687,11 +2687,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2713,11 +2713,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2739,11 +2739,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2765,11 +2765,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2791,11 +2791,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2817,11 +2817,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2843,11 +2843,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2869,11 +2869,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2895,11 +2895,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2921,11 +2921,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2947,11 +2947,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2973,11 +2973,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -2999,11 +2999,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3025,11 +3025,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3051,11 +3051,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3077,11 +3077,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3103,11 +3103,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3129,11 +3129,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3155,11 +3155,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3181,11 +3181,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3207,11 +3207,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3233,11 +3233,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3259,11 +3259,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3285,11 +3285,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3311,11 +3311,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3337,11 +3337,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3363,11 +3363,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3389,11 +3389,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3415,11 +3415,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3441,11 +3441,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3467,11 +3467,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3493,11 +3493,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3519,11 +3519,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3545,11 +3545,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3571,11 +3571,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3597,11 +3597,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3623,11 +3623,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3649,11 +3649,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3675,11 +3675,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3701,11 +3701,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3727,11 +3727,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3753,11 +3753,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3779,11 +3779,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3805,11 +3805,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3831,11 +3831,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3857,11 +3857,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3883,11 +3883,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3909,11 +3909,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3935,11 +3935,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3961,11 +3961,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -3987,11 +3987,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4013,11 +4013,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4039,11 +4039,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4065,11 +4065,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4091,11 +4091,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4117,11 +4117,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4143,11 +4143,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4169,11 +4169,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4195,11 +4195,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4221,11 +4221,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4247,11 +4247,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4273,11 +4273,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4299,11 +4299,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4325,11 +4325,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4351,11 +4351,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4377,11 +4377,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4403,11 +4403,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4429,11 +4429,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4455,11 +4455,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4481,11 +4481,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4507,11 +4507,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4533,11 +4533,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4559,11 +4559,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4585,11 +4585,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4611,11 +4611,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4637,11 +4637,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4663,11 +4663,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4689,11 +4689,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4715,11 +4715,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4741,11 +4741,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4767,11 +4767,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4793,11 +4793,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4819,11 +4819,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4845,11 +4845,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4871,11 +4871,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4897,11 +4897,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4923,11 +4923,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4949,11 +4949,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -4975,11 +4975,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5001,11 +5001,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5027,11 +5027,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5053,11 +5053,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5079,11 +5079,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5105,11 +5105,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5131,11 +5131,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5157,11 +5157,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5183,11 +5183,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5209,11 +5209,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5235,11 +5235,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5261,11 +5261,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5287,11 +5287,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5313,11 +5313,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5339,11 +5339,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5365,11 +5365,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5391,11 +5391,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5417,11 +5417,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5443,11 +5443,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5469,11 +5469,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5495,11 +5495,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5521,11 +5521,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5547,11 +5547,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5573,11 +5573,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5599,11 +5599,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5625,11 +5625,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5651,11 +5651,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5677,11 +5677,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5703,11 +5703,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5729,11 +5729,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5755,11 +5755,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5781,11 +5781,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5807,11 +5807,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5833,11 +5833,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5859,11 +5859,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5885,11 +5885,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5911,11 +5911,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5937,11 +5937,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5963,11 +5963,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -5989,11 +5989,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6015,11 +6015,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6041,11 +6041,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6067,11 +6067,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6093,11 +6093,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6119,11 +6119,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6145,11 +6145,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6171,11 +6171,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6197,11 +6197,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6223,11 +6223,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6249,11 +6249,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6275,11 +6275,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6301,11 +6301,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6327,11 +6327,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6353,11 +6353,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6379,11 +6379,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6405,11 +6405,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6431,11 +6431,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6457,11 +6457,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6483,11 +6483,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6509,11 +6509,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6535,11 +6535,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6561,11 +6561,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6587,11 +6587,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -6613,11 +6613,11 @@
     "year": 2021,
     "quarter": 3,
     "validation_percent": 0.03,
+    "status_id": 2,
+    "not_applicable": false,
     "status": "In Progress",
-    "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2021-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",

@@ -4,8 +4,9 @@ import {
   aws_iam as iam,
   aws_wafv2 as wafv2,
   Aws,
-  Duration,
+  CfnOutput,
   custom_resources as cr,
+  Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
@@ -18,7 +19,6 @@ interface CreateUiAuthComponentsProps {
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
-  customResourceRole: iam.Role;
   oktaMetadataUrl: string;
   restApiId: string;
   bootstrapUsersPassword?: string;
@@ -35,7 +35,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     isDev,
     applicationEndpointUrl,
     restApiId,
-    customResourceRole,
     oktaMetadataUrl,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
@@ -256,21 +255,33 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
             `InvokeBootstrapUsersFunction-${stage}`
           ),
         },
-        onUpdate: undefined,
-        onDelete: undefined,
-        policy: cr.AwsCustomResourcePolicy.fromStatements([
-          new iam.PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [bootstrapUsersFunction.functionArn],
-          }),
-        ]),
-        role: customResourceRole,
+        policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+          resources: [bootstrapUsersFunction.functionArn],
+        }),
         resourceType: "Custom::InvokeBootstrapUsersFunction",
       }
     );
 
+    bootstrapUsersFunction.grantInvoke(bootstrapUsersInvoke.grantPrincipal);
+
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }
+
+  new CfnOutput(scope, "CognitoIdentityPoolId", {
+    value: identityPool.ref,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolId", {
+    value: userPool.userPoolId,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolClientId", {
+    value: userPoolClient.userPoolClientId,
+  });
+
+  new CfnOutput(scope, "CognitoUserPoolClientDomain", {
+    value: userPoolDomain.domainName,
+  });
 
   return {
     userPoolDomainName: userPoolDomain.domainName,
