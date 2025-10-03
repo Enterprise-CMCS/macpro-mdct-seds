@@ -4,7 +4,7 @@ import { Kafka } from "kafkajs";
 const STAGE = process.env.stage;
 const kafka = new Kafka({
   clientId: process.env.KAFKA_CLIENT_ID,
-  brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+  brokers: process.env.brokerString.split(","),
   retry: {
     initialRetryTime: 300,
     retries: 8,
@@ -105,7 +105,7 @@ class KafkaSourceLib {
   }
 
   async handler(event) {
-    if (process.env.BOOTSTRAP_BROKER_STRING_TLS === "localstack") {
+    if (process.env.brokerString === "localstack") {
       return;
     }
 
