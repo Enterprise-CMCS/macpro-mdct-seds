@@ -114,7 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment = {
-    brokerString: brokerString,
+    brokerString,
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
