@@ -1,4 +1,4 @@
-import { FormStatus } from "../libs/types";
+import { InProgressStatusFields } from "../utility-functions/formStatus";
 
 const certificationTabMock = {
   currentForm: {
@@ -24,7 +24,7 @@ const certificationTabMock = {
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status_id: FormStatus.InProgress
+      ...InProgressStatusFields()
     }
   }
 };

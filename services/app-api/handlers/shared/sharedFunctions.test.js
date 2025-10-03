@@ -15,7 +15,6 @@ import {
   getUsersEmailByRole,
   replaceFormYear,
 } from "./sharedFunctions.js";
-import { FormStatus } from "../../libs/types.js";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
@@ -92,16 +91,16 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status_id": FormStatus.InProgress,
+          ":in_progress_1": 1,
+          ":in_progress_2": 2,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -139,16 +138,16 @@ describe("sharedFunctions.js", () => {
         TableName: "local-state-forms",
         Select: "ALL_ATTRIBUTES",
         ExpressionAttributeNames: {
-          "#Unceritifiedstatus": "status_id",
           "#theYear": "year",
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":status_id": FormStatus.InProgress,
+          ":in_progress_1": 1,
+          ":in_progress_2": 2,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 

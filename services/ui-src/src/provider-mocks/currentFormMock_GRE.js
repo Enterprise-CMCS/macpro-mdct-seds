@@ -1,4 +1,4 @@
-import { FormStatus } from "../libs/types";
+import { InProgressStatusFields } from "../utility-functions/formStatus";
 
 const currentFormMock_GRE = {
   currentForm: {
@@ -626,7 +626,7 @@ const currentFormMock_GRE = {
       form_name: "Gender, Race & Ethnicity",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status_id: FormStatus.InProgress
+      ...InProgressStatusFields()
     },
     tabs: ["0018"]
   }

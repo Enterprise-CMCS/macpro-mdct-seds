@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
-import { FormStatus } from "../../../libs/types.js";
+import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import {
   getFormDescriptions,
   getQuestionsByYear,
@@ -125,7 +125,7 @@ describe("generateQuarterForms.js", () => {
             state_form: expect.stringMatching(/^(CO|TX)-2025-1-[AB]$/),
             state_id: expect.stringMatching(/^(CO|TX)$/),
             status_date: expect.stringMatching(ISO_DATE_REGEX),
-            status_id: FormStatus.InProgress,
+            ...InProgressStatusFields(),
             status_modified_by: "seed",
             validation_percent: "0.03",
             year: 2025,

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
-import { FormStatusDisplay } from "../../libs/types";
+import { getStatusDisplay } from "../../utility-functions/formStatus";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
@@ -86,7 +86,7 @@ const Quarterly = () => {
                         <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div className="form-status-pill">{FormStatusDisplay[form.status_id]}</div>
+                        <div className="form-status-pill">{getStatusDisplay(form)}</div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
                       <td style={{ textAlign: "center" }}>

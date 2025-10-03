@@ -10,7 +10,7 @@ import {
 } from "../../shared/sharedFunctions.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
-import { FormStatus } from "../../../libs/types.js";
+import { InProgressStatusFields } from "../../../libs/formStatus.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -180,7 +180,7 @@ const generateQuarterForms = async (event) => {
               status_modified_by: "seed",
               created_by: "seed",
               validation_percent: "0.03",
-              status_id: FormStatus.InProgress,
+              ...InProgressStatusFields(),
               form: allFormDescriptions[form].form,
               program_code: "All",
               state_id: allStates[state].state_id,

@@ -1,5 +1,4 @@
 import dynamoDb from "../../libs/dynamodb-lib.js";
-import { FormStatus } from "../../libs/types.js";
 
 export async function getUsersEmailByRole(role) {
   const params = {
@@ -28,17 +27,17 @@ export async function getUncertifiedStates(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status_id": FormStatus.InProgress,
+      ":in_progress_1": 1,
+      ":in_progress_2": 2,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
+      "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items
@@ -66,17 +65,17 @@ export async function getUncertifiedStatesAndForms(year, quarter) {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeNames: {
-      "#Unceritifiedstatus": "status_id",
       "#theYear": "year",
       "#theQuarter": "quarter",
     },
     ExpressionAttributeValues: {
-      ":status_id": FormStatus.InProgress,
+      ":in_progress_1": 1,
+      ":in_progress_2": 2,
       ":year": year,
       ":quarter": quarter,
     },
     FilterExpression:
-      "#Unceritifiedstatus = :status_id AND #theYear = :year AND #theQuarter = :quarter",
+      "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
   };
 
   // data returned from the database which contains the database Items

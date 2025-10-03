@@ -5,6 +5,17 @@ const {
   BatchWriteCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
+/*
+ * DO NOT RUN THIS SCRIPT.
+ *
+ * It was run in DEV, but not VAL or PROD.
+ *
+ * It was undone in DEV by unMigrateStateFormStatus.js.
+ *
+ * Maybe someday we'll run something like this in the higher environments.
+ * Until then, we're keeping it in the repo, strictly for reference purposes.
+ */
+
 /**
  * This migration will remove the ambiguity from state form statuses.
  *
@@ -181,6 +192,8 @@ async function sendBatch (batch) {
 }
 
 (async function () {
+  throw new Error("Stop. Talk to Ben. And/or read his copious comments.");
+
   let updatedCount = 0;
   try {
     let batch = [];
