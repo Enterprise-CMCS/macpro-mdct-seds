@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import FormHeader from "./FormHeader";
@@ -6,7 +7,7 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import currentFormMock_GRE from "../../provider-mocks/currentFormMock_GRE";
 import { storeFactory } from "../../provider-mocks/testUtils";
 
-jest.spyOn(window, "alert").mockImplementation();
+vi.spyOn(window, "alert").mockImplementation();
 
 // The props this component requires in order to render
 const defaultProps = {
@@ -40,7 +41,7 @@ const mountSetup = (initialState = {}, props = {}, path = "") => {
 
 const mockAnswers = fullStoreMock.currentForm;
 
-jest.mock("../../libs/api", () => ({
+vi.mock("../../libs/api", () => ({
   getFormTypes: () => Promise.resolve(mockFormTypes),
   getSingleForm: () => Promise.resolve(mockAnswers)
 }));

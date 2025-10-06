@@ -1,4 +1,5 @@
 import React from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import Footer from "./Footer";
 
@@ -8,7 +9,7 @@ let useContextMock;
 // Setup mocks
 beforeEach(() => {
   realUseContext = React.useContext;
-  useContextMock = React.useContext = jest.fn();
+  useContextMock = React.useContext = vi.fn();
 });
 
 // Cleanup mocks

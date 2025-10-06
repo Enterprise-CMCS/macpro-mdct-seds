@@ -1,5 +1,6 @@
 import React from "react";
-import { getDefaultNormalizer, render, screen } from "@testing-library/react";
+import { describe, expect, it, test, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import CertificationTab from "../CertificationTab/CertificationTab";
@@ -24,11 +25,11 @@ const mockUser = {
   ]
 };
 
-jest.mock("../../utility-functions/userFunctions", () => ({
+vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
 
-jest.mock("../../libs/api", () => ({
+vi.mock("../../libs/api", () => ({
   obtainUserByEmail: () => mockUser
 }));
 

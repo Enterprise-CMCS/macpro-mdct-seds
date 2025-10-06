@@ -1,21 +1,22 @@
 import React from "react";
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
 import GenerateForms from "./GenerateForms";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { generateQuarterlyForms } from "../../libs/api";
 
-jest.spyOn(window, "alert").mockImplementation(() => {});
-jest.spyOn(window, "confirm").mockImplementation(() => true);
+vi.spyOn(window, "alert").mockImplementation(() => {});
+vi.spyOn(window, "confirm").mockImplementation(() => true);
 
-jest.mock("../../libs/api", () => ({
-  generateQuarterlyForms: jest.fn(),
+vi.mock("../../libs/api", () => ({
+  generateQuarterlyForms: vi.fn(),
 }));
 
 describe("Test GenerateForms.js", () => {
   let container;
   beforeEach(() => {
     container = render(<GenerateForms/>).container;
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render", () => {

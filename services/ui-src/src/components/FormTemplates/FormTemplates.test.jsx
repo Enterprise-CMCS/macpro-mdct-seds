@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, test, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FormTemplates from "./FormTemplates";
@@ -7,15 +8,14 @@ import {
   obtainFormTemplateYears,
   updateCreateFormTemplate
 } from "../../libs/api";
-import { act } from "react-dom/test-utils";
 
-jest.mock("../../libs/api", () => ({
-  obtainFormTemplate: jest.fn(),
-  obtainFormTemplateYears: jest.fn(),
-  updateCreateFormTemplate: jest.fn(),
+vi.mock("../../libs/api", () => ({
+  obtainFormTemplate: vi.fn(),
+  obtainFormTemplateYears: vi.fn(),
+  updateCreateFormTemplate: vi.fn(),
 }));
 
-jest.spyOn(window, "confirm").mockImplementation(() => true);
+vi.spyOn(window, "confirm").mockImplementation(() => true);
 
 describe("Tests for FormTemplates.js", () => {
   test("Should render correctly when there are no years", async () => {
