@@ -1,50 +1,76 @@
 import React from "react";
-import Footer from "./Footer";
 import { render } from "@testing-library/react";
+import Footer from "./Footer";
 
 let realUseContext;
 let useContextMock;
 
-// *** set up mocks
+// Setup mocks
 beforeEach(() => {
   realUseContext = React.useContext;
   useContextMock = React.useContext = jest.fn();
 });
 
-// *** garbage clean up (mocks)
+// Cleanup mocks
 afterEach(() => {
   React.useContext = realUseContext;
 });
 
-describe("Test Footer.js", () => {
-  test("Check the main element, with classname footer, exists", () => {
+describe("Footer Component", () => {
+  it("renders footer element with correct test id", () => {
     useContextMock.mockReturnValue(true);
-
     const mockUser = { attributes: { "app-role": "admin" } };
-
     const { getByTestId } = render(<Footer user={mockUser} />);
-
     expect(getByTestId("Footer")).toBeVisible();
   });
 
-  test("Check for MDCT SEDS Logo", () => {
+  it("displays MDCT SEDS logo with correct src and alt text", () => {
     const { getByAltText } = render(<Footer />);
     const image = getByAltText("MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool");
+    expect(image).toBeVisible();
     expect(image.src).toContain("/img/seds-logo.svg");
   });
 
-  test("Check for CMS Home Page link", () => {
-    const { getByText } = render(<Footer />);
-    expect(
-      getByText("Centers for Medicare & Medicaid Services Website")
-    ).toHaveAttribute("href", "https://www.cms.gov/");
+  it("displays HHS logo with correct src and alt text", () => {
+    const { getByAltText } = render(<Footer />);
+    const image = getByAltText("Department of Health and Human Services, USA");
+    expect(image).toBeVisible();
+    expect(image.src).toContain("/img/logo_hhs.svg");
   });
 
-  test("Check for SEDS Help Desk email link", () => {
+  it("displays both Medicaid logos (mobile and desktop versions)", () => {
+    const { getAllByAltText } = render(<Footer />);
+    const medicaidLogos = getAllByAltText("Medicaid.gov: Keeping America Healthy");
+    expect(medicaidLogos).toHaveLength(2);
+    medicaidLogos.forEach(logo => {
+      expect(logo.src).toContain("/img/logo_medicaid.svg");
+    });
+  });
+
+  it("renders Contact Us link with correct href", () => {
     const { getByText } = render(<Footer />);
-    expect(getByText("MDCT_Help@cms.hhs.gov")).toHaveAttribute(
-      "href",
-      "mailto:mdct_help@cms.hhs.gov"
-    );
+    const contactLink = getByText("Contact Us");
+    expect(contactLink).toBeVisible();
+    expect(contactLink).toHaveAttribute("href", "mailto:mdct_help@cms.hhs.gov");
+  });
+
+  it("renders Accessibility Statement link with correct href", () => {
+    const { getByText } = render(<Footer />);
+    const accessibilityLink = getByText("Accessibility Statement");
+    expect(accessibilityLink).toBeVisible();
+    expect(accessibilityLink).toHaveAttribute("href", "https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice");
+    expect(accessibilityLink).toHaveAttribute("target", "_blank");
+  });
+
+  it("displays CMS copy text", () => {
+    const { getByText } = render(<Footer />);
+    const copyText = getByText(/A federal government website managed and paid for by the U.S. Centers for Medicare and Medicaid Services/);
+    expect(copyText).toBeVisible();
+  });
+
+  it("displays CMS address", () => {
+    const { getByText } = render(<Footer />);
+    const address = getByText("7500 Security Boulevard Baltimore, MD 21244");
+    expect(address).toBeVisible();
   });
 });
