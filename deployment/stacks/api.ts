@@ -114,7 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment = {
-    BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    brokerString,
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
@@ -167,19 +167,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    tables: dataConnectTables,
-  });
-
-  new LambdaDynamoEventSource(scope, "dataConnectSource", {
-    entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
     handler: "handler",
     timeout: Duration.seconds(120),
     memorySize: 2048,
