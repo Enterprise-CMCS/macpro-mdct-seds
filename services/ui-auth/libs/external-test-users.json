@@ -1,0 +1,152 @@
+[
+  {
+    "username": "admin.pen@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "admin.pen@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Admin"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "admin.pen2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "admin.pen2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Admin2"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "state.pen@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "state.pen@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  },
+  {
+    "username": "state.pen2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "state.pen2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State2"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  },
+  {
+    "username": "business.pen@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "business.pen@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Business"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  },
+  {
+    "username": "business.pen2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "business.pen2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Business2"
+      },
+      {
+        "Name": "family_name",
+        "Value": "MDCT"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "CHIP_D_USER_GROUP"
+      }
+    ]
+  }
+]
