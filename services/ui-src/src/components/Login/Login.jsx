@@ -56,7 +56,7 @@ export default function Login() {
 
   //This variable will be used to set the hidden property of the developer-login form
   //If the environment is not PROD, the developer login will be shown
-  const development = window.location.hostname !== "mdctseds.cms.gov";
+  const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
 
   return (
     <div className="login-wrapper text-center" data-testid="Login">
@@ -75,7 +75,7 @@ export default function Login() {
       <form
         onSubmit={handleSubmit}
         className="developer-login text-center"
-        hidden={development}
+        hidden={hideCognitoLogin}
         data-testid="loginForm"
       >
         <FormGroup controlId="email" bsSize="large">
