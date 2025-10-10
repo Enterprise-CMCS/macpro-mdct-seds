@@ -5,13 +5,9 @@ const directories = [
   "./tests/cypress",
   "./nightwatch",
   "./services/app-api",
-  "./services/ui",
   "./services/database",
-  "./services/stream-functions",
   "./services/ui-auth",
   "./services/ui-src",
-  "./services/ui-waf-log-assoc",
-  "./services/ui-waflog-s3-bucket",
 ];
 
 export const installDeps = async () => {

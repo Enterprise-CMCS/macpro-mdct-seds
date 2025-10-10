@@ -1,68 +1,79 @@
 import React from "react";
-import { FooterNav, Grid, GridContainer } from "@trussworks/react-uswds";
+import { Grid, GridContainer } from "@trussworks/react-uswds";
 import "./Footer.scss";
 
 const Footer = () => {
   return (
-    <div className="footer position-relative z-bottom" data-testid="Footer">
-      <GridContainer className="container" containerSize="none">
-        <Grid row>
-          <Grid col={6} tablet={{ col: true }}>
-            <div className="logo">
-              <ul>
-                <li>
-                  <img
-                    src="/img/seds-logo.svg"
-                    alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
-                  />
-                </li>
-              </ul>
-            </div>
-
-            <div className="tagline">
-              Centers for Medicare &amp; Medicaid Services
-            </div>
-          </Grid>
-          <Grid col={6} tablet={{ col: true }}>
-            <div className="footer-nav">
-              <FooterNav
-                aria-label="Footer navigation"
-                size="slim"
-                links={[
-                  <a
-                    className="usa-footer__primary-link"
-                    href="https://www.cms.gov/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Centers for Medicare &amp; Medicaid Services Website
-                  </a>
-                ]}
+    <footer className="footerRoot" data-testid="Footer">
+      <div className="footerTop">
+        <GridContainer className="footerTopContainer" containerSize="none">
+          <Grid row className="footerTopFlex">
+            <Grid col={6} tablet={{ col: true }} className="footerTopLeftContainer">
+              <img
+                className="sedsLogo"
+                src="/img/seds-logo.svg"
+                alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
               />
-            </div>
-            <div className="info">
-              <div className="help">
-                <p>
-                  Email{" "}
-                  <a
-                    data-test="attribute-email"
-                    href="mailto:mdct_help@cms.hhs.gov"
-                  >
-                    MDCT_Help@cms.hhs.gov
-                  </a>{" "}
-                  for help or feedback.
-                </p>
+            </Grid>
+            <Grid col={6} tablet={{ col: true }} className="footerTopRightContainer">
+              <div className="footerTopRightTopFlex">
+                <div className="footerCMSBrandingLeft">
+                  <div className="hhsLogo">
+                    <img
+                        src="/img/logo_hhs.svg"
+                        alt="Department of Health and Human Services, USA"
+                    />
+                  </div>
+                  <div className="hhsMedicaidLogoMobile">
+                    <img
+                        src="/img/logo_medicaid.svg"
+                        alt="Medicaid.gov: Keeping America Healthy"
+                    />
+                  </div>
+                </div>
+                <div className="footerCMSBrandingRight">
+                  <p className="hhsCopyText">
+                    A federal government website managed and paid for by the
+                    U.S. Centers for Medicare and Medicaid Services and part of
+                    the MDCT suite.
+                  </p>
+                </div>
               </div>
-              <div className="title">
-                A federal government managed website by the Centers for Medicare
-                &amp; Medicaid Services
+              <div className="footerCMSMedicaid">
+                <div className="medicaidLogo">
+                  <img
+                      src="/img/logo_medicaid.svg"
+                      alt="Medicaid.gov: Keeping America Healthy"
+                  />
+                </div>
               </div>
-            </div>
+            </Grid>
           </Grid>
-        </Grid>
-      </GridContainer>
-      <div className="address">7500 Security Boulevard Baltimore, MD 21244</div>
-    </div>
+        </GridContainer>
+      </div>
+      <div className="footerBottom">
+        <div className="footerBottomContainer">
+          <div className="footerBottomFlex">
+            <div className="footerBottomLinkFlex">
+              <a href="mailto:mdct_help@cms.hhs.gov">
+                Contact Us
+              </a>
+              <a
+                href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
+                target="_blank"
+              >
+                Accessibility Statement
+              </a>
+            </div>
+            <div className="addressDiv">
+              <p className="address">
+                7500 Security Boulevard Baltimore, MD 21244
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 

@@ -1,8 +1,9 @@
+import { describe, expect, it, vi } from "vitest";
 import { handleExport, buildCsvContents } from "./exportFunctions";
 import { saveAs } from "file-saver";
 
-jest.mock("file-saver", () => ({
-  saveAs: jest.fn()
+vi.mock("file-saver", () => ({
+  saveAs: vi.fn()
 }));
 
 const fruitData = {

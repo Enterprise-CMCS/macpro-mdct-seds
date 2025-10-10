@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import Signup from "./Signup";
 import { render, screen, waitFor } from "@testing-library/react";
 import { useAppContext } from "../../libs/contextLib";
@@ -6,24 +7,24 @@ import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import userEvent from "@testing-library/user-event";
 
-jest.spyOn(window, "alert").mockImplementation(
+vi.spyOn(window, "alert").mockImplementation(
   (message) => console.error(message)
 );
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: jest.fn().mockReturnValue([]),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useHistory: vi.fn().mockReturnValue([]),
 }));
 
-jest.mock("../../libs/contextLib", () => ({
-  useAppContext: jest.fn().mockReturnValue({}),
+vi.mock("../../libs/contextLib", () => ({
+  useAppContext: vi.fn().mockReturnValue({}),
 }));
 
-jest.mock("aws-amplify", () => ({
+vi.mock("aws-amplify", () => ({
   Auth: {
-    signUp: jest.fn(),
-    confirmSignUp: jest.fn().mockResolvedValue(true),
-    signIn: jest.fn().mockResolvedValue(true),
+    signUp: vi.fn(),
+    confirmSignUp: vi.fn().mockResolvedValue(true),
+    signIn: vi.fn().mockResolvedValue(true),
   },
 }));
 
@@ -83,11 +84,11 @@ describe("Test Signup.js", () => {
   });
 
   it("should log in users who confirm their email", async () => {
-    const mockSetAuthenticated = jest.fn();
+    const mockSetAuthenticated = vi.fn();
     useAppContext.mockReturnValue({
       setIsAuthenticated: mockSetAuthenticated,
     });
-    const mockHistoryPush = jest.fn();
+    const mockHistoryPush = vi.fn();
     useHistory.mockReturnValue({
       push: mockHistoryPush,
     });
