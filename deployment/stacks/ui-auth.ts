@@ -220,8 +220,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ],
       environment: {
         userPoolId: userPool.userPoolId,
-        bootstrapUsersPassword,
-        bootstrapExternalUsersPassword,
+        bootstrapUsersPassword: bootstrapUsersPassword!,
+        bootstrapExternalUsersPassword: bootstrapExternalUsersPassword!,
       },
       isDev,
     }).lambda;
