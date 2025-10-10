@@ -22,6 +22,7 @@ interface CreateUiAuthComponentsProps {
   oktaMetadataUrl: string;
   restApiId: string;
   bootstrapUsersPassword?: string;
+  bootstrapExternalUsersPassword?: string;
   secureCloudfrontDomainName?: string;
   userPoolDomainPrefix?: string;
   userPoolName?: string;
@@ -37,6 +38,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     restApiId,
     oktaMetadataUrl,
     bootstrapUsersPassword,
+    bootstrapExternalUsersPassword,
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
     userPoolName,
@@ -201,7 +203,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   let bootstrapUsersFunction;
 
-  if (bootstrapUsersPassword) {
+  if (bootstrapUsersPassword || bootstrapExternalUsersPassword) {
     const service = "ui-auth";
     bootstrapUsersFunction = new Lambda(scope, "bootstrapUsers", {
       stackName: `${service}-${stage}`,
@@ -219,6 +221,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       environment: {
         userPoolId: userPool.userPoolId,
         bootstrapUsersPassword,
+        bootstrapExternalUsersPassword,
       },
       isDev,
     }).lambda;
