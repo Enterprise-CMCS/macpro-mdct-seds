@@ -1,27 +1,34 @@
-import { runCommand } from "../lib/runner";
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+import { runCommand } from "../lib/runner.js";
+import { existsSync, readdirSync } from "node:fs";
+import path from "node:path";
 
 const directories = [
   "./deployment",
-  "./tests/cypress",
-  "./nightwatch",
-  "./services/app-api",
-  "./services/database",
-  "./services/ui-auth",
-  "./services/ui-src",
+  ...readdirSync("services", { withFileTypes: true })
+    .filter(
+      (d) =>
+        d.isDirectory() &&
+        existsSync(path.join("services", d.name, "package.json"))
+    )
+    .map((d) => `./services/${d.name}`)
+    .sort(),
 ];
 
 export const installDeps = async () => {
   await runCommand(
     "yarn install root",
-    ["yarn", "install", "--frozen-lockfile"],
-    "."
+    ["yarn", "--silent", "install", "--frozen-lockfile"],
+    ".",
+    { quiet: true }
   );
 
   for (const dir of directories) {
     await runCommand(
       `yarn install ${dir}`,
-      ["yarn", "install", "--frozen-lockfile"],
-      dir
+      ["yarn", "--silent", "install", "--frozen-lockfile"],
+      dir,
+      { quiet: true }
     );
   }
 };
