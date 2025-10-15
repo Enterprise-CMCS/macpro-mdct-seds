@@ -3,14 +3,17 @@ import { runCommand } from "../lib/runner.js";
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 
-const directories = readdirSync("services", { withFileTypes: true })
-  .filter(
-    (d) =>
-      d.isDirectory() &&
-      existsSync(path.join("services", d.name, "package.json"))
-  )
-  .map((d) => `./services/${d.name}`)
-  .sort();
+const directories = [
+  "./deployment",
+  ...readdirSync("services", { withFileTypes: true })
+    .filter(
+      (d) =>
+        d.isDirectory() &&
+        existsSync(path.join("services", d.name, "package.json"))
+    )
+    .map((d) => `./services/${d.name}`)
+    .sort(),
+];
 
 export const installDeps = async () => {
   await runCommand(
