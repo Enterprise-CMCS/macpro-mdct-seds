@@ -14,14 +14,6 @@
         "type": "number",
         "description": "ID of the current status"
       },
-      "not_applicable": {
-        "type": "boolean",
-        "description": "True if the form status is 'Not Required'"
-      },
-      "status": {
-        "type": "string",
-        "description": "Translates status_id and not_applicable to a human-readable string"
-      },
       "status_modified_by": {
         "type": "string",
         "description": "The user who last changed the status of the form"
@@ -76,8 +68,6 @@
       "state_id",
       "status_modified_by",
       "status_id",
-      "not_applicable",
-      "status",
       "form",
       "program_code",
       "year",
