@@ -48,10 +48,14 @@ export const NotRequiredStatusFields = () => {
  */
 export const getStatusDisplay = stateForm => {
   switch (stateForm.status_id) {
-    case 1: return "In Progress";
-    case 2: return "Provisional Data Certified and Submitted";
-    case 3: return "Final Data Certified and Submitted";
-    case 4: return "Not Required";
+    case 1: 
+      return "In Progress";
+    case 2: 
+      return "Provisional Data Certified and Submitted";
+    case 3: 
+      return "Final Data Certified and Submitted";
+    case 4: 
+      return "Not Required";
     default:
       throw new Error(`Unrecognized status field: ${stateForm.status_id}`);
   }
