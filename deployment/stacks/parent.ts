@@ -58,6 +58,8 @@ export class ParentStack extends Stack {
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
       tables,
+      vpc,
+      kafkaAuthorizedSubnets,
     });
 
     if (isLocalStack) {
