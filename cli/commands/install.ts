@@ -5,13 +5,16 @@ import path from "node:path";
 
 const directories = [
   "./deployment",
+  ...(existsSync(path.join("tests", "package.json")) ? ["./tests"] : []),
   ...readdirSync("services", { withFileTypes: true })
     .filter(
-      (d) =>
+      (d: { isDirectory(): boolean; name: string }) =>
         d.isDirectory() &&
         existsSync(path.join("services", d.name, "package.json"))
     )
-    .map((d) => `./services/${d.name}`)
+    .map(
+      (d: { isDirectory(): boolean; name: string }) => `./services/${d.name}`
+    )
     .sort(),
 ];
 
