@@ -78,8 +78,6 @@ export const updateFormStatus = (username, statusData) => {
     type: UPDATE_FORM_STATUS,
     username,
     status_id: statusData.status_id,
-    not_applicable: statusData.not_applicable,
-    status: statusData.status,
     timeStamp: new Date().toISOString()
   };
 };
@@ -301,8 +299,6 @@ export default (state = initialState, action) => {
           last_modified_by: action.username,
           last_modified: action.timeStamp,
           status_id: action.status_id,
-          not_applicable: action.not_applicable,
-          status: action.status,
           status_date: action.timeStamp,
           status_modified_by: action.username
         }

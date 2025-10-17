@@ -20,14 +20,9 @@ describe("Form status utilities", () => {
   describe("getStatusDisplay", () => {
     it("should recognize all possible status field combinations", () => {
       expect(getStatusDisplay({ status_id: 1 })).toBe(inProgressDescription);
-      expect(getStatusDisplay({ status_id: 2 })).toBe(inProgressDescription);
-      expect(getStatusDisplay({ status_id: 3 })).toBe(provCertDescription);
-      expect(getStatusDisplay({ status_id: 4, not_applicable: false })).toBe(
-        finalCertDescription
-      );
-      expect(getStatusDisplay({ status_id: 4, not_applicable: true })).toBe(
-        notReqDescription
-      );
+      expect(getStatusDisplay({ status_id: 2 })).toBe(provCertDescription);
+      expect(getStatusDisplay({ status_id: 3 })).toBe(finalCertDescription);
+      expect(getStatusDisplay({ status_id: 4 })).toBe(notReqDescription);
     });
 
     it("should reject impossible status_id values", () => {

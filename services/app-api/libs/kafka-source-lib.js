@@ -89,6 +89,30 @@ class KafkaSourceLib {
         String(record.eventSourceARN.toString())
       );
 
+      if (!topicName) {
+        continue;
+      }
+
+      /*
+       * ⚠️ WARNING ⚠️
+       * The MDCT SEDS database contains thousands of state forms from 2019
+       * which appear to be In Progress, whereas DataConnect's records
+       * of these forms indicate they have been Final Certified.
+       * This appears to be the result of some sort of data import gone wrong?
+       * Note that the SEDS system as you see it went live in 2020.
+       * In any case, those forms are assumed incorrect and should NOT BE SENT
+       * through Kafka to DataConnect - unless an actual user action has bumped
+       * the last_modified date.
+       */
+      if (topicName.includes(".state-forms.")) {
+        const state_form = this.unmarshall(record.dynamodb.NewImage);
+        if (state_form.year === 2019 &&
+          new Date(state_form.last_modified).getFullYear() < 2025
+        ) {
+          continue;
+        }
+      }
+
       const dynamoPayload = this.createPayload(record);
 
       //initialize configuration object keyed to topic for quick lookup
@@ -119,11 +143,15 @@ class KafkaSourceLib {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
       const topicMessages = Object.values(outboundEvents);
-      console.log(
-        `Batch configuration: ${this.stringify(topicMessages, true)}`
-      );
-
-      await producer.sendBatch({ topicMessages });
+      
+      if (topicMessages.length > 0) {
+        console.log(
+          `Batch configuration: ${this.stringify(topicMessages, true)}`
+        );
+        await producer.sendBatch({ topicMessages });
+      } else {
+        console.log("Ignored all records - no messages to send.");
+      }
     }
 
     console.log(`Successfully processed ${event.Records.length} records.`);

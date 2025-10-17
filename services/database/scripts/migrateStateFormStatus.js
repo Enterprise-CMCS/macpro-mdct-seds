@@ -5,17 +5,6 @@ const {
   BatchWriteCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
-/*
- * DO NOT RUN THIS SCRIPT.
- *
- * It was run in DEV, but not VAL or PROD.
- *
- * It was undone in DEV by unMigrateStateFormStatus.js.
- *
- * Maybe someday we'll run something like this in the higher environments.
- * Until then, we're keeping it in the repo, strictly for reference purposes.
- */
-
 /**
  * This migration will remove the ambiguity from state form statuses.
  *
@@ -43,15 +32,24 @@ const {
  * | Prior: id, n/a, status  | After: id (status) | Count |
  * |-------------------------|--------------------|-------|
  * | 1, false, "In Progress" | 1 (In Progress)    | ~1500 |
- * | 2, false, "In Progress" | 1 (In Progress)    | ~2600 |
- * | 3, false, "Prov. Cert." | 2 (Prov. Cert.)    |  ~150 |
+ * | 2, false, "In Progress" | 1 (In Progress)    | ~2900 |
+ * | 3, false, "Prov. Cert." | 2 (Prov. Cert.)    |  ~160 |
  * | 4, false, "Final Cert." | 3 (Final Cert.)    | ~3600 |
  * | 4, false, "Not Req."    | 4 (Not Required)   |     3 |
- * | 1, true, "In Progress"  | 4 (Not Required)   |     9 |
+ * | 1, true, "In Progress"  | 4 (Not Required)*  |     9 |
  * | 2, true, "In Progress"  | 4 (Not Required)   |     0 |
  * | 3, true, "Prov. Cert."  | 4 (Not Required)   |     0 |
  * | 4, true, "Final Cert."  | 4 (Not Required)   |     5 |
  * | 4, true, "Not Req."     | 4 (Not Required)   |  ~350 |
+ * * The exception is MA-2021-1-64.21E, which will go from 1/true/InPrg -> 1
+ * 
+ * Note that this migration has a bit of history.
+ * - It was run in DEV on Sep 16, 2025.
+ * - It was then reverted (more or less) by unMigrateStateFormStatus on Oct 3.
+ * - (The next three bullets were speculatively & boldly written on Oct 16.)
+ * - It was then re-run in DEV on Oct 17.
+ * - It was run in VAL the week of Oct 20.
+ * - It was run in PROD on Oct 22.
  */
 
 /*

@@ -95,12 +95,11 @@ describe("sharedFunctions.js", () => {
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":in_progress_1": 1,
-          ":in_progress_2": 2,
+          ":in_progress": 1,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
@@ -142,12 +141,11 @@ describe("sharedFunctions.js", () => {
           "#theQuarter": "quarter",
         },
         ExpressionAttributeValues: {
-          ":in_progress_1": 1,
-          ":in_progress_2": 2,
+          ":in_progress": 1,
           ":year": 2025,
           ":quarter": 1,
         },
-        FilterExpression: "(status_id = :in_progress_1 OR status_id = :in_progress_2) AND #theYear = :year AND #theQuarter = :quarter",
+        FilterExpression: "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
       }), expect.any(Function));
     });
 
