@@ -16,6 +16,7 @@ import { WafConstruct } from "../constructs/waf";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { isLocalStack } from "../local/util";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
+import apiConfig from "./api.config.json";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -139,13 +140,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables,
   };
 
-  new Lambda(scope, "ForceKafkaSync", {
-    entry: "services/app-api/handlers/kafka/get/forceKafkaSync.js",
-    handler: "main",
-    timeout: Duration.minutes(15),
-    memorySize: 3072,
-    ...commonProps,
-  });
 
   const dataConnectTables = tables.filter((table) =>
     [
@@ -170,121 +164,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
     tables: dataConnectTables,
-  });
-
-  new Lambda(scope, "getUserById", {
-    entry: "services/app-api/handlers/users/get/getUserById.js",
-    handler: "main",
-    path: "/users/{id}",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getUsers", {
-    entry: "services/app-api/handlers/users/get/listUsers.js",
-    handler: "main",
-    path: "/users",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "obtainUserByUsername", {
-    entry: "services/app-api/handlers/users/post/obtainUserByUsername.js",
-    handler: "main",
-    path: "/users/get",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "obtainUserByEmail", {
-    entry: "services/app-api/handlers/users/post/obtainUserByEmail.js",
-    handler: "main",
-    path: "/users/get/email",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "createUser", {
-    entry: "services/app-api/handlers/users/post/createUser.js",
-    handler: "main",
-    path: "/users/add",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "adminCreateUser", {
-    entry: "services/app-api/handlers/users/post/createUser.js",
-    handler: "adminCreateUser",
-    path: "/users/admin-add",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateUser", {
-    entry: "services/app-api/handlers/users/post/updateUser.js",
-    handler: "main",
-    path: "/users/update/{userId}",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getForm", {
-    entry: "services/app-api/handlers/forms/get.js",
-    handler: "main",
-    path: "/single-form/{state}/{specifiedYear}/{quarter}/{form}",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getStateFormList", {
-    entry: "services/app-api/handlers/forms/post/obtainFormsList.js",
-    handler: "main",
-    path: "/forms/obtain-state-forms",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateStateFormList", {
-    entry: "services/app-api/handlers/state-forms/post/updateStateForms.js",
-    handler: "main",
-    path: "/state-forms/update",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "generateEnrollmentTotals", {
-    entry:
-      "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.js",
-    handler: "main",
-    path: "/generate-enrollment-totals",
-    method: "POST",
-    timeout: Duration.minutes(15),
-    ...commonProps,
-  });
-
-  new Lambda(scope, "obtainAvailableForms", {
-    entry: "services/app-api/handlers/forms/post/obtainAvailableForms.js",
-    handler: "main",
-    path: "/forms/obtainAvailableForms",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getFormTypes", {
-    entry: "services/app-api/handlers/forms/get/getFormTypes.js",
-    handler: "main",
-    path: "/form-types",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "generateQuarterForms", {
-    entry: "services/app-api/handlers/forms/post/generateQuarterForms.js",
-    handler: "main",
-    path: "/generate-forms",
-    method: "POST",
-    timeout: Duration.minutes(15),
-    ...commonProps,
   });
 
   const generateQuarterFormsOnScheduleLambda = new Lambda(
@@ -351,41 +230,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   //   #         cors: true
   //   #         authorizer: aws_iam
   //   #
-
-  new Lambda(scope, "saveForm", {
-    entry: "services/app-api/handlers/forms/post/saveForm.js",
-    handler: "main",
-    path: "/single-form/save",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getFormTemplate", {
-    entry:
-      "services/app-api/handlers/form-templates/post/obtainFormTemplate.js",
-    handler: "main",
-    path: "/form-template",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getFormTemplateYears", {
-    entry:
-      "services/app-api/handlers/form-templates/post/obtainFormTemplateYears.js",
-    handler: "main",
-    path: "/form-templates/years",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateCreateFormTemplate", {
-    entry:
-      "services/app-api/handlers/form-templates/post/updateCreateFormTemplate.js",
-    handler: "main",
-    path: "/form-templates/add",
-    method: "POST",
-    ...commonProps,
-  });
 
   if (!isLocalStack) {
     const waf = new WafConstruct(
