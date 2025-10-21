@@ -1,7 +1,7 @@
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
 import { Kafka } from "kafkajs";
 
-const STAGE = process.env.stage;
+const STAGE = process.env.STAGE;
 const kafka = new Kafka({
   clientId: process.env.KAFKA_CLIENT_ID,
   brokers: process.env.brokerString.split(","),
