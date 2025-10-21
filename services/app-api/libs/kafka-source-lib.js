@@ -104,10 +104,17 @@ class KafkaSourceLib {
        * through Kafka to DataConnect - unless an actual user action has bumped
        * the last_modified date.
        */
-      if (topicName.includes(".state-forms.")) {
-        const state_form = this.unmarshall(record.dynamodb.NewImage);
-        if (state_form.year === 2019 &&
-          new Date(state_form.last_modified).getFullYear() < 2025
+      if ( topicName.includes(".state-forms.") ||
+        topicName.includes(".form-answers.")
+      ) {
+        // This object might be a StateForm or a FormAnswer.
+        // Both have both state_form and last_modified properties
+        const obj = this.unmarshall(record.dynamodb.NewImage);
+        // The state_form property is a string like "CO-2025-4-21E"
+        const year = Number(obj.state_form.split("-")[1]);
+        // last_modified is an ISO date string like "2025-10-21T19:49:50.105Z"
+        const lastModified = new Date(obj.last_modified).getFullYear();
+        if (year === 2019 && lastModified < 2025
         ) {
           continue;
         }

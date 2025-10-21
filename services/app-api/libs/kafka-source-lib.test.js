@@ -160,7 +160,7 @@ describe("Kafka Source Lib", () => {
             eventName: "mockEventName",
             dynamodb: {
               NewImage: {
-                year: { "N": "2019" },
+                state_form: { "S": "CO-2019-4-21E" },
                 last_modified: { "S": "2019-05-05T05:05:05.555Z" }
               },
               Keys: { id: { "S": "1" } },
@@ -183,7 +183,7 @@ describe("Kafka Source Lib", () => {
             eventName: "mockEventName",
             dynamodb: {
               NewImage: {
-                year: { "N": "2019" },
+                state_form: { "S": "CO-2019-4-21E" },
                 last_modified: { "S": "2025-10-16T21:15:09.005Z" }
               },
               Keys: { id: { "S": "1" } },
