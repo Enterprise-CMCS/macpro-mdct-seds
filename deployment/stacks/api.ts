@@ -140,6 +140,13 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables,
   };
 
+  for (const def of apiConfig.lambdaDefinitions) {
+    new Lambda(scope, def.id, {
+      ...commonProps,
+      ...def,
+      timeout: def.timeout ? Duration.seconds(def.timeout) : undefined,
+    });
+  }
 
   const dataConnectTables = tables.filter((table) =>
     [
