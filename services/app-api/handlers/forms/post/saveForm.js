@@ -196,18 +196,13 @@ const updateStateForm = async (stateFormId, statusData, user) => {
       state_form: stateFormId,
     },
     UpdateExpression:
-      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, not_applicable = :not_applicable, #status = :status, state_comments = :state_comments",
-    ExpressionAttributeNames: {
-      "#status": "status",
-    },
+      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
     ExpressionAttributeValues: {
       ":last_modified_by": user.username,
       ":last_modified": statusData.last_modified,
       ":status_modified_by": currentForm.status_modified_by,
       ":status_date": currentForm.status_date,
       ":status_id": statusData.status_id,
-      ":not_applicable": statusData.not_applicable,
-      ":status": statusData.status,
       ":state_comments": statusData.state_comments,
       ...statusFlags,
     },
