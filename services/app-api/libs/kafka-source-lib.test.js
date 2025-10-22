@@ -33,6 +33,7 @@ describe("Kafka Source Lib", () => {
       tables = [
         "mock-table-alpha",
         "mock-table-beta",
+        "state-forms",
       ];
     };
     let TestKafkaInstance;
@@ -130,8 +131,7 @@ describe("Kafka Source Lib", () => {
       });
     });
 
-    it.skip("should ignore events for irrelevant tables", async () => {
-      // This test fails, because we happily send events with `topic: undefined`
+    it("should ignore events for irrelevant tables", async () => {
       const mockEvent = {
         Records: [
           {
@@ -149,6 +149,52 @@ describe("Kafka Source Lib", () => {
       await TestKafkaInstance.handler(mockEvent);
 
       expect(mockSendBatch).not.toHaveBeenCalled();
+    });
+
+    it("should ignore events for unmodified 2019 data", async () => {
+      const mockEvent = {
+        Records: [
+          {
+            eventSourceARN: "foo/local-state-forms/bar",
+            eventID: "mockEventId",
+            eventName: "mockEventName",
+            dynamodb: {
+              NewImage: {
+                state_form: { "S": "CO-2019-4-21E" },
+                last_modified: { "S": "2019-05-05T05:05:05.555Z" }
+              },
+              Keys: { id: { "S": "1" } },
+            }
+          },
+        ],
+      };
+
+      await TestKafkaInstance.handler(mockEvent);
+
+      expect(mockSendBatch).not.toHaveBeenCalled();
+    });
+
+    it("should send messages for modified 2019 data", async () => {
+      const mockEvent = {
+        Records: [
+          {
+            eventSourceARN: "foo/local-state-forms/bar",
+            eventID: "mockEventId",
+            eventName: "mockEventName",
+            dynamodb: {
+              NewImage: {
+                state_form: { "S": "CO-2019-4-21E" },
+                last_modified: { "S": "2025-10-16T21:15:09.005Z" }
+              },
+              Keys: { id: { "S": "1" } },
+            }
+          },
+        ],
+      };
+
+      await TestKafkaInstance.handler(mockEvent);
+
+      expect(mockSendBatch).toHaveBeenCalled();
     });
 
     it("should disconnect the kafka producer before exiting", async () => {

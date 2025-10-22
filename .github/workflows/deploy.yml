@@ -98,6 +98,7 @@ jobs:
           ./run deploy --stage $branch_name
         env:
           SKIP_PREFLIGHT_CHECK: true
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
       - id: endpoint
         run: |
           APPLICATION_ENDPOINT=$(./scripts/output.sh seds-$branch_name CloudFrontUrl)
