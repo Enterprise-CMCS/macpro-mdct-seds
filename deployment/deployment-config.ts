@@ -10,6 +10,7 @@ export interface DeploymentConfigProperties {
   brokerString: string;
   kafkaAuthorizedSubnetIds: string;
   bootstrapUsersPassword?: string;
+  bootstrapExternalUsersPassword?: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   secureCloudfrontDomainName?: string;

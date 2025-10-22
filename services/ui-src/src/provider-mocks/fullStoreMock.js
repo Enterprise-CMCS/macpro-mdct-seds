@@ -1,3 +1,5 @@
+import { InProgressStatusFields } from "../utility-functions/formStatus";
+
 const fullStoreMock = {
   currentForm: {
     questions: [
@@ -3310,13 +3312,11 @@ const fullStoreMock = {
       program_code: "AL",
       state_form: "AL-2021-1-21E",
       state_id: "AL",
-      not_applicable: false,
       created_date: "2021-04-14T12:46:35.838Z",
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
-      status_id: 1,
-      status: "In Progress"
+      ...InProgressStatusFields()
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
   },
@@ -3553,35 +3553,6 @@ const fullStoreMock = {
       {
         state_name: "Wyoming",
         state_id: "WY"
-      }
-    ],
-    status: [
-      {
-        status_id: 1,
-        status: "In Progress",
-        status_description: "The State has not saved any data to the form yet."
-      },
-      {
-        status_id: 2,
-        status: "In Progress",
-        status_description: "The State has begun saving data to the form."
-      },
-      {
-        status_id: 3,
-        status: "Provisional Data Certified and Submitted",
-        status_description:
-          "The State has certified their provisional data submission."
-      },
-      {
-        status_id: 4,
-        status: "Final Data Certified and Submitted",
-        status_description:
-          "The State has certified their final data submission."
-      },
-      {
-        status_id: 5,
-        status: "Not Required",
-        status_description: "The State is not required to complete the form."
       }
     ]
   }

@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { authorizeUserForState } from "../../../auth/authConditions.js";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.js";
+import { statusHasChanged } from "../../../libs/formStatus.js";
 
 /**
  * This handler will loop through a question array and save each row
@@ -184,7 +185,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
 
   const currentForm = result.Items[0];
   let statusFlags = {};
-  if (currentForm.status_id !== statusData.status_id) {
+  if (statusHasChanged(currentForm, statusData)) {
     statusFlags[":status_modified_by"] = user.username;
     statusFlags[":status_date"] = new Date().toISOString();
   }
@@ -195,20 +196,15 @@ const updateStateForm = async (stateFormId, statusData, user) => {
       state_form: stateFormId,
     },
     UpdateExpression:
-      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, #s = :status, not_applicable = :not_applicable, state_comments = :state_comments",
+      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
     ExpressionAttributeValues: {
       ":last_modified_by": user.username,
       ":last_modified": statusData.last_modified,
       ":status_modified_by": currentForm.status_modified_by,
       ":status_date": currentForm.status_date,
-      ":status": statusData.status,
       ":status_id": statusData.status_id,
-      ":not_applicable": statusData.not_applicable,
       ":state_comments": statusData.state_comments,
       ...statusFlags,
-    },
-    ExpressionAttributeNames: {
-      "#s": "status",
     },
     ReturnValues: "ALL_NEW",
   };

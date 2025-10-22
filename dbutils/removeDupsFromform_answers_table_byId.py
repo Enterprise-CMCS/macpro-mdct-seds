@@ -1,10 +1,7 @@
 
 import boto3
 import sys
-import numpy as np
-import pandas as pd
 from boto3.dynamodb.conditions import Key
-from dynamodb_json import json_util as json
 
 # Open duplicate ids list file
 if (len(sys.argv) > 2):
@@ -21,7 +18,9 @@ if (len(sys.argv) > 2):
         #
         # Find record with the Duplicate based on the key field.
         #
-        response = table.query(KeyConditionExpression=Key('answer_entry').eq(currentKey)   )
+        response = table.query(
+           KeyConditionExpression=Key('answer_entry').eq(currentKey)
+        )
         found = response['Count']
         if (found != 0):
           currentRowValue=(response['Items'])
@@ -39,9 +38,12 @@ if (len(sys.argv) > 2):
                  for x in 2,3,4,5,6,7,8,9:
                     try:
                       if (str(row['col' + str(x)]).find("targets") < 0):
-                       newtot = int(row['col' + str(x)]) + int(dupKey[dupColumn1]['col' + str(x)])
+                       newtot = (
+                          int(row['col' + str(x)]) +
+                          int(dupKey[dupColumn1]['col' + str(x)])
+                       )
                        dupKey[dupColumn1]['col' + str(x)] = str(newtot)
-                    except:
+                    except: # noqa: E722
                        continue
               else:
                 if (dupColumn1 != ''):
@@ -54,7 +56,8 @@ if (len(sys.argv) > 2):
 
 
           response = table.update_item(
-                        Key={'answer_entry': currentKey},UpdateExpression='SET #myrows = :newRow',
+                        Key={'answer_entry': currentKey},
+                        UpdateExpression='SET #myrows = :newRow',
                         ExpressionAttributeValues={
                             ':newRow': noDups
                         },

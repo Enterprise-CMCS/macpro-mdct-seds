@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
@@ -6,20 +7,20 @@ import SummaryTab from "./SummaryTab";
 import configureStore from "redux-mock-store";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 
-jest.mock("../Question/Question", () =>
-  (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
-);
+vi.mock("../Question/Question", () => ({
+  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../SummaryNotes/SummaryNotes", () =>
-  (props) => (<div data-testid="summary-notes">{JSON.stringify(props)}</div>)
-);
+vi.mock("../SummaryNotes/SummaryNotes", () => ({
+  default: (props) => (<div data-testid="summary-notes">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () =>
-  (props) => (<div className="synth-grid-summary">{JSON.stringify(props)}</div>)
-);
+vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
+  default: (props) => (<div className="synth-grid-summary">{JSON.stringify(props)}</div>)
+}));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useLocation: () => ({
     pathname: "localhost:3000/forms/AL/2021/1/21E"
   })

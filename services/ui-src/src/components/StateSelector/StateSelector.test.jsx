@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { Provider } from "react-redux";
 import { BrowserRouter, useHistory } from "react-router-dom";
 import StateSelector from "./StateSelector";
@@ -8,17 +9,17 @@ import userEvent from "@testing-library/user-event"
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { updateUser } from "../../libs/api";
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn(),
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn(),
 }));
 
-jest.mock("../../libs/api", () => ({
-  updateUser: jest.fn(),
+vi.mock("../../libs/api", () => ({
+  updateUser: vi.fn(),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: jest.fn(),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useHistory: vi.fn(),
 }));
 
 const store = storeFactory({
@@ -78,8 +79,8 @@ describe("StateSelector component", () => {
   });
 
   it("should save the user's selected state, and redirect them to Home", async () => {
-    jest.spyOn(window, "confirm").mockImplementation(() => true);
-    const mockHistory = { push: jest.fn() };
+    vi.spyOn(window, "confirm").mockImplementation(() => true);
+    const mockHistory = { push: vi.fn() };
     useHistory.mockReturnValue(mockHistory);
 
     renderComponent({ id: 42, states: [] });

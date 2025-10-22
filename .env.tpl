@@ -1,3 +1,5 @@
+PROJECT=seds
+
 FormAnswersTable=local-form-answers
 FormQuestionsTable=local-form-questions
 FormTemplatesTable=local-form-templates

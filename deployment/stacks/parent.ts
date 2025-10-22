@@ -1,8 +1,9 @@
 import { Construct } from "constructs";
 import {
-  Aws,
-  aws_s3 as s3,
+  aws_ec2 as ec2,
   aws_iam as iam,
+  aws_s3 as s3,
+  Aws,
   CfnOutput,
   Stack,
   StackProps,
@@ -13,8 +14,9 @@ import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { deployFrontend } from "./deployFrontend";
-import { createCustomResourceRole } from "./customResourceRole";
 import { isLocalStack } from "../local/util";
+import { createTopicsComponents } from "./topics";
+import { getSubnets } from "../utils/vpc";
 
 export class ParentStack extends Stack {
   constructor(
@@ -22,7 +24,12 @@ export class ParentStack extends Stack {
     id: string,
     props: StackProps & DeploymentConfigProperties
   ) {
-    const { isDev, secureCloudfrontDomainName } = props;
+    const {
+      isDev,
+      secureCloudfrontDomainName,
+      vpcName,
+      kafkaAuthorizedSubnetIds,
+    } = props;
 
     super(scope, id, {
       ...props,
@@ -35,7 +42,8 @@ export class ParentStack extends Stack {
       isDev,
     };
 
-    const customResourceRole = createCustomResourceRole(commonProps);
+    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+    const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
     const loggingBucket = s3.Bucket.fromBucketName(
       this,
@@ -45,21 +53,24 @@ export class ParentStack extends Stack {
 
     const { tables } = createDataComponents({
       ...commonProps,
-      customResourceRole,
     });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
       tables,
+      vpc,
+      kafkaAuthorizedSubnets,
     });
 
-    /*
-     * For local dev, the LocalStack container will host the database and API.
-     * The UI will self-host, so we don't need to tell CDK anything about it.
-     * Also, we skip authorization locally. So we don't set up Cognito,
-     * or configure the API to interact with it. Therefore, we're done.
-     */
-    if (isLocalStack) return;
+    if (isLocalStack) {
+      /*
+       * For local dev, the LocalStack container will host the database and API.
+       * The UI will self-host, so we don't need to tell CDK anything about it.
+       * Also, we skip authorization locally. So we don't set up Cognito,
+       * or configure the API to interact with it. Therefore, we're done.
+       */
+      return;
+    }
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({ ...commonProps, loggingBucket });
@@ -68,7 +79,6 @@ export class ParentStack extends Stack {
       createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl,
-        customResourceRole,
         restApiId,
       });
 
@@ -85,13 +95,19 @@ export class ParentStack extends Stack {
       userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
     });
 
-    new CfnOutput(this, "CloudFrontUrl", {
-      value: applicationEndpointUrl,
+    createTopicsComponents({
+      ...commonProps,
+      vpc,
+      kafkaAuthorizedSubnets,
     });
 
     if (isDev) {
       applyDenyCreateLogGroupPolicy(this);
     }
+
+    new CfnOutput(this, "CloudFrontUrl", {
+      value: applicationEndpointUrl,
+    });
   }
 }
 

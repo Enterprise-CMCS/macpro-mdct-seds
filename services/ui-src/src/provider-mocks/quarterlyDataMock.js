@@ -1,3 +1,9 @@
+import {
+  FinalCertifiedStatusFields,
+  InProgressStatusFields,
+  ProvisionalCertifiedStatusFields
+} from "../utility-functions/formStatus";
+
 const quarterlyDataMock = [
   {
     status_modified_by: "seed",
@@ -17,13 +23,11 @@ const quarterlyDataMock = [
     program_code: "AL",
     state_form: "AL-2021-1-GRE",
     state_id: "AL",
-    not_applicable: false,
     created_date: "01-15-2021",
     form_name: "Gender, Race & Ethnicity",
     last_modified: "2021-04-08T12:46:35.838Z",
     quarter: 1,
-    status_id: 1,
-    status: "In Progress"
+    ...InProgressStatusFields()
   },
   {
     status_modified_by: "seed",
@@ -43,13 +47,11 @@ const quarterlyDataMock = [
     program_code: "AL",
     state_form: "AL-2021-1-21PW",
     state_id: "AL",
-    not_applicable: false,
     created_date: "2021-03-02T12:46:35.838Z",
     form_name: "Number of Pregnant Women Served",
     last_modified: "2021-04-07T12:46:35.838Z",
     quarter: 1,
-    status_id: 2,
-    status: "In Progress"
+    ...InProgressStatusFields()
   },
   {
     status_modified_by: "seed",
@@ -69,13 +71,11 @@ const quarterlyDataMock = [
     program_code: "AL",
     state_form: "AL-2021-1-64.21E",
     state_id: "AL",
-    not_applicable: false,
     created_date: "01-15-2021",
     form_name: "Number of Children Served in Medicaid Expansion Program",
     last_modified: "2021-04-06T12:46:35.838Z",
     quarter: 1,
-    status_id: 3,
-    status: "Provisional Data Certified and Submitted"
+    ...ProvisionalCertifiedStatusFields()
   },
   {
     status_modified_by: "seed",
@@ -95,13 +95,11 @@ const quarterlyDataMock = [
     program_code: "AL",
     state_form: "AL-2021-1-21E",
     state_id: "AL",
-    not_applicable: false,
     created_date: "01-15-2021",
     form_name: "Number of Children Served in Separate CHIP Program",
     last_modified: "2021-04-05T12:46:35.838Z",
     quarter: 1,
-    status_id: 4,
-    status: "Final Data Certified and Submitted"
+    ...FinalCertifiedStatusFields()
   },
   {
     status_modified_by: "seed",
@@ -121,13 +119,11 @@ const quarterlyDataMock = [
     program_code: "AL",
     state_form: "AL-2021-1-64.EC",
     state_id: "AL",
-    not_applicable: false,
     created_date: "01-15-2021",
     form_name: "Number of Children Served in Medicaid Program",
     last_modified: "2021-04-04T12:46:35.838Z",
     quarter: 1,
-    status_id: 4,
-    status: "Final Data Certified and Submitted"
+    ...FinalCertifiedStatusFields()
   }
 ];
 

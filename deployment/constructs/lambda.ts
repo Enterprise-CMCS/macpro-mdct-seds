@@ -1,21 +1,17 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { Duration, RemovalPolicy, aws_s3 as s3 } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
-import {
-  Effect,
-  ManagedPolicy,
-  PolicyDocument,
-  PolicyStatement,
-  Role,
-  ServicePrincipal,
-} from "aws-cdk-lib/aws-iam";
+import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { createHash } from "crypto";
+import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
@@ -23,6 +19,8 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   stackName: string;
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
+  tables?: DynamoDBTable[];
+  buckets?: s3.IBucket[];
   isDev: boolean;
 }
 
@@ -35,39 +33,21 @@ export class Lambda extends Construct {
     const {
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      environment = {},
       api,
       path,
       method,
       additionalPolicies = [],
+      tables = [],
+      buckets = [],
       stackName,
       isDev,
       ...restProps
     } = props;
 
-    const role = new Role(this, `${id}LambdaExecutionRole`, {
-      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaPolicy: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-            }),
-            ...additionalPolicies,
-          ],
-        }),
-      },
+    const logGroup = new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     this.lambda = new NodejsFunction(this, id, {
@@ -75,21 +55,21 @@ export class Lambda extends Construct {
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
-      role,
       bundling: {
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
         minify: true,
         sourceMap: true,
         nodeModules: ["jsdom"],
       },
-      environment,
+      logGroup,
       ...restProps,
     });
 
-    new LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
-    });
+    for (const stmt of additionalPolicies) {
+      this.lambda.addToRolePolicy(stmt);
+    }
 
     if (api && path && method) {
       const resource = api.root.resourceForPath(path);
@@ -102,6 +82,17 @@ export class Lambda extends Construct {
             : apigateway.AuthorizationType.IAM,
         }
       );
+    }
+
+    for (const ddbTable of tables) {
+      ddbTable.table.grantReadWriteData(this.lambda);
+      if (ddbTable.table.tableStreamArn) {
+        ddbTable.table.grantStreamRead(this.lambda);
+      }
+    }
+
+    for (const bucket of buckets) {
+      bucket.grantReadWrite(this.lambda);
     }
   }
 }

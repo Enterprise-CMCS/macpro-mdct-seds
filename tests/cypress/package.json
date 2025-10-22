@@ -27,5 +27,8 @@
     "test": "concurrently --kill-others \"npm start\" \"npm run cypress\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "resolutions": {
+    "form-data": "^4.0.4"
+  }
 }

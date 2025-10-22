@@ -13,22 +13,21 @@ import {
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 
 interface CreateApiComponentsProps {
   scope: Construct;
   stage: string;
   project: string;
   isDev: boolean;
-  vpcName: string;
   kafkaAuthorizedSubnetIds: string;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   brokerString: string;
   kafkaClientId?: string;
+  kafkaAuthorizedSubnets: ec2.ISubnet[];
+  vpc: ec2.IVpc;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -37,20 +36,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stage,
     project,
     isDev,
-    vpcName,
-    kafkaAuthorizedSubnetIds,
+    vpc,
+    kafkaAuthorizedSubnets,
     tables,
     brokerString,
     kafkaClientId,
   } = props;
 
   const service = "app-api";
-
-  const vpc = ec2.Vpc.fromLookup(scope, "Vpc", { vpcName });
-  const kafkaAuthorizedSubnets = getSubnets(
-    scope,
-    kafkaAuthorizedSubnetIds ?? ""
-  );
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -115,45 +108,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment = {
-    BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    brokerString,
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
     stage,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
   const additionalPolicies = [
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:BatchWriteItem",
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:Query",
-        "dynamodb:Scan",
-        "dynamodb:UpdateItem",
-      ],
-      resources: tables.map((table) => table.arn),
-    }),
-
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:DescribeStream",
-        "dynamodb:GetRecords",
-        "dynamodb:GetShardIterator",
-        "dynamodb:ListShards",
-        "dynamodb:ListStreams",
-      ],
-      resources: tables.map((table) => table.streamArn).filter(isDefined),
-    }),
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["dynamodb:Query", "dynamodb:Scan"],
-      resources: tables.map((table) => `${table.arn}/index/*`),
-    }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
@@ -173,6 +136,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     environment,
     additionalPolicies,
     isDev,
+    tables,
   };
 
   new Lambda(scope, "ForceKafkaSync", {
@@ -181,19 +145,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     timeout: Duration.minutes(15),
     memorySize: 3072,
     ...commonProps,
-  });
-
-  new LambdaDynamoEventSource(scope, "postKafkaData", {
-    entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    tables,
   });
 
   const dataConnectTables = tables.filter((table) =>
@@ -205,11 +156,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "FormTemplates",
       "States",
       "FormAnswers",
-    ].includes(table.id)
+    ].includes(table.node.id)
   );
 
-  new LambdaDynamoEventSource(scope, "dataConnectSource", {
-    entry: "services/app-api/handlers/kafka/post/dataConnectSource.js",
+  new LambdaDynamoEventSource(scope, "postKafkaData", {
+    entry: "services/app-api/handlers/kafka/post/postKafkaData.js",
     handler: "handler",
     timeout: Duration.seconds(120),
     memorySize: 2048,
