@@ -1,4 +1,4 @@
-process.env.stage = "local";
+process.env.STAGE = "local";
 
 process.env.AuthUserTable = "local-auth-user";
 process.env.FormAnswersTable = "local-form-answers";
