@@ -44,12 +44,6 @@ export function deployFrontend(props: DeployFrontendProps) {
     stdio: "inherit",
   });
 
-  const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
-    assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-  });
-
-  uiBucket.grantReadWrite(deploymentRole);
-
   const deployWebsite = new s3_deployment.BucketDeployment(
     scope,
     "DeployWebsite",
@@ -62,9 +56,7 @@ export function deployFrontend(props: DeployFrontendProps) {
       cacheControl: [
         s3_deployment.CacheControl.setPublic(),
         s3_deployment.CacheControl.maxAge(Duration.days(365)),
-        s3_deployment.CacheControl.noCache(),
       ],
-      role: deploymentRole,
     }
   );
 
