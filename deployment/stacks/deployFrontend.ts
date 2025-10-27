@@ -76,7 +76,6 @@ export function deployFrontend(props: DeployFrontendProps) {
         userPoolClientDomain,
         timestamp: new Date().toISOString(),
       },
-      role: deploymentRole,
     }
   );
 
