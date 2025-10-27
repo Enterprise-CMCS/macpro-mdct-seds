@@ -12,7 +12,7 @@
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");
 
 const isLocal = !!process.env.DYNAMODB_URL;
-const stage = isLocal ? "local" : process.env.dynamoPrefix;
+const stageName = isLocal ? "local" : process.env.dynamoPrefix
 const lastModifiedField = "last_modified";
 
 const tables = [
@@ -29,7 +29,7 @@ async function handler() {
     buildDynamoClient();
 
     for (const table of tables) {
-      const tableName = stage + table;
+      const tableName = stageName + table;
       console.log(`Processing table ${tableName}`)
       const existingItems = await scan({
         TableName: tableName,
