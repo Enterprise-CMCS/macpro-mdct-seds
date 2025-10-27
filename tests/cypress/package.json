@@ -21,9 +21,9 @@
   },
   "scripts": {
     "start": "cd ../../ && ./run local && cd -",
-    "test:ci": "npx cypress run --browser chrome --headless",
-    "cypress": "cypress open",
-    "test": "concurrently --kill-others \"npm start\" \"npm run cypress\""
+    "test:ci": "bun cypress run --browser chrome --headless",
+    "cypress": "bun cypress open",
+    "test": "concurrently --kill-others \"bun run start\" \"bun run cypress\""
   },
   "author": "",
   "license": "ISC",
