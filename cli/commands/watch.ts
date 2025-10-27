@@ -22,7 +22,7 @@ export const watch = {
       runCommand(
         "CDK watch",
         [
-          "yarn",
+          "bun",
           "cdk",
           "watch",
           "--context",

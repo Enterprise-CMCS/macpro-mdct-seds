@@ -30,7 +30,7 @@ export const deploy = {
       await runCommand(
         "CDK deploy",
         [
-          "yarn",
+          "bun",
           "cdk",
           "deploy",
           "--context",

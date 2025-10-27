@@ -41,7 +41,7 @@ export function deployFrontend(props: DeployFrontendProps) {
   const buildOutputPath = path.join(reactAppPath, "build");
   const fullPath = path.resolve(reactAppPath);
 
-  execSync("yarn run build", {
+  execSync("bun run build", {
     cwd: fullPath,
     stdio: "inherit",
   });

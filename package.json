@@ -5,18 +5,17 @@
   "main": "index.js",
   "private": true,
   "type": "module",
+  "packageManager": "bun@1.1.21",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "npx --prefix deployment cdk",
-    "cdklocal": "npx --prefix deployment cdklocal",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
-    "smoke": "npm run test --tag smoke",
-    "test:cypress": "cd tests/cypress && npm test && cd -",
-    "test:cypress:ci": "cd tests/cypress && npm run test:ci"
+    "smoke": "bun run test --tag smoke",
+    "test:cypress": "cd tests/cypress && bun run test && cd -",
+    "test:cypress:ci": "cd tests/cypress && bun run test:ci"
   },
   "repository": {
     "type": "git",

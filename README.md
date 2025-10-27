@@ -38,8 +38,8 @@ This project uses a combination of Gitflow and Stack naming to handle branches a
 
 On each PR, a linter and prettier check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the linter and prettier against the work you have done.
 
-- Run Eslint using `yarn lint`
-- Run Prettier using `npx prettier --write .`
+- Run Eslint using `bun run lint`
+- Run Prettier using `bun x prettier --write .`
 
 ## Local Dev
 
@@ -56,7 +56,7 @@ Team members are encouraged to setup all MDCT Products using the script located 
 
 #### For developers that cannot run the workspace setup script or wish to only run SEDS see steps below.
 
-If you do not set don't have yarn, nvm, or java installed, see [Requirements](#requirements)
+If you do not set don't have bun, nvm, or java installed, see [Requirements](#requirements)
 
 Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files.
 
@@ -64,15 +64,15 @@ From the root directory run:
 
 `nvm use`
 
-`yarn install`
+`bun install`
 
 `cd services/ui-src`
 
-`yarn install`
+`bun install`
 
 `cd ../../`
 
-`./run update-env` or `./run local` if you do not have a 1password account and have a .env file populated by hand.
+`./run update-env` or `./run local` if you do not have a 1Password account and have a .env file populated by hand.
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
@@ -167,12 +167,12 @@ found in [src/dms](src/dms).
 1. Navigate to the frontend
    - `cd services/ui-src`
 2. Launch the test for ui-src tests.
-   - Run `yarn test`
+   - Run `bun test`
 
 ### Running the integration test suite
 
 1. Launch cypress and select the file you want to run
-   - Run `yarn test:cypress`
+   - Run `bun run test:cypress`
 
 ### Running Schema Validation
 
@@ -192,7 +192,7 @@ Node - seds enforces using a specific version of node, specified in the file `.n
 
 **The remaining steps in this section are not needed if you have the MDCT Workspace Setup Script**
 
-Yarn - in order to install dependencies, you need to [install yarn](https://classic.yarnpkg.com/en/docs/install/).
+Bun - in order to install dependencies, you need to [install Bun](https://bun.sh/docs/installation).
 
 You'll also need to have java installed to run the database locally. M1 Mac users can download [from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`
 
@@ -209,9 +209,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 nvm install
 nvm use
 
-# install yarn
+# install bun
 
-brew install yarn
+brew install bun
 
 # run dev
 

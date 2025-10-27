@@ -28,8 +28,8 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
     exit 1
 fi
 
-# check yarn exists
-require_cmd yarn "On macOS, install with 'brew install yarn'"
+# check bun exists
+require_cmd bun "On macOS, install with 'brew install bun'"
 
 
 # Parse arguments

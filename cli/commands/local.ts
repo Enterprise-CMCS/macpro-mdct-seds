@@ -46,11 +46,12 @@ export const local = {
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
+    process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost.localstack.cloud:4566";
 
     await runCommand(
       "CDK local bootstrap",
       [
-        "yarn",
+        "bun",
         "cdklocal",
         "bootstrap",
         `aws://000000000000/${region}`, // LocalStack uses the default dummy account ID 000000000000
@@ -63,7 +64,7 @@ export const local = {
     await runCommand(
       "CDK local local-prerequisite deploy",
       [
-        "yarn",
+        "bun",
         "cdklocal",
         "deploy",
         "--app",
@@ -75,7 +76,7 @@ export const local = {
     await runCommand(
       "CDK local prerequisite deploy",
       [
-        "yarn",
+        "bun",
         "cdklocal",
         "deploy",
         "--app",
@@ -89,7 +90,7 @@ export const local = {
     await runCommand(
       "CDK local deploy",
       [
-        "yarn",
+        "bun",
         "cdklocal",
         "deploy",
         "--context",
@@ -106,7 +107,7 @@ export const local = {
       runCommand(
         "CDK local watch",
         [
-          "yarn",
+          "bun",
           "cdklocal",
           "watch",
           "--context",

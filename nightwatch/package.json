@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "node nightwatch.js -c nightwatch.conf.js",
-    "smoke": "yarn run test --tag smoke"
+    "smoke": "bun run test --tag smoke"
   },
   "devDependencies": {
     "chromedriver": ">=88.0.0",

@@ -10,11 +10,11 @@ export const deployPrerequisites = {
     await runCommand(
       "CDK prerequisite deploy",
       [
-        "yarn",
+        "bun",
         "cdk",
         "deploy",
         "--app",
-        '"npx tsx deployment/prerequisites.ts"',
+        '"bun tsx deployment/prerequisites.ts"',
       ],
       "."
     );
