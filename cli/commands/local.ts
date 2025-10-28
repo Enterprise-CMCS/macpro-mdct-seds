@@ -68,7 +68,7 @@ export const local = {
         "cdklocal",
         "deploy",
         "--app",
-        '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
+        "bun tsx deployment/local/prerequisites.ts",
       ],
       "."
     );
@@ -80,7 +80,7 @@ export const local = {
         "cdklocal",
         "deploy",
         "--app",
-        '"npx --prefix deployment tsx deployment/prerequisites.ts"',
+        "bun tsx deployment/prerequisites.ts",
       ],
       "."
     );
