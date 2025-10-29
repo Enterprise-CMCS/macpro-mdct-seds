@@ -21,7 +21,7 @@ const directories = [
 export const installDeps = async () => {
   await runCommand(
     "bun install root",
-    ["bun", "--silent", "install", "--frozen-lockfile"],
+    ["bun", "install"],
     ".",
     { quiet: true }
   );
@@ -29,7 +29,7 @@ export const installDeps = async () => {
   for (const dir of directories) {
     await runCommand(
       `bun install ${dir}`,
-      ["bun", "--silent", "install", "--frozen-lockfile"],
+      ["bun", "install"],
       dir,
       { quiet: true }
     );

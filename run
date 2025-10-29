@@ -75,10 +75,10 @@ if [ "$LOCAL" = true ]; then
     fi
 fi
 
-bun install --frozen-lockfile --silent >/dev/null 2>&1 || {
+bun install >/dev/null 2>&1 || {
 echo "Dependency install failed (root)" >&2; exit 1; }
 pushd cli >/dev/null
-bun install --frozen-lockfile --silent >/dev/null 2>&1 || {
+bun install >/dev/null 2>&1 || {
 echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
 popd >/dev/null
 
