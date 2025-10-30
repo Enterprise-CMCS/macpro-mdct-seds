@@ -23,24 +23,28 @@ const awsConfig = {
   logger,
 };
 
-
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 (async function () {
   let scannedCount = 0;
   let updatedCount = 0;
   console.log("Scanning...");
-  for await (let page of paginateScan({ client }, { TableName: AuthUserTable })) {
+  for await (let page of paginateScan(
+    { client },
+    { TableName: AuthUserTable }
+  )) {
     if (!page.Items) continue;
     for (let user of page.Items) {
       scannedCount += 1;
       if (!("isActive" in user)) continue;
 
       delete user.isActive;
-      await client.send(new PutCommand({
-        TableName: AuthUserTable,
-        Item: user,
-      }));
+      await client.send(
+        new PutCommand({
+          TableName: AuthUserTable,
+          Item: user,
+        })
+      );
 
       updatedCount += 1;
     }

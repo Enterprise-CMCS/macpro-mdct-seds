@@ -24,7 +24,7 @@ vi.mock("../../libs/api", () => ({
   getUserById: vi.fn()
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router-dom", async importOriginal => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({ id: "23" })
 }));
@@ -155,7 +155,7 @@ describe("Test EditUser.js", () => {
 
     expect(updateUser).toHaveBeenCalledWith(
       expect.objectContaining({
-        role: "admin",
+        role: "admin"
       })
     );
   });

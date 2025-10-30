@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as obtainFormsList } from "./obtainFormsList.js";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -37,18 +34,28 @@ describe("obtainFormsList.js", () => {
 
     const response = await obtainFormsList(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify(mockScanResponse),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify(mockScanResponse),
+      })
+    );
 
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-state-forms",
-      Select: "ALL_ATTRIBUTES",
-      ExpressionAttributeNames: { "#theYear": "year" },
-      ExpressionAttributeValues: { ":state": "CO", ":year": 2025, ":quarter": 1 },
-      FilterExpression: "state_id = :state and quarter = :quarter and #theYear = :year",
-    }), expect.any(Function));
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-state-forms",
+        Select: "ALL_ATTRIBUTES",
+        ExpressionAttributeNames: { "#theYear": "year" },
+        ExpressionAttributeValues: {
+          ":state": "CO",
+          ":year": 2025,
+          ":quarter": 1,
+        },
+        FilterExpression:
+          "state_id = :state and quarter = :quarter and #theYear = :year",
+      }),
+      expect.any(Function)
+    );
   });
 
   /*
@@ -77,9 +84,12 @@ describe("obtainFormsList.js", () => {
 
     expect(response).toEqual(expect.objectContaining({ statusCode: 200 }));
 
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      ExclusiveStartKey: "mockKey",
-    }), expect.any(Function));
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ExclusiveStartKey: "mockKey",
+      }),
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user is not an admin", async () => {
@@ -87,9 +97,11 @@ describe("obtainFormsList.js", () => {
 
     const response = await obtainFormsList(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

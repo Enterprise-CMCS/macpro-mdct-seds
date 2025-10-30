@@ -14,46 +14,52 @@ vi.mock("../../libs/contextLib", () => ({
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn().mockResolvedValue(),
+  getUserInfo: vi.fn().mockResolvedValue()
 }));
 
 const mockStore = configureStore([]);
 
-const renderComponent = (user) => {
+const renderComponent = user => {
   const store = mockStore(fullStoreMock);
   useAppContext.mockReturnValue({ isAuthenticated: !!user });
   getUserInfo.mockResolvedValue({ Items: [user] });
   render(
     <Provider store={store}>
       <BrowserRouter>
-        <Home user={user}/>
+        <Home user={user} />
       </BrowserRouter>
     </Provider>
   );
-}
+};
 
 const adminUser = {
-  attributes: { "app-role": "admin" },
+  attributes: { "app-role": "admin" }
 };
 const stateUser = {
-  attributes: { "app-role": "state" },
-}
+  attributes: { "app-role": "state" }
+};
 
 describe("Test Home.js", () => {
   it("should render the admin view for admins", async () => {
     renderComponent(adminUser);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    expect(screen.getByText("Home Admin User Page", { selector: "h1" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Home Admin User Page", { selector: "h1" })
+    ).toBeInTheDocument();
   });
 
   it("should render the state view for state users", async () => {
     renderComponent(stateUser);
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    expect(screen.getByText("Welcome to SEDS!", { exact: false })).toBeInTheDocument();
+    expect(
+      screen.getByText("Welcome to SEDS!", { exact: false })
+    ).toBeInTheDocument();
   });
 
   it("should render the unauthorized view when no user is logged in", async () => {
     renderComponent(undefined);
-    expect(screen.getByText("Unauthorized", { selector: "h1" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Unauthorized", { selector: "h1" })
+    ).toBeInTheDocument();
   });
 });

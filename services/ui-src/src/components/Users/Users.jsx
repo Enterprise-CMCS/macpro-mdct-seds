@@ -128,7 +128,9 @@ const Users = () => {
                     {user.lastLogin &&
                       new Date(user.lastLogin).toLocaleDateString("en-US")}
                   </td>
-                  <td>{Array.isArray(user.states) ? user.states.join(", ") : ""}</td>
+                  <td>
+                    {Array.isArray(user.states) ? user.states.join(", ") : ""}
+                  </td>
                 </tr>
               ))}
             </tbody>

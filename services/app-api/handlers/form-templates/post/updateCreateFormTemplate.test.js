@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateCreateFormTemplate } from "./updateCreateFormTemplate.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  PutCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -36,22 +33,27 @@ describe("updateCreateFormTemplate.js", () => {
   it("should store the provided JSON data in dynamo", async () => {
     const response = await updateCreateFormTemplate(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Template updated for 2025!",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Template updated for 2025!",
+        }),
+      })
+    );
 
-    expect(mockPut).toHaveBeenCalledWith({
-      TableName: "local-form-templates",
-      Item: {
-        year: 2025,
-        template: [mockTemplate],
-        lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-      }
-    }, expect.any(Function));
+    expect(mockPut).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-templates",
+        Item: {
+          year: 2025,
+          template: [mockTemplate],
+          lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+        },
+      },
+      expect.any(Function)
+    );
   });
 
   it("should return an error if the template is not an object", async () => {
@@ -62,16 +64,18 @@ describe("updateCreateFormTemplate.js", () => {
       body: JSON.stringify({
         year: 2025,
         template: [42],
-      })
+      }),
     });
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 400,
-        message: "Invalid JSON. Please review your template."
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 400,
+          message: "Invalid JSON. Please review your template.",
+        }),
+      })
+    );
     expect(mockPut).not.toHaveBeenCalled();
   });
 
@@ -83,16 +87,18 @@ describe("updateCreateFormTemplate.js", () => {
       body: JSON.stringify({
         year: 2025,
         template: [],
-      })
+      }),
     });
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 400,
-        message: "Invalid JSON. Please review your template."
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 400,
+          message: "Invalid JSON. Please review your template.",
+        }),
+      })
+    );
     expect(mockPut).not.toHaveBeenCalled();
   });
 
@@ -101,16 +107,18 @@ describe("updateCreateFormTemplate.js", () => {
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
     const response = await updateCreateFormTemplate({
-      body: JSON.stringify({})
+      body: JSON.stringify({}),
     });
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 422,
-        message: "Please specify both a year and a template"
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 422,
+          message: "Please specify both a year and a template",
+        }),
+      })
+    );
     expect(mockPut).not.toHaveBeenCalled();
   });
 
@@ -119,9 +127,11 @@ describe("updateCreateFormTemplate.js", () => {
 
     const response = await updateCreateFormTemplate(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

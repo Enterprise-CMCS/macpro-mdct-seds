@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as obtainFormTemplate } from "./obtainFormTemplate.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -35,16 +32,21 @@ describe("obtainFormTemplate.js", () => {
 
     const response = await obtainFormTemplate(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify([mockFormTemplate]),
-    }));
-    expect(mockQuery).toHaveBeenCalledWith({
-      TableName: "local-form-templates",
-      ExpressionAttributeNames: { "#theYear": "year" },
-      ExpressionAttributeValues: { ":year": 2025 },
-      KeyConditionExpression: "#theYear = :year",
-    }, expect.any(Function));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify([mockFormTemplate]),
+      })
+    );
+    expect(mockQuery).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-templates",
+        ExpressionAttributeNames: { "#theYear": "year" },
+        ExpressionAttributeValues: { ":year": 2025 },
+        KeyConditionExpression: "#theYear = :year",
+      },
+      expect.any(Function)
+    );
   });
 
   it("should return Not Found if there are no results", async () => {
@@ -53,13 +55,15 @@ describe("obtainFormTemplate.js", () => {
 
     const response = await obtainFormTemplate(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 404,
-        message: "Could not find form template for year: 2025",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 404,
+          message: "Could not find form template for year: 2025",
+        }),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not an admin", async () => {
@@ -67,9 +71,11 @@ describe("obtainFormTemplate.js", () => {
 
     const response = await obtainFormTemplate(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

@@ -8,7 +8,10 @@ import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
+import {
+  isFinalCertified,
+  isNotRequired
+} from "../../utility-functions/formStatus";
 
 const TabContainer = ({
   tabDetails,
@@ -137,7 +140,7 @@ const mapState = state => ({
   tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
-  statusData: state.currentForm.statusData,
+  statusData: state.currentForm.statusData
 });
 
 export default connect(mapState)(TabContainer);

@@ -86,7 +86,9 @@ const Quarterly = () => {
                         <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div className="form-status-pill">{getStatusDisplay(form)}</div>
+                        <div className="form-status-pill">
+                          {getStatusDisplay(form)}
+                        </div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
                       <td style={{ textAlign: "center" }}>

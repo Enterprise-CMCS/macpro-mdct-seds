@@ -55,13 +55,16 @@ describe("sharedFunctions.js", () => {
         { state: ["CO"], email: "stateuserCO@test.com" },
         { state: ["TX"], email: "stateuserTX@test.com" },
       ]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-auth-user",
-        Select: "ALL_ATTRIBUTES",
-        ExpressionAttributeNames: { "#r": "role" },
-        ExpressionAttributeValues: { ":role": "state" },
-        FilterExpression: "#r = :role",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-auth-user",
+          Select: "ALL_ATTRIBUTES",
+          ExpressionAttributeNames: { "#r": "role" },
+          ExpressionAttributeValues: { ":role": "state" },
+          FilterExpression: "#r = :role",
+        }),
+        expect.any(Function)
+      );
     });
 
     it("should return an empty array if no users can be found", async () => {
@@ -77,30 +80,30 @@ describe("sharedFunctions.js", () => {
     it("should fetch unique uncertified state IDs from dynamo", async () => {
       mockScan.mockResolvedValueOnce({
         Count: 3,
-        Items: [
-          { state_id: "CO" },
-          { state_id: "TX" },
-          { state_id: "CO" },
-        ],
+        Items: [{ state_id: "CO" }, { state_id: "TX" }, { state_id: "CO" }],
       });
 
       const result = await getUncertifiedStates(2025, 1);
 
       expect(result).toEqual(["CO", "TX"]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        Select: "ALL_ATTRIBUTES",
-        ExpressionAttributeNames: {
-          "#theYear": "year",
-          "#theQuarter": "quarter",
-        },
-        ExpressionAttributeValues: {
-          ":in_progress": 1,
-          ":year": 2025,
-          ":quarter": 1,
-        },
-        FilterExpression: "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-state-forms",
+          Select: "ALL_ATTRIBUTES",
+          ExpressionAttributeNames: {
+            "#theYear": "year",
+            "#theQuarter": "quarter",
+          },
+          ExpressionAttributeValues: {
+            ":in_progress": 1,
+            ":year": 2025,
+            ":quarter": 1,
+          },
+          FilterExpression:
+            "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
+        }),
+        expect.any(Function)
+      );
     });
 
     it("should return an explanatory mesage if no uncertified forms can be found", async () => {
@@ -130,23 +133,27 @@ describe("sharedFunctions.js", () => {
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
       expect(result).toEqual([
-        { state: "CO", form: ["F1", "F2"]},
-        { state: "TX", form: ["F1"]},
+        { state: "CO", form: ["F1", "F2"] },
+        { state: "TX", form: ["F1"] },
       ]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        Select: "ALL_ATTRIBUTES",
-        ExpressionAttributeNames: {
-          "#theYear": "year",
-          "#theQuarter": "quarter",
-        },
-        ExpressionAttributeValues: {
-          ":in_progress": 1,
-          ":year": 2025,
-          ":quarter": 1,
-        },
-        FilterExpression: "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-state-forms",
+          Select: "ALL_ATTRIBUTES",
+          ExpressionAttributeNames: {
+            "#theYear": "year",
+            "#theQuarter": "quarter",
+          },
+          ExpressionAttributeValues: {
+            ":in_progress": 1,
+            ":year": 2025,
+            ":quarter": 1,
+          },
+          FilterExpression:
+            "status_id = :in_progress AND #theYear = :year AND #theQuarter = :quarter",
+        }),
+        expect.any(Function)
+      );
     });
 
     it("should sort form IDs within each state's result", async () => {
@@ -161,9 +168,7 @@ describe("sharedFunctions.js", () => {
 
       const result = await getUncertifiedStatesAndForms(2025, 1);
 
-      expect(result).toEqual([
-        { state: "CO", form: ["F1", "F2", "F3"]},
-      ]);
+      expect(result).toEqual([{ state: "CO", form: ["F1", "F2", "F3"] }]);
     });
 
     it("should return an explanatory mesage if no uncertified forms can be found", async () => {
@@ -189,12 +194,15 @@ describe("sharedFunctions.js", () => {
       const result = await getQuestionsByYear("2025");
 
       expect(result).toEqual([{ question: "Q1" }, { question: "Q2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-questions",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":specifiedYear": 2025 },
-        FilterExpression: "#theYear = :specifiedYear",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-questions",
+          ExpressionAttributeNames: { "#theYear": "year" },
+          ExpressionAttributeValues: { ":specifiedYear": 2025 },
+          FilterExpression: "#theYear = :specifiedYear",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -208,9 +216,12 @@ describe("sharedFunctions.js", () => {
       const result = await getStatesList();
 
       expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-states",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-states",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -224,9 +235,12 @@ describe("sharedFunctions.js", () => {
       const result = await getFormDescriptions();
 
       expect(result).toEqual([{ form: "F1" }, { form: "F2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-forms",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-forms",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -240,11 +254,14 @@ describe("sharedFunctions.js", () => {
       const result = await getFormResultByStateString("CO-2025-1-A");
 
       expect(result).toEqual([{ form: "F1" }, { form: "F2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-answers",
-        ExpressionAttributeValues: { ":state_form": "CO-2025-1-A" },
-        FilterExpression: "state_form = :state_form",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-answers",
+          ExpressionAttributeValues: { ":state_form": "CO-2025-1-A" },
+          FilterExpression: "state_form = :state_form",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -258,9 +275,12 @@ describe("sharedFunctions.js", () => {
       const result = await getAnswersSet();
 
       expect(result).toEqual(new Set(["F1", "F2"]));
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-answers",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-answers",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -274,13 +294,16 @@ describe("sharedFunctions.js", () => {
       const result = await findExistingStateForms(2025, 1);
 
       expect(result).toEqual(["F1", "F2"]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":year": 2025, ":quarter": 1 },
-        FilterExpression: "#theYear = :year and quarter = :quarter",
-        ProjectionExpression: "state_form",
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-state-forms",
+          ExpressionAttributeNames: { "#theYear": "year" },
+          ExpressionAttributeValues: { ":year": 2025, ":quarter": 1 },
+          FilterExpression: "#theYear = :year and quarter = :quarter",
+          ProjectionExpression: "state_form",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -288,9 +311,11 @@ describe("sharedFunctions.js", () => {
     it("should write template questions to the database", async () => {
       mockQuery.mockResolvedValueOnce({
         Count: 1,
-        Items: [{
-          template: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
-        }],
+        Items: [
+          {
+            template: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
+          },
+        ],
       });
 
       const result = await fetchOrCreateQuestions("2025");
@@ -300,21 +325,26 @@ describe("sharedFunctions.js", () => {
         message: "Questions added to form questions table from template",
         payload: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
       });
-      expect(mockQuery).toHaveBeenCalledWith({
-        TableName: "local-form-templates",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":year": 2025 },
-        KeyConditionExpression: "#theYear = :year",
-      }, expect.any(Function));
+      expect(mockQuery).toHaveBeenCalledWith(
+        {
+          TableName: "local-form-templates",
+          ExpressionAttributeNames: { "#theYear": "year" },
+          ExpressionAttributeValues: { ":year": 2025 },
+          KeyConditionExpression: "#theYear = :year",
+        },
+        expect.any(Function)
+      );
     });
 
     it("should copy last year's form template if needed", async () => {
       mockQuery.mockResolvedValueOnce({ Count: 0 });
       mockScan.mockResolvedValueOnce({
         Count: 1,
-        Items: [{
-          template: [{ questionId: "2024-Q1" }, { questionId: "2024-Q2" }],
-        }],
+        Items: [
+          {
+            template: [{ questionId: "2024-Q1" }, { questionId: "2024-Q2" }],
+          },
+        ],
       });
 
       const result = await fetchOrCreateQuestions("2025");
@@ -332,12 +362,15 @@ describe("sharedFunctions.js", () => {
             questionId: "2025-Q2",
             created_date: expect.stringMatching(ISO_DATE_REGEX),
             last_modified: expect.stringMatching(ISO_DATE_REGEX),
-          }
+          },
         ],
       });
-      expect(mockPut).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-templates",
-      }), expect.any(Function));
+      expect(mockPut).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-templates",
+        }),
+        expect.any(Function)
+      );
     });
 
     it("should return an error if there are no templates, this year or last", async () => {
@@ -362,88 +395,99 @@ describe("sharedFunctions.js", () => {
         { questionId: "Q4" },
       ];
       const result = await addToQuestionTable(questionsForThisYear, "2025");
-      
+
       expect(result).toEqual({
         status: 200,
         message: "Questions added to form questions table from template",
       });
 
       expect(mockBatchWrite).toHaveBeenCalledTimes(2);
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-questions": [
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q1",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
+      expect(mockBatchWrite).toHaveBeenCalledWith(
+        {
+          RequestItems: {
+            "local-form-questions": [
+              {
+                PutRequest: {
+                  Item: {
+                    questionId: "Q1",
+                    year: 2025,
+                    created_date: expect.stringMatching(ISO_DATE_REGEX),
+                    last_modified: expect.stringMatching(ISO_DATE_REGEX),
+                  },
                 },
               },
-            },
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q2",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
+              {
+                PutRequest: {
+                  Item: {
+                    questionId: "Q2",
+                    year: 2025,
+                    created_date: expect.stringMatching(ISO_DATE_REGEX),
+                    last_modified: expect.stringMatching(ISO_DATE_REGEX),
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
-      }, expect.any(Function));
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-questions": [
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q3",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
+        expect.any(Function)
+      );
+      expect(mockBatchWrite).toHaveBeenCalledWith(
+        {
+          RequestItems: {
+            "local-form-questions": [
+              {
+                PutRequest: {
+                  Item: {
+                    questionId: "Q3",
+                    year: 2025,
+                    created_date: expect.stringMatching(ISO_DATE_REGEX),
+                    last_modified: expect.stringMatching(ISO_DATE_REGEX),
+                  },
                 },
               },
-            },
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q4",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
+              {
+                PutRequest: {
+                  Item: {
+                    questionId: "Q4",
+                    year: 2025,
+                    created_date: expect.stringMatching(ISO_DATE_REGEX),
+                    last_modified: expect.stringMatching(ISO_DATE_REGEX),
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
-      }, expect.any(Function));
+        expect.any(Function)
+      );
     });
   });
 
   describe("createFormTemplate", () => {
     it("should write data to dynamo", async () => {
-      const result = await createFormTemplate("2025", [{ questionId: "Q1 "}]);
+      const result = await createFormTemplate("2025", [{ questionId: "Q1 " }]);
 
       expect(result).toEqual({
         status: 200,
         message: "Template updated for 2025!",
       });
-      expect(mockPut).toHaveBeenCalledWith({
-        TableName: "local-form-templates",
-        Item: {
-          year: 2025,
-          template: [{ questionId: "Q1 "}],
-          lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+      expect(mockPut).toHaveBeenCalledWith(
+        {
+          TableName: "local-form-templates",
+          Item: {
+            year: 2025,
+            template: [{ questionId: "Q1 " }],
+            lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+          },
         },
-      }, expect.any(Function));
+        expect.any(Function)
+      );
     });
 
     it("should return an error if year is missing", async () => {
-      const result = await createFormTemplate(undefined, [{ questionId: "Q1 "}]);
+      const result = await createFormTemplate(undefined, [
+        { questionId: "Q1 " },
+      ]);
 
       expect(result).toEqual({
         status: 422,
@@ -474,5 +518,5 @@ describe("sharedFunctions.js", () => {
       expect(getQuarter(new Date("2025-10-02"))).toBe(1);
       expect(getQuarter(new Date("2025-12-28"))).toBe(1);
     });
-  })
+  });
 });

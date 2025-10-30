@@ -76,33 +76,42 @@ describe("generateEnrollmentTotals.js", () => {
 
     const response = await generateEnrollmentTotals(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Generated Totals Successfully",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Generated Totals Successfully",
+        }),
+      })
+    );
 
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-state-forms",
-      Select: "ALL_ATTRIBUTES",
-      ExpressionAttributeValues: {
-        ":form_0": "21E",
-        ":form_1": "64.21E",
-        ":quarter": 4,
-      },
-      FilterExpression: "(form = :form_0 OR form = :form_1) AND quarter = :quarter",
-      ConsistentRead: true,
-    }), expect.any(Function));
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-state-forms",
+        Select: "ALL_ATTRIBUTES",
+        ExpressionAttributeValues: {
+          ":form_0": "21E",
+          ":form_1": "64.21E",
+          ":quarter": 4,
+        },
+        FilterExpression:
+          "(form = :form_0 OR form = :form_1) AND quarter = :quarter",
+        ConsistentRead: true,
+      }),
+      expect.any(Function)
+    );
 
     expect(mockQuery).toHaveBeenCalledTimes(10);
-    expect(mockQuery).toHaveBeenCalledWith({
-      TableName: "local-form-answers",
-      ExpressionAttributeValues: { ":answerEntry": "CO-2025-4-21E-0000-07" },
-      KeyConditionExpression: "answer_entry = :answerEntry",
-      ExclusiveStartKey: undefined,
-    }, expect.any(Function));
+    expect(mockQuery).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-answers",
+        ExpressionAttributeValues: { ":answerEntry": "CO-2025-4-21E-0000-07" },
+        KeyConditionExpression: "answer_entry = :answerEntry",
+        ExclusiveStartKey: undefined,
+      },
+      expect.any(Function)
+    );
     const expectedEntries = [
       "CO-2025-4-21E-0000-07",
       "CO-2025-4-21E-0001-07",
@@ -115,44 +124,48 @@ describe("generateEnrollmentTotals.js", () => {
       "CO-2025-4-64.21E-0612-07",
       "CO-2025-4-64.21E-1318-07",
     ];
-    const actualEntries = mockQuery.mock.calls
-      .map(call => call[0].ExpressionAttributeValues[":answerEntry"]);
+    const actualEntries = mockQuery.mock.calls.map(
+      (call) => call[0].ExpressionAttributeValues[":answerEntry"]
+    );
     expect(actualEntries).toEqual(expectedEntries);
 
-    expect(mockBatchWrite).toHaveBeenCalledWith({
-      RequestItems: {
-        ["local-state-forms"]: [
-          {
-            PutRequest: {
-              Item: {
-                state_form: "CO-2025-4-21E",
-                form: "21E",
-                year: 2025,
-                enrollmentCounts: {
-                  type: "separate",
+    expect(mockBatchWrite).toHaveBeenCalledWith(
+      {
+        RequestItems: {
+          ["local-state-forms"]: [
+            {
+              PutRequest: {
+                Item: {
+                  state_form: "CO-2025-4-21E",
+                  form: "21E",
                   year: 2025,
-                  count: 2610,
+                  enrollmentCounts: {
+                    type: "separate",
+                    year: 2025,
+                    count: 2610,
+                  },
                 },
               },
             },
-          },
-          {
-            PutRequest: {
-              Item: {
-                state_form: "CO-2025-4-64.21E",
-                form: "64.21E",
-                year: 2025,
-                enrollmentCounts: {
-                  type: "expansion",
+            {
+              PutRequest: {
+                Item: {
+                  state_form: "CO-2025-4-64.21E",
+                  form: "64.21E",
                   year: 2025,
-                  count: 6210,
+                  enrollmentCounts: {
+                    type: "expansion",
+                    year: 2025,
+                    count: 6210,
+                  },
                 },
               },
             },
-          },
-        ],
+          ],
+        },
       },
-    }, expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -160,9 +173,11 @@ describe("generateEnrollmentTotals.js", () => {
 
     const response = await generateEnrollmentTotals(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

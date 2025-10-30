@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as getFormTypes } from "./getFormTypes.js";
 import { authorizeAnyUser } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -33,15 +30,20 @@ describe("getFormTypes.js", () => {
 
     const response = await getFormTypes(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify([formA, formB]),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify([formA, formB]),
+      })
+    );
 
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-forms",
-      Select: "ALL_ATTRIBUTES",
-    }), expect.any(Function));
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-forms",
+        Select: "ALL_ATTRIBUTES",
+      }),
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user is not valid", async () => {
@@ -49,9 +51,11 @@ describe("getFormTypes.js", () => {
 
     const response = await getFormTypes(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

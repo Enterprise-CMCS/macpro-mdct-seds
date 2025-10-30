@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
+import {
+  main as generateQuarterForms,
+  scheduled,
+} from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import {
@@ -28,7 +31,9 @@ import { mockClient } from "aws-sdk-client-mock";
  */
 
 vi.mock("../../../libs/time.js", () => ({
-  calculateFormQuarterFromDate: vi.fn().mockReturnValue({ year: 2025, quarter: 1 }),
+  calculateFormQuarterFromDate: vi
+    .fn()
+    .mockReturnValue({ year: 2025, quarter: 1 }),
 }));
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -57,20 +62,19 @@ const mockFormB = { form: "B", form_id: "2", form_name: "Form B" };
 const mockQuestion1 = {
   question: "Q1-A-42",
   age_ranges: [
-    { key: "0001", label: "birth to age 1"},
-    { key: "0105", label: "ages 1 to 5" }
+    { key: "0001", label: "birth to age 1" },
+    { key: "0105", label: "ages 1 to 5" },
   ],
   rows: [],
 };
 const mockQuestion2 = {
   question: "Q2-B-76",
   age_ranges: [
-    { key: "0001", label: "birth to age 1"},
-    { key: "0105", label: "ages 1 to 5" }
+    { key: "0001", label: "birth to age 1" },
+    { key: "0105", label: "ages 1 to 5" },
   ],
   rows: [],
 };
-
 
 describe("generateQuarterForms.js", () => {
   beforeEach(() => {
@@ -85,21 +89,23 @@ describe("generateQuarterForms.js", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Forms successfully created for Quarter 1 of 2025",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Forms successfully created for Quarter 1 of 2025",
+        }),
+      })
+    );
 
     expect(mockBatchWrite).toHaveBeenCalled();
-    
+
     const stateFormParams = mockBatchWrite.mock.calls[0][0];
     expect(stateFormParams).toEqual({
       RequestItems: {
         "local-state-forms": expect.any(Array),
-      }
+      },
     });
     const stateFormPuts = stateFormParams.RequestItems["local-state-forms"];
     expect(stateFormPuts.length).toBe(4);
@@ -133,14 +139,23 @@ describe("generateQuarterForms.js", () => {
         },
       });
     }
-    const expectedStateForms = ["CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B"];
-    const actualStateForms = stateFormPuts.map(put => put.PutRequest.Item.state_form);
+    const expectedStateForms = [
+      "CO-2025-1-A",
+      "CO-2025-1-B",
+      "TX-2025-1-A",
+      "TX-2025-1-B",
+    ];
+    const actualStateForms = stateFormPuts.map(
+      (put) => put.PutRequest.Item.state_form
+    );
     expect(actualStateForms).toEqual(expectedStateForms);
   });
 
   it("should only create missing forms", async () => {
     findExistingStateForms.mockResolvedValueOnce([
-      "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", /* (missing Texas B) */
+      "CO-2025-1-A",
+      "CO-2025-1-B",
+      "TX-2025-1-A" /* (missing Texas B) */,
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
@@ -151,7 +166,9 @@ describe("generateQuarterForms.js", () => {
     expect(mockBatchWrite).toHaveBeenCalled();
     const stateFormParams = mockBatchWrite.mock.calls[0][0];
     const stateFormPuts = stateFormParams.RequestItems["local-state-forms"];
-    expect(stateFormPuts.map(p => p.PutRequest.Item.state_form)).toEqual(["TX-2025-1-B"]);
+    expect(stateFormPuts.map((p) => p.PutRequest.Item.state_form)).toEqual([
+      "TX-2025-1-B",
+    ]);
   });
 
   it("should create forms for the specified year and quarter if provided", async () => {
@@ -166,9 +183,15 @@ describe("generateQuarterForms.js", () => {
 
     expect(mockBatchWrite).toHaveBeenCalled();
     const stateFormParams = mockBatchWrite.mock.calls[0][0];
-    const expectedStateForms = ["CO-2026-2-A", "CO-2026-2-B", "TX-2026-2-A", "TX-2026-2-B"];
-    const actualStateForms = stateFormParams.RequestItems["local-state-forms"]
-      .map(put => put.PutRequest.Item.state_form);
+    const expectedStateForms = [
+      "CO-2026-2-A",
+      "CO-2026-2-B",
+      "TX-2026-2-A",
+      "TX-2026-2-B",
+    ];
+    const actualStateForms = stateFormParams.RequestItems[
+      "local-state-forms"
+    ].map((put) => put.PutRequest.Item.state_form);
     expect(actualStateForms).toEqual(expectedStateForms);
   });
 
@@ -185,8 +208,8 @@ describe("generateQuarterForms.js", () => {
 
     expect(mockBatchWrite).toHaveBeenCalled();
     const batchSizes = mockBatchWrite.mock.calls
-      .filter(call => !!call[0].RequestItems["local-state-forms"])
-      .map(call => call[0].RequestItems["local-state-forms"].length);
+      .filter((call) => !!call[0].RequestItems["local-state-forms"])
+      .map((call) => call[0].RequestItems["local-state-forms"].length);
     // 40 states x 2 forms = 80 items. Max batch size is 25.
     expect(batchSizes).toEqual([25, 25, 25, 5]);
   });
@@ -197,13 +220,15 @@ describe("generateQuarterForms.js", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "Could not retrieve state list.",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 500,
+          message: "Could not retrieve state list.",
+        }),
+      })
+    );
   });
 
   it("should return an error if no forms exist", async () => {
@@ -213,13 +238,15 @@ describe("generateQuarterForms.js", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "Could not retrieve form descriptions.",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 500,
+          message: "Could not retrieve form descriptions.",
+        }),
+      })
+    );
   });
 
   it("should populate state answers for newly generated forms", async () => {
@@ -228,7 +255,7 @@ describe("generateQuarterForms.js", () => {
     getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    await generateQuarterForms({ });
+    await generateQuarterForms({});
 
     expect(mockBatchWrite).toHaveBeenCalledTimes(2);
 
@@ -236,7 +263,7 @@ describe("generateQuarterForms.js", () => {
     expect(formAnswerParams).toEqual({
       RequestItems: {
         "local-form-answers": expect.any(Array),
-      }
+      },
     });
     const formAnswerPuts = formAnswerParams.RequestItems["local-form-answers"];
     expect(formAnswerPuts.length).toBe(4);
@@ -245,7 +272,9 @@ describe("generateQuarterForms.js", () => {
         PutRequest: {
           Item: {
             age_range: expect.stringMatching(/^(birth to age 1|ages 1 to 5)$/),
-            answer_entry: expect.stringMatching(/^(CO|TX)-2025-1-A-(0001|0105)-42$/),
+            answer_entry: expect.stringMatching(
+              /^(CO|TX)-2025-1-A-(0001|0105)-42$/
+            ),
             created_by: "seed",
             created_date: expect.stringMatching(ISO_DATE_REGEX),
             last_modified: expect.stringMatching(ISO_DATE_REGEX),
@@ -262,22 +291,29 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A-0001-42",
       "CO-2025-1-A-0105-42",
       "TX-2025-1-A-0001-42",
-      "TX-2025-1-A-0105-42"
+      "TX-2025-1-A-0105-42",
     ];
-    const actualEntries = formAnswerPuts.map(put => put.PutRequest.Item.answer_entry);
+    const actualEntries = formAnswerPuts.map(
+      (put) => put.PutRequest.Item.answer_entry
+    );
     expect(actualEntries).toEqual(expectedEntries);
   });
 
   it("should populate missing state answers if specified", async () => {
     findExistingStateForms.mockResolvedValueOnce([
-      "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
+      "CO-2025-1-A",
+      "CO-2025-1-B",
+      "TX-2025-1-A",
+      "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set());
 
-    await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
+    await generateQuarterForms({
+      body: JSON.stringify({ restoreMissingAnswers: true }),
+    });
 
     expect(mockBatchWrite).toHaveBeenCalledTimes(1);
 
@@ -289,35 +325,46 @@ describe("generateQuarterForms.js", () => {
 
   it("should not populate missing state answers if not specified", async () => {
     findExistingStateForms.mockResolvedValueOnce([
-      "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
+      "CO-2025-1-A",
+      "CO-2025-1-B",
+      "TX-2025-1-A",
+      "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    const response = await generateQuarterForms({ });
+    const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 204,
-        message: "All forms, for Quarter 1 of 2025, previously existed. No new forms added"
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 204,
+          message:
+            "All forms, for Quarter 1 of 2025, previously existed. No new forms added",
+        }),
       })
-    }));
+    );
     expect(mockBatchWrite).toHaveBeenCalledTimes(0);
   });
 
   it("should populate only the missing state answers if specified", async () => {
     findExistingStateForms.mockResolvedValueOnce([
-      "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
+      "CO-2025-1-A",
+      "CO-2025-1-B",
+      "TX-2025-1-A",
+      "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set(["TX-2025-1-A"]));
 
-    await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
-    
+    await generateQuarterForms({
+      body: JSON.stringify({ restoreMissingAnswers: true }),
+    });
+
     expect(mockBatchWrite).toHaveBeenCalledTimes(1);
 
     const formAnswerParams = mockBatchWrite.mock.calls[0][0];
@@ -331,7 +378,9 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A-0001-42",
       "CO-2025-1-A-0105-42",
     ];
-    const actualEntries = formAnswerPuts.map(put => put.PutRequest.Item.answer_entry);
+    const actualEntries = formAnswerPuts.map(
+      (put) => put.PutRequest.Item.answer_entry
+    );
     expect(actualEntries).toEqual(expectedEntries);
   });
 
@@ -342,10 +391,10 @@ describe("generateQuarterForms.js", () => {
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 200,
-      payload: [mockQuestion2]
+      payload: [mockQuestion2],
     });
 
-    await generateQuarterForms({ });
+    await generateQuarterForms({});
 
     expect(mockBatchWrite).toHaveBeenCalledTimes(2);
 
@@ -364,18 +413,20 @@ describe("generateQuarterForms.js", () => {
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 500,
-      message: "That didn't work."
+      message: "That didn't work.",
     });
 
-    const response = await generateQuarterForms({ });
+    const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "That didn't work."
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 500,
+          message: "That didn't work.",
+        }),
       })
-    }));
+    );
     expect(mockBatchWrite).toHaveBeenCalledTimes(1);
   });
 
@@ -384,10 +435,12 @@ describe("generateQuarterForms.js", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should not require authorization if invoked from a scheduled job", async () => {
@@ -399,13 +452,15 @@ describe("generateQuarterForms.js", () => {
 
     const response = await scheduled({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Forms successfully created for Quarter 1 of 2025"
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Forms successfully created for Quarter 1 of 2025",
+        }),
+      })
+    );
 
     expect(mockBatchWrite).toHaveBeenCalled();
     // We did not exercise this mock rejection; reset it to a no-op.

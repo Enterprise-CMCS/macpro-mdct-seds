@@ -11,11 +11,11 @@ import {
   FinalCertifiedStatusFields,
   InProgressStatusFields,
   NotRequiredStatusFields,
-  ProvisionalCertifiedStatusFields,
+  ProvisionalCertifiedStatusFields
 } from "../../utility-functions/formStatus";
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
 
 const renderComponent = (user, statusData) => {
@@ -24,14 +24,14 @@ const renderComponent = (user, statusData) => {
     ...fullStoreMock,
     currentForm: {
       ...fullStoreMock.currentForm,
-      statusData,
+      statusData
     }
   };
   const store = storeFactory(initialStore);
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <NotApplicable/>
+        <NotApplicable />
       </BrowserRouter>
     </Provider>
   );

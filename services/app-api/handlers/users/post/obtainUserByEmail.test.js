@@ -4,10 +4,7 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -38,19 +35,24 @@ describe("obtainUserByEmail.js", () => {
 
     const response = await obtainUserByEmail(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        Items: [mockUser],
-        Count: 1,
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          Items: [mockUser],
+          Count: 1,
+        }),
+      })
+    );
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-auth-user",
+        Select: "ALL_ATTRIBUTES",
+        ExpressionAttributeValues: { ":email": "user1@test.com" },
+        FilterExpression: "email = :email",
       }),
-    }));
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-auth-user",
-      Select: "ALL_ATTRIBUTES",
-      ExpressionAttributeValues: { ":email": "user1@test.com" },
-      FilterExpression: "email = :email",
-    }), expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user token is invalid", async () => {
@@ -58,10 +60,12 @@ describe("obtainUserByEmail.js", () => {
 
     const response = await obtainUserByEmail(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return empty results regardless of requesting user", async () => {
@@ -70,10 +74,12 @@ describe("obtainUserByEmail.js", () => {
 
     const response = await obtainUserByEmail(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: "false",
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: "false",
+      })
+    );
 
     // Since our mock rejection wasn't exercised, replace it with a no-op
     authorizeAdminOrUserWithEmail.mockReset();
@@ -86,9 +92,11 @@ describe("obtainUserByEmail.js", () => {
 
     const response = await obtainUserByEmail(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

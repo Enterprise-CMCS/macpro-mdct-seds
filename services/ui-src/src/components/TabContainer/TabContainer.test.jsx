@@ -1,7 +1,7 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TabContainer from "./TabContainer";
 import configureStore from "redux-mock-store";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
@@ -9,28 +9,32 @@ import { Provider } from "react-redux";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+  default: props => (
+    <div className="question-component">{JSON.stringify(props)}</div>
+  )
 }));
 
 vi.mock("../SummaryTab/SummaryTab", () => ({
-  default: (props) => (<div data-testid="summary-tab">{JSON.stringify(props)}</div>)
+  default: props => <div data-testid="summary-tab">{JSON.stringify(props)}</div>
 }));
 
 vi.mock("../CertificationTab/CertificationTab", () => ({
-  default: (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
+  default: props => (
+    <div data-testid="certification-tab">{JSON.stringify(props)}</div>
+  )
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
 
-const renderComponent = (userRole) => {
+const renderComponent = userRole => {
   getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
   const mockstore = configureStore([]);
   const store = mockstore(fullStoreMock);
   return render(
     <Provider store={store}>
-      <TabContainer/>
+      <TabContainer />
     </Provider>
   );
 };
@@ -71,7 +75,7 @@ describe("TabContainer tests", () => {
       "Ages 6 - 12",
       "Ages 13 - 18",
       "Summary",
-      "Certification",
+      "Certification"
     ];
     const tabs = screen.getAllByRole("tab");
     expect(tabs.length).toBe(expectedTabNames.length);
@@ -89,7 +93,7 @@ describe("TabContainer tests", () => {
       "Birth through age 12 months:",
       "Age 1 year through age 5 years:",
       "Age 6 years through age 12 years:",
-      "Age 13 years through age 18 years:",
+      "Age 13 years through age 18 years:"
       // Note that the summary and certification tabs do not contain h3s
     ];
     const tabs = screen.getAllByRole("tab");
@@ -108,7 +112,7 @@ describe("TabContainer tests", () => {
     for (let i = 0; i < 5; i += 1) {
       userEvent.click(tabs[i]);
       const questions = container.querySelectorAll(".question-component");
-      expect(questions.length).toBe(6)
+      expect(questions.length).toBe(6);
     }
   });
 });

@@ -36,7 +36,9 @@ const generateQuarterForms = async (event) => {
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
     // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem(tryRetryBatch.batch);
+    const { UnprocessedItems } = await dynamoDb.batchWriteItem(
+      tryRetryBatch.batch
+    );
 
     // If there are any failures and under the retry limit
     if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
@@ -269,18 +271,16 @@ const generateQuarterForms = async (event) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
         // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
-        const isGeneratingStateForm = stateFormsBeingGenerated.includes(
-          stateFormID
-        );
+        const isGeneratingStateForm =
+          stateFormsBeingGenerated.includes(stateFormID);
         const missingAnswers =
           restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
 

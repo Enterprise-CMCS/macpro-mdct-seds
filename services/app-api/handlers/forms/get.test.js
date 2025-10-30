@@ -49,32 +49,40 @@ describe("get.js", () => {
 
     const response = await get(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        answers: [mockFormAnswer],
-        questions: [mockFormQuestion],
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          answers: [mockFormAnswer],
+          questions: [mockFormQuestion],
+        }),
+      })
+    );
 
-    expect(mockQuery).toHaveBeenCalledWith({
-      TableName: "local-form-answers",
-      IndexName: "state-form-index",
-      ExpressionAttributeValues: {
-        ":answerFormID": "CO-2025-1-F1",
+    expect(mockQuery).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-answers",
+        IndexName: "state-form-index",
+        ExpressionAttributeValues: {
+          ":answerFormID": "CO-2025-1-F1",
+        },
+        KeyConditionExpression: "state_form = :answerFormID",
       },
-      KeyConditionExpression: "state_form = :answerFormID",
-    }, expect.any(Function));
+      expect.any(Function)
+    );
 
-    expect(mockScan).toHaveBeenCalledWith({
-      TableName: "local-form-questions",
-      ExpressionAttributeNames: { "#theYear": "year" },
-      ExpressionAttributeValues: {
-        ":specifiedYear": 2025,
-        ":form": "F1",
+    expect(mockScan).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-questions",
+        ExpressionAttributeNames: { "#theYear": "year" },
+        ExpressionAttributeValues: {
+          ":specifiedYear": 2025,
+          ":form": "F1",
+        },
+        FilterExpression: "form = :form and #theYear = :specifiedYear",
       },
-      FilterExpression: "form = :form and #theYear = :specifiedYear",
-    }, expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should return an error if no answers can be found", async () => {
@@ -83,12 +91,14 @@ describe("get.js", () => {
 
     const response = await get(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Answers for Single form not found.",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "Answers for Single form not found.",
+        }),
+      })
+    );
   });
 
   it("should return an error if no questions can be found", async () => {
@@ -97,12 +107,14 @@ describe("get.js", () => {
 
     const response = await get(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Questions for Single form not found.",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "Questions for Single form not found.",
+        }),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -110,9 +122,11 @@ describe("get.js", () => {
 
     const response = await get(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

@@ -12,7 +12,7 @@ import {
   InProgressStatusFields,
   isFinalCertified,
   isNotRequired,
-  NotRequiredStatusFields,
+  NotRequiredStatusFields
 } from "../../utility-functions/formStatus";
 
 const NotApplicable = ({
@@ -38,13 +38,14 @@ const NotApplicable = ({
       } else {
         setInputDisabled(true);
       }
-    })()
+    })();
   }, [statusData]);
 
-  const handleApplicableChange = async (evt) => {
-    const newStatusData = evt.target.value === "Yes"
-      ? InProgressStatusFields()
-      : NotRequiredStatusFields();
+  const handleApplicableChange = async evt => {
+    const newStatusData =
+      evt.target.value === "Yes"
+        ? InProgressStatusFields()
+        : NotRequiredStatusFields();
 
     if (isNotRequired(newStatusData)) {
       const confirm = window.confirm(
@@ -64,7 +65,9 @@ const NotApplicable = ({
   return (
     <div className="applicable-wrapper">
       <fieldset className="usa-fieldset">
-        <legend className="usa-legend usa-legend">Does this form apply to your state?</legend>
+        <legend className="usa-legend usa-legend">
+          Does this form apply to your state?
+        </legend>
         <div className="usa-radio">
           <input
             className="usa-radio__input"
@@ -76,7 +79,9 @@ const NotApplicable = ({
             checked={!isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
-          <label className="usa-radio__label" htmlFor="applicable-yes">Yes</label>
+          <label className="usa-radio__label" htmlFor="applicable-yes">
+            Yes
+          </label>
         </div>
         <div className="usa-radio">
           <input
@@ -89,7 +94,9 @@ const NotApplicable = ({
             checked={isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
-          <label className="usa-radio__label" htmlFor="applicable-no">No</label>
+          <label className="usa-radio__label" htmlFor="applicable-no">
+            No
+          </label>
         </div>
       </fieldset>
     </div>
@@ -104,7 +111,7 @@ NotApplicable.propTypes = {
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData,
+  statusData: state.currentForm.statusData
 });
 
 const mapDispatch = {

@@ -6,10 +6,7 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAdmin,
 } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -31,7 +28,7 @@ const mockUser = {
   username: "COLO",
   email: "stateuserCO@test.com",
   role: "state",
-  states: ["CO"]
+  states: ["CO"],
 };
 
 const mockEvent = {
@@ -54,23 +51,29 @@ describe("updateUser.js", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({ update: "complete" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({ update: "complete" }),
+      })
+    );
 
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-auth-user",
-      Key: { userId: "42" },
-      UpdateExpression: "SET #r = :role, states = :states, lastLogin = :lastLogin",
-      ExpressionAttributeNames: { "#r": "role" },
-      ExpressionAttributeValues: {
-        ":role": "business",
-        ":states": ["CO"],
-        ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
+    expect(mockUpdate).toHaveBeenCalledWith(
+      {
+        TableName: "local-auth-user",
+        Key: { userId: "42" },
+        UpdateExpression:
+          "SET #r = :role, states = :states, lastLogin = :lastLogin",
+        ExpressionAttributeNames: { "#r": "role" },
+        ExpressionAttributeValues: {
+          ":role": "business",
+          ":states": ["CO"],
+          ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
+        },
+        ReturnValues: "ALL_NEW",
       },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -78,10 +81,12 @@ describe("updateUser.js", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return an error if the requesting user isn't an admin, or updating themselves", async () => {
@@ -90,10 +95,12 @@ describe("updateUser.js", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return an error if the requesting user is updating anything other than their state", async () => {
@@ -102,12 +109,12 @@ describe("updateUser.js", () => {
 
     const expectFieldChangeToError = async (changedProperty) => {
       const evt = {
-        body: JSON.stringify({...mockUser, ...changedProperty}),
+        body: JSON.stringify({ ...mockUser, ...changedProperty }),
       };
       const response = await updateUser(evt);
       expect(response.statusCode).toBe(500);
-    }
-    
+    };
+
     await expectFieldChangeToError({ username: "WISC" });
     await expectFieldChangeToError({ role: "admin" });
     await expectFieldChangeToError({ usernameSub: "4444-5555-6666-7777" });
@@ -129,7 +136,7 @@ describe("updateUser.js", () => {
     });
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     const evt = {
-      body: JSON.stringify({...mockUser, states: ["CO"] }),
+      body: JSON.stringify({ ...mockUser, states: ["CO"] }),
     };
 
     const response = await updateUser(evt);
@@ -147,7 +154,7 @@ describe("updateUser.js", () => {
       const evt = { body: JSON.stringify(payload) };
       const response = await updateUser(evt);
       expect(response.statusCode).toBe(500);
-    }
+    };
 
     // Payload must exist
     await expectFieldChangeToError(null);

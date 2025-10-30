@@ -48,7 +48,7 @@ const dateFormatter = dateString => {
       // `medium` dateStyles spell out the month; `short` has a 2-digit year.
       year: "numeric",
       month: "numeric",
-      day: "numeric",
+      day: "numeric"
     });
     const timeParts = formattedPartsET(date, { timeStyle: "long" });
     const yyyy = dateParts("year");
@@ -70,7 +70,7 @@ const formattedPartsET = (date, options) => {
   const zone = { timeZone: "America/New_York" };
   const formatter = new Intl.DateTimeFormat("en-US", { ...options, ...zone });
   const parts = formatter.formatToParts(date);
-  return (type) => parts.find((part) => part.type === type).value;
+  return type => parts.find(part => part.type === type).value;
 };
 
 const compileSimpleArrayStates = complexArray => {
