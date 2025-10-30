@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dynamoDb from "../../libs/dynamodb-lib.js";
 
 export async function getUsersEmailByRole(role) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import handler from "./../../libs/handler-lib.js";
 import {
   getUsersEmailByRole,

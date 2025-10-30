@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";

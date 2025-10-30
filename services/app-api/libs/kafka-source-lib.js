@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
 import { Kafka } from "kafkajs";
 
