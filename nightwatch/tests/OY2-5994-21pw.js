@@ -86,18 +86,20 @@ module.exports = {
       }
     );
 
-    //working
-    //     browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
-    //     for (var x = 0; x < link_array.value.length; x++){
-    //         let ele = link_array.value[x].ELEMENT;
-    //         browser.elementIdEnabled(ele, function(result) {
-    //             if(result.value == true){
-    //                 browser.elementIdClear(ele);
-    //                 browser.elementIdValue(ele, "5");
-    //             }
-    //         });
-    //     }
-    //   });
+    /*
+     * working
+     *      browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
+     *      for (var x = 0; x < link_array.value.length; x++){
+     *          let ele = link_array.value[x].ELEMENT;
+     *          browser.elementIdEnabled(ele, function(result) {
+     *              if(result.value == true){
+     *                  browser.elementIdClear(ele);
+     *                  browser.elementIdValue(ele, "5");
+     *              }
+     *          });
+     *      }
+     *    });
+     */
 
     const valueContains = function () {
       browser.verify.valueContains(tests_data.number.selector, "315");

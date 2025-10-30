@@ -92,8 +92,10 @@ module.exports = {
           selector: "div[data-testid=grid] > a",
         },
         total1: {
-          //selector: "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]",
-          //selector: "//*[@id='AL-2021-1-64.EC-0000-01']/table/tbody/tr[4]/td[6]",
+          /*
+           * selector: "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]",
+           * selector: "//*[@id='AL-2021-1-64.EC-0000-01']/table/tbody/tr[4]/td[6]",
+           */
           selector:
             "/html/body/div/div/div[2]/div/div[3]/div/div[1]/div[2]/div/table/tbody/tr[4]/td[6]",
         },

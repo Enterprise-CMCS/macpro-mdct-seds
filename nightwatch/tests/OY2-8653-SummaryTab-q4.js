@@ -7,39 +7,40 @@ const login = require("./OY2-9998-Login");
 module.exports = {
   "@tags": ["smoke", "year", "tag1"],
 
-  // before: function (browser) {
-  //   console.log("Setting up the browser instance...");
-  //   console.log("Opening the browser...");
-  //   browser
-  //     .maximizeWindow()
-  //     .url(browser.launch_url)
-  //     .waitForElementPresent("body");
-  //   // Login credentails are pulled from .env files, this file should not be tracked and
-  //   // must be stated in the .gitignore file
-  //   //Click on Login with EUA ID
-  //   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-  //   const username = browser.globals.user;
-  //   const password = browser.globals.pass;
-  //   // Loing activities
-  //   //browser.useCss().click(".LoginWithOkta .LoaderButton");
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-username", username)
-  //     .pause(100);
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-password", password)
-  //     .pause(100);
-  //   browser.useCss().click("input#tandc");
-  //   browser.useCss().click("input#okta-signin-submit").pause(3000);
-  //   browser.waitForElementPresent("body");
-  // },
-  // after: function (browser) {
-  //   console.log("Stopping test executions...");
-  //   console.log("Closing down the browser instance...");
-  //   browser.end();
-  // },
-
+  /*
+   * before: function (browser) {
+   *   console.log("Setting up the browser instance...");
+   *   console.log("Opening the browser...");
+   *   browser
+   *     .maximizeWindow()
+   *     .url(browser.launch_url)
+   *     .waitForElementPresent("body");
+   *   // Login credentails are pulled from .env files, this file should not be tracked and
+   *   // must be stated in the .gitignore file
+   *   //Click on Login with EUA ID
+   *   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
+   *   const username = browser.globals.user;
+   *   const password = browser.globals.pass;
+   *   // Loing activities
+   *   //browser.useCss().click(".LoginWithOkta .LoaderButton");
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-username", username)
+   *     .pause(100);
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-password", password)
+   *     .pause(100);
+   *   browser.useCss().click("input#tandc");
+   *   browser.useCss().click("input#okta-signin-submit").pause(3000);
+   *   browser.waitForElementPresent("body");
+   * },
+   * after: function (browser) {
+   *   console.log("Stopping test executions...");
+   *   console.log("Closing down the browser instance...");
+   *   browser.end();
+   * },
+   */
   before: function (browser) {
     login["Login with user"](browser);
   },
@@ -141,9 +142,11 @@ module.exports = {
     //Enter notes and click save on Summary screen
     browser.click(tests_data.summary.selector);
     browser.pause(timeout * 10);
-    //browser.verify.containsText("xpath", tests_data.sumtext.selector, "Summary:");
-    //browser.pause(timeout * 5)
-    //browser.verify.containsText(tests_data.question1.selector, "What is the unduplicated number of pregnant women ever enrolled during the quarter?");
+    /*
+     * browser.verify.containsText("xpath", tests_data.sumtext.selector, "Summary:");
+     * browser.pause(timeout * 5)
+     * browser.verify.containsText(tests_data.question1.selector, "What is the unduplicated number of pregnant women ever enrolled during the quarter?");
+     */
     browser
       .useXpath()
       .verify.containsText(

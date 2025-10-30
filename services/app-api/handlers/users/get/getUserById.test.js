@@ -48,13 +48,15 @@ describe("getUserById.js", () => {
   });
 
   it.skip("should return an error if the user cannot be found", async () => {
-    // This test is being skipped because it is broken.
-    // Instead of checking Count or Items?.length,
-    // we only check for the _existence_ of the Items array,
-    // before happily accessing properties on its 0th entry.
-    // Since the dynamoDb.scan utility always returns Items,
-    // this set yields a 500 error rather than a graceful message.
-    // Uhhh... TODO.
+    /*
+     * This test is being skipped because it is broken.
+     * Instead of checking Count or Items?.length,
+     * we only check for the _existence_ of the Items array,
+     * before happily accessing properties on its 0th entry.
+     * Since the dynamoDb.scan utility always returns Items,
+     * this set yields a 500 error rather than a graceful message.
+     * Uhhh... TODO.
+     */
     mockScan.mockResolvedValueOnce({ Count: 0 });
 
     const response = await getUserById(mockEvent);

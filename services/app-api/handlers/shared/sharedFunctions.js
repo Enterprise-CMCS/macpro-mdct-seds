@@ -19,8 +19,10 @@ export async function getUsersEmailByRole(role) {
   }));
 }
 
-// retrieve all states have NOT submitted their data yet
-// (in other words - all states with ‘in progress’ reports for the prior quarter)
+/*
+ * retrieve all states have NOT submitted their data yet
+ * (in other words - all states with ‘in progress’ reports for the prior quarter)
+ */
 export async function getUncertifiedStates(year, quarter) {
   // house the list of states from the state forms
   const params = {
@@ -56,8 +58,10 @@ export async function getUncertifiedStates(year, quarter) {
   );
 }
 
-// retrieve all states have NOT submitted their data yet AND their missing forms
-// States with 'In Progress' as status/
+/*
+ * retrieve all states have NOT submitted their data yet AND their missing forms
+ * States with 'In Progress' as status/
+ */
 export async function getUncertifiedStatesAndForms(year, quarter) {
   // house the list of states from the state forms
   const params = {
@@ -254,9 +258,10 @@ export async function fetchOrCreateQuestions(specifiedYear) {
   let questionsForThisYear;
 
   if (templateResult.Count === 0) {
-    // no template was found matching this current year
-    // trigger a function to generate a template & retrieve questions from template
-
+    /*
+     * no template was found matching this current year
+     * trigger a function to generate a template & retrieve questions from template
+     */
     const previousYear = parsedYear - 1;
 
     const previousYearParams = {
@@ -300,8 +305,10 @@ export async function fetchOrCreateQuestions(specifiedYear) {
     questionsForThisYear = templateResult.Items[0]["template"];
   }
 
-  // Add the questions that were created or found in an existing template to the questions table
-  // these are the questions found in the template table or created along with a new template
+  /*
+   * Add the questions that were created or found in an existing template to the questions table
+   * these are the questions found in the template table or created along with a new template
+   */
   let questionSuccess = await addToQuestionTable(
     questionsForThisYear,
     parsedYear
@@ -334,9 +341,10 @@ function replaceFormYear(year, templateQuestions) {
 }
 
 export async function addToQuestionTable(questionsForThisYear, questionYear) {
-  // This function is for adding questions to the question table
-  // By this point, questions have been found or created for a given year
-
+  /*
+   * This function is for adding questions to the question table
+   * By this point, questions have been found or created for a given year
+   */
   // Map through the found questions and create batch put requests for the questions table
   const questionsFromTemplate = questionsForThisYear.map((question) => {
     return {
@@ -359,8 +367,10 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
 
   const questionTableName = process.env.FormQuestionsTable;
 
-  // Add the questions found in the template to the form-questions table
-  // this can/should be done recursively to better account for unprocessed items
+  /*
+   * Add the questions found in the template to the form-questions table
+   * this can/should be done recursively to better account for unprocessed items
+   */
   let failedItems = [];
   for (const batch of splitQuestions) {
     const { UnprocessedItems } = await dynamoDb.batchWriteItem({
@@ -443,11 +453,13 @@ export async function createFormTemplate(year, questions) {
   }
 }
 
-// For the US Government fiscal year
-// Oct-Dec = 1
-// Jan-Mar = 2
-// Apr-Jun = 3
-// Jul-Sep = 4
+/*
+ * For the US Government fiscal year
+ * Oct-Dec = 1
+ * Jan-Mar = 2
+ * Apr-Jun = 3
+ * Jul-Sep = 4
+ */
 export const getQuarter = (d) => {
   d = d || new Date();
   const m = Math.floor(d.getMonth() / 3) + 2;

@@ -211,10 +211,12 @@ describe("saveForm.js", () => {
       })
     );
 
-    // ONE WOULD HOPE that we wouldn't perform any update...
-    // But we update form-answers before we check state-forms.
-    // TODO: Fix that! And then uncomment this assertion.
-    // expect(mockUpdate).toHaveBeenCalledTimes(0);
+    /*
+     * ONE WOULD HOPE that we wouldn't perform any update...
+     * But we update form-answers before we check state-forms.
+     * TODO: Fix that! And then uncomment this assertion.
+     * expect(mockUpdate).toHaveBeenCalledTimes(0);
+     */
   });
 
   it("should update the status tracking fields if status_id changes", async () => {

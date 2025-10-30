@@ -15,8 +15,10 @@ const mockConnect = Kafka().producer().connect;
 const mockSendBatch = Kafka().producer().sendBatch;
 const mockDisconnect = Kafka().producer().disconnect;
 
-// The file under test has some one-time behavior on load,
-// which we test one time here.
+/*
+ * The file under test has some one-time behavior on load,
+ * which we test one time here.
+ */
 expect(Kafka).toHaveBeenCalledWith({
   clientId: "seds-local",
   brokers: ["broker1", "broker2"],

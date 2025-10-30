@@ -13,10 +13,12 @@ export const main = handler(async (event, context) => {
   const answerParams = {
     TableName: process.env.FormAnswersTable,
     IndexName: "state-form-index",
-    /*Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {
-      "#answer_entry": "answer_entry"
-    },*/
+    /*
+     * Select: "ALL_ATTRIBUTES",
+     * ExpressionAttributeNames: {
+     * "#answer_entry": "answer_entry"
+     * },
+     */
     ExpressionAttributeValues: {
       ":answerFormID": answerFormID,
     },

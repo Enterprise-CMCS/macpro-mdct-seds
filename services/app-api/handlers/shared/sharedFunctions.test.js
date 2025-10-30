@@ -507,8 +507,10 @@ describe("sharedFunctions.js", () => {
 
   describe("getQuarter", () => {
     it("should return the federal fiscal quarter for the given date", () => {
-      // Note that we're dodging exact quarter boundaries by a day or few,
-      // to avoid any issues with time zones.
+      /*
+       * Note that we're dodging exact quarter boundaries by a day or few,
+       * to avoid any issues with time zones.
+       */
       expect(getQuarter(new Date("2025-01-02"))).toBe(2);
       expect(getQuarter(new Date("2025-03-28"))).toBe(2);
       expect(getQuarter(new Date("2025-04-02"))).toBe(3);

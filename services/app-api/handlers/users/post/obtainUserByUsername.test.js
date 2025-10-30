@@ -70,9 +70,11 @@ describe("obtainUserByUsername.js", () => {
   });
 
   it.skip("should return empty results regardless of requesting user", async () => {
-    // This test is skipped because the code is broken.
-    // Regardless of whether there are users, obtainUserByUsername will
-    // attempt to check the 0th user's email.
+    /*
+     * This test is skipped because the code is broken.
+     * Regardless of whether there are users, obtainUserByUsername will
+     * attempt to check the 0th user's email.
+     */
     authorizeAdminOrUserWithEmail.mockRejectedValueOnce(new Error("Forbidden"));
     mockScan.mockResolvedValueOnce({ Count: 0 });
 

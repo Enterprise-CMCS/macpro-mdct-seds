@@ -25,39 +25,40 @@ module.exports = {
     browser.click(tests_data.year21.selector).waitForElementPresent("body");
   },
 
-  // before: function (browser) {
-  //   console.log("Setting up the browser instance...");
-  //   console.log("Opening the browser...");
-  //   browser
-  //     .maximizeWindow()
-  //     .url(browser.launch_url)
-  //     .waitForElementPresent("body");
-  //   // Login credentails are pulled from .env files, this file should not be tracked and
-  //   // must be stated in the .gitignore file
-  //   //Click on Login with EUA ID
-  //   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-  //   const username = browser.globals.user;
-  //   const password = browser.globals.pass;
-  //   // Login activities
-  //   //browser.useCss().click(".LoginWithOkta .LoaderButton");
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-username", username)
-  //     .pause(100);
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-password", password)
-  //     .pause(100);
-  //   browser.useCss().click("input#tandc");
-  //   browser.useCss().click("input#okta-signin-submit").pause(3000);
-  //   browser.waitForElementPresent("body");
-  // },
-  // after: function (browser) {
-  //   console.log("Stopping test executions...");
-  //   console.log("Closing down the browser instance...");
-  //   browser.end();
-  // },
-
+  /*
+   * before: function (browser) {
+   *   console.log("Setting up the browser instance...");
+   *   console.log("Opening the browser...");
+   *   browser
+   *     .maximizeWindow()
+   *     .url(browser.launch_url)
+   *     .waitForElementPresent("body");
+   *   // Login credentails are pulled from .env files, this file should not be tracked and
+   *   // must be stated in the .gitignore file
+   *   //Click on Login with EUA ID
+   *   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
+   *   const username = browser.globals.user;
+   *   const password = browser.globals.pass;
+   *   // Login activities
+   *   //browser.useCss().click(".LoginWithOkta .LoaderButton");
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-username", username)
+   *     .pause(100);
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-password", password)
+   *     .pause(100);
+   *   browser.useCss().click("input#tandc");
+   *   browser.useCss().click("input#okta-signin-submit").pause(3000);
+   *   browser.waitForElementPresent("body");
+   * },
+   * after: function (browser) {
+   *   console.log("Stopping test executions...");
+   *   console.log("Closing down the browser instance...");
+   *   browser.end();
+   * },
+   */
   "Click on Quarter3": function (browser) {
     const tests_data = {
       quarter3: {
@@ -122,9 +123,11 @@ module.exports = {
       },
       uncertify: {
         selector: "//*[@id='react-tabs-5']/div/div[6]/button",
-        //*[@id="react-tabs-23"]/div/div[6]/button
-        //*[@id="react-tabs-5"]/div/div[6]/button
-        ///html/body/div/div/div[2]/div/div[3]/div/div[3]/div/div[6]/button
+        /*
+         * *[@id="react-tabs-23"]/div/div[6]/button
+         * *[@id="react-tabs-5"]/div/div[6]/button
+         * /html/body/div/div/div[2]/div/div[3]/div/div[3]/div/div[6]/button
+         */
       },
     };
     browser.verify.containsText(

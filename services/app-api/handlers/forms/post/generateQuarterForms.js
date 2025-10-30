@@ -24,6 +24,7 @@ export const scheduled = handler(async (event, context) => {
 });
 
 /*
+ *
  * Generates initial form data and statuses for all states given a year and quarter
  */
 const generateQuarterForms = async (event) => {
@@ -277,8 +278,10 @@ const generateQuarterForms = async (event) => {
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // If the stateFormID is in the array of newly created forms, the questions/answers will be created
-        // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
+        /*
+         * If the stateFormID is in the array of newly created forms, the questions/answers will be created
+         * Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
+         */
         const isGeneratingStateForm =
           stateFormsBeingGenerated.includes(stateFormID);
         const missingAnswers =
@@ -319,8 +322,10 @@ const generateQuarterForms = async (event) => {
     );
   }
 
-  // This will only be true if neither !foundForms.includes statements pass,
-  // Everything was found in the list, nothing is to be created
+  /*
+   * This will only be true if neither !foundForms.includes statements pass,
+   * Everything was found in the list, nothing is to be created
+   */
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
     console.log(message);

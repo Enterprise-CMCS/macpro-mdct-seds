@@ -25,39 +25,40 @@ module.exports = {
     browser.click(tests_data.year21.selector).waitForElementPresent("body");
   },
 
-  // before: function (browser) {
-  //   console.log("Setting up the browser instance...");
-  //   console.log("Opening the browser...");
-  //   browser
-  //     .maximizeWindow()
-  //     .url(browser.launch_url)
-  //     .waitForElementPresent("body");
-  //   // Login credentails are pulled from .env files, this file should not be tracked and
-  //   // must be stated in the .gitignore file
-  //   //Click on Login with EUA ID
-  //   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
-  //   const username = browser.globals.user;
-  //   const password = browser.globals.pass;
-  //   // Loing activities
-  //   //browser.useCss().click(".LoginWithOkta .LoaderButton");
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-username", username)
-  //     .pause(100);
-  //   browser
-  //     .useCss()
-  //     .setValue("input#okta-signin-password", password)
-  //     .pause(100);
-  //   browser.useCss().click("input#tandc");
-  //   browser.useCss().click("input#okta-signin-submit").pause(3000);
-  //   browser.waitForElementPresent("body");
-  // },
-  // after: function (browser) {
-  //   console.log("Stopping test executions...");
-  //   console.log("Closing down the browser instance...");
-  //   browser.end();
-  // },
-
+  /*
+   * before: function (browser) {
+   *   console.log("Setting up the browser instance...");
+   *   console.log("Opening the browser...");
+   *   browser
+   *     .maximizeWindow()
+   *     .url(browser.launch_url)
+   *     .waitForElementPresent("body");
+   *   // Login credentails are pulled from .env files, this file should not be tracked and
+   *   // must be stated in the .gitignore file
+   *   //Click on Login with EUA ID
+   *   browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
+   *   const username = browser.globals.user;
+   *   const password = browser.globals.pass;
+   *   // Loing activities
+   *   //browser.useCss().click(".LoginWithOkta .LoaderButton");
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-username", username)
+   *     .pause(100);
+   *   browser
+   *     .useCss()
+   *     .setValue("input#okta-signin-password", password)
+   *     .pause(100);
+   *   browser.useCss().click("input#tandc");
+   *   browser.useCss().click("input#okta-signin-submit").pause(3000);
+   *   browser.waitForElementPresent("body");
+   * },
+   * after: function (browser) {
+   *   console.log("Stopping test executions...");
+   *   console.log("Closing down the browser instance...");
+   *   browser.end();
+   * },
+   */
   "Click on Quarter3": function (browser) {
     const tests_data = {
       quarter3: {
@@ -224,14 +225,17 @@ module.exports = {
 
     //browser.verify.containsText("xpath", "/html/body/div/div/div[2]/div/div[2]/li/div/div[2]/div/div/div[2]/div[4]/div[3]/div/button", "Provisional Data Certified and Submitted");
 
-    //browser.verify.containsText("xpath", "//*[@id='cell-bYUe_XWoFe-undefined']/div/button", "Provisional Data Certified and Submitted");
-    //browser.verify.containsText("#cell-mQ6oFMh5UP-undefined > div > button", "Provisional Data Certified and Submitted");
-    //browser.verify.containsText("div[id=cell-YHVuUyo8Hg-undefined] > div > button", "Provisional Data Certified and Submitted");
-
-    //browser.assert.visible("//*[contains(text(), 'Provisional Data Certified and Submitted')]" );
-    //browser.assert.visible( "xpath" , tests_data.status.selector );
-    //browser.verify.containsText(tests_data.status.selector, "Provisional Data Certified and Submitted");
-    //browser.verify.valueContains(tests_data.number.selector, "315");
-    //browser.pause(timeout * 4);
+    /*
+     * browser.verify.containsText("xpath", "//*[@id='cell-bYUe_XWoFe-undefined']/div/button", "Provisional Data Certified and Submitted");
+     * browser.verify.containsText("#cell-mQ6oFMh5UP-undefined > div > button", "Provisional Data Certified and Submitted");
+     * browser.verify.containsText("div[id=cell-YHVuUyo8Hg-undefined] > div > button", "Provisional Data Certified and Submitted");
+     */
+    /*
+     * browser.assert.visible("//*[contains(text(), 'Provisional Data Certified and Submitted')]" );
+     * browser.assert.visible( "xpath" , tests_data.status.selector );
+     * browser.verify.containsText(tests_data.status.selector, "Provisional Data Certified and Submitted");
+     * browser.verify.valueContains(tests_data.number.selector, "315");
+     * browser.pause(timeout * 4);
+     */
   },
 };

@@ -28,16 +28,17 @@ signalTraps.map((type) => {
 
 class KafkaSourceLib {
   /*
-  Event types:
-  cmd – command; restful publish
-  cdc – change data capture; record upsert/delete in data store
-  sys – system event; send email, archive logs
-  fct – fact; user activity, notifications, logs
-
-  topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
-  version = "some version";
-  tables = [list of tables];
-  */
+   *
+   * Event types:
+   * cmd – command; restful publish
+   * cdc – change data capture; record upsert/delete in data store
+   * sys – system event; send email, archive logs
+   * fct – fact; user activity, notifications, logs
+   *
+   * topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
+   * version = "some version";
+   * tables = [list of tables];
+   */
 
   stringify(e, prettyPrint) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
@@ -94,6 +95,7 @@ class KafkaSourceLib {
       }
 
       /*
+       *
        * ⚠️ WARNING ⚠️
        * The MDCT SEDS database contains thousands of state forms from 2019
        * which appear to be In Progress, whereas DataConnect's records
@@ -108,8 +110,10 @@ class KafkaSourceLib {
         topicName.includes(".state-forms.") ||
         topicName.includes(".form-answers.")
       ) {
-        // This object might be a StateForm or a FormAnswer.
-        // Both have both state_form and last_modified properties
+        /*
+         * This object might be a StateForm or a FormAnswer.
+         * Both have both state_form and last_modified properties
+         */
         const obj = this.unmarshall(record.dynamodb.NewImage);
         // The state_form property is a string like "CO-2025-4-21E"
         const year = Number(obj.state_form.split("-")[1]);

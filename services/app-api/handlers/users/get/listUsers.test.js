@@ -42,9 +42,11 @@ describe("listUsers.js", () => {
   });
 
   it.skip("should return an error if no users exist", async () => {
-    // This won't work, because dynamoDb.scan always returns an Items array,
-    // even if it's empty. The code under test only checks for the existence
-    // of .Items, not whether it's empty. TODO, fix this code (or delete it)
+    /*
+     * This won't work, because dynamoDb.scan always returns an Items array,
+     * even if it's empty. The code under test only checks for the existence
+     * of .Items, not whether it's empty. TODO, fix this code (or delete it)
+     */
     mockScan.mockResolvedValueOnce({ Count: 0 });
 
     const response = await listUsers(mockEvent);

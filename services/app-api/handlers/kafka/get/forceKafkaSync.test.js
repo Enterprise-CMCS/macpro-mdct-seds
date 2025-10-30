@@ -31,10 +31,12 @@ describe("forceKafkaSync", () => {
     expect(mockScan).toHaveBeenCalledTimes(7);
     expect(mockBatchWrite).toHaveBeenCalled();
 
-    // I don't want to test the exact table name,
-    // but it's a key in the params object.
-    // So digging into the params object gets a bit awkward here.
-    // What I do want to verify is that the lastSynced property was added.
+    /*
+     * I don't want to test the exact table name,
+     * but it's a key in the params object.
+     * So digging into the params object gets a bit awkward here.
+     * What I do want to verify is that the lastSynced property was added.
+     */
     const firstBatchWriteParams = mockBatchWrite.mock.calls[0][0];
     const request = Object.values(firstBatchWriteParams.RequestItems)[0][0];
     expect(request.PutRequest.Item).toEqual({

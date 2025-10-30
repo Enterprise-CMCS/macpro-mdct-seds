@@ -227,29 +227,31 @@ module.exports = {
           });
         }
       );
-      //working
-      //     browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
-      //     for (var x = 0; x < link_array.value.length; x++){
-      //         let ele = link_array.value[x].ELEMENT;
-      //         browser.elementIdEnabled(ele, function(result) {
-      //             if(result.value == true){
-      //                 browser.elementIdClear(ele);
-      //                 browser.elementIdValue(ele, "5");
-      //             }
-      //         });
-      //     }
-      //   });
-
-      //browser.assert.elementPresent( tests_data.total1.selector);
-      //browser.verify.containsText("xpath", "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]");
-      //   browser.click("[id=react-tabs-0]");
-      //   browser.element("xpath", "/html/body/div/div/div[2]/div/div[3]/div/div[1]/div[2]/div/table/tbody/tr[4]/td[6]", function(elements) {
-      //     console.log("total-" , total);
-      //     browser.useXpath().verify.containsText( tests_data.total1.selector , total);
-      //     //console.log("elements-" , elements);
-      //   //console.log("elements-" , elements.value[0].ELEMENT);
-      // });
-
+      /*
+       * working
+       *     browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
+       *     for (var x = 0; x < link_array.value.length; x++){
+       *         let ele = link_array.value[x].ELEMENT;
+       *         browser.elementIdEnabled(ele, function(result) {
+       *             if(result.value == true){
+       *                 browser.elementIdClear(ele);
+       *                 browser.elementIdValue(ele, "5");
+       *             }
+       *         });
+       *     }
+       *   });
+       */
+      /*
+       * browser.assert.elementPresent( tests_data.total1.selector);
+       * browser.verify.containsText("xpath", "//*[@id='AL-2021-1-64.EC-0001-01']/table/tbody/tr[4]/td[6]");
+       *   browser.click("[id=react-tabs-0]");
+       *   browser.element("xpath", "/html/body/div/div/div[2]/div/div[3]/div/div[1]/div[2]/div/table/tbody/tr[4]/td[6]", function(elements) {
+       *     console.log("total-" , total);
+       *     browser.useXpath().verify.containsText( tests_data.total1.selector , total);
+       *     //console.log("elements-" , elements);
+       *   //console.log("elements-" , elements.value[0].ELEMENT);
+       * });
+       */
       browser.click(tests_data.save.selector);
       browser.click(tests_data.footer.selector);
       browser.pause(timeout * 5);
