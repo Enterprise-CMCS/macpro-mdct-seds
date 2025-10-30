@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const timeout = 1000;
 
 const login = require("./OY2-9998-Login");

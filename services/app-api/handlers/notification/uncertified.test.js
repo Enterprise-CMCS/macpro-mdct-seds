@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { describe, expect, it, vi } from "vitest";
 import { main as notifyUncertified } from "./uncertified.js";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
@@ -43,7 +44,7 @@ describe("notification/uncertified", () => {
         },
         Message: {
           Subject: {
-            Data: expect.stringMatching(/Notice \- CO \- \d{4}\-\d\d\-\d\d/),
+            Data: expect.stringMatching(/Notice - CO - \d{4}-\d\d-\d\d/),
           },
           Body: {
             Text: {

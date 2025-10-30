@@ -166,6 +166,7 @@ module.exports = {
   },
 };
 
+/* eslint-disable no-empty */
 function loadServices() {
   try {
     Services.seleniumServer = require("selenium-server");

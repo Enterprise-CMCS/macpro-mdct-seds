@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 module.exports = {
   "Login with user": function (browser) {
     console.log("Setting up the browser instance...");
