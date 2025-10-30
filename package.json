@@ -16,8 +16,7 @@
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
     "smoke": "npm run test --tag smoke",
     "test:cypress": "cd tests/cypress && npm test && cd -",
-    "test:cypress:ci": "cd tests/cypress && npm run test:ci",
-    "track-flags": "./scripts/track-flags.sh"
+    "test:cypress:ci": "cd tests/cypress && npm run test:ci"
   },
   "repository": {
     "type": "git",
