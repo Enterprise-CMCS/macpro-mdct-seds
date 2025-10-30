@@ -52,7 +52,7 @@ const batchWrite = async (tableName, items) => {
   }
 };
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (_event, _context) => {
   const syncDateTime = new Date().toISOString();
 
   for (const tableName of tableNames) {

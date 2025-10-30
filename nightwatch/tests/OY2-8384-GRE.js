@@ -1,7 +1,4 @@
-const path = require("path");
 const timeout = 1000;
-
-const mySelector = "//*[@data-testid='textInput']";
 
 const login = require("./OY2-9998-Login");
 

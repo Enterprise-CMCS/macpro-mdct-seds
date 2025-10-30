@@ -23,7 +23,7 @@ export class twentyOnePWFormPage {
   }
 
   verifyData1Inputs() {
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();

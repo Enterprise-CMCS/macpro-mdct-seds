@@ -1,7 +1,5 @@
-const path = require("path");
 const timeout = 1000;
 
-const mySelector = "//*[@data-testid='textInput']";
 const login = require("./OY2-9998-Login");
 
 module.exports = {
@@ -163,9 +161,6 @@ module.exports = {
 
     browser.clearValue(tests_data.number.selector);
     browser.setValue(tests_data.number.selector, "315", valueContains);
-    const myAssert = function (any) {
-      browser.assert.attributeContains(ffs, "textInput");
-    };
     //browser.click(tests_data.save.selector);
     browser.pause(timeout * 7);
 

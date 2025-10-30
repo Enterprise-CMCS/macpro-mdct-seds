@@ -8,7 +8,7 @@ import { statusHasChanged } from "../../../libs/formStatus.js";
  * This handler will loop through a question array and save each row
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   const data = JSON.parse(event.body);
 
   for (let stateId of stateIdsPresentInForm(data.formAnswers)) {

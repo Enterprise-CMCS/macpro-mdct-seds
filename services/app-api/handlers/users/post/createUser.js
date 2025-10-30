@@ -3,7 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { obtainUserByUsername } from "./obtainUserByUsername.js";
 import { getUserDetailsFromEvent } from "../../../libs/authorization.js";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   const userData = await getUserDetailsFromEvent(event);
 
   return await createUser(userData);

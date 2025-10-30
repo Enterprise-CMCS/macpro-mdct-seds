@@ -13,7 +13,6 @@ import {
   getUncertifiedStates,
   getUncertifiedStatesAndForms,
   getUsersEmailByRole,
-  replaceFormYear,
 } from "./sharedFunctions.js";
 import {
   BatchWriteCommand,

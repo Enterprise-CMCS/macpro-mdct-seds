@@ -13,13 +13,13 @@ import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event, context) => {
+export const scheduled = handler(async (event, _context) => {
   return await generateQuarterForms(event);
 });
 

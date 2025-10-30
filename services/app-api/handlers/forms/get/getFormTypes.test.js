@@ -12,10 +12,6 @@ const mockScan = vi.fn();
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockTemplate = {
-  mockTemplateProp: "mockTemplateValue",
-};
-
 const mockEvent = {};
 
 describe("getFormTypes.js", () => {

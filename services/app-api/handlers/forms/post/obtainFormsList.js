@@ -2,7 +2,7 @@ import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.js";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   const data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.state);

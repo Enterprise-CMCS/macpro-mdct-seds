@@ -7,7 +7,7 @@ import { authorizeAdmin } from "../../../auth/authConditions.js";
  * This can be used for generating form Answers and Questions
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   await authorizeAdmin(event);
 
   let data = JSON.parse(event.body);
