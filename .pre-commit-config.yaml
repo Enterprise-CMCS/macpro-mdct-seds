@@ -28,8 +28,8 @@ repos:
         types: [file]
         additional_dependencies:
           - "eslint@8.56.0"
-          - "@typescript-eslint/parser@5.62.0"
-          - "@typescript-eslint/eslint-plugin@5.62.0"
+          - "@typescript-eslint/parser@6.21.0"
+          - "@typescript-eslint/eslint-plugin@6.21.0"
           - "eslint-plugin-jest"
           - "eslint-plugin-cypress@2.15.2"
           - "eslint-plugin-playwright"
