@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as obtainFormTemplateYears } from "./obtainFormTemplateYears.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -29,16 +26,21 @@ describe("obtainFormTemplateYears.js", () => {
 
     const response = await obtainFormTemplateYears(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      // Note the sort order: most recent year first
-      body: JSON.stringify([2025, 2024, 2023]),
-    }));
-    expect(mockScan).toHaveBeenCalledWith({
-      TableName: "local-form-templates",
-      ExpressionAttributeNames: { "#theYear": "year" },
-      ProjectionExpression: "#theYear",
-    }, expect.any(Function));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        // Note the sort order: most recent year first
+        body: JSON.stringify([2025, 2024, 2023]),
+      })
+    );
+    expect(mockScan).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-templates",
+        ExpressionAttributeNames: { "#theYear": "year" },
+        ProjectionExpression: "#theYear",
+      },
+      expect.any(Function)
+    );
   });
 
   it("should return Not Found if there are no results", async () => {
@@ -47,10 +49,12 @@ describe("obtainFormTemplateYears.js", () => {
 
     const response = await obtainFormTemplateYears(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify([]),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify([]),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not an admin", async () => {
@@ -58,9 +62,11 @@ describe("obtainFormTemplateYears.js", () => {
 
     const response = await obtainFormTemplateYears(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

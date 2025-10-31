@@ -1,7 +1,6 @@
-const path = require("path");
+/* eslint-disable no-console */
 const timeout = 1000;
 
-const mySelector = "//*[@data-testid='textInput']";
 const login = require("./OY2-9998-Login");
 
 module.exports = {
@@ -86,18 +85,20 @@ module.exports = {
       }
     );
 
-    //working
-    //     browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
-    //     for (var x = 0; x < link_array.value.length; x++){
-    //         let ele = link_array.value[x].ELEMENT;
-    //         browser.elementIdEnabled(ele, function(result) {
-    //             if(result.value == true){
-    //                 browser.elementIdClear(ele);
-    //                 browser.elementIdValue(ele, "5");
-    //             }
-    //         });
-    //     }
-    //   });
+    /*
+     * working
+     *      browser.elements("xpath", "//*[@data-testid='textInput']", function(link_array) {
+     *      for (var x = 0; x < link_array.value.length; x++){
+     *          let ele = link_array.value[x].ELEMENT;
+     *          browser.elementIdEnabled(ele, function(result) {
+     *              if(result.value == true){
+     *                  browser.elementIdClear(ele);
+     *                  browser.elementIdValue(ele, "5");
+     *              }
+     *          });
+     *      }
+     *    });
+     */
 
     const valueContains = function () {
       browser.verify.valueContains(tests_data.number.selector, "315");
@@ -106,9 +107,6 @@ module.exports = {
 
     browser.clearValue(tests_data.number.selector);
     browser.setValue(tests_data.number.selector, "315", valueContains);
-    const myAssert = function (any) {
-      browser.assert.attributeContains(ffs, "textInput");
-    };
     browser.click(tests_data.save.selector);
 
     browser.click(tests_data.footer.selector);

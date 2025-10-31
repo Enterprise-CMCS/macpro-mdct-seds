@@ -9,22 +9,22 @@ export default defineConfig({
   plugins: [react(), viteTsconfigPaths()],
   server: {
     open: true,
-    port: 3000,
+    port: 3000
   },
   define: {
-    global: "globalThis",
+    global: "globalThis"
   },
   build: {
-    outDir: "./build",
+    outDir: "./build"
   },
   resolve: {
     alias: [
       {
         // this is required for the SCSS modules
         find: /^~(.*)$/,
-        replacement: "$1",
-      },
-    ],
+        replacement: "$1"
+      }
+    ]
   },
   test: {
     root: "src",
@@ -42,13 +42,13 @@ export default defineConfig({
           // Generate machine-readable coverage files for Code Climate
           "lcov",
           // filepaths in the lcov report should start with services/ui-src
-          { projectRoot: "../.." },
+          { projectRoot: "../.." }
         ],
         // Print a table of each file's coverage to the terminal
         ["text"],
         // Print a table of overall coverage to the terminal
-        ["text-summary"],
-      ],
-    },
-  },
+        ["text-summary"]
+      ]
+    }
+  }
 });

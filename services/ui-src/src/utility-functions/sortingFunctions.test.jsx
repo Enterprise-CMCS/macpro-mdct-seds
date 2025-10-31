@@ -15,7 +15,7 @@ describe("dateFormatter", () => {
     [1730612085000, "11/3/2024 at 1:34:45 AM EDT", "pre-DST: fall"],
     [1730615685000, "11/3/2024 at 1:34:45 AM EST", "post-DST: fall"],
     [1735706085000, "12/31/2024 at 11:34:45 PM EST", "year end: 2024"],
-    [1735709685000, "1/1/2025 at 12:34:45 AM EST", "year start: 2025"],
+    [1735709685000, "1/1/2025 at 12:34:45 AM EST", "year start: 2025"]
   ])(
     "should format the timestamp %d as %s (test for %s)",
     (msSinceEpoch, expectedFormat, _testCaseName) => {

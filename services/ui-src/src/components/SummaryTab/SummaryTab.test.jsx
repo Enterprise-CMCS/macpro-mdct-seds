@@ -8,18 +8,24 @@ import configureStore from "redux-mock-store";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+  default: props => (
+    <div className="question-component">{JSON.stringify(props)}</div>
+  )
 }));
 
 vi.mock("../SummaryNotes/SummaryNotes", () => ({
-  default: (props) => (<div data-testid="summary-notes">{JSON.stringify(props)}</div>)
+  default: props => (
+    <div data-testid="summary-notes">{JSON.stringify(props)}</div>
+  )
 }));
 
 vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
-  default: (props) => (<div className="synth-grid-summary">{JSON.stringify(props)}</div>)
+  default: props => (
+    <div className="synth-grid-summary">{JSON.stringify(props)}</div>
+  )
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router-dom", async importOriginal => ({
   ...(await importOriginal()),
   useLocation: () => ({
     pathname: "localhost:3000/forms/AL/2021/1/21E"
@@ -27,11 +33,11 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 }));
 
 const renderComponent = () => {
-  const store = configureStore([])(currentFormMock_21E)
+  const store = configureStore([])(currentFormMock_21E);
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <SummaryTab/>
+        <SummaryTab />
       </BrowserRouter>
     </Provider>
   );
@@ -43,7 +49,9 @@ describe("Test SummaryTab.js", () => {
 
     expect(screen.getByText("Summary:")).toBeInTheDocument();
 
-    const questions = [...container.querySelectorAll(".question-component, .synth-grid-summary")];
+    const questions = [
+      ...container.querySelectorAll(".question-component, .synth-grid-summary")
+    ];
 
     expect(questions[0].className).toBe("question-component");
     expect(JSON.parse(questions[0].textContent)).toEqual({
@@ -52,7 +60,7 @@ describe("Test SummaryTab.js", () => {
       questionData: currentFormMock_21E.currentForm.questions[0],
       answerData: currentFormMock_21E.currentForm.questions[0],
       disabled: true,
-      synthesized: true,
+      synthesized: true
     });
 
     expect(questions[1].className).toBe("question-component");
@@ -62,7 +70,7 @@ describe("Test SummaryTab.js", () => {
       questionData: currentFormMock_21E.currentForm.questions[1],
       answerData: currentFormMock_21E.currentForm.questions[1],
       disabled: true,
-      synthesized: true,
+      synthesized: true
     });
 
     expect(questions[2].className).toBe("question-component");
@@ -72,7 +80,7 @@ describe("Test SummaryTab.js", () => {
       questionData: currentFormMock_21E.currentForm.questions[2],
       answerData: currentFormMock_21E.currentForm.questions[2],
       disabled: true,
-      synthesized: true,
+      synthesized: true
     });
 
     expect(questions[3].className).toBe("question-component");
@@ -82,7 +90,7 @@ describe("Test SummaryTab.js", () => {
       questionData: currentFormMock_21E.currentForm.questions[3],
       answerData: currentFormMock_21E.currentForm.questions[3],
       disabled: true,
-      synthesized: true,
+      synthesized: true
     });
 
     expect(questions[4].className).toBe("synth-grid-summary");
@@ -91,7 +99,8 @@ describe("Test SummaryTab.js", () => {
       questions: currentFormMock_21E.currentForm.questions,
       questionID: "2021-21E-05",
       gridData: currentFormMock_21E.currentForm.answers[4].rows,
-      label: "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?"
+      label:
+        "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?"
     });
 
     expect(questions[5].className).toBe("question-component");
@@ -101,7 +110,7 @@ describe("Test SummaryTab.js", () => {
       questionData: currentFormMock_21E.currentForm.questions[5],
       answerData: currentFormMock_21E.currentForm.questions[5],
       disabled: true,
-      synthesized: true,
+      synthesized: true
     });
   });
 });

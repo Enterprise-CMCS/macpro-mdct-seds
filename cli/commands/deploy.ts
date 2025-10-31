@@ -1,11 +1,11 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated } from "../lib/sts";
-import { runCommand } from "../lib/runner";
+import { checkIfAuthenticated } from "../lib/sts.js";
+import { runCommand } from "../lib/runner.js";
 import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { region } from "../lib/consts";
+import { region } from "../lib/consts.js";
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });

@@ -3,11 +3,11 @@ import { describe, expect, it, vi } from "vitest";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import { render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react";
 import { useAppContext } from "../../libs/contextLib";
 
 vi.mock("../../libs/contextLib", () => ({
-  useAppContext: vi.fn(),
+  useAppContext: vi.fn()
 }));
 
 const renderComponent = (isAuthenticated, initialRoute) => {
@@ -27,7 +27,7 @@ const renderComponent = (isAuthenticated, initialRoute) => {
       </Route>
     </BrowserRouter>
   );
-}
+};
 
 describe("UnauthenticatedRoute tests", () => {
   it("Should render children for unauthenticated users", () => {

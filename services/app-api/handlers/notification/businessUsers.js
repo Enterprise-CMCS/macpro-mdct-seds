@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import handler from "./../../libs/handler-lib.js";
 import {
   getUsersEmailByRole,
@@ -13,7 +14,7 @@ const client = new SESClient({ region: "us-east-1" });
  * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (_event, _context) => {
   const email = await businessOwnersTemplate();
   const command = new SendEmailCommand(email);
   try {

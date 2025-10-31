@@ -5,7 +5,7 @@ import {
   authorizeAnyUser,
 } from "../../../auth/authConditions.js";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   let data = JSON.parse(event.body);
 
   await authorizeAnyUser(event);

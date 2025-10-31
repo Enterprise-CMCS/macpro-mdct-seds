@@ -15,12 +15,14 @@ const mockConnect = Kafka().producer().connect;
 const mockSendBatch = Kafka().producer().sendBatch;
 const mockDisconnect = Kafka().producer().disconnect;
 
-// The file under test has some one-time behavior on load,
-// which we test one time here.
+/*
+ * The file under test has some one-time behavior on load,
+ * which we test one time here.
+ */
 expect(Kafka).toHaveBeenCalledWith({
   clientId: "seds-local",
   brokers: ["broker1", "broker2"],
-  retry: { initialRetryTime: 300 , retries: 8 },
+  retry: { initialRetryTime: 300, retries: 8 },
   ssl: { rejectUnauthorized: false },
 });
 expect(mockConnect).not.toHaveBeenCalled();
@@ -30,12 +32,8 @@ describe("Kafka Source Lib", () => {
     class TestKafkaExtension extends KafkaSourceLib {
       topicPrefix = "mockPrefix";
       version = "mockVersion";
-      tables = [
-        "mock-table-alpha",
-        "mock-table-beta",
-        "state-forms",
-      ];
-    };
+      tables = ["mock-table-alpha", "mock-table-beta", "state-forms"];
+    }
     let TestKafkaInstance;
 
     beforeEach(() => {
@@ -51,20 +49,20 @@ describe("Kafka Source Lib", () => {
             eventID: "change-a1",
             eventName: "ChangeAlpha1",
             dynamodb: {
-              NewImage: { id: { "S": "a1" }, value: { "N": 5 }},
-              OldImage: { id: { "S": "a1" }, value: { "N": 6 }},
-              Keys: { id: { "S": "a1" } },
-            }
+              NewImage: { id: { S: "a1" }, value: { N: 5 } },
+              OldImage: { id: { S: "a1" }, value: { N: 6 } },
+              Keys: { id: { S: "a1" } },
+            },
           },
           {
             eventSourceARN: "foo/local-mock-table-alpha/bar",
             eventID: "change-a2",
             eventName: "ChangeAlpha2",
             dynamodb: {
-              NewImage: { id: { "S": "a2" }, value: { "N": 44 }},
-              OldImage: { id: { "S": "a2" }, value: { "N": 41 }},
-              Keys: { id: { "S": "a2" } },
-            }
+              NewImage: { id: { S: "a2" }, value: { N: 44 } },
+              OldImage: { id: { S: "a2" }, value: { N: 41 } },
+              Keys: { id: { S: "a2" } },
+            },
           },
           {
             eventSourceARN: "foo/local-mock-table-beta/bar",
@@ -72,15 +70,15 @@ describe("Kafka Source Lib", () => {
             eventName: "NewBeta",
             dynamodb: {
               NewImage: {
-                state: { "S": "CO" },
-                year: { "N": 2025 },
-                flag: { "BOOL": true }
+                state: { S: "CO" },
+                year: { N: 2025 },
+                flag: { BOOL: true },
               },
-              Keys: { state: { "S": "CO" }, year: { "N": 2025 } },
-            }
+              Keys: { state: { S: "CO" }, year: { N: 2025 } },
+            },
           },
-        ]
-      }
+        ],
+      };
 
       await TestKafkaInstance.handler(mockEvent);
 
@@ -109,8 +107,8 @@ describe("Kafka Source Lib", () => {
                   OldImage: { id: "a2", value: 41 },
                   Keys: { id: "a2" },
                 }),
-              }
-            ]
+              },
+            ],
           },
           {
             topic: "mockPrefix.mock-table-beta.mockVersion",
@@ -124,10 +122,10 @@ describe("Kafka Source Lib", () => {
                   OldImage: {},
                   Keys: { state: "CO", year: 2025 },
                 }),
-              }
-            ]
+              },
+            ],
           },
-        ]
+        ],
       });
     });
 
@@ -139,9 +137,9 @@ describe("Kafka Source Lib", () => {
             eventID: "mockEventId",
             eventName: "mockEventName",
             dynamodb: {
-              NewImage: { id: { "S": "1" } },
-              Keys: { id: { "S": "1" } },
-            }
+              NewImage: { id: { S: "1" } },
+              Keys: { id: { S: "1" } },
+            },
           },
         ],
       };
@@ -160,11 +158,11 @@ describe("Kafka Source Lib", () => {
             eventName: "mockEventName",
             dynamodb: {
               NewImage: {
-                state_form: { "S": "CO-2019-4-21E" },
-                last_modified: { "S": "2019-05-05T05:05:05.555Z" }
+                state_form: { S: "CO-2019-4-21E" },
+                last_modified: { S: "2019-05-05T05:05:05.555Z" },
               },
-              Keys: { id: { "S": "1" } },
-            }
+              Keys: { id: { S: "1" } },
+            },
           },
         ],
       };
@@ -183,11 +181,11 @@ describe("Kafka Source Lib", () => {
             eventName: "mockEventName",
             dynamodb: {
               NewImage: {
-                state_form: { "S": "CO-2019-4-21E" },
-                last_modified: { "S": "2025-10-16T21:15:09.005Z" }
+                state_form: { S: "CO-2019-4-21E" },
+                last_modified: { S: "2025-10-16T21:15:09.005Z" },
               },
-              Keys: { id: { "S": "1" } },
-            }
+              Keys: { id: { S: "1" } },
+            },
           },
         ],
       };

@@ -41,7 +41,7 @@ describe("getCurrentUserInfo", () => {
     expect(response).toEqual({
       data: {
         email: mockUser.email,
-      }
+      },
     });
     expect(obtainUserByEmail).toHaveBeenCalledWith(mockUser.email);
   });

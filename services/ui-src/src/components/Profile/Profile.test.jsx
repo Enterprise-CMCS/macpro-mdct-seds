@@ -8,7 +8,7 @@ vi.spyOn(window, "alert").mockImplementation();
 
 vi.mock("react-router-dom", () => ({
   useHistory: vi.fn().mockReturnValue({
-    push: vi.fn(),
+    push: vi.fn()
   })
 }));
 
@@ -20,15 +20,15 @@ vi.mock("../../utility-functions/userFunctions", () => ({
         firstName: "ben",
         lastName: "martin",
         role: "state",
-        states: ["CO"],
-      },
-    ],
-  }),
+        states: ["CO"]
+      }
+    ]
+  })
 }));
 
 const renderComponent = () => {
-  return render(<Profile/>);
-}
+  return render(<Profile />);
+};
 
 describe("Test SummaryTab.js", () => {
   it("should render appropriate inputs, disabled, with correct values", async () => {

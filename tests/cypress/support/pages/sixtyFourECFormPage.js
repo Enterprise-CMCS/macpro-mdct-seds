@@ -28,7 +28,7 @@ export class sixtyFourECFormPage {
   }
 
   verifyData1Inputs() {
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();
@@ -40,7 +40,7 @@ export class sixtyFourECFormPage {
 
   verifyData2Inputs() {
     cy.xpath(age1_5Link).click();
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();
@@ -52,7 +52,7 @@ export class sixtyFourECFormPage {
 
   verifyData3Inputs() {
     cy.xpath(age6_12Link).click();
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();
@@ -64,7 +64,7 @@ export class sixtyFourECFormPage {
 
   verifyData4Inputs() {
     cy.xpath(age13_18Link).click();
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();
@@ -76,7 +76,7 @@ export class sixtyFourECFormPage {
 
   verifyData5Inputs() {
     cy.xpath(age19_20Link).click();
-    cy.xpath(all_text_inputs).each((item, index, list) => {
+    cy.xpath(all_text_inputs).each((item, _index, _list) => {
       //expect(list).to.have.length(27);      // number of element item
       cy.wrap(item).scrollIntoView();
       cy.wrap(item).clear();

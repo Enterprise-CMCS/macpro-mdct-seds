@@ -1,13 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as obtainUserByUsername } from "./obtainUserByUsername.js";
-import { 
+import {
   authorizeAnyUser,
   authorizeAdminOrUserWithEmail,
 } from "../../../auth/authConditions.js";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.js", () => ({
@@ -39,19 +36,24 @@ describe("obtainUserByUsername.js", () => {
 
     const response = await obtainUserByUsername(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        Items: [mockUser],
-        Count: 1,
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          Items: [mockUser],
+          Count: 1,
+        }),
+      })
+    );
+    expect(mockScan).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-auth-user",
+        Select: "ALL_ATTRIBUTES",
+        ExpressionAttributeValues: { ":username": "TEST" },
+        FilterExpression: "username = :username",
       }),
-    }));
-    expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-auth-user",
-      Select: "ALL_ATTRIBUTES",
-      ExpressionAttributeValues: { ":username": "TEST" },
-      FilterExpression: "username = :username",
-    }), expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user token is invalid", async () => {
@@ -59,25 +61,31 @@ describe("obtainUserByUsername.js", () => {
 
     const response = await obtainUserByUsername(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it.skip("should return empty results regardless of requesting user", async () => {
-    // This test is skipped because the code is broken.
-    // Regardless of whether there are users, obtainUserByUsername will
-    // attempt to check the 0th user's email.
+    /*
+     * This test is skipped because the code is broken.
+     * Regardless of whether there are users, obtainUserByUsername will
+     * attempt to check the 0th user's email.
+     */
     authorizeAdminOrUserWithEmail.mockRejectedValueOnce(new Error("Forbidden"));
     mockScan.mockResolvedValueOnce({ Count: 0 });
 
     const response = await obtainUserByUsername(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: "false",
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: "false",
+      })
+    );
 
     // Since our mock rejection wasn't exercised, replace it with a no-op
     authorizeAdminOrUserWithEmail.mockReset();
@@ -90,9 +98,11 @@ describe("obtainUserByUsername.js", () => {
 
     const response = await obtainUserByUsername(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

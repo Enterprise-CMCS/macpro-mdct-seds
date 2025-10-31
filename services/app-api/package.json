@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "coverage": "vitest --run --coverage"
+    "coverage": "vitest --run --coverage",
+    "tsc": "echo 'No TypeScript files to check in app-api'"
   },
   "author": "",
   "license": "CC0-1.0",

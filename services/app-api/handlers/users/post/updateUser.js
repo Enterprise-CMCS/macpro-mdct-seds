@@ -7,7 +7,7 @@ import {
   authorizeAnyUser,
 } from "../../../auth/authConditions.js";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
@@ -51,7 +51,7 @@ function modifyingAnythingButAnEmptyStateList(incomingUser, existingUser) {
   return false;
 }
 
-function assertPayloadIsValid (data) {
+function assertPayloadIsValid(data) {
   if (!data) {
     throw new Error("User update payload is missing");
   }

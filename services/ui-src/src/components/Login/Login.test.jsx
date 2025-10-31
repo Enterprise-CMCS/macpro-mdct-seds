@@ -10,16 +10,16 @@ vi.mock("aws-amplify", () => ({
       oauth: {
         domain: "mock-domain",
         redirectSignIn: "mock-redirect",
-        responseType: "mock-response-type",
+        responseType: "mock-response-type"
       },
-      userPoolWebClientId: "mock-client-id",
-    }),
-  },
+      userPoolWebClientId: "mock-client-id"
+    })
+  }
 }));
 
 const currentlyOnDevelopmentBranch = () =>
   window.location.hostname !== "mdctseds.cms.gov" &&
-  window.location.hostname !== "mdctsedsval.cms.gov"
+  window.location.hostname !== "mdctsedsval.cms.gov";
 
 describe("Test Login.js", () => {
   let originalLocation;
@@ -30,8 +30,8 @@ describe("Test Login.js", () => {
     delete window.location;
     window.location = {
       ...originalLocation,
-      assign: vi.fn(),
-    }
+      assign: vi.fn()
+    };
   });
 
   afterAll(() => {
@@ -40,27 +40,34 @@ describe("Test Login.js", () => {
 
   if (currentlyOnDevelopmentBranch()) {
     it("should render email login form", () => {
-      render(<Login/>);
+      render(<Login />);
       expect(screen.getByLabelText("Email")).toBeInTheDocument();
       expect(screen.getByLabelText("Password")).toBeInTheDocument();
-      expect(screen.getByText("Login", { selector: "button"})).toBeInTheDocument();
+      expect(
+        screen.getByText("Login", { selector: "button" })
+      ).toBeInTheDocument();
     });
   }
 
   it("should render EUA login button", () => {
-    render(<Login/>);
-    expect(screen.getByText("Login with EUA ID", { selector: "button"})).toBeInTheDocument();
+    render(<Login />);
+    expect(
+      screen.getByText("Login with EUA ID", { selector: "button" })
+    ).toBeInTheDocument();
   });
 
   it("should redirect to Okta for login", () => {
     vi.spyOn(window, "alert").mockImplementation(console.error);
 
-    render(<Login/>);
+    render(<Login />);
 
-    const loginButton = screen.getByText("Login with EUA ID", { selector: "button"});
+    const loginButton = screen.getByText("Login with EUA ID", {
+      selector: "button"
+    });
     userEvent.click(loginButton);
 
-    const oktaUrl = "https://mock-domain/oauth2/authorize?identity_provider=Okta&redirect_uri=mock-redirect&response_type=mock-response-type&client_id=mock-client-id";
+    const oktaUrl =
+      "https://mock-domain/oauth2/authorize?identity_provider=Okta&redirect_uri=mock-redirect&response_type=mock-response-type&client_id=mock-client-id";
     expect(window.location.assign).toHaveBeenCalledWith(oktaUrl);
   });
 });

@@ -5,7 +5,7 @@ import {
   authorizeAdminOrUserWithEmail,
 } from "../../../auth/authConditions.js";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   await authorizeAnyUser(event);
   let data = JSON.parse(event.body);
   const result = await obtainUserByUsername(data.username);

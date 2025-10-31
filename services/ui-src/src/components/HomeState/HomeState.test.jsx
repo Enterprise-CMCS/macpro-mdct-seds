@@ -12,34 +12,34 @@ import { obtainAvailableForms } from "../../libs/api";
 const store = configureStore([])(fullStoreMock);
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
 
 vi.mock("../../libs/api", () => ({
-  obtainAvailableForms: vi.fn(),
+  obtainAvailableForms: vi.fn()
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router-dom", async importOriginal => ({
   ...(await importOriginal()),
-  useHistory: vi.fn(),
+  useHistory: vi.fn()
 }));
 
 const renderComponent = (...userStates) => {
   const user = {
     attributes: {
-      "app-role": "state",
+      "app-role": "state"
     },
-    states: userStates,
+    states: userStates
   };
   getUserInfo.mockResolvedValue({ Items: [user] });
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <HomeState user={user}/>
+        <HomeState user={user} />
       </BrowserRouter>
     </Provider>
   );
-}
+};
 
 describe("Test HomeState.js", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -47,7 +47,7 @@ describe("Test HomeState.js", () => {
   it("should redirect users with no state", async () => {
     const history = [];
     useHistory.mockReturnValue(history);
-    
+
     renderComponent();
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
@@ -58,7 +58,7 @@ describe("Test HomeState.js", () => {
     obtainAvailableForms.mockResolvedValue([
       { year: 2021, quarter: 3 },
       { year: 2021, quarter: 4 },
-      { year: 2022, quarter: 1 },
+      { year: 2022, quarter: 1 }
     ]);
 
     const { container } = renderComponent("CO");
@@ -70,8 +70,8 @@ describe("Test HomeState.js", () => {
     const expectedUrls = [
       "/forms/CO/2021/3",
       "/forms/CO/2021/4",
-      "/forms/CO/2022/1",
-    ]
+      "/forms/CO/2022/1"
+    ];
     for (let url of expectedUrls) {
       expect(container.querySelector(`a[href='${url}']`)).toBeInTheDocument();
     }

@@ -9,26 +9,30 @@ vi.spyOn(window, "alert").mockImplementation(() => {});
 vi.spyOn(window, "confirm").mockImplementation(() => true);
 
 vi.mock("../../libs/api", () => ({
-  generateQuarterlyForms: vi.fn(),
+  generateQuarterlyForms: vi.fn()
 }));
 
 describe("Test GenerateForms.js", () => {
   let container;
   beforeEach(() => {
-    container = render(<GenerateForms/>).container;
+    container = render(<GenerateForms />).container;
     vi.clearAllMocks();
   });
 
   it("should render", () => {
     // A dropdown for year, and a dropdown for quarter
     expect(container.querySelectorAll(".Dropdown-root")).toHaveLength(2);
-    expect(screen.getByText("Generate Forms", { selector: "button" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Generate Forms", { selector: "button" })
+    ).toBeInTheDocument();
   });
 
   test("Generating Forms should error if the user has not selected a year and quarter", () => {
     expect(window.alert).not.toHaveBeenCalled();
 
-    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
     userEvent.click(generateButton);
 
     expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
@@ -47,12 +51,14 @@ describe("Test GenerateForms.js", () => {
     const quarterOption = screen.getByText("Q2");
     userEvent.click(quarterOption);
 
-    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
     userEvent.click(generateButton);
 
     expect(generateQuarterlyForms).toHaveBeenCalledWith({
       year: 2022,
-      quarter: 2,
+      quarter: 2
     });
   });
 });

@@ -8,26 +8,34 @@ const Footer = () => {
       <div className="footerTop">
         <GridContainer className="footerTopContainer" containerSize="none">
           <Grid row className="footerTopFlex">
-            <Grid col={6} tablet={{ col: true }} className="footerTopLeftContainer">
+            <Grid
+              col={6}
+              tablet={{ col: true }}
+              className="footerTopLeftContainer"
+            >
               <img
                 className="sedsLogo"
                 src="/img/seds-logo.svg"
                 alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
               />
             </Grid>
-            <Grid col={6} tablet={{ col: true }} className="footerTopRightContainer">
+            <Grid
+              col={6}
+              tablet={{ col: true }}
+              className="footerTopRightContainer"
+            >
               <div className="footerTopRightTopFlex">
                 <div className="footerCMSBrandingLeft">
                   <div className="hhsLogo">
                     <img
-                        src="/img/logo_hhs.svg"
-                        alt="Department of Health and Human Services, USA"
+                      src="/img/logo_hhs.svg"
+                      alt="Department of Health and Human Services, USA"
                     />
                   </div>
                   <div className="hhsMedicaidLogoMobile">
                     <img
-                        src="/img/logo_medicaid.svg"
-                        alt="Medicaid.gov: Keeping America Healthy"
+                      src="/img/logo_medicaid.svg"
+                      alt="Medicaid.gov: Keeping America Healthy"
                     />
                   </div>
                 </div>
@@ -42,8 +50,8 @@ const Footer = () => {
               <div className="footerCMSMedicaid">
                 <div className="medicaidLogo">
                   <img
-                      src="/img/logo_medicaid.svg"
-                      alt="Medicaid.gov: Keeping America Healthy"
+                    src="/img/logo_medicaid.svg"
+                    alt="Medicaid.gov: Keeping America Healthy"
                   />
                 </div>
               </div>
@@ -55,9 +63,7 @@ const Footer = () => {
         <div className="footerBottomContainer">
           <div className="footerBottomFlex">
             <div className="footerBottomLinkFlex">
-              <a href="mailto:mdct_help@cms.hhs.gov">
-                Contact Us
-              </a>
+              <a href="mailto:mdct_help@cms.hhs.gov">Contact Us</a>
               <a
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"

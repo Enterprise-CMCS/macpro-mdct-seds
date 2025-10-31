@@ -1,7 +1,6 @@
-const path = require("path");
+/* eslint-disable no-console */
 const timeout = 1000;
 
-const mySelector = "//*[@data-testid='textInput']";
 const login = require("./OY2-9998-Login");
 
 module.exports = {

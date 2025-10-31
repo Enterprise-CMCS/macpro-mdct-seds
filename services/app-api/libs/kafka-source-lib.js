@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
 import { Kafka } from "kafkajs";
 
@@ -28,16 +29,17 @@ signalTraps.map((type) => {
 
 class KafkaSourceLib {
   /*
-  Event types:
-  cmd – command; restful publish
-  cdc – change data capture; record upsert/delete in data store
-  sys – system event; send email, archive logs
-  fct – fact; user activity, notifications, logs
-
-  topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
-  version = "some version";
-  tables = [list of tables];
-  */
+   *
+   * Event types:
+   * cmd – command; restful publish
+   * cdc – change data capture; record upsert/delete in data store
+   * sys – system event; send email, archive logs
+   * fct – fact; user activity, notifications, logs
+   *
+   * topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
+   * version = "some version";
+   * tables = [list of tables];
+   */
 
   stringify(e, prettyPrint) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
@@ -94,6 +96,7 @@ class KafkaSourceLib {
       }
 
       /*
+       *
        * ⚠️ WARNING ⚠️
        * The MDCT SEDS database contains thousands of state forms from 2019
        * which appear to be In Progress, whereas DataConnect's records
@@ -104,18 +107,20 @@ class KafkaSourceLib {
        * through Kafka to DataConnect - unless an actual user action has bumped
        * the last_modified date.
        */
-      if ( topicName.includes(".state-forms.") ||
+      if (
+        topicName.includes(".state-forms.") ||
         topicName.includes(".form-answers.")
       ) {
-        // This object might be a StateForm or a FormAnswer.
-        // Both have both state_form and last_modified properties
+        /*
+         * This object might be a StateForm or a FormAnswer.
+         * Both have both state_form and last_modified properties
+         */
         const obj = this.unmarshall(record.dynamodb.NewImage);
         // The state_form property is a string like "CO-2025-4-21E"
         const year = Number(obj.state_form.split("-")[1]);
         // last_modified is an ISO date string like "2025-10-21T19:49:50.105Z"
         const lastModified = new Date(obj.last_modified).getFullYear();
-        if (year === 2019 && lastModified < 2025
-        ) {
+        if (year === 2019 && lastModified < 2025) {
           continue;
         }
       }
@@ -150,7 +155,7 @@ class KafkaSourceLib {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
       const topicMessages = Object.values(outboundEvents);
-      
+
       if (topicMessages.length > 0) {
         console.log(
           `Batch configuration: ${this.stringify(topicMessages, true)}`

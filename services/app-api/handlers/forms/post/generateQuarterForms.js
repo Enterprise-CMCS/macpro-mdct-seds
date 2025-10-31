@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
@@ -13,17 +14,18 @@ import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event, _context) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event, context) => {
+export const scheduled = handler(async (event, _context) => {
   return await generateQuarterForms(event);
 });
 
 /*
+ *
  * Generates initial form data and statuses for all states given a year and quarter
  */
 const generateQuarterForms = async (event) => {
@@ -36,7 +38,9 @@ const generateQuarterForms = async (event) => {
   // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
   const batchWriteAll = async (tryRetryBatch) => {
     // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem(tryRetryBatch.batch);
+    const { UnprocessedItems } = await dynamoDb.batchWriteItem(
+      tryRetryBatch.batch
+    );
 
     // If there are any failures and under the retry limit
     if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
@@ -269,18 +273,18 @@ const generateQuarterForms = async (event) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
 
-        // If the stateFormID is in the array of newly created forms, the questions/answers will be created
-        // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
-        const isGeneratingStateForm = stateFormsBeingGenerated.includes(
-          stateFormID
-        );
+        /*
+         * If the stateFormID is in the array of newly created forms, the questions/answers will be created
+         * Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
+         */
+        const isGeneratingStateForm =
+          stateFormsBeingGenerated.includes(stateFormID);
         const missingAnswers =
           restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
 
@@ -319,8 +323,10 @@ const generateQuarterForms = async (event) => {
     );
   }
 
-  // This will only be true if neither !foundForms.includes statements pass,
-  // Everything was found in the list, nothing is to be created
+  /*
+   * This will only be true if neither !foundForms.includes statements pass,
+   * Everything was found in the list, nothing is to be created
+   */
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
     console.log(message);

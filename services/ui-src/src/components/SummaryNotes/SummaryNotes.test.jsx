@@ -6,22 +6,21 @@ import SummaryNotes from "./SummaryNotes";
 import { render, screen, waitFor } from "@testing-library/react";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { FinalCertifiedStatusFields, InProgressStatusFields } from "../../utility-functions/formStatus";
+import {
+  FinalCertifiedStatusFields,
+  InProgressStatusFields
+} from "../../utility-functions/formStatus";
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router-dom", async importOriginal => ({
   ...(await importOriginal()),
-  useHistory: vi.fn(),
+  useHistory: vi.fn()
 }));
 
-const renderComponent = (
-  userRole,
-  statusData,
-  initialComment = ""
-) => {
+const renderComponent = (userRole, statusData, initialComment = "") => {
   getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
   const state_comments = initialComment
     ? [{ entry: initialComment }]
@@ -31,17 +30,17 @@ const renderComponent = (
     currentForm: {
       statusData: {
         ...statusData,
-        state_comments,
-      },
-    },
+        state_comments
+      }
+    }
   });
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <SummaryNotes/>
+        <SummaryNotes />
       </BrowserRouter>
     </Provider>
-  )
+  );
 };
 
 describe("Test SummaryNotes.js", () => {
@@ -51,7 +50,7 @@ describe("Test SummaryNotes.js", () => {
   it("should render correctly", async () => {
     renderComponent("state", InProgressStatusFields());
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    
+
     const commentBox = findCommentBox();
     expect(commentBox).toBeInTheDocument();
     expect(commentBox).not.toBeDisabled();
@@ -61,7 +60,7 @@ describe("Test SummaryNotes.js", () => {
   it("should render existing notes", async () => {
     renderComponent("state", FinalCertifiedStatusFields(), "existing comment");
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    
+
     const commentBox = findCommentBox();
     expect(commentBox.value).toBe("existing comment");
   });
@@ -69,7 +68,7 @@ describe("Test SummaryNotes.js", () => {
   it("should disable the input for admin users", async () => {
     renderComponent("admin", InProgressStatusFields());
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    
+
     const commentBox = findCommentBox();
     expect(commentBox).toBeDisabled();
   });
@@ -77,7 +76,7 @@ describe("Test SummaryNotes.js", () => {
   it("should disable the input for certified forms", async () => {
     renderComponent("state", FinalCertifiedStatusFields());
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    
+
     const commentBox = findCommentBox();
     expect(commentBox).toBeDisabled();
   });

@@ -38,21 +38,24 @@ describe("notification/stateUsers", () => {
 
     await notifyStateUsers({});
 
-    expect(mockSendEmail).toHaveBeenCalledWith({
-      Source: "mdct@cms.hhs.gov",
-      Destination: {
-        ToAddresses: ["stateuserCO@test.com", "stateuserTX@test.com"],
-      },
-      Message: {
-        Subject: {
-          Data: expect.stringMatching(/FFY\d{4} Q\d Enrollment Data Overdue/),
+    expect(mockSendEmail).toHaveBeenCalledWith(
+      {
+        Source: "mdct@cms.hhs.gov",
+        Destination: {
+          ToAddresses: ["stateuserCO@test.com", "stateuserTX@test.com"],
         },
-        Body: {
-          Text: {
-            Data: expect.stringContaining("your state has not yet submitted"),
-          }
-        }
-      }
-    }, expect.any(Function));
+        Message: {
+          Subject: {
+            Data: expect.stringMatching(/FFY\d{4} Q\d Enrollment Data Overdue/),
+          },
+          Body: {
+            Text: {
+              Data: expect.stringContaining("your state has not yet submitted"),
+            },
+          },
+        },
+      },
+      expect.any(Function)
+    );
   });
 });

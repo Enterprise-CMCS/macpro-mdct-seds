@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 module.exports = {
   "Login with user": function (browser) {
     console.log("Setting up the browser instance...");
@@ -6,14 +7,18 @@ module.exports = {
       .maximizeWindow()
       .url(browser.launch_url)
       .waitForElementPresent("body");
-    // Login credentails are pulled from .env files, this file should not be tracked and
-    // must be stated in the .gitignore file
-    //Click on Login with EUA ID
+    /*
+     * Login credentails are pulled from .env files, this file should not be tracked and
+     * must be stated in the .gitignore file
+     * Click on Login with EUA ID
+     */
     browser.useCss().click("button.usa-button[data-testid='LoaderButton']");
     const username = browser.globals.user;
     const password = browser.globals.pass;
-    // Loing activities
-    //browser.useCss().click(".LoginWithOkta .LoaderButton");
+    /*
+     * Loing activities
+     * browser.useCss().click(".LoginWithOkta .LoaderButton");
+     */
     browser
       .useCss()
       .setValue("input#okta-signin-username", username)

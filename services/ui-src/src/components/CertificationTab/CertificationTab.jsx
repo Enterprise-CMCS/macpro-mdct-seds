@@ -29,12 +29,12 @@ const CertificationTab = ({
   const isProvisional = isProvisionalCertified(statusData);
   const isFinal = isFinalCertified(statusData);
 
-  const [provCertDisabled, setProvCertDisabled] = useState(isFinal || isProvisional);
+  const [provCertDisabled, setProvCertDisabled] = useState(
+    isFinal || isProvisional
+  );
   const [finalCertDisabled, setFinalCertDisabled] = useState(isFinal);
-  const [
-    viewProvisionalAndFinalCertify,
-    setViewProvisionalAndFinalCertify
-  ] = useState(true);
+  const [viewProvisionalAndFinalCertify, setViewProvisionalAndFinalCertify] =
+    useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
       const userRole = await currentUserRole();
@@ -122,9 +122,9 @@ const CertificationTab = ({
   const statusText = (
     <div data-testid="statusText">
       <p>
-        This report was updated to <b>{getStatusDisplay(statusData)}</b>{" "}
-        on <b>{dateFormatter(statusData.status_date)}</b>{" "}
-        by <b>{statusData.status_modified_by}</b>
+        This report was updated to <b>{getStatusDisplay(statusData)}</b> on{" "}
+        <b>{dateFormatter(statusData.status_date)}</b> by{" "}
+        <b>{statusData.status_modified_by}</b>
       </p>
     </div>
   );
@@ -216,7 +216,7 @@ CertificationTab.propTypes = {
 };
 
 const mapState = state => ({
-  statusData: state.currentForm.statusData,
+  statusData: state.currentForm.statusData
 });
 
 const mapDispatch = {

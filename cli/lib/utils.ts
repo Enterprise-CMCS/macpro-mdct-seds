@@ -2,9 +2,9 @@ import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { writeLocalUiEnvFile } from "./write-ui-env-file";
-import { runCommand } from "../lib/runner";
-import { region } from "./consts";
+import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
+import { runCommand } from "../lib/runner.js";
+import { region } from "./consts.js";
 
 export const getCloudFormationStackOutputValues = async (
   stackName: string
@@ -21,13 +21,13 @@ export const getCloudFormationStackOutputValues = async (
       .map(
         (o) => [o.OutputKey ?? (o as any).OutputName, o.OutputValue] as const
       )
-      .filter(([k]) => Boolean(k)) as [string, string | undefined][]
+      .filter(([k, v]) => Boolean(k) && v !== undefined) as [string, string][]
   );
 };
 
 const buildUiEnvObject = (
   stage: string,
-  cfnOutputs: Record<string, string | undefined>
+  cfnOutputs: Record<string, string>
 ): Record<string, string> => {
   if (stage === "localstack") {
     return {

@@ -13,15 +13,15 @@ vi.mock("../../libs/contextLib", () => ({
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
 
 const mockStore = configureStore([]);
 
 const adminUser = {
   attributes: {
-    "app-role": "admin",
-  },
+    "app-role": "admin"
+  }
 };
 
 const renderComponent = () => {
@@ -30,11 +30,11 @@ const renderComponent = () => {
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <HomeAdmin user={adminUser}/>
+        <HomeAdmin user={adminUser} />
       </BrowserRouter>
     </Provider>
   );
-}
+};
 
 describe("Tests for HomeAdmin.js", () => {
   it("should render navigation links", async () => {
@@ -45,13 +45,15 @@ describe("Tests for HomeAdmin.js", () => {
       "View / Edit Users",
       "Add/Edit Form Templates",
       "Generate Quarterly Forms",
-      "Generate Total Enrollment Counts",
+      "Generate Total Enrollment Counts"
     ]);
   });
 
   it("should render a state selector", async () => {
     const { container } = renderComponent();
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    expect(container.querySelector(".Dropdown-root.state-select-list")).toBeInTheDocument();
+    expect(
+      container.querySelector(".Dropdown-root.state-select-list")
+    ).toBeInTheDocument();
   });
 });
