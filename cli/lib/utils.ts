@@ -2,9 +2,9 @@ import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { writeLocalUiEnvFile } from "./write-ui-env-file";
-import { runCommand } from "../lib/runner";
-import { region } from "./consts";
+import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
+import { runCommand } from "../lib/runner.js";
+import { region } from "./consts.js";
 
 export const getCloudFormationStackOutputValues = async (
   stackName: string
@@ -21,7 +21,7 @@ export const getCloudFormationStackOutputValues = async (
       .map(
         (o) => [o.OutputKey ?? (o as any).OutputName, o.OutputValue] as const
       )
-      .filter(([k]) => Boolean(k)) as [string, string | undefined][]
+      .filter(([k]) => Boolean(k)) as [string, string][]
   );
 };
 
@@ -33,7 +33,7 @@ const buildUiEnvObject = (
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: cfnOutputs.ApiUrl.replace("https", "http"),
+      API_URL: cfnOutputs.ApiUrl!.replace("https", "http"),
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
       COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
@@ -48,14 +48,14 @@ const buildUiEnvObject = (
   return {
     SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
-    API_URL: cfnOutputs.ApiUrl,
+    API_URL: cfnOutputs.ApiUrl!,
     COGNITO_REGION: region,
-    COGNITO_IDENTITY_POOL_ID: cfnOutputs.CognitoIdentityPoolId,
-    COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId,
-    COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId,
+    COGNITO_IDENTITY_POOL_ID: cfnOutputs.CognitoIdentityPoolId!,
+    COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
+    COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
     COGNITO_USER_POOL_CLIENT_DOMAIN: `${cfnOutputs.CognitoUserPoolClientDomain}.auth.${region}.amazoncognito.com`,
-    COGNITO_REDIRECT_SIGNIN: cfnOutputs.CloudFrontUrl,
-    COGNITO_REDIRECT_SIGNOUT: cfnOutputs.CloudFrontUrl,
+    COGNITO_REDIRECT_SIGNIN: cfnOutputs.CloudFrontUrl!,
+    COGNITO_REDIRECT_SIGNOUT: cfnOutputs.CloudFrontUrl!,
   };
 };
 
