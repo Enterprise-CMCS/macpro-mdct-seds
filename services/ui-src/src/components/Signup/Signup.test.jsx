@@ -58,7 +58,7 @@ describe("Test Signup.js", () => {
 
     expect(Auth.signUp).toHaveBeenCalledWith({
       username: "qwer@email.test",
-      password: "hunter2",
+      password: "hunter2", // pragma: allowlist secret
       attributes: {
         given_name: "Quentin",
         family_name: "Werther",
