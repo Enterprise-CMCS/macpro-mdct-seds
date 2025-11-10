@@ -1,5 +1,4 @@
 // Temporary import, using forms.json static data
-import { formTypes } from "utility-functions/constants";
 import * as age_ranges from "../to-delete/age_ranges.json";
 import * as states from "../to-delete/states.json";
 
@@ -9,12 +8,6 @@ export const LOAD_AGE_RANGES = "LOAD_AGE_RANGES";
 export const LOAD_STATES = "LOAD_STATES";
 
 // ACTION CREATORS
-export const gotFormTypes = (formArray = []) => {
-  return {
-    type: LOAD_FORM_TYPES,
-    formArray
-  };
-};
 export const gotAgeRanges = (agesArray = []) => {
   return {
     type: LOAD_AGE_RANGES,
@@ -46,7 +39,6 @@ export const getStates = () => {
 
 // INITIAL STATE
 const initialState = {
-  formTypes: [],
   age_ranges: [...age_ranges.default],
   states: [...states.default]
 };

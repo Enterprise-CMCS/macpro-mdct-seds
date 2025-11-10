@@ -9,9 +9,10 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { formTypes } from "../../constants/formTypes";
 
 const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
-  const formDescription = formData.find(element => element.form === form);
+  const formDescription = formTypes.find(element => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showFPL, setShowFPL] = useState(false);
