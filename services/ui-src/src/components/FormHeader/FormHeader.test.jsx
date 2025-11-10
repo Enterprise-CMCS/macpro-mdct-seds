@@ -42,7 +42,6 @@ const mountSetup = (initialState = {}, props = {}, path = "") => {
 const mockAnswers = fullStoreMock.currentForm;
 
 vi.mock("../../libs/api", () => ({
-  getFormTypes: () => Promise.resolve(mockFormTypes),
   getSingleForm: () => Promise.resolve(mockAnswers)
 }));
 

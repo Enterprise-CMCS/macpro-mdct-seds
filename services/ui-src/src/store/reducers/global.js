@@ -1,8 +1,7 @@
 // Temporary import, using forms.json static data
+import { formTypes } from "utility-functions/constants";
 import * as age_ranges from "../to-delete/age_ranges.json";
 import * as states from "../to-delete/states.json";
-
-import { getFormTypes } from "../../../src/libs/api.js";
 
 // ACTION TYPES
 export const LOAD_FORM_TYPES = "LOAD_FORM_TYPES";
@@ -33,7 +32,7 @@ export const gotStates = (statesArray = []) => {
 export const fetchFormTypes = () => {
   return async dispatch => {
     try {
-      const data = await getFormTypes();
+      const data = formTypes;
       dispatch(gotFormTypes(data));
     } catch (error) {
       console.log("Error:", error);
