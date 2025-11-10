@@ -28,19 +28,6 @@ export const gotStates = (statesArray = []) => {
   };
 };
 
-// THUNKS
-export const fetchFormTypes = () => {
-  return async dispatch => {
-    try {
-      const data = formTypes;
-      dispatch(gotFormTypes(data));
-    } catch (error) {
-      console.log("Error:", error);
-      console.dir(error);
-    }
-  };
-};
-
 export const getAgeRanges = () => {
   return async dispatch => {
     // Call aws amplify endpoint. This is a placeholder

@@ -8,11 +8,10 @@ import {
   updateFPL,
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
-import { formTypes } from "utility-functions/constants";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
 const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
-  const [formDescription, setFormDescription] = useState({});
+  const formDescription = formData.find(element => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showFPL, setShowFPL] = useState(false);
@@ -41,9 +40,6 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
     // List of forms that do NOT show fpl
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
-      const data = formTypes;
-      const formDetails = data.find(element => element.form === form);
-      setFormDescription(formDetails);
 
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {

@@ -5,7 +5,6 @@ export const formTypes = [
     form_name: "Number of Children Served in Separate CHIP Program",
     form_text:
       "Form 21E collects data on children enrolled in separate child health programs, or separate CHIP.",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
   {
     form: "64.EC",
@@ -13,7 +12,6 @@ export const formTypes = [
     form_name: "Number of Children Served in Medicaid Program",
     form_text:
       "Form 64.EC collects data on children enrolled in the Medicaid Program.",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
   {
     form: "64.21E",
@@ -21,7 +19,6 @@ export const formTypes = [
     form_name: "Number of Children Served in Medicaid CHIP Expansion Program",
     form_text:
       "Form 64.21E collects data on children enrolled in the Medicaid CHIP Expansion Program.",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
   {
     form: "64.ECI",
@@ -29,7 +26,6 @@ export const formTypes = [
     form_name: "Informational Number of Children Served in Medicaid Program",
     form_text:
       "Form 64.ECI collects data on unborn children enrolled in the Medicaid Program.",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
   {
     form: "GRE",
@@ -37,7 +33,6 @@ export const formTypes = [
     form_name: "Gender, Race & Ethnicity",
     form_text:
       "The Gender, Race & Ethnicity Form collects data on the number of children in each Gender, Race, and Ethnicity.",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
   {
     form: "21PW",
@@ -45,6 +40,5 @@ export const formTypes = [
     form_name: "Number of Pregnant Women Served",
     form_text:
       "Children's Health Insurance Program Number of Pregnant Women served",
-    lastSynced: "2021-12-09T23:31:54.086Z",
   },
 ];
