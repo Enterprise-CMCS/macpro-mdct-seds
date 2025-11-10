@@ -5,8 +5,6 @@ This document describes how state forms' status was previously tracked,
 and how that changed over time.
 
 This document is not a guide for the current implementation.
-I have confidence you can learn that from the current code,
-without first reading an essay on the topic.
 
 ## SEDS before SEDS (as we know it)
 
