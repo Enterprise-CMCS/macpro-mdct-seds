@@ -9,7 +9,7 @@ import {
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 import { getUserInfo } from "../../utility-functions/userFunctions";
-import { formTypes } from "../../constants/formTypes";
+import { formTypes } from "../../utility-functions/constants";
 
 const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
   const formDescription = formTypes.find(element => element.form === form);
