@@ -3,7 +3,6 @@ import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import {
-  getFormDescriptions,
   getQuestionsByYear,
   getStatesList,
   findExistingStateForms,
@@ -36,7 +35,6 @@ vi.mock("../../../auth/authConditions.js", () => ({
 }));
 
 vi.mock("../../shared/sharedFunctions.js", () => ({
-  getFormDescriptions: vi.fn(),
   getQuestionsByYear: vi.fn(),
   getStatesList: vi.fn(),
   findExistingStateForms: vi.fn(),
@@ -80,7 +78,6 @@ describe("generateQuarterForms.js", () => {
   it("should create state forms for the current quarter", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({});
@@ -143,7 +140,6 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", /* (missing Texas B) */
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -157,7 +153,6 @@ describe("generateQuarterForms.js", () => {
   it("should create forms for the specified year and quarter if provided", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({
@@ -178,7 +173,6 @@ describe("generateQuarterForms.js", () => {
       stateId: `State${i}`,
     }));
     getStatesList.mockResolvedValueOnce(manyFakeStates);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -206,26 +200,9 @@ describe("generateQuarterForms.js", () => {
     }));
   });
 
-  it("should return an error if no forms exist", async () => {
-    findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([]);
-
-    const response = await generateQuarterForms({});
-
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "Could not retrieve form descriptions.",
-      }),
-    }));
-  });
-
   it("should populate state answers for newly generated forms", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({ });
@@ -273,7 +250,6 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set());
 
@@ -292,7 +268,6 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({ });
@@ -312,7 +287,6 @@ describe("generateQuarterForms.js", () => {
       "CO-2025-1-A", "CO-2025-1-B", "TX-2025-1-A", "TX-2025-1-B",
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set(["TX-2025-1-A"]));
 
@@ -338,7 +312,6 @@ describe("generateQuarterForms.js", () => {
   it("should query the template table for questions if they are not in the questions table for this year", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 200,
@@ -360,7 +333,6 @@ describe("generateQuarterForms.js", () => {
   it("should return an error if fetchOrCreateQuestions fails", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 500,
@@ -394,7 +366,6 @@ describe("generateQuarterForms.js", () => {
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     findExistingStateForms.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
-    getFormDescriptions.mockResolvedValueOnce([mockFormA, mockFormB]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await scheduled({});
