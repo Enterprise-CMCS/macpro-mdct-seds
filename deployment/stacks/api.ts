@@ -228,14 +228,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "getForm", {
-    entry: "services/app-api/handlers/forms/get.js",
-    handler: "main",
-    path: "/single-form/{state}/{specifiedYear}/{quarter}/{form}",
-    method: "GET",
-    ...commonProps,
-  });
-
   new Lambda(scope, "getStateFormList", {
     entry: "services/app-api/handlers/forms/post/obtainFormsList.js",
     handler: "main",
