@@ -10,6 +10,7 @@ on:
   schedule:
     # run every Monday against main
     - cron: "0 4 * * 1"
+  workflow_dispatch:
 
 jobs:
   analyze:
