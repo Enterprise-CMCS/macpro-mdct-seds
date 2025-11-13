@@ -9,7 +9,6 @@ export default [
       ".form-answers",
       ".form-questions",
       ".form-templates",
-      ".forms",
       ".state-forms",
       ".states",
     ],
