@@ -28,7 +28,7 @@ describe("forceKafkaSync", () => {
 
     await forceKafkaSync({});
 
-    expect(mockScan).toHaveBeenCalledTimes(7);
+    expect(mockScan).toHaveBeenCalledTimes(6);
     expect(mockBatchWrite).toHaveBeenCalled();
     
     // I don't want to test the exact table name,
@@ -52,7 +52,7 @@ describe("forceKafkaSync", () => {
 
     await forceKafkaSync({});
 
-    expect(mockScan).toHaveBeenCalledTimes(7);
+    expect(mockScan).toHaveBeenCalledTimes(6);
     expect(mockBatchWrite).toHaveBeenCalledTimes(3);
     const batchSizes = mockBatchWrite.mock.calls.map(call =>
       Object.values(call[0].RequestItems)[0].length
