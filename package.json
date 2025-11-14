@@ -34,7 +34,7 @@
   "devDependencies": {
     "@octokit/auth-action": "^6.0.1",
     "@octokit/rest": "^22.0.0",
-    "esbuild": "^0.25.9",
+    "esbuild": "^0.27.0",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
     "eslint": "^8.57.1",
