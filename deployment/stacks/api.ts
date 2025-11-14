@@ -270,14 +270,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "getFormTypes", {
-    entry: "services/app-api/handlers/forms/get/getFormTypes.js",
-    handler: "main",
-    path: "/form-types",
-    method: "GET",
-    ...commonProps,
-  });
-
   new Lambda(scope, "generateQuarterForms", {
     entry: "services/app-api/handlers/forms/post/generateQuarterForms.js",
     handler: "main",

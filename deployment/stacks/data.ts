@@ -46,12 +46,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
       name: "form-templates",
       partitionKey: { name: "year", type: dynamodb.AttributeType.NUMBER },
     }),
-    new DynamoDBTable(scope, "Forms", {
-      stage,
-      isDev,
-      name: "forms",
-      partitionKey: { name: "form", type: dynamodb.AttributeType.STRING },
-    }),
     new DynamoDBTable(scope, "StateForms", {
       stage,
       isDev,

@@ -77,13 +77,6 @@ export const getSingleForm = async (state, specifiedYear, quarter, form) => {
   );
 };
 
-// *** get form types
-export const getFormTypes = async _ => {
-  const opts = await requestOptions();
-
-  return API.get("mdct-seds", "/form-types", opts);
-};
-
 // *** get form years and quarters
 export const obtainAvailableForms = async data => {
   const opts = await requestOptions();

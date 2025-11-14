@@ -5,7 +5,6 @@ import {
   fetchOrCreateQuestions,
   findExistingStateForms,
   getAnswersSet,
-  getFormDescriptions,
   getFormResultByStateString,
   getQuarter,
   getQuestionsByYear,
@@ -210,22 +209,6 @@ describe("sharedFunctions.js", () => {
       expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-states",
-      }), expect.any(Function));
-    });
-  });
-
-  describe("getFormDescriptions", () => {
-    it("should query states from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ form: "F1" }, { form: "F2" }],
-      });
-
-      const result = await getFormDescriptions();
-
-      expect(result).toEqual([{ form: "F1" }, { form: "F2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-forms",
       }), expect.any(Function));
     });
   });

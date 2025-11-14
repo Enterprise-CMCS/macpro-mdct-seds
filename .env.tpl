@@ -3,7 +3,6 @@ PROJECT=seds
 FormAnswersTable=local-form-answers
 FormQuestionsTable=local-form-questions
 FormTemplatesTable=local-form-templates
-FormsTable=local-forms
 StateFormsTable=local-state-forms
 StatesTable=local-states
 AuthUserTable=local-auth-user
