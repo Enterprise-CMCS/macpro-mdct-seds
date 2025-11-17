@@ -3,9 +3,6 @@ import { useHistory } from "react-router-dom";
 import { onError } from "../../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.scss";
-import {
-  updateUserAttributes
-} from "aws-amplify/auth";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
@@ -17,8 +14,6 @@ export default function Profile({ user }) {
   const [lastName, setLastName] = useState();
   const [role, setRole] = useState();
   const [states, setStates] = useState();
-  /* eslint-disable no-unused-vars */
-  const [isLoading, setIsLoading] = useState(false);
 
   const capitalize = s => {
     if (typeof s !== "string") return "";
@@ -48,16 +43,6 @@ export default function Profile({ user }) {
     onLoad();
   });
 
-  function validateForm() {
-    return (
-      email.length > 0 && firstName.length > 0 && lastName.length && role.length
-    );
-  }
-
-  function saveProfile(userAttributes) {
-    return updateUserAttributes({userAttributes: userAttributes}); // TODO This can't actually be used?
-  }
-
   function formatStates(states) {
     let statesRefined = "";
 
@@ -76,29 +61,13 @@ export default function Profile({ user }) {
     return statesRefined;
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await saveProfile({
-        first_name: firstName,
-        last_name: lastName
-      });
-      history.push("/");
-    } catch (e) {
-      onError(e);
-      setIsLoading(false);
-    }
-  }
-
   return (
     <div className="Profile">
       <h1 className="page-header">Profile</h1>
       <GridContainer className="container">
         <Grid row>
           <Grid col={12}>
-            <form onSubmit={handleSubmit} data-testid="handleSubmit">
+            <form>
               <FormGroup controlId="email">
                 <ControlLabel>Email</ControlLabel>
                 <FormControl value={email ?? ""} disabled={true} />
