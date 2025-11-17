@@ -20,7 +20,6 @@ const apiName = "mdct-seds";
  */
 const apiRequest = async (request, path, options) => {
   try {
-    updateTimeout();
     const response = await request({ apiName, path, options }).response;
     if (!("body" in response)) {
       return undefined;

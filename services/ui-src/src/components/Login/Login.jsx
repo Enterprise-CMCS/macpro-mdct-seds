@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signIn } from "aws-amplify/auth";
+import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { useFormFields } from "../../libs/hooksLib";
@@ -31,7 +31,7 @@ export default function Login() {
     setIsLoadingOkta(true);
 
     try {
-      signInWithOkta();
+      await signInWithOkta();
     } catch (e) {
       onError(e);
       setIsLoadingOkta(false);
@@ -42,7 +42,11 @@ export default function Login() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await signIn({ username: fields.email, password: fields.password });
+      await signIn({ 
+        username: fields.email, 
+        password: fields.password, 
+        options: {authFlowType: "USER_PASSWORD_AUTH"}
+      });
       window.location.href = "/";
     } catch (e) {
       onError(e);

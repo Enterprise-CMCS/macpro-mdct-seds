@@ -8,18 +8,21 @@ import config from "./config/config";
 import { Provider } from "react-redux";
 import store from "./store/storeIndex";
 
+console.log(config.cognito)
 Amplify.configure({
   Auth: {
     Cognito: {
       userPoolId: config.cognito.USER_POOL_ID,
       identityPoolId: config.cognito.IDENTITY_POOL_ID,
       userPoolClientId: config.cognito.APP_CLIENT_ID,
-      oauth: {
-        domain: config.cognito.APP_CLIENT_DOMAIN,
-        redirectSignIn: config.cognito.REDIRECT_SIGNIN,
-        redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-        scope: ["email", "openid"],
-        responseType: "token"
+      loginWith: {
+        oauth: {
+          domain: config.cognito.APP_CLIENT_DOMAIN,
+          redirectSignIn: config.cognito.REDIRECT_SIGNIN,
+          redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
+          scope: ["email", "openid"],
+          responseType: "token"
+        }
       }
     }
   },

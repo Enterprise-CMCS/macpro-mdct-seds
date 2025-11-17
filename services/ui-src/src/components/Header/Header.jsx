@@ -17,7 +17,7 @@ const Header = () => {
     const onLoad = async () => {
       try {
         const authSession = (await fetchAuthSession());
-        setIsAuthenticated(!!authSession);
+        setIsAuthenticated(!!authSession?.tokens);
         // eslint-disable-next-line no-empty
       } catch (error) {}
     };
