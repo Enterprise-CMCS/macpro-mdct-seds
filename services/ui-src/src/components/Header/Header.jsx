@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Auth } from "aws-amplify";
+import {
+  fetchAuthSession,
+  signOut,
+} from "aws-amplify/auth";
 import { GovBanner, NavList } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
@@ -13,8 +16,8 @@ const Header = () => {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const userInfo = (await Auth.currentSession()).getIdToken().payload;
-        setIsAuthenticated(userInfo !== null);
+        const authSession = (await fetchAuthSession());
+        setIsAuthenticated(!!authSession);
         // eslint-disable-next-line no-empty
       } catch (error) {}
     };
@@ -22,11 +25,9 @@ const Header = () => {
     onLoad().then();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      Auth.signOut().then(() => {
-        window.location.href = Auth.configure().oauth.redirectSignOut;
-      });
+      await signOut();
     } catch (error) {
       console.log("error signing out: ", error);
     }

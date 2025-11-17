@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Routes from "../Routes/Routes";
 import { AppContext } from "../../libs/contextLib";
-import { Auth } from "aws-amplify";
+import {
+  fetchAuthSession,
+} from "aws-amplify/auth";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-
 import "./App.scss";
 
 import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
@@ -19,8 +20,9 @@ function App() {
   const [user, setUser] = useState();
   async function onLoad() {
     try {
-      const token = (await Auth.currentSession()).getIdToken();
-      const apiUser = await ensureUserExistsInApi(token.payload.email);
+      const tokens = (await fetchAuthSession()).tokens;
+      const payload = tokens.idToken.payload;
+      const apiUser = await ensureUserExistsInApi(payload.email);
       const user = { attributes: apiUser }; // ew
       user.attributes["app-role"] = user.attributes.role;
 

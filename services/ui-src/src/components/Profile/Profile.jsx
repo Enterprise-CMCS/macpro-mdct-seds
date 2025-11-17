@@ -3,7 +3,9 @@ import { useHistory } from "react-router-dom";
 import { onError } from "../../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.scss";
-import { Auth } from "aws-amplify";
+import {
+  updateUserAttributes
+} from "aws-amplify/auth";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
@@ -52,8 +54,8 @@ export default function Profile({ user }) {
     );
   }
 
-  function saveProfile(user, userAttributes) {
-    return Auth.updateUserAttributes(user, userAttributes);
+  function saveProfile(userAttributes) {
+    return updateUserAttributes({userAttributes: userAttributes}); // TODO This can't actually be used?
   }
 
   function formatStates(states) {
@@ -77,9 +79,9 @@ export default function Profile({ user }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    let user = await Auth.currentAuthenticatedUser();
+    
     try {
-      await saveProfile(user, {
+      await saveProfile({
         first_name: firstName,
         last_name: lastName
       });

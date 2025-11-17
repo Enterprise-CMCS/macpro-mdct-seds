@@ -9,7 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@trussworks/react-uswds": "^7.0.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "aws-amplify": "^5.3.4",
+    "aws-amplify": "^6.15.8",
     "dotenv": "8.2.0",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
