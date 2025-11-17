@@ -182,8 +182,8 @@ export const getFormData = (state, year, quarter, formName) => {
 
 export const getUsername = async () => {
   const authUser = await fetchAuthSession();
-  const userEmail = authUser.tokens.idToken.payload.email;
-  const existingUser = await obtainUserByEmail({ userEmail });
+  const email = authUser.tokens.idToken.payload.email;
+  const existingUser = await obtainUserByEmail({ email });
   if (existingUser === false) return false;
   const data = existingUser.Items.map(userInfo => userInfo.username);
   return data[0];
