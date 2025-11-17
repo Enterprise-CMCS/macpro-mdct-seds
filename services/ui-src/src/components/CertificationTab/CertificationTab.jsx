@@ -70,7 +70,7 @@ const CertificationTab = ({
 
   const currentUserRole = async () => {
     const authUser = await fetchAuthSession();
-    const userEmail = authUser.tokens.idToken.payload.email;
+    const userEmail = authUser.tokens?.idToken.payload.email;
     const currentUser = await obtainUserByEmail({
       email: userEmail
     });

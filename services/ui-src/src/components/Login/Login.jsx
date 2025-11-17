@@ -8,6 +8,7 @@ import "./Login.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
+import config from "config/config";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,8 +22,11 @@ export default function Login() {
     return fields.email.length > 0 && fields.password.length > 0;
   }
 
-  async function signInWithOkta() {
-    await signInWithRedirect({ provider: { custom: "Okta" } });
+  function signInWithOkta() {
+    const { APP_CLIENT_DOMAIN, REDIRECT_SIGNIN, APP_CLIENT_ID } = config.cognito;
+    const responseType = "token";
+    const url = `https://${APP_CLIENT_DOMAIN}/oauth2/authorize?identity_provider=Okta&redirect_uri=${REDIRECT_SIGNIN}&response_type=${responseType}&client_id=${APP_CLIENT_ID}`;
+    window.location.assign(url);
   }
 
   async function handleSubmitOkta(event) {

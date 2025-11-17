@@ -9,6 +9,7 @@ import { GovBanner, NavList } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
 import "./Header.scss";
+import config from "config/config";
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,9 +26,11 @@ const Header = () => {
     onLoad().then();
   }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      await signOut();
+      signOut().then(() => {
+        window.location.href = config.cognito.REDIRECT_SIGNOUT;
+      });
     } catch (error) {
       console.log("error signing out: ", error);
     }
