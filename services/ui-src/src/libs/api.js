@@ -110,7 +110,6 @@ export const getSingleForm = async (state, specifiedYear, quarter, form) => {
   const opts = await requestOptions();
 
   return await apiLib.get(
-    "mdct-seds",
     `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
     opts
   );
