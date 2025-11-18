@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { API } from "aws-amplify";
 import {
   createUser,
   generateEnrollmentTotals,
@@ -20,18 +19,29 @@ import {
   updateUser
 } from "./api";
 
-vi.mock("aws-amplify", () => ({
-  API: {
-    get: vi.fn().mockResolvedValue("mock get response"),
-    post: vi.fn().mockResolvedValue("mock post response"),
-  },
-  Auth: {
-    currentSession: vi.fn().mockResolvedValue({
-      getIdToken: vi.fn().mockReturnValue({
-        getJwtToken: vi.fn().mockResolvedValue("mock-token")
-      })
-    })
+const mockResponse = (method) => ({
+  response: {
+    body: {
+      text: () => Promise.resolve(`{"responseAttr":"${method}"}`),
+    }
   }
+ });
+
+const mockGet = vi.fn().mockImplementation(() => mockResponse("mock get response"));
+const mockPost = vi.fn().mockImplementation(() => mockResponse("mock post response"));
+
+vi.mock("aws-amplify/api", () => ({
+  get: (args) => mockGet(args),
+  post: (args) => mockPost(args),
+}));
+
+
+vi.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: vi.fn().mockResolvedValue({
+    tokens: {
+      idToken: "mock-token"
+    }
+  })
 }));
 
 const expectedHeaders = { "x-api-key": "mock-token" };
@@ -44,211 +54,172 @@ describe("libs/api", () => {
 
   it("should make the expected API call for listUsers", async () => {
     const response = await listUsers();
-    expect(response).toBe("mock get response");
-    expect(API.get).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/users",
-      { headers: expectedHeaders }
-    );
+    expect(mockGet).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/users",
+      options: { headers: expectedHeaders}
+    });
   });
 
   it("should make the expected API call for getUserById", async () => {
     const response = await getUserById({ userId: "123" });
-    expect(response).toBe("mock get response");
-    expect(API.get).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/users/123",
-      { headers: expectedHeaders }
-    );
+    expect(response.responseAttr).toBe("mock get response");
+
+    expect(mockGet).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/users/123",
+      options: { headers: expectedHeaders}
+    });
   });
 
   it("should make the expected API call for obtainUserByEmail", async () => {
     const response = await obtainUserByEmail("test@example.com");
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/users/get/email",
-      {
-        headers: expectedHeaders,
-        body: "test@example.com"
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/users/get/email",
+      options: { headers: expectedHeaders, body: "test@example.com"}
+    });
   });
 
   it("should make the expected API call for updateUser", async () => {
     const mockUser = { userId: "123", states: ["CO"]}
     const response = await updateUser(mockUser);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/users/update/123",
-      {
-        headers: expectedHeaders,
-        body: mockUser
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/users/update/123",
+      options: { headers: expectedHeaders, body: mockUser}
+    });
   });
 
   it("should make the expected API call for createUser", async () => {
     const response = await createUser(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/users/add",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/users/add",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for getStateForms", async () => {
     const response = await getStateForms(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/forms/obtain-state-forms",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/forms/obtain-state-forms",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for updateStateForm", async () => {
     const response = await updateStateForm(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/state-forms/update",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/state-forms/update",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for getSingleForm", async () => {
     const response = await getSingleForm("CO", 2025, 4, "21E");
-    expect(response).toBe("mock get response");
-    expect(API.get).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/single-form/CO/2025/4/21E",
-      { headers: expectedHeaders }
-    );
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/single-form/CO/2025/4/21E",
+      options: { headers: expectedHeaders}
+    });
   });
 
   it("should make the expected API call for getFormTypes", async () => {
     const response = await getFormTypes();
-    expect(response).toBe("mock get response");
-    expect(API.get).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/form-types",
-      { headers: expectedHeaders }
-    );
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/form-types",
+      options: { headers: expectedHeaders}
+    });
   });
 
   it("should make the expected API call for obtainAvailableForms", async () => {
     const response = await obtainAvailableForms(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/forms/obtainAvailableForms",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/forms/obtainAvailableForms",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for saveSingleForm", async () => {
     const response = await saveSingleForm(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/single-form/save",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/single-form/save",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for generateQuarterlyForms", async () => {
     const response = await generateQuarterlyForms(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/generate-forms",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/generate-forms",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for obtainFormTemplateYears", async () => {
     const response = await obtainFormTemplateYears(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/form-templates/years",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/form-templates/years",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for obtainFormTemplate", async () => {
     const response = await obtainFormTemplate(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/form-template",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/form-template",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for updateCreateFormTemplate", async () => {
     const response = await updateCreateFormTemplate(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/form-templates/add",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/form-templates/add",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for generateEnrollmentTotals", async () => {
     const response = await generateEnrollmentTotals(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/generate-enrollment-totals",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/generate-enrollment-totals",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 
   it("should make the expected API call for sendUncertifyEmail", async () => {
     const response = await sendUncertifyEmail(mockPayload);
-    expect(response).toBe("mock post response");
-    expect(API.post).toHaveBeenCalledWith(
-      "mdct-seds",
-      "/notification/uncertified",
-      {
-        headers: expectedHeaders,
-        body: mockPayload
-      }
-    );
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
+      apiName: "mdct-seds",
+      path: "/notification/uncertified",
+      options: { headers: expectedHeaders, body: mockPayload}
+    });
   });
 });

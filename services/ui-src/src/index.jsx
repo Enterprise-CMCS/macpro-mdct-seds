@@ -8,7 +8,6 @@ import config from "./config/config";
 import { Provider } from "react-redux";
 import store from "./store/storeIndex";
 
-console.log(config.cognito)
 Amplify.configure({
   Auth: {
     Cognito: {

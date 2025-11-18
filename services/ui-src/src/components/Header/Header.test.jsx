@@ -7,6 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 let realUseContext;
 let useContextMock;
 
+vi.mock("config/config", () => ({
+  default: { cognito: {
+    REDIRECT_SIGNOUT: "elsewhere.com",
+  },
+}}))
+
+
 // *** set up mocks
 beforeEach(() => {
   realUseContext = React.useContext;
