@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Routes from "../Routes/Routes";
 import { AppContext } from "../../libs/contextLib";
-import {
-  fetchAuthSession,
-} from "aws-amplify/auth";
+import { fetchAuthSession } from "aws-amplify/auth";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./App.scss";

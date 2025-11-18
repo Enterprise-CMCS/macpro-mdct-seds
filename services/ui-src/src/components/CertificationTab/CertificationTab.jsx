@@ -7,9 +7,7 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
-import {
-  fetchAuthSession,
-} from "aws-amplify/auth";
+import { fetchAuthSession } from "aws-amplify/auth";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
