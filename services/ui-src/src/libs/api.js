@@ -11,11 +11,6 @@ const requestOptions = async () => {
 };
 const apiName = "mdct-seds";
 
-/**
- * Wrap the AWS API so we can handle any before or after behaviors.
- * Below we just key off of these API calls as our source of user activity to make sure
- * credentials don't expire.
- */
 const apiRequest = async (request, path, options) => {
   try {
     const response = await request({ apiName, path, options }).response;
