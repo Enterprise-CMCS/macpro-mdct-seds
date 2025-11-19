@@ -3,7 +3,6 @@ import {
   createUser,
   generateEnrollmentTotals,
   generateQuarterlyForms,
-  getFormTypes,
   getSingleForm,
   getStateForms,
   getUserById,
@@ -129,16 +128,6 @@ describe("libs/api", () => {
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/single-form/CO/2025/4/21E",
-      options: { headers: expectedHeaders}
-    });
-  });
-
-  it("should make the expected API call for getFormTypes", async () => {
-    const response = await getFormTypes();
-    expect(response.responseAttr).toBe("mock get response");
-    expect(mockGet).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: "/form-types",
       options: { headers: expectedHeaders}
     });
   });

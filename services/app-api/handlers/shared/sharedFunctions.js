@@ -167,20 +167,6 @@ export async function getStatesList() {
   return stateResult.Items;
 }
 
-export async function getFormDescriptions() {
-  const formDescriptionParams = { TableName: process.env.FormsTable };
-
-  let formDescription;
-  try {
-    formDescription = await dynamoDb.scan(formDescriptionParams);
-  } catch (e) {
-    console.log("getFormDescription failed");
-    throw e;
-  }
-
-  return formDescription.Items;
-}
-
 export async function getFormResultByStateString(stateFormString) {
   const params = {
     TableName: process.env.FormAnswersTable,

@@ -11,6 +11,7 @@ import {
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
+import { formTypes } from "../../shared/constants.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -145,25 +146,15 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Pull list of form descriptions
-  const allFormDescriptions = await getFormDescriptions();
-
-  if (!allFormDescriptions.length) {
-    return {
-      status: 500,
-      message: `Could not retrieve form descriptions.`,
-    };
-  }
-
   // Add All StateForm Descriptions
   const putRequestsStateForms = [];
 
   // Loop through all states
   for (const state in allStates) {
     // Loop through form descriptions for each state
-    for (const form in allFormDescriptions) {
+    for (const form in formTypes) {
       // Build lengthy strings
-      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
+      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
 
       if (!foundForms.includes(stateFormString)) {
         noMissingForms = false;
@@ -175,17 +166,17 @@ const generateQuarterForms = async (event) => {
               status_date: new Date().toISOString(),
               year: specifiedYear,
               state_comments: [{ type: "text_multiline", entry: "" }],
-              form_id: allFormDescriptions[form].form_id,
+              form_id: formTypes[form].form_id,
               last_modified_by: "seed",
               status_modified_by: "seed",
               created_by: "seed",
               validation_percent: "0.03",
               ...InProgressStatusFields(),
-              form: allFormDescriptions[form].form,
+              form: formTypes[form].form,
               program_code: "All",
               state_id: allStates[state].state_id,
               created_date: new Date().toISOString(),
-              form_name: allFormDescriptions[form].form_name,
+              form_name: formTypes[form].form_name,
               last_modified: new Date().toISOString(),
               quarter: specifiedQuarter,
             },
