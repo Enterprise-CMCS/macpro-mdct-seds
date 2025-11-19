@@ -19,11 +19,13 @@ function App() {
   async function onLoad() {
     try {
       const tokens = (await fetchAuthSession()).tokens;
+      console.log("userinfo", tokens);
       const payload = tokens.idToken.payload;
       const apiUser = await ensureUserExistsInApi(payload.email);
       const user = { attributes: apiUser }; // ew
       user.attributes["app-role"] = user.attributes.role;
-
+      console.log("setting user");
+      
       setUser(user);
       setIsAuthenticated(true);
       setIsAuthorized(true);
