@@ -3,7 +3,6 @@ import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
 import Home from "../Home/Home";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
-import Signup from "../Signup/Signup";
 import Profile from "../Profile/Profile";
 import PrintPDF from "../Print/PrintPDF";
 import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
@@ -37,18 +36,12 @@ export default function Routes({ user, isAuthorized }) {
         <UnauthenticatedRoute exact path="/login">
           <Login />
         </UnauthenticatedRoute>
-        <UnauthenticatedRoute exact path="/signup">
-          <Signup />
-        </UnauthenticatedRoute>
       </Switch>
     );
   }
   return (
     <Switch>
       {/*************** UNAUTHENTICATED ROUTES ***************/}
-      <UnauthenticatedRoute exact path="/signup">
-        <Signup />
-      </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/unauthorized">
         <Unauthorized />
       </UnauthenticatedRoute>

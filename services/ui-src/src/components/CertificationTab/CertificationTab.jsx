@@ -7,7 +7,7 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
-import { Auth } from "aws-amplify";
+import { fetchAuthSession } from "aws-amplify/auth";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
@@ -67,8 +67,8 @@ const CertificationTab = ({
   };
 
   const currentUserRole = async () => {
-    const authUser = await Auth.currentSession();
-    const userEmail = authUser.idToken.payload.email;
+    const authUser = await fetchAuthSession();
+    const userEmail = authUser.tokens?.idToken.payload.email;
     const currentUser = await obtainUserByEmail({
       email: userEmail
     });

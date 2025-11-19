@@ -6,6 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
+
+vi.mock("config/config", () => ({
+  default: { 
+    cognito: {
+      APP_CLIENT_DOMAIN: "mock-domain",
+      REDIRECT_SIGNIN: "mock-redirect",
+      APP_CLIENT_ID: "mock-client-id",
+      REDIRECT_SIGNOUT: "elsewhere.com",
+    },
+}}))
+
 vi.mock("../Routes/Routes", () => ({
   default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
 }));
@@ -17,16 +28,12 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   }),
 }));
 
-vi.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: vi.fn().mockResolvedValue({
-      getIdToken: vi.fn().mockReturnValue({
-        payload: {
-          email: "qwer@email.test",
-        },
-      }),
-    }),
-  },
+vi.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: vi.fn().mockResolvedValue({
+    tokens: {
+      idToken: {payload: { email: "qwer@email.test"}}
+    }
+  })
 }));
 
 vi.mock("../../utility-functions/initialLoadFunctions", () => ({

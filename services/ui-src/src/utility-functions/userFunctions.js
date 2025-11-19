@@ -1,4 +1,4 @@
-import { Auth } from "aws-amplify";
+import { fetchAuthSession } from "aws-amplify/auth";
 import { obtainUserByEmail } from "../libs/api";
 import { onError } from "../libs/errorLib";
 
@@ -7,9 +7,9 @@ export const getUserInfo = async () => {
 
   try {
     // Get user information
-    const AuthUserInfo = (await Auth.currentSession()).getIdToken();
+    const authUser = await fetchAuthSession();
     currentUserInfo = await obtainUserByEmail({
-      email: AuthUserInfo.payload.email
+      email: authUser.tokens.idToken.payload.email
     });
   } catch (e) {
     onError(e);

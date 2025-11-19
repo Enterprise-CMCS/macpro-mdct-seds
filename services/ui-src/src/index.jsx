@@ -10,28 +10,28 @@ import store from "./store/storeIndex";
 
 Amplify.configure({
   Auth: {
-    mandatorySignIn: true,
-    region: config.cognito.REGION,
-    userPoolId: config.cognito.USER_POOL_ID,
-    identityPoolId: config.cognito.IDENTITY_POOL_ID,
-    userPoolWebClientId: config.cognito.APP_CLIENT_ID,
-    authenticationFlowType: "USER_PASSWORD_AUTH",
-    oauth: {
-      domain: config.cognito.APP_CLIENT_DOMAIN,
-      redirectSignIn: config.cognito.REDIRECT_SIGNIN,
-      redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-      scope: ["email", "openid"],
-      responseType: "token"
+    Cognito: {
+      userPoolId: config.cognito.USER_POOL_ID,
+      identityPoolId: config.cognito.IDENTITY_POOL_ID,
+      userPoolClientId: config.cognito.APP_CLIENT_ID,
+      loginWith: {
+        oauth: {
+          domain: config.cognito.APP_CLIENT_DOMAIN,
+          redirectSignIn: config.cognito.REDIRECT_SIGNIN,
+          redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
+          scope: ["email", "openid"],
+          responseType: "token"
+        }
+      }
     }
   },
   API: {
-    endpoints: [
-      {
-        name: "mdct-seds",
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION
+    REST: {
+      "mdct-seds": {
+          endpoint: config.apiGateway.URL,
+          region: config.apiGateway.REGION
       }
-    ]
+    }
   }
 });
 
