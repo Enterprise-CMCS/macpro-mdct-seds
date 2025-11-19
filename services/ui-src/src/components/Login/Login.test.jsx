@@ -1,17 +1,13 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi, vitest } from "vitest";
 import Login from "./Login";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { signInWithRedirect } from "aws-amplify/auth";
 
-vi.mock("aws-amplify/auth");
-vi.mock("config/config", () => ({
-  default: { cognito: {
-    APP_CLIENT_DOMAIN: "mock-domain",
-    REDIRECT_SIGNIN: "mock-redirect",
-    APP_CLIENT_ID: "mock-client-id"
-  },
-}}));
+vi.mock("aws-amplify/auth", () => ({
+  signInWithRedirect: vi.fn(),
+}));
 
 const currentlyOnDevelopmentBranch = () =>
   window.location.hostname !== "mdctseds.cms.gov" &&
@@ -56,7 +52,6 @@ describe("Test Login.js", () => {
     const loginButton = screen.getByText("Login with EUA ID", { selector: "button"});
     await userEvent.click(loginButton);
 
-    const oktaUrl = "https://mock-domain/oauth2/authorize?identity_provider=Okta&redirect_uri=mock-redirect&response_type=token&client_id=mock-client-id";
-    expect(window.location.assign).toHaveBeenCalledWith(oktaUrl);
+    expect(signInWithRedirect).toHaveBeenCalled()
   });
 });
