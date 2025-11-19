@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
-import { getFormTypes, getSingleForm } from "../../libs/api";
+import { getSingleForm } from "../../libs/api";
 import {
   updateFPL,
   saveForm
 } from "../../store/reducers/singleForm/singleForm";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { formTypes } from "../../utility-functions/constants";
 
 const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
-  const [formDescription, setFormDescription] = useState({});
+  const formDescription = formTypes.find(element => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showFPL, setShowFPL] = useState(false);
@@ -40,9 +41,6 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
     // List of forms that do NOT show fpl
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
-      const data = await getFormTypes();
-      const formDetails = data.find(element => element.form === form);
-      setFormDescription(formDetails);
 
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {

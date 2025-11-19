@@ -8,7 +8,6 @@ class PostKafkaData extends KafkaSourceLib {
     "form-answers",
     "form-questions",
     "form-templates",
-    "forms",
     "state-forms",
     "states",
   ];
