@@ -73,8 +73,8 @@ describe("libs/api", () => {
 
   it("should make the expected API call for getCurrentUser", async () => {
     const response = await getCurrentUser();
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/getCurrentUser",
       options: { headers: expectedHeaders, body: undefined}
