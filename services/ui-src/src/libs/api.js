@@ -64,7 +64,7 @@ export const getUserById = async data => {
  */
 export const getCurrentUser = async () => {
   const opts = await requestOptions();
-  return await apiLib.post(`/getCurrentUser`, opts);
+  return await apiLib.get(`/getCurrentUser`, opts);
 }
 
 // *** update user information
