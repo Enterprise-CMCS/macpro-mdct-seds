@@ -3,7 +3,6 @@ import { scanForUserWithSub } from "../handlers/users/get/getCurrentUser.js";
 
 export const getCurrentUserInfo = async (event) => {
   const user = await getUserDetailsFromEvent(event);
-  console.log(user);
   const currentUser = await scanForUserWithSub(user.usernameSub);
 
   if (!currentUser) {
