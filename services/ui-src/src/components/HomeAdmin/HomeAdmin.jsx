@@ -30,7 +30,7 @@ const HomeAdmin = ({ stateList, user }) => {
         let selectedStates = false;
 
         // If using all states, create a simple array of states for use in compileStatesForDropdown
-        if (user.attributes["app-role"] === "admin") {
+        if (user.role === "admin") {
           userStates = compileSimpleArrayStates(stateList);
         }
 
@@ -77,7 +77,7 @@ const HomeAdmin = ({ stateList, user }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
-  let role = user.attributes["app-role"];
+  let role = user.role;
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (

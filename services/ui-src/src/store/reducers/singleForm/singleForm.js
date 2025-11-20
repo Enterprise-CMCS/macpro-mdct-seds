@@ -1,6 +1,6 @@
 // PACKAGES
-import { fetchAuthSession } from "aws-amplify/auth";
-import { obtainUserByEmail, updateStateForm } from "../../../libs/api";
+import { getCurrentUser } from "aws-amplify/auth";
+import { getCurrentUser, updateStateForm } from "../../../libs/api";
 import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
 // HELPER FUNCTIONS
@@ -181,12 +181,8 @@ export const getFormData = (state, year, quarter, formName) => {
 };
 
 export const getUsername = async () => {
-  const authUser = await fetchAuthSession();
-  const email = authUser.tokens.idToken.payload.email;
-  const existingUser = await obtainUserByEmail({ email });
-  if (existingUser === false) return false;
-  const data = existingUser.Items.map(userInfo => userInfo.username);
-  return data[0];
+  const existingUser = await getCurrentUser();
+  return existingUser.username;
 };
 
 export const saveForm = () => {

@@ -5,12 +5,12 @@ import {
   generateQuarterlyForms,
   getSingleForm,
   getStateForms,
+  getCurrentUser,
   getUserById,
   listUsers,
   obtainAvailableForms,
   obtainFormTemplate,
   obtainFormTemplateYears,
-  obtainUserByEmail,
   saveSingleForm,
   sendUncertifyEmail,
   updateCreateFormTemplate,
@@ -71,13 +71,13 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for obtainUserByEmail", async () => {
-    const response = await obtainUserByEmail("test@example.com");
+  it("should make the expected API call for getCurrentUser", async () => {
+    const response = await getCurrentUser();
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/users/get/email",
-      options: { headers: expectedHeaders, body: "test@example.com"}
+      path: "/getCurrentUser",
+      options: { headers: expectedHeaders, body: undefined}
     });
   });
 
