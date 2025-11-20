@@ -1,5 +1,4 @@
 // PACKAGES
-import { getCurrentUser } from "aws-amplify/auth";
 import { getCurrentUser, updateStateForm } from "../../../libs/api";
 import { generateDateForDB } from "../../../utility-functions/transformFunctions";
 
