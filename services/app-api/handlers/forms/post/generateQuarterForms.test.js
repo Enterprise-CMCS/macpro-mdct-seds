@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
@@ -194,21 +194,28 @@ describe("generateQuarterForms.js", () => {
     }
   });
 
-  it("should split dynamo requests into batches if there are too many", async () => {
-    findExistingStateForms.mockResolvedValueOnce([]);
-    const manyFakeStates = [...new Array(10)].map((_, i) => ({
-      stateId: `State${i}`,
-    }));
-    getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
+  describe("batch put behavior", () => {
+    beforeEach(() => {
+      // eslint-disable-next-line no-import-assign
+      stateList = [...new Array(10)].map((_, i) => ({ state_id: `State${i}` }));
+    });
+    afterEach(() => {
+      // eslint-disable-next-line no-import-assign
+      stateList = [{ state_id: "CO" }, { state_id: "TX" }];
+    });
+    it("should split dynamo requests into batches if there are too many", async () => {
+      findExistingStateForms.mockResolvedValueOnce([]);
+      getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    await generateQuarterForms({});
+      await generateQuarterForms({});
 
-    expect(mockBatchWrite).toHaveBeenCalled();
-    const batchSizes = mockBatchWrite.mock.calls
-      .filter(call => !!call[0].RequestItems["local-state-forms"])
-      .map(call => call[0].RequestItems["local-state-forms"].length);
-    // 10 states x 6 forms = 60 items. Max batch size is 25.
-    expect(batchSizes).toEqual([25, 25, 10]);
+      expect(mockBatchWrite).toHaveBeenCalled();
+      const batchSizes = mockBatchWrite.mock.calls
+        .filter(call => !!call[0].RequestItems["local-state-forms"])
+        .map(call => call[0].RequestItems["local-state-forms"].length);
+      // 10 states x 6 forms = 60 items. Max batch size is 25.
+      expect(batchSizes).toEqual([25, 25, 10]);
+    });
   });
 
   it("should populate state answers for newly generated forms", async () => {
