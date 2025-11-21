@@ -154,7 +154,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "StateForms",
       "Forms",
       "FormTemplates",
-      "States",
       "FormAnswers",
     ].includes(table.node.id)
   );

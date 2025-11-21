@@ -4,11 +4,11 @@ import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import {
   getQuestionsByYear,
-  getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
   getAnswersSet,
 } from "../../shared/sharedFunctions.js";
+import { stateList } from "../../shared/stateList.js";
 import {
   DynamoDBDocumentClient,
   BatchWriteCommand,
@@ -25,6 +25,12 @@ import { mockClient } from "aws-sdk-client-mock";
  *     for years 2018-2020. The current year is 2025, and I don't see
  *     value in unit testing that logic.
  */
+vi.mock("../../shared/stateList.js", () => ({
+  stateList: [
+    { state_id: "CO", state_name: "Colorado" },
+    { state_id: "TX", state_name: "Texas" },
+  ]
+}));
 
 vi.mock("../../../libs/time.js", () => ({
   calculateFormQuarterFromDate: vi.fn().mockReturnValue({ year: 2025, quarter: 1 }),
@@ -36,7 +42,6 @@ vi.mock("../../../auth/authConditions.js", () => ({
 
 vi.mock("../../shared/sharedFunctions.js", () => ({
   getQuestionsByYear: vi.fn(),
-  getStatesList: vi.fn(),
   findExistingStateForms: vi.fn(),
   fetchOrCreateQuestions: vi.fn(),
   getAnswersSet: vi.fn(),
@@ -67,7 +72,6 @@ const mockQuestion2 = {
   rows: [],
 };
 
-
 describe("generateQuarterForms.js", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -75,7 +79,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should create state forms for the current quarter", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({});
@@ -162,7 +165,6 @@ describe("generateQuarterForms.js", () => {
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -175,7 +177,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should create forms for the specified year and quarter if provided", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({
@@ -198,7 +199,6 @@ describe("generateQuarterForms.js", () => {
     const manyFakeStates = [...new Array(10)].map((_, i) => ({
       stateId: `State${i}`,
     }));
-    getStatesList.mockResolvedValueOnce(manyFakeStates);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -211,24 +211,8 @@ describe("generateQuarterForms.js", () => {
     expect(batchSizes).toEqual([25, 25, 10]);
   });
 
-  it("should return an error if no... states... exist?", async () => {
-    findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([]);
-
-    const response = await generateQuarterForms({});
-
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "Could not retrieve state list.",
-      }),
-    }));
-  });
-
   it("should populate state answers for newly generated forms", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({ });
@@ -263,7 +247,7 @@ describe("generateQuarterForms.js", () => {
     }
 
     /*
-     * getStatesList is mocked to give [CO, TX]
+     * stateList is mocked to give [CO, TX]
      * getQuestionsByYear is mocked to give one question with age ranges [0001, 0105]
      * That makes four answer objects to be inserted to the DB.
      */
@@ -292,7 +276,6 @@ describe("generateQuarterForms.js", () => {
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set());
 
@@ -321,7 +304,6 @@ describe("generateQuarterForms.js", () => {
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({ });
@@ -351,7 +333,6 @@ describe("generateQuarterForms.js", () => {
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     getAnswersSet.mockResolvedValueOnce(new Set([
       /* Omitting CO 21E */
@@ -389,7 +370,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should query the template table for questions if they are not in the questions table for this year", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 200,
@@ -411,7 +391,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should return an error if fetchOrCreateQuestions fails", async () => {
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([]);
     fetchOrCreateQuestions.mockResolvedValueOnce({
       status: 500,
@@ -444,7 +423,6 @@ describe("generateQuarterForms.js", () => {
   it("should not require authorization if invoked from a scheduled job", async () => {
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     findExistingStateForms.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     getQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await scheduled({});
