@@ -3,7 +3,6 @@ import {
   addToQuestionTable,
   createFormTemplate,
   fetchOrCreateQuestions,
-  findExistingStateForms,
   getQuarter,
   getStatesList,
 } from "./sharedFunctions.js";
@@ -43,26 +42,6 @@ describe("sharedFunctions.js", () => {
       expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-states",
-      }), expect.any(Function));
-    });
-  });
-
-  describe("findExistingStateForms", () => {
-    it("should query state form IDs from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ state_form: "F1" }, { state_form: "F2" }],
-      });
-
-      const result = await findExistingStateForms(2025, 1);
-
-      expect(result).toEqual(["F1", "F2"]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":year": 2025, ":quarter": 1 },
-        FilterExpression: "#theYear = :year and quarter = :quarter",
-        ProjectionExpression: "state_form",
       }), expect.any(Function));
     });
   });

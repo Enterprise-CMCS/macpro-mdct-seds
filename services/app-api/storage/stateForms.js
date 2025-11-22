@@ -3,6 +3,24 @@ import dynamoDb from "../libs/dynamodb-lib.js";
 /**
  * @param {number} year
  * @param {number} quarter
+ * @returns {Promise<object[]>}
+ */
+export const scanFormsByQuarter = async (year, quarter) => {
+  const response = await dynamoDb.scan({
+    TableName: process.env.StateFormsTable,
+    FilterExpression: "#year = :year AND quarter = :quarter",
+    ExpressionAttributeNames: { "#year": "year" },
+    ExpressionAttributeValues: {
+      ":year": year,
+      ":quarter": quarter,
+    },
+  });
+  return response.Items;
+};
+
+/**
+ * @param {number} year
+ * @param {number} quarter
  * @param {number} status_id
  * @returns {Promise<object[]>}
  */

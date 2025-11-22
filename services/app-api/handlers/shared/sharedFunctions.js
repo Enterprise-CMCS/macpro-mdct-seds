@@ -17,32 +17,6 @@ export async function getStatesList() {
   return stateResult.Items;
 }
 
-export async function findExistingStateForms(specifiedYear, specifiedQuarter) {
-  const params = {
-    TableName: process.env.StateFormsTable,
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ExpressionAttributeValues: {
-      ":year": specifiedYear,
-      ":quarter": specifiedQuarter,
-    },
-    FilterExpression: "#theYear = :year and quarter = :quarter",
-    ProjectionExpression: "state_form",
-  };
-
-  const result = await dynamoDb.scan(params);
-
-  let values = [];
-
-  if (result.Count !== 0) {
-    values = result.Items.map((id) => {
-      return id.state_form;
-    });
-  }
-  return values;
-}
-
 // This function is called when no entries are found in the question table matching the requested year
 export async function fetchOrCreateQuestions(specifiedYear) {
   // THERE ARE NO QUESTIONS IN QUESTIONS TABLE

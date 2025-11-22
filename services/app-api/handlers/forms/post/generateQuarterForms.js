@@ -2,7 +2,6 @@ import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
   getStatesList,
-  findExistingStateForms,
   fetchOrCreateQuestions,
 } from "../../shared/sharedFunctions.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
@@ -10,6 +9,7 @@ import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
 import { scanForAllFormIds } from "../../../storage/formAnswers.js";
+import { scanStateFormsByQuarter } from "../../../storage/stateForms.js";
 import { formTypes } from "../../shared/constants.js";
 
 /** Called from the API; admin access required */
@@ -130,10 +130,11 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await findExistingStateForms(
+  const foundForms = await scanStateFormsByQuarter(
     specifiedYear,
     specifiedQuarter
   );
+  const foundFormIds = new Set(foundForms.map(f => f.state_form));
 
   // Pull list of states
   let allStates = await getStatesList();
@@ -155,7 +156,7 @@ const generateQuarterForms = async (event) => {
       // Build lengthy strings
       const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
 
-      if (!foundForms.includes(stateFormString)) {
+      if (!foundFormIds.has(stateFormString)) {
         noMissingForms = false;
         // Add item to array for batching later
         putRequestsStateForms.push({

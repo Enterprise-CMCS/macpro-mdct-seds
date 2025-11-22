@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { scanFormsByQuarterAndStatus } from "./stateForms.js";
+import {
+  scanFormsByQuarter,
+  scanFormsByQuarterAndStatus
+} from "./stateForms.js";
 import {
   DynamoDBDocumentClient,
   ScanCommand,
@@ -17,6 +20,28 @@ const mockFormTX21E = { state_id: "TX", form: "21E" };
 describe("State Form storage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  describe("scanFormsByQuarter", () => {
+    it("should fetch forms from dynamo", async () => {
+      mockScan.mockResolvedValueOnce({
+        Count: 3,
+        Items: [mockFormCO21E, mockFormCOGRE, mockFormTX21E],
+      });
+
+      const result = await scanFormsByQuarter(2025, 4);
+
+      expect(result).toEqual([mockFormCO21E, mockFormCOGRE, mockFormTX21E]);
+      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
+        TableName: "local-state-forms",
+        FilterExpression: "#year = :year AND quarter = :quarter",
+        ExpressionAttributeNames: { "#year": "year" },
+        ExpressionAttributeValues: {
+          ":year": 2025,
+          ":quarter": 4,
+        },
+      }), expect.any(Function));
+    });
   });
 
   describe("scanFormsByQuarterAndStatus", () => {
