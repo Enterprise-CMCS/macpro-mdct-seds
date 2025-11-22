@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Routes from "../Routes/Routes";
 import { AppContext } from "../../libs/contextLib";
-import { fetchAuthSession } from "aws-amplify/auth";
+import { getCurrentUser } from "../../libs/api";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./App.scss";
 
-import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
 function App() {
@@ -18,13 +17,9 @@ function App() {
   const [user, setUser] = useState();
   async function onLoad() {
     try {
-      const tokens = (await fetchAuthSession()).tokens;
-      const payload = tokens.idToken.payload;
-      const apiUser = await ensureUserExistsInApi(payload.email);
-      const user = { attributes: apiUser }; // ew
-      user.attributes["app-role"] = user.attributes.role;
-
-      setUser(user);
+      const currentUser = await getCurrentUser();
+      
+      setUser(currentUser);
       setIsAuthenticated(true);
       setIsAuthorized(true);
       setIsAuthenticating(false);

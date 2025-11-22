@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateUser } from "./updateUser.js";
-import { obtainUserByEmail } from "./obtainUserByEmail.js";
+import { scanForUserWithSub } from "../get/getCurrentUser.js";
 import {
   authorizeAnyUser,
   authorizeAdminOrUserWithEmail,
@@ -18,8 +18,8 @@ vi.mock("../../../auth/authConditions.js", () => ({
   authorizeAdmin: vi.fn(),
 }));
 
-vi.mock("./obtainUserByEmail.js", () => ({
-  obtainUserByEmail: vi.fn(),
+vi.mock("../get/getCurrentUser.js", () => ({
+  scanForUserWithSub: vi.fn(),
 }));
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
@@ -49,7 +49,7 @@ describe("updateUser.js", () => {
   });
 
   it("should update the given user data", async () => {
-    obtainUserByEmail.mockResolvedValueOnce({ Items: [mockUser] });
+    scanForUserWithSub.mockResolvedValueOnce(mockUser);
     mockUpdate.mockResolvedValueOnce({ update: "complete" });
 
     const response = await updateUser(mockEvent);
@@ -85,7 +85,7 @@ describe("updateUser.js", () => {
   });
 
   it("should return an error if the requesting user isn't an admin, or updating themselves", async () => {
-    obtainUserByEmail.mockResolvedValueOnce({ Items: [mockUser] });
+    scanForUserWithSub.mockResolvedValueOnce(mockUser);
     authorizeAdminOrUserWithEmail.mockRejectedValueOnce(new Error("Forbidden"));
 
     const response = await updateUser(mockEvent);
@@ -97,7 +97,7 @@ describe("updateUser.js", () => {
   });
 
   it("should return an error if the requesting user is updating anything other than their state", async () => {
-    obtainUserByEmail.mockResolvedValue({ Items: [mockUser] });
+    scanForUserWithSub.mockResolvedValue(mockUser);
     authorizeAdmin.mockRejectedValue(new Error("Forbidden"));
 
     const expectFieldChangeToError = async (changedProperty) => {
@@ -114,19 +114,12 @@ describe("updateUser.js", () => {
     await expectFieldChangeToError({ states: ["WI"] });
 
     // Reset these mocks to no-ops
-    obtainUserByEmail.mockReset().mockResolvedValue();
+    scanForUserWithSub.mockReset().mockResolvedValue();
     authorizeAdmin.mockReset().mockResolvedValue();
   });
 
   it("should allow users to select a state, if they have not yet done so", async () => {
-    obtainUserByEmail.mockResolvedValueOnce({
-      Items: [
-        {
-          ...mockUser,
-          states: [],
-        },
-      ],
-    });
+    scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, states: [] });
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     const evt = {
       body: JSON.stringify({...mockUser, states: ["CO"] }),
@@ -141,7 +134,7 @@ describe("updateUser.js", () => {
   });
 
   it("should reject invalid user payloads", async () => {
-    obtainUserByEmail.mockResolvedValue({ Items: [mockUser] });
+    scanForUserWithSub.mockResolvedValue(mockUser);
 
     const expectFieldChangeToError = async (payload) => {
       const evt = { body: JSON.stringify(payload) };
@@ -165,6 +158,6 @@ describe("updateUser.js", () => {
     await expectFieldChangeToError({ role: "state", states: ["eric"] });
 
     // Reset these mocks to no-ops
-    obtainUserByEmail.mockReset().mockResolvedValue();
+    scanForUserWithSub.mockReset().mockResolvedValue();
   });
 });

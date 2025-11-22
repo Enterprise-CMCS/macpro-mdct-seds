@@ -65,7 +65,7 @@ export default function Routes({ user, isAuthorized }) {
         <PrintPDF />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
-      {user.attributes["app-role"] === "admin" ? (
+      {user.role === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />

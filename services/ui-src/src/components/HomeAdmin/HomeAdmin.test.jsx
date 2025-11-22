@@ -18,11 +18,7 @@ vi.mock("../../utility-functions/userFunctions", () => ({
 
 const mockStore = configureStore([]);
 
-const adminUser = {
-  attributes: {
-    "app-role": "admin",
-  },
-};
+const adminUser = { role: "admin" };
 
 const renderComponent = () => {
   const store = mockStore(fullStoreMock);

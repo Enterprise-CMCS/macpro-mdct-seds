@@ -7,11 +7,10 @@ import {
   certifyAndSubmitProvisional,
   uncertify
 } from "../../store/actions/certify";
-import { fetchAuthSession } from "aws-amplify/auth";
 import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { obtainUserByEmail } from "../../libs/api";
+import { getCurrentUser } from "../../libs/api";
 import {
   isFinalCertified,
   isProvisionalCertified,
@@ -37,8 +36,8 @@ const CertificationTab = ({
   ] = useState(true);
   useEffect(() => {
     const viewProvisionalAndFinal = async () => {
-      const userRole = await currentUserRole();
-      if (userRole === "admin") {
+      const currentUser = await getCurrentUser();
+      if (currentUser.role === "admin") {
         setViewProvisionalAndFinalCertify(false);
       }
     };
@@ -66,35 +65,16 @@ const CertificationTab = ({
     }
   };
 
-  const currentUserRole = async () => {
-    const authUser = await fetchAuthSession();
-    const userEmail = authUser.tokens?.idToken.payload.email;
-    const currentUser = await obtainUserByEmail({
-      email: userEmail
-    });
-    let userRole;
-
-    let userObj = currentUser["Items"];
-    userObj.map(async userInfo => {
-      userRole = userInfo.role;
-    });
-
-    return userRole;
-  };
-
   /* 
     NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
     able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
     
     const sendEmailtoBo = async () => {
-      let userRole = await currentUserRole();
-      if (userRole === "state") {
-              let emailObj = {
-        formInfo: formStatus
-      };
-      await sendUncertifyEmail(emailObj);
-    }
-  };
+      let currentUser = await getCurrentUser();
+      if (currentUser.role === "state") {
+        await sendUncertifyEmail({ formInfo: formStatus });
+      }
+    };
   */
 
   let certifyText;
