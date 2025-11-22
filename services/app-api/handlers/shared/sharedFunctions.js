@@ -1,4 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib.js";
+import { getTemplate, putTemplate } from "../../storage/formTemplates.js";
 
 export async function getStatesList() {
   const stateParams = {
@@ -18,46 +19,19 @@ export async function getStatesList() {
 }
 
 // This function is called when no entries are found in the question table matching the requested year
-export async function fetchOrCreateQuestions(specifiedYear) {
-  // THERE ARE NO QUESTIONS IN QUESTIONS TABLE
-  let parsedYear = parseInt(specifiedYear);
-
-  // GET QUESTIONS FROM TEMPLATE
-  const templateParams = {
-    TableName: process.env.FormTemplatesTable,
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ExpressionAttributeValues: {
-      ":year": parsedYear,
-    },
-    KeyConditionExpression: "#theYear = :year",
-  };
-
-  let templateResult = await dynamoDb.query(templateParams);
+export async function fetchOrCreateQuestions(parsedYear) {
+  let templateResult = await getTemplate(parsedYear);
 
   let questionsForThisYear;
 
-  if (templateResult.Count === 0) {
+  if (!templateResult) {
     // no template was found matching this current year
     // trigger a function to generate a template & retrieve questions from template
 
     const previousYear = parsedYear - 1;
 
-    const previousYearParams = {
-      TableName: process.env.FormTemplatesTable,
-      ExpressionAttributeNames: {
-        "#theYear": "year",
-      },
-      ExpressionAttributeValues: {
-        ":year": previousYear,
-      },
-      FilterExpression: "#theYear = :year",
-    };
-
-    const previousYearTemplateResult = await dynamoDb.scan(previousYearParams);
-
-    if (previousYearTemplateResult.Count === 0) {
+    const previousYearTemplateResult = await getTemplate(previousYear);
+    if (!previousYearTemplateResult) {
       return {
         status: 500,
         message: `Failed to generate form template, check requested year`,
@@ -66,7 +40,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
 
     const createdTemplateQuestions = replaceFormYear(
       parsedYear,
-      previousYearTemplateResult.Items[0]["template"]
+      previousYearTemplateResult.template
     );
 
     try {
@@ -82,7 +56,7 @@ export async function fetchOrCreateQuestions(specifiedYear) {
       };
     }
   } else {
-    questionsForThisYear = templateResult.Items[0]["template"];
+    questionsForThisYear = templateResult.template;
   }
 
   // Add the questions that were created or found in an existing template to the questions table
@@ -204,17 +178,12 @@ export async function createFormTemplate(year, questions) {
     };
   }
 
-  const params = {
-    TableName: process.env.FormTemplatesTable,
-    Item: {
+  try {
+    await putTemplate({
       year: parseInt(year),
       template: validatedJSON,
       lastSynced: new Date().toISOString(),
-    },
-  };
-
-  try {
-    await dynamoDb.put(params);
+    });
     return {
       status: 200,
       message: `Template updated for ${year}!`,

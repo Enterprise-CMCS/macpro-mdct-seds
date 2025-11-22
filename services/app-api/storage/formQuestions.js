@@ -1,7 +1,8 @@
 import dynamoDb from "../libs/dynamodb-lib.js";
 
 /**
- * @param {number} year 
+ * @param {number} year
+ * @returns {Promise<object[]>}
  */
 export const scanQuestionsByYear = async (year) => {
   const response = await dynamoDb.scan({

@@ -6,6 +6,7 @@ import {
   getQuarter,
   getStatesList,
 } from "./sharedFunctions.js";
+import { getTemplate, putTemplate } from "../../storage/formTemplates.js";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
@@ -24,6 +25,11 @@ const mockQuery = vi.fn();
 mockDynamo.on(QueryCommand).callsFake(mockQuery);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
+
+vi.mock("../../storage/formTemplates.js", () => ({
+  getTemplate: vi.fn(),
+  putTemplate: vi.fn(),
+}));
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -48,36 +54,26 @@ describe("sharedFunctions.js", () => {
 
   describe("fetchOrCreateQuestions", () => {
     it("should write template questions to the database", async () => {
-      mockQuery.mockResolvedValueOnce({
-        Count: 1,
-        Items: [{
-          template: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
-        }],
+      getTemplate.mockResolvedValueOnce({
+        template: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
       });
 
-      const result = await fetchOrCreateQuestions("2025");
+      const result = await fetchOrCreateQuestions(2025);
 
       expect(result).toEqual({
         status: 200,
         message: "Questions added to form questions table from template",
         payload: [{ questionId: "2025-Q1" }, { questionId: "2025-Q2" }],
       });
-      expect(mockQuery).toHaveBeenCalledWith({
-        TableName: "local-form-templates",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":year": 2025 },
-        KeyConditionExpression: "#theYear = :year",
-      }, expect.any(Function));
+      expect(getTemplate).toHaveBeenCalledWith(2025);
     });
 
     it("should copy last year's form template if needed", async () => {
-      mockQuery.mockResolvedValueOnce({ Count: 0 });
-      mockScan.mockResolvedValueOnce({
-        Count: 1,
-        Items: [{
+      getTemplate
+        .mockResolvedValueOnce(undefined)
+        .mockResolvedValueOnce({
           template: [{ questionId: "2024-Q1" }, { questionId: "2024-Q2" }],
-        }],
-      });
+        });
 
       const result = await fetchOrCreateQuestions("2025");
 
@@ -97,14 +93,13 @@ describe("sharedFunctions.js", () => {
           }
         ],
       });
-      expect(mockPut).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-templates",
-      }), expect.any(Function));
+      expect(putTemplate).toHaveBeenCalled();
     });
 
     it("should return an error if there are no templates, this year or last", async () => {
-      mockQuery.mockResolvedValueOnce({ Count: 0 });
-      mockScan.mockResolvedValueOnce({ Count: 0 });
+      getTemplate
+        .mockResolvedValueOnce(undefined)
+        .mockResolvedValueOnce(undefined)
 
       const result = await fetchOrCreateQuestions("2025");
 
@@ -194,14 +189,11 @@ describe("sharedFunctions.js", () => {
         status: 200,
         message: "Template updated for 2025!",
       });
-      expect(mockPut).toHaveBeenCalledWith({
-        TableName: "local-form-templates",
-        Item: {
-          year: 2025,
-          template: [{ questionId: "Q1 "}],
-          lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-        },
-      }, expect.any(Function));
+      expect(putTemplate).toHaveBeenCalledWith({
+        year: 2025,
+        template: [{ questionId: "Q1 "}],
+        lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+      });
     });
 
     it("should return an error if year is missing", async () => {

@@ -3,6 +3,7 @@ import {
   BatchWriteCommand,
   DeleteCommand,
   DynamoDBDocumentClient,
+  GetCommand,
   PutCommand,
   QueryCommand,
   ScanCommand,
@@ -19,6 +20,7 @@ const awsConfig = {
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 export default {
+  get: async (params) => await client.send(new GetCommand(params)),
   update: async (params) => await client.send(new UpdateCommand(params)),
   delete: async (params) => await client.send(new DeleteCommand(params)),
   query: async (params) => await client.send(new QueryCommand(params)),
