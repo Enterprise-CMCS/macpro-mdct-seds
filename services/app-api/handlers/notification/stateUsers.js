@@ -1,8 +1,6 @@
 import handler from "./../../libs/handler-lib.js";
-import {
-  getUsersEmailByRole,
-  getUncertifiedStates,
-} from "../shared/sharedFunctions.js";
+import { scanUsersByRole } from "../../storage/users.js";
+import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 const client = new SESClient({ region: "us-east-1" });
@@ -36,24 +34,23 @@ function getQuarter() {
 const quarter = getQuarter();
 const year = new Date().getFullYear();
 
-// returns a list of state users emails whose state isnt fully certified
-async function certifiedStateUsersEmail() {
-  const allStateEmails = await getUsersEmailByRole("state");
-  const uncertifiedStateList = await getUncertifiedStates(year, quarter);
-
-  let stateUsersToEmail = [];
-  allStateEmails.map((e) => {
-    if (uncertifiedStateList.includes(e.state[0])) {
-      stateUsersToEmail.push(e.email);
-    }
-  });
-  return stateUsersToEmail;
+/**
+ * List all emails of users whose state has an In Progress form this quarter.
+ *
+ * @returns {Promise<string[]>}
+ */
+async function determineUsersToEmail() {
+  // TODO: hardcoded status_id. Use FormStatus.InProgress instead.
+  const inProgressForms = await scanFormsByQuarterAndStatus(year, quarter, 1); 
+  const statesToEmail = new Set(inProgressForms.map(f => f.state_id));
+  const users = await scanUsersByRole("state");
+  return users.filter(u => statesToEmail.has(u.states[0])).map(u => u.email);
 }
 
 // creates a template for stateUsers
 async function stateUsersTemplate() {
   // Email of state users whose state isnt certified yet
-  const stateUsersToEmail = await certifiedStateUsersEmail();
+  const stateUsersToEmail = await determineUsersToEmail();
   const fromEmail = "mdct@cms.hhs.gov";
   let todayDate = new Date().toISOString().split("T")[0];
 
