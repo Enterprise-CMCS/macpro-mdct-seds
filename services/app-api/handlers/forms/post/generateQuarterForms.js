@@ -1,8 +1,6 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
-  getFormDescriptions,
-  getQuestionsByYear,
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
@@ -11,6 +9,7 @@ import {
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
+import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
 import { formTypes } from "../../shared/constants.js";
 
 /** Called from the API; admin access required */
@@ -222,7 +221,7 @@ const generateQuarterForms = async (event) => {
   // Pull list of questions
   let allQuestions;
 
-  const questionsFromQuestionTable = await getQuestionsByYear(specifiedYear);
+  const questionsFromQuestionTable = await scanQuestionsByYear(specifiedYear);
 
   // If questions not found, fetch/create them from template table
   if (!questionsFromQuestionTable.length) {

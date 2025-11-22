@@ -1,31 +1,5 @@
 import dynamoDb from "../../libs/dynamodb-lib.js";
 
-export async function getQuestionsByYear(specifiedYear) {
-  const parsedYear = parseInt(specifiedYear);
-
-  const questionParams = {
-    TableName: process.env.FormQuestionsTable,
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ExpressionAttributeValues: {
-      ":specifiedYear": parsedYear,
-    },
-    FilterExpression: "#theYear = :specifiedYear",
-  };
-
-  let questionResult;
-
-  try {
-    questionResult = await dynamoDb.scan(questionParams);
-  } catch (e) {
-    console.log("getQuestionsByYear failed");
-    throw e;
-  }
-
-  return questionResult.Items;
-}
-
 export async function getStatesList() {
   const stateParams = {
     TableName: process.env.StatesTable,

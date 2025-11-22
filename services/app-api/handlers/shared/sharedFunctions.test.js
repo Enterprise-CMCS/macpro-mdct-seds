@@ -7,12 +7,7 @@ import {
   getAnswersSet,
   getFormResultByStateString,
   getQuarter,
-  getQuestionsByYear,
   getStatesList,
-  getUncertifiedStates,
-  getUncertifiedStatesAndForms,
-  getUsersEmailByRole,
-  replaceFormYear,
 } from "./sharedFunctions.js";
 import {
   BatchWriteCommand,
@@ -37,25 +32,6 @@ const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
 describe("sharedFunctions.js", () => {
   beforeEach(() => vi.clearAllMocks());
-
-  describe("getQuestionsByYear", () => {
-    it("should query questions from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ question: "Q1" }, { question: "Q2" }],
-      });
-
-      const result = await getQuestionsByYear("2025");
-
-      expect(result).toEqual([{ question: "Q1" }, { question: "Q2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-questions",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":specifiedYear": 2025 },
-        FilterExpression: "#theYear = :specifiedYear",
-      }), expect.any(Function));
-    });
-  });
 
   describe("getStatesList", () => {
     it("should query states from dynamo", async () => {

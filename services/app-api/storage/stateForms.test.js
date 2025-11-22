@@ -14,7 +14,7 @@ const mockFormCO21E = { state_id: "CO", form: "21E" };
 const mockFormCOGRE = { state_id: "CO", form: "GRE" };
 const mockFormTX21E = { state_id: "TX", form: "21E" };
 
-describe("User storage", () => {
+describe("State Form storage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
