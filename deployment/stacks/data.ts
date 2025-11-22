@@ -55,12 +55,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
-    new DynamoDBTable(scope, "States", {
-      stage,
-      isDev,
-      name: "states",
-      partitionKey: { name: "state_id", type: dynamodb.AttributeType.STRING },
-    }),
     new DynamoDBTable(scope, "AuthUser", {
       stage,
       isDev,

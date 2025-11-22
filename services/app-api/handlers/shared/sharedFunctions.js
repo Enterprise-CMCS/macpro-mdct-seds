@@ -150,23 +150,6 @@ export async function getQuestionsByYear(specifiedYear) {
   return questionResult.Items;
 }
 
-export async function getStatesList() {
-  const stateParams = {
-    TableName: process.env.StatesTable,
-  };
-
-  let stateResult;
-
-  try {
-    stateResult = await dynamoDb.scan(stateParams);
-  } catch (e) {
-    console.log("getStatesList failed");
-    throw e;
-  }
-
-  return stateResult.Items;
-}
-
 export async function getFormResultByStateString(stateFormString) {
   const params = {
     TableName: process.env.FormAnswersTable,

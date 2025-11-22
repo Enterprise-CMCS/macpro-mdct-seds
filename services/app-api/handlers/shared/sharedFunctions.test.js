@@ -8,7 +8,6 @@ import {
   getFormResultByStateString,
   getQuarter,
   getQuestionsByYear,
-  getStatesList,
   getUncertifiedStates,
   getUncertifiedStatesAndForms,
   getUsersEmailByRole,
@@ -193,22 +192,6 @@ describe("sharedFunctions.js", () => {
         ExpressionAttributeNames: { "#theYear": "year" },
         ExpressionAttributeValues: { ":specifiedYear": 2025 },
         FilterExpression: "#theYear = :specifiedYear",
-      }), expect.any(Function));
-    });
-  });
-
-  describe("getStatesList", () => {
-    it("should query states from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ state_id: "CO" }, { state_id: "TX" }],
-      });
-
-      const result = await getStatesList();
-
-      expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-states",
       }), expect.any(Function));
     });
   });

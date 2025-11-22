@@ -93,9 +93,5 @@ module.exports = {
       ],
       tableNameSuffix: "state-forms",
     },
-    {
-      filenames: ["data/initial_data_load/states.json"],
-      tableNameSuffix: "states",
-    },
   ],
 };

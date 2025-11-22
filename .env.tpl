@@ -4,7 +4,6 @@ FormAnswersTable=local-form-answers
 FormQuestionsTable=local-form-questions
 FormTemplatesTable=local-form-templates
 StateFormsTable=local-state-forms
-StatesTable=local-states
 AuthUserTable=local-auth-user
 
 COGNITO_IDENTITY_POOL_ID=op://mdct_devs/seds_secrets/COGNITO_IDENTITY_POOL_ID
