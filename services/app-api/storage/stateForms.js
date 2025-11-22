@@ -37,3 +37,11 @@ export const scanFormsByQuarterAndStatus = async (year, quarter, status_id) => {
   });
   return response.Items;
 };
+
+export const writeAllStateForms = async (forms) => {
+  await dynamoDb.putMultiple(
+    process.env.StateFormsTable,
+    forms,
+    form => form.state_form
+  );
+};

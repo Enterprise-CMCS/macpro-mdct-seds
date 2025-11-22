@@ -3,32 +3,27 @@ import {
   addToQuestionTable,
   createFormTemplate,
   fetchOrCreateQuestions,
-  getQuarter,
   getStatesList,
 } from "./sharedFunctions.js";
 import { getTemplate, putTemplate } from "../../storage/formTemplates.js";
 import {
-  BatchWriteCommand,
   DynamoDBDocumentClient,
-  PutCommand,
-  QueryCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { writeAllFormQuestions } from "../../storage/formQuestions.js";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockBatchWrite = vi.fn().mockResolvedValue({ UnprocessedItems: {} });
-mockDynamo.on(BatchWriteCommand).callsFake(mockBatchWrite);
-const mockPut = vi.fn();
-mockDynamo.on(PutCommand).callsFake(mockPut);
-const mockQuery = vi.fn();
-mockDynamo.on(QueryCommand).callsFake(mockQuery);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 vi.mock("../../storage/formTemplates.js", () => ({
   getTemplate: vi.fn(),
   putTemplate: vi.fn(),
+}));
+
+vi.mock("../../storage/formQuestions.js", () => ({
+  writeAllFormQuestions: vi.fn(),
 }));
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -125,59 +120,32 @@ describe("sharedFunctions.js", () => {
         message: "Questions added to form questions table from template",
       });
 
-      expect(mockBatchWrite).toHaveBeenCalledTimes(2);
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-questions": [
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q1",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
-                },
-              },
-            },
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q2",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
-                },
-              },
-            },
-          ],
+      expect(writeAllFormQuestions).toHaveBeenCalledWith([
+        {
+          questionId: "Q1",
+          year: 2025,
+          created_date: expect.stringMatching(ISO_DATE_REGEX),
+          last_modified: expect.stringMatching(ISO_DATE_REGEX),
         },
-      }, expect.any(Function));
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-questions": [
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q3",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
-                },
-              },
-            },
-            {
-              PutRequest: {
-                Item: {
-                  questionId: "Q4",
-                  year: 2025,
-                  created_date: expect.stringMatching(ISO_DATE_REGEX),
-                  last_modified: expect.stringMatching(ISO_DATE_REGEX),
-                },
-              },
-            },
-          ],
+        {
+          questionId: "Q2",
+          year: 2025,
+          created_date: expect.stringMatching(ISO_DATE_REGEX),
+          last_modified: expect.stringMatching(ISO_DATE_REGEX),
         },
-      }, expect.any(Function));
+        {
+          questionId: "Q3",
+          year: 2025,
+          created_date: expect.stringMatching(ISO_DATE_REGEX),
+          last_modified: expect.stringMatching(ISO_DATE_REGEX),
+        },
+        {
+          questionId: "Q4",
+          year: 2025,
+          created_date: expect.stringMatching(ISO_DATE_REGEX),
+          last_modified: expect.stringMatching(ISO_DATE_REGEX),
+        },
+      ]);
     });
   });
 
@@ -214,19 +182,4 @@ describe("sharedFunctions.js", () => {
       });
     });
   });
-
-  describe("getQuarter", () => {
-    it("should return the federal fiscal quarter for the given date", () => {
-      // Note that we're dodging exact quarter boundaries by a day or few,
-      // to avoid any issues with time zones.
-      expect(getQuarter(new Date("2025-01-02"))).toBe(2);
-      expect(getQuarter(new Date("2025-03-28"))).toBe(2);
-      expect(getQuarter(new Date("2025-04-02"))).toBe(3);
-      expect(getQuarter(new Date("2025-06-28"))).toBe(3);
-      expect(getQuarter(new Date("2025-07-02"))).toBe(4);
-      expect(getQuarter(new Date("2025-09-28"))).toBe(4);
-      expect(getQuarter(new Date("2025-10-02"))).toBe(1);
-      expect(getQuarter(new Date("2025-12-28"))).toBe(1);
-    });
-  })
 });

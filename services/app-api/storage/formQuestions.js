@@ -14,3 +14,12 @@ export const scanQuestionsByYear = async (year) => {
 
   return response.Items;
 };
+
+
+export const writeAllFormQuestions = async (questions) => {
+  await dynamoDb.putMultiple(
+    process.env.FormQuestionsTable,
+    questions,
+    question => question.question
+  );
+};

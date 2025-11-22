@@ -1,5 +1,6 @@
 import dynamoDb from "../../libs/dynamodb-lib.js";
 import { getTemplate, putTemplate } from "../../storage/formTemplates.js";
+import { writeAllFormQuestions } from "../../storage/formQuestions.js";
 
 export async function getStatesList() {
   const stateParams = {
@@ -97,57 +98,14 @@ export async function addToQuestionTable(questionsForThisYear, questionYear) {
   // By this point, questions have been found or created for a given year
 
   // Map through the found questions and create batch put requests for the questions table
-  const questionsFromTemplate = questionsForThisYear.map((question) => {
-    return {
-      PutRequest: {
-        Item: {
-          ...question,
-          year: parseInt(questionYear),
-          created_date: new Date().toISOString(),
-          last_modified: new Date().toISOString(),
-        },
-      },
-    };
-  });
+  const questionsFromTemplate = questionsForThisYear.map((question) => ({
+    ...question,
+    year: parseInt(questionYear),
+    created_date: new Date().toISOString(),
+    last_modified: new Date().toISOString(),
+  }));
 
-  // There will be at most, 39 questions. The maximum for batchWrite is 25 so we'll proces one half at a time
-  const mid = Math.floor(questionsFromTemplate.length / 2);
-  const firstBatch = questionsFromTemplate.slice(0, mid);
-  const secondBatch = questionsFromTemplate.slice(mid);
-  const splitQuestions = [firstBatch, secondBatch];
-
-  const questionTableName = process.env.FormQuestionsTable;
-
-  // Add the questions found in the template to the form-questions table
-  // this can/should be done recursively to better account for unprocessed items
-  let failedItems = [];
-  for (const batch of splitQuestions) {
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem({
-      RequestItems: { [questionTableName]: batch },
-    });
-    // If some questions fail to write, add them to a list of failures
-    if (UnprocessedItems.length) {
-      failedItems.push(UnprocessedItems);
-    }
-  }
-
-  // retry any failed entries
-  if (failedItems.length) {
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem({
-      RequestItems: { [questionTableName]: failedItems },
-    });
-
-    // if some still fail, add them to a list of items to be returned, return status 500
-    if (UnprocessedItems.length) {
-      console.error(
-        `Failed to add all questions from template to question table `
-      );
-      return {
-        status: 500,
-        message: `Failed to add all questions from template to question table`,
-      };
-    }
-  }
+  await writeAllFormQuestions(questionsFromTemplate);
 
   return {
     status: 200,
@@ -196,14 +154,3 @@ export async function createFormTemplate(year, questions) {
     };
   }
 }
-
-// For the US Government fiscal year
-// Oct-Dec = 1
-// Jan-Mar = 2
-// Apr-Jun = 3
-// Jul-Sep = 4
-export const getQuarter = (d) => {
-  d = d || new Date();
-  const m = Math.floor(d.getMonth() / 3) + 2;
-  return m > 4 ? m - 4 : m;
-};

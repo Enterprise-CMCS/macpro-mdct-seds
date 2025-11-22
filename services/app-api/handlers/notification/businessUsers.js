@@ -2,6 +2,7 @@ import handler from "./../../libs/handler-lib.js";
 import { scanUsersByRole } from "../../storage/users.js";
 import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { calculateFiscalQuarterFromDate } from "../../libs/time.js";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -26,15 +27,8 @@ export const main = handler(async (event, context) => {
   };
 });
 
-function getQuarter() {
-  let d = new Date();
-  let m = Math.floor(d.getMonth() / 3) + 2;
-  return m > 4 ? m - 4 : m;
-}
-const quarter = getQuarter();
-const year = new Date().getFullYear();
-
 async function businessOwnersTemplate() {
+  const { year, quarter } = calculateFiscalQuarterFromDate(new Date());
   // TODO: hardcoded status_id. Use FormStatus.InProgress instead.
   const inProgressForms = await scanFormsByQuarterAndStatus(year, quarter, 1);
   const usersToEmail = (await scanUsersByRole("business")).map(u => u.email);

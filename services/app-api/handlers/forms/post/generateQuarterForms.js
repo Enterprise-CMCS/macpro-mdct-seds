@@ -1,5 +1,4 @@
 import handler from "../../../libs/handler-lib.js";
-import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
   getStatesList,
   fetchOrCreateQuestions,
@@ -8,8 +7,14 @@ import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
-import { scanForAllFormIds } from "../../../storage/formAnswers.js";
-import { scanStateFormsByQuarter } from "../../../storage/stateForms.js";
+import {
+  scanForAllFormIds,
+  writeAllFormAnswers
+} from "../../../storage/formAnswers.js";
+import {
+  scanStateFormsByQuarter,
+  writeAllStateForms
+} from "../../../storage/stateForms.js";
 import { formTypes } from "../../shared/constants.js";
 
 /** Called from the API; admin access required */
@@ -28,33 +33,6 @@ export const scheduled = handler(async (event, context) => {
  */
 const generateQuarterForms = async (event) => {
   let noMissingForms = true;
-
-  // at top of file, or in some config file
-  const retryFailLimit = 5;
-  const failureList = [];
-
-  // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
-  const batchWriteAll = async (tryRetryBatch) => {
-    // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem(tryRetryBatch.batch);
-
-    // If there are any failures and under the retry limit
-    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
-      const retryBatch = {
-        noOfRetries: tryRetryBatch.noOfRetries + 1,
-        batch: UnprocessedItems,
-      };
-      return await batchWriteAll(retryBatch);
-    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
-      // exceeded failure limit
-      console.error(
-        `Tried batch ${
-          tryRetryBatch.noOfRetries
-        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
-      );
-      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
-    }
-  };
 
   const determineAgeRanges = (questionId) => {
     const year = questionId.split("-")[0];
@@ -146,8 +124,7 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Add All StateForm Descriptions
-  const putRequestsStateForms = [];
+  const stateFormsToCreate = [];
 
   // Loop through all states
   for (const state in allStates) {
@@ -159,62 +136,35 @@ const generateQuarterForms = async (event) => {
       if (!foundFormIds.has(stateFormString)) {
         noMissingForms = false;
         // Add item to array for batching later
-        putRequestsStateForms.push({
-          PutRequest: {
-            Item: {
-              state_form: stateFormString,
-              status_date: new Date().toISOString(),
-              year: specifiedYear,
-              state_comments: [{ type: "text_multiline", entry: "" }],
-              form_id: formTypes[form].form_id,
-              last_modified_by: "seed",
-              status_modified_by: "seed",
-              created_by: "seed",
-              validation_percent: "0.03",
-              ...InProgressStatusFields(),
-              form: formTypes[form].form,
-              program_code: "All",
-              state_id: allStates[state].state_id,
-              created_date: new Date().toISOString(),
-              form_name: formTypes[form].form_name,
-              last_modified: new Date().toISOString(),
-              quarter: specifiedQuarter,
-            },
-          },
+        stateFormsToCreate.push({
+          state_form: stateFormString,
+          status_date: new Date().toISOString(),
+          year: specifiedYear,
+          state_comments: [{ type: "text_multiline", entry: "" }],
+          form_id: formTypes[form].form_id,
+          last_modified_by: "seed",
+          status_modified_by: "seed",
+          created_by: "seed",
+          validation_percent: "0.03",
+          ...InProgressStatusFields(),
+          form: formTypes[form].form,
+          program_code: "All",
+          state_id: allStates[state].state_id,
+          created_date: new Date().toISOString(),
+          form_name: formTypes[form].form_name,
+          last_modified: new Date().toISOString(),
+          quarter: specifiedQuarter,
         });
       }
     }
   }
-  // Begin batching by groups of 25
-  const batchArrayFormDescriptions = [];
-  const batchSize = 25;
-  for (let i = 0; i < putRequestsStateForms.length; i += batchSize) {
-    batchArrayFormDescriptions.push(
-      putRequestsStateForms.slice(i, i + batchSize)
-    );
-  }
 
-  // Generate a flat array of the state forms being added
-  let stateFormsBeingGenerated = batchArrayFormDescriptions
-    .map((e) => {
-      return e.map((element) => {
-        return element.PutRequest.Item.state_form;
-      });
-    })
-    .flat();
 
-  console.log(`Saving ${putRequestsStateForms.length} state forms`);
+  const newFormIds = new Set(stateFormsToCreate.map(f => f.state_form));
 
-  // Loop through batches and write to DB
-  for (let i in batchArrayFormDescriptions) {
-    const batchRequest = {
-      RequestItems: {
-        [process.env.StateFormsTable]: batchArrayFormDescriptions[i],
-      },
-    };
-
-    // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+  console.log(`Saving ${stateFormsToCreate.length} state forms`);
+  if (stateFormsToCreate.length > 0) {
+    await writeAllStateForms(stateFormsToCreate);
   }
 
   // -----------------------------------------------------------------
@@ -241,8 +191,7 @@ const generateQuarterForms = async (event) => {
     allQuestions = questionsFromQuestionTable;
   }
 
-  // Add All StateForm Descriptions
-  const putRequestsFormAnswers = [];
+  const formAnswersToCreate = [];
   const formIdsWithAnswers = restoreMissingAnswers
     ? new Set(await scanForAllFormIds())
     : null;
@@ -271,9 +220,7 @@ const generateQuarterForms = async (event) => {
 
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
         // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
-        const isGeneratingStateForm = stateFormsBeingGenerated.includes(
-          stateFormID
-        );
+        const isGeneratingStateForm = newFormIds.has(stateFormID);
         const missingAnswers =
           restoreMissingAnswers && !formIdsWithAnswers.has(stateFormID);
 
@@ -282,34 +229,21 @@ const generateQuarterForms = async (event) => {
             console.log(`    - Restoring answer entry: ${answerEntry}`);
           }
           noMissingForms = false;
-          putRequestsFormAnswers.push({
-            PutRequest: {
-              Item: {
-                answer_entry: answerEntry,
-                age_range: currentAgeRangeLabel,
-                rangeId: currentAgeRangeId,
-                question: questionID,
-                state_form: stateFormID,
-                last_modified_by: "seed",
-                created_date: new Date().toISOString(),
-                rows: allQuestions[question].rows,
-                last_modified: new Date().toISOString(),
-                created_by: "seed",
-              },
-            },
+          formAnswersToCreate.push({
+            answer_entry: answerEntry,
+            age_range: currentAgeRangeLabel,
+            rangeId: currentAgeRangeId,
+            question: questionID,
+            state_form: stateFormID,
+            last_modified_by: "seed",
+            created_date: new Date().toISOString(),
+            rows: allQuestions[question].rows,
+            last_modified: new Date().toISOString(),
+            created_by: "seed",
           });
         }
       }
     }
-  }
-  console.log(`Batching ${putRequestsFormAnswers.length} answers`);
-  // Begin batching by groups of 25
-  const batchArrayFormAnswers = [];
-  const batchSizeFA = 25;
-  for (let i = 0; i < putRequestsFormAnswers.length; i += batchSizeFA) {
-    batchArrayFormAnswers.push(
-      putRequestsFormAnswers.slice(i, i + batchSizeFA)
-    );
   }
 
   // This will only be true if neither !foundForms.includes statements pass,
@@ -323,24 +257,7 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Loop through batches and write to DB
-  for (let i in batchArrayFormAnswers) {
-    const batchRequest = {
-      RequestItems: {
-        [process.env.FormAnswersTable]: batchArrayFormAnswers[i],
-      },
-    };
-
-    // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
-  }
-
-  if (failureList.length > 0) {
-    return {
-      status: 500,
-      message: `Failed to write all entries to database.`,
-    };
-  }
+  await writeAllFormAnswers(formAnswersToCreate);
 
   return {
     status: 200,

@@ -15,3 +15,14 @@ export const scanForAllFormIds = async () => {
 
   return response.Items.map(answer => answer.state_form);
 };
+
+/**
+ * @param {object[]} answers
+ */
+export const writeAllFormAnswers = async (answers) => {
+  await dynamoDb.putMultiple(
+    process.env.FormAnswersTable,
+    answers,
+    answer => answer.answer_entry
+  );
+};
