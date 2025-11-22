@@ -17,20 +17,6 @@ export async function getStatesList() {
   return stateResult.Items;
 }
 
-export async function getFormResultByStateString(stateFormString) {
-  const params = {
-    TableName: process.env.FormAnswersTable,
-    ExpressionAttributeValues: {
-      ":state_form": stateFormString,
-    },
-    FilterExpression: "state_form = :state_form",
-  };
-
-  const result = await dynamoDb.scan(params);
-
-  return result.Items;
-}
-
 // Return a map of all stateFormIds within the answers table for use when repairing old data sets
 export async function getAnswersSet() {
   console.log("Building set of state forms with answers");

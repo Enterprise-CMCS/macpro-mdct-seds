@@ -5,7 +5,6 @@ import {
   fetchOrCreateQuestions,
   findExistingStateForms,
   getAnswersSet,
-  getFormResultByStateString,
   getQuarter,
   getStatesList,
 } from "./sharedFunctions.js";
@@ -45,24 +44,6 @@ describe("sharedFunctions.js", () => {
       expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-states",
-      }), expect.any(Function));
-    });
-  });
-
-  describe("getFormResultByStateString", () => {
-    it("should query states from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ form: "F1" }, { form: "F2" }],
-      });
-
-      const result = await getFormResultByStateString("CO-2025-1-A");
-
-      expect(result).toEqual([{ form: "F1" }, { form: "F2" }]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-answers",
-        ExpressionAttributeValues: { ":state_form": "CO-2025-1-A" },
-        FilterExpression: "state_form = :state_form",
       }), expect.any(Function));
     });
   });
