@@ -3,11 +3,11 @@ import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
+import { scanForAllFormIds } from "../../../storage/formAnswers.js";
 import {
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
-  getAnswersSet,
 } from "../../shared/sharedFunctions.js";
 import {
   DynamoDBDocumentClient,
@@ -38,11 +38,14 @@ vi.mock("../../shared/sharedFunctions.js", () => ({
   getStatesList: vi.fn(),
   findExistingStateForms: vi.fn(),
   fetchOrCreateQuestions: vi.fn(),
-  getAnswersSet: vi.fn(),
 }));
 
 vi.mock("../../../storage/formQuestions.js", () => ({
   scanQuestionsByYear: vi.fn(),
+}));
+
+vi.mock("../../../storage/formAnswers.js", () => ({
+  scanForAllFormIds: vi.fn(),
 }));
 
 const mockBatchWrite = vi.fn().mockResolvedValue({ UnprocessedItems: [] });
@@ -297,7 +300,7 @@ describe("generateQuarterForms.js", () => {
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
-    getAnswersSet.mockResolvedValueOnce(new Set());
+    scanForAllFormIds.mockResolvedValueOnce([]);
 
     await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
 
@@ -356,7 +359,7 @@ describe("generateQuarterForms.js", () => {
     ]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
-    getAnswersSet.mockResolvedValueOnce(new Set([
+    scanForAllFormIds.mockResolvedValueOnce([
       /* Omitting CO 21E */
       "CO-2025-1-64.EC",
       "CO-2025-1-64.21E",
@@ -369,7 +372,7 @@ describe("generateQuarterForms.js", () => {
       "TX-2025-1-64.ECI",
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
-    ]));
+    ]);
 
     await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
     

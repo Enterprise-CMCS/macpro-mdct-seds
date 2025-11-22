@@ -4,12 +4,12 @@ import {
   getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
-  getAnswersSet,
 } from "../../shared/sharedFunctions.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
+import { scanForAllFormIds } from "../../../storage/formAnswers.js";
 import { formTypes } from "../../shared/constants.js";
 
 /** Called from the API; admin access required */
@@ -242,7 +242,9 @@ const generateQuarterForms = async (event) => {
 
   // Add All StateForm Descriptions
   const putRequestsFormAnswers = [];
-  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
+  const formIdsWithAnswers = restoreMissingAnswers
+    ? new Set(await scanForAllFormIds())
+    : null;
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in allStates) {
@@ -272,7 +274,7 @@ const generateQuarterForms = async (event) => {
           stateFormID
         );
         const missingAnswers =
-          restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
+          restoreMissingAnswers && !formIdsWithAnswers.has(stateFormID);
 
         if (isGeneratingStateForm || missingAnswers) {
           if (!isGeneratingStateForm && missingAnswers) {

@@ -4,7 +4,6 @@ import {
   createFormTemplate,
   fetchOrCreateQuestions,
   findExistingStateForms,
-  getAnswersSet,
   getQuarter,
   getStatesList,
 } from "./sharedFunctions.js";
@@ -44,22 +43,6 @@ describe("sharedFunctions.js", () => {
       expect(result).toEqual([{ state_id: "CO" }, { state_id: "TX" }]);
       expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
         TableName: "local-states",
-      }), expect.any(Function));
-    });
-  });
-
-  describe("getAnswersSet", () => {
-    it("should query answer form IDs from dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Count: 2,
-        Items: [{ state_form: "F1" }, { state_form: "F2" }],
-      });
-
-      const result = await getAnswersSet();
-
-      expect(result).toEqual(new Set(["F1", "F2"]));
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-answers",
       }), expect.any(Function));
     });
   });
