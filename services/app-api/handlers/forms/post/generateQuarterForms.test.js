@@ -4,6 +4,14 @@ import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
 import { scanForAllFormIds, writeAllFormAnswers } from "../../../storage/formAnswers.js";
+import {
+  scanQuestionsByYear,
+  writeAllFormQuestions,
+} from "../../../storage/formQuestions.js";
+import {
+  getTemplate,
+  putTemplate
+} from "../../../storage/formTemplates.js";
 import { scanStateFormsByQuarter, writeAllStateForms } from "../../../storage/stateForms.js";
 import {
   getStatesList,
@@ -27,16 +35,21 @@ vi.mock("../../../auth/authConditions.js", () => ({
 
 vi.mock("../../shared/sharedFunctions.js", () => ({
   getStatesList: vi.fn(),
-  fetchOrCreateQuestions: vi.fn(),
-}));
-
-vi.mock("../../../storage/formQuestions.js", () => ({
-  scanQuestionsByYear: vi.fn(),
 }));
 
 vi.mock("../../../storage/formAnswers.js", () => ({
   scanForAllFormIds: vi.fn(),
   writeAllFormAnswers: vi.fn(),
+}));
+
+vi.mock("../../../storage/formQuestions.js", () => ({
+  scanQuestionsByYear: vi.fn(),
+  writeAllFormQuestions: vi.fn(),
+}));
+
+vi.mock("../../../storage/formTemplates.js", () => ({
+  getTemplate: vi.fn(),
+  putTemplate: vi.fn(),
 }));
 
 vi.mock("../../../storage/stateForms.js", () => ({
@@ -174,21 +187,6 @@ describe("generateQuarterForms.js", () => {
     for (let form of writtenStateForms) {
       expect(form.state_form).toMatch(/^(CO|TX)-2026-/);
     }
-  });
-
-  it("should return an error if no... states... exist?", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([]);
-
-    const response = await generateQuarterForms({});
-
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "Could not retrieve state list.",
-      }),
-    }));
   });
 
   it("should populate state answers for newly generated forms", async () => {
@@ -337,10 +335,9 @@ describe("generateQuarterForms.js", () => {
     scanStateFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
-    fetchOrCreateQuestions.mockResolvedValueOnce({
-      status: 200,
-      payload: [mockQuestion2]
-    });
+    getTemplate.mockResolvedValueOnce({
+      template: [mockQuestion2]
+    })
 
     await generateQuarterForms({ });
 
@@ -353,26 +350,54 @@ describe("generateQuarterForms.js", () => {
     }
   });
 
-  it("should return an error if fetchOrCreateQuestions fails", async () => {
+  it("should copy the template from the previous year if necessary", async () => {
     scanStateFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
-    fetchOrCreateQuestions.mockResolvedValueOnce({
-      status: 500,
-      message: "That didn't work."
+    getTemplate.mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce({
+        year: 2024,
+        template: [mockQuestion2]
+      });
+
+    await generateQuarterForms({ });
+
+    expect(putTemplate).toHaveBeenCalledWith({
+      year: 2025,
+      template: [mockQuestion2],
+      lastSynced: expect.stringMatching(ISO_DATE_REGEX),
     });
+  
+    expect(writeAllFormQuestions).toHaveBeenCalledWith([
+      {
+        ...mockQuestion2,
+        created_date: expect.stringMatching(ISO_DATE_REGEX),
+        last_modified: expect.stringMatching(ISO_DATE_REGEX),
+      },
+    ]);
+
+    expect(writeAllFormAnswers).toHaveBeenCalled();
+    const writtenFormAnswers = writeAllFormAnswers.mock.calls[0][0];
+    expect(writtenFormAnswers).toHaveLength(4);
+    for (let answer of writtenFormAnswers) {
+      // The ID of mockQuestion2
+      expect(answer.question).toBe("2025-GRE-76");
+    }
+  });
+
+  it("should fail if no template exists for this year or the previous", async () => {
+    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    getStatesList.mockResolvedValueOnce([colorado, texas]);
+    scanQuestionsByYear.mockResolvedValueOnce([]);
+    getTemplate.mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined);
 
     const response = await generateQuarterForms({ });
 
     expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 500,
-        message: "That didn't work."
-      })
+      statusCode: 500,
+      body: expect.stringContaining("No template found for 2025 or 2024!")
     }));
-    expect(writeAllStateForms).toHaveBeenCalled();
-    expect(writeAllFormAnswers).not.toHaveBeenCalled();
   });
 
   it("should return Internal Server Error if the user is not an admin", async () => {

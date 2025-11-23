@@ -1,16 +1,22 @@
 import handler from "../../../libs/handler-lib.js";
 import {
   getStatesList,
-  fetchOrCreateQuestions,
 } from "../../shared/sharedFunctions.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
-import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
 import {
   scanForAllFormIds,
   writeAllFormAnswers
 } from "../../../storage/formAnswers.js";
+import {
+  getTemplate,
+  putTemplate
+} from "../../../storage/formTemplates.js";
+import {
+  scanQuestionsByYear,
+  writeAllFormQuestions,
+} from "../../../storage/formQuestions.js";
 import {
   scanStateFormsByQuarter,
   writeAllStateForms
@@ -169,27 +175,9 @@ const generateQuarterForms = async (event) => {
 
   // -----------------------------------------------------------------
 
-  // Pull list of questions
-  let allQuestions;
+  const allQuestions = await getOrCreateQuestions(specifiedYear);
 
-  const questionsFromQuestionTable = await scanQuestionsByYear(specifiedYear);
-
-  // If questions not found, fetch/create them from template table
-  if (!questionsFromQuestionTable.length) {
-    let createdQuestions = await fetchOrCreateQuestions(
-      specifiedYear,
-      specifiedQuarter
-    );
-
-    if (createdQuestions.status !== 200) {
-      // Return error message without payload
-      const { status, message } = createdQuestions;
-      return { status, message };
-    }
-    allQuestions = createdQuestions.payload;
-  } else {
-    allQuestions = questionsFromQuestionTable;
-  }
+  console.log({ allQuestions });
 
   const formAnswersToCreate = [];
   const formIdsWithAnswers = restoreMissingAnswers
@@ -257,10 +245,54 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  await writeAllFormAnswers(formAnswersToCreate);
+  if (formAnswersToCreate.length > 0) {
+    await writeAllFormAnswers(formAnswersToCreate);
+  }
 
   return {
     status: 200,
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
 };
+
+/** @param {number} year */
+export const getOrCreateFormTemplate = async (year) => {
+  let response = await getTemplate(year);
+  if (response) {
+    return response.template;
+  }
+
+  response = await getTemplate(year - 1);
+  if (!response) {
+    throw new Error(`No template found for ${year} or ${year - 1}!`);
+  }
+
+  const newTemplate = JSON.parse(
+    JSON.stringify(response).replaceAll(`${year - 1}`, `${year}`)
+  );
+
+  await putTemplate({
+    ...newTemplate,
+    lastSynced: new Date().toISOString(),
+  });
+
+  return newTemplate.template;
+};
+
+/** @param {number} year */
+export const getOrCreateQuestions = async (year) => {
+  let questions = await scanQuestionsByYear(year);
+  if (questions.length > 0) {
+    return questions;
+  }
+
+  questions = (await getOrCreateFormTemplate(year)).map(question => ({
+    ...question,
+    created_date: new Date().toISOString(),
+    last_modified: new Date().toISOString(),
+  }));
+  
+  await writeAllFormQuestions(questions);
+
+  return questions;
+}
