@@ -1,20 +1,23 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
+import {
+  scanForAllFormIds,
+  writeAllFormAnswers,
+} from "../../../storage/formAnswers.js";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
 } from "../../../storage/formQuestions.js";
 import {
   getTemplate,
-  putTemplate
+  putTemplate,
 } from "../../../storage/formTemplates.js";
 import {
   scanFormsByQuarter,
-  writeAllStateForms
+  writeAllStateForms,
 } from "../../../storage/stateForms.js";
-import { stateList } from "../../shared/stateList.js";
 
 /*
  * Coverage notes:
@@ -22,6 +25,7 @@ import { stateList } from "../../shared/stateList.js";
  *     for years 2018-2020. The current year is 2025, and I don't see
  *     value in unit testing that logic.
  */
+
 vi.mock("../../shared/stateList.js", () => ({
   stateList: [
     { state_id: "CO", state_name: "Colorado" },
@@ -59,8 +63,6 @@ vi.mock("../../../storage/stateForms.js", () => ({
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
-const colorado = { state_id: "CO" };
-const texas = { state_id: "TX" };
 const mockQuestion1 = {
   question: "Q1-21E-42",
   age_ranges: [
@@ -378,7 +380,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should fail if no template exists for this year or the previous", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce(undefined)
       .mockResolvedValueOnce(undefined);
