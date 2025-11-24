@@ -13,7 +13,7 @@ mockDynamo.on(GetCommand).callsFake(mockGet);
 const mockPut = vi.fn();
 mockDynamo.on(PutCommand).callsFake(mockPut);
 
-const mockTemplate = { year: 2025, template: [{}] };
+const mockTemplate = { year: 2025, template: [{ question: "Q1" }] };
 
 describe("Form Template storage", () => {
   beforeEach(() => {

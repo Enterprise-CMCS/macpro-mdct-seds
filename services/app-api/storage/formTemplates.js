@@ -13,6 +13,9 @@ export const getTemplate = async (year) => {
   return response.Item;
 };
 
+/**
+ * @param {object} formTemplate
+ */
 export const putTemplate = async (formTemplate) => {
   await dynamoDb.put({
     TableName: process.env.FormTemplatesTable,

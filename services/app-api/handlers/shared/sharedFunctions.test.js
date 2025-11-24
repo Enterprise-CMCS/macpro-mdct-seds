@@ -10,7 +10,7 @@ const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-describe.skip("sharedFunctions.js", () => {
+describe("sharedFunctions.js", () => {
   beforeEach(() => vi.clearAllMocks());
 
   describe("getStatesList", () => {

@@ -177,8 +177,6 @@ const generateQuarterForms = async (event) => {
 
   const allQuestions = await getOrCreateQuestions(specifiedYear);
 
-  console.log({ allQuestions });
-
   const formAnswersToCreate = [];
   const formIdsWithAnswers = restoreMissingAnswers
     ? new Set(await scanForAllFormIds())

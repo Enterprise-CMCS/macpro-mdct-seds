@@ -15,7 +15,9 @@ export const scanQuestionsByYear = async (year) => {
   return response.Items;
 };
 
-
+/**
+ * @param {object[]} questions
+ */
 export const writeAllFormQuestions = async (questions) => {
   await dynamoDb.putMultiple(
     process.env.FormQuestionsTable,

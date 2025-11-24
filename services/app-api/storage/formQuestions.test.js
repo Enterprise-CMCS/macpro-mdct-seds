@@ -1,14 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { scanQuestionsByYear } from "./formQuestions.js";
 import {
+  scanQuestionsByYear,
+  writeAllFormQuestions,
+} from "./formQuestions.js";
+import {
+  BatchWriteCommand,
   DynamoDBDocumentClient,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
+const mockBatchWrite = vi.fn();
+mockDynamo.on(BatchWriteCommand).callsFake(mockBatchWrite);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
+
+mockBatchWrite.mockResolvedValue({});
 
 const mockQuestion1 = { question: "Q1" };
 const mockQuestion2 = { question: "Q2" };
@@ -34,6 +42,22 @@ describe("Form Question storage", () => {
         ExpressionAttributeNames: { "#year": "year" },
         ExpressionAttributeValues: { ":year": 2025 },
       }), expect.any(Function));
+    });
+  });
+  
+  describe("writeAllFormQuestions", () => {
+    it("should write objects to dynamo", async () => {
+      await writeAllFormQuestions([mockQuestion1, mockQuestion2]);
+
+      expect(mockBatchWrite).toHaveBeenCalledWith({
+        RequestItems: {
+          "local-form-questions": [
+            { PutRequest: { Item: mockQuestion1 } },
+            { PutRequest: { Item: mockQuestion2 } },
+          ],
+        },
+      },
+      expect.any(Function));
     });
   });
 });
