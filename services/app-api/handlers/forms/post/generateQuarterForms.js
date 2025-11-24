@@ -1,9 +1,7 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import {
-  getFormDescriptions,
   getQuestionsByYear,
-  getStatesList,
   findExistingStateForms,
   fetchOrCreateQuestions,
   getAnswersSet,
@@ -12,6 +10,7 @@ import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
 import { formTypes } from "../../shared/constants.js";
+import { stateList } from "../../shared/stateList.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -136,25 +135,15 @@ const generateQuarterForms = async (event) => {
     specifiedQuarter
   );
 
-  // Pull list of states
-  let allStates = await getStatesList();
-
-  if (!allStates.length) {
-    return {
-      status: 500,
-      message: `Could not retrieve state list.`,
-    };
-  }
-
   // Add All StateForm Descriptions
   const putRequestsStateForms = [];
 
   // Loop through all states
-  for (const state in allStates) {
+  for (const state in stateList) {
     // Loop through form descriptions for each state
     for (const form in formTypes) {
       // Build lengthy strings
-      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
+      const stateFormString = `${stateList[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
 
       if (!foundForms.includes(stateFormString)) {
         noMissingForms = false;
@@ -174,7 +163,7 @@ const generateQuarterForms = async (event) => {
               ...InProgressStatusFields(),
               form: formTypes[form].form,
               program_code: "All",
-              state_id: allStates[state].state_id,
+              state_id: stateList[state].state_id,
               created_date: new Date().toISOString(),
               form_name: formTypes[form].form_name,
               last_modified: new Date().toISOString(),
@@ -246,7 +235,7 @@ const generateQuarterForms = async (event) => {
   const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
 
   // Loop through all states, then all questions to return a new record with correct state info
-  for (const state in allStates) {
+  for (const state in stateList) {
     // Loop through each question
     for (const question in allQuestions) {
       // Get age range array
@@ -256,7 +245,7 @@ const generateQuarterForms = async (event) => {
       // Loop through each age range and insert row
       for (const range in ageRanges) {
         // Get reusable values
-        const currentState = allStates[state].state_id;
+        const currentState = stateList[state].state_id;
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
