@@ -74,7 +74,7 @@ describe("Tests for HomeAdmin.js", () => {
     ).toBeInTheDocument();
   });
 
-  describe("should update a state selector when selected", () => {
+  describe("should update state selector when a state is picked", () => {
     beforeEach(async () => {
       renderComponent();
       await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
@@ -82,7 +82,7 @@ describe("Tests for HomeAdmin.js", () => {
       const stateDropdown = screen.getByText("Select a state");
       userEvent.click(stateDropdown);
     });
-    it("when there is are no forms avaliable", async () => {
+    it("when no forms exist in the state", async () => {
       const stateOption = screen.getByText("Alabama");
       userEvent.click(stateOption);
 
@@ -94,7 +94,7 @@ describe("Tests for HomeAdmin.js", () => {
         ).toBeInTheDocument()
       );
     });
-    it("when there are forms avaliable", async () => {
+    it("when forms exist in the state", async () => {
       buildSortedAccordionByYearQuarter.mockReturnValue(forms);
       const stateOption = screen.getByText("Alabama");
       userEvent.click(stateOption);
