@@ -2,8 +2,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
-import { scanQuestionsByYear } from "../../../storage/formQuestions.js";
-import { scanForAllFormIds, writeAllFormAnswers } from "../../../storage/formAnswers.js";
+import {
+  scanForAllFormIds,
+  writeAllFormAnswers
+} from "../../../storage/formAnswers.js";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
@@ -12,7 +14,10 @@ import {
   getTemplate,
   putTemplate
 } from "../../../storage/formTemplates.js";
-import { scanFormsByQuarter, writeAllStateForms } from "../../../storage/stateForms.js";
+import {
+  scanFormsByQuarter,
+  writeAllStateForms
+} from "../../../storage/stateForms.js";
 import { getStatesList } from "../../shared/sharedFunctions.js";
 
 /*
