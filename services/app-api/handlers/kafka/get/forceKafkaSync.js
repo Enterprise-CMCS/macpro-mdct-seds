@@ -6,7 +6,6 @@ const tableNames = [
   process.env.FormQuestionsTable,
   process.env.FormTemplatesTable,
   process.env.StateFormsTable,
-  process.env.StatesTable,
   process.env.AuthUserTable,
 ];
 

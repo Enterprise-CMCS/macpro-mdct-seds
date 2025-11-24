@@ -1,11 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
-import {
-  scanForAllFormIds,
-  writeAllFormAnswers
-} from "../../../storage/formAnswers.js";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
@@ -18,7 +14,7 @@ import {
   scanFormsByQuarter,
   writeAllStateForms
 } from "../../../storage/stateForms.js";
-import { getStatesList } from "../../shared/sharedFunctions.js";
+import { stateList } from "../../shared/stateList.js";
 
 /*
  * Coverage notes:
@@ -26,6 +22,12 @@ import { getStatesList } from "../../shared/sharedFunctions.js";
  *     for years 2018-2020. The current year is 2025, and I don't see
  *     value in unit testing that logic.
  */
+vi.mock("../../shared/stateList.js", () => ({
+  stateList: [
+    { state_id: "CO", state_name: "Colorado" },
+    { state_id: "TX", state_name: "Texas" },
+  ]
+}));
 
 vi.mock("../../../libs/time.js", () => ({
   calculateFormQuarterFromDate: vi.fn().mockReturnValue({ year: 2025, quarter: 1 }),
@@ -33,10 +35,6 @@ vi.mock("../../../libs/time.js", () => ({
 
 vi.mock("../../../auth/authConditions.js", () => ({
   authorizeAdmin: vi.fn(),
-}));
-
-vi.mock("../../shared/sharedFunctions.js", () => ({
-  getStatesList: vi.fn(),
 }));
 
 vi.mock("../../../storage/formAnswers.js", () => ({
@@ -87,7 +85,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should create state forms for the current quarter", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({});
@@ -163,7 +160,6 @@ describe("generateQuarterForms.js", () => {
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -175,7 +171,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should create forms for the specified year and quarter if provided", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({
@@ -193,7 +188,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should populate state answers for newly generated forms", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({ });
@@ -201,7 +195,7 @@ describe("generateQuarterForms.js", () => {
     expect(writeAllFormAnswers).toHaveBeenCalled();
 
     /*
-     * getStatesList is mocked to give [CO, TX]
+     * stateList is mocked to give [CO, TX]
      * scanQuestionsByYear is mocked to give one question with age ranges [0001, 0105]
      * That makes four answer objects to be inserted to the DB.
      */
@@ -245,7 +239,6 @@ describe("generateQuarterForms.js", () => {
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     scanForAllFormIds.mockResolvedValueOnce([]);
 
@@ -270,7 +263,6 @@ describe("generateQuarterForms.js", () => {
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({ });
@@ -301,7 +293,6 @@ describe("generateQuarterForms.js", () => {
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
     ]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     scanForAllFormIds.mockResolvedValueOnce([
       /* Omitting CO 21E */
@@ -335,7 +326,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should query the template table for questions if they are not in the questions table for this year", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce({
       template: [mockQuestion2]
@@ -354,7 +344,6 @@ describe("generateQuarterForms.js", () => {
 
   it("should copy the template from the previous year if necessary", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce(undefined)
       .mockResolvedValueOnce({
@@ -416,7 +405,6 @@ describe("generateQuarterForms.js", () => {
   it("should not require authorization if invoked from a scheduled job", async () => {
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     scanFormsByQuarter.mockResolvedValueOnce([]);
-    getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await scheduled({});

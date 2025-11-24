@@ -28,7 +28,7 @@ describe("forceKafkaSync", () => {
 
     await forceKafkaSync({});
 
-    expect(mockScan).toHaveBeenCalledTimes(6);
+    expect(mockScan).toHaveBeenCalledTimes(5);
     expect(mockBatchWrite).toHaveBeenCalled();
     
     // I don't want to test the exact table name,
