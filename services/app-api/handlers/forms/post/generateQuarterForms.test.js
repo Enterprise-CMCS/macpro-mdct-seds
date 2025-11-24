@@ -12,11 +12,8 @@ import {
   getTemplate,
   putTemplate
 } from "../../../storage/formTemplates.js";
-import { scanStateFormsByQuarter, writeAllStateForms } from "../../../storage/stateForms.js";
-import {
-  getStatesList,
-  fetchOrCreateQuestions,
-} from "../../shared/sharedFunctions.js";
+import { scanFormsByQuarter, writeAllStateForms } from "../../../storage/stateForms.js";
+import { getStatesList } from "../../shared/sharedFunctions.js";
 
 /*
  * Coverage notes:
@@ -53,7 +50,7 @@ vi.mock("../../../storage/formTemplates.js", () => ({
 }));
 
 vi.mock("../../../storage/stateForms.js", () => ({
-  scanStateFormsByQuarter: vi.fn(),
+  scanFormsByQuarter: vi.fn(),
   writeAllStateForms: vi.fn(),
 }));
 
@@ -84,7 +81,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should create state forms for the current quarter", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
@@ -147,7 +144,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should only create missing forms", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([
+    scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
       { state_form: "CO-2025-1-64.21E" },
@@ -172,7 +169,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should create forms for the specified year and quarter if provided", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
@@ -190,7 +187,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should populate state answers for newly generated forms", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
@@ -229,7 +226,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should populate missing state answers if specified", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([
+    scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
       { state_form: "CO-2025-1-64.21E" },
@@ -254,7 +251,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should not populate missing state answers if not specified", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([
+    scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
       { state_form: "CO-2025-1-64.21E" },
@@ -285,7 +282,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should populate only the missing state answers if specified", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([
+    scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
       { state_form: "CO-2025-1-64.21E" },
@@ -332,7 +329,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should query the template table for questions if they are not in the questions table for this year", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce({
@@ -351,7 +348,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should copy the template from the previous year if necessary", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce(undefined)
@@ -386,7 +383,7 @@ describe("generateQuarterForms.js", () => {
   });
 
   it("should fail if no template exists for this year or the previous", async () => {
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce(undefined)
@@ -413,7 +410,7 @@ describe("generateQuarterForms.js", () => {
 
   it("should not require authorization if invoked from a scheduled job", async () => {
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
-    scanStateFormsByQuarter.mockResolvedValueOnce([]);
+    scanFormsByQuarter.mockResolvedValueOnce([]);
     getStatesList.mockResolvedValueOnce([colorado, texas]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 

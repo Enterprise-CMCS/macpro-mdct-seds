@@ -18,7 +18,7 @@ import {
   writeAllFormQuestions,
 } from "../../../storage/formQuestions.js";
 import {
-  scanStateFormsByQuarter,
+  scanFormsByQuarter,
   writeAllStateForms
 } from "../../../storage/stateForms.js";
 import { formTypes } from "../../shared/constants.js";
@@ -114,7 +114,7 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await scanStateFormsByQuarter(
+  const foundForms = await scanFormsByQuarter(
     specifiedYear,
     specifiedQuarter
   );
