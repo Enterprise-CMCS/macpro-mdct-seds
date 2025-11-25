@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
+import { writeAllStateForms } from "../../../storage/stateForms.js";
 
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
@@ -20,10 +21,7 @@ export const main = handler(async (event, context) => {
     return generatedTotals;
   }
 
-  const commitResponse = await commitTotalsToDB(generatedTotals.countsToWrite);
-  if (commitResponse.status === 404) {
-    return commitResponse;
-  }
+  await writeAllStateForms(generatedTotals.countsToWrite);
 
   return {
     status: 200,
@@ -156,12 +154,8 @@ const generateTotals = async (stateForms, ageRange) => {
       }
 
       countsToWrite.push({
-        PutRequest: {
-          Item: {
-            ...stateForms[i],
-            enrollmentCounts: countObject,
-          },
-        },
+        ...stateForms[i],
+        enrollmentCounts: countObject,
       });
 
       if (countsToWrite.Count === 0) {
@@ -175,76 +169,6 @@ const generateTotals = async (stateForms, ageRange) => {
       status: 200,
       message: "Answer Entries found and counts accumulated",
       countsToWrite,
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      message: "Something went wrong:\n" + error,
-    };
-  }
-};
-
-const commitTotalsToDB = async (putRequests) => {
-  try {
-    const failureList = [];
-    const retryFailLimit = 5;
-
-    // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
-    const batchWriteAll = async (tryRetryBatch) => {
-      // Attempt first batch write
-      const { UnprocessedItems } = await dynamoDb.batchWriteItem(
-        tryRetryBatch.batch
-      );
-
-      // If there are any failures and under the retry limit
-      if (
-        UnprocessedItems.length &&
-        tryRetryBatch.noOfRetries < retryFailLimit
-      ) {
-        const retryBatch = {
-          noOfRetries: tryRetryBatch.noOfRetries + 1,
-          batch: UnprocessedItems,
-        };
-        return await batchWriteAll(retryBatch);
-      } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
-        // exceeded failure limit
-        console.error(
-          `Tried batch ${
-            tryRetryBatch.noOfRetries
-          } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
-        );
-        failureList.push({ failure: JSON.stringify(tryRetryBatch) });
-      }
-    };
-
-    // Begin batching by groups of 25
-    const batchArrayFormAnswers = [];
-    const batchSizeFA = 25;
-    for (let i = 0; i < putRequests.length; i += batchSizeFA) {
-      batchArrayFormAnswers.push(putRequests.slice(i, i + batchSizeFA));
-    }
-
-    // Loop through batches and write to DB
-    for (let i in batchArrayFormAnswers) {
-      const batchRequest = {
-        RequestItems: {
-          [process.env.StateFormsTable]: batchArrayFormAnswers[i],
-        },
-      };
-
-      // Process this batch
-      await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
-    }
-
-    if (failureList.length > 0) {
-      return {
-        status: 500,
-        message: `Failed to write all entries to database.`,
-      };
-    }
-    return {
-      status: 200,
-      message: `Totals Updated Successfully`,
     };
   } catch (error) {
     return {

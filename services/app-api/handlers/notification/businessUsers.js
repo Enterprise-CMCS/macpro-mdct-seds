@@ -1,9 +1,8 @@
 import handler from "./../../libs/handler-lib.js";
-import {
-  getUsersEmailByRole,
-  getUncertifiedStatesAndForms,
-} from "../shared/sharedFunctions.js";
+import { scanUsersByRole } from "../../storage/users.js";
+import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { calculateFiscalQuarterFromDate } from "../../libs/time.js";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -28,37 +27,31 @@ export const main = handler(async (event, context) => {
   };
 });
 
-function getQuarter() {
-  let d = new Date();
-  let m = Math.floor(d.getMonth() / 3) + 2;
-  return m > 4 ? m - 4 : m;
-}
-const quarter = getQuarter();
-const year = new Date().getFullYear();
-
 async function businessOwnersTemplate() {
-  const sendToEmailArry = await getUsersEmailByRole("business");
-  const sendToEmail = sendToEmailArry.map((e) => e.email);
-  const uncertifiedStates = await getUncertifiedStatesAndForms(year, quarter);
+  const { year, quarter } = calculateFiscalQuarterFromDate(new Date());
+  // TODO: hardcoded status_id. Use FormStatus.InProgress instead.
+  const inProgressForms = await scanFormsByQuarterAndStatus(year, quarter, 1);
+  const usersToEmail = (await scanUsersByRole("business")).map(u => u.email);
 
-  // Build string of all states and forms
-  let uncertifiedStatesList = "";
-  uncertifiedStates.map((item) => {
-    uncertifiedStatesList += `${item.state} -${item.form.map(
-      (form) => ` ${form}`
-    )}\n`;
-  });
+  const formsByState = Object.groupBy(inProgressForms, form => form.state_id);
+  const formattedFormList = Object.entries(formsByState)
+    .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
+    .map(([stateAbbr, forms]) => {
+      const formTypes = forms.map(f => f.form).sort().join(", ");
+      return `${stateAbbr} - ${formTypes}`;
+    })
+    .join("\n");
 
   const todayDate = new Date().toISOString().split("T")[0];
   const fromEmail = "mdct@cms.hhs.gov";
   const recipient = {
-    TO: sendToEmail,
+    TO: usersToEmail,
     SUBJECT: "FFY SEDS Enrollment Data Overdue",
     FROM: fromEmail,
     MESSAGE: `
 This is an automated message to notify you that the states listed below have not certified their SEDS data for FFY${year} Q${quarter} as of: ${todayDate}
 
-${uncertifiedStatesList}
+${formattedFormList}
 
 Please follow up with the state’s representatives if you have any questions.
 
