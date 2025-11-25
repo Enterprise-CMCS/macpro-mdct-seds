@@ -11,7 +11,7 @@ export async function getUserDetailsFromEvent(event) {
     lastName: token.family_name,
     role,
     username: token.identities?.[0]?.userId || token.email,
-    usernameSub: token.sub, // whatever that means.
+    usernameSub: token.sub,
   };
 }
 

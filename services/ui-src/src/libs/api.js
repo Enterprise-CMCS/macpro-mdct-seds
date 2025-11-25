@@ -55,13 +55,17 @@ export const getUserById = async data => {
   return await apiLib.get(`/users/${data.userId}`, opts);
 };
 
-// *** get user information by username
-export const obtainUserByEmail = async data => {
+/**
+ * Get or create the AuthUser record for the requesting user's Cognito token.
+ *
+ * Note that this _always_ returns a user object. No need to check.
+ * The only exceptions are actual exceptions that will result in a 500 response.
+ * @returns {Promise<object>}
+ */
+export const getCurrentUser = async () => {
   const opts = await requestOptions();
-  opts.body = data;
-
-  return await apiLib.post(`/users/get/email`, opts);
-};
+  return await apiLib.get(`/getCurrentUser`, opts);
+}
 
 // *** update user information
 export const updateUser = async data => {

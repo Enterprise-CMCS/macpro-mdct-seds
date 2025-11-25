@@ -14,7 +14,7 @@ vi.mock("../../libs/contextLib", () => ({
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn().mockResolvedValue(),
+  getUserInfo: vi.fn().mockImplementation(() => { console.log("lmao what" )}),
 }));
 
 const mockStore = configureStore([]);
@@ -32,12 +32,8 @@ const renderComponent = (user) => {
   );
 }
 
-const adminUser = {
-  attributes: { "app-role": "admin" },
-};
-const stateUser = {
-  attributes: { "app-role": "state" },
-}
+const adminUser = { role: "admin" };
+const stateUser = { role: "state" };
 
 describe("Test Home.js", () => {
   it("should render the admin view for admins", async () => {

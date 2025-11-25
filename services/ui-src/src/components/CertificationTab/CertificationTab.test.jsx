@@ -10,19 +10,16 @@ import {
   InProgressStatusFields,
   ProvisionalCertifiedStatusFields
 } from "../../utility-functions/formStatus";
+import { getCurrentUser } from "libs/api";
 
 const mockStore = configureStore([]);
 
 const mockUser = {
-  Items: [
-    {
-      status: "success",
-      email: "email@email.com",
-      name: "Test User",
-      states: ["CA"],
-      role: "state"
-    }
-  ]
+  status: "success",
+  email: "email@email.com",
+  name: "Test User",
+  states: ["CA"],
+  role: "state"
 };
 
 vi.mock("../../utility-functions/userFunctions", () => ({
@@ -30,7 +27,7 @@ vi.mock("../../utility-functions/userFunctions", () => ({
 }));
 
 vi.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
+  getCurrentUser: () => mockUser
 }));
 
 const renderWithStatus = (statusData) => {
