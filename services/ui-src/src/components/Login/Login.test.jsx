@@ -1,17 +1,22 @@
 import React from "react";
 import { afterAll, beforeAll, describe, expect, it, vi, vitest } from "vitest";
 import Login from "./Login";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { signInWithRedirect } from "aws-amplify/auth";
+import { onError } from "libs/errorLib";
 
 vi.mock("aws-amplify/auth", () => ({
-  signInWithRedirect: vi.fn(),
+  signInWithRedirect: vi.fn()
+}));
+
+vi.mock("libs/errorLib", () => ({
+  onError: vi.fn()
 }));
 
 const currentlyOnDevelopmentBranch = () =>
   window.location.hostname !== "mdctseds.cms.gov" &&
-  window.location.hostname !== "mdctsedsval.cms.gov"
+  window.location.hostname !== "mdctsedsval.cms.gov";
 
 describe("Test Login.js", () => {
   let originalLocation;
@@ -22,8 +27,8 @@ describe("Test Login.js", () => {
     delete window.location;
     window.location = {
       ...originalLocation,
-      assign: vi.fn(),
-    }
+      assign: vi.fn()
+    };
   });
 
   afterAll(() => {
@@ -32,26 +37,59 @@ describe("Test Login.js", () => {
 
   if (currentlyOnDevelopmentBranch()) {
     it("should render email login form", () => {
-      render(<Login/>);
+      render(<Login />);
       expect(screen.getByLabelText("Email")).toBeInTheDocument();
       expect(screen.getByLabelText("Password")).toBeInTheDocument();
-      expect(screen.getByText("Login", { selector: "button"})).toBeInTheDocument();
+      expect(
+        screen.getByText("Login", { selector: "button" })
+      ).toBeInTheDocument();
     });
   }
 
   it("should render EUA login button", () => {
-    render(<Login/>);
-    expect(screen.getByText("Login with EUA ID", { selector: "button"})).toBeInTheDocument();
+    render(<Login />);
+    expect(
+      screen.getByText("Login with EUA ID", { selector: "button" })
+    ).toBeInTheDocument();
   });
 
   it("should redirect to Okta for login", async () => {
     vi.spyOn(window, "alert").mockImplementation(console.error);
 
-    render(<Login/>);
+    render(<Login />);
 
-    const loginButton = screen.getByText("Login with EUA ID", { selector: "button"});
+    const loginButton = screen.getByText("Login with EUA ID", {
+      selector: "button"
+    });
     await userEvent.click(loginButton);
 
-    expect(signInWithRedirect).toHaveBeenCalled()
+    expect(signInWithRedirect).toHaveBeenCalled();
+  });
+
+  it("should display error when Okta login fails", async () => {
+    signInWithRedirect.mockRejectedValue(
+      new Error("Failed to fetch public IP. Error thrown from Vitest")
+    );
+    render(<Login />);
+
+    const loginButton = screen.getByText("Login with EUA ID", {
+      selector: "button"
+    });
+    await userEvent.click(loginButton);
+    expect(signInWithRedirect).toHaveBeenCalled();
+  });
+
+  it("should login successfully", () => {
+    const { container } = render(<Login />);
+
+    const textboxes = container.querySelectorAll(".form-input.form-control");
+    const email = textboxes[0];
+    const password = textboxes[1];
+    const loginBtn = screen.getByRole("button", { name: "Login" });
+
+    fireEvent.change(email, { target: { value: "mail@mail.com" } });
+    fireEvent.change(password, { target: { value: "password" } });
+    fireEvent.click(loginBtn);
+    expect(window.location.href).toEqual(originalLocation.href);
   });
 });
