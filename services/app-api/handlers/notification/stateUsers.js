@@ -44,7 +44,7 @@ async function determineUsersToEmail(year, quarter) {
 // creates a template for stateUsers
 async function stateUsersTemplate() {
   const { year, quarter } = calculateFiscalQuarterFromDate(new Date());
-  const stateUsersToEmail = await determineUsersToEmail();
+  const stateUsersToEmail = await determineUsersToEmail(year, quarter);
   const fromEmail = "mdct@cms.hhs.gov";
   let todayDate = new Date().toISOString().split("T")[0];
 
