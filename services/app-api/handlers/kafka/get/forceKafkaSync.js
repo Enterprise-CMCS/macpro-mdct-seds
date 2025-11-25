@@ -6,50 +6,11 @@ const tableNames = [
   process.env.FormQuestionsTable,
   process.env.FormTemplatesTable,
   process.env.StateFormsTable,
-  process.env.StatesTable,
   process.env.AuthUserTable,
 ];
 
 const mergeLastSynced = (items, syncDateTime) =>
   items.map((item) => ({ ...item, lastSynced: syncDateTime }));
-
-const batchWrite = async (tableName, items) => {
-  console.log(
-    `Performing batchwrite for ${items.length} items in table: ${tableName}`
-  );
-  const itemChunks = [...batchItemsIntoGroupsOfTwentyFive(items)];
-  for (const index in itemChunks) {
-    // Construct the request params for batchWrite
-    const itemArray = itemChunks[index].map((item) => {
-      return {
-        PutRequest: {
-          Item: item,
-        },
-      };
-    });
-
-    let requestItems = {};
-    requestItems[tableName] = itemArray;
-
-    const params = {
-      RequestItems: requestItems,
-    };
-
-    const { FailedItems } = await dynamoDb.batchWriteItem(params);
-    console.log(`BatchWrite performed for ${itemArray.length} items`);
-    if ((FailedItems?.length ?? 0) > 0) {
-      const keys = FailedItems.map((item) => item[Object.keys(item)[0]]);
-      console.log(
-        `BatchWrite ran with ${
-          FailedItems.length ?? 0
-        } numbers of failed item updates`
-      );
-      console.log(
-        `The following items failed updating for the table ${tableName} -  keys ${keys}`
-      );
-    }
-  }
-};
 
 export const main = handler(async (event, context) => {
   const syncDateTime = new Date().toISOString();
@@ -71,18 +32,10 @@ export const main = handler(async (event, context) => {
     // Add lastSynced date time field
     const updatedItems = mergeLastSynced(data.Items, syncDateTime);
     try {
-      await batchWrite(tableName, updatedItems);
+      await dynamoDb.putMultiple(tableName, updatedItems, JSON.stringify);
     } catch (e) {
       console.error(`BatchWrite failed with exception ${e}`);
       throw e;
     }
   }
 });
-
-function* batchItemsIntoGroupsOfTwentyFive(items) {
-  /** This is the max number of requests in a DynamoDB BatchWriteCommand */
-  const TWENTY_FIVE = 25;
-  for (let index = 0; index < items.length; index += TWENTY_FIVE) {
-    yield items.slice(index, index + TWENTY_FIVE);
-  }
-}

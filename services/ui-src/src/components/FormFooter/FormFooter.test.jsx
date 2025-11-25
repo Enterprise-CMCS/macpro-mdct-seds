@@ -25,10 +25,6 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
 
-vi.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
-
 describe("Test FormFooter.js", () => {
   beforeEach(() => {
     const store = mockStore(fullStoreMock);

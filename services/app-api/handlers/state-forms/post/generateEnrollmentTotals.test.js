@@ -1,21 +1,23 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateEnrollmentTotals } from "./generateEnrollmentTotals.js";
+import { writeAllStateForms } from "../../../storage/stateForms.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import {
-  BatchWriteCommand,
   DynamoDBDocumentClient,
   QueryCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
+vi.mock("../../../storage/stateForms.js", () => ({
+  writeAllStateForms: vi.fn(),
+}));
+
 vi.mock("../../../auth/authConditions.js", () => ({
   authorizeAdmin: vi.fn(),
 }));
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockBatchWrite = vi.fn().mockResolvedValue({ UnprocessedItems: {} });
-mockDynamo.on(BatchWriteCommand).callsFake(mockBatchWrite);
 const mockQuery = vi.fn();
 mockDynamo.on(QueryCommand).callsFake(mockQuery);
 const mockScan = vi.fn();
@@ -119,40 +121,28 @@ describe("generateEnrollmentTotals.js", () => {
       .map(call => call[0].ExpressionAttributeValues[":answerEntry"]);
     expect(actualEntries).toEqual(expectedEntries);
 
-    expect(mockBatchWrite).toHaveBeenCalledWith({
-      RequestItems: {
-        ["local-state-forms"]: [
-          {
-            PutRequest: {
-              Item: {
-                state_form: "CO-2025-4-21E",
-                form: "21E",
-                year: 2025,
-                enrollmentCounts: {
-                  type: "separate",
-                  year: 2025,
-                  count: 2610,
-                },
-              },
-            },
-          },
-          {
-            PutRequest: {
-              Item: {
-                state_form: "CO-2025-4-64.21E",
-                form: "64.21E",
-                year: 2025,
-                enrollmentCounts: {
-                  type: "expansion",
-                  year: 2025,
-                  count: 6210,
-                },
-              },
-            },
-          },
-        ],
+    expect(writeAllStateForms).toHaveBeenCalledWith([
+      {
+        state_form: "CO-2025-4-21E",
+        form: "21E",
+        year: 2025,
+        enrollmentCounts: {
+          type: "separate",
+          year: 2025,
+          count: 2610,
+        },
       },
-    }, expect.any(Function));
+      {
+        state_form: "CO-2025-4-64.21E",
+        form: "64.21E",
+        year: 2025,
+        enrollmentCounts: {
+          type: "expansion",
+          year: 2025,
+          count: 6210,
+        },
+      },
+    ]);
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {

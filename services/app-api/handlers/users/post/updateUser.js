@@ -1,6 +1,6 @@
 import handler from "../../../libs/handler-lib.js";
 import dynamoDb from "../../../libs/dynamodb-lib.js";
-import { obtainUserByEmail } from "./obtainUserByEmail.js";
+import { scanForUserWithSub } from "../get/getCurrentUser.js";
 import {
   authorizeAdmin,
   authorizeAdminOrUserWithEmail,
@@ -11,11 +11,11 @@ export const main = handler(async (event, context) => {
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
-  const currentUser = await obtainUserByEmail(data.email);
+  const currentUser = await scanForUserWithSub(data.usernameSub);
 
-  await authorizeAdminOrUserWithEmail(event, currentUser.Items[0].email);
+  await authorizeAdminOrUserWithEmail(event, currentUser.email);
 
-  if (modifyingAnythingButAnEmptyStateList(data, currentUser.Items[0])) {
+  if (modifyingAnythingButAnEmptyStateList(data, currentUser)) {
     await authorizeAdmin(event);
   }
 
@@ -24,7 +24,7 @@ export const main = handler(async (event, context) => {
   const params = {
     TableName: process.env.AuthUserTable,
     Key: {
-      userId: currentUser["Items"][0].userId,
+      userId: currentUser.userId,
     },
     UpdateExpression:
       "SET #r = :role, states = :states, lastLogin = :lastLogin",

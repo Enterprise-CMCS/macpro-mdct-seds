@@ -24,11 +24,7 @@ vi.mock("utility-functions/sortingFunctions", async () => ({
 
 const mockStore = configureStore([]);
 
-const adminUser = {
-  attributes: {
-    "app-role": "admin"
-  }
-};
+const adminUser = { role: "admin" };
 
 const renderComponent = () => {
   const store = mockStore(fullStoreMock);

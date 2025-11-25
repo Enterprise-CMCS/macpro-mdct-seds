@@ -1,10 +1,6 @@
 module.exports = {
   tables: [
     {
-      filenames: ["data/initial_data_load/auth_user.json"],
-      tableNameSuffix: "auth-user",
-    },
-    {
       filenames: [
         "data/initial_data_load/form_questions_2021.json",
         "data/initial_data_load/form_questions_2020.json",
@@ -92,10 +88,6 @@ module.exports = {
         "data/initial_data_load/state_forms_2020.json",
       ],
       tableNameSuffix: "state-forms",
-    },
-    {
-      filenames: ["data/initial_data_load/states.json"],
-      tableNameSuffix: "states",
     },
   ],
 };
