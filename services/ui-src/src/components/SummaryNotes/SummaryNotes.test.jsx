@@ -1,12 +1,11 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import SummaryNotes from "./SummaryNotes";
 import { render, screen, waitFor } from "@testing-library/react";
-import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { FinalCertifiedStatusFields, InProgressStatusFields } from "../../utility-functions/formStatus";
+import { useStore } from "../../store/store";
 
 vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
@@ -27,20 +26,18 @@ const renderComponent = (
     ? [{ entry: initialComment }]
     : undefined;
 
-  const store = storeFactory({
-    currentForm: {
-      statusData: {
-        ...statusData,
-        state_comments,
-      },
+  useStore.setState({
+    statusData: {
+      ...statusData,
+      state_comments,
     },
+    updateSummaryNotes: vi.fn(),
   });
+
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <SummaryNotes/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <SummaryNotes/>
+    </BrowserRouter>
   )
 };
 

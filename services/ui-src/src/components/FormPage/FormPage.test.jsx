@@ -1,11 +1,10 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import FormPage from "./FormPage";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
 import { render, screen, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
 vi.mock("../FormHeader/FormHeader", () => ({
     default: (props) => <div className="form-header">{JSON.stringify(props)}</div>,
@@ -36,12 +35,6 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
 }));
 
-vi.mock("../../store/reducers/singleForm/singleForm", () => ({
-  getFormData: vi.fn().mockReturnValue({
-    type: "SAVING A FORM HERE, BOSS",
-  }),
-}));
-
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({
@@ -67,16 +60,16 @@ const mockForm = {
 
 const renderComponent = (form, user) => {
   getUserInfo.mockResolvedValue({ Items: [user]})
-  
-  const mockstore = configureStore([]);
-  const store = mockstore({ currentForm: form });
+  useStore.setState({
+    statusData: form.statusData,
+    loadError: form.loadError,
+    loadForm: vi.fn(),
+  });
 
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <FormPage/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <FormPage/>
+    </BrowserRouter>
   )
 };
 

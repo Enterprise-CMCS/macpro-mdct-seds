@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab/CertificationTab";
@@ -10,14 +9,13 @@ import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
 import { getAgeRangeDetails } from "lookups/ageRanges";
+import { useStore } from "../../store/store";
 
-const TabContainer = ({
-  questions,
-  answers,
-  currentTabs,
-  quarter,
-  statusData
-}) => {
+const TabContainer = ({ quarter }) => {
+  const questions = useStore(state => state.questions);
+  const answers = useStore(state => state.answers);
+  const currentTabs = useStore(state => state.tabs);
+  const statusData = useStore(state => state.statusData);
   const [disabledStatus, setDisabledStatus] = useState();
 
   useEffect(() => {
@@ -119,17 +117,7 @@ const TabContainer = ({
 };
 
 TabContainer.propTypes = {
-  currentTabs: PropTypes.array.isRequired,
-  questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired,
-  statusData: PropTypes.object.isRequired
+  quarter: PropTypes.number.isRequired,
 };
 
-const mapState = state => ({
-  currentTabs: state.currentForm.tabs,
-  questions: state.currentForm.questions,
-  answers: state.currentForm.answers,
-  statusData: state.currentForm.statusData,
-});
-
-export default connect(mapState)(TabContainer);
+export default TabContainer;

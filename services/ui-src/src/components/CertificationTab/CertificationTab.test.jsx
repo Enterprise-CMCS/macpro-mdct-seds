@@ -1,18 +1,13 @@
 import React from "react";
 import { describe, expect, it, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import CertificationTab from "../CertificationTab/CertificationTab";
-import CertificationTabMock from "../../provider-mocks/certificationTabMock";
 import {
   FinalCertifiedStatusFields,
   InProgressStatusFields,
   ProvisionalCertifiedStatusFields
 } from "../../utility-functions/formStatus";
-import { getCurrentUser } from "libs/api";
-
-const mockStore = configureStore([]);
+import { useStore } from "../../store/store";
 
 const mockUser = {
   status: "success",
@@ -30,18 +25,15 @@ vi.mock("../../libs/api", () => ({
   getCurrentUser: () => mockUser
 }));
 
-const renderWithStatus = (statusData) => {
-  const form = JSON.parse(JSON.stringify(CertificationTabMock));
-  form.currentForm.statusData = {
-    ...form.currentForm.statusData,
-    ...statusData,
-  };
-  const store = mockStore(form);
-  return render(
-    <Provider store={store}>
-      <CertificationTab />
-    </Provider>
-  );
+const renderWithStatus = (statusFields) => {
+  useStore.setState({
+    statusData: {
+      ...statusFields,
+      status_date: "2025-11-26T22:45:38.115Z",
+      status_modified_by: "George Tester",
+    },
+  });
+  return render(<CertificationTab />);
 };
 
 describe("Test CertificationTab.js", () => {
@@ -52,14 +44,14 @@ describe("Test CertificationTab.js", () => {
 
   it("should display status text for provisional forms", () => {
     renderWithStatus(ProvisionalCertifiedStatusFields());
-    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
+    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
   });
 
   it("should display status text for final forms", () => {
     renderWithStatus(FinalCertifiedStatusFields());
-    const expectedText = "This report was updated to Final Data Certified and Submitted on 1/15/2021 at 7:46:35 AM EST by Timothy Griesemer";
+    const expectedText = "This report was updated to Final Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
   })

@@ -2,24 +2,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
-import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
-import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
+import { useStore } from "../../store/store";
 
-const PrintPDF = ({
-  questions,
-  answers,
-  currentTabs,
-  getForm,
-  statusData
-}) => {
+const PrintPDF = () => {
+  const questions = useStore(state => state.questions);
+  const answers = useStore(state => state.answers);
+  const currentTabs = useStore(state => state.tabs);
+  const statusData = useStore(state => state.statusData);
+  const getForm = useStore(state => state.loadForm);
+
   const [loading, setLoading] = useState(true);
 
   const { state, year, quarter, formName } = useParams();
@@ -172,23 +170,4 @@ const PrintPDF = ({
   );
 };
 
-PrintPDF.propTypes = {
-  currentTabs: PropTypes.array.isRequired,
-  questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired,
-  getForm: PropTypes.func.isRequired,
-  statusData: PropTypes.object.isRequired
-};
-
-const mapState = state => ({
-  currentTabs: state.currentForm.tabs,
-  questions: state.currentForm.questions,
-  answers: state.currentForm.answers,
-  statusData: state.currentForm.statusData
-});
-
-const mapDispatch = {
-  getForm: getFormData ?? {}
-};
-
-export default connect(mapState, mapDispatch)(PrintPDF);
+export default PrintPDF;

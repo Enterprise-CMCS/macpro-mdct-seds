@@ -1,14 +1,13 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import PrintPDF from "./PrintPDF";
-import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getSingleForm, getStateForms } from "../../libs/api";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
+import { useStore } from "../../store/store";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
@@ -38,13 +37,11 @@ getSingleForm.mockResolvedValue(fullStoreMock.currentForm);
 getStateForms.mockResolvedValue({ Items: [fullStoreMock.currentForm.statusData] });
 
 const renderComponent = () => {
-  const store = storeFactory(fullStoreMock);
+  useStore.setState(fullStoreMock.currentForm);
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <PrintPDF/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <PrintPDF/>
+    </BrowserRouter>
   );
 };
 

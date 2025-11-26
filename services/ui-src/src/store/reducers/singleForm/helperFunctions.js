@@ -127,11 +127,36 @@ const insertFPL = (answers, fpl) => {
   return updatedAnswers;
 };
 
+const computeTotalEnrollment = (statusData, answers) => {
+  let total = 0;
+  if ((statusData.form === "21E" || statusData.form === "64.21E") &&
+    statusData.quarter === 4) {
+    for (const i in answers) {
+      if (answers[i].question === `${statusData.year}-${statusData.form}-07`) {
+        let temp;
+        const rows = answers[i].rows;
+        for (const j in rows) {
+          // Add all numeric col#'s together
+          temp = Object.keys(rows[j]).reduce(
+            (sum, key) => sum + (parseFloat(rows[j][key]) || 0),
+            0
+          );
+
+          // Add to running total
+          total += !Number.isNaN(temp) ? parseInt(temp) : 0;
+        }
+      }
+    }
+  }
+  return total;
+};
+
 export {
   sortQuestionsByNumber,
   extractAgeRanges,
   insertAnswer,
   formatAnswerData,
   clearSingleQuestion,
-  insertFPL
+  insertFPL,
+  computeTotalEnrollment,
 };
