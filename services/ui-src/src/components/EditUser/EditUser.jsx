@@ -86,19 +86,6 @@ const EditUser = ({ stateList }) => {
     // eslint-disable-next-line
   }, []);
 
-  // Save selections for local use and API use
-  const setStatesFromArray = option => {
-    // Save for API use
-    let states = "";
-    if (option) {
-      states = option.join("-");
-    }
-    if (!states) {
-      states = null;
-    }
-    setStatesToSend(states);
-  };
-
   const roles = [
     { value: "admin", label: "Admin User" },
     { value: "business", label: "Business User" },
