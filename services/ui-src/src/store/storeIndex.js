@@ -2,15 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import currentForm from "./reducers/singleForm/singleForm";
-import global from "./reducers/global";
 import { MODE } from "../utility-functions/environment";
 import { logger } from "redux-logger";
 
 // Consolidate reducers
-export const reducers = combineReducers({
-  currentForm,
-  global
-});
+export const reducers = combineReducers({ currentForm });
 
 // Consolidate middleware
 let middlewareArray = [thunk];
