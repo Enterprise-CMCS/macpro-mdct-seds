@@ -8,6 +8,7 @@ import PrintPDF from "./PrintPDF";
 import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getSingleForm, getStateForms } from "../../libs/api";
+import { getAgeRangeDetails } from "../../lookups/ageRanges";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
@@ -72,9 +73,14 @@ describe("PrintPDF component", () => {
     );
     expect(headers.length).toBe(2);
 
-    for (let ageRange of fullStoreMock.global.age_ranges) {
+    const allAgeDescriptions = fullStoreMock.currentForm.answers
+      .map(ans => ans.rangeId)
+      .filter((x, i, a) => i === a.indexOf(x))
+      .map(rangeId => getAgeRangeDetails(rangeId).description);
+
+    for (let ageRangeDescription of allAgeDescriptions) {
       const sectionHeader = screen.getByText(
-        ageRange.ageDescription,
+        ageRangeDescription,
         { exact: false, selector: "h3" }
       );
       expect(sectionHeader).toBeInTheDocument();

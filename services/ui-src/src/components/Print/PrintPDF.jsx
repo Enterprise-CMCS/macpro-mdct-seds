@@ -11,9 +11,9 @@ import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { getAgeRangeDetails } from "../../lookups/ageRanges";
 
 const PrintPDF = ({
-  tabDetails,
   questions,
   answers,
   currentTabs,
@@ -110,14 +110,12 @@ const PrintPDF = ({
                 element => element.rangeId === tab
               );
 
-              const ageRangeDetails = tabDetails.find(
-                element => tab === element.rangeId
-              );
+              const ageRangeDescription = getAgeRangeDetails(tab)?.description;
               return (
                 <React.Fragment key={tabIndex}>
-                  {ageRangeDetails ? (
+                  {ageRangeDescription ? (
                     <div className="age-range-description padding-y-2">
-                      <h3>{ageRangeDetails.ageDescription}:</h3>
+                      <h3>{ageRangeDescription}:</h3>
                     </div>
                   ) : null}
                   {questions.map((singleQuestion, idx) => {
@@ -176,7 +174,6 @@ const PrintPDF = ({
 
 PrintPDF.propTypes = {
   currentTabs: PropTypes.array.isRequired,
-  tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
   getForm: PropTypes.func.isRequired,
@@ -185,7 +182,6 @@ PrintPDF.propTypes = {
 
 const mapState = state => ({
   currentTabs: state.currentForm.tabs,
-  tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
   statusData: state.currentForm.statusData

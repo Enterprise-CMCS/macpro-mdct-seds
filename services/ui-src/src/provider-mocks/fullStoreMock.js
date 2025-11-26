@@ -3319,35 +3319,6 @@ const fullStoreMock = {
       ...InProgressStatusFields()
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
-  },
-  global: {
-    age_ranges: [
-      {
-        ageRange: "Under Age 0",
-        ageDescription: "Conception to birth",
-        rangeId: "0000"
-      },
-      {
-        ageRange: "Ages 0 - 1",
-        ageDescription: "Birth through age 12 months",
-        rangeId: "0001"
-      },
-      {
-        ageRange: "Ages 1 - 5",
-        ageDescription: "Age 1 year through age 5 years",
-        rangeId: "0105"
-      },
-      {
-        ageRange: "Ages 6 - 12",
-        ageDescription: "Age 6 years through age 12 years",
-        rangeId: "0612"
-      },
-      {
-        ageRange: "Ages 13 - 18",
-        ageDescription: "Age 13 years through age 18 years",
-        rangeId: "1318"
-      }
-    ]
   }
 };
 

@@ -9,9 +9,9 @@ import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
+import { getAgeRangeDetails } from "lookups/ageRanges";
 
 const TabContainer = ({
-  tabDetails,
   questions,
   answers,
   currentTabs,
@@ -48,14 +48,10 @@ const TabContainer = ({
     <Tabs className="tab-container-main">
       <TabList>
         {currentTabs.map((tab, idx) => {
-          const rangeDetails = tabDetails.find(
-            element => tab === element.rangeId
-          );
-
-          // Custom tab label from age range ID
-          const tabLabel = rangeDetails
-            ? rangeDetails.ageRange
-            : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+          const ageRangeName = getAgeRangeDetails(tab)?.name;
+          const tabLabel = ageRangeName
+            // Default to dynamic label. Example: "1234" -> "Ages 12 - 34"
+            ?? `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
           return <Tab key={idx}>{tabLabel}</Tab>;
         })}
         <Tab>Summary</Tab>
@@ -65,15 +61,13 @@ const TabContainer = ({
       {currentTabs.map((tab, idx) => {
         // Filter out just the answer objects that belong in this tab
         const tabAnswers = answers.filter(element => element.rangeId === tab);
-
-        const ageRangeDetails = tabDetails.find(
-          element => tab === element.rangeId
-        );
+        
+        const ageRangeDescription = getAgeRangeDetails(tab)?.description;
         return (
           <TabPanel key={idx}>
-            {ageRangeDetails ? (
+            {ageRangeDescription ? (
               <div className="age-range-description padding-y-2">
-                <h3>{ageRangeDetails.ageDescription}:</h3>
+                <h3>{ageRangeDescription}:</h3>
               </div>
             ) : null}
 
@@ -126,7 +120,6 @@ const TabContainer = ({
 
 TabContainer.propTypes = {
   currentTabs: PropTypes.array.isRequired,
-  tabDetails: PropTypes.array.isRequired,
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
   statusData: PropTypes.object.isRequired
@@ -134,7 +127,6 @@ TabContainer.propTypes = {
 
 const mapState = state => ({
   currentTabs: state.currentForm.tabs,
-  tabDetails: state.global.age_ranges,
   questions: state.currentForm.questions,
   answers: state.currentForm.answers,
   statusData: state.currentForm.statusData,
