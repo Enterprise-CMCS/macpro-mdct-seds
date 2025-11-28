@@ -36,6 +36,7 @@ const NotApplicable = () => {
   }, [statusData]);
 
   const handleApplicableChange = async (evt) => {
+    // TODO: Clean up these objects - just use status_id instead.
     const newStatusData = evt.target.value === "Yes"
       ? InProgressStatusFields()
       : NotRequiredStatusFields();
@@ -51,7 +52,7 @@ const NotApplicable = () => {
       }
     }
 
-    await updateFormStatus(newStatusData);
+    await updateFormStatus(newStatusData.status_id);
     saveForm();
   };
 
