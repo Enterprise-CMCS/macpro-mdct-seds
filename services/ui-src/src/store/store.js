@@ -31,7 +31,7 @@ export const useStore = create((set, get) => ({
       const statuses = await getStateForms({ state, year, quarter });
       const answers = form.answers;
       const questions = form.questions.sort(sortQuestionsByNumber);
-      const statusData = statuses.find(s => s.form === formName);
+      const statusData = statuses.Items.find(s => s.form === formName);
       const tabs = extractAgeRanges(answers);
       set({ questions, answers, statusData, tabs, loadError: false });
     } catch (err) {

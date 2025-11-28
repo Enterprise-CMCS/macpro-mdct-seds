@@ -30,7 +30,7 @@ const mockSingleForm = { questions: mockQuestions, answers: mockAnswers };
 const mock21E = { state_id: "CO", year: 2025, quarter: 4, form: "21E" };
 const mockGRE = { state_id: "CO", year: 2025, quarter: 4, form: "GRE" };
 const mock64_EC = { state_id: "CO", year: 2025, quarter: 4, form: "64.EC" };
-const mockStateForms = [ mock21E, mockGRE, mock64_EC ];
+const mockStateForms = { Items: [ mock21E, mockGRE, mock64_EC ] };
 
 const anyDate = expect.stringMatching(/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ$/);
 
@@ -48,11 +48,11 @@ describe("useStore actions", () => {
       await loadForm("CO", 2025, 4, "21E");
       const state = useStore.getState();
 
+      expect(state.loadError).toBe(false);
       expect(state.answers).toBe(mockSingleForm.answers);
       expect(state.questions).toBe(mockSingleForm.questions);
       expect(state.statusData).toBe(mock21E);
       expect(state.tabs).toEqual(["0105", "0618"]);
-      expect(state.loadError).toBe(false);
     });
 
     it("should flag a load error if an API call fails", async () => {
@@ -83,6 +83,7 @@ describe("useStore actions", () => {
       await loadForm("CO", 2025, 4, "21E");
       const state = useStore.getState();
 
+      expect(state.loadError).toBe(false);
       expect(state.questions).toEqual([
         { question: "2025-21E-01" },
         { question: "2025-21E-02" },
