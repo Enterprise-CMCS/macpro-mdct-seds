@@ -117,7 +117,7 @@ const TabContainer = ({ quarter }) => {
 };
 
 TabContainer.propTypes = {
-  quarter: PropTypes.number.isRequired,
+  quarter: PropTypes.string.isRequired,
 };
 
 export default TabContainer;
