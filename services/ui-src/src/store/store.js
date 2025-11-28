@@ -7,7 +7,7 @@ import {
   insertAnswer,
   insertFPL,
   sortQuestionsByNumber,
-} from "./reducers/singleForm/helperFunctions";
+} from "./helperFunctions";
 import {
   getCurrentUser,
   getSingleForm,
