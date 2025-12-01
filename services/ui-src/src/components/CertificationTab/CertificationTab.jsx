@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@trussworks/react-uswds";
-import {
-  certifyAndSubmitFinal,
-  certifyAndSubmitProvisional,
-  uncertify
-} from "../../store/actions/certify";
-import PropTypes from "prop-types";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { getCurrentUser } from "../../libs/api";
@@ -16,15 +9,13 @@ import {
   isProvisionalCertified,
   getStatusDisplay
 } from "../../utility-functions/formStatus";
-import { saveForm } from "../../store/reducers/singleForm/singleForm";
+import { useStore } from "../../store/store";
 
-const CertificationTab = ({
-  statusData,
-  certifyAndSubmitFinal,
-  certifyAndSubmitProvisional,
-  uncertify,
-  saveForm
-}) => {
+const CertificationTab = () => {
+  const statusData = useStore(state => state.statusData);
+  const updateFormStatus = useStore(state => state.updateFormStatus);
+  const saveForm = useStore(state => state.saveForm);
+
   const isProvisional = isProvisionalCertified(statusData);
   const isFinal = isFinalCertified(statusData);
 
@@ -45,20 +36,23 @@ const CertificationTab = ({
   }, []);
 
   const submitProvisional = async () => {
-    await certifyAndSubmitProvisional();
-    saveForm();
+    // TODO hardcoded status_id; use FormStatus.ProvisionalCertified
+    await updateFormStatus(2);
+    await saveForm();
     setProvCertDisabled(true);
   };
   const submitFinal = async () => {
-    await certifyAndSubmitFinal();
-    saveForm();
+    // TODO hardcoded status_id; use FormStatus.FinalCertified
+    await updateFormStatus(3);
+    await saveForm();
     setProvCertDisabled(true);
     setFinalCertDisabled(true);
   };
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
-      await uncertify();
-      saveForm();
+      // TODO hardcoded status_id; use FormStatus.InProgress
+      await updateFormStatus(1);
+      await saveForm();
       // await sendEmailtoBo();
       setProvCertDisabled(false);
       setFinalCertDisabled(false);
@@ -187,22 +181,4 @@ const CertificationTab = ({
   );
 };
 
-CertificationTab.propTypes = {
-  statusData: PropTypes.object.isRequired,
-  certifyAndSubmitFinal: PropTypes.func.isRequired,
-  certifyAndSubmitProvisional: PropTypes.func.isRequired,
-  uncertify: PropTypes.func.isRequired,
-  saveForm: PropTypes.func.isRequired
-};
-
-const mapState = state => ({
-  statusData: state.currentForm.statusData,
-});
-
-const mapDispatch = {
-  certifyAndSubmitFinal,
-  certifyAndSubmitProvisional,
-  uncertify,
-  saveForm
-};
-export default connect(mapState, mapDispatch)(CertificationTab);
+export default CertificationTab;

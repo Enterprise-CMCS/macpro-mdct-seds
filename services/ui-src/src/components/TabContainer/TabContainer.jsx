@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab/CertificationTab";
@@ -9,15 +8,14 @@ import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
+import { getAgeRangeDetails } from "lookups/ageRanges";
+import { useStore } from "../../store/store";
 
-const TabContainer = ({
-  tabDetails,
-  questions,
-  answers,
-  currentTabs,
-  quarter,
-  statusData
-}) => {
+const TabContainer = ({ quarter }) => {
+  const questions = useStore(state => state.questions);
+  const answers = useStore(state => state.answers);
+  const currentTabs = useStore(state => state.tabs);
+  const statusData = useStore(state => state.statusData);
   const [disabledStatus, setDisabledStatus] = useState();
 
   useEffect(() => {
@@ -48,14 +46,10 @@ const TabContainer = ({
     <Tabs className="tab-container-main">
       <TabList>
         {currentTabs.map((tab, idx) => {
-          const rangeDetails = tabDetails.find(
-            element => tab === element.rangeId
-          );
-
-          // Custom tab label from age range ID
-          const tabLabel = rangeDetails
-            ? rangeDetails.ageRange
-            : `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+          const ageRangeName = getAgeRangeDetails(tab)?.name;
+          const tabLabel = ageRangeName
+            // Default to dynamic label. Example: "1234" -> "Ages 12 - 34"
+            ?? `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
           return <Tab key={idx}>{tabLabel}</Tab>;
         })}
         <Tab>Summary</Tab>
@@ -65,15 +59,13 @@ const TabContainer = ({
       {currentTabs.map((tab, idx) => {
         // Filter out just the answer objects that belong in this tab
         const tabAnswers = answers.filter(element => element.rangeId === tab);
-
-        const ageRangeDetails = tabDetails.find(
-          element => tab === element.rangeId
-        );
+        
+        const ageRangeDescription = getAgeRangeDetails(tab)?.description;
         return (
           <TabPanel key={idx}>
-            {ageRangeDetails ? (
+            {ageRangeDescription ? (
               <div className="age-range-description padding-y-2">
-                <h3>{ageRangeDetails.ageDescription}:</h3>
+                <h3>{ageRangeDescription}:</h3>
               </div>
             ) : null}
 
@@ -125,19 +117,7 @@ const TabContainer = ({
 };
 
 TabContainer.propTypes = {
-  currentTabs: PropTypes.array.isRequired,
-  tabDetails: PropTypes.array.isRequired,
-  questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired,
-  statusData: PropTypes.object.isRequired
+  quarter: PropTypes.string.isRequired,
 };
 
-const mapState = state => ({
-  currentTabs: state.currentForm.tabs,
-  tabDetails: state.global.age_ranges,
-  questions: state.currentForm.questions,
-  answers: state.currentForm.answers,
-  statusData: state.currentForm.statusData,
-});
-
-export default connect(mapState)(TabContainer);
+export default TabContainer;

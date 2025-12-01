@@ -9,7 +9,7 @@ import {
   clearSingleQuestion
 } from "./helperFunctions";
 
-import { answers, questions } from "./singleFormTestVariables";
+import { answers, questions } from "./helperFunctionsMockData";
 
 describe("Single Form Reducer, helper functions", () => {
   test("sortQuestionsByNumber should sort an unordered array of questions", () => {

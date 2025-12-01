@@ -2,14 +2,9 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
 import { BrowserRouter, useHistory } from "react-router-dom";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { render, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { obtainAvailableForms } from "../../libs/api";
-
-const store = configureStore([])(fullStoreMock);
 
 vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
@@ -33,11 +28,9 @@ const renderComponent = (...userStates) => {
   };
   getUserInfo.mockResolvedValue({ Items: [user] });
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <HomeState user={user}/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <HomeState user={user}/>
+    </BrowserRouter>
   );
 }
 

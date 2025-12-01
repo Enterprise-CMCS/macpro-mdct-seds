@@ -3,12 +3,14 @@ import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import SynthesizedGridSummary from "../SynthesizedGridSummary/SynthesizedGridSummary";
 import jsonpath from "jsonpath";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
 import { useLocation } from "react-router-dom";
+import { useStore } from "../../store/store";
 
-const SummaryTab = ({ questions, answers }) => {
+const SummaryTab = () => {
+  const questions = useStore(state => state.questions);
+  const answers = useStore(state => state.answers);
+
   // Get current quarter from URL
   const location = useLocation();
   const quarter = location.pathname.split("/")[4];
@@ -131,14 +133,4 @@ const SummaryTab = ({ questions, answers }) => {
   );
 };
 
-SummaryTab.propTypes = {
-  questions: PropTypes.array.isRequired,
-  answers: PropTypes.array.isRequired
-};
-
-const mapState = state => ({
-  answers: state.currentForm.answers,
-  questions: state.currentForm.questions
-});
-
-export default connect(mapState)(SummaryTab);
+export default SummaryTab;

@@ -5,8 +5,6 @@ import App from "./components/App/App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
 import config from "./config/config";
-import { Provider } from "react-redux";
-import store from "./store/storeIndex";
 
 Amplify.configure({
   Auth: {
@@ -37,9 +35,7 @@ Amplify.configure({
 
 ReactDOM.render(
   <Router>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </Router>,
   document.getElementById("root")
 );

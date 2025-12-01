@@ -1,11 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import {
-  updateFormStatusThunk,
-  clearFormData,
-  saveForm
-} from "../../store/reducers/singleForm/singleForm";
 import "./NotApplicable.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import {
@@ -14,13 +7,14 @@ import {
   isNotRequired,
   NotRequiredStatusFields,
 } from "../../utility-functions/formStatus";
+import { useStore } from "../../store/store";
 
-const NotApplicable = ({
-  statusData,
-  resetData,
-  saveForm,
-  updateFormStatusThunk
-}) => {
+const NotApplicable = () => {
+  const statusData = useStore(state => state.statusData);
+  const resetData = useStore(state => state.wipeForm);
+  const saveForm = useStore(state => state.saveForm);
+  const updateFormStatus = useStore(state => state.updateFormStatus);
+
   const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
@@ -42,6 +36,7 @@ const NotApplicable = ({
   }, [statusData]);
 
   const handleApplicableChange = async (evt) => {
+    // TODO: Clean up these objects - just use status_id instead.
     const newStatusData = evt.target.value === "Yes"
       ? InProgressStatusFields()
       : NotRequiredStatusFields();
@@ -57,7 +52,7 @@ const NotApplicable = ({
       }
     }
 
-    await updateFormStatusThunk(newStatusData);
+    await updateFormStatus(newStatusData.status_id);
     saveForm();
   };
 
@@ -96,21 +91,4 @@ const NotApplicable = ({
   );
 };
 
-NotApplicable.propTypes = {
-  statusData: PropTypes.object.isRequired,
-  resetData: PropTypes.func.isRequired,
-  saveForm: PropTypes.func.isRequired,
-  updateFormStatusThunk: PropTypes.func.isRequired
-};
-
-const mapState = state => ({
-  statusData: state.currentForm.statusData,
-});
-
-const mapDispatch = {
-  resetData: clearFormData,
-  saveForm: saveForm,
-  updateFormStatusThunk: updateFormStatusThunk
-};
-
-export default connect(mapState, mapDispatch)(NotApplicable);
+export default NotApplicable;

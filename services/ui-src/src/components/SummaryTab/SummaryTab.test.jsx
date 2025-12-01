@@ -1,11 +1,10 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import SummaryTab from "./SummaryTab";
-import configureStore from "redux-mock-store";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
   default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
@@ -27,13 +26,11 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 }));
 
 const renderComponent = () => {
-  const store = configureStore([])(currentFormMock_21E)
+  useStore.setState(currentFormMock_21E.currentForm);
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <SummaryTab/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <SummaryTab/>
+    </BrowserRouter>
   );
 };
 

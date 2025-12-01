@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { MultiSelect } from "react-multi-select-component";
-import PropTypes from "prop-types";
 import Searchable from "react-searchable-dropdown";
 import Dropdown from "react-dropdown";
 import { Table, TextInput, Button } from "@trussworks/react-uswds";
 import "react-dropdown/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
-
 import { getUserById, updateUser } from "../../libs/api";
-
+import { getStateName, stateSelectOptions } from "../../lookups/states";
 import "./EditUser.scss";
 
 /**
@@ -20,7 +17,7 @@ import "./EditUser.scss";
  * @constructor
  */
 
-const EditUser = ({ stateList }) => {
+const EditUser = () => {
   // Get params from url
   let { id } = useParams();
 
@@ -53,30 +50,12 @@ const EditUser = ({ stateList }) => {
 
     // Set states to array of objects
     if (user.data?.role !== "state") {
-      setSelectedStates(
-        theStates.map(e => {
-          let stateName;
-          // Get full state name from redux
-          for (const state in stateList) {
-            if (stateList[state].value === e) {
-              stateName = stateList[state].label;
-            }
-          }
-          return { label: stateName, value: e };
-        })
-      );
+      setSelectedStates(theStates.map(
+        abbr => ({ label: getStateName(abbr), value: abbr })
+      ));
     } else {
-      // Get user state, which will always be the first index.
-      let userHomeState = user.data.states;
-      // Loop through U.S. states to find a match and set to local state (storage)
-      for (const state in stateList) {
-        if (stateList[state].value === userHomeState[0]) {
-          setSelectedStates({
-            label: stateList[state].label,
-            value: stateList[state].value
-          });
-        }
-      }
+      const abbr = user.data.states[0];
+      setSelectedStates({ label: getStateName(abbr), value: abbr });
     }
     return user.data;
   };
@@ -239,7 +218,7 @@ const EditUser = ({ stateList }) => {
                     <th>State</th>
                     <td>
                       <Dropdown
-                        options={stateList}
+                        options={stateSelectOptions}
                         onChange={e => updateLocalUser(e, "states")}
                         value={selectedStates ? selectedStates : ""}
                         placeholder="Select a state"
@@ -256,7 +235,7 @@ const EditUser = ({ stateList }) => {
                     <th>State</th>
                     <td>
                       <MultiSelect
-                        options={stateList}
+                        options={stateSelectOptions}
                         value={selectedStates ? selectedStates : []}
                         onChange={e => updateLocalUser(e, "states")}
                         labelledBy={"Select States"}
@@ -300,14 +279,4 @@ const EditUser = ({ stateList }) => {
   );
 };
 
-EditUser.propTypes = {
-  stateList: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-  stateList: state.global.states.map(element => {
-    return { label: element.state_name, value: element.state_id };
-  })
-});
-
-export default connect(mapStateToProps)(EditUser);
+export default EditUser;

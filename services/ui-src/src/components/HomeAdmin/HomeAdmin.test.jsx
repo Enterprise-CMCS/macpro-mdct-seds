@@ -2,9 +2,6 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import HomeAdmin from "./HomeAdmin";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { render, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 
@@ -16,19 +13,14 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
 }));
 
-const mockStore = configureStore([]);
-
 const adminUser = { role: "admin" };
 
 const renderComponent = () => {
-  const store = mockStore(fullStoreMock);
   getUserInfo.mockResolvedValue({ Items: [adminUser] });
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <HomeAdmin user={adminUser}/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <HomeAdmin user={adminUser}/>
+    </BrowserRouter>
   );
 }
 

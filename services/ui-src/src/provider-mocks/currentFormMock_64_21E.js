@@ -3319,15 +3319,6 @@ const currentFormMock_21E = {
       created_by: "seed"
     },
     tabs: ["0000", "0001", "0105", "0612", "1318"]
-  },
-  global: {
-    age_ranges: [
-      { "0000": "Under Age 0" },
-      { "0001": "between the ages of 0 and 1" },
-      { "0105": "between the ages of 1 and 5" },
-      { "0612": "between the ages of 6 and 12" },
-      { 1318: "between the ages of 13 and 18" }
-    ]
   }
 };
 

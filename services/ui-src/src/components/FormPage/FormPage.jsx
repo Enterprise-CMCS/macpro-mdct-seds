@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { Alert } from "@trussworks/react-uswds";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams, useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
-import { getFormData } from "../../store/reducers/singleForm/singleForm";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
@@ -15,8 +12,13 @@ import { Button } from "@trussworks/react-uswds";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
-const FormPage = ({ getForm, statusData, loadError }) => {
+const FormPage = () => {
+  const statusData = useStore(state => state.statusData);
+  const loadError = useStore(state => state.loadError);
+  const getForm = useStore(state => state.loadForm);
+
   let history = useHistory();
 
   const [saveAlert, setSaveAlert] = React.useState(false);
@@ -40,7 +42,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
       history.push(`/print/${state}/${year}/${quarter}/${formName}`);
     }
   };
-  // Call the API and set questions, answers and status data in redux based on URL parameters
+  // Call the API and set questions, answers and status data in the store based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
       // Get user information
@@ -59,7 +61,7 @@ const FormPage = ({ getForm, statusData, loadError }) => {
       }
     };
     fetchData();
-  }, [getForm, formattedStateName, year, quarterInt, formattedFormName, state]);
+  }, [formattedStateName, year, quarterInt, formattedFormName, state]);
 
   useEffect(() => {
     // Get current time
@@ -156,18 +158,4 @@ const FormPage = ({ getForm, statusData, loadError }) => {
   );
 };
 
-FormPage.propTypes = {
-  statusData: PropTypes.object.isRequired,
-  getForm: PropTypes.func.isRequired
-};
-
-const mapState = state => ({
-  statusData: state.currentForm.statusData,
-  loadError: state.currentForm.loadError
-});
-
-const mapDispatch = {
-  getForm: getFormData ?? {}
-};
-
-export default connect(mapState, mapDispatch)(FormPage);
+export default FormPage;

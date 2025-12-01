@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Textarea } from "@trussworks/react-uswds";
-import { saveSummaryNotes } from "../../store/actions/statusData";
 import { isFinalCertified } from "../../utility-functions/formStatus";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
-const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
+const SummaryNotes = () => {
+  const statusData = useStore(state => state.statusData);
+  const saveSummaryNotes = useStore(state => state.updateSummaryNotes);
   const [summaryNotes, setSummaryNotes] = useState([]);
   const [userRole, setUserRole] = useState();
 
@@ -31,7 +31,7 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
     setSummaryNotes(currentSummaryNotes);
   }, [currentSummaryNotes, statusData]);
 
-  // Update summary notes object locally and in redux
+  // Update summary notes object locally and in the store
   const updateTempSummaryNotes = e => {
     setSummaryNotes(e.target.value);
   };
@@ -62,17 +62,4 @@ const SummaryNotes = ({ statusData, saveSummaryNotes }) => {
   );
 };
 
-SummaryNotes.propTypes = {
-  statusData: PropTypes.object.isRequired
-};
-
-const mapState = state => ({
-  statusData: state.currentForm.statusData,
-  saveSummaryNotes: state.currentForm.statusData.state_comments
-});
-
-const mapDispatch = {
-  saveSummaryNotes
-};
-
-export default connect(mapState, mapDispatch)(SummaryNotes);
+export default SummaryNotes;

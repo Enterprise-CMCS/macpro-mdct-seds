@@ -1,11 +1,9 @@
 import React from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
-
 import GREGridWithTotals from "./GREGridWithTotals";
 import currentFormMock_GRE from "../../provider-mocks/currentFormMock_GRE.js";
+import { useStore } from "../../store/store";
 
 const gridDataItems = [
   {
@@ -42,17 +40,17 @@ const gridDataItems = [
   }
 ];
 
-const mockStore = configureStore([]);
 const renderComponent = () => {
-  const store = mockStore(currentFormMock_GRE);
+  useStore.setState({
+    ...currentFormMock_GRE.currentForm,
+    updateAnswer: vi.fn(),
+  });
   return render(
-    <Provider store={store}>
-      <GREGridWithTotals
-        gridData={gridDataItems}
-        questionID="42"
-        disabled={false}
-      />
-    </Provider>
+    <GREGridWithTotals
+      gridData={gridDataItems}
+      questionID="42"
+      disabled={false}
+    />
   );
 };
 
