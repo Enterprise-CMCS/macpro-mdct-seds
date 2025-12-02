@@ -3,16 +3,15 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
 import { getSingleForm } from "../../libs/api";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
 
 const FormHeader = ({ quarter, form, year, state }) => {
   const updateFPL = useStore(state => state.updateFpl);
+  const userRole = useStore(state => state.user.role);
   const saveForm = useStore(state => state.saveForm);
   const formDescription = formTypes.find(element => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
-  const [disabled, setDisabled] = useState(false);
   const [showFPL, setShowFPL] = useState(false);
 
   // Returns last three digits of maximum FPL range
@@ -22,17 +21,6 @@ const FormHeader = ({ quarter, form, year, state }) => {
 
     // Strips out last three digits (ex. get 317 from `% of FPL 301-317`)
     return fplRange.substring(fplRange.length - 3);
-  };
-
-  const determineUserRole = async () => {
-    const currentUser = await getUserInfo();
-
-    if (
-      currentUser?.Items?.[0]?.role === "admin" ||
-      currentUser?.Items?.[0]?.role === "business"
-    ) {
-      setDisabled(true);
-    }
   };
 
   useEffect(() => {
@@ -51,7 +39,6 @@ const FormHeader = ({ quarter, form, year, state }) => {
         setShowFPL(true);
       }
     }
-    determineUserRole().then();
     fetchData();
   }, [quarter, form, state, year]);
 
@@ -135,7 +122,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   type="button"
                   className="max-fpl-btn"
                   onClick={updateMaxFPL}
-                  disabled={disabled}
+                  disabled={userRole !== "state"}
                 >
                   Apply FPL Changes
                 </Button>

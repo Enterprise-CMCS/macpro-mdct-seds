@@ -21,12 +21,9 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
 
-vi.mock("../../libs/api", () => ({
-  getCurrentUser: () => mockUser
-}));
-
 const renderWithStatus = (statusFields) => {
   useStore.setState({
+    user: mockUser,
     statusData: {
       ...statusFields,
       status_date: "2025-11-26T22:45:38.115Z",

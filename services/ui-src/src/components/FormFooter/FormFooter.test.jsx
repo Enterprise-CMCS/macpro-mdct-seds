@@ -17,13 +17,10 @@ const mockUser = {
   ]
 };
 
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
-}));
-
 describe("Test FormFooter.js", () => {
   beforeEach(() => {
     useStore.setState({
+      user: mockUser,
       statusData: { last_modified: "2025-11-26T22:45:38.115Z" }
     })
     render(

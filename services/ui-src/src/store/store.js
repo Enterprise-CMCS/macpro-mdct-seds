@@ -23,6 +23,7 @@ export const useStore = create((set, get) => ({
   statusData: {},
   tabs: [],
   loadError: false,
+  user: {},
 
   // Actions
   loadForm: async (state, year, quarter, formName) => {
@@ -55,8 +56,7 @@ export const useStore = create((set, get) => ({
       return { answers };
     })
   },
-  wipeForm: async () => {
-    const username = (await getCurrentUser()).username;
+  wipeForm: () => {
     set((state) => {
       const timeStamp = new Date().toISOString();
       const answers = structuredClone(state.answers).map(
@@ -64,22 +64,21 @@ export const useStore = create((set, get) => ({
           ...answer,
           rows: clearSingleQuestion(answer.rows),
           last_modified: timeStamp,
-          last_modified_by: username,
+          last_modified_by: state.user.username,
         })
       );
       return { answers };
     });
   },
-  updateFormStatus: async (status_id) => {
-    const username = (await getCurrentUser()).username;
+  updateFormStatus: (status_id) => {
     set((state) => ({
       statusData: {
         ...state.statusData,
         status_id,
         status_date: new Date().toISOString(),
-        status_modified_by: username,
+        status_modified_by: state.user.username,
         last_modified: new Date().toISOString(),
-        last_modified_by: username,
+        last_modified_by: state.user.username,
       }
     }));
   },
@@ -98,11 +97,10 @@ export const useStore = create((set, get) => ({
   },
   saveForm: async () => {
     try {
-      const username = (await getCurrentUser()).username;
-      const { answers, statusData } = get();
+      const { answers, statusData, user } = get();
 
       await saveSingleForm({
-        username,
+        username: user.username,
         formAnswers: answers,
         statusData: statusData,
       });
@@ -119,7 +117,7 @@ export const useStore = create((set, get) => ({
         statusData: {
           ...statusData,
           last_modified: new Date().toISOString(),
-          last_modified_by: username,
+          last_modified_by: user.username,
           save_error: false,
         },
       });
@@ -131,5 +129,9 @@ export const useStore = create((set, get) => ({
         }
       }));
     }
+  },
+  loadUser: async () => {
+    const user = (await getCurrentUser()) ?? {};
+    set({ user });
   },
 }));

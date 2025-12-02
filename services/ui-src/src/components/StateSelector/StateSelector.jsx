@@ -5,31 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { stateSelectOptions } from "../../lookups/states";
+import { useStore } from "../../store/store";
 
 const StateSelector = () => {
-  let history = useHistory();
-
-  // Set up local state
-  const [user, setUser] = useState();
+  const user = useStore(state => state.user);
+  const history = useHistory();
   const [selectedState, setSelectedState] = useState("");
-
-  // Get User data
-  const loadUserData = async () => {
-    let currentUserInfo = await getUserInfo();
-
-    // Save to local state
-    if (currentUserInfo["Items"]) {
-      setUser(currentUserInfo["Items"][0]);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      await loadUserData();
-    })();
-  }, []);
 
   const addUserState = event => {
     setSelectedState(event);
