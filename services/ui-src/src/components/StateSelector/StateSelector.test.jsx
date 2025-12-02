@@ -1,9 +1,7 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Provider } from "react-redux";
 import { BrowserRouter, useHistory } from "react-router-dom";
 import StateSelector from "./StateSelector";
-import { storeFactory } from "../../provider-mocks/testUtils";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event"
 import { getUserInfo } from "../../utility-functions/userFunctions";
@@ -22,24 +20,12 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   useHistory: vi.fn(),
 }));
 
-const store = storeFactory({
-  global: {
-      states: [
-      { state_name: "Colorado", state_id: "CO" },
-      { state_name: "Texas", state_id: "TX" },
-      { state_name: "Wisconsin", state_id: "WI" },
-    ],
-  },
-});
-
 const renderComponent = (user) => {
   getUserInfo.mockResolvedValue({ Items: [user] });
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <StateSelector/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <StateSelector/>
+    </BrowserRouter>
   )
 };
 

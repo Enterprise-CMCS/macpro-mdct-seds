@@ -1,10 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import HomeAdmin from "./HomeAdmin";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import { screen, render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import userEvent from "@testing-library/user-event";
 import { buildSortedAccordionByYearQuarter } from "utility-functions/sortingFunctions";
@@ -22,19 +19,14 @@ vi.mock("utility-functions/sortingFunctions", async () => ({
   buildSortedAccordionByYearQuarter: vi.fn().mockReturnValue([])
 }));
 
-const mockStore = configureStore([]);
-
 const adminUser = { role: "admin" };
 
 const renderComponent = () => {
-  const store = mockStore(fullStoreMock);
   getUserInfo.mockResolvedValue({ Items: [adminUser] });
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <HomeAdmin user={adminUser} />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <HomeAdmin user={adminUser}/>
+    </BrowserRouter>
   );
 };
 

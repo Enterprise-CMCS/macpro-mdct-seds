@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Button } from "@trussworks/react-uswds";
-import PropTypes from "prop-types";
 import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { stateSelectOptions } from "../../lookups/states";
 
-const StateSelector = ({ stateList }) => {
+const StateSelector = () => {
   let history = useHistory();
 
   // Set up local state
@@ -82,7 +81,7 @@ const StateSelector = ({ stateList }) => {
           <h3>Please select your state below:</h3>
 
           <Dropdown
-            options={stateList}
+            options={stateSelectOptions}
             onChange={event => addUserState(event)}
             value={selectedState ? selectedState : ""}
             placeholder="Select a state"
@@ -108,14 +107,4 @@ const StateSelector = ({ stateList }) => {
   );
 };
 
-StateSelector.propTypes = {
-  stateList: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-  stateList: state.global.states.map(element => {
-    return { label: element.state_name, value: element.state_id };
-  })
-});
-
-export default connect(mapStateToProps)(StateSelector);
+export default StateSelector;

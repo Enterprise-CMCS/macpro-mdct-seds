@@ -73,35 +73,6 @@ const formattedPartsET = (date, options) => {
   return (type) => parts.find((part) => part.type === type).value;
 };
 
-const compileSimpleArrayStates = complexArray => {
-  const simpleArray = [];
-  for (const item in complexArray) {
-    simpleArray.push(complexArray[item].value);
-  }
-  return simpleArray;
-};
-
-/**
- * This function creates an array of objects suitable for dropdowns.
- *
- * @param stateList - list of all U.S. states (probably from redux)
- * @param userStates - list of states to select from (user states)
- * @returns {*[]} - an array of objects suitable for a dropdown component
- */
-
-const compileStatesForDropdown = (stateList, userStates) => {
-  let selectedStates = [];
-
-  // Create single array of objects with label and value of userStates
-  // This is the format for dropdowns in this project
-  if (userStates.length > 0) {
-    selectedStates = stateList.filter(state =>
-      userStates.includes(state.value)
-    );
-  }
-  return selectedStates;
-};
-
 /**
  * Sorts array by year and quarter descending
  * @param formsArray - multidimensional array of forms
@@ -295,8 +266,6 @@ const sortByCol1 = (a, b) => {
 export {
   sortQuestionColumns,
   dateFormatter,
-  compileStatesForDropdown,
-  compileSimpleArrayStates,
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter,
   gatherByQuestion,

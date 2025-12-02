@@ -1,4 +1,4 @@
-import { InProgressStatusFields } from "../../../utility-functions/formStatus";
+import { InProgressStatusFields } from "../utility-functions/formStatus";
 
 export const tabs = ["0000", "0001", "0105", "0612"];
 

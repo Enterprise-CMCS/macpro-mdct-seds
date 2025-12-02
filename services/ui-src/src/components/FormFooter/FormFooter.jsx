@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
-import { saveForm } from "../../store/reducers/singleForm/singleForm";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 
 // FontAwesome / Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
-const FormFooter = ({ state, year, quarter, lastModified, saveForm }) => {
+const FormFooter = ({ state, year, quarter }) => {
+  const lastModified = useStore(state => state.statusData.last_modified);
+  const saveForm = useStore(state => state.saveForm);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const handleClick = () => {
     saveForm();
@@ -81,16 +82,6 @@ FormFooter.propTypes = {
   state: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   quarter: PropTypes.string.isRequired,
-  lastModified: PropTypes.string,
-  saveForm: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  lastModified: state.currentForm.statusData.last_modified
-});
-
-const mapDispatchToProps = {
-  saveForm: saveForm
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormFooter);
+export default FormFooter;

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
-import { connect } from "react-redux";
-
-import "./GREGridWithTotals.scss";
-
-import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 import { addCommas } from "../../utility-functions/transformFunctions";
+import { useStore } from "../../store/store";
+import "./GREGridWithTotals.scss";
 
 /*This component is specifically designed to for the Gender/Race/Ethnicity form as of 2021.
  * It is based off of the GridWithTotals component.
@@ -15,6 +12,7 @@ import { addCommas } from "../../utility-functions/transformFunctions";
  * The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
 const GREGridWithTotals = props => {
+  const setAnswer = useStore(state => state.updateAnswer);
   function compare(a, b) {
     const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
     const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
@@ -67,7 +65,7 @@ const GREGridWithTotals = props => {
     gridCopy[row][4] = gridCHIPTotals[row];
     updateGridData(gridCopy);
 
-    props.setAnswer(gridCopy, props.questionID);
+    setAnswer(gridCopy, props.questionID);
   };
 
   const updateTotals = () => {
@@ -382,12 +380,7 @@ const translateInitialData = gridDataObject => {
 GREGridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
-  setAnswer: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
 };
 
-const mapDispatch = {
-  setAnswer: gotAnswer ?? {}
-};
-
-export default connect(null, mapDispatch)(GREGridWithTotals);
+export default GREGridWithTotals;
