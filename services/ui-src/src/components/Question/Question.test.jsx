@@ -17,12 +17,12 @@ vi.mock("../SynthesizedGrid/SynthesizedGrid", () => ({
 
 const mockQuestionData = {
   label: "Mock Question: &&&VARIABLE&&&",
-  question: "2021-64.21E-01",
+  question: "2021-GRE-01",
   type: "datagridwithtotals",
 }
 
 const mockAnswerData = {
-  question: "2021-64.21E-01",
+  question: "2021-GRE-01",
   rows: [
     { col1: "",      col2: "Column A", col3: "Column B", },
     { col1: "Row 1", col2: null,       col3: null },

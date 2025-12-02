@@ -4,6 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import NotApplicable from "./NotApplicable";
 import { BrowserRouter } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import userEvent from "@testing-library/user-event";
 import {
   FinalCertifiedStatusFields,
   InProgressStatusFields,
@@ -33,6 +34,8 @@ const renderComponent = (user, statusData) => {
 
 const stateUser = { role: "state" };
 const adminUser = { role: "admin" };
+
+vi.spyOn(window, "confirm").mockImplementation(() => false);
 
 describe("NotApplicable", () => {
   it("should be enabled for state users viewing an in-progress form", async () => {
@@ -72,14 +75,25 @@ describe("NotApplicable", () => {
   it("should initialize to Yes for a Certified form", async () => {
     renderComponent(stateUser, ProvisionalCertifiedStatusFields());
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const yesOption = screen.getByRole("radio", { name: "Yes" });
-    expect(yesOption).toBeChecked();
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
+    expect(yesButton).toBeChecked();
   });
 
   it("should initialize to Not Applicable when appropriate", async () => {
     renderComponent(stateUser, NotRequiredStatusFields());
     await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    const yesButton = screen.getByRole("radio", { name: "No" });
+    const noButton = screen.getByRole("radio", { name: "No" });
+    expect(noButton).toBeChecked();
+  });
+
+    it("should initialize to Yes for a Certified form", async () => {
+    renderComponent(stateUser, ProvisionalCertifiedStatusFields());
+    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    const yesButton = screen.getByRole("radio", { name: "Yes" });
     expect(yesButton).toBeChecked();
+
+    const noButton = screen.getByRole("radio", { name: "No" });
+    userEvent.click(noButton);
+    expect(window.confirm).toBeCalled();
   });
 });
