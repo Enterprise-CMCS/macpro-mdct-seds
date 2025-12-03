@@ -2,8 +2,7 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import SummaryNotes from "./SummaryNotes";
-import { render, screen, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
+import { render, screen } from "@testing-library/react";
 import { FinalCertifiedStatusFields, InProgressStatusFields } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
 
