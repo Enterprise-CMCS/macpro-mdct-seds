@@ -10,6 +10,7 @@ import { useStore } from "../../store/store";
 
 const StateSelector = () => {
   const user = useStore(state => state.user);
+  const loadUser = useStore(state => state.loadUser);
   const history = useHistory();
   const [selectedState, setSelectedState] = useState("");
 
@@ -27,7 +28,10 @@ const StateSelector = () => {
         try {
           let userToPass = user;
           userToPass.states = [selectedState.value];
+          // Send data to API
           await updateUser(userToPass);
+          // Re-fetch from API
+          await loadUser();
           history.push("/");
         } catch (error) {
           console.log("Error in state selector:", error);

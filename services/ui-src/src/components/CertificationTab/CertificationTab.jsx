@@ -53,8 +53,7 @@ const CertificationTab = () => {
     able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
     
     const sendEmailtoBo = async () => {
-      let currentUser = await getCurrentUser();
-      if (currentUser.role === "state") {
+      if (userRole === "state") {
         await sendUncertifyEmail({ formInfo: formStatus });
       }
     };
