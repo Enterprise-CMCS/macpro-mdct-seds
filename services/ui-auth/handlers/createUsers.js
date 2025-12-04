@@ -1,8 +1,22 @@
 import * as cognitolib from "../libs/cognito-lib.js";
 const userPoolId = process.env.userPoolId;
 import users from "../libs/users.json" assert { type: "json" };
+import externalUsers from "../libs/external-test-users.json" assert { type: "json" };
 
 export async function handler(_event, _context, _callback) {
+  if (process.env.bootstrapUsersPassword) {
+    await uploadUsers(users, process.env.bootstrapUsersPassword);
+  }
+  // User group used for pen tests with a potential for more frequent password rotation
+  if (process.env.bootstrapExternalUsersPassword) {
+    await uploadUsers(
+      externalUsers,
+      process.env.bootstrapExternalUsersPassword
+    );
+  }
+}
+
+const uploadUsers = async (users, password) => {
   for (let user of users) {
     var poolData = {
       UserPoolId: userPoolId,
@@ -11,7 +25,7 @@ export async function handler(_event, _context, _callback) {
       UserAttributes: user.attributes,
     };
     var passwordData = {
-      Password: process.env.bootstrapUsersPassword,
+      Password: password,
       UserPoolId: userPoolId,
       Username: user.username,
       Permanent: true,
@@ -43,4 +57,4 @@ export async function handler(_event, _context, _callback) {
       /* swallow this exception and continue */
     }
   }
-}
+};

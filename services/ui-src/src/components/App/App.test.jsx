@@ -1,25 +1,26 @@
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 
-jest.mock("../Routes/Routes", () =>
-  (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
-);
+vi.mock("../Routes/Routes", () => ({
+  default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
+}));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useLocation: () => ({
     pathname: "localhost:3000/example/path",
   }),
 }));
 
-jest.mock("aws-amplify", () => ({
+vi.mock("aws-amplify", () => ({
   Auth: {
-    currentSession: jest.fn().mockResolvedValue({
-      getIdToken: jest.fn().mockReturnValue({
+    currentSession: vi.fn().mockResolvedValue({
+      getIdToken: vi.fn().mockReturnValue({
         payload: {
           email: "qwer@email.test",
         },
@@ -28,16 +29,16 @@ jest.mock("aws-amplify", () => ({
   },
 }));
 
-jest.mock("../../utility-functions/initialLoadFunctions", () => ({
-  ensureUserExistsInApi: jest.fn().mockResolvedValue({
+vi.mock("../../utility-functions/initialLoadFunctions", () => ({
+  ensureUserExistsInApi: vi.fn().mockResolvedValue({
     attributes: {
       role: "state",
     },
   }),
 }));
 
-jest.mock("../../utility-functions/tealium", () => ({
-  fireTealiumPageView: jest.fn(),
+vi.mock("../../utility-functions/tealium", () => ({
+  fireTealiumPageView: vi.fn(),
 }));
 
 const renderComponent = () => {
@@ -49,7 +50,7 @@ const renderComponent = () => {
 };
 
 describe("Test App.js", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   it("should record analytics for authenticated page views", async () => {
     renderComponent();
@@ -58,7 +59,7 @@ describe("Test App.js", () => {
       expect(ensureUserExistsInApi).toHaveBeenCalledWith("qwer@email.test");
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         true,
-        "http://localhost/",
+        "http://localhost:3000/",
         "localhost:3000/example/path"
       );
     });
@@ -83,7 +84,7 @@ describe("Test App.js", () => {
       expect(ensureUserExistsInApi).toHaveBeenCalledWith("qwer@email.test");
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         false, // not authenticated
-        "http://localhost/", // we've been redirected
+        "http://localhost:3000/", // we've been redirected
         "localhost:3000/example/path",
       );
     });

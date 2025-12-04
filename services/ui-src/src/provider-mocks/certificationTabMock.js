@@ -1,3 +1,5 @@
+import { InProgressStatusFields } from "../utility-functions/formStatus";
+
 const certificationTabMock = {
   currentForm: {
     statusData: {
@@ -18,13 +20,11 @@ const certificationTabMock = {
       program_code: "AL",
       state_form: "AL-2021-1-21E",
       state_id: "AL",
-      not_applicable: false,
       created_date: "2021-01-15T12:46:35.838Z",
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      status_id: 2,
-      status: "In Progress"
+      ...InProgressStatusFields()
     }
   }
 };

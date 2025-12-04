@@ -1,93 +1,178 @@
 /**********************
   FOOTER
 **********************/
-.footer {
-  background: $brand-tertiary;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
-
-  .container {
-    width: 100%;
-    padding: 2rem;
+.footerRoot {
+  flex-shrink: 0;
+  @media print {
+    display: none;
   }
-
-  .logo {
-    margin-bottom: 1.2rem;
-
-    ul {
-      padding: 0;
-
-      li {
-        display: inline-block;
-        list-style-type: none;
-        margin-left: 0;
-        padding-right: 0.4rem;
-
-        img {
-          max-height: 50px;
-        }
-
-        &:last-of-type {
-          img {
-            max-height: 80px;
-          }
-        }
+  .footerTop {
+    background: $brand-tertiary;
+    min-height: 7rem;
+    padding: 2rem 0;
+  }
+  .footerTopContainer {
+    max-width: 100vw;
+    @media (55rem < width)  {
+      padding: 0 2rem;
+    }
+  }
+  .footerTopFlex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .footerTopLeftContainer {
+    flex: 0 0 50%;
+    max-width: 100%;
+    min-width: 100%;
+    margin-bottom: 1em;
+      @media (55rem < width)  {
+      margin-bottom: 0;
+      max-width: 50%;
+      min-width: auto;
+    }
+  }
+  .footerTopRightContainer {
+    flex: 0 0 50%;
+    max-width: 100%;
+    min-width: 100%;
+     @media (55rem < width) {
+      min-width: auto;
+    }
+  }
+  .footerTopRightTopFlex {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+     @media (55rem < width) {
+      justify-content: flex-end;
+      flex-direction: row;
+    }
+  }
+  .footerCMSBrandingLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    padding: 0 1rem;
+    min-width: 100%;
+    margin-bottom: 1rem;
+     @media (55rem < width) {
+      margin-bottom: 0;
+      display: block;
+      width: auto;
+      max-width: auto;
+      min-width: auto;
+    }
+  }
+  .footerCMSBrandingRight {
+    flex: 0 0 75%;
+    max-width: 25rem;
+  }
+  .sedsLogo {
+    max-height: 4.875rem;
+    margin: 0 auto;
+    display: block;
+     @media (55rem < width) {
+      margin: 0;
+    }
+  }
+  .hhsLogo { 
+    display: inline-block;
+    width: 4.375rem;
+  }
+  .hhsMedicaidLogoMobile {
+    display: block;
+    max-width: 12.5rem;
+    margin-left: 1.25rem;
+    // desktop view
+     @media (55rem < width) {
+      display: none;
+    }
+  }
+  .hhsCopyText {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    font-size: 0.875rem; // 14px
+    line-height: 21px;
+    margin-top: 0;
+    margin-block: 0;
+  }
+  .footerCMSMedicaid {
+    display: none;
+    justify-content: flex-end;
+    // desktop view
+     @media (55rem < width) {
+      display: flex;
+    }
+  }
+  .medicaidLogo {
+    flex: 0 0 75%;
+    max-width: 75%;
+    margin-top: 0.25rem;
+     @media (55rem < width) {
+      max-width: 25rem;
+    }
+  }
+  .footerBottom {
+    min-height: 3rem;
+    background-color: $brand-primary;
+    font-size: 14px;
+  }
+  .footerBottomContainer {
+    max-width: 100vw;
+    padding: 0 1rem;
+    @media (55rem < width)  {
+      padding: 0 2rem;
+    }
+  }
+  .footerBottomFlex {
+    color: $white;
+    display: flex;
+    padding: 1rem 0;
+    justify-content: space-between;
+    align-items: normal;
+    flex-direction: column;
+    @media (55rem < width)  {
+      align-items: initial;
+      flex-direction: row;
+    }
+  }
+  .footerBottomLinkFlex {
+    display: flex;
+    flex-direction: column;
+    @media (55rem < width)  {
+      flex-direction: row;
+    }
+    a:first-of-type > p {
+      margin-left: 0;
+    }
+  }
+  a {
+    color: $white;
+    margin: 0.5rem 0;
+    @media (55rem < width)  {
+      &:first-of-type {
+        padding-right: .5rem;
+        border-right: 1px solid;
+        border-color: white;
+      }
+      &:last-child {
+        padding-left: .5rem;
       }
     }
   }
-
-  .tagline {
-    color: $brand-primary;
-    font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman",
-      "Times", serif;
-  }
-
-  .info {
-    clear: both;
-    font-size: 0.75rem;
-    text-align: right;
-
-    .title {
-      float: right;
-      max-width: 274px;
-    }
-
-    .address {
-      float: right;
-      font-weight: $font-weight-light;
-      clear: both;
-    }
-  }
-
-  .footer-nav {
-    float: right;
-    padding-bottom: 1.2rem;
-    .usa-footer__nav {
-      font-size: 0.85rem;
-      padding-right: 0;
-      text-align: right;
-
-      li {
-        border-left: 1px solid $black;
-
-        &:first-of-type {
-          border-left: none;
-        }
-
-        a {
-          font-weight: $font-weight-normal;
-          padding: 0;
-          text-decoration: underline;
-        }
-      }
-    }
+  .addressDiv {
+    display: flex;
   }
   .address {
-    background-color: $brand-primary;
-    color: white;
-    padding: 0.75rem 2rem;
-    text-align: right;
     font-weight: bold;
+    align-self: center;
+    margin: 2.25rem 0 0;
+    @media (55rem < width)  {
+      margin: 0;
+    }
   }
 }

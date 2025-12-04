@@ -1,4 +1,5 @@
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
@@ -8,9 +9,9 @@ import { storeFactory } from "../../provider-mocks/testUtils";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getSingleForm, getStateForms } from "../../libs/api";
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     state: "AL",
     year: "2021",
     quarter: "01",
@@ -18,8 +19,8 @@ jest.mock("react-router-dom", () => ({
   }),
 }));
 
-jest.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: jest.fn().mockResolvedValue({
+vi.mock("../../utility-functions/userFunctions", () => ({
+  getUserInfo: vi.fn().mockResolvedValue({
     Items: [
       {
         states: "AL",
@@ -28,9 +29,9 @@ jest.mock("../../utility-functions/userFunctions", () => ({
   }),
 }));
 
-jest.mock("../../libs/api", () => ({
-  getSingleForm: jest.fn(),
-  getStateForms: jest.fn(),
+vi.mock("../../libs/api", () => ({
+  getSingleForm: vi.fn(),
+  getStateForms: vi.fn(),
 }));
 getSingleForm.mockResolvedValue(fullStoreMock.currentForm);
 getStateForms.mockResolvedValue({ Items: [fullStoreMock.currentForm.statusData] });

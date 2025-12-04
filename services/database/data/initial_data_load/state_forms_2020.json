@@ -9,11 +9,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "Final Data Certified and Submitted",
-    "status_id": 4,
+    "status_id": 3,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -35,11 +33,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -61,11 +57,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -87,11 +81,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -113,11 +105,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -139,11 +129,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -165,11 +153,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -191,11 +177,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -217,11 +201,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -243,11 +225,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -269,11 +249,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -295,11 +273,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-03-02T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -321,11 +297,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -347,11 +321,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
@@ -373,11 +345,9 @@
     "year": 2020,
     "quarter": 4,
     "validation_percent": 0.03,
-    "status": "In Progress",
     "status_id": 1,
     "status_modified_by": "seed",
     "status_date": "2020-04-14T12:46:35.838Z",
-    "not_applicable": false,
     "state_comments": [
       {
         "type": "text_multiline",
