@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import "./SynthesizedGrid.scss";
 import { Table } from "@trussworks/react-uswds";
+import { useStore } from "../../store/store";
 
-export const SynthesizedGrid = ({ entireForm, range }) => {
+export const SynthesizedGrid = ({ range }) => {
+  const answers = useStore(state => state.answers);
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
-  let tabAnswers = entireForm.answers.filter(
+  let tabAnswers = answers.filter(
     element => element.rangeId === range
   );
   // Retrieve question 4 answer data for the current tab
@@ -154,14 +155,7 @@ export const SynthesizedGrid = ({ entireForm, range }) => {
 };
 
 SynthesizedGrid.propTypes = {
-  entireForm: PropTypes.object.isRequired,
-  questionID: PropTypes.string.isRequired,
-  gridData: PropTypes.array.isRequired,
   range: PropTypes.string.isRequired
 };
 
-const mapState = state => ({
-  entireForm: state.currentForm
-});
-
-export default connect(mapState)(SynthesizedGrid);
+export default SynthesizedGrid;

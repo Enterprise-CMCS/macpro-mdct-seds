@@ -1,23 +1,10 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import EditUser from "./EditUser";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import configureMockStore from "redux-mock-store";
 import { getUserById, updateUser } from "../../libs/api";
-
-const mockStore = configureMockStore([]);
-const store = mockStore({
-  global: {
-    states: [
-      { state_name: "Colorado", state_id: "CO" },
-      { state_name: "Texas", state_id: "TX" },
-      { state_name: "Wisconsin", state_id: "WI" }
-    ]
-  }
-});
 
 vi.mock("../../libs/api", () => ({
   updateUser: vi.fn().mockResolvedValue({}),
@@ -43,11 +30,9 @@ const renderComponent = user => {
   }
 
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <EditUser />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <EditUser />
+    </BrowserRouter>
   );
 };
 

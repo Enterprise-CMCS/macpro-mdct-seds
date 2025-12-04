@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Auth } from "aws-amplify";
+import {
+  fetchAuthSession,
+  signOut,
+} from "aws-amplify/auth";
 import { GovBanner, NavList } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 
 import "./Header.scss";
+import config from "config/config";
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,8 +17,8 @@ const Header = () => {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const userInfo = (await Auth.currentSession()).getIdToken().payload;
-        setIsAuthenticated(userInfo !== null);
+        const authSession = (await fetchAuthSession());
+        setIsAuthenticated(!!authSession?.tokens);
         // eslint-disable-next-line no-empty
       } catch (error) {}
     };
@@ -24,8 +28,8 @@ const Header = () => {
 
   const handleLogout = () => {
     try {
-      Auth.signOut().then(() => {
-        window.location.href = Auth.configure().oauth.redirectSignOut;
+      signOut().then(() => {
+        window.location.href = config.cognito.REDIRECT_SIGNOUT;
       });
     } catch (error) {
       console.log("error signing out: ", error);

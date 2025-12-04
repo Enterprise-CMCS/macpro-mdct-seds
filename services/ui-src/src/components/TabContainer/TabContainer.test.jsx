@@ -3,10 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import TabContainer from "./TabContainer";
-import configureStore from "redux-mock-store";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import { Provider } from "react-redux";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
   default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
@@ -26,13 +25,8 @@ vi.mock("../../utility-functions/userFunctions", () => ({
 
 const renderComponent = (userRole) => {
   getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
-  const mockstore = configureStore([]);
-  const store = mockstore(fullStoreMock);
-  return render(
-    <Provider store={store}>
-      <TabContainer/>
-    </Provider>
-  );
+  useStore.setState(fullStoreMock.currentForm);
+  return render(<TabContainer/>);
 };
 
 describe("TabContainer tests", () => {

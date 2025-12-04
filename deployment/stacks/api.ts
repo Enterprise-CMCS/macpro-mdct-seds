@@ -110,7 +110,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const environment = {
     brokerString,
     KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
-    stage,
+    STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
@@ -154,7 +154,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       "StateForms",
       "Forms",
       "FormTemplates",
-      "States",
       "FormAnswers",
     ].includes(table.node.id)
   );
@@ -188,18 +187,18 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "getCurrentUser", {
+    entry: "services/app-api/handlers/users/get/getCurrentUser.js",
+    handler: "main",
+    path: "/getCurrentUser",
+    method: "GET",
+    ...commonProps,
+  });
+
   new Lambda(scope, "obtainUserByUsername", {
     entry: "services/app-api/handlers/users/post/obtainUserByUsername.js",
     handler: "main",
     path: "/users/get",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "obtainUserByEmail", {
-    entry: "services/app-api/handlers/users/post/obtainUserByEmail.js",
-    handler: "main",
-    path: "/users/get/email",
     method: "POST",
     ...commonProps,
   });
@@ -267,14 +266,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     handler: "main",
     path: "/forms/obtainAvailableForms",
     method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getFormTypes", {
-    entry: "services/app-api/handlers/forms/get/getFormTypes.js",
-    handler: "main",
-    path: "/form-types",
-    method: "GET",
     ...commonProps,
   });
 

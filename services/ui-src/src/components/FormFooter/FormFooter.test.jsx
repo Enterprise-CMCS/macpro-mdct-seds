@@ -1,13 +1,9 @@
 import React from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
 import FormFooter from "./FormFooter";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import configureMockStore from "redux-mock-store";
 import { BrowserRouter } from "react-router-dom";
-
-const mockStore = configureMockStore([]);
+import { useStore } from "../../store/store";
 
 const mockUser = {
   Items: [
@@ -25,19 +21,15 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: () => Promise.resolve(mockUser)
 }));
 
-vi.mock("../../libs/api", () => ({
-  obtainUserByEmail: () => mockUser
-}));
-
 describe("Test FormFooter.js", () => {
   beforeEach(() => {
-    const store = mockStore(fullStoreMock);
+    useStore.setState({
+      statusData: { last_modified: "2025-11-26T22:45:38.115Z" }
+    })
     render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <FormFooter state="AL" year="2021" quarter="1" />
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <FormFooter state="AL" year="2021" quarter="1" />
+      </BrowserRouter>
     );
   });
 
@@ -47,7 +39,7 @@ describe("Test FormFooter.js", () => {
 
   test("Check for Last Saved Date display", () => {
     expect(screen.getByTestId("lastModified"))
-      .toHaveTextContent("Last saved: 4/14/2021 at 8:46:35 AM EDT");
+      .toHaveTextContent("Last saved: 11/26/2025 at 5:45:38 PM EST");
   });
 
   test("Check for Save button", () => {

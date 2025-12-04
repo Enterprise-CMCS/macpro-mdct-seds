@@ -44,7 +44,7 @@ vi.mock("aws-amplify", () => ({
   }
 }));
 
-vi.mock("./utility-functions/constants", () => ({
+vi.mock("./utility-functions/environment", () => ({
   MODE: "production",
   BASE_URL: "mdctcartsdev.cms.gov"
 }));

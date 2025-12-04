@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Auth } from "aws-amplify";
+import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { useFormFields } from "../../libs/hooksLib";
@@ -21,12 +21,8 @@ export default function Login() {
     return fields.email.length > 0 && fields.password.length > 0;
   }
 
-  function signInWithOkta() {
-    const authConfig = Auth.configure();
-    const { domain, redirectSignIn, responseType } = authConfig.oauth;
-    const clientId = authConfig.userPoolWebClientId;
-    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
-    window.location.assign(url);
+  async function signInWithOkta() {
+    await signInWithRedirect({ provider: { custom: "Okta" } });
   }
 
   async function handleSubmitOkta(event) {
@@ -35,7 +31,7 @@ export default function Login() {
     setIsLoadingOkta(true);
 
     try {
-      signInWithOkta();
+      await signInWithOkta();
     } catch (e) {
       onError(e);
       setIsLoadingOkta(false);
@@ -46,7 +42,11 @@ export default function Login() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await Auth.signIn(fields.email, fields.password);
+      await signIn({ 
+        username: fields.email, 
+        password: fields.password, 
+        options: {authFlowType: "USER_PASSWORD_AUTH"}
+      });
       window.location.href = "/";
     } catch (e) {
       onError(e);
