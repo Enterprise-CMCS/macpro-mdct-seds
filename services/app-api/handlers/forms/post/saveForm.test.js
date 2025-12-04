@@ -111,18 +111,13 @@ describe("saveForm.js", () => {
     expect(mockUpdate).toHaveBeenCalledWith({
       TableName: "local-state-forms",
       Key: { state_form: "CO-2025-F1-A" },
-      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, not_applicable = :not_applicable, #status = :status, state_comments = :state_comments",
-      ExpressionAttributeNames: {
-        "#status": "status",
-      },
+      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
       ExpressionAttributeValues: {
         ":last_modified_by": "COLO",
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status_id": 2,
-        ":not_applicable": false,
-        ":status": "In Progress",
+        ":status_id": 1,
         ":state_comments": ["mock state comment"],
       },
       ReturnValues: "ALL_NEW",
