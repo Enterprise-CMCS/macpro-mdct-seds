@@ -134,4 +134,5 @@ export const useStore = create((set, get) => ({
     const user = (await getCurrentUser()) ?? {};
     set({ user });
   },
+  wipeUser: () => set({ user: {} }),
 }));

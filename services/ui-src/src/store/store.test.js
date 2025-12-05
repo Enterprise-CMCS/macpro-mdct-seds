@@ -226,7 +226,7 @@ describe("useStore actions", () => {
   });
 
   describe("updateSummaryNotes", () => {
-    it("should work", () => {
+    it("should store updated notes within statusData", () => {
       useStore.setState({
         statusData: {
           state_form: "CO-2025-4-21E",
@@ -336,6 +336,30 @@ describe("useStore actions", () => {
       const state = useStore.getState();
 
       expect(state.statusData.save_error).toBe(true);
+    });
+  });
+
+  describe("loadUser", () => {
+    it("should call the API to populate user data in the store", async () => {
+      useStore.setState({ user: {} });
+
+      const { loadUser } = useStore.getState();
+      await loadUser();
+      const state = useStore.getState();
+
+      expect(state.user.username).toBe("mockUsername");
+    });
+  });
+
+  describe("wipeUser", () => {
+    it("should clear user data from the store", async () => {
+      useStore.setState({ user: { username: "mockUsername", role: "admin" } });
+
+      const { wipeUser } = useStore.getState();
+      wipeUser();
+      const state = useStore.getState();
+
+      expect(state.user).toEqual({});
     });
   });
 });
