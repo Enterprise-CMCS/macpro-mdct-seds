@@ -90,12 +90,12 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 <th>
                   <b>State:</b>
                 </th>
-                <td data-testid="state-value">{`${state}`}</td>
+                <td>{`${state}`}</td>
 
                 <th>
                   <b>Quarter:</b>
                 </th>
-                <td data-testid="quarter-value">{`${quarter}/${year}`}</td>
+                <td>{`${quarter}/${year}`}</td>
               </tr>
             </tbody>
           </Table>

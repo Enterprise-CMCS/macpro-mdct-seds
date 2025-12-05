@@ -1,46 +1,75 @@
 import React from "react";
-import { describe, expect, test, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import FormHeader from "./FormHeader";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
+import { getSingleForm } from "../../libs/api";
+import { useStore } from "../../store/store";
 
-vi.spyOn(window, "alert").mockImplementation();
+vi.mock("../../libs/api", () => ({
+  getSingleForm: vi.fn().mockResolvedValue({
+    answers: [
+      {
+        rows: [
+          {
+            col6: "% of FPL 301-317",
+          },
+        ],
+      },
+    ],
+  }),
+}));
 
-const mountSetup = (props) => {
+const renderComponent = (role, form) => {
   const setupProps = {
-    quarter: "1",
-    form: "21E",
-    year: "2021",
     state: "AL",
-    ...props,
+    year: "2021",
+    quarter: "1",
+    form,
   };
+  useStore.setState({ user: { role } });
   return render(
     <BrowserRouter>
-      <FormHeader {...setupProps} />{" "}
+      <FormHeader {...setupProps} />
     </BrowserRouter>
   );
 };
 
-const mockAnswers = fullStoreMock.currentForm;
-
-vi.mock("../../libs/api", () => ({
-  getSingleForm: () => Promise.resolve(mockAnswers)
-}));
-
 describe("Test FormHeader.js", () => {
-  test("Check for correct state", () => {
-    mountSetup();
-    expect(screen.getByTestId("state-value")).toHaveTextContent("AL");
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  test("Check for correct quarter/year", () => {
-    mountSetup();
-    expect(screen.getByTestId("quarter-value")).toHaveTextContent("1/2021");
+  it("should render correctly", async () => {
+    renderComponent("state", "21E");
+    await waitFor(() => expect(getSingleForm).toHaveBeenCalled());
+
+    const stateAndQuarter = screen.getByRole(
+      "row",
+      { name: "State: AL Quarter: 1/2021" }
+    );
+    expect(stateAndQuarter).toBeVisible();
+
+    const fplText = screen.getByText(/What is the upper income .* limit/);
+    expect(fplText).toBeVisible();
+
+    const fplButton = screen.getByRole("button", { name: "Apply FPL Changes" });
+    expect(fplButton).toBeEnabled();
   });
 
-  test("Hides the FPL when the form is GRE", () => {
-    mountSetup();
-    expect(screen.queryByTestId("form-max-fpl")).not.toBeInTheDocument();
+  it("should disable FPL updates for non-state users", async () => {
+    renderComponent("business", "21E");
+    await waitFor(() => expect(getSingleForm).toHaveBeenCalled());
+
+    const fplButton = screen.getByRole("button", { name: "Apply FPL Changes" });
+    expect(fplButton).toBeDisabled();
+  });
+
+  it("should hide the FPL section when the form is GRE", async () => {
+    renderComponent("state", "GRE");
+
+    expect(getSingleForm).not.toHaveBeenCalled();
+    const fplText = screen.queryByText(/What is the upper income .* limit/);
+    expect(fplText).not.toBeInTheDocument();
   });
 });
