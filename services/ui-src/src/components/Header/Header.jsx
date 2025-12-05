@@ -25,12 +25,11 @@ const Header = () => {
     onLoad().then();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      signOut().then(() => {
-        window.location.href = config.cognito.REDIRECT_SIGNOUT;
-        wipeUser();
-      });
+      await signOut();
+      wipeUser();
+      window.location.href = config.cognito.REDIRECT_SIGNOUT;
     } catch (error) {
       console.log("error signing out: ", error);
     }

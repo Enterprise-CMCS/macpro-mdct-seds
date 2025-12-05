@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
 import { BrowserRouter, useHistory } from "react-router-dom";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { obtainAvailableForms } from "../../libs/api";
 import { useStore } from "../../store/store";
 
@@ -59,5 +59,14 @@ describe("Test HomeState.js", () => {
     for (let url of expectedUrls) {
       expect(container.querySelector(`a[href='${url}']`)).toBeInTheDocument();
     }
+  });
+
+  it("should still render if obtainAvailableForms fails", async () => {
+    obtainAvailableForms.mockRejectedValueOnce(new Error("Mock server error"));
+
+    renderComponent("CO");
+    await waitFor(() => expect(obtainAvailableForms).toHaveBeenCalled());
+
+    expect(screen.getByText(/Welcome to SEDS/)).toBeVisible();
   });
 });
