@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap";
+import { Nav, NavDropdown, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import {
-  fetchAuthSession,
-  signOut,
-} from "aws-amplify/auth";
+import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { GovBanner, NavList } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
+import { useStore } from "../../store/store";
 
 import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
+  const wipeUser = useStore(state => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -26,11 +25,11 @@ const Header = () => {
     onLoad().then();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      signOut().then(() => {
-        window.location.href = config.cognito.REDIRECT_SIGNOUT;
-      });
+      await signOut();
+      wipeUser();
+      window.location.href = config.cognito.REDIRECT_SIGNOUT;
     } catch (error) {
       console.log("error signing out: ", error);
     }

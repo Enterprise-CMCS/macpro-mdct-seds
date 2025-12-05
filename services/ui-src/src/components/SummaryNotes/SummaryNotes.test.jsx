@@ -2,14 +2,9 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import SummaryNotes from "./SummaryNotes";
-import { render, screen, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
+import { render, screen } from "@testing-library/react";
 import { FinalCertifiedStatusFields, InProgressStatusFields } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
-
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
-}));
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
@@ -21,12 +16,12 @@ const renderComponent = (
   statusData,
   initialComment = ""
 ) => {
-  getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
   const state_comments = initialComment
     ? [{ entry: initialComment }]
     : undefined;
 
   useStore.setState({
+    user: { role: userRole },
     statusData: {
       ...statusData,
       state_comments,
@@ -47,7 +42,6 @@ describe("Test SummaryNotes.js", () => {
 
   it("should render correctly", async () => {
     renderComponent("state", InProgressStatusFields());
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
     expect(commentBox).toBeInTheDocument();
@@ -57,7 +51,6 @@ describe("Test SummaryNotes.js", () => {
 
   it("should render existing notes", async () => {
     renderComponent("state", FinalCertifiedStatusFields(), "existing comment");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
     expect(commentBox.value).toBe("existing comment");
@@ -65,7 +58,6 @@ describe("Test SummaryNotes.js", () => {
 
   it("should disable the input for admin users", async () => {
     renderComponent("admin", InProgressStatusFields());
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
     expect(commentBox).toBeDisabled();
@@ -73,7 +65,6 @@ describe("Test SummaryNotes.js", () => {
 
   it("should disable the input for certified forms", async () => {
     renderComponent("state", FinalCertifiedStatusFields());
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     
     const commentBox = findCommentBox();
     expect(commentBox).toBeDisabled();

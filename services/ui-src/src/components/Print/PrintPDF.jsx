@@ -7,11 +7,11 @@ import QuestionComponent from "../Question/Question";
 import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 import Unauthorized from "../Unauthorized/Unauthorized";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
 import { useStore } from "../../store/store";
 
 const PrintPDF = () => {
+  const user = useStore(state => state.user);
   const questions = useStore(state => state.questions);
   const answers = useStore(state => state.answers);
   const currentTabs = useStore(state => state.tabs);
@@ -21,7 +21,7 @@ const PrintPDF = () => {
   const [loading, setLoading] = useState(true);
 
   const { state, year, quarter, formName } = useParams();
-  const [hasAccess, setHasAccess] = React.useState("");
+  const [hasAccess, setHasAccess] = React.useState(false);
 
   // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
   const formattedStateName = state.toUpperCase();
@@ -30,15 +30,7 @@ const PrintPDF = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Get user information
-      const currentUserInfo = await getUserInfo();
-
-      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
-
-      if (
-        userStates.includes(state) ||
-        currentUserInfo.Items[0].role === "admin"
-      ) {
+      if ((user.states ?? []).includes(state) || user.role === "admin" ) {
         await getForm(formattedStateName, year, quarterInt, form);
         setHasAccess(true);
       } else {

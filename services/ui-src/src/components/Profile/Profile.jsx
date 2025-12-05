@@ -1,65 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { onError } from "../../libs/errorLib";
+import React from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.scss";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
-import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
-export default function Profile({ user }) {
-  const history = useHistory();
-  /* eslint-disable no-unused-vars */
-  const [email, setEmail] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [role, setRole] = useState();
-  const [states, setStates] = useState();
+export default function Profile() {
+  const user = useStore(state => state.user);
 
   const capitalize = s => {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
-  useEffect(() => {
-    const onLoad = async () => {
-      try {
-        let currentUserInfo = await getUserInfo();
-
-        let userObj = currentUserInfo["Items"];
-        for (const userInfo of userObj) {
-          setEmail(userInfo.email);
-          setFirstName(capitalize(userInfo.firstName));
-          setLastName(capitalize(userInfo.lastName));
-          setRole(capitalize(userInfo.role));
-          if (userInfo.states) {
-            setStates(formatStates(userInfo.states));
-          }
-        }
-      } catch (e) {
-        onError(e);
-      }
-    };
-
-    onLoad();
-  });
-
-  function formatStates(states) {
-    let statesRefined = "";
-
-    // Sort alphabetically
-    const statesArray = states.sort();
-
-    // Create string from array, add in commas
-    statesArray.forEach((value, i) => {
-      if (i === 0) {
-        statesRefined += value;
-      } else {
-        statesRefined += ", " + value;
-      }
-    });
-
-    return statesRefined;
-  }
+  const email = user.email ?? "";
+  const firstName = user.firstName ?? "";
+  const lastName = user.lastName ?? "";
+  const role = capitalize(user.role);
+  const states = (user.states ?? []).sort().join(", ");
 
   return (
     <div className="Profile">
@@ -70,35 +27,32 @@ export default function Profile({ user }) {
             <form>
               <FormGroup controlId="email">
                 <ControlLabel>Email</ControlLabel>
-                <FormControl value={email ?? ""} disabled={true} />
+                <FormControl value={email} disabled={true} />
               </FormGroup>
               <FormGroup controlId="firstName">
                 <ControlLabel>First Name</ControlLabel>
                 <FormControl
-                  value={firstName ?? ""}
-                  onChange={e => setFirstName(e.target.value)}
+                  value={firstName}
                   disabled={true}
                 />
               </FormGroup>
               <FormGroup controlId="lastName">
                 <ControlLabel>Last Name</ControlLabel>
                 <FormControl
-                  value={lastName ?? ""}
-                  onChange={e => setLastName(e.target.value)}
+                  value={lastName}
                   disabled={true}
                 />
               </FormGroup>
               <FormGroup controlId="role">
                 <ControlLabel>Role</ControlLabel>
                 <FormControl
-                  value={capitalize(role ?? "")}
-                  onChange={e => setRole(e.target.value)}
+                  value={role}
                   disabled={true}
                 />
               </FormGroup>
               <FormGroup controlId="states">
                 <ControlLabel>States</ControlLabel>
-                <FormControl value={states ?? []} disabled={true} />
+                <FormControl value={states} disabled={true} />
               </FormGroup>
             </form>
           </Grid>

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./NotApplicable.scss";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import {
   InProgressStatusFields,
   isFinalCertified,
@@ -10,30 +9,13 @@ import {
 import { useStore } from "../../store/store";
 
 const NotApplicable = () => {
+  const userRole = useStore(state => state.user.role);
   const statusData = useStore(state => state.statusData);
   const resetData = useStore(state => state.wipeForm);
   const saveForm = useStore(state => state.saveForm);
   const updateFormStatus = useStore(state => state.updateFormStatus);
 
-  const [inputDisabled, setInputDisabled] = useState(true);
-
-  useEffect(() => {
-    if (isFinalCertified(statusData)) {
-      // This cannot be changed after a form is Final Certified.
-      setInputDisabled(true);
-      return;
-    }
-
-    (async () => {
-      const currentUser = await getUserInfo();
-      if (currentUser.Items?.[0].role === "state") {
-        // This cannot be changed by admin or business users.
-        setInputDisabled(false);
-      } else {
-        setInputDisabled(true);
-      }
-    })()
-  }, [statusData]);
+  const inputDisabled = userRole !== "state" || isFinalCertified(statusData);
 
   const handleApplicableChange = async (evt) => {
     // TODO: Clean up these objects - just use status_id instead.
@@ -46,14 +28,14 @@ const NotApplicable = () => {
         `Are you sure you do not want to complete this form? Any data you entered will be lost.`
       );
       if (confirm) {
-        await resetData();
+        resetData();
       } else {
         return;
       }
     }
 
-    await updateFormStatus(newStatusData.status_id);
-    saveForm();
+    updateFormStatus(newStatusData.status_id);
+    await saveForm();
   };
 
   return (

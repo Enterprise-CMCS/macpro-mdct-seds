@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import CertificationTab from "../CertificationTab/CertificationTab";
@@ -6,41 +6,20 @@ import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
 import { getAgeRangeDetails } from "lookups/ageRanges";
 import { useStore } from "../../store/store";
 
 const TabContainer = ({ quarter }) => {
+  const userRole = useStore(state => state.user.role);
   const questions = useStore(state => state.questions);
   const answers = useStore(state => state.answers);
   const currentTabs = useStore(state => state.tabs);
   const statusData = useStore(state => state.statusData);
-  const [disabledStatus, setDisabledStatus] = useState();
 
-  useEffect(() => {
-    const establishStatus = async () => {
-      let userRole;
-      let statusBoolean = false;
-
-      let existingUser = await getUserInfo();
-
-      const userdata = existingUser["Items"];
-      userdata.map(async userInfo => {
-        userRole = userInfo.role;
-      });
-      if (
-        isFinalCertified(statusData) ||
-        isNotRequired(statusData) ||
-        userRole === "admin" ||
-        userRole === "business"
-      ) {
-        statusBoolean = true;
-      }
-      setDisabledStatus(statusBoolean);
-    };
-    establishStatus();
-  }, [statusData]);
+  const disabled = userRole !== "state" ||
+    isFinalCertified(statusData) ||
+    isNotRequired(statusData);
 
   return (
     <Tabs className="tab-container-main">
@@ -96,7 +75,7 @@ const TabContainer = ({ quarter }) => {
                     rangeID={tab}
                     questionData={singleQuestion}
                     answerData={questionAnswer}
-                    disabled={disabledStatus}
+                    disabled={disabled}
                   />
                 );
               }

@@ -1,10 +1,9 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import TabContainer from "./TabContainer";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
@@ -19,20 +18,17 @@ vi.mock("../CertificationTab/CertificationTab", () => ({
   default: (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
 }));
 
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
-}));
-
 const renderComponent = (userRole) => {
-  getUserInfo.mockResolvedValue({ Items: [{ role: userRole }] });
-  useStore.setState(fullStoreMock.currentForm);
+  useStore.setState({
+    ...fullStoreMock.currentForm,
+    user: { role: userRole },
+  });
   return render(<TabContainer/>);
 };
 
 describe("TabContainer tests", () => {
   it("should render the correct subcomponents", async () => {
     const { container } = renderComponent("state");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     const firstQuestion = container.querySelector(".question-component");
     const firstQuestionProps = JSON.parse(firstQuestion.textContent);
@@ -47,7 +43,6 @@ describe("TabContainer tests", () => {
 
   it("should disable questions for admin users", async () => {
     const { container } = renderComponent("admin");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     const firstQuestion = container.querySelector(".question-component");
     const firstQuestionProps = JSON.parse(firstQuestion.textContent);
@@ -56,7 +51,6 @@ describe("TabContainer tests", () => {
 
   it("should render the correct tab names", async () => {
     renderComponent("state");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     const expectedTabNames = [
       "Under Age 0",
@@ -76,7 +70,6 @@ describe("TabContainer tests", () => {
 
   it("should render the correct headings within tabs", async () => {
     renderComponent("state");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     const expectedTabHeaders = [
       "Conception to birth:",
@@ -95,7 +88,6 @@ describe("TabContainer tests", () => {
 
   it("should render the correct content within tabs", async () => {
     const { container } = renderComponent("state");
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     // All five age group tabs should containe six questions each
     const tabs = screen.getAllByRole("tab");

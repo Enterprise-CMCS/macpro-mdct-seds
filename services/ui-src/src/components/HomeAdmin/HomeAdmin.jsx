@@ -7,10 +7,11 @@ import {
 } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { getStateName, stateSelectOptions } from "../../lookups/states";
+import { useStore } from "../../store/store";
 
-const HomeAdmin = ({ user }) => {
+const HomeAdmin = () => {
+  const user = useStore(state => state.user);
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
@@ -20,39 +21,35 @@ const HomeAdmin = ({ user }) => {
 
   useEffect(() => {
     const onLoad = async () => {
-      let currentUserInfo = await getUserInfo();
+      let userStates = user.states;
+      let selectedStates = false;
 
-      if (currentUserInfo["Items"]) {
-        let userStates = currentUserInfo["Items"][0].states;
-        let selectedStates = false;
-
-        if (user.role === "admin") {
-          // An admin's state list is just all states.
-          userStates = stateSelectOptions.map(opt => opt.value);
-        }
-
-        if (userStates && userStates !== "null" && userStates.length > 0) {
-          // Convert simple array into array of objects for dropdown
-          selectedStates = userStates.map(
-            abbr => ({ label: getStateName(abbr), value: abbr })
-          );
-          // Remove default error
-          setStateError(false);
-        }
-
-        // Redirect to register-state if business user with no states
-        if (!selectedStates) {
-          history.push("/register-state");
-        } else {
-          selectedStates.sort((a, b) => {
-            let stateA = a.label.toUpperCase();
-            let stateB = b.label.toUpperCase();
-            return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
-          });
-        }
-
-        setAvailableStates(selectedStates);
+      if (user.role === "admin") {
+        // An admin's state list is just all states.
+        userStates = stateSelectOptions.map(opt => opt.value);
       }
+
+      if (userStates && userStates !== "null" && userStates.length > 0) {
+        // Convert simple array into array of objects for dropdown
+        selectedStates = userStates.map(
+          abbr => ({ label: getStateName(abbr), value: abbr })
+        );
+        // Remove default error
+        setStateError(false);
+      }
+
+      // Redirect to register-state if business user with no states
+      if (!selectedStates) {
+        history.push("/register-state");
+      } else {
+        selectedStates.sort((a, b) => {
+          let stateA = a.label.toUpperCase();
+          let stateB = b.label.toUpperCase();
+          return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
+        });
+      }
+
+      setAvailableStates(selectedStates);
     };
 
     onLoad().then();

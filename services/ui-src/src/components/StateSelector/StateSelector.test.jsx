@@ -4,12 +4,8 @@ import { BrowserRouter, useHistory } from "react-router-dom";
 import StateSelector from "./StateSelector";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event"
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { updateUser } from "../../libs/api";
-
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
-}));
+import { useStore } from "../../store/store";
 
 vi.mock("../../libs/api", () => ({
   updateUser: vi.fn(),
@@ -21,7 +17,10 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 }));
 
 const renderComponent = (user) => {
-  getUserInfo.mockResolvedValue({ Items: [user] });
+  useStore.setState({
+    user,
+    loadUser: vi.fn(),
+  });
   return render(
     <BrowserRouter>
       <StateSelector/>
@@ -32,7 +31,6 @@ const renderComponent = (user) => {
 describe("StateSelector component", () => {
   it("should render an alert for users with a state", async () => {
     const { container } = renderComponent({ states: ["CO"] });
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     expect(screen.getByText(
       "This account has already been associated with a state: CO"
@@ -49,7 +47,6 @@ describe("StateSelector component", () => {
 
   it("should render a selector for users with no state", async () => {
     const { container } = renderComponent({ states: [] });
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     expect(screen.queryByText(
       "This account has already been associated with a state", { exact: false }
@@ -64,13 +61,12 @@ describe("StateSelector component", () => {
     )).toBeInTheDocument();
   });
 
-  it("should save the user's selected state, and redirect them to Home", async () => {
+  it("should save the user's selected state, reload their data in the store, and redirect them to Home", async () => {
     vi.spyOn(window, "confirm").mockImplementation(() => true);
     const mockHistory = { push: vi.fn() };
     useHistory.mockReturnValue(mockHistory);
 
     renderComponent({ id: 42, states: [] });
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     userEvent.click(screen.getByText("Select a state"));
     userEvent.click(screen.getByText("Colorado"));
@@ -78,7 +74,8 @@ describe("StateSelector component", () => {
     
     await waitFor(() => {
       expect(updateUser).toHaveBeenCalledWith({ id: 42, states: ["CO"] });
+      expect(useStore.getState().loadUser).toHaveBeenCalled();
     })
     expect(mockHistory.push).toHaveBeenCalledWith("/");
-  })
+  });
 });

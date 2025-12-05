@@ -4,8 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import Quarterly from "../Quarterly/Quarterly";
 import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
+import { useStore } from "../../store/store";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
@@ -13,12 +13,6 @@ vi.mock("react-router-dom", async (importOriginal) => ({
     state: "AL",
     year: "2021",
     quarter: "01"
-  }),
-}));
-
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn().mockResolvedValue({
-    Items: [{ states: ["AL"] }],
   }),
 }));
 
@@ -62,6 +56,9 @@ const forms = [
 
 
 const renderComponent = () => {
+  useStore.setState({
+    user: { states: ["AL"] },
+  });
   return render(
     <BrowserRouter>
       <Quarterly/>
@@ -73,7 +70,6 @@ describe("Quarterly tests", () => {
   it("should render correctly", async () => {
     const { container } = renderComponent();
     await waitFor(() => {
-      expect(getUserInfo).toHaveBeenCalled();
       expect(recursiveGetStateForms).toHaveBeenCalled();
     });
 

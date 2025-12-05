@@ -4,8 +4,10 @@ import "./Home.scss";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { useStore } from "../../store/store";
 
-const Home = ({ user }) => {
+const Home = () => {
+  const userRole = useStore(state => state.user.role);
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);
@@ -17,13 +19,13 @@ const Home = ({ user }) => {
   const renderLander = () => {
     let content;
 
-    switch (user?.role) {
+    switch (userRole) {
       case "state":
         content = <HomeState />;
         break;
       case "business":
       case "admin":
-        content = <HomeAdmin user={user} />;
+        content = <HomeAdmin />;
         break;
       default:
         content = <Unauthorized />;
