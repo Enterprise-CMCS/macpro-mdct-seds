@@ -1,11 +1,10 @@
 import React from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import GridWithTotals from "./GridWithTotals";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import { useStore } from "../../store/store";
 
 const gridDataItems = [
   {
@@ -42,16 +41,16 @@ const gridDataItems = [
   }
 ];
 
-const mockStore = configureStore([]);
 const renderComponent = () => {
-  const store = mockStore(currentFormMock_21E);
+  useStore.setState({
+    ...currentFormMock_21E.currentForm,
+    updateAnswer: vi.fn(),
+  });
   return render(
-    <Provider store={store}>
-      <GridWithTotals
-        gridData={gridDataItems}
-        questionID="42"
-      />
-    </Provider>
+    <GridWithTotals
+      gridData={gridDataItems}
+      questionID="42"
+    />
   );
 }
 

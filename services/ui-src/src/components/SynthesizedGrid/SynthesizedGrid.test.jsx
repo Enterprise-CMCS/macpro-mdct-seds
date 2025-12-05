@@ -1,22 +1,18 @@
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { Provider } from "react-redux";
 import SynthesizedGrid from "./SynthesizedGrid";
 import { render } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
+import { useStore } from "../../store/store";
 
 const renderComponent = () => {
-  const mockStore = configureStore([]);
-  const store = mockStore(currentFormMock_21E);
+  useStore.setState(currentFormMock_21E.currentForm);
   return render(
-    <Provider store={store}>
-      <SynthesizedGrid
-        questionID="unused"
-        gridData={[ /*unused*/ ]}
-        range="0000"
-      />
-    </Provider>
+    <SynthesizedGrid
+      questionID="unused"
+      gridData={[ /*unused*/ ]}
+      range="0000"
+    />
   );
 };
 

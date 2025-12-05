@@ -2,18 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import { obtainAvailableForms } from "../../libs/api";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import {
-  compileStatesForDropdown,
-  compileSimpleArrayStates,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { getStateName, stateSelectOptions } from "../../lookups/states";
 
-const HomeAdmin = ({ stateList, user }) => {
+const HomeAdmin = ({ user }) => {
   const [selectedState, setSelectedState] = useState();
   const [availableStates, setAvailableStates] = useState([]);
   const [stateError, setStateError] = useState(true);
@@ -29,14 +26,16 @@ const HomeAdmin = ({ stateList, user }) => {
         let userStates = currentUserInfo["Items"][0].states;
         let selectedStates = false;
 
-        // If using all states, create a simple array of states for use in compileStatesForDropdown
-        if (user.attributes["app-role"] === "admin") {
-          userStates = compileSimpleArrayStates(stateList);
+        if (user.role === "admin") {
+          // An admin's state list is just all states.
+          userStates = stateSelectOptions.map(opt => opt.value);
         }
 
         if (userStates && userStates !== "null" && userStates.length > 0) {
           // Convert simple array into array of objects for dropdown
-          selectedStates = compileStatesForDropdown(stateList, userStates);
+          selectedStates = userStates.map(
+            abbr => ({ label: getStateName(abbr), value: abbr })
+          );
           // Remove default error
           setStateError(false);
         }
@@ -77,7 +76,7 @@ const HomeAdmin = ({ stateList, user }) => {
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
   };
 
-  let role = user.attributes["app-role"];
+  let role = user.role;
   return (
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
@@ -156,14 +155,4 @@ const HomeAdmin = ({ stateList, user }) => {
   );
 };
 
-HomeAdmin.propTypes = {
-  stateList: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-  stateList: state.global.states.map(element => {
-    return { label: element.state_name, value: element.state_id };
-  })
-});
-
-export default connect(mapStateToProps)(HomeAdmin);
+export default HomeAdmin;

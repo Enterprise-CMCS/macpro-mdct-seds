@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { TextInput, Table } from "@trussworks/react-uswds";
-import { connect } from "react-redux";
-import "./GridWithTotals.scss";
-import { gotAnswer } from "../../store/reducers/singleForm/singleForm";
 import { addCommas } from "../../utility-functions/transformFunctions";
+import { useStore } from "../../store/store";
+import "./GridWithTotals.scss";
 
 const GridWithTotals = props => {
+  const setAnswer = useStore(state => state.updateAnswer);
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
@@ -35,7 +35,7 @@ const GridWithTotals = props => {
   };
 
   const updateGridOnBlur = () => {
-    props.setAnswer(gridData, props.questionID);
+    setAnswer(gridData, props.questionID);
   };
 
   const updateTotals = () => {
@@ -452,7 +452,6 @@ const translateInitialData = gridDataObject => {
 
 GridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
-  setAnswer: PropTypes.func.isRequired,
   questionID: PropTypes.string.isRequired,
   updateSynthesizedValues: PropTypes.func,
   disabled: PropTypes.bool,
@@ -460,8 +459,4 @@ GridWithTotals.propTypes = {
   precision: PropTypes.number
 };
 
-const mapDispatch = {
-  setAnswer: gotAnswer ?? {}
-};
-
-export default connect(null, mapDispatch)(GridWithTotals);
+export default GridWithTotals;

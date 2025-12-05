@@ -3,8 +3,18 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { ensureUserExistsInApi } from "../../utility-functions/initialLoadFunctions";
+import { getCurrentUser } from "../../libs/api";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
+
+vi.mock("config/config", () => ({
+  default: { 
+    cognito: {
+      APP_CLIENT_DOMAIN: "mock-domain",
+      REDIRECT_SIGNIN: "mock-redirect",
+      APP_CLIENT_ID: "mock-client-id",
+      REDIRECT_SIGNOUT: "elsewhere.com",
+    },
+}}))
 
 vi.mock("../Routes/Routes", () => ({
   default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
@@ -17,24 +27,11 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   }),
 }));
 
-vi.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: vi.fn().mockResolvedValue({
-      getIdToken: vi.fn().mockReturnValue({
-        payload: {
-          email: "qwer@email.test",
-        },
-      }),
-    }),
-  },
-}));
-
-vi.mock("../../utility-functions/initialLoadFunctions", () => ({
-  ensureUserExistsInApi: vi.fn().mockResolvedValue({
-    attributes: {
-      role: "state",
-    },
-  }),
+vi.mock("../../libs/api", () => ({
+  getCurrentUser: vi.fn().mockResolvedValue({
+    email: "test@example.com",
+    role: "state"
+  })
 }));
 
 vi.mock("../../utility-functions/tealium", () => ({
@@ -50,13 +47,15 @@ const renderComponent = () => {
 };
 
 describe("Test App.js", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("should record analytics for authenticated page views", async () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(ensureUserExistsInApi).toHaveBeenCalledWith("qwer@email.test");
+      expect(getCurrentUser).toHaveBeenCalled();
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         true,
         "http://localhost:3000/",
@@ -76,12 +75,12 @@ describe("Test App.js", () => {
   });
 
   it("should record analytics for unauthenticated page views", async () => {
-    ensureUserExistsInApi.mockRejectedValue("oh no a error");
+    getCurrentUser.mockRejectedValue("oh no a error");
 
     renderComponent();
 
     await waitFor(() => {
-      expect(ensureUserExistsInApi).toHaveBeenCalledWith("qwer@email.test");
+      expect(getCurrentUser).toHaveBeenCalled();
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         false, // not authenticated
         "http://localhost:3000/", // we've been redirected

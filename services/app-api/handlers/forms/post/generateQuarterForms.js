@@ -1,16 +1,25 @@
 import handler from "../../../libs/handler-lib.js";
-import dynamoDb from "../../../libs/dynamodb-lib.js";
-import {
-  getFormDescriptions,
-  getQuestionsByYear,
-  getStatesList,
-  findExistingStateForms,
-  fetchOrCreateQuestions,
-  getAnswersSet,
-} from "../../shared/sharedFunctions.js";
 import { authorizeAdmin } from "../../../auth/authConditions.js";
 import { calculateFormQuarterFromDate } from "../../../libs/time.js";
 import { InProgressStatusFields } from "../../../libs/formStatus.js";
+import {
+  scanForAllFormIds,
+  writeAllFormAnswers
+} from "../../../storage/formAnswers.js";
+import {
+  getTemplate,
+  putTemplate
+} from "../../../storage/formTemplates.js";
+import {
+  scanQuestionsByYear,
+  writeAllFormQuestions,
+} from "../../../storage/formQuestions.js";
+import {
+  scanFormsByQuarter,
+  writeAllStateForms
+} from "../../../storage/stateForms.js";
+import { formTypes } from "../../shared/constants.js";
+import { stateList } from "../../shared/stateList.js";
 
 /** Called from the API; admin access required */
 export const main = handler(async (event, context) => {
@@ -28,33 +37,6 @@ export const scheduled = handler(async (event, context) => {
  */
 const generateQuarterForms = async (event) => {
   let noMissingForms = true;
-
-  // at top of file, or in some config file
-  const retryFailLimit = 5;
-  const failureList = [];
-
-  // Batch write all items, rerun if any UnprocessedItems are returned and it's under the retry limit
-  const batchWriteAll = async (tryRetryBatch) => {
-    // Attempt first batch write
-    const { UnprocessedItems } = await dynamoDb.batchWriteItem(tryRetryBatch.batch);
-
-    // If there are any failures and under the retry limit
-    if (UnprocessedItems.length && tryRetryBatch.noOfRetries < retryFailLimit) {
-      const retryBatch = {
-        noOfRetries: tryRetryBatch.noOfRetries + 1,
-        batch: UnprocessedItems,
-      };
-      return await batchWriteAll(retryBatch);
-    } else if (tryRetryBatch.noOfRetries >= retryFailLimit) {
-      // exceeded failure limit
-      console.error(
-        `Tried batch ${
-          tryRetryBatch.noOfRetries
-        } times. Failing batch ${JSON.stringify(tryRetryBatch)}`
-      );
-      failureList.push({ failure: JSON.stringify(tryRetryBatch) });
-    }
-  };
 
   const determineAgeRanges = (questionId) => {
     const year = questionId.split("-")[0];
@@ -130,132 +112,66 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await findExistingStateForms(
+  const foundForms = await scanFormsByQuarter(
     specifiedYear,
     specifiedQuarter
   );
+  const foundFormIds = new Set(foundForms.map(f => f.state_form));
 
-  // Pull list of states
-  let allStates = await getStatesList();
-
-  if (!allStates.length) {
-    return {
-      status: 500,
-      message: `Could not retrieve state list.`,
-    };
-  }
-
-  // Pull list of form descriptions
-  const allFormDescriptions = await getFormDescriptions();
-
-  if (!allFormDescriptions.length) {
-    return {
-      status: 500,
-      message: `Could not retrieve form descriptions.`,
-    };
-  }
-
-  // Add All StateForm Descriptions
-  const putRequestsStateForms = [];
+  const stateFormsToCreate = [];
 
   // Loop through all states
-  for (const state in allStates) {
+  for (const state in stateList) {
     // Loop through form descriptions for each state
-    for (const form in allFormDescriptions) {
+    for (const form in formTypes) {
       // Build lengthy strings
-      const stateFormString = `${allStates[state].state_id}-${specifiedYear}-${specifiedQuarter}-${allFormDescriptions[form].form}`;
+      const stateFormString = `${stateList[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
 
-      if (!foundForms.includes(stateFormString)) {
+      if (!foundFormIds.has(stateFormString)) {
         noMissingForms = false;
         // Add item to array for batching later
-        putRequestsStateForms.push({
-          PutRequest: {
-            Item: {
-              state_form: stateFormString,
-              status_date: new Date().toISOString(),
-              year: specifiedYear,
-              state_comments: [{ type: "text_multiline", entry: "" }],
-              form_id: allFormDescriptions[form].form_id,
-              last_modified_by: "seed",
-              status_modified_by: "seed",
-              created_by: "seed",
-              validation_percent: "0.03",
-              ...InProgressStatusFields(),
-              form: allFormDescriptions[form].form,
-              program_code: "All",
-              state_id: allStates[state].state_id,
-              created_date: new Date().toISOString(),
-              form_name: allFormDescriptions[form].form_name,
-              last_modified: new Date().toISOString(),
-              quarter: specifiedQuarter,
-            },
-          },
+        stateFormsToCreate.push({
+          state_form: stateFormString,
+          status_date: new Date().toISOString(),
+          year: specifiedYear,
+          state_comments: [{ type: "text_multiline", entry: "" }],
+          form_id: formTypes[form].form_id,
+          last_modified_by: "seed",
+          status_modified_by: "seed",
+          created_by: "seed",
+          validation_percent: "0.03",
+          ...InProgressStatusFields(),
+          form: formTypes[form].form,
+          program_code: "All",
+          state_id: stateList[state].state_id,
+          created_date: new Date().toISOString(),
+          form_name: formTypes[form].form_name,
+          last_modified: new Date().toISOString(),
+          quarter: specifiedQuarter,
         });
       }
     }
   }
-  // Begin batching by groups of 25
-  const batchArrayFormDescriptions = [];
-  const batchSize = 25;
-  for (let i = 0; i < putRequestsStateForms.length; i += batchSize) {
-    batchArrayFormDescriptions.push(
-      putRequestsStateForms.slice(i, i + batchSize)
-    );
-  }
 
-  // Generate a flat array of the state forms being added
-  let stateFormsBeingGenerated = batchArrayFormDescriptions
-    .map((e) => {
-      return e.map((element) => {
-        return element.PutRequest.Item.state_form;
-      });
-    })
-    .flat();
 
-  console.log(`Saving ${putRequestsStateForms.length} state forms`);
+  const newFormIds = new Set(stateFormsToCreate.map(f => f.state_form));
 
-  // Loop through batches and write to DB
-  for (let i in batchArrayFormDescriptions) {
-    const batchRequest = {
-      RequestItems: {
-        [process.env.StateFormsTable]: batchArrayFormDescriptions[i],
-      },
-    };
-
-    // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
+  console.log(`Saving ${stateFormsToCreate.length} state forms`);
+  if (stateFormsToCreate.length > 0) {
+    await writeAllStateForms(stateFormsToCreate);
   }
 
   // -----------------------------------------------------------------
 
-  // Pull list of questions
-  let allQuestions;
+  const allQuestions = await getOrCreateQuestions(specifiedYear);
 
-  const questionsFromQuestionTable = await getQuestionsByYear(specifiedYear);
-
-  // If questions not found, fetch/create them from template table
-  if (!questionsFromQuestionTable.length) {
-    let createdQuestions = await fetchOrCreateQuestions(
-      specifiedYear,
-      specifiedQuarter
-    );
-
-    if (createdQuestions.status !== 200) {
-      // Return error message without payload
-      const { status, message } = createdQuestions;
-      return { status, message };
-    }
-    allQuestions = createdQuestions.payload;
-  } else {
-    allQuestions = questionsFromQuestionTable;
-  }
-
-  // Add All StateForm Descriptions
-  const putRequestsFormAnswers = [];
-  const stateAnswersSet = restoreMissingAnswers ? await getAnswersSet() : null;
+  const formAnswersToCreate = [];
+  const formIdsWithAnswers = restoreMissingAnswers
+    ? new Set(await scanForAllFormIds())
+    : null;
 
   // Loop through all states, then all questions to return a new record with correct state info
-  for (const state in allStates) {
+  for (const state in stateList) {
     // Loop through each question
     for (const question in allQuestions) {
       // Get age range array
@@ -265,7 +181,7 @@ const generateQuarterForms = async (event) => {
       // Loop through each age range and insert row
       for (const range in ageRanges) {
         // Get reusable values
-        const currentState = allStates[state].state_id;
+        const currentState = stateList[state].state_id;
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
@@ -278,45 +194,30 @@ const generateQuarterForms = async (event) => {
 
         // If the stateFormID is in the array of newly created forms, the questions/answers will be created
         // Does not consider state forms generated missing questions & answers, unless flag set on manual invocation
-        const isGeneratingStateForm = stateFormsBeingGenerated.includes(
-          stateFormID
-        );
+        const isGeneratingStateForm = newFormIds.has(stateFormID);
         const missingAnswers =
-          restoreMissingAnswers && !stateAnswersSet.has(stateFormID);
+          restoreMissingAnswers && !formIdsWithAnswers.has(stateFormID);
 
         if (isGeneratingStateForm || missingAnswers) {
           if (!isGeneratingStateForm && missingAnswers) {
             console.log(`    - Restoring answer entry: ${answerEntry}`);
           }
           noMissingForms = false;
-          putRequestsFormAnswers.push({
-            PutRequest: {
-              Item: {
-                answer_entry: answerEntry,
-                age_range: currentAgeRangeLabel,
-                rangeId: currentAgeRangeId,
-                question: questionID,
-                state_form: stateFormID,
-                last_modified_by: "seed",
-                created_date: new Date().toISOString(),
-                rows: allQuestions[question].rows,
-                last_modified: new Date().toISOString(),
-                created_by: "seed",
-              },
-            },
+          formAnswersToCreate.push({
+            answer_entry: answerEntry,
+            age_range: currentAgeRangeLabel,
+            rangeId: currentAgeRangeId,
+            question: questionID,
+            state_form: stateFormID,
+            last_modified_by: "seed",
+            created_date: new Date().toISOString(),
+            rows: allQuestions[question].rows,
+            last_modified: new Date().toISOString(),
+            created_by: "seed",
           });
         }
       }
     }
-  }
-  console.log(`Batching ${putRequestsFormAnswers.length} answers`);
-  // Begin batching by groups of 25
-  const batchArrayFormAnswers = [];
-  const batchSizeFA = 25;
-  for (let i = 0; i < putRequestsFormAnswers.length; i += batchSizeFA) {
-    batchArrayFormAnswers.push(
-      putRequestsFormAnswers.slice(i, i + batchSizeFA)
-    );
   }
 
   // This will only be true if neither !foundForms.includes statements pass,
@@ -330,23 +231,8 @@ const generateQuarterForms = async (event) => {
     };
   }
 
-  // Loop through batches and write to DB
-  for (let i in batchArrayFormAnswers) {
-    const batchRequest = {
-      RequestItems: {
-        [process.env.FormAnswersTable]: batchArrayFormAnswers[i],
-      },
-    };
-
-    // Process this batch
-    await batchWriteAll({ batch: batchRequest, noOfRetries: 0 });
-  }
-
-  if (failureList.length > 0) {
-    return {
-      status: 500,
-      message: `Failed to write all entries to database.`,
-    };
+  if (formAnswersToCreate.length > 0) {
+    await writeAllFormAnswers(formAnswersToCreate);
   }
 
   return {
@@ -354,3 +240,45 @@ const generateQuarterForms = async (event) => {
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
   };
 };
+
+/** @param {number} year */
+export const getOrCreateFormTemplate = async (year) => {
+  let response = await getTemplate(year);
+  if (response) {
+    return response.template;
+  }
+
+  response = await getTemplate(year - 1);
+  if (!response) {
+    throw new Error(`No template found for ${year} or ${year - 1}!`);
+  }
+
+  const newTemplate = JSON.parse(
+    JSON.stringify(response).replaceAll(`${year - 1}`, `${year}`)
+  );
+
+  await putTemplate({
+    ...newTemplate,
+    lastSynced: new Date().toISOString(),
+  });
+
+  return newTemplate.template;
+};
+
+/** @param {number} year */
+export const getOrCreateQuestions = async (year) => {
+  let questions = await scanQuestionsByYear(year);
+  if (questions.length > 0) {
+    return questions;
+  }
+
+  questions = (await getOrCreateFormTemplate(year)).map(question => ({
+    ...question,
+    created_date: new Date().toISOString(),
+    last_modified: new Date().toISOString(),
+  }));
+  
+  await writeAllFormQuestions(questions);
+
+  return questions;
+}

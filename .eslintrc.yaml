@@ -1,0 +1,41 @@
+env:
+  browser: true
+  es6: true
+  node: true
+  jest/globals: true
+  cypress/globals: true
+parser: '@typescript-eslint/parser'
+plugins:
+  - '@typescript-eslint'
+  - 'jest'
+  - 'cypress'
+  - 'playwright'
+parserOptions:
+  ecmaVersion: 2022
+  sourceType: module
+  ecmaFeatures:
+    modules: true
+extends:
+  - 'eslint:recommended'
+
+rules:
+  no-const-assign: error
+  no-duplicate-imports: error
+  no-unreachable: off
+  no-unused-vars: off
+  '@typescript-eslint/no-unused-vars': off
+  no-console: off
+  no-empty: off
+  no-extra-semi: off
+  multiline-comment-style: off
+  no-undef: off
+  no-useless-escape: off
+  no-redeclare: off
+
+overrides:
+  - files:
+      - "tests/**/*"
+      - "cli/**"
+      - "deployment/**"
+    rules:
+      no-console: off

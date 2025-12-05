@@ -1,20 +1,12 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi, vitest } from "vitest";
 import Login from "./Login";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { signInWithRedirect } from "aws-amplify/auth";
 
-vi.mock("aws-amplify", () => ({
-  Auth: {
-    configure: vi.fn().mockReturnValue({
-      oauth: {
-        domain: "mock-domain",
-        redirectSignIn: "mock-redirect",
-        responseType: "mock-response-type",
-      },
-      userPoolWebClientId: "mock-client-id",
-    }),
-  },
+vi.mock("aws-amplify/auth", () => ({
+  signInWithRedirect: vi.fn(),
 }));
 
 const currentlyOnDevelopmentBranch = () =>
@@ -52,15 +44,14 @@ describe("Test Login.js", () => {
     expect(screen.getByText("Login with EUA ID", { selector: "button"})).toBeInTheDocument();
   });
 
-  it("should redirect to Okta for login", () => {
+  it("should redirect to Okta for login", async () => {
     vi.spyOn(window, "alert").mockImplementation(console.error);
 
     render(<Login/>);
 
     const loginButton = screen.getByText("Login with EUA ID", { selector: "button"});
-    userEvent.click(loginButton);
+    await userEvent.click(loginButton);
 
-    const oktaUrl = "https://mock-domain/oauth2/authorize?identity_provider=Okta&redirect_uri=mock-redirect&response_type=mock-response-type&client_id=mock-client-id";
-    expect(window.location.assign).toHaveBeenCalledWith(oktaUrl);
+    expect(signInWithRedirect).toHaveBeenCalled()
   });
 });

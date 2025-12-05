@@ -1,40 +1,42 @@
 import { describe, expect, it, vi } from "vitest";
 import { main as notifyStateUsers } from "./stateUsers.js";
-import {
-  getUsersEmailByRole,
-  getUncertifiedStates,
-} from "../shared/sharedFunctions.js";
+import { scanUsersByRole } from "../../storage/users.js";
+import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.js";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
 
-// TODO: remove this mock, once we've moved getQuarter to a different file
-vi.mock("./stateUsers.js", async (importOriginal) => ({
-  ...(await importOriginal()),
-  getQuarter: vi.fn().mockReturnValue(3),
+vi.mock("../../storage/users.js", () => ({
+  scanUsersByRole: vi.fn(),
 }));
 
-vi.mock("../shared/sharedFunctions.js", () => ({
-  getUsersEmailByRole: vi.fn(),
-  getUncertifiedStates: vi.fn(),
+vi.mock("../../storage/stateForms.js", () => ({
+  scanFormsByQuarterAndStatus: vi.fn(),
 }));
 
 const mockSes = mockClient(SESClient);
 const mockSendEmail = vi.fn();
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
-const mockStateUser1 = {
-  email: "stateuserCO@test.com",
-  state: ["CO"],
-};
-const mockStateUser2 = {
-  email: "stateuserTX@test.com",
-  state: ["TX"],
-};
+const mockStateUserCO = { email: "stateuserCO@test.com", states: ["CO"] };
+const mockStateUserTX = { email: "stateuserTX@test.com", states: ["TX"] };
+const mockStateUserWI = { email: "stateuserWI@test.com", states: ["WI"] };
+
+const mockFormCO21E = { state_id: "CO", form: "21E" };
+const mockFormCOGRE = { state_id: "CO", form: "GRE" };
+const mockFormTX21E = { state_id: "TX", form: "21E" };
 
 describe("notification/stateUsers", () => {
   it("should send emails to state users regarding not-yet-certified forms", async () => {
-    getUsersEmailByRole.mockResolvedValueOnce([mockStateUser1, mockStateUser2]);
-    getUncertifiedStates.mockResolvedValueOnce(["CO", "TX"]);
+    scanUsersByRole.mockResolvedValueOnce([
+      mockStateUserCO,
+      mockStateUserTX,
+      mockStateUserWI
+    ]);
+    scanFormsByQuarterAndStatus.mockResolvedValueOnce([
+      mockFormCO21E,
+      mockFormCOGRE,
+      mockFormTX21E,
+    ]);
 
     await notifyStateUsers({});
 

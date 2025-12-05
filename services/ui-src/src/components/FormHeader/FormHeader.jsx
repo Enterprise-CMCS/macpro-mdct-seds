@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, TextInput, Table } from "@trussworks/react-uswds";
-import { getFormTypes, getSingleForm } from "../../libs/api";
-import {
-  updateFPL,
-  saveForm
-} from "../../store/reducers/singleForm/singleForm";
+import { getSingleForm } from "../../libs/api";
 import { getUserInfo } from "../../utility-functions/userFunctions";
+import { formTypes } from "../../utility-functions/constants";
+import { useStore } from "../../store/store";
 
-const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
-  const [formDescription, setFormDescription] = useState({});
+const FormHeader = ({ quarter, form, year, state }) => {
+  const updateFPL = useStore(state => state.updateFpl);
+  const saveForm = useStore(state => state.saveForm);
+  const formDescription = formTypes.find(element => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showFPL, setShowFPL] = useState(false);
@@ -40,9 +39,6 @@ const FormHeader = ({ quarter, form, year, state, updateFPL, saveForm }) => {
     // List of forms that do NOT show fpl
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
-      const data = await getFormTypes();
-      const formDetails = data.find(element => element.form === form);
-      setFormDescription(formDetails);
 
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {
@@ -157,13 +153,6 @@ FormHeader.propTypes = {
   form: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  updateFPL: PropTypes.func.isRequired,
-  saveForm: PropTypes.func.isRequired
 };
 
-const mapDispatch = {
-  updateFPL: updateFPL ?? {},
-  saveForm: saveForm ?? {}
-};
-
-export default connect(null, mapDispatch)(FormHeader);
+export default FormHeader;

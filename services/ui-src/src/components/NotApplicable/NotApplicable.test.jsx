@@ -1,10 +1,7 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Provider } from "react-redux";
 import { render, screen, waitFor } from "@testing-library/react";
-import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import NotApplicable from "./NotApplicable";
-import { storeFactory } from "../../provider-mocks/testUtils";
 import { BrowserRouter } from "react-router-dom";
 import { getUserInfo } from "../../utility-functions/userFunctions";
 import {
@@ -13,6 +10,7 @@ import {
   NotRequiredStatusFields,
   ProvisionalCertifiedStatusFields,
 } from "../../utility-functions/formStatus";
+import { useStore } from "../../store/store";
 
 vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
@@ -20,20 +18,16 @@ vi.mock("../../utility-functions/userFunctions", () => ({
 
 const renderComponent = (user, statusData) => {
   getUserInfo.mockResolvedValue({ Items: [user] });
-  const initialStore = {
-    ...fullStoreMock,
-    currentForm: {
-      ...fullStoreMock.currentForm,
-      statusData,
-    }
-  };
-  const store = storeFactory(initialStore);
+  useStore.setState({
+    statusData,
+    wipeForm: vi.fn(),
+    saveForm: vi.fn(),
+    updateFormStatus: vi.fn(),
+  });
   return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <NotApplicable/>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <NotApplicable/>
+    </BrowserRouter>
   );
 };
 
