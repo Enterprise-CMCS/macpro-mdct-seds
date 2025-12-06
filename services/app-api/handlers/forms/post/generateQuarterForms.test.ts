@@ -1,22 +1,24 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.ts";
-import { authorizeAdmin } from "../../../auth/authConditions.ts";
-import { InProgressStatusFields } from "../../../libs/formStatus.ts";
 import {
-  scanForAllFormIds,
-  writeAllFormAnswers,
+  authorizeAdmin as actualAuthorizeAdmin
+} from "../../../auth/authConditions.ts";
+import { FormStatus } from "../../../shared/types.ts";
+import {
+  scanForAllFormIds as actualScanForAllFormIds,
+  writeAllFormAnswers as actualWriteAllFormAnswers,
 } from "../../../storage/formAnswers.ts";
 import {
-  scanQuestionsByYear,
-  writeAllFormQuestions,
+  scanQuestionsByYear as actualScanQuestionsByYear,
+  writeAllFormQuestions as actualWriteAllFormQuestions,
 } from "../../../storage/formQuestions.ts";
 import {
-  getTemplate,
-  putTemplate,
+  getTemplate as actualGetTemplate,
+  putTemplate as actualPutTemplate,
 } from "../../../storage/formTemplates.ts";
 import {
-  scanFormsByQuarter,
-  writeAllStateForms,
+  scanFormsByQuarter as actualScanFormsByQuarter,
+  writeAllStateForms as actualWriteAllStateForms,
 } from "../../../storage/stateForms.ts";
 
 /*
@@ -60,6 +62,16 @@ vi.mock("../../../storage/stateForms.ts", () => ({
   scanFormsByQuarter: vi.fn(),
   writeAllStateForms: vi.fn(),
 }));
+
+const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+const scanForAllFormIds = vi.mocked(actualScanForAllFormIds);
+const writeAllFormAnswers = vi.mocked(actualWriteAllFormAnswers);
+const scanQuestionsByYear = vi.mocked(actualScanQuestionsByYear);
+const writeAllFormQuestions = vi.mocked(actualWriteAllFormQuestions);
+const getTemplate = vi.mocked(actualGetTemplate);
+const putTemplate = vi.mocked(actualPutTemplate);
+const scanFormsByQuarter = vi.mocked(actualScanFormsByQuarter);
+const writeAllStateForms = vi.mocked(actualWriteAllStateForms);
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -139,7 +151,7 @@ describe("generateQuarterForms.ts", () => {
         state_form: expect.stringMatching(/^(CO|TX)-2025-1-[\.1246CEGIPRW]+$/),
         state_id: expect.stringMatching(/^(CO|TX)$/),
         status_date: expect.stringMatching(ISO_DATE_REGEX),
-        ...InProgressStatusFields(),
+        status_id: FormStatus.InProgress,
         status_modified_by: "seed",
         validation_percent: "0.03",
         year: 2025,
@@ -420,6 +432,6 @@ describe("generateQuarterForms.ts", () => {
 
     expect(writeAllStateForms).toHaveBeenCalled();
     // We did not exercise this mock rejection; reset it to a no-op.
-    authorizeAdmin.mockReset().mockImplementation();
+    authorizeAdmin.mockReset().mockResolvedValueOnce()
   });
 });

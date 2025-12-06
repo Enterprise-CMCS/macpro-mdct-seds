@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getUserDetailsFromEvent } from "./authorization.ts";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode as actualJwtDecode } from "jwt-decode";
 
 vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(),
 }));
+const jwtDecode = vi.mocked(actualJwtDecode);
 
 const mockEvent = {
   headers: {

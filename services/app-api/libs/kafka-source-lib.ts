@@ -1,10 +1,10 @@
 import { unmarshall as dynamoDbUnmarshall } from "@aws-sdk/util-dynamodb";
-import { Kafka } from "kafkajs";
+import { Kafka, TopicMessages } from "kafkajs";
 
 const stage = process.env.STAGE;
 const kafka = new Kafka({
   clientId: process.env.KAFKA_CLIENT_ID,
-  brokers: process.env.brokerString.split(","),
+  brokers: process.env.brokerString!.split(","),
   retry: {
     initialRetryTime: 300,
     retries: 8,
@@ -27,6 +27,10 @@ signalTraps.map((type) => {
 });
 
 class KafkaSourceLib {
+  tables: string[];
+  version: string;
+  topicPrefix: string;
+  
   /*
   Event types:
   cmd – command; restful publish
@@ -39,7 +43,7 @@ class KafkaSourceLib {
   tables = [list of tables];
   */
 
-  stringify(e, prettyPrint) {
+  stringify(e, prettyPrint = false) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }
@@ -149,7 +153,7 @@ class KafkaSourceLib {
     if (event.Records) {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
-      const topicMessages = Object.values(outboundEvents);
+      const topicMessages = Object.values(outboundEvents) as TopicMessages[];
       
       if (topicMessages.length > 0) {
         console.log(

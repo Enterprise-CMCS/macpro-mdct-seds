@@ -29,11 +29,8 @@ export const main = handler(async (event, context) => {
 
 /**
  * List all emails of users whose state has an In Progress form this quarter.
- * @param {number} year
- * @param {number} quarter
- * @returns {Promise<string[]>}
  */
-async function determineUsersToEmail(year, quarter) {
+async function determineUsersToEmail(year: number, quarter: number): Promise<string[]> {
   // TODO: hardcoded status_id. Use FormStatus.InProgress instead.
   const inProgressForms = await scanFormsByQuarterAndStatus(year, quarter, 1); 
   const statesToEmail = new Set(inProgressForms.map(f => f.state_id));

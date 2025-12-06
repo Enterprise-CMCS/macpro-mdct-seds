@@ -1,7 +1,7 @@
 import * as logger from "./debug-lib.ts";
 
 export default function handler(lambda) {
-  return async function (event, context) {
+  return async function (event) {
     let body, statusCode;
 
     logger.init();
@@ -13,7 +13,7 @@ export default function handler(lambda) {
 
     try {
       // Run the Lambda
-      body = await lambda(event, context);
+      body = await lambda(event);
       statusCode = 200;
     } catch (e) {
       // Print debug messages

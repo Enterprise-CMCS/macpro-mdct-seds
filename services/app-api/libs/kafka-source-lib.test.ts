@@ -1,19 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import KafkaSourceLib from "./kafka-source-lib";
+import KafkaSourceLib from "./kafka-source-lib.ts";
 import { Kafka } from "kafkajs";
 
 vi.mock("kafkajs", () => ({
   Kafka: vi.fn().mockReturnValue({
     producer: vi.fn().mockReturnValue({
-      disconnect: vi.fn().mockResolvedValue(),
-      connect: vi.fn().mockResolvedValue(),
-      sendBatch: vi.fn().mockResolvedValue(),
+      disconnect: vi.fn().mockResolvedValue(undefined),
+      connect: vi.fn().mockResolvedValue(undefined),
+      sendBatch: vi.fn().mockResolvedValue(undefined),
     }),
   }),
 }));
-const mockConnect = Kafka().producer().connect;
-const mockSendBatch = Kafka().producer().sendBatch;
-const mockDisconnect = Kafka().producer().disconnect;
+const mockConnect = (Kafka as Function)().producer().connect;
+const mockSendBatch = (Kafka as Function)().producer().sendBatch;
+const mockDisconnect = (Kafka as Function)().producer().disconnect;
 
 // The file under test has some one-time behavior on load,
 // which we test one time here.
@@ -202,7 +202,7 @@ describe("Kafka Source Lib", () => {
 
       expect(mockDisconnect).not.toHaveBeenCalled();
 
-      process.emit("beforeExit");
+      process.emit("beforeExit", 0);
 
       expect(mockDisconnect).toHaveBeenCalled();
     });

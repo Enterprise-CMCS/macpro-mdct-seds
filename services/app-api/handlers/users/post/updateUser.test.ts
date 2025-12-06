@@ -1,16 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateUser } from "./updateUser.ts";
-import { scanForUserWithSub } from "../get/getCurrentUser.ts";
 import {
-  authorizeAnyUser,
-  authorizeAdminOrUserWithEmail,
-  authorizeAdmin,
+  scanForUserWithSub as actualScanForUserWithSub
+} from "../get/getCurrentUser.ts";
+import {
+  authorizeAnyUser as actualAuthorizeAnyUser,
+  authorizeAdminOrUserWithEmail as actualAuthorizeAdminOrUserWithEmail,
+  authorizeAdmin as actualAuthorizeAdmin,
 } from "../../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { AuthUser } from "../../../storage/users.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
@@ -21,6 +24,11 @@ vi.mock("../../../auth/authConditions.ts", () => ({
 vi.mock("../get/getCurrentUser.ts", () => ({
   scanForUserWithSub: vi.fn(),
 }));
+const scanForUserWithSub = vi.mocked(actualScanForUserWithSub);
+const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
+const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
+const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockUpdate = vi.fn();
@@ -32,7 +40,7 @@ const mockUser = {
   email: "stateuserCO@test.com",
   role: "state",
   states: ["CO"]
-};
+} as AuthUser;
 
 const mockEvent = {
   body: JSON.stringify({
@@ -114,7 +122,7 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ states: ["WI"] });
 
     // Reset these mocks to no-ops
-    scanForUserWithSub.mockReset().mockResolvedValue();
+    scanForUserWithSub.mockReset().mockResolvedValue(undefined);
     authorizeAdmin.mockReset().mockResolvedValue();
   });
 
@@ -158,6 +166,6 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ role: "state", states: ["eric"] });
 
     // Reset these mocks to no-ops
-    scanForUserWithSub.mockReset().mockResolvedValue();
+    scanForUserWithSub.mockReset().mockResolvedValue(undefined);
   });
 });

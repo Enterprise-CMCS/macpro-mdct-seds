@@ -19,11 +19,10 @@
  * Happily, these off-by-one issues cancel each other out. So this
  * function returns the more common quarter number of the current date.
  *
- * @param { Date } date - The current date
- * @returns {{ year: number, quarter: number }} -
- *          The Federal Fiscal Quarter for which forms should be generated
+ * @param date - The current date
+ * @returns The Federal Fiscal Quarter for which forms should be generated
  */
-export const calculateFormQuarterFromDate = (date) => {
+export const calculateFormQuarterFromDate = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth();
   const quarter = Math.floor(month / 3) + 1;
@@ -40,9 +39,8 @@ export const calculateFormQuarterFromDate = (date) => {
  * - Oct-Dec: 1
  *
  * Federal Fiscal Quarter looks 3 months ahead of the common calendar quarter.
- * @returns {{ year: number, quarter: number }}
  */
-export const calculateFiscalQuarterFromDate = (date) => {
+export const calculateFiscalQuarterFromDate = (date: Date) => {
   let year = date.getFullYear();
   let quarter = Math.floor(date.getMonth() / 3) + 2;
   if (quarter === 5) {

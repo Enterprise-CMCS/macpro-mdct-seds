@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getTemplate, putTemplate } from "./formTemplates.ts";
+import { FormTemplate, getTemplate, putTemplate } from "./formTemplates.ts";
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -13,7 +13,10 @@ mockDynamo.on(GetCommand).callsFake(mockGet);
 const mockPut = vi.fn();
 mockDynamo.on(PutCommand).callsFake(mockPut);
 
-const mockTemplate = { year: 2025, template: [{ question: "Q1" }] };
+const mockTemplate = {
+  year: 2025,
+  template: [{ question: "Q1" }],
+} as FormTemplate;
 
 describe("Form Template storage", () => {
   beforeEach(() => {

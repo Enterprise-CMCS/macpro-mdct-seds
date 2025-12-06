@@ -13,7 +13,7 @@ export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
   const currentUser = await scanForUserWithSub(data.usernameSub);
 
-  await authorizeAdminOrUserWithEmail(event, currentUser.email);
+  await authorizeAdminOrUserWithEmail(event, currentUser!.email);
 
   if (modifyingAnythingButAnEmptyStateList(data, currentUser)) {
     await authorizeAdmin(event);
@@ -24,7 +24,7 @@ export const main = handler(async (event, context) => {
   const params = {
     TableName: process.env.AuthUserTable,
     Key: {
-      userId: currentUser.userId,
+      userId: currentUser!.userId,
     },
     UpdateExpression:
       "SET #r = :role, states = :states, lastLogin = :lastLogin",

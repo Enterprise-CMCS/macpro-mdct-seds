@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { scanForAllFormIds, writeAllFormAnswers } from "./formAnswers.ts";
+import { FormAnswer, scanForAllFormIds, writeAllFormAnswers } from "./formAnswers.ts";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
@@ -15,8 +15,8 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 mockBatchWrite.mockResolvedValue({});
 
-const mockAnswer1 = { state_form: "CO-2025-4-21E" };
-const mockAnswer2 = { state_form: "CO-2025-4-GRE" };
+const mockAnswer1 = { state_form: "CO-2025-4-21E" } as FormAnswer;
+const mockAnswer2 = { state_form: "CO-2025-4-GRE" } as FormAnswer;
 
 describe("Form Answer storage", () => {
   beforeEach(() => {

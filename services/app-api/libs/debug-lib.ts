@@ -1,8 +1,14 @@
 import util from "util";
 
-const logs = [];
+type LogLevel = "trace" | "debug" | "info" | "warn" | "error";
+type LogEvent = {
+  date: Date;
+  level: LogLevel;
+  string: string;
+}
+const logs: LogEvent[] = [];
 
-const buildLoggerForLevel = (level) => {
+const buildLoggerForLevel = (level: LogLevel) => {
   return function (...content) {
     logs.push({
       date: new Date(),
@@ -33,7 +39,7 @@ export const error = buildLoggerForLevel("error");
 
 export function flush() {
   while (logs.length > 0) {
-    const { date, level, string } = logs.shift();
+    const { date, level, string } = logs.shift()!;
     // eslint-disable-next-line no-console
     console[level](date, string);
   }

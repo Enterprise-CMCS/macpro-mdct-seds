@@ -1,22 +1,22 @@
 import dynamoDb from "../libs/dynamodb-lib.ts";
+import { FormQuestion } from "./formQuestions.ts";
 
-/**
- * @param {number} year 
- * @returns {Promise<object|undefined>}
- */
-export const getTemplate = async (year) => {
+/** The shape of an object in the `form-templates` table */
+export type FormTemplate = {
+  year: number;
+  template: FormQuestion[];
+};
+
+export const getTemplate = async (year: number) => {
   const response = await dynamoDb.get({
     TableName: process.env.FormTemplatesTable,
     Key: { year },
   });
 
-  return response.Item;
+  return response.Item as FormTemplate | undefined;
 };
 
-/**
- * @param {object} formTemplate
- */
-export const putTemplate = async (formTemplate) => {
+export const putTemplate = async (formTemplate: FormTemplate) => {
   await dynamoDb.put({
     TableName: process.env.FormTemplatesTable,
     Item: formTemplate,

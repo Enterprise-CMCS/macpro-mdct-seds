@@ -1,8 +1,9 @@
 import handler from "../../../libs/handler-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../../libs/time.ts";
-import { InProgressStatusFields } from "../../../libs/formStatus.ts";
+import { FormStatus } from "../../../shared/types.ts";
 import {
+  FormAnswer,
   scanForAllFormIds,
   writeAllFormAnswers
 } from "../../../storage/formAnswers.ts";
@@ -16,19 +17,20 @@ import {
 } from "../../../storage/formQuestions.ts";
 import {
   scanFormsByQuarter,
+  StateForm,
   writeAllStateForms
 } from "../../../storage/stateForms.ts";
-import { formTypes } from "../../shared/constants.ts";
-import { stateList } from "../../shared/stateList.ts";
+import { formTypes } from "../../../shared/formTypeList.ts";
+import { stateList } from "../../../shared/stateList.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event, context) => {
+export const scheduled = handler(async (event) => {
   return await generateQuarterForms(event);
 });
 
@@ -118,7 +120,7 @@ const generateQuarterForms = async (event) => {
   );
   const foundFormIds = new Set(foundForms.map(f => f.state_form));
 
-  const stateFormsToCreate = [];
+  const stateFormsToCreate: StateForm[] = [];
 
   // Loop through all states
   for (const state in stateList) {
@@ -140,7 +142,7 @@ const generateQuarterForms = async (event) => {
           status_modified_by: "seed",
           created_by: "seed",
           validation_percent: "0.03",
-          ...InProgressStatusFields(),
+          status_id: FormStatus.InProgress,
           form: formTypes[form].form,
           program_code: "All",
           state_id: stateList[state].state_id,
@@ -165,10 +167,10 @@ const generateQuarterForms = async (event) => {
 
   const allQuestions = await getOrCreateQuestions(specifiedYear);
 
-  const formAnswersToCreate = [];
+  const formAnswersToCreate: FormAnswer[] = [];
   const formIdsWithAnswers = restoreMissingAnswers
     ? new Set(await scanForAllFormIds())
-    : null;
+    : new Set();
 
   // Loop through all states, then all questions to return a new record with correct state info
   for (const state in stateList) {
@@ -241,8 +243,7 @@ const generateQuarterForms = async (event) => {
   };
 };
 
-/** @param {number} year */
-export const getOrCreateFormTemplate = async (year) => {
+export const getOrCreateFormTemplate = async (year: number) => {
   let response = await getTemplate(year);
   if (response) {
     return response.template;
@@ -265,8 +266,7 @@ export const getOrCreateFormTemplate = async (year) => {
   return newTemplate.template;
 };
 
-/** @param {number} year */
-export const getOrCreateQuestions = async (year) => {
+export const getOrCreateQuestions = async (year: number) => {
   let questions = await scanQuestionsByYear(year);
   if (questions.length > 0) {
     return questions;

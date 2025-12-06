@@ -8,7 +8,7 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
-import { InProgressStatusFields } from "../../../libs/formStatus.ts";
+import { FormStatus } from "../../../shared/types.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeUserForState: vi.fn(),
@@ -46,7 +46,7 @@ const mockFormAnswer3 = {
   rows: [{ rowNumber: 1 }],
 };
 const mockStatusData = {
-  ...InProgressStatusFields(),
+  status_id: FormStatus.InProgress,
   state_comments: ["mock state comment"],
   last_modified: new Date().toISOString(),
 };
@@ -61,7 +61,7 @@ const mockBusinessUser = {
   states: ["CO", "etc"],
 };
 const mockStateForm = {
-  ...InProgressStatusFields(),
+  status_id: FormStatus.InProgress,
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 };

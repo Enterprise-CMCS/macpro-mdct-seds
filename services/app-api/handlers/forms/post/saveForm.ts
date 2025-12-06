@@ -2,7 +2,6 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
-import { statusHasChanged } from "../../../libs/formStatus.ts";
 
 /**
  * This handler will loop through a question array and save each row
@@ -185,7 +184,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
 
   const currentForm = result.Items[0];
   let statusFlags = {};
-  if (statusHasChanged(currentForm, statusData)) {
+  if (currentForm.status_id !== statusData.status_id) {
     statusFlags[":status_modified_by"] = user.username;
     statusFlags[":status_date"] = new Date().toISOString();
   }

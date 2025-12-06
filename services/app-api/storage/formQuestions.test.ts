@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  FormQuestion,
   scanQuestionsByYear,
   writeAllFormQuestions,
 } from "./formQuestions.ts";
@@ -18,8 +19,8 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 mockBatchWrite.mockResolvedValue({});
 
-const mockQuestion1 = { question: "Q1" };
-const mockQuestion2 = { question: "Q2" };
+const mockQuestion1 = { question: "Q1" } as FormQuestion;
+const mockQuestion2 = { question: "Q2" } as FormQuestion;
 
 describe("Form Question storage", () => {
   beforeEach(() => {

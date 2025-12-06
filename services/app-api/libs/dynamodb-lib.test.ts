@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import dynamodbLib from "./dynamodb-lib";
+import dynamodbLib from "./dynamodb-lib.ts";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,

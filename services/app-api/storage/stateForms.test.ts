@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   scanFormsByQuarter,
   scanFormsByQuarterAndStatus,
+  StateForm,
   writeAllStateForms,
 } from "./stateForms.ts";
 import {
@@ -19,9 +20,9 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 mockBatchWrite.mockResolvedValue({});
 
-const mockFormCO21E = { state_id: "CO", form: "21E" };
-const mockFormCOGRE = { state_id: "CO", form: "GRE" };
-const mockFormTX21E = { state_id: "TX", form: "21E" };
+const mockFormCO21E = { state_id: "CO", form: "21E" } as StateForm;
+const mockFormCOGRE = { state_id: "CO", form: "GRE" } as StateForm;
+const mockFormTX21E = { state_id: "TX", form: "21E" } as StateForm;
 
 describe("State Form storage", () => {
   beforeEach(() => {

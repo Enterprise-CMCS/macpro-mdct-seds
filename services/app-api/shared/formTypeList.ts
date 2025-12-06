@@ -41,4 +41,4 @@ export const formTypes = [
     form_text:
       "Children's Health Insurance Program Number of Pregnant Women served",
   },
-];
+] as const;

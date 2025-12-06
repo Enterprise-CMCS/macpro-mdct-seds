@@ -1,8 +1,17 @@
 import { jwtDecode } from "jwt-decode";
 
+type CmsAmplifyToken = {
+  sub: string;
+  email: string | undefined;
+  given_name: string | undefined;
+  family_name: string | undefined;
+  "custom:ismemberof": string | undefined;
+  identities?: { userId: string | undefined }[];
+};
+
 export async function getUserDetailsFromEvent(event) {
   const apiKey = event?.headers?.["x-api-key"];
-  const token = jwtDecode(apiKey);
+  const token = jwtDecode(apiKey) as CmsAmplifyToken;
   const role = mapMembershipToRole(token["custom:ismemberof"]);
 
   return {
