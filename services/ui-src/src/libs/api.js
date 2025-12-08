@@ -75,14 +75,6 @@ export const updateUser = async data => {
   return await apiLib.post(`/users/update/${data.userId}`, opts);
 };
 
-// *** create user
-export const createUser = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return await apiLib.post(`/users/add`, opts);
-};
-
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
 export const getStateForms = async data => {
