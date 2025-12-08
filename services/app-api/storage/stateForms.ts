@@ -62,7 +62,7 @@ export const scanFormsByQuarter = async (year: number, quarter: number) => {
   return response.Items as StateForm[];
 };
 
-export const scanFormsByQuarterAndStatus = async (year: number, quarter: number, status_id: number) => {
+export const scanFormsByQuarterAndStatus = async (year: number, quarter: number, status_id: FormStatusValue) => {
   const response = await dynamoDb.scan({
     TableName: process.env.StateFormsTable,
     FilterExpression: "#year = :year AND quarter = :quarter AND status_id = :status_id",

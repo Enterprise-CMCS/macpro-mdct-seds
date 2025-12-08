@@ -11,6 +11,7 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { FormStatus } from "../shared/types.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockBatchWrite = vi.fn();
@@ -68,7 +69,7 @@ describe("State Form storage", () => {
         ExpressionAttributeValues: {
           ":year": 2025,
           ":quarter": 4,
-          ":status_id": 1,
+          ":status_id": FormStatus.InProgress,
         },
       }), expect.any(Function));
     });

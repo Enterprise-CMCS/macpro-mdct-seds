@@ -126,7 +126,7 @@ describe("saveForm.ts", () => {
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status_id": 1,
+        ":status_id": FormStatus.InProgress,
         ":state_comments": [{
           type: "text_multiline",
           entry: "mock state comment"
@@ -221,7 +221,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: {
           ...mockStatusData,
-          status_id: 3
+          status_id: FormStatus.FinalCert
         },
       }),
     };
@@ -236,7 +236,7 @@ describe("saveForm.ts", () => {
 
     expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
       ExpressionAttributeValues: expect.objectContaining({
-        ":status_id": 3,
+        ":status_id": FormStatus.FinalCert,
         ":status_modified_by": "COLO",
         ":status_date": expect.stringMatching(ISO_DATE_REGEX),
       }),
