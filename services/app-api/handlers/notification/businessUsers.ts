@@ -33,11 +33,11 @@ async function businessOwnersTemplate() {
   const inProgressForms = await scanFormsByQuarterAndStatus(year, quarter, 1);
   const usersToEmail = (await scanUsersByRole("business")).map(u => u.email);
 
-  const formsByState = Object.groupBy(inProgressForms, form => form.state_id);
+  const formsByState = Object_groupBy(inProgressForms, form => form.state_id);
   const formattedFormList = Object.entries(formsByState)
     .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
     .map(([stateAbbr, forms]) => {
-      const formTypes = forms.map(f => f.form).sort().join(", ");
+      const formTypes = forms!.map(f => f.form).sort().join(", ");
       return `${stateAbbr} - ${formTypes}`;
     })
     .join("\n");
@@ -76,4 +76,25 @@ MDCT SEDS.
     },
     Source: recipient.FROM,
   };
+}
+
+/**
+ * Ponyfill for `Object.groupBy`, which _should_ be safe in Node 21+.
+ *
+ * But TS is complaining. Replace me when we're targeting ES2024, please.
+ */
+function Object_groupBy<TKey extends string | number | symbol, TItem>(
+  items: Iterable<TItem>,
+  selector: (item: TItem) => TKey
+) {
+  const groups: Partial<Record<TKey, TItem[]>> = {};
+  for (let item of items) {
+    const key = selector(item);
+    if (key in groups) {
+      groups[key]!.push(item);
+    } else {
+      groups[key] = [item];
+    }
+  }
+  return groups;
 }

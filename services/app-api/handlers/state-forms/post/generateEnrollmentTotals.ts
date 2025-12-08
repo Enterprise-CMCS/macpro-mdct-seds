@@ -1,16 +1,16 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
-import { writeAllStateForms } from "../../../storage/stateForms.ts";
+import { StateForm, writeAllStateForms } from "../../../storage/stateForms.ts";
+import { FormQuestion } from "../../../storage/formQuestions.ts";
 
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
 
   const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
-  const forms = ["21E", "64.21E"];
 
   // Get all State Forms
-  const stateForms = await getStateForms(forms);
+  const stateForms = await getStateForms();
   if (stateForms.status === 404) {
     return stateForms;
   }
@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
     return generatedTotals;
   }
 
-  await writeAllStateForms(generatedTotals.countsToWrite);
+  await writeAllStateForms(generatedTotals.countsToWrite!);
 
   return {
     status: 200,
@@ -29,34 +29,17 @@ export const main = handler(async (event, context) => {
   };
 });
 
-const getStateForms = async (forms) => {
+const getStateForms = async () => {
   try {
-    // Build expression Attribute Value object
-    const getExpressions = () => {
-      const expressionAttributeValues = {
-        ":quarter": 4,
-      };
-      let filterExpression = "";
-      for (const i in forms) {
-        const key = `:form_${i}`;
-        expressionAttributeValues[key] = forms[i];
-        if (key === ":form_0") {
-          filterExpression += `(form = ${key} `;
-        } else {
-          filterExpression += `OR form = ${key}`;
-        }
-      }
-      filterExpression += ") AND quarter = :quarter";
-      return [expressionAttributeValues, filterExpression];
-    };
-
-    const [expressionAttributeValues, filterExpression] = getExpressions();
-
     const params = {
       TableName: process.env.StateFormsTable,
       Select: "ALL_ATTRIBUTES",
-      ExpressionAttributeValues: { ...expressionAttributeValues },
-      FilterExpression: filterExpression,
+      FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
+      ExpressionAttributeValues: {
+        ":quarter": 4,
+        ":f1": "21E",
+        ":f2": "64.21E",
+      },
       ConsistentRead: true,
     };
 
@@ -84,46 +67,20 @@ const getStateForms = async (forms) => {
 
 const generateTotals = async (stateForms, ageRange) => {
   try {
-    const countsToWrite = [];
+    const countsToWrite: StateForm[] = [];
     // Loop through all stateForms
     let stateFormsLength = stateForms.length;
     for (let i = 0; i < stateFormsLength; i++) {
-      const questionAccumulator = [];
+      const questionAccumulator: FormQuestion[] = [];
       let questionTotal = 0;
       let ageRangeLength = ageRange.length;
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
-
-        const questionParams = {
+        const existingItems = (await dynamoDb.query({
           TableName: process.env.FormAnswersTable,
-          ExpressionAttributeValues: {
-            ":answerEntry": answerEntry,
-          },
+          ExpressionAttributeValues: { ":answerEntry": answerEntry },
           KeyConditionExpression: "answer_entry = :answerEntry",
-        };
-
-        let startingKey;
-        let existingItems = [];
-        let results;
-
-        const queryTable = async (startingKey) => {
-          questionParams.ExclusiveStartKey = startingKey;
-          let results = await dynamoDb.query(questionParams);
-          if (results.LastEvaluatedKey) {
-            startingKey = results.LastEvaluatedKey;
-            return [startingKey, results];
-          } else {
-            return [null, results];
-          }
-        };
-
-        // Looping to perform complete scan of tables due to 1 mb limit per iteration
-        do {
-          [startingKey, results] = await queryTable(startingKey);
-
-          const items = results.Items;
-          existingItems.push(...items);
-        } while (startingKey);
+        })).Items;
 
         // Add just the rows, no other details are needed
         let questionResultLength = existingItems.length;
@@ -136,7 +93,7 @@ const generateTotals = async (stateForms, ageRange) => {
       }
 
       // Setup counts object
-      let countObject = [];
+      let countObject = [] as any;
       if (stateForms[i].form === "21E") {
         countObject = {
           type: "separate",
@@ -157,13 +114,6 @@ const generateTotals = async (stateForms, ageRange) => {
         ...stateForms[i],
         enrollmentCounts: countObject,
       });
-
-      if (countsToWrite.Count === 0) {
-        return {
-          status: 404,
-          message: "Could not retrieve Answer Entries",
-        };
-      }
     }
     return {
       status: 200,
@@ -183,7 +133,7 @@ const totalEnrollmentCount = (questionAccumulator) => {
     let currentTotal = 0;
     let currentArrayLength = currentArr.length;
     for (let i = 0; i < currentArrayLength; i++) {
-      Object.values(currentArr[i]).forEach((value) => {
+      Object.values(currentArr[i]).forEach((value: any) => {
         if (!isNaN(value)) {
           currentTotal += Number(value);
         }

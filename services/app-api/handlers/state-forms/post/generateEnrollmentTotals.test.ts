@@ -1,7 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as generateEnrollmentTotals } from "./generateEnrollmentTotals.ts";
-import { writeAllStateForms } from "../../../storage/stateForms.ts";
-import { authorizeAdmin } from "../../../auth/authConditions.ts";
+import {
+  writeAllStateForms as actualWriteAllStateForms
+} from "../../../storage/stateForms.ts";
+import {
+  authorizeAdmin as actualAuthorizeAdmin
+} from "../../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -12,10 +16,12 @@ import { mockClient } from "aws-sdk-client-mock";
 vi.mock("../../../storage/stateForms.ts", () => ({
   writeAllStateForms: vi.fn(),
 }));
+const writeAllStateForms = vi.mocked(actualWriteAllStateForms);
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
 }));
+const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockQuery = vi.fn();
@@ -88,13 +94,13 @@ describe("generateEnrollmentTotals.ts", () => {
 
     expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
       TableName: "local-state-forms",
-      Select: "ALL_ATTRIBUTES",
+      FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
       ExpressionAttributeValues: {
-        ":form_0": "21E",
-        ":form_1": "64.21E",
         ":quarter": 4,
+        ":f1": "21E",
+        ":f2": "64.21E",
       },
-      FilterExpression: "(form = :form_0 OR form = :form_1) AND quarter = :quarter",
+      Select: "ALL_ATTRIBUTES",
       ConsistentRead: true,
     }), expect.any(Function));
 

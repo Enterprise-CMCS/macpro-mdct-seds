@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
+import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
 
 /**
  * This handler will loop through a question array and save each row
@@ -35,7 +36,7 @@ const stateIdsPresentInForm = (answers) => {
 };
 
 const updateAnswers = async (answers, user) => {
-  let questionResult = [];
+  let questionResult: UpdateCommandOutput[] = [];
   answers.sort(function (a, b) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
   });
@@ -182,7 +183,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
     throw new Error("State Form Not Found");
   }
 
-  const currentForm = result.Items[0];
+  const currentForm = result.Items![0];
   let statusFlags = {};
   if (currentForm.status_id !== statusData.status_id) {
     statusFlags[":status_modified_by"] = user.username;
@@ -211,7 +212,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
   try {
     await dynamoDb.update(formParams);
   } catch (e) {
-    throw ("Form params update failed", e);
+    throw new Error("Form params update failed", { cause: e });
   }
 };
 

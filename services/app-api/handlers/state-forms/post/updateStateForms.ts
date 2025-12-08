@@ -25,7 +25,7 @@ export const main = handler(async (event, context) => {
     return [];
   }
 
-  const record = result.Items[0];
+  const record = result.Items![0];
   if (record.form === "21E") {
     record.enrollmentCounts = {
       type: "separate",
@@ -50,7 +50,7 @@ export const main = handler(async (event, context) => {
   try {
     await dynamoDb.put(paramsPut);
   } catch (e) {
-    throw ("Table params update failed", e);
+    throw new Error("Table params update failed", { cause: e });
   }
 
   return {

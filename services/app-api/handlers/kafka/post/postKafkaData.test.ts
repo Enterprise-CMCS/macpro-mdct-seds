@@ -8,7 +8,7 @@ vi.mock("../../../libs/kafka-source-lib.ts", () => ({
   }),
 }));
 
-const mockKafkaHandler = KafkaSourceLib().handler;
+const mockKafkaHandler = (KafkaSourceLib as Function)().handler;
 
 describe("postKafkaData", () => {
   it("should forward calls to the underlying library", () => {

@@ -14,4 +14,4 @@ class PostKafkaData extends KafkaSourceLib {
 
 const postKafkaData = new PostKafkaData();
 
-exports.handler = postKafkaData.handler.bind(postKafkaData);
+export const handler = postKafkaData.handler.bind(postKafkaData);

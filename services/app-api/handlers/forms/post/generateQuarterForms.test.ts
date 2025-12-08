@@ -19,6 +19,7 @@ import {
 import {
   scanFormsByQuarter as actualScanFormsByQuarter,
   writeAllStateForms as actualWriteAllStateForms,
+  StateForm,
 } from "../../../storage/stateForms.ts";
 
 /*
@@ -28,7 +29,10 @@ import {
  *     value in unit testing that logic.
  */
 
-vi.mock("../../shared/stateList.ts", () => ({
+vi.mock("../../../shared/stateList.ts", () => ({
+  // In order to make unit tests more explicit, we want to list all state forms.
+  // With [6 form types] x [51 states], that's impractical.
+  // So within these unit tests, let's pretend there are only 2 states.
   stateList: [
     { state_id: "CO", state_name: "Colorado" },
     { state_id: "TX", state_name: "Texas" },
@@ -173,7 +177,7 @@ describe("generateQuarterForms.ts", () => {
       { state_form: "TX-2025-1-64.ECI" },
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
-    ]);
+    ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({});
@@ -252,7 +256,7 @@ describe("generateQuarterForms.ts", () => {
       { state_form: "TX-2025-1-64.ECI" },
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
-    ]);
+    ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     scanForAllFormIds.mockResolvedValueOnce([]);
 
@@ -276,7 +280,7 @@ describe("generateQuarterForms.ts", () => {
       { state_form: "TX-2025-1-64.ECI" },
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
-    ]);
+    ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     const response = await generateQuarterForms({ });
@@ -306,7 +310,7 @@ describe("generateQuarterForms.ts", () => {
       { state_form: "TX-2025-1-64.ECI" },
       { state_form: "TX-2025-1-GRE" },
       { state_form: "TX-2025-1-21PW" },
-    ]);
+    ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     scanForAllFormIds.mockResolvedValueOnce([
       /* Omitting CO 21E */
@@ -342,6 +346,7 @@ describe("generateQuarterForms.ts", () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce({
+      year: 2025,
       template: [mockQuestion2]
     })
 

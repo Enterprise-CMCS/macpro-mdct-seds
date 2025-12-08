@@ -1,29 +1,37 @@
 import { describe, expect, it, vi } from "vitest";
 import { main as notifyStateUsers } from "./stateUsers.ts";
-import { scanUsersByRole } from "../../storage/users.ts";
-import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.ts";
+import {
+  scanUsersByRole as actualScanUsersByRole,
+  AuthUser
+} from "../../storage/users.ts";
+import {
+  scanFormsByQuarterAndStatus as actualScanForms,
+  StateForm
+} from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../storage/users.ts", () => ({
   scanUsersByRole: vi.fn(),
 }));
+const scanUsersByRole = vi.mocked(actualScanUsersByRole);
 
 vi.mock("../../storage/stateForms.ts", () => ({
   scanFormsByQuarterAndStatus: vi.fn(),
 }));
+const scanFormsByQuarterAndStatus = vi.mocked(actualScanForms);
 
 const mockSes = mockClient(SESClient);
 const mockSendEmail = vi.fn();
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
-const mockStateUserCO = { email: "stateuserCO@test.com", states: ["CO"] };
-const mockStateUserTX = { email: "stateuserTX@test.com", states: ["TX"] };
-const mockStateUserWI = { email: "stateuserWI@test.com", states: ["WI"] };
+const mockStateUserCO = { email: "stateuserCO@test.com", states: ["CO"] } as AuthUser;
+const mockStateUserTX = { email: "stateuserTX@test.com", states: ["TX"] } as AuthUser;
+const mockStateUserWI = { email: "stateuserWI@test.com", states: ["WI"] } as AuthUser;
 
-const mockFormCO21E = { state_id: "CO", form: "21E" };
-const mockFormCOGRE = { state_id: "CO", form: "GRE" };
-const mockFormTX21E = { state_id: "TX", form: "21E" };
+const mockFormCO21E = { state_id: "CO", form: "21E" } as StateForm;
+const mockFormCOGRE = { state_id: "CO", form: "GRE" } as StateForm;
+const mockFormTX21E = { state_id: "TX", form: "21E" } as StateForm;
 
 describe("notification/stateUsers", () => {
   it("should send emails to state users regarding not-yet-certified forms", async () => {

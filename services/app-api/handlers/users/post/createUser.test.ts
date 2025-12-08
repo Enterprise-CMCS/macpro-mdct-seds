@@ -1,21 +1,28 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as createUser } from "./createUser.ts";
-import { obtainUserByUsername } from "./obtainUserByUsername.ts";
-import { getUserDetailsFromEvent } from "../../../libs/authorization.ts";
+import {
+  getUserDetailsFromEvent as actualGetUserDetails
+} from "../../../libs/authorization.ts";
 import {
   DynamoDBDocumentClient,
   PutCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import {
+  scanForUserByUsername as actualScanForUser,
+  AuthUser
+} from "../../../storage/users.ts";
 
 vi.mock("../../../libs/authorization.ts", () => ({
   getUserDetailsFromEvent: vi.fn(),
 }));
+const getUserDetailsFromEvent = vi.mocked(actualGetUserDetails);
 
-vi.mock("./obtainUserByUsername.ts", () => ({
-  obtainUserByUsername: vi.fn(),
+vi.mock("../../../storage/users.ts", () => ({
+  scanForUserByUsername: vi.fn(),
 }));
+const scanForUserByUsername = vi.mocked(actualScanForUser);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockPut = vi.fn();
@@ -25,13 +32,15 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {};
 
-const mockUser = {
+const mockUser: AuthUser = {
+  userId: "42",
   email: "stateuserCO@test.com",
   firstName: "Cheryl",
   lastName: "O'Lorry'",
-  role: "state",
+  role: "state" as const,
   username: "COLO",
   usernameSub: "0000-1111-2222-3333",
+  states: ["CO"],
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -93,7 +102,8 @@ describe("createUser.ts", () => {
   });
 
   it("should fail if the user has somehow created a Cognito account with no username", async () => {
-    getUserDetailsFromEvent.mockResolvedValueOnce({ username: undefined });
+    const invalidUser = { username: undefined } as any;
+    getUserDetailsFromEvent.mockResolvedValueOnce(invalidUser);
 
     const response = await createUser(mockEvent);
 
@@ -107,7 +117,7 @@ describe("createUser.ts", () => {
 
   it("should do nothing if the user already exists", async () => {
     getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
-    obtainUserByUsername.mockResolvedValueOnce(mockUser);
+    scanForUserByUsername.mockResolvedValueOnce(mockUser);
     mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
     const response = await createUser(mockEvent);

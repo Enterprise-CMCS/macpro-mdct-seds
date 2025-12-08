@@ -7,8 +7,6 @@ export const main = handler(async (event, context) => {
 
   await authorizeAdminOrUserForState(event, data.state);
 
-  const startKey = data.startKey;
-
   const params = {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
@@ -24,11 +22,6 @@ export const main = handler(async (event, context) => {
     FilterExpression:
       "state_id = :state and quarter = :quarter and #theYear = :year",
   };
-
-  // If startKey exists, start the scan from this position
-  if (startKey) {
-    params.ExclusiveStartKey = startKey;
-  }
 
   return await dynamoDb.scan(params);
 });

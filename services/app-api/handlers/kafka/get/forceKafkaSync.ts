@@ -7,7 +7,7 @@ const tableNames = [
   process.env.FormTemplatesTable,
   process.env.StateFormsTable,
   process.env.AuthUserTable,
-];
+] as string[];
 
 const mergeLastSynced = (items, syncDateTime) =>
   items.map((item) => ({ ...item, lastSynced: syncDateTime }));

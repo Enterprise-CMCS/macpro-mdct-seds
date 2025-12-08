@@ -4,8 +4,8 @@ import {
   DeleteCommand,
   DynamoDBDocumentClient,
   GetCommand,
+  paginateQuery,
   PutCommand,
-  QueryCommand,
   ScanCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
@@ -23,7 +23,13 @@ export default {
   get: async (params) => await client.send(new GetCommand(params)),
   update: async (params) => await client.send(new UpdateCommand(params)),
   delete: async (params) => await client.send(new DeleteCommand(params)),
-  query: async (params) => await client.send(new QueryCommand(params)),
+  query: async (params) => {
+    let items: Record<string, any>[] = [];
+    for await (let page of paginateQuery({ client }, params)) {
+      items = items.concat(page.Items ?? []);
+    }
+    return { Items: items, Count: items.length };
+  },
   put: async (params) => await client.send(new PutCommand(params)),
   scan: async (params) => {
     let items: Record<string, any>[] = [];

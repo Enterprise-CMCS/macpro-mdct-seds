@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as getUserById } from "./getUserById.ts";
 import {
-  authorizeAnyUser,
-  authorizeAdminOrUserWithEmail,
+  authorizeAnyUser as actualAuthorizeAnyUser,
+  authorizeAdminOrUserWithEmail as actualAuthorizeAdminOrUserWithEmail,
 } from "../../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
@@ -14,6 +14,8 @@ vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
   authorizeAdminOrUserWithEmail: vi.fn(),
 }));
+const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
+const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();

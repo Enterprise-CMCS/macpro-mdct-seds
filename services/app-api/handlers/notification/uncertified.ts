@@ -31,7 +31,7 @@ export const main = handler(async (event, context) => {
 
 // logic to retrieve all business users emails
 async function getBusinessUsersEmail() {
-  const businessOwnersEmails = [];
+  const businessOwnersEmails: string[] = [];
   const params = {
     TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
@@ -40,10 +40,8 @@ async function getBusinessUsersEmail() {
     FilterExpression: "#r = :role",
   };
   const result = await dynamoDb.scan(params);
-  if (result.Count === 0) {
-    return false;
-  }
-  const payload = result["Items"];
+
+  const payload = result.Items ?? [];
   payload.map((userInfo) => {
     if (userInfo.email) {
       businessOwnersEmails.push(userInfo.email);
@@ -56,7 +54,7 @@ async function unCetifiedTemplate(payload) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 
-  if (sendToEmail.Count === 0) {
+  if (sendToEmail.length === 0) {
     throw new Error("No Business users found.");
   }
   return {

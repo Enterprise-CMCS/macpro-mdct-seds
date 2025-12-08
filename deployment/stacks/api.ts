@@ -195,14 +195,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "obtainUserByUsername", {
-    entry: "services/app-api/handlers/users/post/obtainUserByUsername.ts",
-    handler: "main",
-    path: "/users/get",
-    method: "POST",
-    ...commonProps,
-  });
-
   new Lambda(scope, "createUser", {
     entry: "services/app-api/handlers/users/post/createUser.ts",
     handler: "main",

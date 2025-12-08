@@ -1,7 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as saveForm } from "./saveForm.ts";
-import { authorizeUserForState } from "../../../auth/authConditions.ts";
-import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
+import {
+  authorizeUserForState as actualAuthorizeUserForState
+} from "../../../auth/authConditions.ts";
+import {
+  getCurrentUserInfo as actualGetCurrentUserInfo
+} from "../../../auth/cognito-auth.ts";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -9,14 +13,19 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { FormStatus } from "../../../shared/types.ts";
+import { AuthUser } from "../../../storage/users.ts";
+import { StateForm } from "../../../storage/stateForms.ts";
+import { FormAnswer } from "../../../storage/formAnswers.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeUserForState: vi.fn(),
 }));
+const authorizeUserForState = vi.mocked(actualAuthorizeUserForState);
 
 vi.mock("../../../auth/cognito-auth.ts", () => ({
   getCurrentUserInfo: vi.fn(),
 }));
+const getCurrentUserInfo = vi.mocked(actualGetCurrentUserInfo);
 
 const mockQuery = vi.fn();
 const mockUpdate = vi.fn();
@@ -29,42 +38,42 @@ const mockFormAnswer1 = {
   question: "mock-Question-Q1",
   rangeId: "0001",
   answer_entry: "CO-2025-F1-A-0001-Q1",
-  rows: [{ rowNumber: 1 }],
-};
+  rows: [{ col1: 12 }],
+} as FormAnswer;
 const mockFormAnswer2 = {
   state_form: "CO-2025-F1-A",
   question: "mock-Question-Q1",
   rangeId: "0105",
   answer_entry: "CO-2025-F1-A-0105-Q1",
-  rows: [{ rowNumber: 1 }],
-};
+  rows: [{ col1: 23 }],
+} as FormAnswer;
 const mockFormAnswer3 = {
   state_form: "CO-2025-F1-A",
   question: "mock-Question-Q1",
   rangeId: "0618",
   answer_entry: "CO-2025-F1-A-0618-Q1",
-  rows: [{ rowNumber: 1 }],
-};
+  rows: [{ col1: 34 }],
+} as FormAnswer;
 const mockStatusData = {
   status_id: FormStatus.InProgress,
-  state_comments: ["mock state comment"],
+  state_comments: [{ type: "text_multiline", entry: "mock state comment" }],
   last_modified: new Date().toISOString(),
-};
+} as StateForm;
 const mockStateUser = {
   username: "COLO",
   role: "state",
   states: ["CO"],
-};
+} as AuthUser;
 const mockBusinessUser = {
   username: "BUSY",
   role: "business",
   states: ["CO", "etc"],
-};
+} as AuthUser;
 const mockStateForm = {
   status_id: FormStatus.InProgress,
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
-};
+} as StateForm;
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -80,7 +89,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
@@ -96,7 +105,7 @@ describe("saveForm.ts", () => {
       Key: { answer_entry: "CO-2025-F1-A-0001-Q1" },
       UpdateExpression: "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
       ExpressionAttributeValues: {
-        ":rows": [{ rowNumber: 1 }],
+        ":rows": [{ col1: 12 }],
         ":last_modified_by": "COLO",
         ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
       },
@@ -118,7 +127,10 @@ describe("saveForm.ts", () => {
         ":status_modified_by": "PREV",
         ":status_date": "2025-02-02T19:41:00.770Z",
         ":status_id": 1,
-        ":state_comments": ["mock state comment"],
+        ":state_comments": [{
+          type: "text_multiline",
+          entry: "mock state comment"
+        }],
       },
       ReturnValues: "ALL_NEW",
     }, expect.any(Function));
@@ -138,7 +150,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
@@ -163,7 +175,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
@@ -187,7 +199,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [], Count: 0 });
 
     const response = await saveForm(mockEvent);
@@ -213,7 +225,7 @@ describe("saveForm.ts", () => {
         },
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
@@ -329,7 +341,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
@@ -378,7 +390,7 @@ describe("saveForm.ts", () => {
         statusData: mockStatusData,
       }),
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ data: mockBusinessUser });
+    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockBusinessUser });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);

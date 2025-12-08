@@ -6,13 +6,15 @@ import {
   authorizeAdminOrUserForState,
   authorizeUserForState,
   authorizeStateUser,
-  authorizeUserForState
 } from "./authConditions.ts";
-import { getCurrentUserInfo } from "./cognito-auth.ts";
+import {
+  getCurrentUserInfo as actualGetCurrentUserInfo
+} from "./cognito-auth.ts";
 
 vi.mock("./cognito-auth.ts", () => ({
   getCurrentUserInfo: vi.fn(),
 }));
+const getCurrentUserInfo = vi.mocked(actualGetCurrentUserInfo);
 
 const mockEvent = {};
 
@@ -60,10 +62,10 @@ describe("authConditions", () => {
   });
 
   test("authorizeAnyUser should reject when a user cannot be found", async () => {
-    getCurrentUserInfo.mockResolvedValueOnce(undefined);
+    getCurrentUserInfo.mockResolvedValueOnce(undefined as any);
     await expect(authorizeAnyUser(mockEvent)).rejects.toThrow();
 
-    getCurrentUserInfo.mockResolvedValueOnce({ data: {} });
+    getCurrentUserInfo.mockResolvedValueOnce({ data: {} } as any);
     await expect(authorizeAnyUser(mockEvent)).rejects.toThrow();
   });
 

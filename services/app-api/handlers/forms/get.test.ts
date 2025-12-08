@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as get } from "./get.ts";
-import { authorizeAdminOrUserForState } from "../../auth/authConditions.ts";
+import {
+  authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState
+} from "../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -11,6 +13,7 @@ import { mockClient } from "aws-sdk-client-mock";
 vi.mock("../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
 }));
+const authorizeAdminOrUserForState = vi.mocked(actualAuthorizeAdminOrUserForState);
 
 const mockQuery = vi.fn();
 const mockScan = vi.fn();

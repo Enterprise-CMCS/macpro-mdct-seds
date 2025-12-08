@@ -1,7 +1,7 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
-import { obtainUserByUsername } from "./obtainUserByUsername.ts";
 import { getUserDetailsFromEvent } from "../../../libs/authorization.ts";
+import { scanForUserByUsername } from "../../../storage/users.ts";
 
 export const main = handler(async (event, context) => {
   const userData = await getUserDetailsFromEvent(event);
@@ -14,7 +14,7 @@ export const createUser = async (userData) => {
     return `Please enter a username`;
   }
 
-  const currentUser = await obtainUserByUsername(userData.username);
+  const currentUser = await scanForUserByUsername(userData.username);
 
   if (currentUser) {
     return `User ${userData.username} already exists`;
