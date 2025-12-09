@@ -66,9 +66,7 @@ describe("Tests for FormTemplates.js", () => {
       expect(obtainFormTemplateYears).toHaveBeenCalled();
       expect(obtainFormTemplate).toHaveBeenCalled();
     });
-
-    screen.debug();
-
+    
     const textarea = screen.getByRole("textbox", {
       name: "Enter or Modify Template"
     });

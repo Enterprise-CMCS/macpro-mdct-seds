@@ -129,6 +129,5 @@ describe("Test GridWithTotals.js", () => {
   it("should update totals for summary-synthesized", () => {
     const { container } = renderComponent("summary-synthesized");
     
-    screen.debug();
   });
 });

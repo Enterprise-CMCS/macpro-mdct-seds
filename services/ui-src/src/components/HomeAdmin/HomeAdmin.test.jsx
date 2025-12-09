@@ -63,8 +63,6 @@ describe("Tests for HomeAdmin.js", () => {
     beforeEach(async () => {
       renderComponent();
 
-      screen.debug();
-
       const stateDropdown = screen.getByText("Select a state");
       userEvent.click(stateDropdown);
     });
