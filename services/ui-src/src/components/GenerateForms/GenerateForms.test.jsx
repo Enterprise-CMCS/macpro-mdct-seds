@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, test, vi } from "vitest";
 import GenerateForms from "./GenerateForms";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { generateQuarterlyForms } from "../../libs/api";
 
@@ -9,26 +9,30 @@ vi.spyOn(window, "alert").mockImplementation(() => {});
 vi.spyOn(window, "confirm").mockImplementation(() => true);
 
 vi.mock("../../libs/api", () => ({
-  generateQuarterlyForms: vi.fn(),
+  generateQuarterlyForms: vi.fn()
 }));
 
 describe("Test GenerateForms.js", () => {
   let container;
   beforeEach(() => {
-    container = render(<GenerateForms/>).container;
+    container = render(<GenerateForms />).container;
     vi.clearAllMocks();
   });
 
   it("should render", () => {
     // A dropdown for year, and a dropdown for quarter
     expect(container.querySelectorAll(".Dropdown-root")).toHaveLength(2);
-    expect(screen.getByText("Generate Forms", { selector: "button" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Generate Forms", { selector: "button" })
+    ).toBeInTheDocument();
   });
 
   test("Generating Forms should error if the user has not selected a year and quarter", () => {
     expect(window.alert).not.toHaveBeenCalled();
 
-    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
     userEvent.click(generateButton);
 
     expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
@@ -47,12 +51,56 @@ describe("Test GenerateForms.js", () => {
     const quarterOption = screen.getByText("Q2");
     userEvent.click(quarterOption);
 
-    const generateButton = screen.getByText("Generate Forms", { selector: "button" });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
     userEvent.click(generateButton);
 
     expect(generateQuarterlyForms).toHaveBeenCalledWith({
       year: 2022,
+      quarter: 2
+    });
+  });
+
+  test("Generating Forms is succesful", async () => {
+    generateQuarterlyForms.mockReturnValue({
+      year: 2022,
       quarter: 2,
+      status: 200,
+      message: "success"
+    });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
+    userEvent.click(generateButton);
+    await waitFor(() => {
+      expect(screen.getByText("success")).toBeInTheDocument();
+    });
+  });
+  test("Generating Form has a warning", async () => {
+    generateQuarterlyForms.mockReturnValue({
+      status: 204,
+      message: "warning"
+    });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
+    userEvent.click(generateButton);
+    await waitFor(() => {
+      expect(screen.getByText("warning")).toBeInTheDocument();
+    });
+  });
+  test("Generating Form has an error", async () => {
+    generateQuarterlyForms.mockReturnValue({
+      status: 500,
+      message: "error"
+    });
+    const generateButton = screen.getByText("Generate Forms", {
+      selector: "button"
+    });
+    userEvent.click(generateButton);
+    await waitFor(() => {
+      expect(screen.getByText("error")).toBeInTheDocument();
     });
   });
 });
