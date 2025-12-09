@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "devDependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.744.0",
+    "@aws-sdk/client-secrets-manager": "^3.946.0",
     "aws-cdk-lib": "^2.185.0",
     "aws-cdk-local": "^2.19.2",
     "aws-cdk": "^2.1028.0",
