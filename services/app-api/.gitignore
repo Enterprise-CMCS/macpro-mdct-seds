@@ -46,5 +46,3 @@ env.yml
 
 # Jetbrains IDEs
 .idea
-
-auth/local-user.js
