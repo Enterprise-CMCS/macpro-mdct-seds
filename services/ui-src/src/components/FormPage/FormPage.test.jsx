@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 import FormPage from "./FormPage";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";
 
@@ -63,8 +62,8 @@ const mockForm = {
 };
 
 const renderComponent = (form, user) => {
-  getUserInfo.mockResolvedValue({ Items: [user]})
   useStore.setState({
+    user,
     statusData: form.statusData,
     loadError: form.loadError,
     loadForm: vi.fn(),
@@ -82,7 +81,7 @@ window.confirm = vi.fn(() => true);
 describe("FormPage", () => {
   it("should render a form for state users with access", async () => {
     const { container } = renderComponent(mockForm, mockUser);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
 
     const formHeader = container.querySelector(".form-header");
     expect(formHeader).toBeInTheDocument();
@@ -123,7 +122,7 @@ describe("FormPage", () => {
     const user = { role: "admin", states: [] };
 
     const { container } = renderComponent(mockForm, user);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
 
     const tabContainer = container.querySelector(".tab-container");
     expect(tabContainer).toBeInTheDocument();
@@ -136,7 +135,6 @@ describe("FormPage", () => {
     const user = { role: "state", states: ["TX"] };
 
     const { container } = renderComponent(mockForm, user);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     const tabContainer = container.querySelector(".tab-container");
     expect(tabContainer).not.toBeInTheDocument();
@@ -154,8 +152,8 @@ describe("FormPage", () => {
       }
     };
     const { container } = renderComponent(form, mockUser);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
+    
     const saveMessage = container.querySelector(".save-success");
     expect(saveMessage.textContent).toBe(
       "Save success:Form 21E has been successfully saved."
@@ -171,8 +169,8 @@ describe("FormPage", () => {
       }
     };
     const { container } = renderComponent(form, mockUser);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
+    
     const errorMessage = container.querySelector(".save-error");
     expect(errorMessage.textContent).toBe(
       "Save Error:A problem occurred while saving. Please save again. If the problem persists, contact MDCT_Help@cms.hhs.gov"
@@ -185,8 +183,8 @@ describe("FormPage", () => {
       loadError: true
     };
     const { container } = renderComponent(form, mockUser);
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
+    
     const errorMessage = container.querySelector(".form-load-error");
     expect(errorMessage).toBeInTheDocument();
   });

@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { getCurrentUser } from "../../libs/api";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
+import { useStore } from "../../store/store";
 
 vi.mock("config/config", () => ({
   default: { 
@@ -27,18 +27,16 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   }),
 }));
 
-vi.mock("../../libs/api", () => ({
-  getCurrentUser: vi.fn().mockResolvedValue({
-    email: "test@example.com",
-    role: "state"
-  })
-}));
-
 vi.mock("../../utility-functions/tealium", () => ({
   fireTealiumPageView: vi.fn(),
 }));
 
+const loadUser = vi.fn();
+
 const renderComponent = () => {
+  useStore.setState({
+    loadUser,
+  });
   return render(
     <BrowserRouter>
       <App />
@@ -52,10 +50,12 @@ describe("Test App.js", () => {
   });
 
   it("should record analytics for authenticated page views", async () => {
+    loadUser.mockResolvedValue(undefined);
+
     renderComponent();
 
     await waitFor(() => {
-      expect(getCurrentUser).toHaveBeenCalled();
+      expect(loadUser).toHaveBeenCalled();
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         true,
         "http://localhost:3000/",
@@ -75,12 +75,12 @@ describe("Test App.js", () => {
   });
 
   it("should record analytics for unauthenticated page views", async () => {
-    getCurrentUser.mockRejectedValue("oh no a error");
+    loadUser.mockRejectedValueOnce("oh no a error");
 
     renderComponent();
 
     await waitFor(() => {
-      expect(getCurrentUser).toHaveBeenCalled();
+      expect(loadUser).toHaveBeenCalled();
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         false, // not authenticated
         "http://localhost:3000/", // we've been redirected

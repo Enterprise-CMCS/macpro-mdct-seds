@@ -1,5 +1,6 @@
 {
   "name": "macpro-mdct-seds",
+  "version": "",
   "description": "SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.",
   "longDescription": "CHIP Statistical Enrollment Data Reports",
   "status": "Production",
@@ -15,13 +16,16 @@
   },
   "organization": "Centers for Medicare & Medicaid Services",
   "repositoryURL": "https://github.com/Enterprise-CMCS/macpro-mdct-seds",
-  "projectURL": "https://mdctseds.cms.gov",
   "repositoryHost": "github.com/Enterprise-CMCS",
   "repositoryVisibility": "public",
+  "homepageURL": "",
+  "downloadURL": "",
+  "disclaimerURL": "",
+  "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 35026,
+  "laborHours": 34990,
   "reuseFrequency": {
-    "forks": 4,
+    "forks": 3,
     "clones": 0
   },
   "platforms": [
@@ -42,11 +46,17 @@
     "Gherkin"
   ],
   "maintenance": "contract",
-  "contractNumber": "75FCMC24F0027",
+  "contractNumber": [
+    "75FCMC24F0027"
+  ],
+  "SBOM": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/network/dependencies",
+  "relatedCode": [],
+  "reusedCode": [],
+  "partners": [],
   "date": {
     "created": "2020-12-04T19:41:29Z",
-    "lastModified": "2025-08-27T18:11:20Z",
-    "metaDataLastUpdated": "2025-09-01T00:25:38.328Z"
+    "lastModified": "2025-11-25T20:25:45Z",
+    "metadataLastUpdated": "2025-12-01T00:26:53.325Z"
   },
   "tags": [
     "mdct"
@@ -55,9 +65,8 @@
     "email": "brendan.myers@coforma.com",
     "name": "Brendan Myers"
   },
-  "feedbackMechanisms": [
-    "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues"
-  ],
+  "feedbackMechanism": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues",
+  "AIUseCaseID": "0",
   "localisation": false,
   "repositoryType": "application",
   "userInput": true,
@@ -67,7 +76,6 @@
     "MDCT"
   ],
   "systems": [],
-  "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/network/dependencies",
   "subsetInHealthcare": [
     "Medicaid"
   ],

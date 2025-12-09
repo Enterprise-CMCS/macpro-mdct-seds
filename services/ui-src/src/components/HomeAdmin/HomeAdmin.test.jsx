@@ -1,10 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import HomeAdmin from "./HomeAdmin";
 import { BrowserRouter } from "react-router-dom";
-import { render, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
-import userEvent from "@testing-library/user-event";
-import { buildSortedAccordionByYearQuarter } from "utility-functions/sortingFunctions";
+import { render } from "@testing-library/react";
+import { useStore } from "../../store/store";
 
 vi.mock("../../libs/contextLib", () => ({
   useAppContext: vi.fn()
@@ -19,13 +17,11 @@ vi.mock("utility-functions/sortingFunctions", async () => ({
   buildSortedAccordionByYearQuarter: vi.fn().mockReturnValue([])
 }));
 
-const adminUser = { role: "admin" };
-
 const renderComponent = () => {
-  getUserInfo.mockResolvedValue({ Items: [adminUser] });
+  useStore.setState({ user: { role: "admin" } });
   return render(
     <BrowserRouter>
-      <HomeAdmin user={adminUser}/>
+      <HomeAdmin />
     </BrowserRouter>
   );
 };
@@ -44,7 +40,6 @@ const forms = [
 describe("Tests for HomeAdmin.js", () => {
   it("should render navigation links", async () => {
     const { container } = renderComponent();
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
     const links = [...container.querySelectorAll("h1 ~ div ul li a")];
     expect(links.map(a => a.textContent)).toEqual([
       "View / Edit Users",
@@ -56,10 +51,7 @@ describe("Tests for HomeAdmin.js", () => {
 
   it("should render a state selector", async () => {
     const { container } = renderComponent();
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
-    expect(
-      container.querySelector(".Dropdown-root.state-select-list")
-    ).toBeInTheDocument();
+    expect(container.querySelector(".Dropdown-root.state-select-list")).toBeInTheDocument();
   });
 
   describe("should update state selector when a state is picked", () => {
