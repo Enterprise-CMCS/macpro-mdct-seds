@@ -69,6 +69,17 @@ describe("Test GenerateForms.js", () => {
       status: 200,
       message: "success"
     });
+
+    const yearDropdown = screen.getByText("Select a Year");
+    userEvent.click(yearDropdown);
+    const yearOption = screen.getByText("2022");
+    userEvent.click(yearOption);
+
+    const quarterDropdown = screen.getByText("Select a Quarter");
+    userEvent.click(quarterDropdown);
+    const quarterOption = screen.getByText("Q2");
+    userEvent.click(quarterOption);
+
     const generateButton = screen.getByText("Generate Forms", {
       selector: "button"
     });
@@ -77,11 +88,21 @@ describe("Test GenerateForms.js", () => {
       expect(screen.getByText("success")).toBeInTheDocument();
     });
   });
+
   test("Generating Form has a warning", async () => {
     generateQuarterlyForms.mockReturnValue({
       status: 204,
       message: "warning"
     });
+    const yearDropdown = screen.getByText("Select a Year");
+    userEvent.click(yearDropdown);
+    const yearOption = screen.getByText("2022");
+    userEvent.click(yearOption);
+
+    const quarterDropdown = screen.getByText("Select a Quarter");
+    userEvent.click(quarterDropdown);
+    const quarterOption = screen.getByText("Q2");
+    userEvent.click(quarterOption);
     const generateButton = screen.getByText("Generate Forms", {
       selector: "button"
     });
@@ -95,6 +116,15 @@ describe("Test GenerateForms.js", () => {
       status: 500,
       message: "error"
     });
+    const yearDropdown = screen.getByText("Select a Year");
+    userEvent.click(yearDropdown);
+    const yearOption = screen.getByText("2022");
+    userEvent.click(yearOption);
+
+    const quarterDropdown = screen.getByText("Select a Quarter");
+    userEvent.click(quarterDropdown);
+    const quarterOption = screen.getByText("Q2");
+    userEvent.click(quarterOption);
     const generateButton = screen.getByText("Generate Forms", {
       selector: "button"
     });
