@@ -11,10 +11,10 @@ import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@trussworks/react-uswds";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { useStore } from "../../store/store";
 
 const FormPage = () => {
+  const user = useStore(state => state.user);
   const statusData = useStore(state => state.statusData);
   const loadError = useStore(state => state.loadError);
   const getForm = useStore(state => state.loadForm);
@@ -42,18 +42,11 @@ const FormPage = () => {
       history.push(`/print/${state}/${year}/${quarter}/${formName}`);
     }
   };
+
   // Call the API and set questions, answers and status data in the store based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
-      // Get user information
-      const currentUserInfo = await getUserInfo();
-
-      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
-
-      if (
-        userStates.includes(state) ||
-        currentUserInfo.Items[0].role === "admin"
-      ) {
+      if ((user.states ?? []).includes(state) || user.role === "admin") {
         await getForm(formattedStateName, year, quarterInt, formattedFormName);
         setHasAccess(true);
       } else {
