@@ -1,17 +1,35 @@
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeAdmin from "./HomeAdmin";
 import { BrowserRouter } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import { useStore } from "../../store/store";
+import userEvent from "@testing-library/user-event";
+import { buildSortedAccordionByYearQuarter } from "utility-functions/sortingFunctions";
 
 vi.mock("../../libs/contextLib", () => ({
   useAppContext: vi.fn()
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
+  getUserInfo: vi.fn()
 }));
+
+vi.mock("utility-functions/sortingFunctions", async () => ({
+  ...(await vi.importActual("utility-functions/sortingFunctions")),
+  buildSortedAccordionByYearQuarter: vi.fn().mockReturnValue([])
+}));
+
+const forms = [
+  {
+    id: 2021,
+    description: "Quarters for 2021",
+    title: 2021,
+    content: [<></>],
+    headingLevel: "h1", // unsure
+    expanded: false
+  }
+];
 
 const renderComponent = () => {
   useStore.setState({ user: { role: "admin" } });
@@ -20,7 +38,7 @@ const renderComponent = () => {
       <HomeAdmin />
     </BrowserRouter>
   );
-}
+};
 
 describe("Tests for HomeAdmin.js", () => {
   it("should render navigation links", async () => {
@@ -30,12 +48,46 @@ describe("Tests for HomeAdmin.js", () => {
       "View / Edit Users",
       "Add/Edit Form Templates",
       "Generate Quarterly Forms",
-      "Generate Total Enrollment Counts",
+      "Generate Total Enrollment Counts"
     ]);
   });
 
   it("should render a state selector", async () => {
     const { container } = renderComponent();
-    expect(container.querySelector(".Dropdown-root.state-select-list")).toBeInTheDocument();
+    expect(
+      container.querySelector(".Dropdown-root.state-select-list")
+    ).toBeInTheDocument();
+  });
+
+  describe("should update state selector when a state is picked", () => {
+    beforeEach(async () => {
+      renderComponent();
+
+      screen.debug();
+
+      const stateDropdown = screen.getByText("Select a state");
+      userEvent.click(stateDropdown);
+    });
+    it("when no forms exist in the state", async () => {
+      const stateOption = screen.getByText("Alabama");
+      userEvent.click(stateOption);
+
+      await waitFor(() =>
+        expect(
+          screen.getByText(
+            "There are no forms available for the selected state"
+          )
+        ).toBeInTheDocument()
+      );
+    });
+    it("when forms exist in the state", async () => {
+      buildSortedAccordionByYearQuarter.mockReturnValue(forms);
+      const stateOption = screen.getByText("Alabama");
+      userEvent.click(stateOption);
+
+      await waitFor(() =>
+        expect(screen.getByRole("button", { name: "2021" })).toBeInTheDocument()
+      );
+    });
   });
 });
