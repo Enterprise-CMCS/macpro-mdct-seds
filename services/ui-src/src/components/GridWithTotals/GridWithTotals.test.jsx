@@ -42,41 +42,6 @@ const gridDataItems = [
   }
 ];
 
-const rows = [
-  {
-    col6: "% of FPL 301",
-    col4: "% of FPL 201-250",
-    col5: "% of FPL 251-300",
-    col2: "% of FPL 0-133",
-    col3: "% of FPL 134-200",
-    col1: ""
-  },
-  {
-    col6: 5,
-    col4: 3,
-    col5: 4,
-    col2: 1,
-    col3: 2,
-    col1: 0
-  },
-  {
-    col6: 5,
-    col4: 3,
-    col5: 4,
-    col2: 1,
-    col3: 2,
-    col1: 0
-  },
-  {
-    col6: 5,
-    col4: 3,
-    col5: 4,
-    col2: 1,
-    col3: 2,
-    col1: 0
-  }
-];
-
 const renderComponent = (questionID = "42", questions) => {
   useStore.setState({
     ...currentFormMock_21E.currentForm,
@@ -166,7 +131,12 @@ describe("Test GridWithTotals.js", () => {
     expect(columnTotal).toHaveTextContent("147");
   });
   it("should update totals for summary-synthesized", () => {
-    const questions = [{ rows }, { rows }, { rows }, { rows }];
+    const questions = [
+      { rows: gridDataItems },
+      { rows: gridDataItems },
+      { rows: gridDataItems },
+      { rows: gridDataItems }
+    ];
     const { container } = renderComponent("summary-synthesized", questions);
 
     const rowTotal = container.querySelector("tbody tr td:nth-last-child(1)");
