@@ -11,14 +11,16 @@ let realUseContext;
 let useContextMock;
 
 vi.mock("config/config", () => ({
-  default: { cognito: {
-    REDIRECT_SIGNOUT: "elsewhere.com",
-  },
-}}))
+  default: {
+    cognito: {
+      REDIRECT_SIGNOUT: "elsewhere.com"
+    }
+  }
+}));
 
 vi.mock("aws-amplify/auth", () => ({
   fetchAuthSession: vi.fn().mockResolvedValue({ tokens: "mock tokens" }),
-  signOut: vi.fn(),
+  signOut: vi.fn()
 }));
 
 // *** set up mocks
@@ -85,5 +87,17 @@ describe("Test Header.js", () => {
 
     await waitFor(() => expect(signOut).toHaveBeenCalled());
     expect(useStore.getState().wipeUser).not.toHaveBeenCalled();
+  });
+  test("Test logout", async () => {
+    signOut.mockResolvedValueOnce();
+    render(
+      <BrowserRouter>
+        <Header />
+      </BrowserRouter>
+    );
+    await waitFor(() => expect(screen.getByText("My Profile")).toBeVisible());
+    const logoutBtn = screen.getByRole("button", { name: "Logout" });
+    userEvent.click(logoutBtn);
+    expect(signOut).toHaveBeenCalled();
   });
 });

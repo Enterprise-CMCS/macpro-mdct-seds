@@ -50,9 +50,9 @@ const EditUser = () => {
 
     // Set states to array of objects
     if (user.data?.role !== "state") {
-      setSelectedStates(theStates.map(
-        abbr => ({ label: getStateName(abbr), value: abbr })
-      ));
+      setSelectedStates(
+        theStates.map(abbr => ({ label: getStateName(abbr), value: abbr }))
+      );
     } else {
       const abbr = user.data.states[0];
       setSelectedStates({ label: getStateName(abbr), value: abbr });
@@ -64,19 +64,6 @@ const EditUser = () => {
     loadUserData().then();
     // eslint-disable-next-line
   }, []);
-
-  // Save selections for local use and API use
-  const setStatesFromArray = option => {
-    // Save for API use
-    let states = "";
-    if (option) {
-      states = option.join("-");
-    }
-    if (!states) {
-      states = null;
-    }
-    setStatesToSend(states);
-  };
 
   const roles = [
     { value: "admin", label: "Admin User" },

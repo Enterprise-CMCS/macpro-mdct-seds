@@ -79,5 +79,11 @@ describe("Export Functions", () => {
       expect(lines[3]).toBe(`has_carriage_return,"e\rf"`);
       expect(lines[4]).toBe(`has_comma_and_quote,"g:""h,i"""`);
     });
+
+    it("should throw error from export if the type is a pdf", async () => {
+      await expect(handleExport("pdf", "mock-name")).rejects.toThrow(
+        "PDF export failed! Error code 10f2c"
+      );
+    });
   });
 });
