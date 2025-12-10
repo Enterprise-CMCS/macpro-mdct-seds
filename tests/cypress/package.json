@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-  },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^11.5.1",
     "@cypress/webpack-preprocessor": "^6.0.0",

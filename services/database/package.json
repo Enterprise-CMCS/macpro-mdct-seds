@@ -10,7 +10,7 @@
   "license": "CC0-1.0",
   "devDependencies": {},
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.744.0",
-    "@aws-sdk/lib-dynamodb": "^3.744.0"
+    "@aws-sdk/client-dynamodb": "^3.946.0",
+    "@aws-sdk/lib-dynamodb": "^3.946.0"
   }
 }
