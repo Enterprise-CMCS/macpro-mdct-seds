@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  createUser,
   generateEnrollmentTotals,
   generateQuarterlyForms,
   getSingleForm,
@@ -89,16 +88,6 @@ describe("libs/api", () => {
       apiName: "mdct-seds",
       path: "/users/update/123",
       options: { headers: expectedHeaders, body: mockUser}
-    });
-  });
-
-  it("should make the expected API call for createUser", async () => {
-    const response = await createUser(mockPayload);
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: "/users/add",
-      options: { headers: expectedHeaders, body: mockPayload}
     });
   });
 
