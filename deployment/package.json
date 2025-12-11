@@ -5,6 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@aws-sdk/client-secrets-manager": "^3.946.0",
+    "@types/node": "^22.19.2",
     "aws-cdk-lib": "^2.185.0",
     "aws-cdk-local": "^2.19.2",
     "aws-cdk": "^2.1028.0",
