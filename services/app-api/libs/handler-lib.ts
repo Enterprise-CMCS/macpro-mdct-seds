@@ -1,8 +1,13 @@
+import { sanitizeObject } from "../shared/sanitize.ts";
 import * as logger from "./debug-lib.ts";
 
 export default function handler(lambda) {
   return async function (event) {
     let body, statusCode;
+
+    if (event.body) {
+      event.body = JSON.stringify(sanitizeObject(JSON.parse(event.body)));
+    }
 
     logger.init();
     logger.debug("API event: %O", {
