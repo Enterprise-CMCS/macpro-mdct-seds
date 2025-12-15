@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import { obtainAvailableForms } from "../../libs/api";
 import {
@@ -7,54 +7,13 @@ import {
 } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
-import { getStateName, stateSelectOptions } from "../../lookups/states";
+import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const HomeAdmin = () => {
   const user = useStore(state => state.user);
   const [selectedState, setSelectedState] = useState();
-  const [availableStates, setAvailableStates] = useState([]);
-  const [stateError, setStateError] = useState(true);
   const [accordionItems, setAccordionItems] = useState("");
-
-  let history = useHistory();
-
-  useEffect(() => {
-    const onLoad = async () => {
-      let userStates = user.states;
-      let selectedStates = false;
-
-      if (user.role === "admin") {
-        // An admin's state list is just all states.
-        userStates = stateSelectOptions.map(opt => opt.value);
-      }
-
-      if (userStates && userStates !== "null" && userStates.length > 0) {
-        // Convert simple array into array of objects for dropdown
-        selectedStates = userStates.map(
-          abbr => ({ label: getStateName(abbr), value: abbr })
-        );
-        // Remove default error
-        setStateError(false);
-      }
-
-      // Redirect to register-state if business user with no states
-      if (!selectedStates) {
-        history.push("/register-state");
-      } else {
-        selectedStates.sort((a, b) => {
-          let stateA = a.label.toUpperCase();
-          let stateB = b.label.toUpperCase();
-          return stateA < stateB ? -1 : stateA > stateB ? 1 : 0;
-        });
-      }
-
-      setAvailableStates(selectedStates);
-    };
-
-    onLoad().then();
-    /* eslint-disable */
-  }, []);
 
   const updateUsState = async e => {
     setSelectedState(e.value);
@@ -110,24 +69,14 @@ const HomeAdmin = () => {
       <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
           <h3>Select Your State</h3>
-          {stateError ? (
-            <>
-              <p>This account is not associated with any states.</p>
-              <p>
-                If you feel this is an error, please contact the helpdesk{" "}
-                <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
-              </p>
-            </>
-          ) : (
-            <Dropdown
-              options={availableStates}
-              onChange={e => updateUsState(e)}
-              value={selectedState ? selectedState : ""}
-              placeholder="Select a state"
-              autosize={false}
-              className="state-select-list"
-            />
-          )}
+          <Dropdown
+            options={stateSelectOptions}
+            onChange={e => updateUsState(e)}
+            value={selectedState ? selectedState : ""}
+            placeholder="Select a state"
+            autosize={false}
+            className="state-select-list"
+          />
         </div>
 
         <div className="year-coreset-selector">

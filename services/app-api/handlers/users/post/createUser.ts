@@ -48,7 +48,7 @@ export const createUser = async (userData) => {
       lastName: userData.lastName,
       isSuperUser: "true",
       role: userData.role,
-      states: [],
+      state: undefined,
       userId: newUserId.toString(),
       username: userData.username,
       usernameSub: userData.usernameSub,

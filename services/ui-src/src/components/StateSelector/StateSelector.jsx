@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@trussworks/react-uswds";
 import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,11 +12,7 @@ const StateSelector = () => {
   const user = useStore(state => state.user);
   const loadUser = useStore(state => state.loadUser);
   const history = useHistory();
-  const [selectedState, setSelectedState] = useState("");
-
-  const addUserState = event => {
-    setSelectedState(event);
-  };
+  const [selectedState, setSelectedState] = useState();
 
   const saveUpdatedUser = async () => {
     if (selectedState) {
@@ -27,7 +23,7 @@ const StateSelector = () => {
       if (confirm) {
         try {
           let userToPass = user;
-          userToPass.states = [selectedState.value];
+          userToPass.state = selectedState.value;
           // Send data to API
           await updateUser(userToPass);
           // Re-fetch from API
@@ -46,21 +42,28 @@ const StateSelector = () => {
 
   return (
     <div className="page-state-selector">
-      {user &&
-      user.states &&
-      user.states.length > 0 &&
-      user.states !== "null" ? (
+      {user?.state ? (
         <>
           <h2>
             {" "}
-            {`This account has already been associated with a state: ${user.states[0]}`}
+            {`This account has already been associated with a state: ${user.state}`}
           </h2>
           <p>
             If you feel this is an error, please contact the helpdesk{" "}
             <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
-      ) : (
+      )
+      : user?.role === "admin" || user?.role === "business" ? (
+        <>
+          <h2>This account does not need to select a state</h2>
+          <p>
+            {user.role[0].toUpperCase() + user.role.slice(1)}{" "}
+            users have access to all states' form data.
+          </p>
+        </>
+      )
+      : (
         <>
           <h1>This account is not associated with any states</h1>
 
@@ -68,7 +71,7 @@ const StateSelector = () => {
 
           <Dropdown
             options={stateSelectOptions}
-            onChange={event => addUserState(event)}
+            onChange={setSelectedState}
             value={selectedState ? selectedState : ""}
             placeholder="Select a state"
             autosize={false}

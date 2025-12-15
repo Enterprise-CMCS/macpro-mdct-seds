@@ -25,16 +25,14 @@ const HomeState = () => {
 
   useEffect(() => {
     (async () => {
-      const stateString = user.states?.[0];
-
-      if (stateString) {
-        const forms = await loadForms(stateString);
-        setAccordionItems(
-          buildSortedAccordionByYearQuarter(forms, stateString)
-        );
-      } else {
+      if (!user.state) {
         history.push("/register-state");
       }
+
+      const forms = await loadForms(user.state);
+      setAccordionItems(
+        buildSortedAccordionByYearQuarter(forms, user.state)
+      );
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

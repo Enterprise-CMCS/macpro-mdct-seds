@@ -30,7 +30,7 @@ const PrintPDF = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if ((user.states ?? []).includes(state) || user.role === "admin" ) {
+      if (user.state === state || user.role === "admin" || user.role === "business") {
         await getForm(formattedStateName, year, quarterInt, form);
         setHasAccess(true);
       } else {

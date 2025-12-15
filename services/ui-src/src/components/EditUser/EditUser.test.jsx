@@ -45,7 +45,7 @@ const mockUser = {
   role: "state",
   dateJoined: "2024-01-15T12:34:45Z",
   lastLogin: "2024-02-16T12:34:45Z",
-  states: ["CO"]
+  state: "CO"
 };
 
 describe("Test EditUser.js", () => {
@@ -108,22 +108,16 @@ describe("Test EditUser.js", () => {
     expect(rows[7].querySelector("td")).toHaveTextContent("2/16/2024");
   });
 
-  it("should render admin users' states in a multiselect", async () => {
+  it("should not render admin users' state property", async () => {
     const user = {
       ...mockUser,
       role: "admin",
-      states: ["WI", "TX"]
+      state: undefined
     };
     renderComponent(user);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const table = screen.getByTestId("table");
-    const rows = [...table.querySelectorAll("tr")];
-
-    expect(rows[5].querySelector("th")).toHaveTextContent("State");
-    expect(
-      rows[5].querySelector("td .dropdown-heading-value")
-    ).toHaveTextContent("Texas, Wisconsin");
+    expect(screen.queryByRole("row-header", { name: "State" })).not.toBeInTheDocument();
   });
 
   it("should call the API to save updated user details", async () => {

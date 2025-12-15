@@ -30,7 +30,7 @@ const renderComponent = (user) => {
 
 describe("StateSelector component", () => {
   it("should render an alert for users with a state", async () => {
-    const { container } = renderComponent({ states: ["CO"] });
+    const { container } = renderComponent({ state: "CO" });
 
     expect(screen.getByText(
       "This account has already been associated with a state: CO"
@@ -46,7 +46,7 @@ describe("StateSelector component", () => {
   });
 
   it("should render a selector for users with no state", async () => {
-    const { container } = renderComponent({ states: [] });
+    const { container } = renderComponent({ state: undefined });
 
     expect(screen.queryByText(
       "This account has already been associated with a state", { exact: false }
@@ -66,14 +66,14 @@ describe("StateSelector component", () => {
     const mockHistory = { push: vi.fn() };
     useHistory.mockReturnValue(mockHistory);
 
-    renderComponent({ id: 42, states: [] });
+    renderComponent({ id: 42, state: undefined });
 
     userEvent.click(screen.getByText("Select a state"));
     userEvent.click(screen.getByText("Colorado"));
     userEvent.click(screen.getByText("Update User", { selector: "button" }));
     
     await waitFor(() => {
-      expect(updateUser).toHaveBeenCalledWith({ id: 42, states: ["CO"] });
+      expect(updateUser).toHaveBeenCalledWith({ id: 42, state: "CO" });
       expect(useStore.getState().loadUser).toHaveBeenCalled();
     })
     expect(mockHistory.push).toHaveBeenCalledWith("/");

@@ -39,7 +39,7 @@ const mockUser = {
   username: "COLO",
   email: "stateuserCO@test.com",
   role: "state",
-  states: ["CO"]
+  state: "CO"
 } as AuthUser;
 
 const mockEvent = {
@@ -70,11 +70,37 @@ describe("updateUser.ts", () => {
     expect(mockUpdate).toHaveBeenCalledWith({
       TableName: "local-auth-user",
       Key: { userId: "42" },
-      UpdateExpression: "SET #r = :role, states = :states, lastLogin = :lastLogin",
+      UpdateExpression: "SET #r = :role, state = :state, lastLogin = :lastLogin",
       ExpressionAttributeNames: { "#r": "role" },
       ExpressionAttributeValues: {
         ":role": "business",
-        ":states": ["CO"],
+        ":state": "CO",
+        ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
+      },
+      ReturnValues: "ALL_NEW",
+    }, expect.any(Function));
+  });
+
+  it("should allow the state of a state user to be cleared", async () => {
+    // TODO: Reimplement user update as a PutCommand
+    scanForUserWithSub.mockResolvedValueOnce(mockUser);
+    mockUpdate.mockResolvedValueOnce({ update: "complete" });
+
+    const response = await updateUser(mockEvent);
+
+    expect(response).toEqual(expect.objectContaining({
+      statusCode: 200,
+      body: JSON.stringify({ update: "complete" }),
+    }));
+
+    expect(mockUpdate).toHaveBeenCalledWith({
+      TableName: "local-auth-user",
+      Key: { userId: "42" },
+      UpdateExpression: "SET #r = :role, state = :state, lastLogin = :lastLogin",
+      ExpressionAttributeNames: { "#r": "role" },
+      ExpressionAttributeValues: {
+        ":role": "business",
+        ":state": "CO",
         ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
       },
       ReturnValues: "ALL_NEW",
@@ -119,7 +145,7 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ username: "WISC" });
     await expectFieldChangeToError({ role: "admin" });
     await expectFieldChangeToError({ usernameSub: "4444-5555-6666-7777" });
-    await expectFieldChangeToError({ states: ["WI"] });
+    await expectFieldChangeToError({ state: "WI" });
 
     // Reset these mocks to no-ops
     scanForUserWithSub.mockReset().mockResolvedValue(undefined);
@@ -127,10 +153,10 @@ describe("updateUser.ts", () => {
   });
 
   it("should allow users to select a state, if they have not yet done so", async () => {
-    scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, states: [] });
+    scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, state: undefined });
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     const evt = {
-      body: JSON.stringify({...mockUser, states: ["CO"] }),
+      body: JSON.stringify({...mockUser, state: "CO" }),
     };
 
     const response = await updateUser(evt);
@@ -159,11 +185,12 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ role: 0 });
     await expectFieldChangeToError({ role: "super" });
 
-    // States must be valid
-    await expectFieldChangeToError({ role: "state", states: "CO" });
-    await expectFieldChangeToError({ role: "state", states: [0] });
-    await expectFieldChangeToError({ role: "state", states: ["CO", 42] });
-    await expectFieldChangeToError({ role: "state", states: ["eric"] });
+    // State must be valid
+    await expectFieldChangeToError({ role: "state", state: "" });
+    await expectFieldChangeToError({ role: "state", state: "null" });
+    await expectFieldChangeToError({ role: "state", state: [] });
+    await expectFieldChangeToError({ role: "state", state: [0] });
+    await expectFieldChangeToError({ role: "state", state: ["CO"] });
 
     // Reset these mocks to no-ops
     scanForUserWithSub.mockReset().mockResolvedValue(undefined);

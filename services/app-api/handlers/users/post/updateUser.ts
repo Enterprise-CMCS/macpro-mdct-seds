@@ -15,7 +15,7 @@ export const main = handler(async (event, context) => {
 
   await authorizeAdminOrUserWithEmail(event, currentUser!.email);
 
-  if (modifyingAnythingButAnEmptyStateList(data, currentUser)) {
+  if (modifyingAnythingButAnUndefinedState(data, currentUser)) {
     await authorizeAdmin(event);
   }
 
@@ -27,10 +27,10 @@ export const main = handler(async (event, context) => {
       userId: currentUser!.userId,
     },
     UpdateExpression:
-      "SET #r = :role, states = :states, lastLogin = :lastLogin",
+      "SET #r = :role, state = :state, lastLogin = :lastLogin",
     ExpressionAttributeValues: {
       ":role": data.role,
-      ":states": data.states ?? "",
+      ":state": data.state,
       ":lastLogin": new Date().toISOString(),
     },
     ExpressionAttributeNames: {
@@ -43,11 +43,11 @@ export const main = handler(async (event, context) => {
   return await dynamoDb.update(params);
 });
 
-function modifyingAnythingButAnEmptyStateList(incomingUser, existingUser) {
+function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {
   if (incomingUser.username !== existingUser.username) return true;
   if (incomingUser.role !== existingUser.role) return true;
   if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
-  if (existingUser.states.length > 0) return true;
+  if (existingUser.state !== undefined) return true;
   return false;
 }
 
@@ -63,17 +63,12 @@ function assertPayloadIsValid (data) {
     throw new Error("Invalid user role - must be an existing role");
   }
 
-  if (data.states && data.states !== "null") {
-    if (!Array.isArray(data.states)) {
-      throw new Error("Invalid user states - must be an array");
+  if (data.state !== undefined) {
+    if (typeof data.state !== "string") {
+      throw new Error("Invalid user state - must be a string");
     }
-    for (let state of data.states) {
-      if (typeof state !== "string") {
-        throw new Error("Invalid user states - must be strings");
-      }
-      if (!/^[A-Z]{2}$/.test(state)) {
-        throw new Error("Invalid user states - must be 2-letter abbreviations");
-      }
+    if (!/^[A-Z]{2}$/.test(data.state)) {
+      throw new Error("Invalid user state - must be 2-letter abbreviations");
     }
   }
 }

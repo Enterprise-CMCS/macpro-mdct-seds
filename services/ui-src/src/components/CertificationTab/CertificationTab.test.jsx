@@ -14,7 +14,7 @@ const mockUser = {
   status: "success",
   email: "email@email.com",
   name: "Test User",
-  states: ["CA"],
+  state: "CA",
   role: "state"
 };
 

@@ -50,7 +50,7 @@ vi.mock("react-router-dom", async importOriginal => ({
 
 const mockUser = {
   role: "state",
-  states: ["CO"]
+  state: "CO"
 };
 
 const mockForm = {
@@ -119,7 +119,7 @@ describe("FormPage", () => {
   });
 
   it("should render a form for admin users", async () => {
-    const user = { role: "admin", states: [] };
+    const user = { role: "admin", state: undefined };
 
     const { container } = renderComponent(mockForm, user);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
@@ -132,7 +132,7 @@ describe("FormPage", () => {
   });
 
   it("should not render a form for state users from other states", async () => {
-    const user = { role: "state", states: ["TX"] };
+    const user = { role: "state", state: "TX" };
 
     const { container } = renderComponent(mockForm, user);
 

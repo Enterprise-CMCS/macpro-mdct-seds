@@ -17,7 +17,7 @@ export type AuthUser = {
   firstName: string;
   lastName: string;
   role: "state" | "business" | "admin";
-  states: string[] | string | null;
+  state: string | undefined;
 };
 
 export const scanUsersByRole = async (role: string) => {

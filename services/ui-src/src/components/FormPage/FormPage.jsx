@@ -46,7 +46,7 @@ const FormPage = () => {
   // Call the API and set questions, answers and status data in the store based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
-      if ((user.states ?? []).includes(state) || user.role === "admin") {
+      if (user.state === state || user.role === "admin" || user.role === "business") {
         await getForm(formattedStateName, year, quarterInt, formattedFormName);
         setHasAccess(true);
       } else {

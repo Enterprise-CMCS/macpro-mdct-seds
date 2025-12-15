@@ -40,7 +40,7 @@ const mockUser: AuthUser = {
   role: "state" as const,
   username: "COLO",
   usernameSub: "0000-1111-2222-3333",
-  states: ["CO"],
+  state: "CO",
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -69,7 +69,7 @@ describe("createUser.ts", () => {
         lastLogin: expect.stringMatching(ISO_DATE_REGEX),
         lastSynced: expect.stringMatching(ISO_DATE_REGEX),
         isSuperUser: "true",
-        states: [],
+        state: undefined,
         userId: "0",
       },
     }, expect.any(Function));

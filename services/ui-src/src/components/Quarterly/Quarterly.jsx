@@ -21,7 +21,7 @@ const Quarterly = () => {
   const title = `Q${quarter} ${year} Reports`;
   useEffect(() => {
     async function fetchData() {
-      if ((user.states ?? []).includes(state) || user.role === "admin") {
+      if (user.state === state || user.role === "admin" || user.role === "business") {
         let data = await recursiveGetStateForms({ state, year, quarter });
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
         data = data.filter(i => i.form !== "64.ECI");

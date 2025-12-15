@@ -25,39 +25,24 @@ const EditUser = () => {
   const [username, setUsername] = useState();
   const [user, setUser] = useState();
   const [role, setRole] = useState();
+  const [selectedState, setSelectedState] = useState();
 
-  const [selectedStates, setSelectedStates] = useState([]);
-  /* eslint-disable no-unused-vars */
-  const [statesToSend, setStatesToSend] = useState([]);
   // Get User data
   const loadUserData = async () => {
-    // Retrive user data from datastore
+    // Retrieve user data from datastore
     const getUserData = { userId: id };
 
-    const user = await getUserById(getUserData);
-    if (user.status === "success") {
-      setUser(user.data);
-      setRole(user.data.role);
-      setUsername(user.data.username);
+    const response = await getUserById(getUserData);
+    const user = response.data;
+    if (response.status === "success") {
+      setUser(user);
+      setRole(user.role);
+      setUsername(user.username);
+      if (user.role === "state" && user.state) {
+        setSelectedState({ label: getStateName(user.state), value: user.state });
+      }
     }
-    // Sort states alphabetically and place in array
-    let theStates = [];
-    const userStates =
-      user.data?.states && user.data.states !== "null" ? user.data.states : [];
-    if (userStates) {
-      theStates = userStates.sort();
-    }
-
-    // Set states to array of objects
-    if (user.data?.role !== "state") {
-      setSelectedStates(
-        theStates.map(abbr => ({ label: getStateName(abbr), value: abbr }))
-      );
-    } else {
-      const abbr = user.data.states[0];
-      setSelectedStates({ label: getStateName(abbr), value: abbr });
-    }
-    return user.data;
+    return user;
   };
 
   useEffect(() => {
@@ -71,35 +56,23 @@ const EditUser = () => {
     { value: "state", label: "State User" }
   ];
 
+  const updateLocalState = (e) => {
+    setSelectedState(e);
+    setUser({
+      ...user,
+      state: e.value || undefined
+    });
+  };
+
   // Update user object
   const updateLocalUser = (e, field) => {
     let tempUser = { ...user };
     let response;
 
-    if (field === "states") {
-      setSelectedStates(e);
-      // If from multiselect, else single selection
-      if (Array.isArray(e)) {
-        // Simplify array
-        let newStates = [];
-        for (const state in e) {
-          newStates.push(e[state].value);
-        }
-        setStatesToSend(newStates);
-      } else {
-        if (!e.value) {
-          e.value = null;
-        }
-        setStatesToSend([e.value]);
-        response = e.value;
-      }
-
-      // Write to local state
-    } else if (field === "role") {
+    if (field === "role") {
       // Save to local state
       setRole(e.value);
-      setStatesToSend(null);
-      setSelectedStates();
+      setSelectedState(undefined);
       // Update user
       response = e.value;
     } else if (field === "username") {
@@ -113,7 +86,7 @@ const EditUser = () => {
 
   const updateUserStore = async data => {
     // Set states from statesToSend (in proper format)
-    data.states = statesToSend;
+    data.state = selectedState?.value ?? undefined;
     data.username = username;
 
     console.log("updating data: ");
@@ -206,27 +179,11 @@ const EditUser = () => {
                     <td>
                       <Dropdown
                         options={stateSelectOptions}
-                        onChange={e => updateLocalUser(e, "states")}
-                        value={selectedStates ? selectedStates : ""}
+                        onChange={updateLocalState}
+                        value={selectedState ?? ""}
                         placeholder="Select a state"
                         autosize={false}
                         className="state-select-list"
-                      />
-                    </td>
-                  </tr>
-                </>
-              ) : null}
-              {role !== "state" && role !== null ? (
-                <>
-                  <tr>
-                    <th>State</th>
-                    <td>
-                      <MultiSelect
-                        options={stateSelectOptions}
-                        value={selectedStates ? selectedStates : []}
-                        onChange={e => updateLocalUser(e, "states")}
-                        labelledBy={"Select States"}
-                        multiple={false}
                       />
                     </td>
                   </tr>
