@@ -1,17 +1,21 @@
 import handler from "../../../libs/handler-lib.ts";
-import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { scanForUserWithSub } from "../get/getCurrentUser.ts";
 import {
   authorizeAdmin,
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
+import { putUser } from "../../../storage/users.ts";
 
 export const main = handler(async (event, context) => {
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);
   const currentUser = await scanForUserWithSub(data.usernameSub);
+  if (!currentUser) {
+    // TODO, return a nice 404 response object instead
+    throw new Error(`User not found! Scanned for sub: ${data.usernameSub}`);
+  }
 
   await authorizeAdminOrUserWithEmail(event, currentUser!.email);
 
@@ -21,26 +25,14 @@ export const main = handler(async (event, context) => {
 
   assertPayloadIsValid(data);
 
-  const params = {
-    TableName: process.env.AuthUserTable,
-    Key: {
-      userId: currentUser!.userId,
-    },
-    UpdateExpression:
-      "SET #r = :role, state = :state, lastLogin = :lastLogin",
-    ExpressionAttributeValues: {
-      ":role": data.role,
-      ":state": data.state,
-      ":lastLogin": new Date().toISOString(),
-    },
-    ExpressionAttributeNames: {
-      "#r": "role",
-    },
-
-    ReturnValues: "ALL_NEW",
+  const updatedUser = {
+    ...currentUser,
+    role: data.role,
+    state: data.state,
+    lastLogin: new Date().toISOString(),
   };
 
-  return await dynamoDb.update(params);
+  await putUser(updatedUser);
 });
 
 function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateUser } from "./updateUser.ts";
 import {
-  scanForUserWithSub as actualScanForUserWithSub
+  scanForUserWithSub as actualScanForUserWithSub,
 } from "../get/getCurrentUser.ts";
 import {
   authorizeAnyUser as actualAuthorizeAnyUser,
@@ -9,30 +9,28 @@ import {
   authorizeAdmin as actualAuthorizeAdmin,
 } from "../../../auth/authConditions.ts";
 import {
-  DynamoDBDocumentClient,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
-import { AuthUser } from "../../../storage/users.ts";
+  AuthUser,
+  putUser as actualPutUser,
+} from "../../../storage/users.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
   authorizeAdminOrUserWithEmail: vi.fn(),
   authorizeAdmin: vi.fn(),
 }));
+const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
+const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
+const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+
+vi.mock("../../../storage/users.ts", () => ({
+  putUser: vi.fn(),
+}))
+const putUser = vi.mocked(actualPutUser);
 
 vi.mock("../get/getCurrentUser.ts", () => ({
   scanForUserWithSub: vi.fn(),
 }));
 const scanForUserWithSub = vi.mocked(actualScanForUserWithSub);
-const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
-const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
-const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
-
-
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockUpdate = vi.fn();
-mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
 
 const mockUser = {
   userId: "42",
@@ -58,53 +56,46 @@ describe("updateUser.ts", () => {
 
   it("should update the given user data", async () => {
     scanForUserWithSub.mockResolvedValueOnce(mockUser);
-    mockUpdate.mockResolvedValueOnce({ update: "complete" });
 
     const response = await updateUser(mockEvent);
 
     expect(response).toEqual(expect.objectContaining({
       statusCode: 200,
-      body: JSON.stringify({ update: "complete" }),
     }));
 
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-auth-user",
-      Key: { userId: "42" },
-      UpdateExpression: "SET #r = :role, state = :state, lastLogin = :lastLogin",
-      ExpressionAttributeNames: { "#r": "role" },
-      ExpressionAttributeValues: {
-        ":role": "business",
-        ":state": "CO",
-        ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
-      },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
+    expect(putUser).toHaveBeenCalledWith({
+      userId: "42",
+      username: "COLO",
+      email: "stateuserCO@test.com",
+      role: "business",
+      state: "CO",
+      lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+    });
   });
 
   it("should allow the state of a state user to be cleared", async () => {
-    // TODO: Reimplement user update as a PutCommand
+    const mockEvent = {
+      body: JSON.stringify({
+        ...mockUser,
+        state: undefined,
+      })
+    }
     scanForUserWithSub.mockResolvedValueOnce(mockUser);
-    mockUpdate.mockResolvedValueOnce({ update: "complete" });
 
     const response = await updateUser(mockEvent);
 
     expect(response).toEqual(expect.objectContaining({
       statusCode: 200,
-      body: JSON.stringify({ update: "complete" }),
     }));
 
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-auth-user",
-      Key: { userId: "42" },
-      UpdateExpression: "SET #r = :role, state = :state, lastLogin = :lastLogin",
-      ExpressionAttributeNames: { "#r": "role" },
-      ExpressionAttributeValues: {
-        ":role": "business",
-        ":state": "CO",
-        ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
-      },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
+    expect(putUser).toHaveBeenCalledWith({
+      userId: "42",
+      username: "COLO",
+      email: "stateuserCO@test.com",
+      role: "state",
+      state: undefined,
+      lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+    });
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {

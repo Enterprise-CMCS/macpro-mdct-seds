@@ -11,6 +11,7 @@ import {
 import { mockClient } from "aws-sdk-client-mock";
 import {
   scanForUserByUsername as actualScanForUser,
+  putUser as actualPutUser,
   AuthUser
 } from "../../../storage/users.ts";
 
@@ -21,8 +22,10 @@ const getUserDetailsFromEvent = vi.mocked(actualGetUserDetails);
 
 vi.mock("../../../storage/users.ts", () => ({
   scanForUserByUsername: vi.fn(),
+  putUser: vi.fn(),
 }));
 const scanForUserByUsername = vi.mocked(actualScanForUser);
+const putUser = vi.mocked(actualPutUser);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockPut = vi.fn();
@@ -40,7 +43,6 @@ const mockUser: AuthUser = {
   role: "state" as const,
   username: "COLO",
   usernameSub: "0000-1111-2222-3333",
-  state: "CO",
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -69,7 +71,6 @@ describe("createUser.ts", () => {
         lastLogin: expect.stringMatching(ISO_DATE_REGEX),
         lastSynced: expect.stringMatching(ISO_DATE_REGEX),
         isSuperUser: "true",
-        state: undefined,
         userId: "0",
       },
     }, expect.any(Function));
