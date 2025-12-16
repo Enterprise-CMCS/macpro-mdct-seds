@@ -3135,7 +3135,7 @@ classlist-polyfill@1.2.0:
   resolved "https://registry.yarnpkg.com/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz#935bc2dfd9458a876b279617514638bcaa964a2e"
   integrity sha512-GzIjNdcEtH4ieA2S8NmrSxv7DfEV5fmixQeyTmqmRmRJPGpRBaSnA2a0VrCjyT8iW8JjEdMbKzDotAJf+ajgaQ==
 
-classnames@^2.2.3, classnames@^2.2.5:
+classnames@^2.2.5:
   version "2.2.6"
   resolved "https://registry.npmjs.org/classnames/-/classnames-2.2.6.tgz"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -6071,7 +6071,7 @@ react-bootstrap@^0.33.1:
     uncontrollable "^7.0.2"
     warning "^3.0.0"
 
-react-dom@^16.13.1, react-dom@^16.8.6:
+react-dom@^16.13.1:
   version "16.14.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -6080,13 +6080,6 @@ react-dom@^16.13.1, react-dom@^16.8.6:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.19.1"
-
-react-dropdown@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.npmjs.org/react-dropdown/-/react-dropdown-1.9.2.tgz"
-  integrity sha512-g4eufErTi5P5T5bGK+VmLl//qvAHy79jm6KKx8G2Tl3mG90bpigb+Aw85P+C2JUdAnIIQdv8kP/oHN314GvAfw==
-  dependencies:
-    classnames "^2.2.3"
 
 react-is@^16.13.1, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
@@ -6102,11 +6095,6 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-
-react-multi-select-component@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/react-multi-select-component/-/react-multi-select-component-4.3.4.tgz#4f4b354bfa1f0353fa9c3bccf8178c87c9780450"
-  integrity sha512-Ui/bzCbROF4WfKq3OKWyQJHmy/bd1mW7CQM+L83TfiltuVvHElhKEyPM3JzO9urIcWplBUKv+kyxqmEnd9jPcA==
 
 react-overlays@^0.9.0:
   version "0.9.3"
@@ -6168,14 +6156,6 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-searchable-dropdown@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.npmjs.org/react-searchable-dropdown/-/react-searchable-dropdown-1.2.5.tgz"
-  integrity sha512-tHx6fmwhRjVDYFvRzfTUlL4BiQ0lpLrOf1k6lkhDBMEAB68N9fRqoF7X8SSWJtASN9vXP33BO7fZxfI0ohA5Xg==
-  dependencies:
-    react "^16.8.6"
-    react-dom "^16.8.6"
-
 react-tabs@^3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/react-tabs/-/react-tabs-3.1.2.tgz"
@@ -6194,7 +6174,7 @@ react-transition-group@^2.0.0, react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.13.1, react@^16.8.6:
+react@^16.13.1:
   version "16.14.0"
   resolved "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
