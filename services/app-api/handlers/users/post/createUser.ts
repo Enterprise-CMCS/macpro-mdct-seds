@@ -46,7 +46,6 @@ export const createUser = async (userData) => {
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
-      isSuperUser: "true",
       role: userData.role,
       userId: newUserId.toString(),
       username: userData.username,

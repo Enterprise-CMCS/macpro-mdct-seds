@@ -71,6 +71,8 @@ function updateUserState (user) {
   }
 
   delete user.states;
+  delete user.isSuperUser;
+  delete user.password;
   return true;
 }
 

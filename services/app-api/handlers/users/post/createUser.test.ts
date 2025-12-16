@@ -70,7 +70,6 @@ describe("createUser.ts", () => {
         dateJoined: expect.stringMatching(ISO_DATE_REGEX),
         lastLogin: expect.stringMatching(ISO_DATE_REGEX),
         lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-        isSuperUser: "true",
         userId: "0",
       },
     }, expect.any(Function));
