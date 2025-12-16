@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Dropdown from "react-dropdown";
 import { obtainAvailableForms } from "../../libs/api";
 import {
   buildSortedAccordionByYearQuarter
@@ -15,21 +14,17 @@ const HomeAdmin = () => {
   const [selectedState, setSelectedState] = useState();
   const [accordionItems, setAccordionItems] = useState("");
 
-  const updateUsState = async e => {
-    setSelectedState(e.value);
+  const updateUsState = async stateId => {
+    setSelectedState(stateId);
 
     // Get list of all state forms
-    let forms;
+    let forms = [];
     try {
-      forms = await obtainAvailableForms({
-        stateId: e.value
-      });
-    } catch (e) {
-      forms = [];
-    }
+      forms = await obtainAvailableForms({ stateId });
+    } catch (e) { /* no-op */ }
 
     // Build Accordion items and set to local state
-    setAccordionItems(buildSortedAccordionByYearQuarter(forms, e.value));
+    setAccordionItems(buildSortedAccordionByYearQuarter(forms, stateId));
   };
 
   let role = user.role;
@@ -68,15 +63,20 @@ const HomeAdmin = () => {
       )}
       <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
-          <h3>Select Your State</h3>
-          <Dropdown
-            options={stateSelectOptions}
-            onChange={e => updateUsState(e)}
-            value={selectedState ? selectedState : ""}
-            placeholder="Select a state"
-            autosize={false}
-            className="state-select-list"
-          />
+          <label className="usa-label" htmlFor="state-select">
+            Select State to View
+          </label>
+          <select
+            className="usa-select"
+            id="state-select"
+            value={selectedState}
+            onChange={evt => updateUsState(evt.target.value)}
+          >
+            <option value>- Select a State -</option>
+            {stateSelectOptions.map(({ label, value }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
         </div>
 
         <div className="year-coreset-selector">
