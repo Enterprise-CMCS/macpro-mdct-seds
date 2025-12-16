@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "@trussworks/react-uswds";
-import Dropdown from "react-dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
-import { stateSelectOptions } from "../../lookups/states";
+import { getStateName, stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const StateSelector = () => {
@@ -17,13 +16,13 @@ const StateSelector = () => {
   const saveUpdatedUser = async () => {
     if (selectedState) {
       const confirm = window.confirm(
-        `You have selected ${selectedState.label}, is this correct?`
+        `You have selected ${getStateName(selectedState)}, is this correct?`
       );
 
       if (confirm) {
         try {
           let userToPass = user;
-          userToPass.state = selectedState.value;
+          userToPass.state = selectedState;
           // Send data to API
           await updateUser(userToPass);
           // Re-fetch from API
@@ -67,16 +66,20 @@ const StateSelector = () => {
         <>
           <h1>This account is not associated with any states</h1>
 
-          <h3>Please select your state below:</h3>
-
-          <Dropdown
-            options={stateSelectOptions}
-            onChange={setSelectedState}
-            value={selectedState ? selectedState : ""}
-            placeholder="Select a state"
-            autosize={false}
-            className="state-select-list"
-          />
+          <label className="usa-label" htmlFor="state-select">
+            Please select your state:
+          </label>
+          <select
+            className="usa-select"
+            id="state-select"
+            value={selectedState}
+            onChange={evt => setSelectedState(evt.target.value)}
+          >
+            <option value>- Select a State -</option>
+            {stateSelectOptions.map(({ label, value }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
           <div className="action-buttons">
             <Button
               type="button"
