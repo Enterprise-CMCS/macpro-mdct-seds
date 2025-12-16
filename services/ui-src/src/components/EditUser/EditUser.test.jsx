@@ -53,15 +53,10 @@ describe("Test EditUser.js", () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const backLink = screen.getByText("Back to User List", {
-      selector: "a",
-      exact: false
-    });
+    const backLink = screen.getByRole("link", { name: /Back to User List/ });
     expect(backLink).toBeInTheDocument();
 
-    const updateButton = screen.getByText("Update User", {
-      selector: "button"
-    });
+    const updateButton = screen.getByRole("button", { name: "Update User" });
     expect(updateButton).toBeInTheDocument();
   });
 
@@ -77,35 +72,14 @@ describe("Test EditUser.js", () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const table = screen.getByTestId("table");
-    const rows = [...table.querySelectorAll("tr")];
-    expect(rows.length).toBe(8);
-
-    expect(rows[0].querySelector("th")).toHaveTextContent("Username");
-    expect(rows[0].querySelector("td input")).toHaveValue("QWER");
-
-    expect(rows[1].querySelector("th")).toHaveTextContent("First Name");
-    expect(rows[1].querySelector("td input")).toHaveValue("Quentin");
-
-    expect(rows[2].querySelector("th")).toHaveTextContent("Last Name");
-    expect(rows[2].querySelector("td input")).toHaveValue("Werther");
-
-    expect(rows[3].querySelector("th")).toHaveTextContent("Email");
-    expect(rows[3].querySelector("td input")).toHaveValue("qwer@email.test");
-
-    expect(rows[4].querySelector("th")).toHaveTextContent("Role");
-    expect(rows[4].querySelector("td input")).toHaveValue("State User");
-
-    expect(rows[5].querySelector("th")).toHaveTextContent("State");
-    expect(rows[5].querySelector("td .is-selected")).toHaveTextContent(
-      "Colorado"
-    );
-
-    expect(rows[6].querySelector("th")).toHaveTextContent("Registration Date");
-    expect(rows[6].querySelector("td")).toHaveTextContent("1/15/2024");
-
-    expect(rows[7].querySelector("th")).toHaveTextContent("Last Login");
-    expect(rows[7].querySelector("td")).toHaveTextContent("2/16/2024");
+    expect(screen.getByRole("row", { name: "Username QWER" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "First Name Quentin" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Last Name Werther" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Email qwer@email.test" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Role State User" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "State Colorado" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Registration Date 1/15/2024" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Last Login 2/16/2024" })).toBeVisible();
   });
 
   it("should not render admin users' state property", async () => {
@@ -124,13 +98,11 @@ describe("Test EditUser.js", () => {
     renderComponent(mockUser);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
-    const roleDropdown = screen.getByPlaceholderText("Select a Role");
-    userEvent.click(roleDropdown);
-    const adminOption = screen.getByText("Admin User");
-    userEvent.click(adminOption);
+    const roleSelect = screen.getByRole("combobox", { name: "Role" });
+    userEvent.selectOptions(roleSelect, "Admin User");
 
-    const saveButton = screen.getByText("Update User", { selector: "button" });
-    userEvent.click(saveButton);
+    const updateButton = screen.getByRole("button", { name: "Update User" });
+    userEvent.click(updateButton);
 
     expect(updateUser).toHaveBeenCalledWith(
       expect.objectContaining({
