@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.946.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
