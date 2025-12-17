@@ -37,7 +37,8 @@ const mockUser = {
   username: "COLO",
   email: "stateuserCO@test.com",
   role: "state",
-  state: "CO"
+  state: "CO",
+  lastLogin: "2025-12-16T23:00:32.442Z",
 } as AuthUser;
 
 const mockEvent = {
@@ -69,7 +70,7 @@ describe("updateUser.ts", () => {
       email: "stateuserCO@test.com",
       role: "business",
       state: "CO",
-      lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+      lastLogin: "2025-12-16T23:00:32.442Z",
     });
   });
 
@@ -94,7 +95,7 @@ describe("updateUser.ts", () => {
       email: "stateuserCO@test.com",
       role: "state",
       state: undefined,
-      lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+      lastLogin: "2025-12-16T23:00:32.442Z",
     });
   });
 

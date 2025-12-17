@@ -4,6 +4,10 @@ const {
   paginateScan,
   BatchWriteCommand,
 } = require("@aws-sdk/lib-dynamodb");
+const {
+  paginateListUsers,
+  CognitoIdentityProviderClient,
+} = require("@aws-sdk/client-cognito-identity-provider");
 
 /*
  * This migration will convert `AuthUser.states` to `AuthUser.state`
@@ -22,17 +26,35 @@ const {
  * Therefore, the states array in the AuthUser table may as well be a string.
  * And now it will be. Well, a string or possibly undefined.
  *
- * This migration also addresses inconsistencies in the data.
- * The states field would sometimes be an empty string, or the string "null".
- * Now, it will always be an uppercase two-letter string. Or missing entirely.
+ * This migration also addresses some minor inconsistencies in the data:
+ * - `user.states` could be `""` or `"null"` or `[]`.
+ *   Now `user.state` will be an uppercase 2-char string.
+ *   Or, if the user has no state, the `state` key will be absent.
+ * - `user.isSuperUser` was always `true` or `"true"`: All SEDS users are super.
+ *   But this field was never used for any purpose, and now it will be gone.
+ * - `user.password` was usually absent. When present, it was always `""`.
+ *   But SEDS has never handled authentication, let alone by storing passwords.
+ *   So now this field will be gone as well.
+ * - `user.lastLogin` was previously updated:
+ *     + When the user was created, OR
+ *     + When an admin modified that user's permissions, BUT
+ *     + Not when the user logged in.
+ *   This made it nearly useless as an indicator of activity for a given user.
+ *   It will no longer be updated when the user is modified by an admin,
+ *   and it is now updated by user activity (see getCurrentUser.ts).
+ *   To make it useful for past activity, this migration does a one-time update,
+ *   using timestamps from Cognito as a proxy for user activity.
+ *   These are a good proxy, for the users that have it:
+ *   verified against `obtainUserByEmail` logs from the month of November 2025.
  */
 
 /*
  * ENVIRONMENT VARIABLES TO SET:
  * AUTH_USER_TABLE_NAME: the name of the table in Dynamo
+ * COGNITO_USER_POOL_ID: The UserPoolId for our Cognito user pool
  * [anything needed for AWS auth, if not local]
  */
-const { AUTH_USER_TABLE_NAME } = process.env;
+const { AUTH_USER_TABLE_NAME, COGNITO_USER_POOL_ID } = process.env;
 
 const awsConfig = {
   region: "us-east-1",
@@ -54,12 +76,32 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
 /**
+ * Use Cognito's `UserLastModifiedDate` to infer the last time a user logged in.
+ * @returns {Map<string, string>} A mapping from `sub` to ISO date strings
+ */
+async function gatherLoginDatesFromCognito () {
+  const cognitoClient = new CognitoIdentityProviderClient();
+  const UserPoolId = COGNITO_USER_POOL_ID;
+  const pages = paginateListUsers({ client: cognitoClient }, { UserPoolId });
+  const modifyDates = new Map();
+  for await (let page of pages) {
+    for (let user of page.Users ?? []) {
+      const sub = user.Attributes.find(attr => attr.Name === "sub").Value;
+      modifyDates.set(sub, user.UserLastModifiedDate);
+    }
+  }
+  return modifyDates;
+}
+
+/**
  * Given a user object, ensure it has the correct shape.
  * If not, modify it in-place.
+ * @param {object} user The AuthUser record
+ * @param {Map<string, string>} loginDates A trustworthy set of login dates
  * @returns `true` if a change was made; `false` if no change was needed.
  */
-function updateUserState (user) {
-  const { role, states } = user;
+function updateUserState (user, loginDates) {
+  const { role, states, usernameSub } = user;
 
   if (states === undefined) {
     // This user has already been migrated; no update necessary.
@@ -69,6 +111,9 @@ function updateUserState (user) {
   if (role === "state" && Array.isArray(states)) {
     user.state = user.states[0];
   }
+
+  // If we have a more trustworthy date, use it. Otherwise, leave what's there.
+  user.lastLogin = loginDates.get(usernameSub) ?? user.lastLogin;
 
   delete user.states;
   delete user.isSuperUser;
@@ -100,9 +145,9 @@ async function * scanAllUsers (TableName) {
 /**
  * @param {AsyncGenerator<object>} userIterable 
  */
-async function * filterAndModifyUsers (userIterable) {
+async function * filterAndModifyUsers (userIterable, loginDates) {
   for await (let user of userIterable) {
-    const needsUpdate = updateUserState(user);
+    const needsUpdate = updateUserState(user, loginDates);
     if (needsUpdate) {
       yield user;
     }
@@ -155,8 +200,9 @@ async function sendBatches (batches, tableName, idSelector) {
 }
 
 async function main () {
+  const lastLoginDates = await gatherLoginDatesFromCognito();
   const allUsers = scanAllUsers(AUTH_USER_TABLE_NAME);
-  const usersToUpdate = filterAndModifyUsers(allUsers);
+  const usersToUpdate = filterAndModifyUsers(allUsers, lastLoginDates);
   const batches = createBatches(usersToUpdate);
   await sendBatches(AUTH_USER_TABLE_NAME, batches, user => user.userId);
 }

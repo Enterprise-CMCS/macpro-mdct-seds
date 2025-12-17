@@ -29,7 +29,6 @@ export const main = handler(async (event, context) => {
     ...currentUser,
     role: data.role,
     state: data.state,
-    lastLogin: new Date().toISOString(),
   };
 
   await putUser(updatedUser);

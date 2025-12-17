@@ -1,4 +1,5 @@
 import dynamoDb from "../libs/dynamodb-lib.ts";
+import { DateString } from "../shared/types.ts";
 
 /** The shape of an object in the `auth-user` table */
 export type AuthUser = {
@@ -35,6 +36,8 @@ export type AuthUser = {
    * this may also have resulted in some old records with no state.
    */
   state?: string;
+  dateJoined: DateString;
+  lastLogin: DateString;
 };
 
 export const putUser = async (user: AuthUser) => {
