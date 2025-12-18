@@ -12,6 +12,7 @@ import { Button } from "@trussworks/react-uswds";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { useStore } from "../../store/store";
+import { canViewStateData } from "../../utility-functions/permissions";
 
 const FormPage = () => {
   const user = useStore(state => state.user);
@@ -46,7 +47,7 @@ const FormPage = () => {
   // Call the API and set questions, answers and status data in the store based on URL parameters
   useEffect(() => {
     const fetchData = async () => {
-      if (user.state === state || user.role === "admin" || user.role === "business") {
+      if (canViewStateData(user, state)) {
         await getForm(formattedStateName, year, quarterInt, formattedFormName);
         setHasAccess(true);
       } else {

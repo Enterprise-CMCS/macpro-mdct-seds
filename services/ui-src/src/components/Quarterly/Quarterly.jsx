@@ -8,6 +8,7 @@ import { getStatusDisplay } from "../../utility-functions/formStatus";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 import { useStore } from "../../store/store";
+import { canViewStateData } from "../../utility-functions/permissions";
 
 import "./Quarterly.scss";
 
@@ -21,7 +22,7 @@ const Quarterly = () => {
   const title = `Q${quarter} ${year} Reports`;
   useEffect(() => {
     async function fetchData() {
-      if (user.state === state || user.role === "admin" || user.role === "business") {
+      if (canViewStateData(user, state)) {
         let data = await recursiveGetStateForms({ state, year, quarter });
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
         data = data.filter(i => i.form !== "64.ECI");
