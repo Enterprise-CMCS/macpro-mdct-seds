@@ -35,7 +35,7 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {};
 
-const mockUser: AuthUser = {
+const mockUser = {
   userId: "42",
   email: "stateuserCO@test.com",
   firstName: "Cheryl",
@@ -117,7 +117,7 @@ describe("createUser.ts", () => {
 
   it("should do nothing if the user already exists", async () => {
     getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
-    scanForUserByUsername.mockResolvedValueOnce(mockUser);
+    scanForUserByUsername.mockResolvedValueOnce(mockUser as AuthUser);
     mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
     const response = await createUser(mockEvent);
