@@ -77,7 +77,7 @@ const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
 /**
  * Use Cognito's `UserLastModifiedDate` to infer the last time a user logged in.
- * @returns {Map<string, string>} A mapping from `sub` to ISO date strings
+ * @returns {Promise<Map<string, string>>} A mapping from `sub` to ISO date strings
  */
 async function gatherLoginDatesFromCognito () {
   const cognitoClient = new CognitoIdentityProviderClient();
@@ -85,7 +85,7 @@ async function gatherLoginDatesFromCognito () {
   const pages = paginateListUsers({ client: cognitoClient }, { UserPoolId });
   const modifyDates = new Map();
   for await (let page of pages) {
-    for (let user of page.Users ?? []) {
+    for (const user of page.Users ?? []) {
       const sub = user.Attributes.find(attr => attr.Name === "sub").Value;
       modifyDates.set(sub, user.UserLastModifiedDate);
     }
@@ -132,7 +132,7 @@ async function * scanAllUsers (TableName) {
   for await (let page of paginateScan({ client }, { TableName })) {
     pageNumber += 1;
     let pageItemCount = 0;
-    for (let user of (page.Items ?? [])) {
+    for (const user of (page.Items ?? [])) {
       pageItemCount += 1;
       totalItemCount += 1;
       yield user;
@@ -180,7 +180,7 @@ async function * createBatches (itemIterable) {
  * @param {(object) => string} idSelector For logging purposes.
  */
 async function sendBatches (batches, tableName, idSelector) {
-  for (let batch of batches) {
+  for await (const batch of batches) {
     const command = new BatchWriteCommand({
       RequestItems: {
         [tableName]: batch.map((Item) => ({
@@ -204,7 +204,7 @@ async function main () {
   const allUsers = scanAllUsers(AUTH_USER_TABLE_NAME);
   const usersToUpdate = filterAndModifyUsers(allUsers, lastLoginDates);
   const batches = createBatches(usersToUpdate);
-  await sendBatches(AUTH_USER_TABLE_NAME, batches, user => user.userId);
+  await sendBatches(batches, AUTH_USER_TABLE_NAME, user => user.userId);
 }
 
 main();
