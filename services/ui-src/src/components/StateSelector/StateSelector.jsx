@@ -80,19 +80,18 @@ const StateSelector = () => {
               <option key={value} value={value}>{label}</option>
             ))}
           </select>
-          <div className="action-buttons">
-            <Button
-              type="button"
-              className="form-button"
-              data-testid="saveUpdatedUser"
-              onClick={() => {
-                saveUpdatedUser();
-              }}
-            >
-              Update User
-              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
-            </Button>
-          </div>
+          <Button
+            style={{ marginTop: "0.5rem" }}
+            type="button"
+            className="form-button"
+            data-testid="saveUpdatedUser"
+            onClick={() => {
+              saveUpdatedUser();
+            }}
+          >
+            Update User
+            <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+          </Button>
         </>
       )}
     </div>

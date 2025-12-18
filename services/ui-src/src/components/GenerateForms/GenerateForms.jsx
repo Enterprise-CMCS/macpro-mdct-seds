@@ -69,7 +69,7 @@ const GenerateForms = () => {
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
-      <label for="year-select">Select the Year</label>
+      <label htmlFor="year-select">Select the Year</label>
       <select
         className="usa-select"
         id="year-select"
@@ -80,7 +80,9 @@ const GenerateForms = () => {
           <option key={value} value={value}>{label}</option>
         ))}
       </select>
-      <label for="quarter-select">Select the Quarter</label>
+      <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
+        Select the Quarter
+      </label>
       <select
         className="usa-select"
         id="quarter-select"
@@ -94,6 +96,7 @@ const GenerateForms = () => {
       </select>
       <Button
         type="button"
+        style={{ marginTop: "0.5rem" }}
         data-testid="generateFormsButton"
         onClick={() => generateForms()}
         className="margin-bottom-5"

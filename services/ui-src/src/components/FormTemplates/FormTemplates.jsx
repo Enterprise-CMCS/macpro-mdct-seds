@@ -59,7 +59,7 @@ const FormTemplates = () => {
     } else {
       setCurrentTemplate("");
       setShowYearInput(true);
-      setSelectedYear(newTemplateObject);
+      setSelectedYear("0");
       setInputYear(nextYear);
     }
   };

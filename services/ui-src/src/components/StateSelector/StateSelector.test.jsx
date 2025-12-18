@@ -61,6 +61,15 @@ describe("StateSelector component", () => {
     expect(updateButton).toBeVisible();
   });
 
+  it("should tell non-state users that they do not need to be here", () => {
+    renderComponent({ role: "admin" });
+
+    const message = "Admin users have access to all states' form data."
+    expect(screen.getByText(message)).toBeVisible();
+
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+  });
+
   it("should save the user's selected state, reload their data in the store, and redirect them to Home", async () => {
     vi.spyOn(window, "confirm").mockImplementation(() => true);
     const mockHistory = { push: vi.fn() };
