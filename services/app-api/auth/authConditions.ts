@@ -40,12 +40,17 @@ export const authorizeStateUser = async (event, state) => {
   }
 };
 
+/**
+ * Throws an exception unless the current user is a business user,
+ * or a state user with access to the given state.
+ */
 export const authorizeUserForState = async (event, state) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "business" && user.role !== "state") {
-    throw new Error("Forbidden");
+  if (user.role === "business") {
+    return;
   }
-  if (user.role !== "business" && user.state !== state) {
-    throw new Error("Forbidden");
+  if (user.role === "state" && user.state === state) {
+    return;
   }
+  throw new Error("Forbidden");
 };
