@@ -20,7 +20,7 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 const renderComponent = () => {
   useStore.setState({
     ...fullStoreMock.currentForm,
-    user: { state: "AL" },
+    user: { role: "state", state: "AL" },
     loadForm: vi.fn(),
   });
   return render(

@@ -57,7 +57,7 @@ const forms = [
 
 const renderComponent = () => {
   useStore.setState({
-    user: { state: "AL" }
+    user: { role: "state", state: "AL" }
   });
   return render(
     <BrowserRouter>
