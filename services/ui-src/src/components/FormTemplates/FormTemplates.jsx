@@ -20,11 +20,6 @@ const FormTemplates = () => {
     new Date().setFullYear(new Date().getFullYear() + 1)
   ).getFullYear();
 
-  let newTemplateObject = {
-    label: "+ Create New Template",
-    value: "0"
-  };
-
   const handleSave = async () => {
     const confirm = window.confirm(
       `Are you sure you want to update the template for ${inputYear}? This option cannot be undone.`
@@ -51,7 +46,8 @@ const FormTemplates = () => {
   };
 
   const updateYear = async year => {
-    if (year !== "0") {
+    setSelectedYear(year);
+    if (year !== "CREATE_NEW") {
       const template = await obtainFormTemplate({ year: Number(year) });
       setCurrentTemplate(JSON.stringify(template[0].template, null, 2));
       setShowYearInput(false);
@@ -59,7 +55,6 @@ const FormTemplates = () => {
     } else {
       setCurrentTemplate("");
       setShowYearInput(true);
-      setSelectedYear("0");
       setInputYear(nextYear);
     }
   };
@@ -71,7 +66,10 @@ const FormTemplates = () => {
       setInputYear(nextYear);
     } else {
       let yearsObjects = [
-        newTemplateObject,
+        {
+          label: "+ Create New Template",
+          value: "CREATE_NEW"
+        },
         ...yearsArray.map(year => ({
           label: year.toString(),
           value: year.toString()
