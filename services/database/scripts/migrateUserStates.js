@@ -108,7 +108,7 @@ function updateUserState (user, loginDates) {
     return false;
   }
 
-  if (role === "state" && Array.isArray(states)) {
+  if (role === "state" && Array.isArray(states) && states.length > 0) {
     user.state = user.states[0];
   }
 
