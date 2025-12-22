@@ -128,7 +128,7 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
 
   const applyPolicy = (role: iam.CfnRole | undefined, useIndex = false) => {
     if (role) {
-      const prop = useIndex ? "Policies.1" : "Policies";
+      const prop = "Policies.1"; // useIndex ? "Policies.1" : "Policies";
       const value = useIndex
         ? denyCreateLogGroupPolicy
         : [denyCreateLogGroupPolicy];
