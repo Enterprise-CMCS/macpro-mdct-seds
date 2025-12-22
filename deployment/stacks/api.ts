@@ -68,7 +68,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
-      loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      loggingLevel: isDev
+        ? apigateway.MethodLoggingLevel.OFF
+        : apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
