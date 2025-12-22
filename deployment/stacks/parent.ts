@@ -126,29 +126,37 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     },
   };
 
-  const provider = stack.node.tryFindChild(
+  const applyPolicy = (role: iam.CfnRole | undefined, useIndex = false) => {
+    if (role) {
+      const prop = useIndex ? "Policies.1" : "Policies";
+      const value = useIndex
+        ? denyCreateLogGroupPolicy
+        : [denyCreateLogGroupPolicy];
+      role.addPropertyOverride(prop, value);
+    }
+  };
+
+  // S3 Auto Delete Objects provider
+  const s3Provider = stack.node.tryFindChild(
     "Custom::S3AutoDeleteObjectsCustomResourceProvider"
   );
-  const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
-  if (role) {
-    role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-  }
+  applyPolicy(s3Provider?.node.tryFindChild("Role") as iam.CfnRole);
 
-  stack.node.findAll().forEach((c) => {
-    if (!c.node.id.startsWith("BucketNotificationsHandler")) return;
+  // Bucket Notifications handlers
+  stack.node
+    .findAll()
+    .filter((c) => c.node.id.startsWith("BucketNotificationsHandler"))
+    .forEach((c) => {
+      applyPolicy(
+        c.node
+          .tryFindChild("Role")
+          ?.node.tryFindChild("Resource") as iam.CfnRole
+      );
+    });
 
-    const role = c.node.tryFindChild("Role");
-    const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
-    if (cfnRole) {
-      cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-    }
-  });
-
+  // Trigger provider (appends to existing policies)
   const triggerProvider = stack.node.tryFindChild(
     "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
   );
-  const triggerRole = triggerProvider?.node.tryFindChild("Role") as iam.CfnRole;
-  if (triggerRole) {
-    triggerRole.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
-  }
+  applyPolicy(triggerProvider?.node.tryFindChild("Role") as iam.CfnRole, true);
 }
