@@ -149,13 +149,6 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
   );
   const triggerRole = triggerProvider?.node.tryFindChild("Role") as iam.CfnRole;
   if (triggerRole) {
-    const existingPolicies =
-      (triggerRole.policies as iam.CfnRole.PolicyProperty[]) ?? [];
-    // triggerRole.addPropertyOverride("Policies", [
-    //   ...existingPolicies,
-    //   denyCreateLogGroupPolicy,
-    // ]);
-    console.log("existingPolicies:", existingPolicies);
     triggerRole.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
   }
 }
