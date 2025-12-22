@@ -143,4 +143,12 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
       cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
     }
   });
+
+  const triggerProvider = stack.node.tryFindChild(
+    "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
+  );
+  const triggerRole = triggerProvider?.node.tryFindChild("Role") as iam.CfnRole;
+  if (triggerRole) {
+    triggerRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+  }
 }
