@@ -126,37 +126,25 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     },
   };
 
-  const applyPolicy = (role: iam.CfnRole | undefined, useIndex = false) => {
-    if (role) {
-      const prop = "Policies.1"; // useIndex ? "Policies.1" : "Policies";
-      const value = useIndex
-        ? denyCreateLogGroupPolicy
-        : [denyCreateLogGroupPolicy];
-      role.addPropertyOverride(prop, value);
-    }
-  };
+  const findRole = (id: string) =>
+    stack.node.tryFindChild(id)?.node.tryFindChild("Role") as iam.CfnRole;
 
-  // S3 Auto Delete Objects provider
-  const s3Provider = stack.node.tryFindChild(
+  findRole(
     "Custom::S3AutoDeleteObjectsCustomResourceProvider"
-  );
-  applyPolicy(s3Provider?.node.tryFindChild("Role") as iam.CfnRole);
+  )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
 
-  // Bucket Notifications handlers
+  findRole(
+    "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
+  )?.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
+
   stack.node
     .findAll()
     .filter((c) => c.node.id.startsWith("BucketNotificationsHandler"))
     .forEach((c) => {
-      applyPolicy(
+      (
         c.node
           .tryFindChild("Role")
           ?.node.tryFindChild("Resource") as iam.CfnRole
-      );
+      )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
     });
-
-  // Trigger provider (appends to existing policies)
-  const triggerProvider = stack.node.tryFindChild(
-    "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
-  );
-  applyPolicy(triggerProvider?.node.tryFindChild("Role") as iam.CfnRole, true);
 }
