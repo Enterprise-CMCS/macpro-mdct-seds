@@ -11,6 +11,7 @@ import {
 import { mockClient } from "aws-sdk-client-mock";
 import {
   scanForUserByUsername as actualScanForUser,
+  putUser as actualPutUser,
   AuthUser
 } from "../../../storage/users.ts";
 
@@ -21,8 +22,10 @@ const getUserDetailsFromEvent = vi.mocked(actualGetUserDetails);
 
 vi.mock("../../../storage/users.ts", () => ({
   scanForUserByUsername: vi.fn(),
+  putUser: vi.fn(),
 }));
 const scanForUserByUsername = vi.mocked(actualScanForUser);
+const putUser = vi.mocked(actualPutUser);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockPut = vi.fn();
@@ -32,7 +35,7 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {};
 
-const mockUser: AuthUser = {
+const mockUser = {
   userId: "42",
   email: "stateuserCO@test.com",
   firstName: "Cheryl",
@@ -40,7 +43,6 @@ const mockUser: AuthUser = {
   role: "state" as const,
   username: "COLO",
   usernameSub: "0000-1111-2222-3333",
-  states: ["CO"],
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -68,8 +70,6 @@ describe("createUser.ts", () => {
         dateJoined: expect.stringMatching(ISO_DATE_REGEX),
         lastLogin: expect.stringMatching(ISO_DATE_REGEX),
         lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-        isSuperUser: "true",
-        states: [],
         userId: "0",
       },
     }, expect.any(Function));
@@ -117,7 +117,7 @@ describe("createUser.ts", () => {
 
   it("should do nothing if the user already exists", async () => {
     getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
-    scanForUserByUsername.mockResolvedValueOnce(mockUser);
+    scanForUserByUsername.mockResolvedValueOnce(mockUser as AuthUser);
     mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
     const response = await createUser(mockEvent);

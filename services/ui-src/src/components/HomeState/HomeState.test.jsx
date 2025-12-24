@@ -15,10 +15,8 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   useHistory: vi.fn(),
 }));
 
-const renderComponent = (...userStates) => {
-  const user = {
-    states: userStates,
-  };
+const renderComponent = (state) => {
+  const user = { state };
   useStore.setState({ user });
   return render(
     <BrowserRouter>

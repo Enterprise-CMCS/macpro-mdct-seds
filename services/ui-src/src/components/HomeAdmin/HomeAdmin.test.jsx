@@ -41,6 +41,10 @@ const renderComponent = () => {
 };
 
 describe("Tests for HomeAdmin.js", () => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+  });
+
   it("should render navigation links", async () => {
     const { container } = renderComponent();
     const links = [...container.querySelectorAll("h1 ~ div ul li a")];
@@ -52,40 +56,31 @@ describe("Tests for HomeAdmin.js", () => {
     ]);
   });
 
-  it("should render a state selector", async () => {
-    const { container } = renderComponent();
-    expect(
-      container.querySelector(".Dropdown-root.state-select-list")
-    ).toBeInTheDocument();
+  it("should display an appropriate message for a state with no forms", async () => {
+    renderComponent();
+    
+    const stateDropdown = screen.getByRole("combobox", { name: /State/ });
+    userEvent.selectOptions(stateDropdown, "Alabama");
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "There are no forms available for the selected state"
+        )
+      ).toBeInTheDocument()
+    );
   });
 
-  describe("should update state selector when a state is picked", () => {
-    beforeEach(async () => {
-      renderComponent();
+  it("should display a year accordion for a state which has forms", async () => {
+    buildSortedAccordionByYearQuarter.mockReturnValueOnce(forms);
 
-      const stateDropdown = screen.getByText("Select a state");
-      userEvent.click(stateDropdown);
-    });
-    it("when no forms exist in the state", async () => {
-      const stateOption = screen.getByText("Alabama");
-      userEvent.click(stateOption);
+    renderComponent();
+    
+    const stateDropdown = screen.getByRole("combobox", { name: /State/ });
+    userEvent.selectOptions(stateDropdown, "Alabama");
 
-      await waitFor(() =>
-        expect(
-          screen.getByText(
-            "There are no forms available for the selected state"
-          )
-        ).toBeInTheDocument()
-      );
-    });
-    it("when forms exist in the state", async () => {
-      buildSortedAccordionByYearQuarter.mockReturnValue(forms);
-      const stateOption = screen.getByText("Alabama");
-      userEvent.click(stateOption);
-
-      await waitFor(() =>
-        expect(screen.getByRole("button", { name: "2021" })).toBeInTheDocument()
-      );
-    });
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "2021" })).toBeInTheDocument()
+    );
   });
 });

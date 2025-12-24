@@ -11,7 +11,7 @@ const renderComponent = () => {
       firstName: "Ben",
       lastName: "Martin",
       role: "state",
-      states: ["CO"],
+      state: "CO",
     }
   });
   return render(<Profile/>);
@@ -37,8 +37,8 @@ describe("Test SummaryTab.js", () => {
     expect(screen.getByLabelText("Role")).toBeDisabled();
     expect(screen.getByLabelText("Role").value).toBe("State");
 
-    expect(screen.getByLabelText("States")).toBeInTheDocument();
-    expect(screen.getByLabelText("States")).toBeDisabled();
-    expect(screen.getByLabelText("States").value).toBe("CO");
+    expect(screen.getByLabelText("State")).toBeInTheDocument();
+    expect(screen.getByLabelText("State")).toBeDisabled();
+    expect(screen.getByLabelText("State").value).toBe("CO");
   });
 });

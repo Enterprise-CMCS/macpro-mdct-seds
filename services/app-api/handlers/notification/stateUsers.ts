@@ -37,7 +37,7 @@ async function determineUsersToEmail(year: number, quarter: number): Promise<str
   ); 
   const statesToEmail = new Set(inProgressForms.map(f => f.state_id));
   const users = await scanUsersByRole("state");
-  return users.filter(u => statesToEmail.has(u.states![0])).map(u => u.email);
+  return users.filter(u => statesToEmail.has(u.state!)).map(u => u.email);
 }
 
 // creates a template for stateUsers

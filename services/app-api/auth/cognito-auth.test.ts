@@ -22,7 +22,7 @@ const mockEvent = {};
 const mockUser = {
   email: "stateuserCO@test.com",
   role: "state",
-  states: ["CO"],
+  state: "CO",
   usernameSub: "mock-sub"
 } as AuthUser;
 

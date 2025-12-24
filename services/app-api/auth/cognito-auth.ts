@@ -10,7 +10,7 @@ export const getCurrentUserInfo = async (event) => {
       data: {
         email: user.email,
         role: undefined,
-        states: undefined,
+        state: undefined,
       },
     };
   }

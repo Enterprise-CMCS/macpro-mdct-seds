@@ -4,7 +4,6 @@ import {
   obtainFormTemplateYears,
   updateCreateFormTemplate
 } from "../../libs/api";
-import Dropdown from "react-dropdown";
 import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -21,11 +20,6 @@ const FormTemplates = () => {
     new Date().setFullYear(new Date().getFullYear() + 1)
   ).getFullYear();
 
-  let newTemplateObject = {
-    label: "+ Create New Template",
-    value: 0
-  };
-
   const handleSave = async () => {
     const confirm = window.confirm(
       `Are you sure you want to update the template for ${inputYear}? This option cannot be undone.`
@@ -34,7 +28,7 @@ const FormTemplates = () => {
     if (confirm) {
       try {
         response = await updateCreateFormTemplate({
-          year: inputYear,
+          year: Number(inputYear),
           template: JSON.parse(currentTemplate)
         });
       } catch (e) {
@@ -52,15 +46,15 @@ const FormTemplates = () => {
   };
 
   const updateYear = async year => {
-    if (year !== 0) {
-      const template = await obtainFormTemplate({ year: year });
+    setSelectedYear(year);
+    if (year !== "CREATE_NEW") {
+      const template = await obtainFormTemplate({ year: Number(year) });
       setCurrentTemplate(JSON.stringify(template[0].template, null, 2));
       setShowYearInput(false);
       setInputYear(year);
     } else {
       setCurrentTemplate("");
       setShowYearInput(true);
-      setSelectedYear(newTemplateObject);
       setInputYear(nextYear);
     }
   };
@@ -71,16 +65,19 @@ const FormTemplates = () => {
       setShowYearInput(true);
       setInputYear(nextYear);
     } else {
-      let yearsObjects = yearsArray.map(i => {
-        return {
-          label: i,
-          value: i
-        };
-      });
+      let yearsObjects = [
+        {
+          label: "+ Create New Template",
+          value: "CREATE_NEW"
+        },
+        ...yearsArray.map(year => ({
+          label: year.toString(),
+          value: year.toString()
+        }))
+      ];
 
-      yearsObjects.unshift(newTemplateObject);
       setFormYears(yearsObjects);
-      setSelectedYear(yearsObjects[1]);
+      setSelectedYear(yearsObjects[1].value);
       await updateYear(yearsObjects[1].value);
     }
   };
@@ -105,16 +102,19 @@ const FormTemplates = () => {
         ) : null}
         {formYears && selectedYear ? (
           <div className="year-selection-container">
-            <label htmlFor="year-select">Select Year or Create New</label>
-            <Dropdown
+            <label className="usa-label" htmlFor="year-select">
+              Select Year or Create New
+            </label>
+            <select
+              className="usa-select"
               id="year-select"
-              options={formYears}
-              onChange={event => updateYear(event.value)}
-              value={selectedYear ? selectedYear : ""}
-              placeholder="Select a year"
-              autosize={false}
-              className="year-select-list"
-            />
+              value={selectedYear}
+              onChange={evt => updateYear(evt.target.value)}
+            >
+              {formYears.map(({ label, value }) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
           </div>
         ) : null}
         {showYearInput ? (

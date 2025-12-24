@@ -16,7 +16,7 @@ export default function Profile() {
   const firstName = user.firstName ?? "";
   const lastName = user.lastName ?? "";
   const role = capitalize(user.role);
-  const states = (user.states ?? []).sort().join(", ");
+  const state = user.state ?? "";
 
   return (
     <div className="Profile">
@@ -50,9 +50,9 @@ export default function Profile() {
                   disabled={true}
                 />
               </FormGroup>
-              <FormGroup controlId="states">
-                <ControlLabel>States</ControlLabel>
-                <FormControl value={states} disabled={true} />
+              <FormGroup controlId="state">
+                <ControlLabel>State</ControlLabel>
+                <FormControl value={state} disabled={true} />
               </FormGroup>
             </form>
           </Grid>

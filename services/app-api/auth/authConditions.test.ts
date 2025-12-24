@@ -21,25 +21,25 @@ const mockEvent = {};
 const stateUserCO = {
   email: "stateuserCO@test.com",
   role: "state",
-  states: ["CO"],
+  state: "CO",
 };
 
 const stateUserTX = {
   email: "stateuserTX@test.com",
   role: "state",
-  states: ["TX"],
+  state: "TX",
 };
 
 const adminUser = {
   email: "adminuser@test.com",
   role: "admin",
-  states: [],
+  state: undefined,
 };
 
 const businessUser = {
   email: "businessuser@test.com",
   role: "business",
-  states: ["CO", "TX", "etc"],
+  state: undefined,
 };
 
 const assertAllow = async (authCall, user) => {

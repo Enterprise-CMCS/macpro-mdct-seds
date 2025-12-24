@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateUser } from "./updateUser.ts";
 import {
-  scanForUserWithSub as actualScanForUserWithSub
+  scanForUserWithSub as actualScanForUserWithSub,
 } from "../get/getCurrentUser.ts";
 import {
   authorizeAnyUser as actualAuthorizeAnyUser,
@@ -9,37 +9,36 @@ import {
   authorizeAdmin as actualAuthorizeAdmin,
 } from "../../../auth/authConditions.ts";
 import {
-  DynamoDBDocumentClient,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
-import { AuthUser } from "../../../storage/users.ts";
+  AuthUser,
+  putUser as actualPutUser,
+} from "../../../storage/users.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
   authorizeAdminOrUserWithEmail: vi.fn(),
   authorizeAdmin: vi.fn(),
 }));
+const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
+const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
+const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+
+vi.mock("../../../storage/users.ts", () => ({
+  putUser: vi.fn(),
+}))
+const putUser = vi.mocked(actualPutUser);
 
 vi.mock("../get/getCurrentUser.ts", () => ({
   scanForUserWithSub: vi.fn(),
 }));
 const scanForUserWithSub = vi.mocked(actualScanForUserWithSub);
-const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
-const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
-const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
-
-
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockUpdate = vi.fn();
-mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
 
 const mockUser = {
   userId: "42",
   username: "COLO",
   email: "stateuserCO@test.com",
   role: "state",
-  states: ["CO"]
+  state: "CO",
+  lastLogin: "2025-12-16T23:00:32.442Z",
 } as AuthUser;
 
 const mockEvent = {
@@ -58,27 +57,46 @@ describe("updateUser.ts", () => {
 
   it("should update the given user data", async () => {
     scanForUserWithSub.mockResolvedValueOnce(mockUser);
-    mockUpdate.mockResolvedValueOnce({ update: "complete" });
 
     const response = await updateUser(mockEvent);
 
     expect(response).toEqual(expect.objectContaining({
       statusCode: 200,
-      body: JSON.stringify({ update: "complete" }),
     }));
 
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-auth-user",
-      Key: { userId: "42" },
-      UpdateExpression: "SET #r = :role, states = :states, lastLogin = :lastLogin",
-      ExpressionAttributeNames: { "#r": "role" },
-      ExpressionAttributeValues: {
-        ":role": "business",
-        ":states": ["CO"],
-        ":lastLogin": expect.stringMatching(ISO_DATE_REGEX),
-      },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
+    expect(putUser).toHaveBeenCalledWith({
+      userId: "42",
+      username: "COLO",
+      email: "stateuserCO@test.com",
+      role: "business",
+      state: "CO",
+      lastLogin: "2025-12-16T23:00:32.442Z",
+    });
+  });
+
+  it("should allow the state of a state user to be cleared", async () => {
+    const mockEvent = {
+      body: JSON.stringify({
+        ...mockUser,
+        state: undefined,
+      })
+    }
+    scanForUserWithSub.mockResolvedValueOnce(mockUser);
+
+    const response = await updateUser(mockEvent);
+
+    expect(response).toEqual(expect.objectContaining({
+      statusCode: 200,
+    }));
+
+    expect(putUser).toHaveBeenCalledWith({
+      userId: "42",
+      username: "COLO",
+      email: "stateuserCO@test.com",
+      role: "state",
+      state: undefined,
+      lastLogin: "2025-12-16T23:00:32.442Z",
+    });
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -119,7 +137,7 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ username: "WISC" });
     await expectFieldChangeToError({ role: "admin" });
     await expectFieldChangeToError({ usernameSub: "4444-5555-6666-7777" });
-    await expectFieldChangeToError({ states: ["WI"] });
+    await expectFieldChangeToError({ state: "WI" });
 
     // Reset these mocks to no-ops
     scanForUserWithSub.mockReset().mockResolvedValue(undefined);
@@ -127,10 +145,10 @@ describe("updateUser.ts", () => {
   });
 
   it("should allow users to select a state, if they have not yet done so", async () => {
-    scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, states: [] });
+    scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, state: undefined });
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     const evt = {
-      body: JSON.stringify({...mockUser, states: ["CO"] }),
+      body: JSON.stringify({...mockUser, state: "CO" }),
     };
 
     const response = await updateUser(evt);
@@ -159,11 +177,12 @@ describe("updateUser.ts", () => {
     await expectFieldChangeToError({ role: 0 });
     await expectFieldChangeToError({ role: "super" });
 
-    // States must be valid
-    await expectFieldChangeToError({ role: "state", states: "CO" });
-    await expectFieldChangeToError({ role: "state", states: [0] });
-    await expectFieldChangeToError({ role: "state", states: ["CO", 42] });
-    await expectFieldChangeToError({ role: "state", states: ["eric"] });
+    // State must be valid
+    await expectFieldChangeToError({ role: "state", state: "" });
+    await expectFieldChangeToError({ role: "state", state: "null" });
+    await expectFieldChangeToError({ role: "state", state: [] });
+    await expectFieldChangeToError({ role: "state", state: [0] });
+    await expectFieldChangeToError({ role: "state", state: ["CO"] });
 
     // Reset these mocks to no-ops
     scanForUserWithSub.mockReset().mockResolvedValue(undefined);

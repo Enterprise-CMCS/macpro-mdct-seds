@@ -30,7 +30,7 @@ const renderComponent = (user) => {
 
 describe("StateSelector component", () => {
   it("should render an alert for users with a state", async () => {
-    const { container } = renderComponent({ states: ["CO"] });
+    renderComponent({ state: "CO" });
 
     expect(screen.getByText(
       "This account has already been associated with a state: CO"
@@ -39,14 +39,14 @@ describe("StateSelector component", () => {
     expect(screen.queryByText(
       "This account is not associated with any states"
     )).not.toBeInTheDocument();
-    expect(container.querySelector(".Dropdown-root")).not.toBeInTheDocument();
-    expect(screen.queryByText(
-      "Update User", { selector: "button" }
-    )).not.toBeInTheDocument();
+    const stateDropdown = screen.queryByRole("combobox", { name: /state/ });
+    expect(stateDropdown).not.toBeInTheDocument();
+    const updateButton = screen.queryByRole("button", { name: "Update User" });
+    expect(updateButton).not.toBeInTheDocument();
   });
 
   it("should render a selector for users with no state", async () => {
-    const { container } = renderComponent({ states: [] });
+    renderComponent({ state: undefined });
 
     expect(screen.queryByText(
       "This account has already been associated with a state", { exact: false }
@@ -55,10 +55,19 @@ describe("StateSelector component", () => {
     expect(screen.getByText(
       "This account is not associated with any states"
     )).toBeInTheDocument();
-    expect(container.querySelector(".Dropdown-root")).toBeInTheDocument();
-    expect(screen.getByText(
-      "Update User", { selector: "button" }
-    )).toBeInTheDocument();
+    const stateDropdown = screen.getByRole("combobox", { name: /state/ });
+    expect(stateDropdown).toBeVisible();
+    const updateButton = screen.getByRole("button", { name: "Update User" });
+    expect(updateButton).toBeVisible();
+  });
+
+  it("should tell non-state users that they do not need to be here", () => {
+    renderComponent({ role: "admin" });
+
+    const message = "Admin users have access to all states' form data."
+    expect(screen.getByText(message)).toBeVisible();
+
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
   it("should save the user's selected state, reload their data in the store, and redirect them to Home", async () => {
@@ -66,14 +75,15 @@ describe("StateSelector component", () => {
     const mockHistory = { push: vi.fn() };
     useHistory.mockReturnValue(mockHistory);
 
-    renderComponent({ id: 42, states: [] });
+    renderComponent({ id: 42, state: undefined });
 
-    userEvent.click(screen.getByText("Select a state"));
-    userEvent.click(screen.getByText("Colorado"));
-    userEvent.click(screen.getByText("Update User", { selector: "button" }));
+    const stateDropdown = screen.getByRole("combobox", { name: /state/ });
+    userEvent.selectOptions(stateDropdown, "Colorado");
+
+    userEvent.click(screen.getByRole("button", { name: "Update User" }));
     
     await waitFor(() => {
-      expect(updateUser).toHaveBeenCalledWith({ id: 42, states: ["CO"] });
+      expect(updateUser).toHaveBeenCalledWith({ id: 42, state: "CO" });
       expect(useStore.getState().loadUser).toHaveBeenCalled();
     })
     expect(mockHistory.push).toHaveBeenCalledWith("/");
