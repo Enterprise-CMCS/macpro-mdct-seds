@@ -30,7 +30,7 @@ export class LocalPrerequisiteStack extends Stack {
     });
 
     new secretsmanager.Secret(this, "DefaultSecret", {
-      secretName: "seds-default", // pragma: allowlist-secret
+      secretName: `${process.env.PROJECT}-default`, // pragma: allowlist-secret
       secretObjectValue: {
         vpcName: SecretValue.unsafePlainText("localstack-dev"),
         brokerString: SecretValue.unsafePlainText("localstack"),
@@ -65,7 +65,7 @@ export class LocalPrerequisiteStack extends Stack {
 async function main() {
   const app = new App();
 
-  new LocalPrerequisiteStack(app, "seds-local-prerequisites");
+  new LocalPrerequisiteStack(app, `${process.env.PROJECT}-local-prerequisites`);
 }
 
 main();

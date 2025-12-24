@@ -60,7 +60,9 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
-  const outputs = await getCloudFormationStackOutputValues(`seds-${stage}`);
+  const outputs = await getCloudFormationStackOutputValues(
+    `${process.env.PROJECT}-${stage}`
+  );
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
 

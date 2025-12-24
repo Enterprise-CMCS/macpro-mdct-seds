@@ -68,7 +68,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
-      loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      loggingLevel: isDev
+        ? apigateway.MethodLoggingLevel.OFF
+        : apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
@@ -109,7 +111,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     brokerString,
-    KAFKA_CLIENT_ID: kafkaClientId ?? `seds-${stage}`,
+    KAFKA_CLIENT_ID: kafkaClientId ?? `${process.env.PROJECT}-${stage}`,
     STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
