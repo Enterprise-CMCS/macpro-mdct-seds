@@ -29,10 +29,7 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
 fi
 
 # check yarn exists with corepack
-if ! corepack --version >/dev/null 2>&1; then
-    echo "corepack not found. Please enable it with 'corepack enable'" >&2
-    exit 1
-fi
+require_cmd corepack "Please enable it with 'corepack enable'"
 corepack enable 2>/dev/null || true
 
 
@@ -79,10 +76,10 @@ if [ "$LOCAL" = true ]; then
     fi
 fi
 
-yarn install --immutable --silent >/dev/null 2>&1 || {
+yarn install --immutable >/dev/null 2>&1 || {
 echo "Dependency install failed (root)" >&2; exit 1; }
 pushd cli >/dev/null
-yarn install --immutable --silent >/dev/null 2>&1 || {
+yarn install --immutable >/dev/null 2>&1 || {
 echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
 popd >/dev/null
 
