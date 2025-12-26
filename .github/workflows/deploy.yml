@@ -71,7 +71,9 @@ jobs:
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: Install dependencies
         working-directory: tests/cypress
-        run: yarn install --immutable
+        run: |
+          yarn install --immutable
+          yarn cypress install
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
