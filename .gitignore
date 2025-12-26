@@ -16,3 +16,4 @@ tests/cypress/downloads
 .vscode
 /.cdk
 cdk.context.json
+**/.yarn/*
