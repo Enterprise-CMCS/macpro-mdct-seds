@@ -31,14 +31,6 @@ fi
 # check yarn exists with corepack
 corepack enable 2>/dev/null || true
 
-# check yarn version
-YARN_VERSION=$(yarn --version 2>/dev/null)
-YARN_MAJOR_VERSION=$(echo "$YARN_VERSION" | cut -d. -f1)
-if [ "$YARN_MAJOR_VERSION" != "4" ]; then
-    echo "yarn version must be 4.x, but found $YARN_VERSION"
-    exit 1
-fi
-
 # Parse arguments
 UPDATE_ENV=false
 LOCAL=false
@@ -70,12 +62,12 @@ if [ "$LOCAL" = true ]; then
     require_cmd docker "On macOS, install with 'brew install docker'"
     require_cmd colima "On macOS, install with 'brew install colima'"
     require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
-    
+
     if ! colima status 2>&1 | grep -q "colima is running" ; then
         log "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
-    
+
     if ! localstack status | grep -q "running" ; then
         log "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
