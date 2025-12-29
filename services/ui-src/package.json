@@ -3,6 +3,7 @@
   "license": "CC0-1.0",
   "description": "",
   "version": "1.0.0",
+  "packageManager": "yarn@4.12.0",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",

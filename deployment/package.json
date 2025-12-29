@@ -2,6 +2,7 @@
   "name": "deployment",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "yarn@4.12.0",
   "type": "module",
   "devDependencies": {
     "@aws-sdk/client-secrets-manager": "^3.946.0",
