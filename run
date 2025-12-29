@@ -29,9 +29,15 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
 fi
 
 # check yarn exists with corepack
-require_cmd corepack "Please enable it with 'corepack enable'"
 corepack enable 2>/dev/null || true
 
+# check yarn version
+YARN_VERSION=$(yarn --version 2>/dev/null)
+YARN_MAJOR_VERSION=$(echo "$YARN_VERSION" | cut -d. -f1)
+if [ "$YARN_MAJOR_VERSION" != "4" ]; then
+    echo "yarn version must be 4.x, but found $YARN_VERSION"
+    exit 1
+fi
 
 # Parse arguments
 UPDATE_ENV=false
