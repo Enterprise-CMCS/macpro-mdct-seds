@@ -73,7 +73,7 @@ jobs:
         working-directory: tests/cypress
         run: |
           yarn install --immutable
-          npx cypress install
+          yarn cypress install
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
