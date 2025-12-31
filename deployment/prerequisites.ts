@@ -8,14 +8,14 @@ import {
   aws_iam as iam,
   DefaultStackSynthesizer,
   Stack,
-  StackProps,
+  type StackProps,
   Tags,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.js";
-import { loadDefaultSecret } from "./deployment-config.js";
-import { isLocalStack } from "./local/util.js";
-import { tryImport } from "./utils/misc.js";
+import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.ts";
+import { loadDefaultSecret } from "./deployment-config.ts";
+import { isLocalStack } from "./local/util.ts";
+import { tryImport } from "./utils/misc.ts";
 
 interface PrerequisiteConfigProps {
   project: string;
