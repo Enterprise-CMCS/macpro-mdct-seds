@@ -6,6 +6,8 @@ on:
     # Every Monday at 1600 UTC
     - cron: "0 16 * * 1"
   workflow_dispatch:
+  push:
+    branches: [cmdct-5467] # REMOVE PETE!!!
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.ref }}
@@ -63,7 +65,7 @@ jobs:
       - name: List all topics for project
         run: |
           # Executing the run command is required to assemble all the dependencies in the topics service
-          ./run list-topics --stage $branch_name
+          ./run list-topics --stage main
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
 
@@ -95,7 +97,7 @@ jobs:
         run: |
           set -euo pipefail
           pushd macpro-mdct-tools/scripts
-          npx tsx scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
+          yarn tsx scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
           REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | head -n1 || true)
           if [ -n "$REPORT_FILE" ]; then
