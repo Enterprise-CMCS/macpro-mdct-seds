@@ -15,7 +15,7 @@ export const deployPrerequisites = {
         "cdk",
         "deploy",
         "--app",
-        '"npx tsx deployment/prerequisites.ts"',
+        '"yarn tsx deployment/prerequisites.ts"',
       ],
       "."
     );
