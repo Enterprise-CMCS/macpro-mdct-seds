@@ -10,8 +10,8 @@ const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockUserCO = { states: ["CO"], email: "stateuserCO@test.com" };
-const mockUserTX = { states: ["TX"], email: "stateuserTX@test.com" };
+const mockUserCO = { state: "CO", email: "stateuserCO@test.com" };
+const mockUserTX = { state: "TX", email: "stateuserTX@test.com" };
 
 describe("User storage", () => {
   beforeEach(() => {

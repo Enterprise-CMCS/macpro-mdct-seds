@@ -81,7 +81,7 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for updateUser", async () => {
-    const mockUser = { userId: "123", states: ["CO"]}
+    const mockUser = { userId: "123", state: "CO" };
     const response = await updateUser(mockUser);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({

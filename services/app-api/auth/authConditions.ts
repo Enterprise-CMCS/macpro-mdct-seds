@@ -27,7 +27,7 @@ export const authorizeAdminOrUserWithEmail = async (event, email) => {
 /** Throws an exception unless the current user is an admin, or they have access to the given state. */
 export const authorizeAdminOrUserForState = async (event, state) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "admin" && !user.states!.includes(state)) {
+  if (user.role !== "admin" && user.role !== "business" && user.state !== state) {
     throw new Error("Forbidden");
   }
 };
@@ -35,17 +35,22 @@ export const authorizeAdminOrUserForState = async (event, state) => {
 /** Throws an exception unless the current user is a state user with access to the given state. */
 export const authorizeStateUser = async (event, state) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "state" || !user.states!.includes(state)) {
+  if (user.role !== "state" || user.state !== state) {
     throw new Error("Forbidden");
   }
 };
 
+/**
+ * Throws an exception unless the current user is a business user,
+ * or a state user with access to the given state.
+ */
 export const authorizeUserForState = async (event, state) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (
-    !["state", "business"].includes(user.role!) ||
-    !user.states!.includes(state)
-  ) {
-    throw new Error("Forbidden");
+  if (user.role === "business") {
+    return;
   }
+  if (user.role === "state" && user.state === state) {
+    return;
+  }
+  throw new Error("Forbidden");
 };

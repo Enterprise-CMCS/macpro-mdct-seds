@@ -4069,7 +4069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.3, classnames@npm:^2.2.5":
+"classnames@npm:^2.2.5":
   version: 2.2.6
   resolution: "classnames@npm:2.2.6"
   checksum: 10c0/04fe84deb40e4f4fcee688494ced342b048a6992506cd3da81efb773b03f6d8120f9b893e6eb8a0bc7c6fb38edd66b4751e413ab4672ed93b2c59a4e2bd1068a
@@ -8013,7 +8013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.13.1, react-dom@npm:^16.8.6":
+"react-dom@npm:^16.13.1":
   version: 16.14.0
   resolution: "react-dom@npm:16.14.0"
   dependencies:
@@ -8024,18 +8024,6 @@ __metadata:
   peerDependencies:
     react: ^16.14.0
   checksum: 10c0/ca146e780631672a2d57c8d77775d38f394a6cd67db30c6af7964d0b3574ef7edccb1de8d592e990b98f4f5f8d1c8460b0691f04e7a45799962a51dcbaaa1371
-  languageName: node
-  linkType: hard
-
-"react-dropdown@npm:^1.9.2":
-  version: 1.9.2
-  resolution: "react-dropdown@npm:1.9.2"
-  dependencies:
-    classnames: "npm:^2.2.3"
-  peerDependencies:
-    react: ^0.14.7 || ^15.0.0-0 || ^16.0.0 || ^17.0.0
-    react-dom: ^0.14.7 || ^15.0.0-0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/bd31375c01ce5da5c8f8218f1c25d3d0f11fa45b688d756d989672db2e01d57cb32b7c6d7d00ca52b72f334930ae5c885c776646491f3cb5c0d842de43f56e7e
   languageName: node
   linkType: hard
 
@@ -8057,16 +8045,6 @@ __metadata:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: 10c0/1d0df3c85af79df720524780f00c064d53a9dd1899d785eddb7264b378026979acbddb58a4b7e06e7d0d12aa1494fd5754562ee55d32907b15601068dae82c27
-  languageName: node
-  linkType: hard
-
-"react-multi-select-component@npm:^4.3.4":
-  version: 4.3.4
-  resolution: "react-multi-select-component@npm:4.3.4"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: 10c0/4060be3cf283db633ac89d6b6359f3fe3d90ca4913c11129128c15921c056cbca1fc51a7be91a901e4f109759dac32489da9433f36ddf9a581a64b72d920027d
   languageName: node
   linkType: hard
 
@@ -8154,16 +8132,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-searchable-dropdown@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "react-searchable-dropdown@npm:1.2.5"
-  dependencies:
-    react: "npm:^16.8.6"
-    react-dom: "npm:^16.8.6"
-  checksum: 10c0/4ccc5227cede41b41186c76c88b60cbc6942511f5602e833ffa9b9fdd62b2aec6b1dda8671bcffeda83eecd04c26facf6c374171f37742d87d73cfc98cf7f02c
-  languageName: node
-  linkType: hard
-
 "react-tabs@npm:^3.1.2":
   version: 3.1.2
   resolution: "react-tabs@npm:3.1.2"
@@ -8191,7 +8159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^16.13.1, react@npm:^16.8.6":
+"react@npm:^16.13.1":
   version: 16.14.0
   resolution: "react@npm:16.14.0"
   dependencies:
@@ -9848,11 +9816,8 @@ __metadata:
     react-app-polyfill: "npm:^1.0.6"
     react-bootstrap: "npm:^0.33.1"
     react-dom: "npm:^16.13.1"
-    react-dropdown: "npm:^1.9.2"
-    react-multi-select-component: "npm:^4.3.4"
     react-router-bootstrap: "npm:^0.25.0"
     react-router-dom: "npm:^5.1.2"
-    react-searchable-dropdown: "npm:^1.2.5"
     react-tabs: "npm:^3.1.2"
     sass: "npm:^1.77.6"
     typescript: "npm:^5.9.3"

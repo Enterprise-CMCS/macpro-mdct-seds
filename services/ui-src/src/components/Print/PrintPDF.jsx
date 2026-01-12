@@ -9,6 +9,7 @@ import { NavLink, useParams } from "react-router-dom";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
 import { useStore } from "../../store/store";
+import { canViewStateData } from "../../utility-functions/permissions";
 
 const PrintPDF = () => {
   const user = useStore(state => state.user);
@@ -30,7 +31,7 @@ const PrintPDF = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if ((user.states ?? []).includes(state) || user.role === "admin" ) {
+      if (canViewStateData(user, state)) {
         await getForm(formattedStateName, year, quarterInt, form);
         setHasAccess(true);
       } else {

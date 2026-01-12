@@ -1,5 +1,5 @@
 import React from "react";
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FormTemplates from "./FormTemplates";
@@ -17,7 +17,13 @@ vi.mock("../../libs/api", () => ({
 
 vi.spyOn(window, "confirm").mockImplementation(() => true);
 
+const mockTemplate = { foo: "bar" };
+
 describe("Tests for FormTemplates.js", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   test("Should render correctly when there are no years", async () => {
     obtainFormTemplateYears.mockResolvedValue([]);
 
@@ -37,26 +43,23 @@ describe("Tests for FormTemplates.js", () => {
   });
 
   test("Should render correctly when years exist", async () => {
-    const mockTemplate = { foo: "bar" };
     obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
     obtainFormTemplate.mockResolvedValue([{ template: mockTemplate }]);
 
-    const { container } = render(<FormTemplates />);
+    render(<FormTemplates />);
     await waitFor(() => {
       expect(obtainFormTemplateYears).toHaveBeenCalled();
       expect(obtainFormTemplate).toHaveBeenCalled();
     });
 
-    const yearSelection = container.querySelector(
-      ".Dropdown-root.year-select-list .is-selected"
-    );
-    expect(yearSelection).toHaveTextContent("2021");
+    const yearDropdown = screen.getByRole("combobox", { name: /Year/ });
+    expect(yearDropdown).toHaveValue("2021");
 
-    const templateInput = screen.getByLabelText("Enter or Modify Template");
-    expect(JSON.parse(templateInput.value)).toEqual(mockTemplate);
+    const templateInput = screen.getByRole("textbox", { name: /Template/ });
+    expect(templateInput).toHaveValue(JSON.stringify(mockTemplate, null, 2));
 
     expect(
-      screen.getByText("Save", { selector: "button" })
+      screen.getByRole("button", { name: "Save" })
     ).toBeInTheDocument();
   });
 
@@ -67,17 +70,13 @@ describe("Tests for FormTemplates.js", () => {
       expect(obtainFormTemplate).toHaveBeenCalled();
     });
     
-    const textarea = screen.getByRole("textbox", {
-      name: "Enter or Modify Template"
-    });
-    expect(textarea.value).toEqual('{\n  "foo": "bar"\n}');
+    const templateInput = screen.getByRole("textbox", { name: /Template/ });
+    expect(templateInput).toHaveValue(JSON.stringify(mockTemplate, null, 2));
 
-    const yearDropdown = screen.getByText("2021");
-    userEvent.click(yearDropdown);
+    const yearDropdown = screen.getByRole("combobox", { name: /Year/ });
+    userEvent.selectOptions(yearDropdown, "+ Create New Template");
 
-    const yearOption = screen.getByText("+ Create New Template");
-    userEvent.click(yearOption);
-    expect(textarea.value).toEqual("");
+    expect(templateInput).toHaveValue("");
   });
 
   test("Should send saved templates back to the API", async () => {

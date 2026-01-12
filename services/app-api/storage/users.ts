@@ -1,4 +1,5 @@
 import dynamoDb from "../libs/dynamodb-lib.ts";
+import { DateString } from "../shared/types.ts";
 
 /** The shape of an object in the `auth-user` table */
 export type AuthUser = {
@@ -17,7 +18,33 @@ export type AuthUser = {
   firstName: string;
   lastName: string;
   role: "state" | "business" | "admin";
-  states: string[] | string | null;
+  /**
+   * For state users, the 2-letter postal abbreviation of their US state.
+   *
+   * For admin and business users, this property will be absent;
+   * Admin and business users can view data from any state.
+   *
+   * This will also be absent for a state user who has never selected a state.
+   * For that to happen they must have logged in to SEDS
+   * (in order to create an AuthUser record in the first place),
+   * but not proceeded past the landing page
+   * (which would have asked them to select their state).
+   *
+   * In theory, an admin user has permissions to remove a state user's state.
+   *
+   * In past versions of SEDS, admins could create AuthUser records directly;
+   * this may also have resulted in some old records with no state.
+   */
+  state?: string;
+  dateJoined: DateString;
+  lastLogin: DateString;
+};
+
+export const putUser = async (user: AuthUser) => {
+  await dynamoDb.put({
+    TableName: process.env.AuthUserTable,
+    Item: user,
+  });
 };
 
 export const scanUsersByRole = async (role: string) => {

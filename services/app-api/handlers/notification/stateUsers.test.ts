@@ -25,9 +25,9 @@ const mockSes = mockClient(SESClient);
 const mockSendEmail = vi.fn();
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
-const mockStateUserCO = { email: "stateuserCO@test.com", states: ["CO"] } as AuthUser;
-const mockStateUserTX = { email: "stateuserTX@test.com", states: ["TX"] } as AuthUser;
-const mockStateUserWI = { email: "stateuserWI@test.com", states: ["WI"] } as AuthUser;
+const mockStateUserCO = { email: "stateuserCO@test.com", state: "CO" } as AuthUser;
+const mockStateUserTX = { email: "stateuserTX@test.com", state: "TX" } as AuthUser;
+const mockStateUserWI = { email: "stateuserWI@test.com", state: "WI" } as AuthUser;
 
 const mockFormCO21E = { state_id: "CO", form: "21E" } as StateForm;
 const mockFormCOGRE = { state_id: "CO", form: "GRE" } as StateForm;

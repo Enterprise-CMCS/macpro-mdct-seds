@@ -62,12 +62,12 @@ const mockStatusData = {
 const mockStateUser = {
   username: "COLO",
   role: "state",
-  states: ["CO"],
+  state: "CO",
 } as AuthUser;
 const mockBusinessUser = {
   username: "BUSY",
   role: "business",
-  states: ["CO", "etc"],
+  state: undefined,
 } as AuthUser;
 const mockStateForm = {
   status_id: FormStatus.InProgress,
