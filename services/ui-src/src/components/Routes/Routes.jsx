@@ -1,5 +1,6 @@
 import {React, useEffect} from "react";
 import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
+import { useStore } from "../../store/store";
 import Home from "../Home/Home";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
@@ -17,7 +18,8 @@ import GenerateForms from "../GenerateForms/GenerateForms";
 import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
 
-export default function Routes({ user, isAuthorized }) {
+export default function Routes({ isAuthorized }) {
+  const userRole = useStore(state => state.user.role);
   const history = useHistory()
   const location = useLocation()
   // Preserve old hash style urls and route them to adjusted urls
@@ -47,13 +49,13 @@ export default function Routes({ user, isAuthorized }) {
       </UnauthenticatedRoute>
       {/*************** AUTHENTICATED ROUTES ***************/}
       <AuthenticatedRoute exact path="/">
-        <Home user={user} />
+        <Home />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter/:formName">
         <FormPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile">
-        <Profile user={user} />
+        <Profile />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
         <Quarterly />
@@ -65,7 +67,7 @@ export default function Routes({ user, isAuthorized }) {
         <PrintPDF />
       </AuthenticatedRoute>
       {/*************** ADMIN ROUTES ***************/}
-      {user.role === "admin" ? (
+      {userRole === "admin" ? (
         <>
           <AuthenticatedRoute exact path="/users">
             <Users />

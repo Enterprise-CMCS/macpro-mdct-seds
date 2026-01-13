@@ -2,13 +2,9 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
 import { BrowserRouter, useHistory } from "react-router-dom";
-import { render, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
+import { render, screen, waitFor } from "@testing-library/react";
 import { obtainAvailableForms } from "../../libs/api";
-
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn(),
-}));
+import { useStore } from "../../store/store";
 
 vi.mock("../../libs/api", () => ({
   obtainAvailableForms: vi.fn(),
@@ -19,17 +15,12 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   useHistory: vi.fn(),
 }));
 
-const renderComponent = (...userStates) => {
-  const user = {
-    attributes: {
-      "app-role": "state",
-    },
-    states: userStates,
-  };
-  getUserInfo.mockResolvedValue({ Items: [user] });
+const renderComponent = (state) => {
+  const user = { state };
+  useStore.setState({ user });
   return render(
     <BrowserRouter>
-      <HomeState user={user}/>
+      <HomeState />
     </BrowserRouter>
   );
 }
@@ -42,7 +33,6 @@ describe("Test HomeState.js", () => {
     useHistory.mockReturnValue(history);
     
     renderComponent();
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     expect(history).toEqual(["/register-state"]);
   });
@@ -56,7 +46,6 @@ describe("Test HomeState.js", () => {
 
     const { container } = renderComponent("CO");
     await waitFor(() => {
-      expect(getUserInfo).toHaveBeenCalled();
       expect(obtainAvailableForms).toHaveBeenCalledWith({ stateId: "CO" });
     });
 
@@ -68,5 +57,14 @@ describe("Test HomeState.js", () => {
     for (let url of expectedUrls) {
       expect(container.querySelector(`a[href='${url}']`)).toBeInTheDocument();
     }
+  });
+
+  it("should still render if obtainAvailableForms fails", async () => {
+    obtainAvailableForms.mockRejectedValueOnce(new Error("Mock server error"));
+
+    renderComponent("CO");
+    await waitFor(() => expect(obtainAvailableForms).toHaveBeenCalled());
+
+    expect(screen.getByText(/Welcome to SEDS/)).toBeVisible();
   });
 });

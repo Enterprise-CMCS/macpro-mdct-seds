@@ -1,141 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { MultiSelect } from "react-multi-select-component";
-import Searchable from "react-searchable-dropdown";
-import Dropdown from "react-dropdown";
 import { Table, TextInput, Button } from "@trussworks/react-uswds";
-import "react-dropdown/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { getUserById, updateUser } from "../../libs/api";
-import { getStateName, stateSelectOptions } from "../../lookups/states";
+import { stateSelectOptions } from "../../lookups/states";
 import "./EditUser.scss";
 
 /**
- * View/edit a single user with options
+ * Admin-only page for viewing & editing other users' permissions.
  *
- * @constructor
+ * Information such as the user's name and email come from Cognito
+ * and cannot be edited here. Only the role and state fields can.
  */
-
 const EditUser = () => {
-  // Get params from url
   let { id } = useParams();
-
-  // Set up local state
-  const [username, setUsername] = useState();
   const [user, setUser] = useState();
   const [role, setRole] = useState();
-
-  const [selectedStates, setSelectedStates] = useState([]);
-  /* eslint-disable no-unused-vars */
-  const [statesToSend, setStatesToSend] = useState([]);
-  // Get User data
-  const loadUserData = async () => {
-    // Retrive user data from datastore
-    const getUserData = { userId: id };
-
-    const user = await getUserById(getUserData);
-    if (user.status === "success") {
-      setUser(user.data);
-      setRole(user.data.role);
-      setUsername(user.data.username);
-    }
-    // Sort states alphabetically and place in array
-    let theStates = [];
-    const userStates =
-      user.data?.states && user.data.states !== "null" ? user.data.states : [];
-    if (userStates) {
-      theStates = userStates.sort();
-    }
-
-    // Set states to array of objects
-    if (user.data?.role !== "state") {
-      setSelectedStates(theStates.map(
-        abbr => ({ label: getStateName(abbr), value: abbr })
-      ));
-    } else {
-      const abbr = user.data.states[0];
-      setSelectedStates({ label: getStateName(abbr), value: abbr });
-    }
-    return user.data;
-  };
+  const [state, setState] = useState();
 
   useEffect(() => {
-    loadUserData().then();
-    // eslint-disable-next-line
+    (async () => {
+      const response = await getUserById({ userId: id });
+      if (response.status === "success") {
+        const user = response.data;
+        setUser(user);
+        setRole(user.role);
+        setState(user.state);
+      }
+    })();
   }, []);
 
-  // Save selections for local use and API use
-  const setStatesFromArray = option => {
-    // Save for API use
-    let states = "";
-    if (option) {
-      states = option.join("-");
-    }
-    if (!states) {
-      states = null;
-    }
-    setStatesToSend(states);
-  };
-
-  const roles = [
-    { value: "admin", label: "Admin User" },
-    { value: "business", label: "Business User" },
-    { value: "state", label: "State User" }
-  ];
-
-  // Update user object
-  const updateLocalUser = (e, field) => {
-    let tempUser = { ...user };
-    let response;
-
-    if (field === "states") {
-      setSelectedStates(e);
-      // If from multiselect, else single selection
-      if (Array.isArray(e)) {
-        // Simplify array
-        let newStates = [];
-        for (const state in e) {
-          newStates.push(e[state].value);
-        }
-        setStatesToSend(newStates);
-      } else {
-        if (!e.value) {
-          e.value = null;
-        }
-        setStatesToSend([e.value]);
-        response = e.value;
-      }
-
-      // Write to local state
-    } else if (field === "role") {
-      // Save to local state
-      setRole(e.value);
-      setStatesToSend(null);
-      setSelectedStates();
-      // Update user
-      response = e.value;
-    } else if (field === "username") {
-      setUsername(e.target.value);
+  const handleUpdateClick = async () => {
+    const updatedUser = structuredClone(user);
+    updatedUser.role = role;
+    if (role === "state" && !!state) {
+      updatedUser.state = state;
     } else {
-      response = e.target.value;
+      delete updatedUser.state;
     }
-    tempUser[field] = response;
-    setUser(tempUser);
-  };
 
-  const updateUserStore = async data => {
-    // Set states from statesToSend (in proper format)
-    data.states = statesToSend;
-    data.username = username;
-
-    console.log("updating data: ");
-    console.log(data);
-
-    await updateUser(data).then(() => {
-      alert(`User with username: "${data.username}" has been updated`);
-      window.location.reload(false);
-    });
+    await updateUser(updatedUser);
+    setUser(updatedUser);
+    alert(`User with username: "${updatedUser.username}" has been updated`);
+    window.location.reload(false);
   };
 
   return (
@@ -154,7 +62,6 @@ const EditUser = () => {
                   <TextInput
                     value={user.username}
                     type="text"
-                    onChange={e => updateLocalUser(e, "username")}
                     disabled={true}
                     name="username"
                     className="form-input"
@@ -167,7 +74,6 @@ const EditUser = () => {
                   <TextInput
                     value={user.firstName}
                     type="text"
-                    onChange={e => updateLocalUser(e, "firstName")}
                     disabled={true}
                     name="firstName"
                     className="form-input"
@@ -180,7 +86,6 @@ const EditUser = () => {
                   <TextInput
                     value={user.lastName}
                     type="text"
-                    onChange={e => updateLocalUser(e, "lastName")}
                     disabled={true}
                     name="lastName"
                     className="form-input"
@@ -193,7 +98,6 @@ const EditUser = () => {
                   <TextInput
                     value={user.email}
                     type="text"
-                    onChange={e => updateLocalUser(e, "email")}
                     disabled={true}
                     name="email"
                     className="form-input"
@@ -201,49 +105,42 @@ const EditUser = () => {
                 </td>
               </tr>
               <tr>
-                <th>Role</th>
+                <th>
+                  <label className="usa-label" htmlFor="role-select">Role</label>
+                </th>
                 <td>
-                  <Searchable
-                    options={roles}
-                    placeholder="Select a Role"
-                    onSelect={e => updateLocalUser(e, "role")}
-                    value={role ? role : user.role}
-                    className="form-input"
-                  />
+                  <select
+                    className="usa-select"
+                    id="role-select"
+                    value={role}
+                    onChange={evt => setRole(evt.target.value)}
+                  >
+                    <option value>- Select a Role -</option>
+                    <option value="admin">Admin User</option>
+                    <option value="business">Business User</option>
+                    <option value="state">State User</option>
+                  </select>
                 </td>
               </tr>
               {role === "state" ? (
-                <>
-                  <tr>
-                    <th>State</th>
-                    <td>
-                      <Dropdown
-                        options={stateSelectOptions}
-                        onChange={e => updateLocalUser(e, "states")}
-                        value={selectedStates ? selectedStates : ""}
-                        placeholder="Select a state"
-                        autosize={false}
-                        className="state-select-list"
-                      />
-                    </td>
-                  </tr>
-                </>
-              ) : null}
-              {role !== "state" && role !== null ? (
-                <>
-                  <tr>
-                    <th>State</th>
-                    <td>
-                      <MultiSelect
-                        options={stateSelectOptions}
-                        value={selectedStates ? selectedStates : []}
-                        onChange={e => updateLocalUser(e, "states")}
-                        labelledBy={"Select States"}
-                        multiple={false}
-                      />
-                    </td>
-                  </tr>
-                </>
+                <tr>
+                  <th>
+                    <label className="usa-label" htmlFor="state-select">State</label>
+                  </th>
+                  <td>
+                    <select
+                      className="usa-select"
+                      id="state-select"
+                      value={state}
+                      onChange={evt => setState(evt.target.value)}
+                    >
+                      <option value>- Select a State -</option>
+                      {stateSelectOptions.map(({ label, value }) => (
+                        <option key={value} value={value}>{label}</option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
               ) : null}
               <tr>
                 <th>Registration Date</th>
@@ -263,9 +160,7 @@ const EditUser = () => {
             <Button
               type="button"
               className="form-button"
-              onClick={async () => {
-                await updateUserStore(user);
-              }}
+              onClick={handleUpdateClick}
             >
               Update User
               <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />

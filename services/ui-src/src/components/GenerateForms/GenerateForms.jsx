@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Alert, Button } from "@trussworks/react-uswds";
-import Dropdown from "react-dropdown";
 import { generateQuarterlyForms } from "../../libs/api";
 import "./GenerateForms.scss";
 
@@ -10,22 +9,12 @@ const GenerateForms = () => {
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
 
+  // Build options for year dropdown. From 2019 until next year, inclusive.
+  const firstYear = 2019;
   const nextYear = new Date().getFullYear() + 1;
-
-  // Build array for year dropdown
-  const yearSelections = [];
-
-  for (let i = 2019; i <= nextYear; i++) {
-    yearSelections.push({ label: i, value: i });
-  }
-
-  // Build array for quarter dropdown
-  const quarterSelections = [
-    { label: "Q1", value: 1 },
-    { label: "Q2", value: 2 },
-    { label: "Q3", value: 3 },
-    { label: "Q4", value: 4 }
-  ];
+  const yearSelections = [...new Array(nextYear - firstYear + 1)]
+    .map((_, i) => (i + 2019).toString())
+    .map(year => ({ label: year, value: year }));
 
   // Handle click event and trigger
   const generateForms = async () => {
@@ -35,13 +24,15 @@ const GenerateForms = () => {
     }
     if (
       window.confirm(
-        `Are you sure you want to generate forms for Quarter ${selectedQuarter.value} of ${selectedYear.value}. This action cannot be undone.`
+        `Are you sure you want to generate forms for Quarter Q${selectedQuarter} of ${selectedYear}. This action cannot be undone.`
       )
     ) {
       // send year and quarter to lambda which will create the table rows
       setLoading(true);
-      const data = { year: selectedYear.value, quarter: selectedQuarter.value };
-      const response = await generateQuarterlyForms(data);
+      const response = await generateQuarterlyForms({
+        year: Number(selectedYear),
+        quarter: Number(selectedQuarter),
+      });
       setLoading(false);
       setAlert(response);
     }
@@ -78,29 +69,34 @@ const GenerateForms = () => {
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
-      <label for="select-year">Select the Year</label>
-      <Dropdown
-        options={yearSelections}
-        onChange={e => setSelectedYear(e)}
-        value={selectedYear ?? ""}
-        placeholder="Select a Year"
-        autosize={false}
-        id="select-year"
-        className="margin-bottom-4"
-      />
-      <label for="select-quarter">Select the Quarter</label>
-      <Dropdown
-        options={quarterSelections}
-        onChange={e => setSelectedQuarter(e)}
-        value={selectedQuarter ?? ""}
-        placeholder="Select a Quarter"
-        autosize={false}
-        id="select-quarter"
-        className="margin-bottom-4"
-      />
-
+      <label htmlFor="year-select">Select the Year</label>
+      <select
+        className="usa-select"
+        id="year-select"
+        value={selectedYear}
+        onChange={evt => setSelectedYear(evt.target.value)}
+      >
+        {yearSelections.map(({ label, value }) => (
+          <option key={value} value={value}>{label}</option>
+        ))}
+      </select>
+      <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
+        Select the Quarter
+      </label>
+      <select
+        className="usa-select"
+        id="quarter-select"
+        value={selectedQuarter}
+        onChange={evt => setSelectedQuarter(evt.target.value)}
+      >
+        <option value="1">Q1</option>
+        <option value="2">Q2</option>
+        <option value="3">Q3</option>
+        <option value="4">Q4</option>
+      </select>
       <Button
         type="button"
+        style={{ marginTop: "0.5rem" }}
         data-testid="generateFormsButton"
         onClick={() => generateForms()}
         className="margin-bottom-5"

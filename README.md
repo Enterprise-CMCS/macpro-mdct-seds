@@ -105,7 +105,7 @@ To avoid this issue, the IDP now filters the roles passed through by the prefix 
 
 ```
   new Lambda(scope, "getUserById", {
-    entry: "services/app-api/handlers/users/get/getUserById.js",
+    entry: "services/app-api/handlers/users/get/getUserById.ts",
     handler: "main",
     path: "/users/{id}",
     method: "GET",
@@ -117,9 +117,9 @@ To avoid this issue, the IDP now filters the roles passed through by the prefix 
    1. Conventions:
       1. Each file in the handler directory should contain a single function called 'main'
       2. The handlers are organized by API, each with their own folder. Within those folders should be separate files per HTTP verb.
-         For instance: There is a `users` folder in handlers, ([services/app-api/handlers/users/](services/app-api/handlers/users/)). That folder would have individual files corresponding to an HTTP verb (e.g. `get.js` `create.js` `update.js` `delete.js`, etc.).
+         For instance: There is a `users` folder in handlers, ([services/app-api/handlers/users/](services/app-api/handlers/users/)). That folder would have individual files corresponding to an HTTP verb (e.g. `get.ts` `create.ts` `update.ts` `delete.ts`, etc.).
          The intention of this structure is that each request verb within a folder interacts with the table sharing the folder's name.
-3. Add a wrapper function in [/services/ui-src/src/libs/api.js](/services/ui-src/src/libs/api.js)
+3. Add a wrapper function in [/services/ui-src/src/libs/api.ts](/services/ui-src/src/libs/api.ts)
    example:
 
 ```

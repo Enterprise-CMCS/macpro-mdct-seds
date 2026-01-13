@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@trussworks/react-uswds";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { getCurrentUser } from "../../libs/api";
 import {
   isFinalCertified,
   isProvisionalCertified,
@@ -13,6 +12,7 @@ import { useStore } from "../../store/store";
 
 const CertificationTab = () => {
   const statusData = useStore(state => state.statusData);
+  const userRole = useStore(state => state.user.role);
   const updateFormStatus = useStore(state => state.updateFormStatus);
   const saveForm = useStore(state => state.saveForm);
 
@@ -21,29 +21,18 @@ const CertificationTab = () => {
 
   const [provCertDisabled, setProvCertDisabled] = useState(isFinal || isProvisional);
   const [finalCertDisabled, setFinalCertDisabled] = useState(isFinal);
-  const [
-    viewProvisionalAndFinalCertify,
-    setViewProvisionalAndFinalCertify
-  ] = useState(true);
-  useEffect(() => {
-    const viewProvisionalAndFinal = async () => {
-      const currentUser = await getCurrentUser();
-      if (currentUser.role === "admin") {
-        setViewProvisionalAndFinalCertify(false);
-      }
-    };
-    viewProvisionalAndFinal();
-  }, []);
+
+  const showCertifyButtons = userRole === "state" || userRole === "business";
 
   const submitProvisional = async () => {
     // TODO hardcoded status_id; use FormStatus.ProvisionalCertified
-    await updateFormStatus(2);
+    updateFormStatus(2);
     await saveForm();
     setProvCertDisabled(true);
   };
   const submitFinal = async () => {
     // TODO hardcoded status_id; use FormStatus.FinalCertified
-    await updateFormStatus(3);
+    updateFormStatus(3);
     await saveForm();
     setProvCertDisabled(true);
     setFinalCertDisabled(true);
@@ -51,7 +40,7 @@ const CertificationTab = () => {
   const submitUncertify = async () => {
     if (window.confirm("Are you sure you want to uncertify this report?")) {
       // TODO hardcoded status_id; use FormStatus.InProgress
-      await updateFormStatus(1);
+      updateFormStatus(1);
       await saveForm();
       // await sendEmailtoBo();
       setProvCertDisabled(false);
@@ -64,8 +53,7 @@ const CertificationTab = () => {
     able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
     
     const sendEmailtoBo = async () => {
-      let currentUser = await getCurrentUser();
-      if (currentUser.role === "state") {
+      if (userRole === "state") {
         await sendUncertifyEmail({ formInfo: formStatus });
       }
     };
@@ -144,7 +132,7 @@ const CertificationTab = () => {
         </p>
         {isFinal || isProvisional ? statusText : null}
       </div>
-      {viewProvisionalAndFinalCertify ? (
+      {showCertifyButtons ? (
         <div className="certify-btn ">
           <Button
             onClick={() => submitProvisional()}

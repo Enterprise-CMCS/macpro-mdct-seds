@@ -23,20 +23,10 @@ import { listUsers } from "../../libs/api";
 
 const Users = () => {
   const [users, setUsers] = useState();
-  const history = useHistory();
 
   const loadUserData = async () => {
     const userList = await listUsers();
-    if (userList) {
-      userList.sort((a, b) => a.username?.localeCompare(b.username));
-      for (let user of userList) {
-        // Sometimes user.states is a string instead of an array.
-        // TODO: Perform a migration to fix that. Should always be an array.
-        if (Array.isArray(user.states)) {
-          user.states.sort();
-        }
-      }
-    }
+    userList?.sort((a, b) => a.username?.localeCompare(b.username));
     setUsers(userList);
   };
 
@@ -64,7 +54,7 @@ const Users = () => {
                 { name: "Role", selector: "role" },
                 { name: "Registration Date", selector: "dateJoined" },
                 { name: "Last Login", selector: "lastLogin" },
-                { name: "States", selector: "states" }
+                { name: "State", selector: "state" }
               ],
               data: users
             })
@@ -102,7 +92,7 @@ const Users = () => {
                 <th scope="col">Role</th>
                 <th scope="col">Registration Date</th>
                 <th scope="col">Last Login</th>
-                <th scope="col">States</th>
+                <th scope="col">State</th>
               </tr>
             </thead>
             <tbody>
@@ -127,7 +117,7 @@ const Users = () => {
                     {user.lastLogin &&
                       new Date(user.lastLogin).toLocaleDateString("en-US")}
                   </td>
-                  <td>{Array.isArray(user.states) ? user.states.join(", ") : ""}</td>
+                  <td>{user.state ?? ""}</td>
                 </tr>
               ))}
             </tbody>

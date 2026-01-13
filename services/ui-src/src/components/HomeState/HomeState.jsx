@@ -6,51 +6,33 @@ import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter
 } from "../../utility-functions/sortingFunctions";
-import { getUserInfo } from "../../utility-functions/userFunctions";
+import { useStore } from "../../store/store";
 
 const HomeState = () => {
+  const user = useStore(state => state.user);
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
 
-  // Get User data
-  const loadUserData = async () => {
-    // Get user information
-    let currentUserInfo = await getUserInfo();
-
-    let forms = [];
-    let stateString = "";
-
-    if (currentUserInfo["Items"]) {
-      // Get list of all state forms
-      try {
-        const availableForms = await obtainAvailableForms({
-          stateId: currentUserInfo["Items"][0].states[0]
-        });
-        forms = sortFormsByYearAndQuarter(availableForms);
-        stateString = currentUserInfo["Items"][0].states[0];
-      } catch (error) {
-        console.log(error);
-      }
+  const loadForms = async (stateId) => {
+    try {
+      const availableForms = await obtainAvailableForms({ stateId });
+      return sortFormsByYearAndQuarter(availableForms);
+    } catch (error) {
+      console.log(error);
+      return [];
     }
-
-    return {
-      // Sort forms descending by year and then quarter and return them along with user state
-      forms: forms.legnth === 0 ? [] : forms,
-      stateString: stateString === "" ? "" : stateString
-    };
   };
 
   useEffect(() => {
     (async () => {
-      const { forms, stateString } = await loadUserData();
-
-      if (stateString) {
-        setAccordionItems(
-          buildSortedAccordionByYearQuarter(forms, stateString)
-        );
-      } else {
+      if (!user.state) {
         history.push("/register-state");
       }
+
+      const forms = await loadForms(user.state);
+      setAccordionItems(
+        buildSortedAccordionByYearQuarter(forms, user.state)
+      );
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

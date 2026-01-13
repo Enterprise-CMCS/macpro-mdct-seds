@@ -32,7 +32,7 @@ const mockUsers = [
     role: "state",
     dateJoined: "2024-01-15T12:34:45Z",
     lastLogin: "2024-02-16T12:34:45Z",
-    states: ["CO"],
+    state: "CO",
   },
   {
     userId: 42,
@@ -43,7 +43,7 @@ const mockUsers = [
     role: "admin",
     dateJoined: "2024-03-17T12:34:45Z",
     lastLogin: "2024-04-18T12:34:45Z",
-    states: ["WI", "TX", "CO"],
+    state: undefined,
   },
 ];
 listUsers.mockResolvedValue(mockUsers);
@@ -88,7 +88,7 @@ describe("Test Users.js", () => {
       "Role",
       "Registration Date",
       "Last Login",
-      "States",
+      "State",
     ]
     const headers = screen.getAllByRole("columnheader");
     expect(headers.length).toBe(expectedHeaders.length);
@@ -127,7 +127,7 @@ describe("Test Users.js", () => {
 
     expect(row1cells[6].textContent).toBe("4/18/2024");
 
-    expect(row1cells[7].textContent).toBe("CO, TX, WI");
+    expect(row1cells[7].textContent).toBe("");
   });
 
   it("should export to CSV somehow", async () => {
