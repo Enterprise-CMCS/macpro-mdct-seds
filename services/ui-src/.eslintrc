@@ -2,21 +2,11 @@
   "extends": [
     "react-app",
     "eslint:recommended",
-    "prettier",
-    "plugin:prettier/recommended"
   ],
-  "plugins": ["prettier"],
   "ignorePatterns": ["", "**/public/env-config.js"],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-param-reassign": [2, { "props": false }],
-    "react/jsx-props-no-spreading": 0,
-    "prettier/prettier": [
-      "error",
-      {
-        "semi": true,
-        "endOfLine": "auto"
-      }
-    ]
+    "react/jsx-props-no-spreading": 0
   }
 }
