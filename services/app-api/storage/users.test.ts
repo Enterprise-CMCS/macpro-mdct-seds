@@ -1,9 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { scanUsersByRole } from "./users.ts";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
@@ -28,12 +25,15 @@ describe("User storage", () => {
       const result = await scanUsersByRole("state");
 
       expect(result).toEqual([mockUserCO, mockUserTX]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-auth-user",
-        FilterExpression: "#role = :role",
-        ExpressionAttributeNames: { "#role": "role" },
-        ExpressionAttributeValues: { ":role": "state" },
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-auth-user",
+          FilterExpression: "#role = :role",
+          ExpressionAttributeNames: { "#role": "role" },
+          ExpressionAttributeValues: { ":role": "state" },
+        }),
+        expect.any(Function)
+      );
     });
   });
 });

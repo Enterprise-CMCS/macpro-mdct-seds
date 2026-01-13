@@ -31,13 +31,18 @@ export const main = handler(async (event, context) => {
 /**
  * List all emails of users whose state has an In Progress form this quarter.
  */
-async function determineUsersToEmail(year: number, quarter: number): Promise<string[]> {
+async function determineUsersToEmail(
+  year: number,
+  quarter: number
+): Promise<string[]> {
   const inProgressForms = await scanFormsByQuarterAndStatus(
-    year, quarter, FormStatus.InProgress
-  ); 
-  const statesToEmail = new Set(inProgressForms.map(f => f.state_id));
+    year,
+    quarter,
+    FormStatus.InProgress
+  );
+  const statesToEmail = new Set(inProgressForms.map((f) => f.state_id));
   const users = await scanUsersByRole("state");
-  return users.filter(u => statesToEmail.has(u.state!)).map(u => u.email);
+  return users.filter((u) => statesToEmail.has(u.state!)).map((u) => u.email);
 }
 
 // creates a template for stateUsers

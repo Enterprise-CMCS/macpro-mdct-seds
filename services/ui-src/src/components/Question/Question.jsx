@@ -5,7 +5,7 @@ import SynthesizedGrid from "../SynthesizedGrid/SynthesizedGrid";
 import GREGridWithTotals from "../GREGridWithTotals/GREGridWithTotals";
 import {
   sortQuestionColumns,
-  sortByCol1
+  sortByCol1,
 } from "../../utility-functions/sortingFunctions";
 
 const QuestionComponent = ({
@@ -13,7 +13,7 @@ const QuestionComponent = ({
   rangeID,
   answerData,
   disabled,
-  synthesized
+  synthesized,
 }) => {
   // Get the question ID, label and question type from the question
   const { label, question, type } = questionData;
@@ -101,7 +101,7 @@ QuestionComponent.propTypes = {
   rangeID: PropTypes.string.isRequired,
   answerData: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
-  synthesized: PropTypes.bool
+  synthesized: PropTypes.bool,
 };
 
 export default QuestionComponent;
@@ -113,5 +113,5 @@ const questionVariables = {
   "0105": "between the ages of 1 and 5",
   "0612": "between the ages of 6 and 12",
   1318: "between the ages of 13 and 18",
-  1920: "between the ages of 19 and 20"
+  1920: "between the ages of 19 and 20",
 };

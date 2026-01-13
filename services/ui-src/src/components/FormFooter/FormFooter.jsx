@@ -8,9 +8,9 @@ import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {
-  const userRole = useStore(state => state.user.role);
-  const lastModified = useStore(state => state.statusData.last_modified);
-  const saveForm = useStore(state => state.saveForm);
+  const userRole = useStore((state) => state.user.role);
+  const lastModified = useStore((state) => state.statusData.last_modified);
+  const saveForm = useStore((state) => state.saveForm);
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
 
   return (

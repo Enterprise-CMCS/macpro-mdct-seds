@@ -1,12 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as listUsers } from "./listUsers.ts";
-import {
-  authorizeAdmin as actualAuthorizeAdmin
-} from "../../../auth/authConditions.ts";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
@@ -39,10 +34,12 @@ describe("listUsers.ts", () => {
 
     const response = await listUsers(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify([mockUser1, mockUser2]),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify([mockUser1, mockUser2]),
+      })
+    );
   });
 
   it.skip("should return an error if no users exist", async () => {
@@ -53,10 +50,12 @@ describe("listUsers.ts", () => {
 
     const response = await listUsers(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "No Users not found." }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "No Users not found." }),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -64,9 +63,11 @@ describe("listUsers.ts", () => {
 
     const response = await listUsers(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

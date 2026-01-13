@@ -5,8 +5,8 @@ import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
 import "./GridWithTotals.scss";
 
-const GridWithTotals = props => {
-  const setAnswer = useStore(state => state.updateAnswer);
+const GridWithTotals = (props) => {
+  const setAnswer = useStore((state) => state.updateAnswer);
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
@@ -43,7 +43,7 @@ const GridWithTotals = props => {
     updateColumnTotals();
   };
 
-  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+  const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
   const updateColumnTotals = () => {
     let gridColumnTotalsCopy = [...gridColumnTotals];
@@ -298,7 +298,7 @@ const GridWithTotals = props => {
                       <TextInput
                         style={{ width: "100%", padding: 0 }}
                         className="grid-column"
-                        onChange={event =>
+                        onChange={(event) =>
                           updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
                         onBlur={updateGridOnBlur}
@@ -333,7 +333,7 @@ const GridWithTotals = props => {
                     <TextInput
                       style={{ width: "100%", padding: 0 }}
                       className="grid-column"
-                      onChange={event =>
+                      onChange={(event) =>
                         updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
                       onBlur={updateGridOnBlur}
@@ -424,12 +424,12 @@ const GridWithTotals = props => {
   );
 };
 
-const translateInitialData = gridDataObject => {
+const translateInitialData = (gridDataObject) => {
   let rowCounter = 1;
   let colCounter = 1;
   let translatedData = [];
 
-  gridDataObject.forEach(row => {
+  gridDataObject.forEach((row) => {
     // *** skip the first row (headers)
     if (rowCounter > 1) {
       colCounter = 1;
@@ -456,7 +456,7 @@ GridWithTotals.propTypes = {
   updateSynthesizedValues: PropTypes.func,
   disabled: PropTypes.bool,
   synthesized: PropTypes.bool,
-  precision: PropTypes.number
+  precision: PropTypes.number,
 };
 
 export default GridWithTotals;

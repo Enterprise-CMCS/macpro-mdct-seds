@@ -68,10 +68,10 @@ const awsConfig = {
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    fractionalSecondDigits: 3
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  fractionalSecondDigits: 3,
 });
 const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
@@ -79,14 +79,14 @@ const logPrefix = () => dateFormatter.format(new Date()) + " | ";
  * Use Cognito's `UserLastModifiedDate` to infer the last time a user logged in.
  * @returns {Promise<Map<string, string>>} A mapping from `sub` to ISO date strings
  */
-async function gatherLoginDatesFromCognito () {
+async function gatherLoginDatesFromCognito() {
   const cognitoClient = new CognitoIdentityProviderClient();
   const UserPoolId = COGNITO_USER_POOL_ID;
   const pages = paginateListUsers({ client: cognitoClient }, { UserPoolId });
   const modifyDates = new Map();
   for await (let page of pages) {
     for (const user of page.Users ?? []) {
-      const sub = user.Attributes.find(attr => attr.Name === "sub").Value;
+      const sub = user.Attributes.find((attr) => attr.Name === "sub").Value;
       modifyDates.set(sub, user.UserLastModifiedDate);
     }
   }
@@ -100,7 +100,7 @@ async function gatherLoginDatesFromCognito () {
  * @param {Map<string, string>} loginDates A trustworthy set of login dates
  * @returns `true` if a change was made; `false` if no change was needed.
  */
-function updateUserState (user, loginDates) {
+function updateUserState(user, loginDates) {
   const { role, states, usernameSub } = user;
 
   if (states === undefined) {
@@ -123,29 +123,31 @@ function updateUserState (user, loginDates) {
 
 /**
  * Create an iterator for the entire table.
- * @param {string} TableName 
+ * @param {string} TableName
  */
-async function * scanAllUsers (TableName) {
+async function* scanAllUsers(TableName) {
   console.log(`${logPrefix()}Scanning...`);
   let pageNumber = 0;
   let totalItemCount = 0;
   for await (let page of paginateScan({ client }, { TableName })) {
     pageNumber += 1;
     let pageItemCount = 0;
-    for (const user of (page.Items ?? [])) {
+    for (const user of page.Items ?? []) {
       pageItemCount += 1;
       totalItemCount += 1;
       yield user;
     }
-    console.log(`${logPrefix()}Completed scan of page ${pageNumber}; ${pageItemCount} items processed.`);
+    console.log(
+      `${logPrefix()}Completed scan of page ${pageNumber}; ${pageItemCount} items processed.`
+    );
   }
   console.log(`${logPrefix()}Scan complete; ${totalItemCount} items in all.`);
 }
 
 /**
- * @param {AsyncGenerator<object>} userIterable 
+ * @param {AsyncGenerator<object>} userIterable
  */
-async function * filterAndModifyUsers (userIterable, loginDates) {
+async function* filterAndModifyUsers(userIterable, loginDates) {
   for await (let user of userIterable) {
     const needsUpdate = updateUserState(user, loginDates);
     if (needsUpdate) {
@@ -157,7 +159,7 @@ async function * filterAndModifyUsers (userIterable, loginDates) {
 /**
  * @param {AsyncGenerator<object>} itemIterable
  */
-async function * createBatches (itemIterable) {
+async function* createBatches(itemIterable) {
   let batch = [];
 
   for await (let item of itemIterable) {
@@ -179,19 +181,21 @@ async function * createBatches (itemIterable) {
  * @param {string} tableName
  * @param {(object) => string} idSelector For logging purposes.
  */
-async function sendBatches (batches, tableName, idSelector) {
+async function sendBatches(batches, tableName, idSelector) {
   for await (const batch of batches) {
     const command = new BatchWriteCommand({
       RequestItems: {
         [tableName]: batch.map((Item) => ({
-          PutRequest: { Item }
-        }))
-      }
+          PutRequest: { Item },
+        })),
+      },
     });
     const response = await client.send(command);
     const unprocessedItems = response.UnprocessedItems?.[tableName];
     if (unprocessedItems && unprocessedItems.length > 0) {
-      const ids = unprocessedItems.map((putRequest) => idSelector(putRequest.Item));
+      const ids = unprocessedItems.map((putRequest) =>
+        idSelector(putRequest.Item)
+      );
       throw new Error(
         `Batch write failed! The following items were not updated: ${ids.join(", ")}`
       );
@@ -199,12 +203,12 @@ async function sendBatches (batches, tableName, idSelector) {
   }
 }
 
-async function main () {
+async function main() {
   const lastLoginDates = await gatherLoginDatesFromCognito();
   const allUsers = scanAllUsers(AUTH_USER_TABLE_NAME);
   const usersToUpdate = filterAndModifyUsers(allUsers, lastLoginDates);
   const batches = createBatches(usersToUpdate);
-  await sendBatches(batches, AUTH_USER_TABLE_NAME, user => user.userId);
+  await sendBatches(batches, AUTH_USER_TABLE_NAME, (user) => user.userId);
 }
 
 main();

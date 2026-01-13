@@ -6,14 +6,16 @@
   width: 23em;
 }
 
-.Dropdown-control, .usa-input, .rmsc .multi-select{
+.Dropdown-control,
+.usa-input,
+.rmsc .multi-select {
   border-color: $black;
   border-width: 2px;
 }
 
 .searchable {
   .searchable-input {
-    border: none;;
+    border: none;
     .searchable-input-control {
       input {
         background-color: $white;
@@ -98,11 +100,12 @@
   }
 }
 
-.question-component{
-  th, td{
+.question-component {
+  th,
+  td {
     font-size: 16px;
   }
-  th{
+  th {
     background-color: $alto;
   }
 }
