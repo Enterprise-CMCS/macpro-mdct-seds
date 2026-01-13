@@ -146,8 +146,9 @@ describe("useStore actions", () => {
   });
 
   describe("wipeForm", () => {
-    it("should clear the data from every answer row, except headers and formulas", async () => {
+    it("should clear the data from every answer row, except headers and formulas", () => {
       useStore.setState({
+        user: { username: "mockUsername" },
         answers: [
           {
             rows: [
@@ -172,7 +173,7 @@ describe("useStore actions", () => {
       });
 
       const { wipeForm } = useStore.getState();
-      await wipeForm();
+      wipeForm();
       const state = useStore.getState();
 
       expect(state.answers).toEqual([
@@ -202,14 +203,15 @@ describe("useStore actions", () => {
   });
 
   describe("updateFormStatus", () => {
-    it("should update status and traceability fields", async () => {
+    it("should update status and traceability fields", () => {
       useStore.setState({
+        user: { username: "mockUsername" },
         statusData: { state_form: "CO-2025-4-21E" },
       });
 
       const { updateFormStatus } = useStore.getState();
       // TODO hardcoded status_id. Use FormStatus.NotRequired.
-      await updateFormStatus(4);
+      updateFormStatus(4);
       const state = useStore.getState();
 
       expect(state.statusData).toEqual({
@@ -224,7 +226,7 @@ describe("useStore actions", () => {
   });
 
   describe("updateSummaryNotes", () => {
-    it("should work", () => {
+    it("should store updated notes within statusData", () => {
       useStore.setState({
         statusData: {
           state_form: "CO-2025-4-21E",
@@ -256,6 +258,7 @@ describe("useStore actions", () => {
   describe("saveForm", () => {
     it("should call both API endpoints to save the form", async () => {
       useStore.setState({
+        user: { username: "mockUsername" },
         questions: mockQuestions,
         answers: mockAnswers,
         statusData: mock21E,
@@ -333,6 +336,30 @@ describe("useStore actions", () => {
       const state = useStore.getState();
 
       expect(state.statusData.save_error).toBe(true);
+    });
+  });
+
+  describe("loadUser", () => {
+    it("should call the API to populate user data in the store", async () => {
+      useStore.setState({ user: {} });
+
+      const { loadUser } = useStore.getState();
+      await loadUser();
+      const state = useStore.getState();
+
+      expect(state.user.username).toBe("mockUsername");
+    });
+  });
+
+  describe("wipeUser", () => {
+    it("should clear user data from the store", async () => {
+      useStore.setState({ user: { username: "mockUsername", role: "admin" } });
+
+      const { wipeUser } = useStore.getState();
+      wipeUser();
+      const state = useStore.getState();
+
+      expect(state.user).toEqual({});
     });
   });
 });

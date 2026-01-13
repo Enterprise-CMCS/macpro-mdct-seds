@@ -1,6 +1,7 @@
 {
   "name": "macpro-mdct-seds",
   "version": "1.0.0",
+  "packageManager": "yarn@4.12.0",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -14,9 +15,9 @@
     "cdk": "npx --prefix deployment cdk",
     "cdklocal": "npx --prefix deployment cdklocal",
     "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
-    "smoke": "npm run test --tag smoke",
-    "test:cypress": "cd tests/cypress && npm test && cd -",
-    "test:cypress:ci": "cd tests/cypress && npm run test:ci"
+    "smoke": "yarn run test --tag smoke",
+    "test:cypress": "cd tests/cypress && yarn test && cd -",
+    "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
   },
   "repository": {
     "type": "git",
@@ -29,14 +30,15 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.946.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
     "@octokit/auth-action": "^6.0.1",
     "@octokit/rest": "^22.0.0",
-    "esbuild": "^0.27.0",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
+    "esbuild": "^0.27.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-cypress": "^2.15.2",
@@ -46,7 +48,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
     "prettier": "2.4.1",
-    "typescript": "^4.9.5",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.3"
   }
 }

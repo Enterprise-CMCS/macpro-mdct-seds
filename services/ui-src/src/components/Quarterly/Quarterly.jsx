@@ -6,12 +6,14 @@ import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getStatusDisplay } from "../../utility-functions/formStatus";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
+import { useStore } from "../../store/store";
+import { canViewStateData } from "../../utility-functions/permissions";
+
 import "./Quarterly.scss";
 
 const Quarterly = () => {
-  // Determine values based on URI
+  const user = useStore(state => state.user);
   const { state, year, quarter } = useParams();
   const [stateFormsList, setStateFormsList] = useState();
   const [hasAccess, setHasAccess] = useState();
@@ -20,15 +22,7 @@ const Quarterly = () => {
   const title = `Q${quarter} ${year} Reports`;
   useEffect(() => {
     async function fetchData() {
-      // Get user information
-      const currentUserInfo = await getUserInfo();
-
-      let userStates = currentUserInfo ? currentUserInfo.Items[0].states : [];
-
-      if (
-        userStates.includes(state) ||
-        currentUserInfo.Items[0].role === "admin"
-      ) {
+      if (canViewStateData(user, state)) {
         let data = await recursiveGetStateForms({ state, year, quarter });
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
         data = data.filter(i => i.form !== "64.ECI");

@@ -4,8 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import PrintPDF from "./PrintPDF";
-import { getUserInfo } from "../../utility-functions/userFunctions";
-import { getSingleForm, getStateForms } from "../../libs/api";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
 import { useStore } from "../../store/store";
 
@@ -19,25 +17,12 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   }),
 }));
 
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn().mockResolvedValue({
-    Items: [
-      {
-        states: "AL",
-      },
-    ],
-  }),
-}));
-
-vi.mock("../../libs/api", () => ({
-  getSingleForm: vi.fn(),
-  getStateForms: vi.fn(),
-}));
-getSingleForm.mockResolvedValue(fullStoreMock.currentForm);
-getStateForms.mockResolvedValue({ Items: [fullStoreMock.currentForm.statusData] });
-
 const renderComponent = () => {
-  useStore.setState(fullStoreMock.currentForm);
+  useStore.setState({
+    ...fullStoreMock.currentForm,
+    user: { role: "state", state: "AL" },
+    loadForm: vi.fn(),
+  });
   return render(
     <BrowserRouter>
       <PrintPDF/>
@@ -48,7 +33,7 @@ const renderComponent = () => {
 describe("PrintPDF component", () => {
   it("should render appropriate sub-components", async () => {
     const { container } = renderComponent();
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled);
+    await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
     
     const breadcrumbs = container.querySelectorAll(".breadcrumbs a");
     const expectedHrefs = [

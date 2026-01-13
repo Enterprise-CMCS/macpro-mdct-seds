@@ -2,12 +2,10 @@ env:
   browser: true
   es6: true
   node: true
-  jest/globals: true
   cypress/globals: true
 parser: '@typescript-eslint/parser'
 plugins:
   - '@typescript-eslint'
-  - 'jest'
   - 'cypress'
   - 'playwright'
 parserOptions:
@@ -20,7 +18,8 @@ extends:
 
 rules:
   no-const-assign: error
-  no-duplicate-imports: error
+  no-duplicate-imports: off
+  "@typescript-eslint/no-duplicate-imports": error
   no-unreachable: off
   no-unused-vars: off
   '@typescript-eslint/no-unused-vars': off

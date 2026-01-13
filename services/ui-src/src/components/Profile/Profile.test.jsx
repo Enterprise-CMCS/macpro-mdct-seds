@@ -1,40 +1,25 @@
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import Profile from "./Profile";
-import { render, screen, waitFor } from "@testing-library/react";
-import { getUserInfo } from "../../utility-functions/userFunctions";
-
-vi.spyOn(window, "alert").mockImplementation();
-
-vi.mock("react-router-dom", () => ({
-  useHistory: vi.fn().mockReturnValue({
-    push: vi.fn(),
-  })
-}));
-
-vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn().mockResolvedValue({
-    Items: [
-      {
-        email: "ben@example.com",
-        firstName: "ben",
-        lastName: "martin",
-        role: "state",
-        states: ["CO"],
-      },
-    ],
-  }),
-}));
+import { render, screen } from "@testing-library/react";
+import { useStore } from "../../store/store";
 
 const renderComponent = () => {
+  useStore.setState({
+    user: {
+      email: "ben@example.com",
+      firstName: "Ben",
+      lastName: "Martin",
+      role: "state",
+      state: "CO",
+    }
+  });
   return render(<Profile/>);
 }
 
 describe("Test SummaryTab.js", () => {
   it("should render appropriate inputs, disabled, with correct values", async () => {
     renderComponent();
-
-    await waitFor(() => expect(getUserInfo).toHaveBeenCalled());
 
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeDisabled();
@@ -52,8 +37,8 @@ describe("Test SummaryTab.js", () => {
     expect(screen.getByLabelText("Role")).toBeDisabled();
     expect(screen.getByLabelText("Role").value).toBe("State");
 
-    expect(screen.getByLabelText("States")).toBeInTheDocument();
-    expect(screen.getByLabelText("States")).toBeDisabled();
-    expect(screen.getByLabelText("States").value).toBe("CO");
+    expect(screen.getByLabelText("State")).toBeInTheDocument();
+    expect(screen.getByLabelText("State")).toBeDisabled();
+    expect(screen.getByLabelText("State").value).toBe("CO");
   });
 });

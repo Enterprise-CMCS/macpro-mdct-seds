@@ -1,0 +1,65 @@
+import handler from "../../../libs/handler-lib.ts";
+import { scanForUserWithSub } from "../get/getCurrentUser.ts";
+import {
+  authorizeAdmin,
+  authorizeAdminOrUserWithEmail,
+  authorizeAnyUser,
+} from "../../../auth/authConditions.ts";
+import { putUser } from "../../../storage/users.ts";
+
+export const main = handler(async (event, context) => {
+  await authorizeAnyUser(event);
+
+  const data = JSON.parse(event.body);
+  const currentUser = await scanForUserWithSub(data.usernameSub);
+  if (!currentUser) {
+    // TODO, return a nice 404 response object instead
+    throw new Error(`User not found! Scanned for sub: ${data.usernameSub}`);
+  }
+
+  await authorizeAdminOrUserWithEmail(event, currentUser!.email);
+
+  if (modifyingAnythingButAnUndefinedState(data, currentUser)) {
+    await authorizeAdmin(event);
+  }
+
+  assertPayloadIsValid(data);
+
+  const updatedUser = {
+    ...currentUser,
+    role: data.role,
+    state: data.state,
+  };
+
+  await putUser(updatedUser);
+});
+
+function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {
+  if (incomingUser.username !== existingUser.username) return true;
+  if (incomingUser.role !== existingUser.role) return true;
+  if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
+  if (existingUser.state !== undefined) return true;
+  return false;
+}
+
+function assertPayloadIsValid (data) {
+  if (!data) {
+    throw new Error("User update payload is missing");
+  }
+
+  if (typeof data.role !== "string" || !data.role) {
+    throw new Error("Invalid user role - must be a nonempty string");
+  }
+  if (!["admin", "business", "state"].includes(data.role)) {
+    throw new Error("Invalid user role - must be an existing role");
+  }
+
+  if (data.state !== undefined) {
+    if (typeof data.state !== "string") {
+      throw new Error("Invalid user state - must be a string");
+    }
+    if (!/^[A-Z]{2}$/.test(data.state)) {
+      throw new Error("Invalid user state - must be 2-letter abbreviations");
+    }
+  }
+}

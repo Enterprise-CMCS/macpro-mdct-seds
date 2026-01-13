@@ -1,33 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Textarea } from "@trussworks/react-uswds";
 import { isFinalCertified } from "../../utility-functions/formStatus";
-import { getUserInfo } from "../../utility-functions/userFunctions";
 import { useStore } from "../../store/store";
 
 const SummaryNotes = () => {
+  const userRole = useStore(state => state.user.role);
   const statusData = useStore(state => state.statusData);
   const saveSummaryNotes = useStore(state => state.updateSummaryNotes);
   const [summaryNotes, setSummaryNotes] = useState([]);
-  const [userRole, setUserRole] = useState();
-
-  let currentSummaryNotes;
-  let disabledNotes = false;
+  const disabledNotes = userRole !== "state" || isFinalCertified(statusData);
 
   // Summary tab will load before statusData is populated and this prevents an error
+  let currentSummaryNotes;
   if (statusData.state_comments !== undefined) {
     currentSummaryNotes = statusData.state_comments[0].entry;
   }
 
   // Set the initial state of the summary notes
   useEffect(() => {
-    const disableNotes = async () => {
-      let existingUser = await getUserInfo();
-      const userdata = existingUser["Items"];
-      userdata.map(async userInfo => {
-        setUserRole(userInfo.role);
-      });
-    };
-    disableNotes();
     setSummaryNotes(currentSummaryNotes);
   }, [currentSummaryNotes, statusData]);
 
@@ -35,13 +25,6 @@ const SummaryNotes = () => {
   const updateTempSummaryNotes = e => {
     setSummaryNotes(e.target.value);
   };
-  if (
-    userRole === "admin" ||
-    userRole === "business" ||
-    isFinalCertified(statusData)
-  ) {
-    disabledNotes = true;
-  }
 
   return (
     <>

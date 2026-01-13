@@ -2,7 +2,7 @@
   "name": "app-api",
   "description": "",
   "version": "1.0.0",
-  "main": "handler.js",
+  "packageManager": "yarn@4.12.0",
   "type": "module",
   "scripts": {
     "test": "vitest",
@@ -15,17 +15,21 @@
     "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds.git"
   },
   "devDependencies": {
+    "@types/jsdom": "27.0.0",
+    "@types/node": "^24.10.1",
     "@vitest/coverage-v8": "3.0.5",
+    "aws-sdk-client-mock": "^4.1.0",
+    "typescript": "^5.9.3",
     "vitest": "^3.0.5"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.744.0",
-    "@aws-sdk/client-ses": "^3.744.0",
-    "@aws-sdk/lib-dynamodb": "^3.744.0",
-    "aws-sdk-client-mock": "^4.1.0",
+    "@aws-sdk/client-dynamodb": "^3.946.0",
+    "@aws-sdk/client-ses": "^3.946.0",
+    "@aws-sdk/lib-dynamodb": "^3.946.0",
+    "dompurify": "3.3.1",
+    "jsdom": "26.1.0",
     "jwt-decode": "^4.0.0",
     "kafkajs": "^1.16.0",
-    "uuid": "^7.0.3",
-    "typescript": "^4.9.5"
+    "uuid": "^7.0.3"
   }
 }
