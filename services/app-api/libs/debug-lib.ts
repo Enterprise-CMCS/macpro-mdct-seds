@@ -5,7 +5,7 @@ type LogEvent = {
   date: Date;
   level: LogLevel;
   string: string;
-}
+};
 const logs: LogEvent[] = [];
 
 const buildLoggerForLevel = (level: LogLevel) => {

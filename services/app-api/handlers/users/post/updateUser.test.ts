@@ -1,17 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as updateUser } from "./updateUser.ts";
-import {
-  scanForUserWithSub as actualScanForUserWithSub,
-} from "../get/getCurrentUser.ts";
+import { scanForUserWithSub as actualScanForUserWithSub } from "../get/getCurrentUser.ts";
 import {
   authorizeAnyUser as actualAuthorizeAnyUser,
   authorizeAdminOrUserWithEmail as actualAuthorizeAdminOrUserWithEmail,
   authorizeAdmin as actualAuthorizeAdmin,
 } from "../../../auth/authConditions.ts";
-import {
-  AuthUser,
-  putUser as actualPutUser,
-} from "../../../storage/users.ts";
+import { AuthUser, putUser as actualPutUser } from "../../../storage/users.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
@@ -19,12 +14,14 @@ vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
 }));
 const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
-const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
+const authorizeAdminOrUserWithEmail = vi.mocked(
+  actualAuthorizeAdminOrUserWithEmail
+);
 const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 
 vi.mock("../../../storage/users.ts", () => ({
   putUser: vi.fn(),
-}))
+}));
 const putUser = vi.mocked(actualPutUser);
 
 vi.mock("../get/getCurrentUser.ts", () => ({
@@ -60,9 +57,11 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+      })
+    );
 
     expect(putUser).toHaveBeenCalledWith({
       userId: "42",
@@ -79,15 +78,17 @@ describe("updateUser.ts", () => {
       body: JSON.stringify({
         ...mockUser,
         state: undefined,
-      })
-    }
+      }),
+    };
     scanForUserWithSub.mockResolvedValueOnce(mockUser);
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+      })
+    );
 
     expect(putUser).toHaveBeenCalledWith({
       userId: "42",
@@ -104,10 +105,12 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return an error if the requesting user isn't an admin, or updating themselves", async () => {
@@ -116,10 +119,12 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return an error if the requesting user is updating anything other than their state", async () => {
@@ -128,12 +133,12 @@ describe("updateUser.ts", () => {
 
     const expectFieldChangeToError = async (changedProperty) => {
       const evt = {
-        body: JSON.stringify({...mockUser, ...changedProperty}),
+        body: JSON.stringify({ ...mockUser, ...changedProperty }),
       };
       const response = await updateUser(evt);
       expect(response.statusCode).toBe(500);
-    }
-    
+    };
+
     await expectFieldChangeToError({ username: "WISC" });
     await expectFieldChangeToError({ role: "admin" });
     await expectFieldChangeToError({ usernameSub: "4444-5555-6666-7777" });
@@ -148,7 +153,7 @@ describe("updateUser.ts", () => {
     scanForUserWithSub.mockResolvedValueOnce({ ...mockUser, state: undefined });
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
     const evt = {
-      body: JSON.stringify({...mockUser, state: "CO" }),
+      body: JSON.stringify({ ...mockUser, state: "CO" }),
     };
 
     const response = await updateUser(evt);
@@ -166,7 +171,7 @@ describe("updateUser.ts", () => {
       const evt = { body: JSON.stringify(payload) };
       const response = await updateUser(evt);
       expect(response.statusCode).toBe(500);
-    }
+    };
 
     // Payload must exist
     await expectFieldChangeToError(null);

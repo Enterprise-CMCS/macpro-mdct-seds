@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
-import {
-  buildSortedAccordionByYearQuarter
-} from "../../utility-functions/sortingFunctions";
+import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const HomeAdmin = () => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const [selectedState, setSelectedState] = useState();
   const [accordionItems, setAccordionItems] = useState("");
 
-  const updateUsState = async stateId => {
+  const updateUsState = async (stateId) => {
     setSelectedState(stateId);
 
     // Get list of all state forms
     let forms = [];
     try {
       forms = await obtainAvailableForms({ stateId });
-    } catch (e) { /* no-op */ }
+    } catch (e) {
+      /* no-op */
+    }
 
     // Build Accordion items and set to local state
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, stateId));
@@ -70,11 +70,13 @@ const HomeAdmin = () => {
             className="usa-select"
             id="state-select"
             value={selectedState}
-            onChange={evt => updateUsState(evt.target.value)}
+            onChange={(evt) => updateUsState(evt.target.value)}
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>
+                {label}
+              </option>
             ))}
           </select>
         </div>

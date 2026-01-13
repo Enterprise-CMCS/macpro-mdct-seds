@@ -3,7 +3,7 @@ import { FormTemplate, getTemplate, putTemplate } from "./formTemplates.ts";
 import {
   DynamoDBDocumentClient,
   GetCommand,
-  PutCommand
+  PutCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
@@ -32,10 +32,13 @@ describe("Form Template storage", () => {
       const result = await getTemplate(2025);
 
       expect(result).toEqual(mockTemplate);
-      expect(mockGet).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-templates",
-        Key: { year: 2025 }
-      }), expect.any(Function));
+      expect(mockGet).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-templates",
+          Key: { year: 2025 },
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -43,10 +46,13 @@ describe("Form Template storage", () => {
     it("should put the given item into dynamo", async () => {
       await putTemplate(mockTemplate);
 
-      expect(mockPut).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-templates",
-        Item: mockTemplate
-      }), expect.any(Function));
+      expect(mockPut).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-templates",
+          Item: mockTemplate,
+        }),
+        expect.any(Function)
+      );
     });
   });
 });

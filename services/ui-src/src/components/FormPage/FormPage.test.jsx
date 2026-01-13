@@ -7,58 +7,66 @@ import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("../FormHeader/FormHeader", () => ({
-  default: props => <div className="form-header">{JSON.stringify(props)}</div>
+  default: (props) => (
+    <div className="form-header">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../NotApplicable/NotApplicable", () => ({
-  default: props => (
+  default: (props) => (
     <div className="not-applicable">{JSON.stringify(props)}</div>
-  )
+  ),
 }));
 
 vi.mock("../TabContainer/TabContainer", () => ({
-  default: props => <div className="tab-container">{JSON.stringify(props)}</div>
+  default: (props) => (
+    <div className="tab-container">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../FormFooter/FormFooter", () => ({
-  default: props => <div className="form-footer">{JSON.stringify(props)}</div>
+  default: (props) => (
+    <div className="form-footer">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../FormLoadError/FormLoadError", () => ({
-  default: props => (
+  default: (props) => (
     <div className="form-load-error">{JSON.stringify(props)}</div>
-  )
+  ),
 }));
 
 vi.mock("../Unauthorized/Unauthorized", () => ({
-  default: props => <div className="unauth-cmpt">{JSON.stringify(props)}</div>
+  default: (props) => (
+    <div className="unauth-cmpt">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn()
+  getUserInfo: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async importOriginal => ({
+vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({
     state: "CO",
     year: "2024",
     quarter: "3",
-    formName: "21E"
-  })
+    formName: "21E",
+  }),
 }));
 
 const mockUser = {
   role: "state",
-  state: "CO"
+  state: "CO",
 };
 
 const mockForm = {
   statusData: {
     last_modified: "2024-07-27T10:01:42Z",
-    save_error: false
+    save_error: false,
   },
-  loadError: ""
+  loadError: "",
 };
 
 const renderComponent = (form, user) => {
@@ -66,7 +74,7 @@ const renderComponent = (form, user) => {
     user,
     statusData: form.statusData,
     loadError: form.loadError,
-    loadForm: vi.fn()
+    loadForm: vi.fn(),
   });
 
   return render(
@@ -90,11 +98,11 @@ describe("FormPage", () => {
       state: "CO",
       year: "2024",
       quarter: "3",
-      form: "21E"
+      form: "21E",
     });
 
     const printButton = screen.getByText("Print view / PDF", {
-      selector: "button"
+      selector: "button",
     });
     expect(printButton).toBeInTheDocument();
 
@@ -111,7 +119,7 @@ describe("FormPage", () => {
       state: "CO",
       year: "2024",
       quarter: "3",
-      lastModified: "2024-07-27T10:01:42Z"
+      lastModified: "2024-07-27T10:01:42Z",
     });
 
     const unauthorized = container.querySelector(".unauth-cmpt");
@@ -148,8 +156,8 @@ describe("FormPage", () => {
       ...mockForm,
       statusData: {
         ...mockForm.statusData,
-        last_modified: new Date().toISOString()
-      }
+        last_modified: new Date().toISOString(),
+      },
     };
     const { container } = renderComponent(form, mockUser);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
@@ -165,8 +173,8 @@ describe("FormPage", () => {
       ...mockForm,
       statusData: {
         ...mockForm.statusData,
-        save_error: true
-      }
+        save_error: true,
+      },
     };
     const { container } = renderComponent(form, mockUser);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
@@ -180,7 +188,7 @@ describe("FormPage", () => {
   it("should render an error message when the form has failed to load", async () => {
     const form = {
       ...mockForm,
-      loadError: true
+      loadError: true,
     };
     const { container } = renderComponent(form, mockUser);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());

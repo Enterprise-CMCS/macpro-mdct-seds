@@ -34,17 +34,20 @@ describe("DynamoDB library functions", () => {
         .mockResolvedValueOnce({ Items: [2, 3], LastEvaluatedKey: "b" })
         .mockResolvedValueOnce({ LastEvaluatedKey: "c" })
         .mockResolvedValueOnce({ Items: [4] });
-      
+
       const result = await dynamodbLib.scan({});
 
       expect(result).toEqual({
         Count: 4,
-        Items: [1, 2, 3, 4]
+        Items: [1, 2, 3, 4],
       });
       for (let mockStartKey of ["a", "b", "c"]) {
-        expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-          ExclusiveStartKey: mockStartKey
-        }), expect.any(Function))
+        expect(mockScan).toHaveBeenCalledWith(
+          expect.objectContaining({
+            ExclusiveStartKey: mockStartKey,
+          }),
+          expect.any(Function)
+        );
       }
     });
   });
@@ -54,51 +57,47 @@ describe("DynamoDB library functions", () => {
       mockBatchWrite.mockResolvedValue({});
       const items = [...new Array(60)].map((_, id) => ({ id }));
 
-      await dynamodbLib.putMultiple(
-        "mockTableName",
-        items,
-        item => item.id
-      );
+      await dynamodbLib.putMultiple("mockTableName", items, (item) => item.id);
 
       expect(mockBatchWrite).toHaveBeenCalledTimes(3);
       const batchSizes = mockBatchWrite.mock.calls.map(
-        call => call[0].RequestItems.mockTableName.length
+        (call) => call[0].RequestItems.mockTableName.length
       );
       expect(batchSizes).toEqual([25, 25, 10]);
-      const processedItems = mockBatchWrite.mock.calls.flatMap(
-        call => call[0].RequestItems.mockTableName
-          .map(req => req.PutRequest.Item)
+      const processedItems = mockBatchWrite.mock.calls.flatMap((call) =>
+        call[0].RequestItems.mockTableName.map((req) => req.PutRequest.Item)
       );
       expect(processedItems).toEqual(items);
     });
 
     it("should throw if any item fails", async () => {
-      mockBatchWrite.mockImplementation(async batchRequest => {
+      mockBatchWrite.mockImplementation(async (batchRequest) => {
         // Let's cause a handful of failures in the second batch
-        const itemsToFail = batchRequest.RequestItems.mockTableName
-          .filter(req => {
+        const itemsToFail = batchRequest.RequestItems.mockTableName.filter(
+          (req) => {
             const item = req.PutRequest.Item;
-            return item.id > 40 && item.id % 2 === 1
-          });
+            return item.id > 40 && item.id % 2 === 1;
+          }
+        );
         if (itemsToFail.length === 0) {
           return Promise.resolve({});
         } else {
           return Promise.resolve({
             UnprocessedItems: {
-              mockTableName: itemsToFail
-            }
+              mockTableName: itemsToFail,
+            },
           });
         }
       });
       const items = [...new Array(60)].map((_, id) => ({ id }));
 
-      const tryPutMultiple = async () => 
+      const tryPutMultiple = async () =>
         await dynamodbLib.putMultiple(
           "mockTableName",
           items,
-          item => item.id
+          (item) => item.id
         );
-      
+
       await expect(tryPutMultiple).rejects.toThrow(
         "Failed to insert item(s): [41, 43, 45, 47, 49]"
       );

@@ -42,7 +42,7 @@ const {
  * | 4, true, "Final Cert."  | 4 (Not Required)   |     5 |
  * | 4, true, "Not Req."     | 4 (Not Required)   |  ~350 |
  * * The exception is MA-2021-1-64.21E, which will go from 1/true/InPrg -> 1
- * 
+ *
  * Note that this migration has a bit of history.
  * - It was run in DEV on Sep 16, 2025.
  * - It was then reverted (more or less) by unMigrateStateFormStatus on Oct 3.
@@ -71,14 +71,14 @@ const awsConfig = {
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    fractionalSecondDigits: 3
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  fractionalSecondDigits: 3,
 });
 const logPrefix = () => dateFormatter.format(new Date()) + " | ";
 
-function updateStatusFields (stateForm) {
+function updateStatusFields(stateForm) {
   const { state_form, status_id, status, not_applicable } = stateForm;
 
   if (not_applicable === undefined && status === undefined) {
@@ -87,17 +87,25 @@ function updateStatusFields (stateForm) {
   }
 
   if (
-    (typeof status_id !== "number" || typeof status !== "string" || typeof not_applicable !== "boolean") ||
+    typeof status_id !== "number" ||
+    typeof status !== "string" ||
+    typeof not_applicable !== "boolean" ||
     (status_id === 1 && status !== "In Progress") ||
     (status_id === 2 && status !== "In Progress") ||
-    (status_id === 3 && status !== "Provisional Data Certified and Submitted") ||
-    (status_id === 4 && status !== "Final Data Certified and Submitted" && status !== "Not Required")
+    (status_id === 3 &&
+      status !== "Provisional Data Certified and Submitted") ||
+    (status_id === 4 &&
+      status !== "Final Data Certified and Submitted" &&
+      status !== "Not Required")
   ) {
     // This form does not look like I expected, so I refuse to touch it.
-    throw new Error(`Form ${state_form} is in a bad status! [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
+    throw new Error(
+      `Form ${state_form} is in a bad status! [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`
+    );
   }
 
-  if ((not_applicable && status !== "Not Required") ||
+  if (
+    (not_applicable && status !== "Not Required") ||
     (!not_applicable && status === "Not Required")
   ) {
     /*
@@ -105,7 +113,9 @@ function updateStatusFields (stateForm) {
      * We expect to see fewer than 20 of these,
      * and we want all of their IDs logged out.
      */
-    console.warn(`${logPrefix()}Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`);
+    console.warn(
+      `${logPrefix()}Form ${state_form} has an outlier status. [status_id, status, not_applicable] = ${JSON.stringify([status_id, status, not_applicable])}`
+    );
   }
 
   if (state_form === "MA-2021-1-64.21E") {
@@ -114,8 +124,14 @@ function updateStatusFields (stateForm) {
      * but which actually has some answers filled in.
      * The rest will go to Not Required, but this one stays In Progress.
      */
-    if (status_id !== 1 || not_applicable !== true || status !== "In Progress") {
-      throw new Error(`Form MA-2021-1-64.21E has changed since we last checked it! Re-examine and re-evaluate.`);
+    if (
+      status_id !== 1 ||
+      not_applicable !== true ||
+      status !== "In Progress"
+    ) {
+      throw new Error(
+        `Form MA-2021-1-64.21E has changed since we last checked it! Re-examine and re-evaluate.`
+      );
     }
     stateForm.status_id = 1;
     delete stateForm.status;
@@ -126,14 +142,11 @@ function updateStatusFields (stateForm) {
   // Let's make the update.
   if (not_applicable || status === "Not Required") {
     stateForm.status_id = 4;
-  }
-  else if (status_id === 2) {
+  } else if (status_id === 2) {
     stateForm.status_id = 1;
-  }
-  else if (status_id === 3) {
+  } else if (status_id === 3) {
     stateForm.status_id = 2;
-  }
-  else if (status_id === 4) {
+  } else if (status_id === 4) {
     stateForm.status_id = 3;
   }
   delete stateForm.status;
@@ -141,24 +154,29 @@ function updateStatusFields (stateForm) {
   return true;
 }
 
-async function * iterateStateForms () {
+async function* iterateStateForms() {
   console.log(`${logPrefix()}Scanning...`);
   let pageNumber = 0;
   let totalFormCount = 0;
-  for await (let page of paginateScan({ client }, { TableName: STATE_FORMS_TABLE_NAME })) {
+  for await (let page of paginateScan(
+    { client },
+    { TableName: STATE_FORMS_TABLE_NAME }
+  )) {
     pageNumber += 1;
     let pageFormCount = 0;
-    for (let stateForm of (page.Items ?? [])) {
+    for (let stateForm of page.Items ?? []) {
       pageFormCount += 1;
       totalFormCount += 1;
       yield stateForm;
     }
-    console.log(`${logPrefix()}Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`);
+    console.log(
+      `${logPrefix()}Completed scan of page ${pageNumber}; ${pageFormCount} forms processed.`
+    );
   }
   console.log(`${logPrefix()}Scan complete; ${totalFormCount} forms in all.`);
 }
 
-async function * formsToUpdate () {
+async function* formsToUpdate() {
   for await (let stateForm of iterateStateForms()) {
     const needsUpdate = updateStatusFields(stateForm);
     if (needsUpdate) {
@@ -169,20 +187,22 @@ async function * formsToUpdate () {
 
 /**
  * Send a BatchWriteCommand to Put the given array of StateForm objects.
- * @param {object[]} batch 
+ * @param {object[]} batch
  */
-async function sendBatch (batch) {
+async function sendBatch(batch) {
   const command = new BatchWriteCommand({
     RequestItems: {
       [STATE_FORMS_TABLE_NAME]: batch.map((Item) => ({
-        PutRequest: { Item }
-      }))
-    }
+        PutRequest: { Item },
+      })),
+    },
   });
   const response = await client.send(command);
   const unprocessedItems = response.UnprocessedItems?.[STATE_FORMS_TABLE_NAME];
   if (unprocessedItems && unprocessedItems.length > 0) {
-    const ids = unprocessedItems.map((putRequest) => putRequest.Item.state_form);
+    const ids = unprocessedItems.map(
+      (putRequest) => putRequest.Item.state_form
+    );
     throw new Error(
       `Batch write failed! The following forms were not updated: ${ids.join(", ")}`
     );
@@ -210,12 +230,15 @@ async function sendBatch (batch) {
       updatedCount += batch.length;
     }
 
-    console.log(`${logPrefix()}Found ${updatedCount} state forms in need of update.`);
+    console.log(
+      `${logPrefix()}Found ${updatedCount} state forms in need of update.`
+    );
     console.log(`${logPrefix()}All updates successful.`);
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     // The updatedCount may be short by up to 24 items, depending on how much of a batch failed.
-    console.log(`${logPrefix()}Updated at least ${updatedCount} state forms before exiting.`);
+    console.log(
+      `${logPrefix()}Updated at least ${updatedCount} state forms before exiting.`
+    );
   }
 })();

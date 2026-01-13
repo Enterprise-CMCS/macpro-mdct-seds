@@ -5,12 +5,9 @@ import { FormStatus } from "../../../shared/types.ts";
 import {
   FormAnswer,
   scanForAllFormIds,
-  writeAllFormAnswers
+  writeAllFormAnswers,
 } from "../../../storage/formAnswers.ts";
-import {
-  getTemplate,
-  putTemplate
-} from "../../../storage/formTemplates.ts";
+import { getTemplate, putTemplate } from "../../../storage/formTemplates.ts";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
@@ -18,7 +15,7 @@ import {
 import {
   scanFormsByQuarter,
   StateForm,
-  writeAllStateForms
+  writeAllStateForms,
 } from "../../../storage/stateForms.ts";
 import { formTypes } from "../../../shared/formTypeList.ts";
 import { stateList } from "../../../shared/stateList.ts";
@@ -114,11 +111,8 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await scanFormsByQuarter(
-    specifiedYear,
-    specifiedQuarter
-  );
-  const foundFormIds = new Set(foundForms.map(f => f.state_form));
+  const foundForms = await scanFormsByQuarter(specifiedYear, specifiedQuarter);
+  const foundFormIds = new Set(foundForms.map((f) => f.state_form));
 
   const stateFormsToCreate: StateForm[] = [];
 
@@ -155,8 +149,7 @@ const generateQuarterForms = async (event) => {
     }
   }
 
-
-  const newFormIds = new Set(stateFormsToCreate.map(f => f.state_form));
+  const newFormIds = new Set(stateFormsToCreate.map((f) => f.state_form));
 
   console.log(`Saving ${stateFormsToCreate.length} state forms`);
   if (stateFormsToCreate.length > 0) {
@@ -187,9 +180,8 @@ const generateQuarterForms = async (event) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
@@ -272,13 +264,13 @@ export const getOrCreateQuestions = async (year: number) => {
     return questions;
   }
 
-  questions = (await getOrCreateFormTemplate(year)).map(question => ({
+  questions = (await getOrCreateFormTemplate(year)).map((question) => ({
     ...question,
     created_date: new Date().toISOString(),
     last_modified: new Date().toISOString(),
   }));
-  
+
   await writeAllFormQuestions(questions);
 
   return questions;
-}
+};

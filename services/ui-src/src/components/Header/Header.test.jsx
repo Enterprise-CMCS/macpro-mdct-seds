@@ -13,14 +13,14 @@ let useContextMock;
 vi.mock("config/config", () => ({
   default: {
     cognito: {
-      REDIRECT_SIGNOUT: "elsewhere.com"
-    }
-  }
+      REDIRECT_SIGNOUT: "elsewhere.com",
+    },
+  },
 }));
 
 vi.mock("aws-amplify/auth", () => ({
   fetchAuthSession: vi.fn().mockResolvedValue({ tokens: "mock tokens" }),
-  signOut: vi.fn()
+  signOut: vi.fn(),
 }));
 
 // *** set up mocks

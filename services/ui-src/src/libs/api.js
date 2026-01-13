@@ -5,7 +5,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 const requestOptions = async () => {
   const { idToken } = (await fetchAuthSession()).tokens ?? {};
   const options = {
-    headers: { "x-api-key": idToken?.toString() }
+    headers: { "x-api-key": idToken?.toString() },
   };
   return options;
 };
@@ -37,7 +37,7 @@ const apiRequest = async (request, path, options) => {
 
 export const apiLib = {
   get: async (path, options) => apiRequest(get, path, options),
-  post: async (path, options) => apiRequest(post, path, options)
+  post: async (path, options) => apiRequest(post, path, options),
 };
 
 /*************************** USER API ***************************/
@@ -49,7 +49,7 @@ export const listUsers = async () => {
 };
 
 // *** get user information by user id
-export const getUserById = async data => {
+export const getUserById = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/users/${data.userId}`, opts);
@@ -65,10 +65,10 @@ export const getUserById = async data => {
 export const getCurrentUser = async () => {
   const opts = await requestOptions();
   return await apiLib.get(`/getCurrentUser`, opts);
-}
+};
 
 // *** update user information
-export const updateUser = async data => {
+export const updateUser = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -77,7 +77,7 @@ export const updateUser = async data => {
 
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
-export const getStateForms = async data => {
+export const getStateForms = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -85,7 +85,7 @@ export const getStateForms = async data => {
 };
 
 // *** update forms associated with a specified state for specified year and quarter
-export const updateStateForm = async data => {
+export const updateStateForm = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -103,7 +103,7 @@ export const getSingleForm = async (state, specifiedYear, quarter, form) => {
 };
 
 // *** get form years and quarters
-export const obtainAvailableForms = async data => {
+export const obtainAvailableForms = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -111,7 +111,7 @@ export const obtainAvailableForms = async data => {
 };
 
 // *** save single form
-export const saveSingleForm = async data => {
+export const saveSingleForm = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -119,7 +119,7 @@ export const saveSingleForm = async data => {
 };
 
 // *** generate quarterly forms
-export const generateQuarterlyForms = async data => {
+export const generateQuarterlyForms = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -127,7 +127,7 @@ export const generateQuarterlyForms = async data => {
 };
 
 // *** get form template years
-export const obtainFormTemplateYears = async data => {
+export const obtainFormTemplateYears = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -135,7 +135,7 @@ export const obtainFormTemplateYears = async data => {
 };
 
 // *** get a form template by year
-export const obtainFormTemplate = async data => {
+export const obtainFormTemplate = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -143,7 +143,7 @@ export const obtainFormTemplate = async data => {
 };
 
 // *** Create or update a form template based on year
-export const updateCreateFormTemplate = async data => {
+export const updateCreateFormTemplate = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -151,7 +151,7 @@ export const updateCreateFormTemplate = async data => {
 };
 
 // *** generate enrollment totals
-export const generateEnrollmentTotals = async data => {
+export const generateEnrollmentTotals = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -159,7 +159,7 @@ export const generateEnrollmentTotals = async data => {
 };
 
 // **
-export const sendUncertifyEmail = async data => {
+export const sendUncertifyEmail = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
   return await apiLib.post(`/notification/uncertified`, opts);

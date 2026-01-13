@@ -76,11 +76,13 @@ const generateTotals = async (stateForms, ageRange) => {
       let ageRangeLength = ageRange.length;
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
-        const existingItems = (await dynamoDb.query({
-          TableName: process.env.FormAnswersTable,
-          ExpressionAttributeValues: { ":answerEntry": answerEntry },
-          KeyConditionExpression: "answer_entry = :answerEntry",
-        })).Items;
+        const existingItems = (
+          await dynamoDb.query({
+            TableName: process.env.FormAnswersTable,
+            ExpressionAttributeValues: { ":answerEntry": answerEntry },
+            KeyConditionExpression: "answer_entry = :answerEntry",
+          })
+        ).Items;
 
         // Add just the rows, no other details are needed
         let questionResultLength = existingItems.length;

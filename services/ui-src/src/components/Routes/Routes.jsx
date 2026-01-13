@@ -1,4 +1,4 @@
-import {React, useEffect} from "react";
+import { React, useEffect } from "react";
 import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
 import { useStore } from "../../store/store";
 import Home from "../Home/Home";
@@ -19,15 +19,15 @@ import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
 
 export default function Routes({ isAuthorized }) {
-  const userRole = useStore(state => state.user.role);
-  const history = useHistory()
-  const location = useLocation()
+  const userRole = useStore((state) => state.user.role);
+  const history = useHistory();
+  const location = useLocation();
   // Preserve old hash style urls and route them to adjusted urls
   useEffect(() => {
-    if (location.hash && location.hash.startsWith('#/')) {
-      history.replace(location.hash.replace('#', ''))
+    if (location.hash && location.hash.startsWith("#/")) {
+      history.replace(location.hash.replace("#", ""));
     }
-  }, [history, location.hash, location.pathname])
+  }, [history, location.hash, location.pathname]);
 
   if (!isAuthorized) {
     return (
