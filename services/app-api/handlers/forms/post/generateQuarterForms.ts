@@ -175,12 +175,14 @@ const generateQuarterForms = async (event: any) => {
         allQuestions[question].age_ranges ??
         determineAgeRanges(allQuestions[question].question);
       // Loop through each age range and insert row
+      if (!ageRanges) continue;
+
       for (const range in ageRanges) {
         // Get reusable values
         const currentState = stateList[state].state_id;
         const currentForm = allQuestions[question].question.split("-")[1];
-        const currentAgeRangeId = (range as any).key;
-        const currentAgeRangeLabel = (range as any).label;
+        const currentAgeRangeId = ageRanges[range].key;
+        const currentAgeRangeLabel = ageRanges[range].label;
         const currentQuestionNumber =
           allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
