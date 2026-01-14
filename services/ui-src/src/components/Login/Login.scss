@@ -10,13 +10,25 @@
 .login-wrapper {
   width: 100%;
   max-width: 424px;
-  form {
-    label {
-      width: 100%;
-      text-align: left;
-    }
-    .form-control {
-      width: 100%;
-    }
+
+  .ds-c-inline-error {
+    display: none;
   }
+
+  label {
+    width: 100%;
+    text-align: left;
+  }
+
+  .ds-c-field {
+    width: 100%;
+    height: 46px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+}
+
+.developer-login .ds-u-clearfix:first-child {
+  margin-bottom: 24px;
 }

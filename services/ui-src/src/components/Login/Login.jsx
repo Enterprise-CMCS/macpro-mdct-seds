@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { signIn, signInWithRedirect } from "aws-amplify/auth";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
-import { useFormFields } from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
 import "./Login.scss";
 
@@ -12,7 +11,7 @@ import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
+  const [fields, setFieldChange] = useState({
     email: "",
     password: ""
   });
@@ -23,6 +22,13 @@ export default function Login() {
 
   async function signInWithOkta() {
     await signInWithRedirect({ provider: { custom: "Okta" } });
+  }
+
+  function onFieldChange(e) {
+    const { name, value } = e.target;
+    const newFields = { ...fields };
+    newFields[name] = value;
+    setFieldChange(newFields);
   }
 
   async function handleSubmitOkta(event) {
@@ -42,10 +48,10 @@ export default function Login() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await signIn({ 
-        username: fields.email, 
-        password: fields.password, 
-        options: {authFlowType: "USER_PASSWORD_AUTH"}
+      await signIn({
+        username: fields.email,
+        password: fields.password,
+        options: { authFlowType: "USER_PASSWORD_AUTH" }
       });
       window.location.href = "/";
     } catch (e) {
@@ -74,29 +80,25 @@ export default function Login() {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="developer-login text-center"
+        className="developer-login"
         hidden={hideCognitoLogin}
         data-testid="loginForm"
       >
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-            className="form-input"
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-            className="form-input"
-          />
-        </FormGroup>
+        <TextField
+          autoFocus
+          key="email"
+          name="email"
+          label="Email"
+          value={fields.email}
+          onChange={onFieldChange}
+        ></TextField>
+        <TextField
+          key="password"
+          name="password"
+          label="Password"
+          value={fields.password}
+          onChange={onFieldChange}
+        ></TextField>
         <div className="padding-y-9">
           <LoaderButton
             type="submit"

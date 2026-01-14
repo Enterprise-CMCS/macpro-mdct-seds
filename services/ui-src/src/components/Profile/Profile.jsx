@@ -1,8 +1,8 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Profile.scss";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
+import { TextField } from "@cmsgov/design-system";
 
 export default function Profile() {
   const user = useStore(state => state.user);
@@ -25,35 +25,41 @@ export default function Profile() {
         <Grid row>
           <Grid col={12}>
             <form>
-              <FormGroup controlId="email">
-                <ControlLabel>Email</ControlLabel>
-                <FormControl value={email} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="firstName">
-                <ControlLabel>First Name</ControlLabel>
-                <FormControl
-                  value={firstName}
-                  disabled={true}
-                />
-              </FormGroup>
-              <FormGroup controlId="lastName">
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl
-                  value={lastName}
-                  disabled={true}
-                />
-              </FormGroup>
-              <FormGroup controlId="role">
-                <ControlLabel>Role</ControlLabel>
-                <FormControl
-                  value={role}
-                  disabled={true}
-                />
-              </FormGroup>
-              <FormGroup controlId="state">
-                <ControlLabel>State</ControlLabel>
-                <FormControl value={state} disabled={true} />
-              </FormGroup>
+              <TextField
+                key="email"
+                name="email"
+                label="Email"
+                value={email}
+                disabled={true}
+              ></TextField>
+              <TextField
+                key="firstName"
+                name="firstName"
+                label="First Name"
+                value={firstName}
+                disabled={true}
+              ></TextField>
+              <TextField
+                key="lastName"
+                name="lastName"
+                label="Last Name"
+                value={lastName}
+                disabled={true}
+              ></TextField>
+              <TextField
+                key="role"
+                name="role"
+                label="Role"
+                value={role}
+                disabled={true}
+              ></TextField>
+              <TextField
+                key="state"
+                name="state"
+                label="State"
+                value={state}
+                disabled={true}
+              ></TextField>
             </form>
           </Grid>
         </Grid>

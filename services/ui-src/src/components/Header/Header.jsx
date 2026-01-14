@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Nav, NavDropdown, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
-import { GovBanner, NavList } from "@trussworks/react-uswds";
+import { GovBanner } from "@trussworks/react-uswds";
 import { Link } from "react-router-dom";
 import { useStore } from "../../store/store";
 
@@ -12,11 +10,12 @@ import config from "config/config";
 const Header = () => {
   const wipeUser = useStore(state => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [navigation, setNavigation] = useState(false);
 
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const authSession = (await fetchAuthSession());
+        const authSession = await fetchAuthSession();
         setIsAuthenticated(!!authSession?.tokens);
         // eslint-disable-next-line no-empty
       } catch (error) {}
@@ -50,25 +49,35 @@ const Header = () => {
             height={90}
           />
         </Link>
-        <Nav pullRight={true}>
+        <nav class="navbar">
           {isAuthenticated ? (
-            <>
-              <NavDropdown id="User" title="My Profile">
-                <LinkContainer to="/profile">
-                  <NavItem>User Profile</NavItem>
-                </LinkContainer>
-                <NavItem onClick={handleLogout}>Logout</NavItem>
-              </NavDropdown>
-            </>
+            <div id="User" class="dropdown">
+              <button
+                class="dropbtn"
+                onClick={() => {
+                  setNavigation(!navigation);
+                }}
+              >
+                My Profile
+              </button>
+              {navigation && (
+                <div class="dropdown-content">
+                  <ui class="dropdown-content">
+                    <li role="presentation"><a href="/profile">User Profile</a></li>
+                    <li role="presentation"><a role="button" onClick={handleLogout}>Logout</a></li>
+                  </ui>
+                </div>
+              )}
+            </div>
           ) : null}
-        </Nav>
+        </nav>
       </div>
 
       <div className="navigation">
         {isAuthenticated ? (
-          <Nav pullLeft={true}>
-            <NavList items={menuItems} />
-          </Nav>
+          <nav>
+            <Link to="/">Home</Link>
+          </nav>
         ) : null}
       </div>
     </div>
