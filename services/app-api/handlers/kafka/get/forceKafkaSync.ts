@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 const tableNames = [
   process.env.FormAnswersTable,
@@ -38,4 +39,6 @@ export const main = handler(async (event, context) => {
       throw e;
     }
   }
+
+  return ok();
 });

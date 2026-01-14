@@ -1,10 +1,11 @@
 import { sanitizeObject } from "../shared/sanitize.ts";
 import * as logger from "./debug-lib.ts";
+import { HttpResponse } from "./response-lib.ts";
 
-export default function handler(lambda) {
-  return async function (event) {
-    let body, statusCode;
-
+export default function handler(
+  lambda: (event: any, context: any) => Promise<HttpResponse>
+) {
+  return async function (event: any, context: any): Promise<HttpResponse> {
     if (event.body) {
       event.body = JSON.stringify(sanitizeObject(JSON.parse(event.body)));
     }
@@ -18,27 +19,28 @@ export default function handler(lambda) {
 
     try {
       // Run the Lambda
-      body = await lambda(event);
-      statusCode = 200;
+      const response = await lambda(event, context);
+      
+      // Extract and rebuild the response
+      return {
+        statusCode: response.statusCode,
+        body: response.body,
+        headers: response.headers,
+      } as HttpResponse;
     } catch (e) {
       // Print debug messages
       logger.error("Error: %O", e);
 
-      body = { error: e.message };
-      statusCode = 500;
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: e.message }),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
+      } as HttpResponse;
     } finally {
       logger.flush();
     }
-
-    // Return HTTP response
-
-    return {
-      statusCode,
-      body: JSON.stringify(body),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
-    };
   };
 }

@@ -3,6 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { StateForm, writeAllStateForms } from "../../../storage/stateForms.ts";
 import { FormQuestion } from "../../../storage/formQuestions.ts";
+import { ok, notFound } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
@@ -12,21 +13,25 @@ export const main = handler(async (event, context) => {
   // Get all State Forms
   const stateForms = await getStateForms();
   if (stateForms.status === 404) {
-    return stateForms;
+    return notFound({
+      message: stateForms.message,
+    });
   }
 
   // Get answer entries from forms and bundle totals together
   const generatedTotals = await generateTotals(stateForms.entries, ageRanges);
   if (generatedTotals.status === 404) {
-    return generatedTotals;
+    return notFound({
+      message: generatedTotals.message,
+    });
   }
 
   await writeAllStateForms(generatedTotals.countsToWrite!);
 
-  return {
+  return ok({
     status: 200,
     message: `Generated Totals Successfully`,
-  };
+  });
 });
 
 const getStateForms = async () => {
@@ -76,11 +81,13 @@ const generateTotals = async (stateForms, ageRange) => {
       let ageRangeLength = ageRange.length;
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
-        const existingItems = (await dynamoDb.query({
-          TableName: process.env.FormAnswersTable,
-          ExpressionAttributeValues: { ":answerEntry": answerEntry },
-          KeyConditionExpression: "answer_entry = :answerEntry",
-        })).Items;
+        const existingItems = (
+          await dynamoDb.query({
+            TableName: process.env.FormAnswersTable,
+            ExpressionAttributeValues: { ":answerEntry": answerEntry },
+            KeyConditionExpression: "answer_entry = :answerEntry",
+          })
+        ).Items;
 
         // Add just the rows, no other details are needed
         let questionResultLength = existingItems.length;

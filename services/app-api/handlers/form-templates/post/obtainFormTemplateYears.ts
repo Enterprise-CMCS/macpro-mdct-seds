@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
@@ -16,10 +17,10 @@ export const main = handler(async (event, context) => {
   const result = await dynamoDb.scan(params);
 
   if (result.Count === 0) {
-    return [];
+    return ok([]);
   }
 
   const resultsArray = result.Items.map((i) => i.year);
 
-  return resultsArray.sort((a, b) => b - a);
+  return ok(resultsArray.sort((a, b) => b - a));
 });

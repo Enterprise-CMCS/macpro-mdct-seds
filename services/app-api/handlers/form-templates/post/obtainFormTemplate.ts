@@ -1,6 +1,7 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
+import { ok, notFound } from "../../../libs/response-lib.ts";
 
 /**
  * Returns a single form template
@@ -26,11 +27,11 @@ export const main = handler(async (event, context) => {
 
   const result = await dynamoDb.query(params);
   if (result.Count === 0) {
-    return {
+    return notFound({
       status: 404,
       message: `Could not find form template for year: ${data.year}`,
-    };
+    });
   }
   // Return the matching list of items in response body
-  return result.Items;
+  return ok(result.Items);
 });

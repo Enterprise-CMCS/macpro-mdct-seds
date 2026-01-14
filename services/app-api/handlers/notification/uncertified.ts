@@ -2,6 +2,7 @@ import handler from "./../../libs/handler-lib.ts";
 import dynamoDb from "./../../libs/dynamodb-lib.ts";
 import { authorizeStateUser } from "../../auth/authConditions.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -23,10 +24,10 @@ export const main = handler(async (event, context) => {
   } catch (err) {
     console.error(err, err.stack);
   }
-  return {
+  return ok({
     status: "success",
     message: "Uncertified Business owners email sent",
-  };
+  });
 });
 
 // logic to retrieve all business users emails

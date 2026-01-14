@@ -2,15 +2,13 @@ import handler from "../../../libs/handler-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../../libs/time.ts";
 import { FormStatus } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 import {
   FormAnswer,
   scanForAllFormIds,
-  writeAllFormAnswers
+  writeAllFormAnswers,
 } from "../../../storage/formAnswers.ts";
-import {
-  getTemplate,
-  putTemplate
-} from "../../../storage/formTemplates.ts";
+import { getTemplate, putTemplate } from "../../../storage/formTemplates.ts";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
@@ -18,19 +16,19 @@ import {
 import {
   scanFormsByQuarter,
   StateForm,
-  writeAllStateForms
+  writeAllStateForms,
 } from "../../../storage/stateForms.ts";
 import { formTypes } from "../../../shared/formTypeList.ts";
 import { stateList } from "../../../shared/stateList.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event) => {
+export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event) => {
+export const scheduled = handler(async (event, context) => {
   return await generateQuarterForms(event);
 });
 
@@ -114,11 +112,8 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await scanFormsByQuarter(
-    specifiedYear,
-    specifiedQuarter
-  );
-  const foundFormIds = new Set(foundForms.map(f => f.state_form));
+  const foundForms = await scanFormsByQuarter(specifiedYear, specifiedQuarter);
+  const foundFormIds = new Set(foundForms.map((f) => f.state_form));
 
   const stateFormsToCreate: StateForm[] = [];
 
@@ -155,8 +150,7 @@ const generateQuarterForms = async (event) => {
     }
   }
 
-
-  const newFormIds = new Set(stateFormsToCreate.map(f => f.state_form));
+  const newFormIds = new Set(stateFormsToCreate.map((f) => f.state_form));
 
   console.log(`Saving ${stateFormsToCreate.length} state forms`);
   if (stateFormsToCreate.length > 0) {
@@ -187,9 +181,8 @@ const generateQuarterForms = async (event) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
@@ -227,20 +220,20 @@ const generateQuarterForms = async (event) => {
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
     console.log(message);
-    return {
+    return ok({
       status: 204,
       message: message,
-    };
+    });
   }
 
   if (formAnswersToCreate.length > 0) {
     await writeAllFormAnswers(formAnswersToCreate);
   }
 
-  return {
+  return ok({
     status: 200,
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-  };
+  });
 };
 
 export const getOrCreateFormTemplate = async (year: number) => {
@@ -272,13 +265,13 @@ export const getOrCreateQuestions = async (year: number) => {
     return questions;
   }
 
-  questions = (await getOrCreateFormTemplate(year)).map(question => ({
+  questions = (await getOrCreateFormTemplate(year)).map((question) => ({
     ...question,
     created_date: new Date().toISOString(),
     last_modified: new Date().toISOString(),
   }));
-  
+
   await writeAllFormQuestions(questions);
 
   return questions;
-}
+};

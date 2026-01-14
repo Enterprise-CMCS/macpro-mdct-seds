@@ -3,6 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
 import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
+import { ok } from "../../../libs/response-lib.ts";
 
 /**
  * This handler will loop through a question array and save each row
@@ -24,6 +25,8 @@ export const main = handler(async (event, context) => {
     await updateAnswers(answers, user);
   }
   await updateStateForm(stateFormId, statusData, user);
+
+  return ok();
 });
 
 // TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
@@ -221,21 +224,16 @@ const updateStateForm = async (stateFormId, statusData, user) => {
  * Guaranteed to work on state forms.
  * Not guaranteed to work with _any_ object in the universe.
  */
-function replaceNullsWithZeros (obj) {
+function replaceNullsWithZeros(obj) {
   if (obj === null) {
     return 0;
-  }
-  else if (Array.isArray(obj)) {
+  } else if (Array.isArray(obj)) {
     return obj.map((x) => replaceNullsWithZeros(x));
-  }
-  else if (typeof obj === "object") {
+  } else if (typeof obj === "object") {
     return Object.fromEntries(
-      Object.entries(obj).map(
-        ([key, val]) => [key, replaceNullsWithZeros(val)]
-      )
+      Object.entries(obj).map(([key, val]) => [key, replaceNullsWithZeros(val)])
     );
-  }
-  else {
+  } else {
     return obj;
   }
 }
