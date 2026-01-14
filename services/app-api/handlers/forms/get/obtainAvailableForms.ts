@@ -8,15 +8,15 @@ import handler from "../../../libs/handler-lib.ts";
  */
 
 export const main = handler(async (event) => {
-  let data = JSON.parse(event.body);
+  const { state } = event.pathParameters;
 
-  await authorizeAdminOrUserForState(event, data.stateId);
+  await authorizeAdminOrUserForState(event, state);
 
   const params = {
     TableName: process.env.StateFormsTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":stateId": data.stateId,
+      ":stateId": state,
     },
     FilterExpression: "state_id = :stateId",
     ConsistentRead: true,

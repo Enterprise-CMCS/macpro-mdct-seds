@@ -125,12 +125,13 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for obtainAvailableForms", async () => {
-    const response = await obtainAvailableForms(mockPayload);
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
+    const mockState = { stateId: "CO" };
+    const response = await obtainAvailableForms(mockState);
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/forms/obtainAvailableForms",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/forms/${mockState.stateId}`,
+      options: { headers: expectedHeaders }
     });
   });
 

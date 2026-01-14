@@ -240,10 +240,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "obtainAvailableForms", {
-    entry: "services/app-api/handlers/forms/post/obtainAvailableForms.ts",
+    entry: "services/app-api/handlers/forms/get/obtainAvailableForms.ts",
     handler: "main",
-    path: "/forms/obtainAvailableForms",
-    method: "POST",
+    path: "/forms/{state}",
+    method: "GET",
     ...commonProps,
   });
 

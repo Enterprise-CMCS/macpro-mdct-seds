@@ -105,9 +105,8 @@ export const getSingleForm = async (state, specifiedYear, quarter, form) => {
 // *** get form years and quarters
 export const obtainAvailableForms = async data => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post(`/forms/obtainAvailableForms`, opts);
+  return await apiLib.get(`/forms/${data.stateId}`, opts);
 };
 
 // *** save single form
