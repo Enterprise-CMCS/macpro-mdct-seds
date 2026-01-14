@@ -1,0 +1,62 @@
+name: Test Quiet Flag
+
+on:
+  push:
+    branches:
+      - jon20260114
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+
+jobs:
+  test-quiet:
+    name: Test list-topics output
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Test list-topics output without quiet flag
+        run: |
+          echo "=== RAW OUTPUT (no quiet flag) ==="
+          ./run list-topics --stage main 2>&1 | tee /tmp/raw-output.txt
+          echo ""
+          echo "=== ATTEMPTING JQ PARSE ON RAW OUTPUT ==="
+          if cat /tmp/raw-output.txt | jq -r '.[]' > /tmp/parsed.txt 2>&1; then
+            echo "SUCCESS - jq parsed the output:"
+            cat /tmp/parsed.txt
+          else
+            echo "FAILED - jq could not parse. Error:"
+            cat /tmp/parsed.txt
+          fi
+          echo ""
+          echo "=== WITH QUIET FLAG ==="
+          ./run list-topics --stage main -q 2>&1 | tee /tmp/quiet-output.txt
+          echo ""
+          echo "=== QUIET OUTPUT JQ PARSE ==="
+          if cat /tmp/quiet-output.txt | jq -r '.[]' > /tmp/quiet-parsed.txt 2>&1; then
+            echo "SUCCESS - jq parsed quiet output:"
+            cat /tmp/quiet-parsed.txt
+          else
+            echo "FAILED - jq could not parse quiet output. Error:"
+            cat /tmp/quiet-parsed.txt
+          fi
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
+        continue-on-error: true
