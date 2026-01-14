@@ -4,10 +4,7 @@ import {
   authorizeAnyUser as actualAuthorizeAnyUser,
   authorizeAdminOrUserWithEmail as actualAuthorizeAdminOrUserWithEmail,
 } from "../../../auth/authConditions.ts";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
@@ -15,7 +12,9 @@ vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserWithEmail: vi.fn(),
 }));
 const authorizeAnyUser = vi.mocked(actualAuthorizeAnyUser);
-const authorizeAdminOrUserWithEmail = vi.mocked(actualAuthorizeAdminOrUserWithEmail);
+const authorizeAdminOrUserWithEmail = vi.mocked(
+  actualAuthorizeAdminOrUserWithEmail
+);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
@@ -23,13 +22,13 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {
   pathParameters: {
-    id: "42"
-  }
+    userId: "42",
+  },
 };
 const mockUser = {
   id: 42,
   email: "user@test.com",
-}
+};
 
 describe("getUserById.ts", () => {
   beforeEach(() => {
@@ -41,13 +40,15 @@ describe("getUserById.ts", () => {
 
     const response = await getUserById(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: "success",
-        data: mockUser,
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: "success",
+          data: mockUser,
+        }),
+      })
+    );
   });
 
   it.skip("should return an error if the user cannot be found", async () => {
@@ -62,13 +63,15 @@ describe("getUserById.ts", () => {
 
     const response = await getUserById(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: "error",
-        message: "No user by specified id found",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: "error",
+          message: "No user by specified id found",
+        }),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -76,10 +79,12 @@ describe("getUserById.ts", () => {
 
     const response = await getUserById(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should return Internal Server Error if requesting user is not the requested user", async () => {
@@ -88,9 +93,11 @@ describe("getUserById.ts", () => {
 
     const response = await getUserById(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

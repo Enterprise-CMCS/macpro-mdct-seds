@@ -176,7 +176,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/get/getUserById.ts",
     handler: "main",
-    path: "/users/{id}",
+    path: "/users/{userId}",
     method: "GET",
     ...commonProps,
   });

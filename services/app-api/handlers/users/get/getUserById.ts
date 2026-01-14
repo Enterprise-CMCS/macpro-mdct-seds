@@ -12,7 +12,7 @@ export const main = handler(async (event) => {
     TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":userId": event.pathParameters["id"],
+      ":userId": event.pathParameters["userId"],
     },
     FilterExpression: "userId = :userId",
   };
