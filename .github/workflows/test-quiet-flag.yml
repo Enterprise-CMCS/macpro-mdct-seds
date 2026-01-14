@@ -32,31 +32,20 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
-      - name: Test list-topics output without quiet flag
+      - name: Test list-topics output (quiet flag removed)
         run: |
-          echo "=== RAW OUTPUT (no quiet flag) ==="
+          echo "=== RAW OUTPUT ==="
           ./run list-topics --stage main 2>&1 | tee /tmp/raw-output.txt
           echo ""
-          echo "=== ATTEMPTING JQ PARSE ON RAW OUTPUT ==="
+          echo "=== ATTEMPTING JQ PARSE ==="
           if cat /tmp/raw-output.txt | jq -r '.[]' > /tmp/parsed.txt 2>&1; then
-            echo "SUCCESS - jq parsed the output:"
-            cat /tmp/parsed.txt
+            echo "SUCCESS - jq parsed the output"
+            head -5 /tmp/parsed.txt
+            echo "..."
           else
             echo "FAILED - jq could not parse. Error:"
             cat /tmp/parsed.txt
-          fi
-          echo ""
-          echo "=== WITH QUIET FLAG ==="
-          ./run list-topics --stage main -q 2>&1 | tee /tmp/quiet-output.txt
-          echo ""
-          echo "=== QUIET OUTPUT JQ PARSE ==="
-          if cat /tmp/quiet-output.txt | jq -r '.[]' > /tmp/quiet-parsed.txt 2>&1; then
-            echo "SUCCESS - jq parsed quiet output:"
-            cat /tmp/quiet-parsed.txt
-          else
-            echo "FAILED - jq could not parse quiet output. Error:"
-            cat /tmp/quiet-parsed.txt
+            exit 1
           fi
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
-        continue-on-error: true
