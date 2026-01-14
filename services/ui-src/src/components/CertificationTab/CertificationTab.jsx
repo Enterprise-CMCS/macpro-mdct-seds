@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-tabs/style/react-tabs.css";
-import { Button, Alert } from "@trussworks/react-uswds";
+import { Button, Alert } from "@cmsgov/design-system";
 import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import {
@@ -19,7 +19,9 @@ const CertificationTab = () => {
   const isProvisional = isProvisionalCertified(statusData);
   const isFinal = isFinalCertified(statusData);
 
-  const [provCertDisabled, setProvCertDisabled] = useState(isFinal || isProvisional);
+  const [provCertDisabled, setProvCertDisabled] = useState(
+    isFinal || isProvisional
+  );
   const [finalCertDisabled, setFinalCertDisabled] = useState(isFinal);
 
   const showCertifyButtons = userRole === "state" || userRole === "business";
@@ -84,9 +86,9 @@ const CertificationTab = () => {
   const statusText = (
     <div data-testid="statusText">
       <p>
-        This report was updated to <b>{getStatusDisplay(statusData)}</b>{" "}
-        on <b>{dateFormatter(statusData.status_date)}</b>{" "}
-        by <b>{statusData.status_modified_by}</b>
+        This report was updated to <b>{getStatusDisplay(statusData)}</b> on{" "}
+        <b>{dateFormatter(statusData.status_date)}</b> by{" "}
+        <b>{statusData.status_modified_by}</b>
       </p>
     </div>
   );
@@ -96,7 +98,7 @@ const CertificationTab = () => {
       {isFinal ? (
         <div className="padding-y-2">
           <Alert
-            type="success"
+            variation="success"
             heading="Thank you for submitting your SEDS data!"
             headingLevel="h1"
           >
@@ -109,10 +111,9 @@ const CertificationTab = () => {
       {isProvisional ? (
         <div className="padding-y-2">
           <Alert
-            type="info"
             heading="You have submitted provisional SEDS data"
             headingLevel="h1"
-          />
+          ></Alert>
         </div>
       ) : null}
 
@@ -135,15 +136,17 @@ const CertificationTab = () => {
       {showCertifyButtons ? (
         <div className="certify-btn ">
           <Button
-            onClick={() => submitProvisional()}
+            variation="solid"
             type="button"
+            onClick={() => submitProvisional()}
             disabled={provCertDisabled}
           >
             {"Certify & Submit Provisional Data"}
           </Button>
           <Button
-            onClick={() => submitFinal()}
+            variation="solid"
             type="button"
+            onClick={() => submitFinal()}
             disabled={finalCertDisabled}
           >
             {"Certify & Submit Final Data"}
@@ -152,7 +155,11 @@ const CertificationTab = () => {
       ) : null}
       {isFinal ? (
         <div className="certify-btn uncertify">
-          <Button onClick={() => submitUncertify()} type="button">
+          <Button
+            variation="solid"
+            type="button"
+            onClick={() => submitUncertify()}
+          >
             {"Uncertify"}
           </Button>
         </div>
