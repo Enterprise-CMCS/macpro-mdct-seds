@@ -22,23 +22,23 @@ import { formTypes } from "../../../shared/formTypeList.ts";
 import { stateList } from "../../../shared/stateList.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event, context) => {
+export const scheduled = handler(async (event) => {
   return await generateQuarterForms(event);
 });
 
 /*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-const generateQuarterForms = async (event) => {
+const generateQuarterForms = async (event: any) => {
   let noMissingForms = true;
 
-  const determineAgeRanges = (questionId) => {
+  const determineAgeRanges = (questionId: any) => {
     const year = questionId.split("-")[0];
     const form = questionId.split("-")[1];
 
@@ -179,8 +179,8 @@ const generateQuarterForms = async (event) => {
         // Get reusable values
         const currentState = stateList[state].state_id;
         const currentForm = allQuestions[question].question.split("-")[1];
-        const currentAgeRangeId = ageRanges[range].key;
-        const currentAgeRangeLabel = ageRanges[range].label;
+        const currentAgeRangeId = (range as any).key;
+        const currentAgeRangeLabel = (range as any).label;
         const currentQuestionNumber =
           allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
@@ -265,7 +265,7 @@ export const getOrCreateQuestions = async (year: number) => {
     return questions;
   }
 
-  questions = (await getOrCreateFormTemplate(year)).map((question) => ({
+  questions = (await getOrCreateFormTemplate(year)).map((question: any) => ({
     ...question,
     created_date: new Date().toISOString(),
     last_modified: new Date().toISOString(),

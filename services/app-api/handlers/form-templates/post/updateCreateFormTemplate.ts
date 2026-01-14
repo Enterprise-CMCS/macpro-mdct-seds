@@ -6,7 +6,7 @@ import { ok, badRequest } from "../../../libs/response-lib.ts";
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
 
-  const isJsonString = (jsonString) => {
+  const isJsonString = (jsonString: any) => {
     try {
       // try to stringify and parse the incoming data to verify if valid json
       let o = JSON.parse(JSON.stringify(jsonString));

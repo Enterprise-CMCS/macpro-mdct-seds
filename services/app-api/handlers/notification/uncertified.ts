@@ -22,7 +22,7 @@ export const main = handler(async (event, context) => {
     console.log(data, "data: promise");
     console.log(data.MessageId, "data.MessageId");
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
   return ok({
     status: "success",
@@ -51,7 +51,7 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-async function unCetifiedTemplate(payload) {
+async function unCetifiedTemplate(payload: any) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 

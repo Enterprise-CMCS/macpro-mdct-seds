@@ -55,7 +55,7 @@ export const scanForUserWithSub = async (usernameSub: string) => {
  * The date usually matters more than the exact time,
  * so this is still valuable information.
  */
-const recordLogin = async (authUser, userDetails) => {
+const recordLogin = async (authUser: any, userDetails: any) => {
   await dynamoDb.update({
     TableName: process.env.AuthUserTable,
     Key: { userId: authUser.userId },

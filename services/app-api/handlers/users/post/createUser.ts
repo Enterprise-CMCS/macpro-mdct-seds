@@ -10,7 +10,7 @@ export const main = handler(async (event, context) => {
   return ok(await createUser(userData));
 });
 
-export const createUser = async (userData) => {
+export const createUser = async (userData: any) => {
   if (!userData.username) {
     return `Please enter a username`;
   }

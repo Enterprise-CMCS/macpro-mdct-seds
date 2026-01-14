@@ -8,7 +8,7 @@ import { ok } from "../../../libs/response-lib.ts";
  * This can be used for displaying a list of years and quarters available
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   let data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.stateId);

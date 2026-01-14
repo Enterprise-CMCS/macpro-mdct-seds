@@ -20,7 +20,7 @@ export default function handler(
     try {
       // Run the Lambda
       const response = await lambda(event, context);
-      
+
       // Extract and rebuild the response
       return {
         statusCode: response.statusCode,
@@ -33,7 +33,7 @@ export default function handler(
 
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: e.message }),
+        body: JSON.stringify({ error: (e as Error).message }),
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,

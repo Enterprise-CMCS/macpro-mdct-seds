@@ -21,7 +21,7 @@ export const main = handler(async (event, context) => {
     const data = await client.send(command);
     console.log(data.MessageId);
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
   return ok({
     status: "success",

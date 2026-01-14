@@ -70,7 +70,7 @@ const getStateForms = async () => {
   }
 };
 
-const generateTotals = async (stateForms, ageRange) => {
+const generateTotals = async (stateForms: any, ageRange: any) => {
   try {
     const countsToWrite: StateForm[] = [];
     // Loop through all stateForms
@@ -135,8 +135,8 @@ const generateTotals = async (stateForms, ageRange) => {
   }
 };
 
-const totalEnrollmentCount = (questionAccumulator) => {
-  return questionAccumulator.reduce((accumulator, currentArr) => {
+const totalEnrollmentCount = (questionAccumulator: any) => {
+  return questionAccumulator.reduce((accumulator: any, currentArr: any) => {
     let currentTotal = 0;
     let currentArrayLength = currentArr.length;
     for (let i = 0; i < currentArrayLength; i++) {

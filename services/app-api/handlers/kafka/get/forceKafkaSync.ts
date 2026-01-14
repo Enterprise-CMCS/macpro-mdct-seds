@@ -10,8 +10,8 @@ const tableNames = [
   process.env.AuthUserTable,
 ] as string[];
 
-const mergeLastSynced = (items, syncDateTime) =>
-  items.map((item) => ({ ...item, lastSynced: syncDateTime }));
+const mergeLastSynced = (items: any[], syncDateTime: string) =>
+  items.map((item: any) => ({ ...item, lastSynced: syncDateTime }));
 
 export const main = handler(async (event, context) => {
   const syncDateTime = new Date().toISOString();
