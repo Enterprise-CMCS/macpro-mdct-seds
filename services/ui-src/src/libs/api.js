@@ -79,9 +79,11 @@ export const updateUser = async data => {
 // *** get forms associated with a specified state for specified year and quarter
 export const getStateForms = async data => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post(`/forms/obtain-state-forms`, opts);
+  return await apiLib.get(
+    `/forms/${data.state}/${data.year}/${data.quarter}`,
+    opts
+  );
 };
 
 // *** update forms associated with a specified state for specified year and quarter

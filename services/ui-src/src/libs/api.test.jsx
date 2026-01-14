@@ -95,12 +95,13 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for getStateForms", async () => {
-    const response = await getStateForms(mockPayload);
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
+    const mockFormPayload = { state: "CO", year: 2025, quarter: 1 };
+    const response = await getStateForms(mockFormPayload);
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/forms/obtain-state-forms",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/forms/${mockFormPayload.state}/${mockFormPayload.year}/${mockFormPayload.quarter}`,
+      options: { headers: expectedHeaders }
     });
   });
 

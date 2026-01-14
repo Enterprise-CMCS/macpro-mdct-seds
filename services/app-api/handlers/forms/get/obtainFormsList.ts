@@ -3,9 +3,9 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 
 export const main = handler(async (event, context) => {
-  const data = JSON.parse(event.body);
+  const { state, year, quarter } = event.pathParameters;
 
-  await authorizeAdminOrUserForState(event, data.state);
+  await authorizeAdminOrUserForState(event, year);
 
   const params = {
     TableName: process.env.StateFormsTable,
@@ -15,9 +15,9 @@ export const main = handler(async (event, context) => {
     },
 
     ExpressionAttributeValues: {
-      ":state": data.state,
-      ":year": parseInt(data.year),
-      ":quarter": parseInt(data.quarter),
+      ":state": state,
+      ":year": parseInt(year),
+      ":quarter": parseInt(quarter),
     },
     FilterExpression:
       "state_id = :state and quarter = :quarter and #theYear = :year",

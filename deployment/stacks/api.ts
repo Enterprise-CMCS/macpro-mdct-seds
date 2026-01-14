@@ -214,10 +214,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getStateFormList", {
-    entry: "services/app-api/handlers/forms/post/obtainFormsList.ts",
+    entry: "services/app-api/handlers/forms/get/obtainFormsList.ts",
     handler: "main",
-    path: "/forms/obtain-state-forms",
-    method: "POST",
+    path: "/forms/{state}/{year}/{quarter}",
+    method: "GET",
     ...commonProps,
   });
 
