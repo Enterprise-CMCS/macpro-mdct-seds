@@ -6,7 +6,7 @@ import {
 } from "../../../auth/authConditions.ts";
 import { ok, notFound } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAnyUser(event);
 
   const params = {

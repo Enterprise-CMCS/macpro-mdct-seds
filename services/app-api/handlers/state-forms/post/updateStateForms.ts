@@ -3,7 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 

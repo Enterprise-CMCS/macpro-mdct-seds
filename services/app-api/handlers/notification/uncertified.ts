@@ -10,7 +10,7 @@ const client = new SESClient({ region: "us-east-1" });
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
  */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   let data = JSON.parse(event.body);
 
   await authorizeStateUser(event, data.formInfo.state_id);

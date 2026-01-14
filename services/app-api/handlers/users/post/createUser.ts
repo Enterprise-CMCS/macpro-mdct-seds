@@ -4,7 +4,7 @@ import { getUserDetailsFromEvent } from "../../../libs/authorization.ts";
 import { scanForUserByUsername } from "../../../storage/users.ts";
 import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const userData = await getUserDetailsFromEvent(event);
 
   return ok(await createUser(userData));

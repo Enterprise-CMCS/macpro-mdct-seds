@@ -8,7 +8,7 @@ import { ok } from "../../../libs/response-lib.ts";
 /**
  * Get **or** create the AuthUser record matching this request's auth token.
  */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const userDetails = await getUserDetailsFromEvent(event);
   const usernameSub = userDetails.usernameSub;
   if (!usernameSub) {

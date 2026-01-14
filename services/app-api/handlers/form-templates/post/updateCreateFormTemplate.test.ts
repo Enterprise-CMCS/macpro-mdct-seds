@@ -32,7 +32,7 @@ describe("updateCreateFormTemplate.ts", () => {
   });
 
   it("should store the provided JSON data in dynamo", async () => {
-    const response = await updateCreateFormTemplate(mockEvent, {} as any);
+    const response = await updateCreateFormTemplate(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -61,15 +61,12 @@ describe("updateCreateFormTemplate.ts", () => {
     const mockPut = vi.fn();
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
-    const response = await updateCreateFormTemplate(
-      {
-        body: JSON.stringify({
-          year: 2025,
-          template: [42],
-        }),
-      },
-      {} as any
-    );
+    const response = await updateCreateFormTemplate({
+      body: JSON.stringify({
+        year: 2025,
+        template: [42],
+      }),
+    });
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -87,15 +84,12 @@ describe("updateCreateFormTemplate.ts", () => {
     const mockPut = vi.fn();
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
-    const response = await updateCreateFormTemplate(
-      {
-        body: JSON.stringify({
-          year: 2025,
-          template: [],
-        }),
-      },
-      {} as any
-    );
+    const response = await updateCreateFormTemplate({
+      body: JSON.stringify({
+        year: 2025,
+        template: [],
+      }),
+    });
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -113,12 +107,9 @@ describe("updateCreateFormTemplate.ts", () => {
     const mockPut = vi.fn();
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
-    const response = await updateCreateFormTemplate(
-      {
-        body: JSON.stringify({}),
-      },
-      {} as any
-    );
+    const response = await updateCreateFormTemplate({
+      body: JSON.stringify({}),
+    });
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -135,7 +126,7 @@ describe("updateCreateFormTemplate.ts", () => {
   it("should return Internal Server Error if the user is not an admin", async () => {
     authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
 
-    const response = await updateCreateFormTemplate(mockEvent, {} as any);
+    const response = await updateCreateFormTemplate(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({

@@ -13,7 +13,7 @@ const tableNames = [
 const mergeLastSynced = (items: any[], syncDateTime: string) =>
   items.map((item: any) => ({ ...item, lastSynced: syncDateTime }));
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const syncDateTime = new Date().toISOString();
 
   for (const tableName of tableNames) {

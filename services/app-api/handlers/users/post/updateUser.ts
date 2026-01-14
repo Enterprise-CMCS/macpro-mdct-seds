@@ -8,7 +8,7 @@ import {
 import { putUser, AuthUser } from "../../../storage/users.ts";
 import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);

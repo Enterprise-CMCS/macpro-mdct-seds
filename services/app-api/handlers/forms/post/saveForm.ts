@@ -9,7 +9,7 @@ import { ok } from "../../../libs/response-lib.ts";
  * This handler will loop through a question array and save each row
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
 
   for (let stateId of stateIdsPresentInForm(data.formAnswers)) {

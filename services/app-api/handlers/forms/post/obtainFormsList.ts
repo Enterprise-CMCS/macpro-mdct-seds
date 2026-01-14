@@ -3,7 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.state);

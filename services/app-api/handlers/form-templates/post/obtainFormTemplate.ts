@@ -8,7 +8,7 @@ import { ok, notFound } from "../../../libs/response-lib.ts";
  * This can be used for generating form Answers and Questions
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAdmin(event);
 
   let data = JSON.parse(event.body);

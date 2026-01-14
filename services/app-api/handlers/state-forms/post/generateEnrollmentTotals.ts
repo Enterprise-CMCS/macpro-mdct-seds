@@ -5,7 +5,7 @@ import { StateForm, writeAllStateForms } from "../../../storage/stateForms.ts";
 import { FormQuestion } from "../../../storage/formQuestions.ts";
 import { ok, notFound } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   await authorizeAdmin(event);
 
   const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
