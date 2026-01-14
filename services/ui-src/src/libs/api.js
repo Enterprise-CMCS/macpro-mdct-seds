@@ -65,14 +65,14 @@ export const getUserById = async data => {
 export const getCurrentUser = async () => {
   const opts = await requestOptions();
   return await apiLib.get(`/getCurrentUser`, opts);
-}
+};
 
 // *** update user information
 export const updateUser = async data => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post(`/users/update/${data.userId}`, opts);
+  return await apiLib.post(`/users/${data.userId}`, opts);
 };
 
 /*************************** FORMS API ***************************/
