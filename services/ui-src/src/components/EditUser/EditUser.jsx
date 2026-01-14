@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, TextInput, Button } from "@trussworks/react-uswds";
+import { Button, Table, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { getUserById, updateUser } from "../../libs/api";
@@ -59,54 +59,48 @@ const EditUser = () => {
               <tr className="userName">
                 <th>Username</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.username}
-                    type="text"
                     disabled={true}
                     name="username"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>First Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.firstName}
-                    type="text"
                     disabled={true}
                     name="firstName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Last Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.lastName}
-                    type="text"
                     disabled={true}
                     name="lastName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Email</th>
                 <td>
-                  <TextInput
+                   <TextField
                     value={user.email}
-                    type="text"
                     disabled={true}
                     name="email"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>
-                  <label className="usa-label" htmlFor="role-select">Role</label>
+                  <label className="usa-label" htmlFor="role-select">
+                    Role
+                  </label>
                 </th>
                 <td>
                   <select
@@ -125,7 +119,9 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label className="usa-label" htmlFor="state-select">State</label>
+                    <label className="usa-label" htmlFor="state-select">
+                      State
+                    </label>
                   </th>
                   <td>
                     <select
@@ -136,7 +132,9 @@ const EditUser = () => {
                     >
                       <option value>- Select a State -</option>
                       {stateSelectOptions.map(({ label, value }) => (
-                        <option key={value} value={value}>{label}</option>
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
                       ))}
                     </select>
                   </td>
@@ -160,6 +158,7 @@ const EditUser = () => {
             <Button
               type="button"
               className="form-button"
+              variation="solid"
               onClick={handleUpdateClick}
             >
               Update User
