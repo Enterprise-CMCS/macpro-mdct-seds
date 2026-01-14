@@ -53,6 +53,9 @@ const {
  * AUTH_USER_TABLE_NAME: the name of the table in Dynamo
  * COGNITO_USER_POOL_ID: The UserPoolId for our Cognito user pool
  * [anything needed for AWS auth, if not local]
+ *
+ * YOU MUST ALSO `yarn add @aws-sdk/client-cognito-identity-provider@xyz`,
+ * where `xyz` is the installed version of the other @aws-sdk packages.
  */
 const { AUTH_USER_TABLE_NAME, COGNITO_USER_POOL_ID } = process.env;
 
@@ -87,7 +90,7 @@ async function gatherLoginDatesFromCognito () {
   for await (let page of pages) {
     for (const user of page.Users ?? []) {
       const sub = user.Attributes.find(attr => attr.Name === "sub").Value;
-      modifyDates.set(sub, user.UserLastModifiedDate);
+      modifyDates.set(sub, user.UserLastModifiedDate?.toISOString());
     }
   }
   return modifyDates;
@@ -101,7 +104,7 @@ async function gatherLoginDatesFromCognito () {
  * @returns `true` if a change was made; `false` if no change was needed.
  */
 function updateUserState (user, loginDates) {
-  const { role, states, usernameSub } = user;
+  const { lastLogin, role, states, userId, usernameSub } = user;
 
   if (states === undefined) {
     // This user has already been migrated; no update necessary.
@@ -113,7 +116,18 @@ function updateUserState (user, loginDates) {
   }
 
   // If we have a more trustworthy date, use it. Otherwise, leave what's there.
-  user.lastLogin = loginDates.get(usernameSub) ?? user.lastLogin;
+  const newLastLogin = loginDates.get(usernameSub);
+  if (!newLastLogin) {
+    console.log(`${logPrefix()}Did not find Cognito login date for user ${userId}.`);
+  } else if (Math.abs(
+      new Date(newLastLogin).valueOf() - new Date(lastLogin).valueOf()
+    ) < 60 * 60 * 1000
+  ) {
+    console.log(`${logPrefix()}Cognito login date for user ${userId} is within an hour of lastLogin; leaving unchanged.`);
+  } else {
+    user.lastLogin = newLastLogin;
+    console.log(`${logPrefix()}User ${user.userId}: lastLogin changed from ${lastLogin} to ${newLastLogin}`);
+  }
 
   delete user.states;
   delete user.isSuperUser;
