@@ -7,7 +7,9 @@ import {
   authorizeUserForState,
   authorizeStateUser,
 } from "./authConditions.ts";
-import { getCurrentUserInfo as actualGetCurrentUserInfo } from "./cognito-auth.ts";
+import {
+  getCurrentUserInfo as actualGetCurrentUserInfo
+} from "./cognito-auth.ts";
 
 vi.mock("./cognito-auth.ts", () => ({
   getCurrentUserInfo: vi.fn(),
