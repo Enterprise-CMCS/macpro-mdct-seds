@@ -120,7 +120,7 @@ describe("libs/api", () => {
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/single-form/CO/2025/4/21E",
+      path: "/forms/CO/2025/4/21E",
       options: { headers: expectedHeaders }
     });
   });

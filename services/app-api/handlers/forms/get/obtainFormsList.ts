@@ -5,7 +5,7 @@ import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 export const main = handler(async (event, context) => {
   const { state, year, quarter } = event.pathParameters;
 
-  await authorizeAdminOrUserForState(event, year);
+  await authorizeAdminOrUserForState(event, state);
 
   const params = {
     TableName: process.env.StateFormsTable,

@@ -95,13 +95,10 @@ export const updateStateForm = async data => {
 };
 
 // *** get single form associated with a specified state, year and quarter
-export const getSingleForm = async (state, specifiedYear, quarter, form) => {
+export const getSingleForm = async (state, year, quarter, form) => {
   const opts = await requestOptions();
 
-  return await apiLib.get(
-    `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
-    opts
-  );
+  return await apiLib.get(`/forms/${state}/${year}/${quarter}/${form}`, opts);
 };
 
 // *** get form years and quarters
