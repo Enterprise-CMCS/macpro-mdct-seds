@@ -224,7 +224,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "updateStateFormList", {
     entry: "services/app-api/handlers/state-forms/post/updateStateForms.ts",
     handler: "main",
-    path: "/state-forms/update",
+    path: "/forms/{state}/{year}/{quarter}/{form}/totals",
     method: "POST",
     ...commonProps,
   });

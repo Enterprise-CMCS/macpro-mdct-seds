@@ -10,7 +10,7 @@ import { authorizeAdmin } from "../../../auth/authConditions.ts";
 export const main = handler(async (event, context) => {
   await authorizeAdmin(event);
 
-  let data = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
 
   const params = {
     TableName: process.env.FormTemplatesTable,

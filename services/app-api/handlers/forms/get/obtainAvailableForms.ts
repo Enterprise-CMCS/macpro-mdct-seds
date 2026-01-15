@@ -1,14 +1,14 @@
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import dynamodbLib from "../../../libs/dynamodb-lib.ts";
 import handler from "../../../libs/handler-lib.ts";
-
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 /**
  * Returns list of all forms based on state
  * This can be used for displaying a list of years and quarters available
  */
 
-export const main = handler(async (event) => {
-  const { state } = event.pathParameters;
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state } = event.pathParameters!;
 
   await authorizeAdminOrUserForState(event, state);
 

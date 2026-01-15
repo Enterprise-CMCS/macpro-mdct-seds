@@ -88,10 +88,14 @@ export const getStateForms = async data => {
 
 // *** update forms associated with a specified state for specified year and quarter
 export const updateStateForm = async data => {
+  const { state, year, quarter, form } = data;
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post(`/state-forms/update`, opts);
+  return await apiLib.post(
+    `/forms/${state}/${year}/${quarter}/${form}/totals`,
+    opts
+  );
 };
 
 // *** get single form associated with a specified state, year and quarter

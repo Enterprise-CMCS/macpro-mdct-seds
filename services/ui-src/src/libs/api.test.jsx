@@ -106,12 +106,18 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for updateStateForm", async () => {
-    const response = await updateStateForm(mockPayload);
+    const mockSavePayload = {
+      state: "CO",
+      year: 2025,
+      quarter: 4,
+      form: "GRE"
+    };
+    const response = await updateStateForm(mockSavePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/state-forms/update",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/forms/${mockSavePayload.state}/${mockSavePayload.year}/${mockSavePayload.quarter}/${mockSavePayload.form}/totals`,
+      options: { headers: expectedHeaders, body: mockSavePayload }
     });
   });
 

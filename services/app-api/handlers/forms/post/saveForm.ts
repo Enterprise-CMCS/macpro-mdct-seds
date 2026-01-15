@@ -6,18 +6,18 @@ import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
 import { AuthUser } from "../../../storage/users.ts";
 import { FormAnswer } from "../../../storage/formAnswers.ts";
 import { StateForm } from "../../../storage/stateForms.ts";
-
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 /**
  * This handler will loop through a question array and save each row
  */
 
-export const main = handler(async (event, context) => {
-  const { state, year, quarter, form } = event.pathParameters;
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter, form } = event.pathParameters!;
   const data = JSON.parse(event.body);
 
   await authorizeUserForState(event, state);
 
-  const stateFormId = `${state}-${year}-${parseInt(quarter)}-${form}`;
+  const stateFormId = `${state}-${year}-${quarter}-${form}`;
 
   for (const answer of data.formAnswers) {
     if (answer.state_form !== stateFormId) {

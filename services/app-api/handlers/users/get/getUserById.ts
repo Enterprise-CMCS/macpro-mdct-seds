@@ -4,15 +4,16 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
 
   const params = {
     TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":userId": event.pathParameters["userId"],
+      ":userId": event.pathParameters!["userId"],
     },
     FilterExpression: "userId = :userId",
   };
