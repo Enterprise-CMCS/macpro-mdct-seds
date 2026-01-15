@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Button } from "@trussworks/react-uswds";
+import { Button, Alert } from "@cmsgov/design-system";
 import { generateQuarterlyForms } from "../../libs/api";
 import "./GenerateForms.scss";
 
@@ -31,7 +31,7 @@ const GenerateForms = () => {
       setLoading(true);
       const response = await generateQuarterlyForms({
         year: Number(selectedYear),
-        quarter: Number(selectedQuarter),
+        quarter: Number(selectedQuarter)
       });
       setLoading(false);
       setAlert(response);
@@ -48,19 +48,23 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert && alert.status === 200 ? (
-        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
+        <Alert
+          variation="success"
+          className="margin-bottom-3"
+          headingLevel="h1"
+        >
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && alert.status === 204 ? (
-        <Alert className="margin-bottom-3" type="warning" headingLevel="h1">
+        <Alert variation="warn" className="margin-bottom-3" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert className="margin-bottom-3" type="error" headingLevel="h1">
+        <Alert variation="error" className="margin-bottom-3" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
@@ -77,7 +81,9 @@ const GenerateForms = () => {
         onChange={evt => setSelectedYear(evt.target.value)}
       >
         {yearSelections.map(({ label, value }) => (
-          <option key={value} value={value}>{label}</option>
+          <option key={value} value={value}>
+            {label}
+          </option>
         ))}
       </select>
       <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
@@ -95,7 +101,7 @@ const GenerateForms = () => {
         <option value="4">Q4</option>
       </select>
       <Button
-        type="button"
+        variation="solid"
         style={{ marginTop: "0.5rem" }}
         data-testid="generateFormsButton"
         onClick={() => generateForms()}

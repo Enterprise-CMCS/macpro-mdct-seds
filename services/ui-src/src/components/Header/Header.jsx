@@ -64,7 +64,7 @@ const Header = () => {
                 <div class="dropdown-content">
                   <ui class="dropdown-content">
                     <li role="presentation"><a href="/profile">User Profile</a></li>
-                    <li role="presentation"><a role="button" onClick={handleLogout}>Logout</a></li>
+                    <li role="presentation"><a role="button" href="#" onClick={handleLogout}>Logout</a></li>
                   </ui>
                 </div>
               )}
