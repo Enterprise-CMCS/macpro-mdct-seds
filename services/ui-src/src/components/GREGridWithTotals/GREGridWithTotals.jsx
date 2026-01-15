@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Table } from "@trussworks/react-uswds";
+import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
 import "./GREGridWithTotals.scss";
@@ -236,7 +236,7 @@ const GREGridWithTotals = props => {
                 <React.Fragment key={columnIndex}>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
-                    <TextInput
+                    <TextField
                       className="grid-column"
                       onChange={event =>
                         updateGrid(rowIndex, columnIndex, event)
@@ -268,7 +268,7 @@ const GREGridWithTotals = props => {
             } else {
               formattedCell = (
                 <td key={columnIndex}>
-                  <TextInput
+                  <TextField
                     className="grid-column"
                     onChange={event => updateGrid(rowIndex, columnIndex, event)}
                     defaultValue={parseFloat(column).toFixed(currentPrecision)}

@@ -1,16 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./SynthesizedGrid.scss";
-import { Table } from "@trussworks/react-uswds";
+import { Table } from "@cmsgov/design-system";
 import { useStore } from "../../store/store";
 
 export const SynthesizedGrid = ({ range }) => {
   const answers = useStore(state => state.answers);
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
-  let tabAnswers = answers.filter(
-    element => element.rangeId === range
-  );
+  let tabAnswers = answers.filter(element => element.rangeId === range);
   // Retrieve question 4 answer data for the current tab
   let q4arry = tabAnswers.filter(e => e.question.includes("-04"));
   q4arry.map(e => {

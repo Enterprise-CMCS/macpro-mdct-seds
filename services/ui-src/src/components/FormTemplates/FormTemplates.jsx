@@ -4,7 +4,7 @@ import {
   obtainFormTemplateYears,
   updateCreateFormTemplate
 } from "../../libs/api";
-import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
+import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -94,7 +94,7 @@ const FormTemplates = () => {
         {alert ? (
           <Alert
             className="margin-bottom-3"
-            type={alert.status === 200 ? "success" : "error"}
+            variation={alert.status === 200 ? "success" : "error"}
             headingLevel="h1"
           >
             {alert.message}
@@ -112,7 +112,9 @@ const FormTemplates = () => {
               onChange={evt => updateYear(evt.target.value)}
             >
               {formYears.map(({ label, value }) => (
-                <option key={value} value={value}>{label}</option>
+                <option key={value} value={value}>
+                  {label}
+                </option>
               ))}
             </select>
           </div>
@@ -133,7 +135,8 @@ const FormTemplates = () => {
         ) : null}
         <div className="template-input margin-top-3 margin-bottom-4">
           <label htmlFor="templateInput">Enter or Modify Template</label>
-          <Textarea
+          <TextField
+            multiline
             id="templateInput"
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}
@@ -143,7 +146,7 @@ const FormTemplates = () => {
         </div>
         <Button
           id="save-button"
-          primary="true"
+          variation="solid"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
