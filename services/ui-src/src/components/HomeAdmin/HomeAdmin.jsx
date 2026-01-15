@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
-import {
-  buildSortedAccordionByYearQuarter
-} from "../../utility-functions/sortingFunctions";
-import { Accordion } from "@trussworks/react-uswds";
+import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
+import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import "./HomeAdmin.scss";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
@@ -21,7 +19,9 @@ const HomeAdmin = () => {
     let forms = [];
     try {
       forms = await obtainAvailableForms({ stateId });
-    } catch (e) { /* no-op */ }
+    } catch (e) {
+      /* no-op */
+    }
 
     // Build Accordion items and set to local state
     setAccordionItems(buildSortedAccordionByYearQuarter(forms, stateId));
@@ -74,7 +74,9 @@ const HomeAdmin = () => {
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>
+                {label}
+              </option>
             ))}
           </select>
         </div>
@@ -88,7 +90,17 @@ const HomeAdmin = () => {
               </p>
 
               <div className="quarterly-report-list">
-                <Accordion bordered={true} items={accordionItems} />
+                <Accordion bordered>
+                  {accordionItems.map((item, idx) => (
+                    <AccordionItem
+                      key={idx}
+                      defaultOpen={item.expanded}
+                      heading={item.title}
+                    >
+                      {item.content}
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
             </>
           ) : (

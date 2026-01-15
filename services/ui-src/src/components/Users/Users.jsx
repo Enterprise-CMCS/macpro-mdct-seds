@@ -5,8 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
-// * trussworks
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,7 +42,7 @@ const Users = () => {
       <div className="page-subheader exclude-from-pdf">
         <Button
           className="margin-left-3 action-button"
-          primary="true"
+          variation="solid"
           onClick={() =>
             handleExport("csv", "MDCT Users Export.csv", {
               columns: [
@@ -66,7 +65,7 @@ const Users = () => {
 
         <Button
           className="margin-left-3 action-button"
-          primary="true"
+          variation="solid"
           onClick={async () =>
             await handleExport(
               "pdf",

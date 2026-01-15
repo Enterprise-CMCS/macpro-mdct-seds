@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Button } from "@trussworks/react-uswds";
+import { Button, Alert } from "@cmsgov/design-system";
 
 import { generateEnrollmentTotals } from "../../libs/api";
 import "./GenerateTotals.scss";
@@ -36,7 +36,11 @@ const GenerateTotals = () => {
         </div>
       ) : null}
       {alert && (
-        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
+        <Alert
+          className="margin-bottom-3"
+          variation="success"
+          headingLevel="h1"
+        >
           Enrollment Totals have been requested! Please wait at least 1 minute
           for the data to reflect this update.
         </Alert>
@@ -49,7 +53,7 @@ const GenerateTotals = () => {
       </p>
 
       <Button
-        type="button"
+        variation="solid"
         data-testid="generateTotalsButton"
         onClick={() => handleSubmit()}
       >

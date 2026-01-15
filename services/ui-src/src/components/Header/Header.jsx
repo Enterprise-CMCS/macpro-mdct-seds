@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
-import { GovBanner } from "@trussworks/react-uswds";
+import { UsaBanner } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { useStore } from "../../store/store";
 
@@ -38,7 +38,7 @@ const Header = () => {
 
   return (
     <div className="header" data-testid="Header">
-      <GovBanner className="padding-y-1px" />
+      <UsaBanner className="padding-y-1px" />
 
       <div className="logo">
         <Link to="/">
@@ -49,11 +49,11 @@ const Header = () => {
             height={90}
           />
         </Link>
-        <nav class="navbar">
+        <nav className="navbar">
           {isAuthenticated ? (
-            <div id="User" class="dropdown">
+            <div id="User" className="dropdown">
               <button
-                class="dropbtn"
+                className="dropbtn"
                 onClick={() => {
                   setNavigation(!navigation);
                 }}
@@ -61,10 +61,16 @@ const Header = () => {
                 My Profile
               </button>
               {navigation && (
-                <div class="dropdown-content">
-                  <ui class="dropdown-content">
-                    <li role="presentation"><a href="/profile">User Profile</a></li>
-                    <li role="presentation"><a role="button" href="#" onClick={handleLogout}>Logout</a></li>
+                <div className="dropdown-content">
+                  <ui className="dropdown-content">
+                    <li role="presentation">
+                      <a href="/profile">User Profile</a>
+                    </li>
+                    <li role="presentation">
+                      <a role="button" href="#" onClick={handleLogout}>
+                        Logout
+                      </a>
+                    </li>
                   </ui>
                 </div>
               )}

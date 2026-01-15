@@ -137,7 +137,6 @@ const CertificationTab = () => {
         <div className="certify-btn ">
           <Button
             variation="solid"
-            type="button"
             onClick={() => submitProvisional()}
             disabled={provCertDisabled}
           >
@@ -145,7 +144,6 @@ const CertificationTab = () => {
           </Button>
           <Button
             variation="solid"
-            type="button"
             onClick={() => submitFinal()}
             disabled={finalCertDisabled}
           >
