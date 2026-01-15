@@ -81,9 +81,8 @@ describe("Test Login.js", () => {
   it("should login successfully", () => {
     const { container } = render(<Login />);
 
-    const textboxes = container.querySelectorAll(".form-input.form-control");
-    const email = textboxes[0];
-    const password = textboxes[1];
+    const email = screen.getByRole("textbox", { name: "Email" });
+    const password = container.querySelector(".form-input");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
     fireEvent.change(email, { target: { value: "mail@mail.com" } });

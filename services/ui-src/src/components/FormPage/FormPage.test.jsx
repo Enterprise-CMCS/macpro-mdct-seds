@@ -155,8 +155,9 @@ describe("FormPage", () => {
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
 
     const saveMessage = container.querySelector(".save-success");
+
     expect(saveMessage.textContent).toBe(
-      "Save success:Form 21E has been successfully saved."
+      "Success: Save success:Form 21E has been successfully saved."
     );
   });
 
@@ -173,7 +174,7 @@ describe("FormPage", () => {
 
     const errorMessage = container.querySelector(".save-error");
     expect(errorMessage.textContent).toBe(
-      "Save Error:A problem occurred while saving. Please save again. If the problem persists, contact MDCT_Help@cms.hhs.gov"
+      "Alert: Save Error:A problem occurred while saving. Please save again. If the problem persists, contact MDCT_Help@cms.hhs.gov"
     );
   });
 

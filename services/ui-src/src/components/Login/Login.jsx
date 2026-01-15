@@ -93,6 +93,7 @@ export default function Login() {
           onChange={onFieldChange}
         ></TextField>
         <TextField
+          class="form-input"
           type="password"
           key="password"
           name="password"

@@ -63,6 +63,9 @@ describe("Test Header.js", () => {
     );
     await waitFor(() => expect(fetchAuthSession).toHaveBeenCalled());
 
+    const myProfileBtn = screen.getByRole("button", { name: "My Profile" });
+    userEvent.click(myProfileBtn);
+
     const logoutButton = screen.getByRole("button", { name: "Logout" });
     userEvent.click(logoutButton);
 
@@ -82,6 +85,9 @@ describe("Test Header.js", () => {
     );
     await waitFor(() => expect(fetchAuthSession).toHaveBeenCalled());
 
+    const myProfileBtn = screen.getByRole("button", { name: "My Profile" });
+    userEvent.click(myProfileBtn);
+
     const logoutButton = screen.getByRole("button", { name: "Logout" });
     userEvent.click(logoutButton);
 
@@ -95,9 +101,11 @@ describe("Test Header.js", () => {
         <Header />
       </BrowserRouter>
     );
+
     await waitFor(() => expect(screen.getByText("My Profile")).toBeVisible());
     const myProfileBtn = screen.getByRole("button", { name: "My Profile" });
     userEvent.click(myProfileBtn);
+
     const logoutBtn = screen.getByRole("button", { name: "Logout" });
     userEvent.click(logoutBtn);
     expect(signOut).toHaveBeenCalled();
