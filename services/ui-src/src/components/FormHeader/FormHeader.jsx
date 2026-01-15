@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, TextInput, Table } from "@trussworks/react-uswds";
+import { Button, TextInput } from "@cmsgov/design-system";
 import { getSingleForm } from "../../libs/api";
 import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
@@ -84,7 +84,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <p className="instructions"> {formDescription.form_text}</p>
         </div>
         <div className="unstyled">
-          <Table>
+          <table>
             <tbody>
               <tr>
                 <th>
@@ -98,7 +98,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 <td>{`${quarter}/${year}`}</td>
               </tr>
             </tbody>
-          </Table>
+          </table>
         </div>
 
         {showFPL ? (
@@ -119,7 +119,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
               </div>
               <div className="fpl-button">
                 <Button
-                  type="button"
+                  variation="solid"
                   className="max-fpl-btn"
                   onClick={updateMaxFPL}
                   disabled={userRole !== "state"}
@@ -139,7 +139,7 @@ FormHeader.propTypes = {
   quarter: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired
 };
 
 export default FormHeader;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
@@ -52,17 +52,15 @@ const StateSelector = () => {
             <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
-      )
-      : user?.role === "admin" || user?.role === "business" ? (
+      ) : user?.role === "admin" || user?.role === "business" ? (
         <>
           <h2>This account does not need to select a state</h2>
           <p>
-            {user.role[0].toUpperCase() + user.role.slice(1)}{" "}
-            users have access to all states' form data.
+            {user.role[0].toUpperCase() + user.role.slice(1)} users have access
+            to all states' form data.
           </p>
         </>
-      )
-      : (
+      ) : (
         <>
           <h1>This account is not associated with any states</h1>
 
@@ -77,12 +75,14 @@ const StateSelector = () => {
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>
+                {label}
+              </option>
             ))}
           </select>
           <Button
             style={{ marginTop: "0.5rem" }}
-            type="button"
+            variation="solid"
             className="form-button"
             data-testid="saveUpdatedUser"
             onClick={() => {

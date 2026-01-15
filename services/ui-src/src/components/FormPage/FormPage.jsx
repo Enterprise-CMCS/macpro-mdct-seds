@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert } from "@trussworks/react-uswds";
+import { Alert, Button } from "@cmsgov/design-system";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams, useHistory } from "react-router-dom";
 import FormHeader from "../FormHeader/FormHeader";
@@ -8,7 +8,6 @@ import NotApplicable from "../NotApplicable/NotApplicable";
 import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@trussworks/react-uswds";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { useStore } from "../../store/store";
@@ -82,7 +81,7 @@ const FormPage = () => {
     <div data-testid="FormPage" className="formPage">
       {save_error ? (
         <div className="save-error">
-          <Alert type="error" heading="Save Error:" headingLevel="h1">
+          <Alert variation="error" heading="Save Error:" headingLevel="h1">
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
             <a
@@ -96,7 +95,7 @@ const FormPage = () => {
         </div>
       ) : saveAlert ? (
         <div className="save-success">
-          <Alert type="success" heading="Save success:" headingLevel="h1">
+          <Alert variation="success" heading="Save success:" headingLevel="h1">
             Form {formName} has been successfully saved.
           </Alert>
         </div>
@@ -111,11 +110,7 @@ const FormPage = () => {
               state={formattedStateName}
             />
           </div>
-          <Button
-            className="action-button"
-            primary="true"
-            onClick={redirectToPDF}
-          >
+          <Button variation="solid" onClick={redirectToPDF}>
             Print view / PDF
             <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
           </Button>

@@ -100,13 +100,13 @@ label {
 }
 
 .unstyled {
-  .usa-table {
-    border: none !important;
-    box-shadow: none !important;
-
-    tr {
-      border: none !important;
-    }
+  table {
+    border: 1px solid black;
+    border-width: 1px 0;
+  }
+  th,
+  td {
+    padding: 8px 16px;
   }
 }
 
