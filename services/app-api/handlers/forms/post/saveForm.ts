@@ -3,22 +3,31 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
 import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
+import { AuthUser } from "../../../storage/users.ts";
+import { FormAnswer } from "../../../storage/formAnswers.ts";
+import { StateForm } from "../../../storage/stateForms.ts";
 
 /**
  * This handler will loop through a question array and save each row
  */
 
 export const main = handler(async (event, context) => {
+  const { state, year, quarter, form } = event.pathParameters;
   const data = JSON.parse(event.body);
 
-  for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
-    await authorizeUserForState(event, stateId);
+  await authorizeUserForState(event, state);
+
+  const stateFormId = `${state}-${year}-${parseInt(quarter)}-${form}`;
+
+  for (const answer of data.formAnswers) {
+    if (answer.state_form !== stateFormId) {
+      throw new Error("Answer state_form does not match URL parameters.");
+    }
   }
 
   const user = (await getCurrentUserInfo(event)).data;
   const answers = data.formAnswers;
   const statusData = data.statusData;
-  const stateFormId = answers[0].state_form;
 
   if (user.role === "state") {
     await updateAnswers(answers, user);
@@ -26,16 +35,7 @@ export const main = handler(async (event, context) => {
   await updateStateForm(stateFormId, statusData, user);
 });
 
-// TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
-const stateIdsPresentInForm = (answers) => {
-  const foundStateIds = new Set();
-  for (let answer of answers) {
-    foundStateIds.add(answer.state_form.substring(0, 2));
-  }
-  return foundStateIds;
-};
-
-const updateAnswers = async (answers, user) => {
+const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
   let questionResult: UpdateCommandOutput[] = [];
   answers.sort(function (a, b) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
@@ -166,7 +166,11 @@ const updateAnswers = async (answers, user) => {
   }
 };
 
-const updateStateForm = async (stateFormId, statusData, user) => {
+const updateStateForm = async (
+  stateFormId: string,
+  statusData: StateForm,
+  user: AuthUser
+) => {
   // Get existing form to compare changes
   const params = {
     TableName: process.env.StateFormsTable,
@@ -221,21 +225,16 @@ const updateStateForm = async (stateFormId, statusData, user) => {
  * Guaranteed to work on state forms.
  * Not guaranteed to work with _any_ object in the universe.
  */
-function replaceNullsWithZeros (obj) {
+function replaceNullsWithZeros(obj) {
   if (obj === null) {
     return 0;
-  }
-  else if (Array.isArray(obj)) {
+  } else if (Array.isArray(obj)) {
     return obj.map((x) => replaceNullsWithZeros(x));
-  }
-  else if (typeof obj === "object") {
+  } else if (typeof obj === "object") {
     return Object.fromEntries(
-      Object.entries(obj).map(
-        ([key, val]) => [key, replaceNullsWithZeros(val)]
-      )
+      Object.entries(obj).map(([key, val]) => [key, replaceNullsWithZeros(val)])
     );
-  }
-  else {
+  } else {
     return obj;
   }
 }

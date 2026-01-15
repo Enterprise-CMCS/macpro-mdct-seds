@@ -110,10 +110,14 @@ export const obtainAvailableForms = async data => {
 
 // *** save single form
 export const saveSingleForm = async data => {
+  const { state_id, year, quarter, form } = data.statusData;
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/single-form/save", opts);
+  return await apiLib.post(
+    `/forms/${state_id}/${year}/${quarter}/${form}`,
+    opts
+  );
 };
 
 // *** generate quarterly forms

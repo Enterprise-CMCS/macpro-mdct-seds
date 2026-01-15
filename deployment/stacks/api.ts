@@ -324,7 +324,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "saveForm", {
     entry: "services/app-api/handlers/forms/post/saveForm.ts",
     handler: "main",
-    path: "/single-form/save",
+    path: "/forms/{state}/{year}/{quarter}/{form}",
     method: "POST",
     ...commonProps,
   });

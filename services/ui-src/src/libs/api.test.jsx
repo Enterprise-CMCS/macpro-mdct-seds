@@ -137,12 +137,15 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for saveSingleForm", async () => {
-    const response = await saveSingleForm(mockPayload);
+    const mockSavePayload = {
+      statusData: { state_id: "CO", year: 2025, quarter: 4, form: "GRE" }
+    };
+    const response = await saveSingleForm(mockSavePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/single-form/save",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: "/forms/CO/2025/4/GRE",
+      options: { headers: expectedHeaders, body: mockSavePayload }
     });
   });
 

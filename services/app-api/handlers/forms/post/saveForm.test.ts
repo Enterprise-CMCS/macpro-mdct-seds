@@ -1,11 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as saveForm } from "./saveForm.ts";
-import {
-  authorizeUserForState as actualAuthorizeUserForState
-} from "../../../auth/authConditions.ts";
-import {
-  getCurrentUserInfo as actualGetCurrentUserInfo
-} from "../../../auth/cognito-auth.ts";
+import { authorizeUserForState as actualAuthorizeUserForState } from "../../../auth/authConditions.ts";
+import { getCurrentUserInfo as actualGetCurrentUserInfo } from "../../../auth/cognito-auth.ts";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -34,24 +30,24 @@ mockDynamo.on(QueryCommand).callsFake(mockQuery);
 mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
 
 const mockFormAnswer1 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0001",
-  answer_entry: "CO-2025-F1-A-0001-Q1",
+  answer_entry: "CO-2025-1-A-0001-Q1",
   rows: [{ col1: 12 }],
 } as FormAnswer;
 const mockFormAnswer2 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0105",
-  answer_entry: "CO-2025-F1-A-0105-Q1",
+  answer_entry: "CO-2025-1-A-0105-Q1",
   rows: [{ col1: 23 }],
 } as FormAnswer;
 const mockFormAnswer3 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0618",
-  answer_entry: "CO-2025-F1-A-0618-Q1",
+  answer_entry: "CO-2025-1-A-0618-Q1",
   rows: [{ col1: 34 }],
 } as FormAnswer;
 const mockStatusData = {
@@ -74,6 +70,12 @@ const mockStateForm = {
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 } as StateForm;
+const mockPathParams = {
+  state: "CO",
+  year: "2025",
+  quarter: "1",
+  form: "A",
+};
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -88,52 +90,71 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1, mockFormAnswer2],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: undefined,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: undefined,
+      })
+    );
 
     expect(mockUpdate).toHaveBeenCalledTimes(3);
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-form-answers",
-      Key: { answer_entry: "CO-2025-F1-A-0001-Q1" },
-      UpdateExpression: "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
-      ExpressionAttributeValues: {
-        ":rows": [{ col1: 12 }],
-        ":last_modified_by": "COLO",
-        ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
+    expect(mockUpdate).toHaveBeenCalledWith(
+      {
+        TableName: "local-form-answers",
+        Key: { answer_entry: "CO-2025-1-A-0001-Q1" },
+        UpdateExpression:
+          "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
+        ExpressionAttributeValues: {
+          ":rows": [{ col1: 12 }],
+          ":last_modified_by": "COLO",
+          ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
+        },
+        ExpressionAttributeNames: { "#r": "rows" },
+        ReturnValues: "ALL_NEW",
       },
-      ExpressionAttributeNames: { "#r": "rows" },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-form-answers",
-      Key: { answer_entry: "CO-2025-F1-A-0105-Q1" },
-    }), expect.any(Function));
+      expect.any(Function)
+    );
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-form-answers",
+        Key: { answer_entry: "CO-2025-1-A-0105-Q1" },
+      }),
+      expect.any(Function)
+    );
 
-    expect(mockUpdate).toHaveBeenCalledWith({
-      TableName: "local-state-forms",
-      Key: { state_form: "CO-2025-F1-A" },
-      UpdateExpression: "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
-      ExpressionAttributeValues: {
-        ":last_modified_by": "COLO",
-        ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
-        ":status_modified_by": "PREV",
-        ":status_date": "2025-02-02T19:41:00.770Z",
-        ":status_id": FormStatus.InProgress,
-        ":state_comments": [{
-          type: "text_multiline",
-          entry: "mock state comment"
-        }],
+    expect(mockUpdate).toHaveBeenCalledWith(
+      {
+        TableName: "local-state-forms",
+        Key: { state_form: "CO-2025-1-A" },
+        UpdateExpression:
+          "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
+        ExpressionAttributeValues: {
+          ":last_modified_by": "COLO",
+          ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
+          ":status_modified_by": "PREV",
+          ":status_date": "2025-02-02T19:41:00.770Z",
+          ":status_id": FormStatus.InProgress,
+          ":state_comments": [
+            {
+              type: "text_multiline",
+              entry: "mock state comment",
+            },
+          ],
+        },
+        ReturnValues: "ALL_NEW",
       },
-      ReturnValues: "ALL_NEW",
-    }, expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should replace null values with 0, anywhere in the answer", async () => {
@@ -141,53 +162,60 @@ describe("saveForm.ts", () => {
       body: JSON.stringify({
         formAnswers: [
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-Q1",
             rangeId: "0001",
-            rows: [{ foo: { bar: null } }, ],
-          }
+            rows: [{ foo: { bar: null } }],
+          },
         ],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
     expect(response.statusCode).toEqual(200);
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-form-answers",
-      ExpressionAttributeValues: expect.objectContaining({
-        ":rows": [{ foo: { bar: 0 } }],
-      })
-    }), expect.any(Function));
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-form-answers",
+        ExpressionAttributeValues: expect.objectContaining({
+          ":rows": [{ foo: { bar: 0 } }],
+        }),
+      }),
+      expect.any(Function)
+    );
   });
 
   it("should sort answers by answer_entry", async () => {
     const mockEvent = {
       body: JSON.stringify({
-        formAnswers: [
-          mockFormAnswer2,
-          mockFormAnswer3,
-          mockFormAnswer1,
-        ],
+        formAnswers: [mockFormAnswer2, mockFormAnswer3, mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
     expect(response.statusCode).toEqual(200);
     const savedAnswerEntries = mockUpdate.mock.calls
-      .filter(call => call[0].TableName === "local-form-answers")
-      .map(call => call[0].Key.answer_entry);
+      .filter((call) => call[0].TableName === "local-form-answers")
+      .map((call) => call[0].Key.answer_entry);
     const expectedAnswerEntries = [
-      "CO-2025-F1-A-0001-Q1",
-      "CO-2025-F1-A-0105-Q1",
-      "CO-2025-F1-A-0618-Q1",
+      "CO-2025-1-A-0001-Q1",
+      "CO-2025-1-A-0105-Q1",
+      "CO-2025-1-A-0618-Q1",
     ];
     expect(savedAnswerEntries).toEqual(expectedAnswerEntries);
   });
@@ -198,16 +226,22 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [], Count: 0 });
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "State Form Not Found" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "State Form Not Found" }),
+      })
+    );
 
     // ONE WOULD HOPE that we wouldn't perform any update...
     // But we update form-answers before we check state-forms.
@@ -221,26 +255,35 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: {
           ...mockStatusData,
-          status_id: FormStatus.FinalCert
+          status_id: FormStatus.FinalCert,
         },
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+      })
+    );
 
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      ExpressionAttributeValues: expect.objectContaining({
-        ":status_id": FormStatus.FinalCert,
-        ":status_modified_by": "COLO",
-        ":status_date": expect.stringMatching(ISO_DATE_REGEX),
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ExpressionAttributeValues: expect.objectContaining({
+          ":status_id": FormStatus.FinalCert,
+          ":status_modified_by": "COLO",
+          ":status_date": expect.stringMatching(ISO_DATE_REGEX),
+        }),
       }),
-    }), expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should perform special calculations for section 05", async () => {
@@ -248,10 +291,10 @@ describe("saveForm.ts", () => {
       body: JSON.stringify({
         formAnswers: [
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-01",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-01",
+            answer_entry: "CO-2025-1-A-0001-01",
             rows: [
               {},
               {
@@ -278,10 +321,10 @@ describe("saveForm.ts", () => {
             ],
           },
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-04",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-04",
+            answer_entry: "CO-2025-1-A-0001-04",
             rows: [
               {},
               {
@@ -308,10 +351,10 @@ describe("saveForm.ts", () => {
             ],
           },
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-05",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-05",
+            answer_entry: "CO-2025-1-A-0001-05",
             rows: [
               {},
               {
@@ -336,51 +379,60 @@ describe("saveForm.ts", () => {
                 col6: [{ answer: null }],
               },
             ],
-          }
+          },
         ],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockStateUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockStateUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: undefined,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: undefined,
+      })
+    );
 
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-form-answers",
-      Key: { answer_entry: "CO-2025-F1-A-0001-05" },
-      ExpressionAttributeValues: expect.objectContaining({
-        ":rows": [
-          {},
-          {
-            "col2": [{ "answer": "21.0" }],
-            "col3": [{ "answer": "11.0" }],
-            "col4": [{ "answer": "7.7" }],
-            "col5": [{ "answer": "6.0" }],
-            "col6": [{ "answer": "5.0" }],
-          },
-          {
-            "col2": [{ "answer": "4.3" }],
-            "col3": [{ "answer": "3.9" }],
-            "col4": [{ "answer": "3.5" }],
-            "col5": [{ "answer": "3.2" }],
-            "col6": [{ "answer": "3.0" }],
-          },
-          {
-            "col2": [{ "answer": "2.8" }],
-            "col3": [{ "answer": "2.7" }],
-            "col4": [{ "answer": "2.5" }],
-            "col5": [{ "answer": "2.4" }],
-            "col6": [{ "answer": "2.3" }],
-          }
-        ],
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-form-answers",
+        Key: { answer_entry: "CO-2025-1-A-0001-05" },
+        ExpressionAttributeValues: expect.objectContaining({
+          ":rows": [
+            {},
+            {
+              col2: [{ answer: "21.0" }],
+              col3: [{ answer: "11.0" }],
+              col4: [{ answer: "7.7" }],
+              col5: [{ answer: "6.0" }],
+              col6: [{ answer: "5.0" }],
+            },
+            {
+              col2: [{ answer: "4.3" }],
+              col3: [{ answer: "3.9" }],
+              col4: [{ answer: "3.5" }],
+              col5: [{ answer: "3.2" }],
+              col6: [{ answer: "3.0" }],
+            },
+            {
+              col2: [{ answer: "2.8" }],
+              col3: [{ answer: "2.7" }],
+              col4: [{ answer: "2.5" }],
+              col5: [{ answer: "2.4" }],
+              col6: [{ answer: "2.3" }],
+            },
+          ],
+        }),
       }),
-    }), expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should ONLY update status data if the requestor is a business user", async () => {
@@ -389,24 +441,33 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1, mockFormAnswer2],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
-    getCurrentUserInfo.mockResolvedValueOnce({ status: "success", data: mockBusinessUser });
+    getCurrentUserInfo.mockResolvedValueOnce({
+      status: "success",
+      data: mockBusinessUser,
+    });
     mockQuery.mockResolvedValueOnce({ Items: [mockStateForm], Count: 1 });
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+      })
+    );
 
     expect(mockUpdate).toHaveBeenCalledTimes(1);
 
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-state-forms",
-      ExpressionAttributeValues: expect.objectContaining({
-        ":last_modified_by": "BUSY",
-      })
-    }), expect.any(Function));
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-state-forms",
+        ExpressionAttributeValues: expect.objectContaining({
+          ":last_modified_by": "BUSY",
+        }),
+      }),
+      expect.any(Function)
+    );
   });
 
   it("should return Internal Server Error if the user is not authorized", async () => {
@@ -416,13 +477,16 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

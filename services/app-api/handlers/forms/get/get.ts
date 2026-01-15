@@ -1,14 +1,14 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event, context) => {
-  // Deconstruct variables from URL string
-  const { state, year, quarter, form } = event.pathParameters;
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter, form } = event.pathParameters!;
 
   await authorizeAdminOrUserForState(event, state);
 
-  const answerFormID = `${state}-${year}-${parseInt(quarter)}-${form}`;
+  const answerFormID = `${state}-${year}-${parseInt(quarter!)}-${form}`;
 
   const answerParams = {
     TableName: process.env.FormAnswersTable,
@@ -29,7 +29,7 @@ export const main = handler(async (event, context) => {
       "#theYear": "year",
     },
     ExpressionAttributeValues: {
-      ":year": parseInt(year),
+      ":year": parseInt(year!),
       ":form": form,
     },
     FilterExpression: "form = :form and #theYear = :year",
