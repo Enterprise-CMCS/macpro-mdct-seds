@@ -200,7 +200,7 @@ describe("libs/api", () => {
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/generate-enrollment-totals",
+      path: "/admin/generate-totals",
       options: { headers: expectedHeaders, body: mockPayload }
     });
   });

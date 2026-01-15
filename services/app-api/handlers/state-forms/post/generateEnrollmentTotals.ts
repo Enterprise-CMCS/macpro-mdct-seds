@@ -3,8 +3,9 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { StateForm, writeAllStateForms } from "../../../storage/stateForms.ts";
 import { FormQuestion } from "../../../storage/formQuestions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAdmin(event);
 
   const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
@@ -76,11 +77,13 @@ const generateTotals = async (stateForms, ageRange) => {
       let ageRangeLength = ageRange.length;
       for (let j = 0; j < ageRangeLength; j++) {
         const answerEntry = `${stateForms[i].state_form}-${ageRange[j]}-07`;
-        const existingItems = (await dynamoDb.query({
-          TableName: process.env.FormAnswersTable,
-          ExpressionAttributeValues: { ":answerEntry": answerEntry },
-          KeyConditionExpression: "answer_entry = :answerEntry",
-        })).Items;
+        const existingItems = (
+          await dynamoDb.query({
+            TableName: process.env.FormAnswersTable,
+            ExpressionAttributeValues: { ":answerEntry": answerEntry },
+            KeyConditionExpression: "answer_entry = :answerEntry",
+          })
+        ).Items;
 
         // Add just the rows, no other details are needed
         let questionResultLength = existingItems.length;

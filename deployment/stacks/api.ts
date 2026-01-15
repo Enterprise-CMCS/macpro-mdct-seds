@@ -233,7 +233,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry:
       "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.ts",
     handler: "main",
-    path: "/generate-enrollment-totals",
+    path: "/admin/generate-totals",
     method: "POST",
     timeout: Duration.minutes(15),
     ...commonProps,

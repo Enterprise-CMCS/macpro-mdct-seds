@@ -161,7 +161,7 @@ export const generateEnrollmentTotals = async data => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/generate-enrollment-totals", opts);
+  return await apiLib.post("/admin/generate-totals", opts);
 };
 
 // **
