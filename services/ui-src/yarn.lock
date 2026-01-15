@@ -4876,17 +4876,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trussworks/react-uswds@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@trussworks/react-uswds@npm:7.0.0"
-  peerDependencies:
-    "@uswds/uswds": ^3.7.1
-    react: ^16.x || ^17.x || ^18.x
-    react-dom: ^16.x || ^17.x || ^18.x
-  checksum: 10c0/09cd75ff6b5849f50114bb0243773280a463ffba3a59f83d2af2302a2fb1dd36f8efec09f60245ffc2690660b4aa4169b1e40480d53e252a837936c03d78623a
-  languageName: node
-  linkType: hard
-
 "@types/aria-query@npm:^4.2.0":
   version: 4.2.2
   resolution: "@types/aria-query@npm:4.2.2"
@@ -6110,13 +6099,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classlist-polyfill@npm:1.2.0":
-  version: 1.2.0
-  resolution: "classlist-polyfill@npm:1.2.0"
-  checksum: 10c0/97a6c6865daa1f74e6219f24bb5971c6b418aa9dcec0dcaab38283dbd9388af1c0057e9bd281b7236959059d971c55705bc055ee8382ee89f0c2d70749794cf3
-  languageName: node
-  linkType: hard
-
 "classnames@npm:^2.2.5":
   version: 2.2.6
   resolution: "classnames@npm:2.2.6"
@@ -6662,13 +6644,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"domready@npm:1.0.8":
-  version: 1.0.8
-  resolution: "domready@npm:1.0.8"
-  checksum: 10c0/b63587a684f73786c5a10236b878b6b4509133a7a79d07ce609fe212a8a08668b6399e8ddab0dc371a5e5545ab83567983b3232e9972b60916d54a4fe219ce5a
-  languageName: node
-  linkType: hard
-
 "dotenv@npm:8.2.0":
   version: 8.2.0
   resolution: "dotenv@npm:8.2.0"
@@ -6698,13 +6673,6 @@ __metadata:
   version: 1.4.733
   resolution: "electron-to-chromium@npm:1.4.733"
   checksum: 10c0/729e79256748102180a74d997efafb8377f100a8e087aef99175ec6ee298aa715fa41f6a869af906adaefb7fcba43f898c42f721c9ea8980c13744d2ef7ea1b2
-  languageName: node
-  linkType: hard
-
-"element-closest@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "element-closest@npm:2.0.2"
-  checksum: 10c0/1279012d0b23ef1eb84e8e4bcf54dac0b26f5ad101d0ea2c5ba11bba081ba2092ff4c3728c9d413a6d219cf6f80fcc62a41149f5cf8b4a47572c6ce9501ceaab
   languageName: node
   linkType: hard
 
@@ -9276,13 +9244,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keyboardevent-key-polyfill@npm:^1.0.2":
-  version: 1.1.0
-  resolution: "keyboardevent-key-polyfill@npm:1.1.0"
-  checksum: 10c0/0f3ef56daa469a0f09f3e7f20e77e1ecb988edee7f83953aa3450b991a1d318d6e3b03dee644015b2bb7b5f26dd0656e167c83967a553bc951e883831afc6b19
-  languageName: node
-  linkType: hard
-
 "language-subtag-registry@npm:~0.3.2":
   version: 0.3.22
   resolution: "language-subtag-registry@npm:0.3.22"
@@ -9428,13 +9389,6 @@ __metadata:
     promise-retry: "npm:^2.0.1"
     ssri: "npm:^13.0.0"
   checksum: 10c0/525f74915660be60b616bcbd267c4a5b59481b073ba125e45c9c3a041bb1a47a2bd0ae79d028eb6f5f95bf9851a4158423f5068539c3093621abb64027e8e461
-  languageName: node
-  linkType: hard
-
-"matches-selector@npm:^1.0.0":
-  version: 1.2.0
-  resolution: "matches-selector@npm:1.2.0"
-  checksum: 10c0/a0bb9457e8fe59a38cb17ca1bf66ac0c31db163b9141254906808f99ce2a734f7e888753b34c4f7631069cf63e34d10eff1a0501a541a0cd233323392f4b71b1
   languageName: node
   linkType: hard
 
@@ -9727,7 +9681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:4.1.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
+"object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 10c0/1f4df9945120325d041ccf7b86f31e8bcc14e73d29171e37a7903050e96b81323784ec59f93f102ec635bcf6fa8034ba3ea0a8c7e69fa202b87ae3b6cec5a414
@@ -10519,18 +10473,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"receptor@npm:1.0.0":
-  version: 1.0.0
-  resolution: "receptor@npm:1.0.0"
-  dependencies:
-    element-closest: "npm:^2.0.1"
-    keyboardevent-key-polyfill: "npm:^1.0.2"
-    matches-selector: "npm:^1.0.0"
-    object-assign: "npm:^4.1.0"
-  checksum: 10c0/4b45921a80237ea9aa6a9c91878f0da6f5f5faccc117668235137f359c8ef0a5844a94b6d5117ebfdc50776a63039a031069098f53ff39af19a62dc64e67905a
-  languageName: node
-  linkType: hard
-
 "redent@npm:^3.0.0":
   version: 3.0.0
   resolution: "redent@npm:3.0.0"
@@ -10662,13 +10604,6 @@ __metadata:
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
   checksum: 10c0/8408eec31a3112ef96e3746c37be7d64020cda07c03a920f5024e77290a218ea758b26ca9529fd7b1ad283947f34b2291c1c0f6aa0ed34acfdda9c6014c8d190
-  languageName: node
-  linkType: hard
-
-"resolve-id-refs@npm:0.1.0":
-  version: 0.1.0
-  resolution: "resolve-id-refs@npm:0.1.0"
-  checksum: 10c0/36b49fdef76f9006967878da05aafbd529027879a78b1db3102ecf24dff993abe7aac8b45fba3ac89b7b27ed0867f16127b805c3575472d86bbce578a9b7c784
   languageName: node
   linkType: hard
 
@@ -12208,7 +12143,6 @@ __metadata:
     "@testing-library/jest-dom": "npm:6.4.6"
     "@testing-library/react": "npm:12.1.5"
     "@testing-library/user-event": "npm:13.5.0"
-    "@trussworks/react-uswds": "npm:^7.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^2.10.0"
     "@typescript-eslint/parser": "npm:^2.10.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
@@ -12239,7 +12173,6 @@ __metadata:
     react-tabs: "npm:^3.1.2"
     sass: "npm:^1.77.6"
     typescript: "npm:^5.9.3"
-    uswds: "npm:^2.14.0"
     vite: "npm:^6.4.1"
     vite-tsconfig-paths: "npm:^4.3.2"
     vitest: "npm:^3.0.5"
@@ -12341,19 +12274,6 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/35e1179f872a53227bdf8a827f7911da4c37c0f4091c29b76b1e32473d1670ebe7bcd880b808b7549ba9a5605c233350f800ffab963ee4a4ee346ee983b6019b
-  languageName: node
-  linkType: hard
-
-"uswds@npm:^2.14.0":
-  version: 2.14.0
-  resolution: "uswds@npm:2.14.0"
-  dependencies:
-    classlist-polyfill: "npm:1.2.0"
-    domready: "npm:1.0.8"
-    object-assign: "npm:4.1.1"
-    receptor: "npm:1.0.0"
-    resolve-id-refs: "npm:0.1.0"
-  checksum: 10c0/fd65c288b41253bc615ac763ee4f085d9eeb67ad24f3cd69bfcbae9d2c1b3c070aed165239f73b1579943f78f17fde2595e6e8eaacaf1cf6d0bb0c5aebd55992
   languageName: node
   linkType: hard
 

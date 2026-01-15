@@ -1,21 +1,20 @@
 import React from "react";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 import "./Footer.scss";
 
 const Footer = () => {
   return (
     <footer className="footerRoot" data-testid="Footer">
       <div className="footerTop">
-        <GridContainer className="footerTopContainer" containerSize="none">
-          <Grid row className="footerTopFlex">
-            <Grid col={6} tablet={{ col: true }} className="footerTopLeftContainer">
+        <div className="footerTopContainer" containerSize="none">
+          <div row className="footerTopFlex">
+            <div col={6} tablet={{ col: true }} className="footerTopLeftContainer">
               <img
                 className="sedsLogo"
                 src="/img/seds-logo.svg"
                 alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
               />
-            </Grid>
-            <Grid col={6} tablet={{ col: true }} className="footerTopRightContainer">
+            </div>
+            <div col={6} tablet={{ col: true }} className="footerTopRightContainer">
               <div className="footerTopRightTopFlex">
                 <div className="footerCMSBrandingLeft">
                   <div className="hhsLogo">
@@ -47,9 +46,9 @@ const Footer = () => {
                   />
                 </div>
               </div>
-            </Grid>
-          </Grid>
-        </GridContainer>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="footerBottom">
         <div className="footerBottomContainer">

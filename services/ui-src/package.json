@@ -9,7 +9,6 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
-    "@trussworks/react-uswds": "^7.0.0",
     "aws-amplify": "^6.15.8",
     "file-saver": "^2.0.5",
     "jsonpath": "^1.1.1",
@@ -21,7 +20,6 @@
     "react-router-dom": "^5.1.2",
     "react-tabs": "^3.1.2",
     "sass": "^1.77.6",
-    "uswds": "^2.14.0",
     "zustand": "^4.5.7"
   },
   "scripts": {

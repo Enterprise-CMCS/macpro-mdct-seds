@@ -1,6 +1,5 @@
 import React from "react";
 import "./Profile.scss";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
 import { TextField } from "@cmsgov/design-system";
 
@@ -21,9 +20,9 @@ export default function Profile() {
   return (
     <div className="Profile">
       <h1 className="page-header">Profile</h1>
-      <GridContainer className="container">
-        <Grid row>
-          <Grid col={12}>
+      <div className="container">
+        <div row>
+          <div col={12}>
             <form>
               <TextField
                 key="email"
@@ -61,9 +60,9 @@ export default function Profile() {
                 disabled={true}
               ></TextField>
             </form>
-          </Grid>
-        </Grid>
-      </GridContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
