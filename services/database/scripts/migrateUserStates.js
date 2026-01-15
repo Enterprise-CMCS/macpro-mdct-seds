@@ -90,7 +90,7 @@ async function gatherLoginDatesFromCognito() {
   for await (let page of pages) {
     for (const user of page.Users ?? []) {
       const sub = user.Attributes.find((attr) => attr.Name === "sub").Value;
-      modifyDates.set(sub, user.UserLastModifiedDate);
+      modifyDates.set(sub, user.UserLastModifiedDate?.toISOString());
     }
   }
   return modifyDates;
@@ -104,7 +104,7 @@ async function gatherLoginDatesFromCognito() {
  * @returns `true` if a change was made; `false` if no change was needed.
  */
 function updateUserState(user, loginDates) {
-  const { role, states, usernameSub } = user;
+  const { lastLogin, role, states, userId, usernameSub } = user;
 
   if (states === undefined) {
     // This user has already been migrated; no update necessary.
