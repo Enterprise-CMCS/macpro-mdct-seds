@@ -103,7 +103,7 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+            <FontAwesomeIcon icon={faSignInAlt} />
           </LoaderButton>
         </div>
       </form>

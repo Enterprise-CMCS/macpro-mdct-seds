@@ -89,7 +89,7 @@ const PrintPDF = () => {
             onClick={(e) => handlePrint(e)}
           >
             Print / PDF
-            <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
+            <FontAwesomeIcon icon={faPrint} />
           </Button>
 
           <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

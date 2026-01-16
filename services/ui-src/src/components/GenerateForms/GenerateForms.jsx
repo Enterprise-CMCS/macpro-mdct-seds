@@ -47,28 +47,24 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert && alert.status === 200 ? (
-        <Alert
-          variation="success"
-          className="margin-bottom-3"
-          headingLevel="h1"
-        >
+        <Alert variation="success" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && alert.status === 204 ? (
-        <Alert variation="warn" className="margin-bottom-3" headingLevel="h1">
+        <Alert variation="warn" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert variation="error" className="margin-bottom-3" headingLevel="h1">
+        <Alert variation="error" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
       <h1>Generate Quarterly Forms</h1>
-      <p className="margin-bottom-4">
+      <p>
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
@@ -99,10 +95,8 @@ const GenerateForms = () => {
       </select>
       <Button
         variation="solid"
-        style={{ marginTop: "0.5rem" }}
         data-testid="generateFormsButton"
         onClick={() => generateForms()}
-        className="margin-bottom-5"
       >
         Generate Forms
       </Button>

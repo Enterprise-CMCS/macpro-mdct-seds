@@ -64,9 +64,7 @@ const StateSelector = () => {
         <>
           <h1>This account is not associated with any states</h1>
 
-          <label htmlFor="state-select">
-            Please select your state:
-          </label>
+          <label htmlFor="state-select">Please select your state:</label>
           <select
             id="state-select"
             value={selectedState}
@@ -88,7 +86,7 @@ const StateSelector = () => {
             }}
           >
             Update User
-            <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+            <FontAwesomeIcon icon={faUserCheck} />
           </Button>
         </>
       )}

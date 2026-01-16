@@ -35,7 +35,7 @@ const FormFooter = ({ state, year, quarter }) => {
             data-testid="saveButton"
             disabled={userRole !== "state"}
           >
-            Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+            Save <FontAwesomeIcon icon={faSave} />
           </Button>
         </div>
       </div>

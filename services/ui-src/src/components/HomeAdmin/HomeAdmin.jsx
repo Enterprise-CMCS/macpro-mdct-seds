@@ -62,9 +62,7 @@ const HomeAdmin = () => {
       )}
       <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
-          <label htmlFor="state-select">
-            Select State to View
-          </label>
+          <label htmlFor="state-select">Select State to View</label>
           <select
             id="state-select"
             value={selectedState}

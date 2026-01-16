@@ -93,9 +93,7 @@ const EditUser = () => {
               </tr>
               <tr>
                 <th>
-                  <label htmlFor="role-select">
-                    Role
-                  </label>
+                  <label htmlFor="role-select">Role</label>
                 </th>
                 <td>
                   <select
@@ -113,9 +111,7 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label htmlFor="state-select">
-                      State
-                    </label>
+                    <label htmlFor="state-select">State</label>
                   </th>
                   <td>
                     <select
@@ -148,13 +144,9 @@ const EditUser = () => {
             </tbody>
           </Table>
           <div>
-            <Button
-              type="button"
-              variation="solid"
-              onClick={handleUpdateClick}
-            >
+            <Button type="button" variation="solid" onClick={handleUpdateClick}>
               Update User
-              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+              <FontAwesomeIcon icon={faUserCheck} />
             </Button>
           </div>
         </div>

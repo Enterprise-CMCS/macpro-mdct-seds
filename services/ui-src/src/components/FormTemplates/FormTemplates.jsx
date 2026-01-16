@@ -102,9 +102,7 @@ const FormTemplates = () => {
         ) : null}
         {formYears && selectedYear ? (
           <div className="year-selection-container">
-            <label htmlFor="year-select">
-              Select Year or Create New
-            </label>
+            <label htmlFor="year-select">Select Year or Create New</label>
             <select
               id="year-select"
               value={selectedYear}
@@ -149,7 +147,7 @@ const FormTemplates = () => {
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          Save <FontAwesomeIcon icon={faSave} />
         </Button>
       </div>
     </div>
