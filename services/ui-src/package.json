@@ -1,9 +1,16 @@
 {
   "name": "ui-src",
-  "license": "CC0-1.0",
-  "description": "",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
+  "description": "",
+  "license": "CC0-1.0",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest --run --coverage",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -24,33 +31,6 @@
     "sass": "^1.77.6",
     "uswds": "^2.14.0",
     "zustand": "^4.5.7"
-  },
-  "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "coverage": "vitest --run --coverage",
-    "lint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "eslint:recommended",
-      "google"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@testing-library/dom": "7.31.2",
@@ -79,5 +59,25 @@
   },
   "resolutions": {
     "form-data": "^4.0.4"
-  }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended",
+      "google"
+    ]
+  },
+  "packageManager": "yarn@4.12.0"
 }

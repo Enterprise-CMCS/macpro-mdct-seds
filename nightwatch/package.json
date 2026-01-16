@@ -1,9 +1,8 @@
 {
   "name": "nightwatch",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "test": "node nightwatch.js -c nightwatch.conf.js",
     "smoke": "yarn run test --tag smoke"
@@ -13,5 +12,6 @@
     "dotenv": "^8.2.0",
     "nightwatch": "^1.5.1",
     "yargs": "^16.1.1"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }

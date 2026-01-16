@@ -1,4 +1,5 @@
 # A History of Status ID
+
 _As of November 2025_
 
 This document describes how state forms' status was previously tracked,
@@ -21,19 +22,20 @@ But we can make some inferences.
 ## What are the statuses?
 
 A state form can be:
-   - **In Progress**:
-     The form is missing some or all of its data.
-     SEDS does not make a distinction for Not Started;
-     a form is In Progress from the moment it is created.
-   - **Provisional Certified**:
-     The state user believes they have entered all the data,
-     but it is still being reviewed.
-   - **Final Certified**:
-     Now the state user has declared that the data is complete.
-   - **Not Required**:
-     Not every form makes sense for every state.
-     If a state user says that a form doesn't apply to them,
-     it will have this status.
+
+- **In Progress**:
+  The form is missing some or all of its data.
+  SEDS does not make a distinction for Not Started;
+  a form is In Progress from the moment it is created.
+- **Provisional Certified**:
+  The state user believes they have entered all the data,
+  but it is still being reviewed.
+- **Final Certified**:
+  Now the state user has declared that the data is complete.
+- **Not Required**:
+  Not every form makes sense for every state.
+  If a state user says that a form doesn't apply to them,
+  it will have this status.
 
 Those are the only statuses currently.
 As far as I'm aware, they are the only statuses ever.
@@ -98,12 +100,12 @@ Our clue for what pre-2020 data looks like is here:
 in the old DataConnect [code to interpret `status_id`][status-id-interpret-2020].
 Let me format that code as a table:
 
-| ID | Meaning pre-2020 | Meaning post-2020              |
-|----|------------------|--------------------------------|
-|  1 | In Progress      | In Progress                    |
-|  2 | Provisional Cert | In Progress                    |
-|  3 | Final Cert       | Provisional Cert               |
-|  4 | Not Required     | Final Cert **OR** Not Required |
+| ID  | Meaning pre-2020 | Meaning post-2020              |
+| --- | ---------------- | ------------------------------ |
+| 1   | In Progress      | In Progress                    |
+| 2   | Provisional Cert | In Progress                    |
+| 3   | Final Cert       | Provisional Cert               |
+| 4   | Not Required     | Final Cert **OR** Not Required |
 
 Attentive readers will notice that the "OR Not Required" part
 was not implemented in DataConnect's code.
@@ -152,6 +154,7 @@ Then they would re-run their Kafka message processing.
 This was planned for September 24, 2025, and it did not happen that day.
 
 When coordinating test cases, we discovered that:
+
 - Some forms in the MDCT database didn't match the status of those forms in DC
 - Some forms in MDCT don't even exist in DC
 - Some forms in DC appear to be missing status information entirely
@@ -279,6 +282,7 @@ Also, note: as far as I can tell, the status descriptions have never changed.
 ## Okay that's it love you bye
 
 If you read this whole document, I can only assume that you are
+
 - entertained by the ups and downs of the story, or
 - desparately looking for clues to unravel some new `status_id` problem.
 

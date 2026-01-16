@@ -1,14 +1,23 @@
 {
   "name": "macpro-mdct-seds",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
-  "description": "",
-  "main": "index.js",
   "private": true,
-  "type": "module",
+  "description": "",
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
+  "bugs": {
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues"
+  },
+  "license": "CC0-1.0",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enterprise-CMCS/macpro-mdct-seds.git"
+  },
   "directories": {
     "test": "tests"
   },
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -19,16 +28,6 @@
     "test:cypress": "cd tests/cypress && yarn test && cd -",
     "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Enterprise-CMCS/macpro-mdct-seds.git"
-  },
-  "author": "",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds/issues"
-  },
-  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-seds#readme",
   "dependencies": {
     "@aws-sdk/client-cloudformation": "^3.946.0",
     "jsdom": "^26.1.0"
@@ -50,5 +49,6 @@
     "oxfmt": "^0.24.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
