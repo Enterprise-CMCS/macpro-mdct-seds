@@ -1,8 +1,9 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   // Get year and quarter from request
   let data = JSON.parse(event.body);
 
@@ -22,7 +23,7 @@ export const main = handler(async (event, context) => {
 
   const result = await dynamoDb.query(params);
   if (result.Count === 0) {
-    return [];
+    return ok([]);
   }
 
   const record = result.Items![0];
@@ -53,8 +54,8 @@ export const main = handler(async (event, context) => {
     throw new Error("Table params update failed", { cause: e });
   }
 
-  return {
+  return ok({
     status: 200,
     message: "Enrollment Data successfully updated",
-  };
+  });
 });

@@ -2,6 +2,7 @@ import handler from "./../../libs/handler-lib.ts";
 import dynamoDb from "./../../libs/dynamodb-lib.ts";
 import { authorizeStateUser } from "../../auth/authConditions.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -9,7 +10,7 @@ const client = new SESClient({ region: "us-east-1" });
  * Handler responsible for sending notification to business users,
  * each time a state takes an uncertify action on any of their quarterly forms
  */
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   let data = JSON.parse(event.body);
 
   await authorizeStateUser(event, data.formInfo.state_id);
@@ -21,12 +22,12 @@ export const main = handler(async (event, context) => {
     console.log(data, "data: promise");
     console.log(data.MessageId, "data.MessageId");
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
-  return {
+  return ok({
     status: "success",
     message: "Uncertified Business owners email sent",
-  };
+  });
 });
 
 // logic to retrieve all business users emails
@@ -50,7 +51,7 @@ async function getBusinessUsersEmail() {
   return businessOwnersEmails;
 }
 
-async function unCetifiedTemplate(payload) {
+async function unCetifiedTemplate(payload: any) {
   const sendToEmail = await getBusinessUsersEmail();
   const todayDate = new Date().toISOString().split("T")[0];
 

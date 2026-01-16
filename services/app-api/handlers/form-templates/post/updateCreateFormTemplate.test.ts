@@ -3,6 +3,7 @@ import { main as updateCreateFormTemplate } from "./updateCreateFormTemplate.ts"
 import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
@@ -70,9 +71,9 @@ describe("updateCreateFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
-          status: 400,
+          status: StatusCodes.BadRequest,
           message: "Invalid JSON. Please review your template.",
         }),
       })
@@ -93,9 +94,9 @@ describe("updateCreateFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
-          status: 400,
+          status: StatusCodes.BadRequest,
           message: "Invalid JSON. Please review your template.",
         }),
       })
@@ -113,7 +114,7 @@ describe("updateCreateFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
           status: 422,
           message: "Please specify both a year and a template",
