@@ -10,7 +10,7 @@ const FormLoadError = () => {
     <div className="formLoadError" data-testid="formLoadTest">
       <div className="container">
         <div row>
-          <div col={12}>
+          <div>
             <h1>Error Retrieving Form</h1>
             <p>
               There was an issue loading the form, please contact the helpdesk

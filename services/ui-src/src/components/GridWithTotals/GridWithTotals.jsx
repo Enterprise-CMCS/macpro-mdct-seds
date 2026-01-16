@@ -313,7 +313,7 @@ const GridWithTotals = (props) => {
                         disabled={props.disabled}
                       />
                     ) : (
-                      <span className="usa-input rid-column synthesized">
+                      <span>
                         {gridData[rowIndex][columnIndex] >= 0
                           ? addCommas(
                               parseFloat(
@@ -348,7 +348,7 @@ const GridWithTotals = (props) => {
                       disabled={props.disabled}
                     />
                   ) : (
-                    <span className="usa-input grid-column synthesized ">
+                    <span>
                       {column >= 0
                         ? addCommas(
                             parseFloat(column).toFixed(currentPrecision)

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
 import { generateQuarterlyForms } from "../../libs/api";
-import "./GenerateForms.scss";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState();
@@ -68,14 +67,13 @@ const GenerateForms = () => {
           {alert.message}
         </Alert>
       ) : null}
-      <h1 className="page-header">Generate Quarterly Forms</h1>
+      <h1>Generate Quarterly Forms</h1>
       <p className="margin-bottom-4">
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
       <label htmlFor="year-select">Select the Year</label>
       <select
-        className="usa-select"
         id="year-select"
         value={selectedYear}
         onChange={(evt) => setSelectedYear(evt.target.value)}
@@ -90,7 +88,6 @@ const GenerateForms = () => {
         Select the Quarter
       </label>
       <select
-        className="usa-select"
         id="quarter-select"
         value={selectedQuarter}
         onChange={(evt) => setSelectedQuarter(evt.target.value)}

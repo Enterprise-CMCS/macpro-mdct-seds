@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
-import "./EditUser.scss";
 
 /**
  * Admin-only page for viewing & editing other users' permissions.
@@ -48,15 +47,15 @@ const EditUser = () => {
 
   return (
     <div className="edit-user" data-testid="EditUser">
-      <Link to="/users" className="userListLink text-bold">
+      <Link to="/users" className="text-bold">
         &laquo; Back to User List
       </Link>
-      <h1 className="page-header">Edit User</h1>
+      <h1>Edit User</h1>
       {user ? (
         <div className="center-content">
           <Table>
             <tbody>
-              <tr className="userName">
+              <tr>
                 <th>Username</th>
                 <td>
                   <TextField
@@ -94,13 +93,12 @@ const EditUser = () => {
               </tr>
               <tr>
                 <th>
-                  <label className="usa-label" htmlFor="role-select">
+                  <label htmlFor="role-select">
                     Role
                   </label>
                 </th>
                 <td>
                   <select
-                    className="usa-select"
                     id="role-select"
                     value={role}
                     onChange={(evt) => setRole(evt.target.value)}
@@ -115,13 +113,12 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label className="usa-label" htmlFor="state-select">
+                    <label htmlFor="state-select">
                       State
                     </label>
                   </th>
                   <td>
                     <select
-                      className="usa-select"
                       id="state-select"
                       value={state}
                       onChange={(evt) => setState(evt.target.value)}
@@ -150,10 +147,9 @@ const EditUser = () => {
               </tr>
             </tbody>
           </Table>
-          <div className="action-buttons margin-top-4">
+          <div>
             <Button
               type="button"
-              className="form-button"
               variation="solid"
               onClick={handleUpdateClick}
             >

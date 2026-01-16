@@ -18,11 +18,11 @@ export default function Profile() {
   const state = user.state ?? "";
 
   return (
-    <div className="Profile">
-      <h1 className="page-header">Profile</h1>
-      <div className="container">
-        <div row>
-          <div col={12}>
+    <div className="Profile center">
+      <h1>Profile</h1>
+      <div>
+        <div>
+          <div>
             <form>
               <TextField
                 key="email"

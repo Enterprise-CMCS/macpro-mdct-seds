@@ -146,8 +146,29 @@ legend {
   gap: 1rem;
 }
 
+.col-gap-1-half{
+  @extend .col-gap;
+  gap: 1.5rem;
+}
+
 .col-gap-2 {
   @extend .col-gap;
+  gap: 2rem;
+}
+
+.row-gap {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.row-gap-1 {
+  @extend .row-gap;
+  gap: 1rem;
+}
+
+.row-gap-2 {
+  @extend .row-gap;
   gap: 2rem;
 }
 
@@ -211,5 +232,46 @@ button {
 .Home {
   p:first-of-type {
     padding: 16px 0;
+  }
+}
+
+.loader {
+  background: rgba(255, 255, 255, 0.85);
+  bottom: 0;
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+.loader-content {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 4px;
+  left: calc(50% - 120px);
+  padding: 1.2rem;
+  position: absolute;
+  text-align: center;
+  top: calc(50% - 80px);
+}
+.loader-icon {
+  animation: spin 2s linear infinite;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #3366cc;
+  height: 40px;
+  margin-left: calc(50% - 16px);
+  width: 40px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -64,11 +64,10 @@ const StateSelector = () => {
         <>
           <h1>This account is not associated with any states</h1>
 
-          <label className="usa-label" htmlFor="state-select">
+          <label htmlFor="state-select">
             Please select your state:
           </label>
           <select
-            className="usa-select"
             id="state-select"
             value={selectedState}
             onChange={(evt) => setSelectedState(evt.target.value)}
@@ -83,7 +82,6 @@ const StateSelector = () => {
           <Button
             style={{ marginTop: "0.5rem" }}
             variation="solid"
-            className="form-button"
             data-testid="saveUpdatedUser"
             onClick={() => {
               saveUpdatedUser();

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
 
 import { generateEnrollmentTotals } from "../../libs/api";
-import "./GenerateTotals.scss";
 
 const GenerateTotals = () => {
   const [alert, setAlert] = useState(false);
@@ -26,7 +25,7 @@ const GenerateTotals = () => {
 
   return (
     <div className="generate-totals-container">
-      <h1 className="page-header">Generate Total Enrollment Counts</h1>
+      <h1>Generate Total Enrollment Counts</h1>
       {loading ? (
         <div className="loader">
           <div className="loader-content">

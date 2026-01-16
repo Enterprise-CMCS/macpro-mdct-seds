@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // *** 3rd party and other functional dependencies
 import { handleExport } from "../../utility-functions/exportFunctions";
@@ -9,11 +9,7 @@ import { Button } from "@cmsgov/design-system";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserPlus,
-  faFileCsv,
-  faFilePdf,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileCsv, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -37,11 +33,10 @@ const Users = () => {
   }, []);
 
   return (
-    <div className="user-profiles" data-testid="users">
-      <h1 className="page-header">Users</h1>
-      <div className="page-subheader exclude-from-pdf">
+    <div className="user-profiles col-gap-1-half" data-testid="users">
+      <h1>Users</h1>
+      <div className="row-gap-1">
         <Button
-          className="margin-left-3 action-button"
           variation="solid"
           onClick={() =>
             handleExport("csv", "MDCT Users Export.csv", {
@@ -60,11 +55,10 @@ const Users = () => {
           }
         >
           CSV
-          <FontAwesomeIcon icon={faFileCsv} className="margin-left-2" />
+          <FontAwesomeIcon icon={faFileCsv} />
         </Button>
 
         <Button
-          className="margin-left-3 action-button"
           variation="solid"
           onClick={async () =>
             await handleExport(
@@ -76,12 +70,12 @@ const Users = () => {
           }
         >
           PDF
-          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+          <FontAwesomeIcon icon={faFilePdf} />
         </Button>
       </div>
       <div>
         {users?.length ? (
-          <table className="user-list">
+          <table>
             <thead>
               <tr>
                 <th scope="col">Username</th>

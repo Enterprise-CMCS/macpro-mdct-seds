@@ -5,7 +5,6 @@ import { useParams, useHistory } from "react-router-dom";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
-import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import Unauthorized from "../Unauthorized/Unauthorized";

@@ -89,7 +89,7 @@ const FormTemplates = () => {
 
   return (
     <div className="formTemplates">
-      <h1 className="page-header">Add/Edit Form Templates</h1>
+      <h1>Add/Edit Form Templates</h1>
       <div data-testid="formTemplates">
         {alert ? (
           <Alert
@@ -102,11 +102,10 @@ const FormTemplates = () => {
         ) : null}
         {formYears && selectedYear ? (
           <div className="year-selection-container">
-            <label className="usa-label" htmlFor="year-select">
+            <label htmlFor="year-select">
               Select Year or Create New
             </label>
             <select
-              className="usa-select"
               id="year-select"
               value={selectedYear}
               onChange={(evt) => updateYear(evt.target.value)}

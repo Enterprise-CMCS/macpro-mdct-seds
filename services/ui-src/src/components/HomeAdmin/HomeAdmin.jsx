@@ -31,7 +31,7 @@ const HomeAdmin = () => {
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
         <div>
-          <h1 className="page-header">Home Admin User Page</h1>
+          <h1>Home Admin User Page</h1>
           <div className="list-display-container">
             <ul>
               <li className="user-view-edit">
@@ -58,15 +58,14 @@ const HomeAdmin = () => {
           </div>
         </div>
       ) : (
-        <h1 className="page-header">Home Business User Page</h1>
+        <h1>Home Business User Page</h1>
       )}
       <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
-          <label className="usa-label" htmlFor="state-select">
+          <label htmlFor="state-select">
             Select State to View
           </label>
           <select
-            className="usa-select"
             id="state-select"
             value={selectedState}
             onChange={(evt) => updateUsState(evt.target.value)}

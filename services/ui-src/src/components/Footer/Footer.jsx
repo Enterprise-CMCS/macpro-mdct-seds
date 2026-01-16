@@ -6,22 +6,14 @@ const Footer = () => {
       <div className="footerTop">
         <div className="footerTopContainer" containerSize="none">
           <div row className="footerTopFlex">
-            <div
-              col={6}
-              tablet={{ col: true }}
-              className="footerTopLeftContainer"
-            >
+            <div className="footerTopLeftContainer">
               <img
                 className="sedsLogo"
                 src="/img/seds-logo.svg"
                 alt="MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
               />
             </div>
-            <div
-              col={6}
-              tablet={{ col: true }}
-              className="footerTopRightContainer"
-            >
+            <div className="footerTopRightContainer">
               <div className="footerTopRightTopFlex">
                 <div className="footerCMSBrandingLeft">
                   <div className="hhsLogo">
