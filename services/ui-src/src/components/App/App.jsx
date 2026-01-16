@@ -9,7 +9,7 @@ import { useStore } from "../../store/store";
 import "./App.scss";
 
 function App() {
-  const loadUser = useStore(state => state.loadUser);
+  const loadUser = useStore((state) => state.loadUser);
   const { pathname } = useLocation();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);

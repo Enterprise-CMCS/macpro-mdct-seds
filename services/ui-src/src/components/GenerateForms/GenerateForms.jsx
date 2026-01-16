@@ -14,7 +14,7 @@ const GenerateForms = () => {
   const nextYear = new Date().getFullYear() + 1;
   const yearSelections = [...new Array(nextYear - firstYear + 1)]
     .map((_, i) => (i + 2019).toString())
-    .map(year => ({ label: year, value: year }));
+    .map((year) => ({ label: year, value: year }));
 
   // Handle click event and trigger
   const generateForms = async () => {
@@ -74,10 +74,12 @@ const GenerateForms = () => {
         className="usa-select"
         id="year-select"
         value={selectedYear}
-        onChange={evt => setSelectedYear(evt.target.value)}
+        onChange={(evt) => setSelectedYear(evt.target.value)}
       >
         {yearSelections.map(({ label, value }) => (
-          <option key={value} value={value}>{label}</option>
+          <option key={value} value={value}>
+            {label}
+          </option>
         ))}
       </select>
       <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
@@ -87,7 +89,7 @@ const GenerateForms = () => {
         className="usa-select"
         id="quarter-select"
         value={selectedQuarter}
-        onChange={evt => setSelectedQuarter(evt.target.value)}
+        onChange={(evt) => setSelectedQuarter(evt.target.value)}
       >
         <option value="1">Q1</option>
         <option value="2">Q2</option>

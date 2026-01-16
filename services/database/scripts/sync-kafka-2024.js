@@ -15,11 +15,7 @@ const isLocal = !!process.env.DYNAMODB_URL;
 const stageName = isLocal ? "local" : process.env.dynamoPrefix;
 const lastModifiedField = "last_modified";
 
-const tables = [
-  "-form-answers",
-  "-form-questions",
-  "-state-forms"
-];
+const tables = ["-form-answers", "-form-questions", "-state-forms"];
 const syncTime = new Date().toISOString();
 
 async function handler() {
@@ -30,7 +26,7 @@ async function handler() {
 
     for (const table of tables) {
       const tableName = stageName + table;
-      console.log(`Processing table ${tableName}`)
+      console.log(`Processing table ${tableName}`);
       const existingItems = await scan({
         TableName: tableName,
       });
@@ -54,13 +50,15 @@ async function handler() {
 }
 
 function filter(items) {
-  return items.filter((item) => new Date(item[lastModifiedField]).getFullYear() === 2024)
+  return items.filter(
+    (item) => new Date(item[lastModifiedField]).getFullYear() === 2024
+  );
 }
 
 async function transform(items) {
   // Touch sync field only
   const transformed = items.map((item) => {
-    const corrected = { ...item, ...{"lastSynced": syncTime} };
+    const corrected = { ...item, ...{ lastSynced: syncTime } };
     return corrected;
   });
 

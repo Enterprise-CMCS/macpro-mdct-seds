@@ -9,8 +9,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useLocation: () => ({
-    pathname: "localhost:3000/"
-  })
+    pathname: "localhost:3000/",
+  }),
 }));
 
 const testRoute = (
@@ -23,9 +23,9 @@ const testRoute = (
 
 describe("AuthenticatedRoute tests", () => {
   test("Check that a route is available", () => {
-    vi
-      .spyOn(AppContext, "useAppContext")
-      .mockImplementation(() => ({ isAuthenticated: true }));
+    vi.spyOn(AppContext, "useAppContext").mockImplementation(() => ({
+      isAuthenticated: true,
+    }));
 
     render(testRoute);
 
@@ -33,9 +33,9 @@ describe("AuthenticatedRoute tests", () => {
   });
 
   test("Check that unauthenticated users are redirected", () => {
-    vi
-      .spyOn(AppContext, "useAppContext")
-      .mockImplementation(() => ({ isAuthenticated: false }));
+    vi.spyOn(AppContext, "useAppContext").mockImplementation(() => ({
+      isAuthenticated: false,
+    }));
 
     render(testRoute);
 

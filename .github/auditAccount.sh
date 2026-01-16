@@ -89,7 +89,7 @@ untagged () {
 
 #Create array of objects with the topic name and parsed topic namespace
 get_topics () {
-  local RAW_TOPICS="$(./run list-topics --stage main -q | jq -r '.[]')"
+  local RAW_TOPICS="$(./run list-topics --stage main | jq -r '.[]')"
   local TOPICS=()
   for T in $RAW_TOPICS; do
     STAGE=$(echo "${T}" | sed 's/--/ /g' | cut -f3 -d' ')

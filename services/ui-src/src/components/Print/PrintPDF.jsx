@@ -12,12 +12,12 @@ import { useStore } from "../../store/store";
 import { canViewStateData } from "../../utility-functions/permissions";
 
 const PrintPDF = () => {
-  const user = useStore(state => state.user);
-  const questions = useStore(state => state.questions);
-  const answers = useStore(state => state.answers);
-  const currentTabs = useStore(state => state.tabs);
-  const statusData = useStore(state => state.statusData);
-  const getForm = useStore(state => state.loadForm);
+  const user = useStore((state) => state.user);
+  const questions = useStore((state) => state.questions);
+  const answers = useStore((state) => state.answers);
+  const currentTabs = useStore((state) => state.tabs);
+  const statusData = useStore((state) => state.statusData);
+  const getForm = useStore((state) => state.loadForm);
 
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ const PrintPDF = () => {
     fetchData();
   }, [getForm, formattedStateName, year, quarterInt, form, state]);
 
-  const handlePrint = async event => {
+  const handlePrint = async (event) => {
     event.preventDefault();
     window.print();
   };
@@ -86,7 +86,7 @@ const PrintPDF = () => {
           <Button
             className="margin-left-5 action-button print-button"
             primary="true"
-            onClick={e => handlePrint(e)}
+            onClick={(e) => handlePrint(e)}
           >
             Print / PDF
             <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
@@ -98,7 +98,7 @@ const PrintPDF = () => {
             {currentTabs.map((tab, tabIndex) => {
               // Filter out just the answer objects that belong in this tab
               const tabAnswers = answers.filter(
-                element => element.rangeId === tab
+                (element) => element.rangeId === tab
               );
 
               const ageRangeDescription = getAgeRangeDetails(tab)?.description;
@@ -113,7 +113,7 @@ const PrintPDF = () => {
                     // Extract the ID from each question and find its corresponding answer object
                     const questionID = singleQuestion.question;
                     const questionAnswer = tabAnswers.find(
-                      element => element.question === questionID
+                      (element) => element.question === questionID
                     );
 
                     let returnComponent = "";

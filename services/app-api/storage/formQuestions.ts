@@ -37,6 +37,6 @@ export const writeAllFormQuestions = async (questions: FormQuestion[]) => {
   await dynamoDb.putMultiple(
     process.env.FormQuestionsTable!,
     questions,
-    question => question.question
+    (question) => question.question
   );
 };

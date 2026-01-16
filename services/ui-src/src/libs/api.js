@@ -5,7 +5,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 const requestOptions = async () => {
   const { idToken } = (await fetchAuthSession()).tokens ?? {};
   const options = {
-    headers: { "x-api-key": idToken?.toString() }
+    headers: { "x-api-key": idToken?.toString() },
   };
   return options;
 };
@@ -37,7 +37,7 @@ const apiRequest = async (request, path, options) => {
 
 export const apiLib = {
   get: async (path, options) => apiRequest(get, path, options),
-  post: async (path, options) => apiRequest(post, path, options)
+  post: async (path, options) => apiRequest(post, path, options),
 };
 
 /*************************** USER API ***************************/
@@ -49,7 +49,7 @@ export const listUsers = async () => {
 };
 
 // *** get user information by user id
-export const getUserById = async data => {
+export const getUserById = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/users/${data.userId}`, opts);
@@ -68,7 +68,7 @@ export const getCurrentUser = async () => {
 };
 
 // *** update user information
-export const updateUser = async data => {
+export const updateUser = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -77,7 +77,7 @@ export const updateUser = async data => {
 
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
-export const getStateForms = async data => {
+export const getStateForms = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.get(
@@ -87,7 +87,7 @@ export const getStateForms = async data => {
 };
 
 // *** update forms associated with a specified state for specified year and quarter
-export const updateStateForm = async data => {
+export const updateStateForm = async (data) => {
   const { state, year, quarter, form } = data;
   const opts = await requestOptions();
   opts.body = data;
@@ -106,14 +106,14 @@ export const getSingleForm = async (state, year, quarter, form) => {
 };
 
 // *** get form years and quarters
-export const obtainAvailableForms = async data => {
+export const obtainAvailableForms = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/forms/${data.stateId}`, opts);
 };
 
 // *** save single form
-export const saveSingleForm = async data => {
+export const saveSingleForm = async (data) => {
   const { state_id, year, quarter, form } = data.statusData;
   const opts = await requestOptions();
   opts.body = data;
@@ -125,7 +125,7 @@ export const saveSingleForm = async data => {
 };
 
 // *** generate quarterly forms
-export const generateQuarterlyForms = async data => {
+export const generateQuarterlyForms = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.post(
@@ -142,14 +142,14 @@ export const obtainFormTemplateYears = async () => {
 };
 
 // *** get a form template by year
-export const obtainFormTemplate = async year => {
+export const obtainFormTemplate = async (year) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/templates/${year}`, opts);
 };
 
 // *** Create or update a form template based on year
-export const updateCreateFormTemplate = async data => {
+export const updateCreateFormTemplate = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
@@ -157,14 +157,14 @@ export const updateCreateFormTemplate = async data => {
 };
 
 // *** generate enrollment totals
-export const generateEnrollmentTotals = async data => {
+export const generateEnrollmentTotals = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
   return await apiLib.post("/admin/generate-totals", opts);
 };
 
-/* 
+/*
     NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
     able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
   

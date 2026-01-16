@@ -23,7 +23,7 @@ const renderComponent = (state) => {
       <HomeState />
     </BrowserRouter>
   );
-}
+};
 
 describe("Test HomeState.js", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -31,7 +31,7 @@ describe("Test HomeState.js", () => {
   it("should redirect users with no state", async () => {
     const history = [];
     useHistory.mockReturnValue(history);
-    
+
     renderComponent();
 
     expect(history).toEqual(["/register-state"]);
@@ -53,7 +53,7 @@ describe("Test HomeState.js", () => {
       "/forms/CO/2021/3",
       "/forms/CO/2021/4",
       "/forms/CO/2022/1",
-    ]
+    ];
     for (let url of expectedUrls) {
       expect(container.querySelector(`a[href='${url}']`)).toBeInTheDocument();
     }

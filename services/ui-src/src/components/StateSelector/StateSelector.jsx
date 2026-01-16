@@ -8,8 +8,8 @@ import { getStateName, stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const StateSelector = () => {
-  const user = useStore(state => state.user);
-  const loadUser = useStore(state => state.loadUser);
+  const user = useStore((state) => state.user);
+  const loadUser = useStore((state) => state.loadUser);
   const history = useHistory();
   const [selectedState, setSelectedState] = useState();
 
@@ -52,17 +52,15 @@ const StateSelector = () => {
             <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
-      )
-      : user?.role === "admin" || user?.role === "business" ? (
+      ) : user?.role === "admin" || user?.role === "business" ? (
         <>
           <h2>This account does not need to select a state</h2>
           <p>
-            {user.role[0].toUpperCase() + user.role.slice(1)}{" "}
-            users have access to all states' form data.
+            {user.role[0].toUpperCase() + user.role.slice(1)} users have access
+            to all states' form data.
           </p>
         </>
-      )
-      : (
+      ) : (
         <>
           <h1>This account is not associated with any states</h1>
 
@@ -73,11 +71,13 @@ const StateSelector = () => {
             className="usa-select"
             id="state-select"
             value={selectedState}
-            onChange={evt => setSelectedState(evt.target.value)}
+            onChange={(evt) => setSelectedState(evt.target.value)}
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>
+                {label}
+              </option>
             ))}
           </select>
           <Button

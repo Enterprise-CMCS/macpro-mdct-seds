@@ -5,26 +5,24 @@ import { Table } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
 
 export const SynthesizedGrid = ({ range }) => {
-  const answers = useStore(state => state.answers);
+  const answers = useStore((state) => state.answers);
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
-  let tabAnswers = answers.filter(
-    element => element.rangeId === range
-  );
+  let tabAnswers = answers.filter((element) => element.rangeId === range);
   // Retrieve question 4 answer data for the current tab
-  let q4arry = tabAnswers.filter(e => e.question.includes("-04"));
-  q4arry.map(e => {
+  let q4arry = tabAnswers.filter((e) => e.question.includes("-04"));
+  q4arry.map((e) => {
     answer_arr.push(e.rows);
     return true;
   });
 
-  let q1arry = tabAnswers.filter(e => e.question.includes("-01"));
-  q1arry.map(e => {
+  let q1arry = tabAnswers.filter((e) => e.question.includes("-01"));
+  q1arry.map((e) => {
     answer_arr.push(e.rows);
     return true;
   });
 
-  let numOr0 = n => (isNaN(n) ? 0 : Number(n));
+  let numOr0 = (n) => (isNaN(n) ? 0 : Number(n));
 
   let firstRowQ4Total = Object.values(q4arry[0].rows[1]).reduce(
     (a, b) => numOr0(a) + numOr0(b)
@@ -82,7 +80,7 @@ export const SynthesizedGrid = ({ range }) => {
     return total;
   };
 
-  const getColumnTotalAverage = column => {
+  const getColumnTotalAverage = (column) => {
     const total =
       columnTotal(q4arry[0], column) / columnTotal(q1arry[0], column);
     return isFinite(total) ? total : 0;
@@ -155,7 +153,7 @@ export const SynthesizedGrid = ({ range }) => {
 };
 
 SynthesizedGrid.propTypes = {
-  range: PropTypes.string.isRequired
+  range: PropTypes.string.isRequired,
 };
 
 export default SynthesizedGrid;
