@@ -78,7 +78,7 @@ const FormPage = () => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage">
+    <div data-testid="FormPage" className="col-gap-2">
       {save_error ? (
         <div>
           <Alert variation="error" heading="Save Error:" headingLevel="h1">
@@ -115,18 +115,13 @@ const FormPage = () => {
             <FontAwesomeIcon icon={faFilePdf} />
           </Button>
           <NotApplicable />
-          <div>
-            <TabContainer quarter={quarter} />
-          </div>
-
-          <div data-testid="form-footer">
-            <FormFooter
-              state={formattedStateName}
-              year={year}
-              quarter={quarterInt}
-              lastModified={last_modified}
-            />
-          </div>
+          <TabContainer quarter={quarter} />
+          <FormFooter
+            state={formattedStateName}
+            year={year}
+            quarter={quarterInt}
+            lastModified={last_modified}
+          />
         </>
       ) : null}
       {hasAccess === false ? <Unauthorized /> : null}

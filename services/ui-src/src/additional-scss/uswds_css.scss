@@ -130,6 +130,44 @@ table:not(.unstyled) {
   }
 }
 
+legend {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.col-gap {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.col-gap-1 {
+  @extend .col-gap;
+  gap: 1rem;
+}
+
+.col-gap-2 {
+  @extend .col-gap;
+  gap: 2rem;
+}
+
+.form-radio {
+  display: flex;
+  height: 24px;
+  flex-direction: row;
+  margin: 0.5rem 0;
+
+  input,
+  label {
+    margin: 0;
+  }
+  input {
+    min-width: 20px;
+    min-height: 20px;
+    margin-right: 10px;
+  }
+}
+
 button {
   svg {
     margin-left: 20px;
@@ -145,6 +183,13 @@ button {
   padding: 0.75rem 1.25rem 0.75rem 1.25rem;
   line-height: 1.1rem;
   font-weight: bold;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 //page specifica changes

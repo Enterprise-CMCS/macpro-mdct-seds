@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import { Button, Alert } from "@cmsgov/design-system";
-import "./CertificationTab.scss";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import {
   isFinalCertified,
@@ -65,19 +64,19 @@ const CertificationTab = () => {
 
   if (isFinal) {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b> Thank you for submitting your SEDS data!</b>
       </div>
     );
   } else if (isProvisional) {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b>Ready to final certify?</b>
       </div>
     );
   } else {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b>Ready to certify?</b>
       </div>
     );
@@ -96,7 +95,7 @@ const CertificationTab = () => {
   return (
     <div>
       {isFinal ? (
-        <div className="padding-y-2">
+        <div>
           <Alert
             variation="success"
             heading="Thank you for submitting your SEDS data!"
@@ -109,7 +108,7 @@ const CertificationTab = () => {
       ) : null}
 
       {isProvisional ? (
-        <div className="padding-y-2">
+        <div>
           <Alert
             heading="You have submitted provisional SEDS data"
             headingLevel="h1"
@@ -117,11 +116,11 @@ const CertificationTab = () => {
         </div>
       ) : null}
 
-      <div className="age-range-description padding-y-2">
+      <div>
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
-      <div className="padding-top-3">
+      <div>
         <p>
           Certify & Submit Provisional Data will allow you to submit your form
           now, but it will remain editable to allow you to submit final data.
@@ -162,7 +161,7 @@ const CertificationTab = () => {
           </Button>
         </div>
       ) : null}
-      <p className="padding-top-3">
+      <p>
         Certify & Submit Provisional Data will allow you to submit your form
         now, but it will remain editable to allow you to submit final data.
       </p>

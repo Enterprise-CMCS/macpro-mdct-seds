@@ -14,34 +14,29 @@ const FormFooter = ({ state, year, quarter }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
 
   return (
-    <div className="formfooter" data-testid="FormFooter">
-      <div className="row">
-        <div className="form-nav">
-          <Link to={quarterPath}>
-            <FontAwesomeIcon icon={faArrowLeft} /> Back to{" "}
-            {`Q${quarter} ${year}`}
-          </Link>
-        </div>
+    <div data-testid="FormFooter" className="row">
+      <div className="form-nav">
+        <Link to={quarterPath}>
+          <FontAwesomeIcon icon={faArrowLeft} /> Back to {`Q${quarter} ${year}`}
+        </Link>
+      </div>
 
-        <div>
-          <div className="row">
-            {lastModified ? (
-              <div data-testid="lastModified">
-                {" "}
-                Last saved: {dateFormatter(lastModified)}{" "}
-              </div>
-            ) : null}
-            <div>
-              <Button
-                variation="solid"
-                onClick={saveForm}
-                data-testid="saveButton"
-                disabled={userRole !== "state"}
-              >
-                Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
-              </Button>
-            </div>
+      <div className="row">
+        {lastModified ? (
+          <div data-testid="lastModified">
+            {" "}
+            Last saved: {dateFormatter(lastModified)}{" "}
           </div>
+        ) : null}
+        <div>
+          <Button
+            variation="solid"
+            onClick={saveForm}
+            data-testid="saveButton"
+            disabled={userRole !== "state"}
+          >
+            Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          </Button>
         </div>
       </div>
     </div>
@@ -51,7 +46,7 @@ const FormFooter = ({ state, year, quarter }) => {
 FormFooter.propTypes = {
   state: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
-  quarter: PropTypes.string.isRequired
+  quarter: PropTypes.string.isRequired,
 };
 
 export default FormFooter;
