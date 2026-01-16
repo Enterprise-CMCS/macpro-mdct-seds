@@ -1,11 +1,12 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event, context) => {
-  const data = JSON.parse(event.body);
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter } = event.pathParameters!;
 
-  await authorizeAdminOrUserForState(event, data.state);
+  await authorizeAdminOrUserForState(event, state);
 
   const params = {
     TableName: process.env.StateFormsTable,
@@ -15,9 +16,9 @@ export const main = handler(async (event, context) => {
     },
 
     ExpressionAttributeValues: {
-      ":state": data.state,
-      ":year": parseInt(data.year),
-      ":quarter": parseInt(data.quarter),
+      ":state": state,
+      ":year": parseInt(year!),
+      ":quarter": parseInt(quarter!),
     },
     FilterExpression:
       "state_id = :state and quarter = :quarter and #theYear = :year",

@@ -72,74 +72,80 @@ export const updateUser = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post(`/users/update/${data.userId}`, opts);
+  return await apiLib.post(`/users/${data.userId}`, opts);
 };
 
 /*************************** FORMS API ***************************/
 // *** get forms associated with a specified state for specified year and quarter
 export const getStateForms = async (data) => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post(`/forms/obtain-state-forms`, opts);
+  return await apiLib.get(
+    `/forms/${data.state}/${data.year}/${data.quarter}`,
+    opts
+  );
 };
 
 // *** update forms associated with a specified state for specified year and quarter
 export const updateStateForm = async (data) => {
+  const { state, year, quarter, form } = data;
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post(`/state-forms/update`, opts);
+  return await apiLib.post(
+    `/forms/${state}/${year}/${quarter}/${form}/totals`,
+    opts
+  );
 };
 
 // *** get single form associated with a specified state, year and quarter
-export const getSingleForm = async (state, specifiedYear, quarter, form) => {
+export const getSingleForm = async (state, year, quarter, form) => {
   const opts = await requestOptions();
 
-  return await apiLib.get(
-    `/single-form/${state}/${specifiedYear}/${quarter}/${form}`,
-    opts
-  );
+  return await apiLib.get(`/forms/${state}/${year}/${quarter}/${form}`, opts);
 };
 
 // *** get form years and quarters
 export const obtainAvailableForms = async (data) => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post(`/forms/obtainAvailableForms`, opts);
+  return await apiLib.get(`/forms/${data.stateId}`, opts);
 };
 
 // *** save single form
 export const saveSingleForm = async (data) => {
+  const { state_id, year, quarter, form } = data.statusData;
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/single-form/save", opts);
+  return await apiLib.post(
+    `/forms/${state_id}/${year}/${quarter}/${form}`,
+    opts
+  );
 };
 
 // *** generate quarterly forms
 export const generateQuarterlyForms = async (data) => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post("/generate-forms", opts);
+  return await apiLib.post(
+    `/admin/generate-forms?year=${data.year}&quarter=${data.quarter}`,
+    opts
+  );
 };
 
 // *** get form template years
-export const obtainFormTemplateYears = async (data) => {
+export const obtainFormTemplateYears = async () => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post("/form-templates/years", opts);
+  return await apiLib.get("/templates", opts);
 };
 
 // *** get a form template by year
-export const obtainFormTemplate = async (data) => {
+export const obtainFormTemplate = async (year) => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post("/form-template", opts);
+  return await apiLib.get(`/templates/${year}`, opts);
 };
 
 // *** Create or update a form template based on year
@@ -147,7 +153,7 @@ export const updateCreateFormTemplate = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/form-templates/add", opts);
+  return await apiLib.post(`/templates/${data.year}`, opts);
 };
 
 // *** generate enrollment totals
@@ -155,12 +161,16 @@ export const generateEnrollmentTotals = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/generate-enrollment-totals", opts);
+  return await apiLib.post("/admin/generate-totals", opts);
 };
 
-// **
-export const sendUncertifyEmail = async (data) => {
-  const opts = await requestOptions();
-  opts.body = data;
-  return await apiLib.post(`/notification/uncertified`, opts);
-};
+/*
+    NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
+    able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
+  
+  export const sendUncertifyEmail = async data => {
+    const opts = await requestOptions();
+    opts.body = data;
+    return await apiLib.post(`/notification/uncertified`, opts);
+  };
+  */

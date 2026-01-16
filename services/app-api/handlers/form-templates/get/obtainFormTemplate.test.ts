@@ -12,7 +12,9 @@ const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 
 const mockEvent = {
-  body: JSON.stringify({ year: 2025 }),
+  pathParameters: {
+    year: "2025",
+  },
 };
 
 const mockFormTemplate = {

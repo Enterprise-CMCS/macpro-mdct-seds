@@ -16,11 +16,11 @@ const mockDynamo = mockClient(DynamoDBDocumentClient);
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {
-  body: JSON.stringify({
+  pathParameters: {
     state: "CO",
-    year: 2025,
-    quarter: 1,
-  }),
+    year: "2025",
+    quarter: "1",
+  },
 };
 const mockScanResponse = {
   Items: [{ mockForm: 1 }, { mockForm: 2 }],
@@ -75,10 +75,12 @@ describe("obtainFormsList.ts", () => {
   it.skip("should continue a prior scan if a key is provided", async () => {
     mockScan.mockResolvedValueOnce(mockScanResponse);
     const mockEventWithKey = {
-      body: JSON.stringify({
+      pathParameters: {
         state: "CO",
-        year: 2025,
-        quarter: 1,
+        year: "2025",
+        quarter: "1",
+      },
+      body: JSON.stringify({
         startKey: "mockKey",
       }),
     };

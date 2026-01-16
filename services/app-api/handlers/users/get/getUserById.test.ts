@@ -22,7 +22,7 @@ mockDynamo.on(ScanCommand).callsFake(mockScan);
 
 const mockEvent = {
   pathParameters: {
-    id: "42",
+    userId: "42",
   },
 };
 const mockUser = {

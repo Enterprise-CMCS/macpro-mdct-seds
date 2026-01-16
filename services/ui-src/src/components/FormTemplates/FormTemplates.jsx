@@ -48,7 +48,7 @@ const FormTemplates = () => {
   const updateYear = async (year) => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
-      const template = await obtainFormTemplate({ year: Number(year) });
+      const template = await obtainFormTemplate(Number(year));
       setCurrentTemplate(JSON.stringify(template[0].template, null, 2));
       setShowYearInput(false);
       setInputYear(year);

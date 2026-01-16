@@ -19,9 +19,11 @@ const mockTemplate = {
 
 const mockEvent = {
   body: JSON.stringify({
-    year: 2025,
     template: [mockTemplate],
   }),
+  pathParameters: {
+    year: "2025",
+  },
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -63,9 +65,9 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({
-        year: 2025,
         template: [42],
       }),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(
@@ -86,9 +88,9 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({
-        year: 2025,
         template: [],
       }),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(
@@ -109,6 +111,7 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({}),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(

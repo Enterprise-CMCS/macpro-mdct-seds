@@ -15,7 +15,7 @@ const mockScan = vi.fn();
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockEvent = { body: JSON.stringify({ stateId: "CO" }) };
+const mockEvent = { pathParameters: { state: "CO" } };
 const mockForm1 = { mockForm: 1 };
 const mockForm2 = { mockForm: 2 };
 const mockForms = [mockForm1, mockForm2];

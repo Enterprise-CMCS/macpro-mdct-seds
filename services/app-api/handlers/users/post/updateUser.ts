@@ -6,8 +6,9 @@ import {
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
 import { putUser } from "../../../storage/users.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
 
   const data = JSON.parse(event.body);

@@ -1,14 +1,15 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 
-export const main = handler(async (event, context) => {
-  // Get year and quarter from request
-  let data = JSON.parse(event.body);
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter, form } = event.pathParameters!;
+  const data = JSON.parse(event.body);
 
-  await authorizeUserForState(event, data.state);
+  await authorizeUserForState(event, state);
 
-  const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
+  const stateFormId = `${state}-${year}-${quarter}-${form}`;
 
   const params = {
     TableName: process.env.StateFormsTable,
@@ -29,14 +30,14 @@ export const main = handler(async (event, context) => {
   if (record.form === "21E") {
     record.enrollmentCounts = {
       type: "separate",
-      year: data.year,
+      year,
       count: data.totalEnrollment,
     };
   }
   if (record.form === "64.21E") {
     record.enrollmentCounts = {
       type: "expansion",
-      year: data.year,
+      year,
       count: data.totalEnrollment,
     };
   }

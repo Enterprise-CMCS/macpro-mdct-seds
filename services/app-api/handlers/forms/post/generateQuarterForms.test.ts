@@ -198,7 +198,7 @@ describe("generateQuarterForms.ts", () => {
 
     await generateQuarterForms({
       // We mocked calculateFormQuarterFromDate to give 2025, but pass 2026 here
-      body: JSON.stringify({ year: 2026, quarter: 2 }),
+      queryStringParameters: { year: "2026", quarter: "2" },
     });
 
     expect(writeAllStateForms).toHaveBeenCalled();
@@ -268,7 +268,7 @@ describe("generateQuarterForms.ts", () => {
     scanForAllFormIds.mockResolvedValueOnce([]);
 
     await generateQuarterForms({
-      body: JSON.stringify({ restoreMissingAnswers: true }),
+      queryStringParameters: { restore: "true" },
     });
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
@@ -340,7 +340,7 @@ describe("generateQuarterForms.ts", () => {
     ]);
 
     await generateQuarterForms({
-      body: JSON.stringify({ restoreMissingAnswers: true }),
+      queryStringParameters: { restore: "true" },
     });
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
