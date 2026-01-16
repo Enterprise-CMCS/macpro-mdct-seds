@@ -330,11 +330,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getFormTemplate", {
-    entry:
-      "services/app-api/handlers/form-templates/post/obtainFormTemplate.ts",
+    entry: "services/app-api/handlers/form-templates/get/obtainFormTemplate.ts",
     handler: "main",
-    path: "/form-template",
-    method: "POST",
+    path: "/templates/{year}",
+    method: "GET",
     ...commonProps,
   });
 

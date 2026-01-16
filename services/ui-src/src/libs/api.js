@@ -137,16 +137,15 @@ export const generateQuarterlyForms = async data => {
 // *** get form template years
 export const obtainFormTemplateYears = async () => {
   const opts = await requestOptions();
-  console.log("CALLING obtainFormTemplateYears");
+
   return await apiLib.get("/templates", opts);
 };
 
 // *** get a form template by year
-export const obtainFormTemplate = async data => {
+export const obtainFormTemplate = async year => {
   const opts = await requestOptions();
-  opts.body = data;
-
-  return await apiLib.post("/form-template", opts);
+  console.log("CALLING obtainFormTemplate");
+  return await apiLib.get(`/templates/${year}`, opts);
 };
 
 // *** Create or update a form template based on year

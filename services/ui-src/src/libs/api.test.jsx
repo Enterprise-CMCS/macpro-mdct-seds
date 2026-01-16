@@ -177,12 +177,13 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for obtainFormTemplate", async () => {
-    const response = await obtainFormTemplate(mockPayload);
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
+    const mockYear = 2022;
+    const response = await obtainFormTemplate(mockYear);
+    expect(response.responseAttr).toBe("mock get response");
+    expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/form-template",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/templates/${mockYear}`,
+      options: { headers: expectedHeaders }
     });
   });
 
