@@ -36,7 +36,7 @@ function App() {
   }, [pathname, isAuthenticating, isAuthenticated]);
 
   return (
-    <div className="App">
+    <div>
       {!isAuthenticating && (
         <>
           <Header displayHeader={true} />

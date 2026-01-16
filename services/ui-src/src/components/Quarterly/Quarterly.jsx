@@ -10,8 +10,6 @@ import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 import { useStore } from "../../store/store";
 import { canViewStateData } from "../../utility-functions/permissions";
 
-import "./Quarterly.scss";
-
 const Quarterly = () => {
   const user = useStore((state) => state.user);
   const { state, year, quarter } = useParams();
@@ -40,17 +38,17 @@ const Quarterly = () => {
   const getFormSegment = (form) => form.form?.replace(".", "-");
 
   return (
-    <div className="page-quarterly">
+    <div>
       <div className="breadcrumbs">
         <Link to="/">Enrollment Data Home</Link> &gt;{" "}
         {`${state} Q${quarter} ${year}`}
       </div>
-      <h1 className="page-header">{title}</h1>
-      <div className="quarterly-report-listing">
+      <h1>{title}</h1>
+      <div>
         {hasAccess === true ? (
           <div>
             {stateFormsList ? (
-              <table className="quarterly-forms">
+              <table>
                 <caption>
                   Start, complete, and print this quarter's CHIP Enrollment Data
                   Reports.
@@ -85,12 +83,11 @@ const Quarterly = () => {
                         </div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
-                      <td style={{ textAlign: "center" }}>
+                      <td className="print">
                         <Link
                           to={`/print/${state}/${year}/${quarter}/${getFormSegment(
                             form
                           )}`}
-                          className="font-heading-2xl"
                         >
                           <FontAwesomeIcon icon={faFilePdf} />
                         </Link>

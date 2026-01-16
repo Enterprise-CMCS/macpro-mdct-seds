@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
@@ -84,12 +84,12 @@ const PrintPDF = () => {
           </div>
 
           <Button
-            className="margin-left-5 action-button print-button"
-            primary="true"
+            className="print-button margin-bottom-4"
+            variation="solid"
             onClick={(e) => handlePrint(e)}
           >
             Print / PDF
-            <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
+            <FontAwesomeIcon icon={faPrint} />
           </Button>
 
           <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

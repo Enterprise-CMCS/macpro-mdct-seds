@@ -1,15 +1,17 @@
 import React from "react";
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import "./LoaderButton.scss";
 
 export default function LoaderButton({
   isLoading,
   className = "",
   disabled = false,
+  variation = "solid",
   ...props
 }) {
   return (
     <Button
+      variation={variation}
       className="login-button"
       disabled={disabled || isLoading}
       {...props}

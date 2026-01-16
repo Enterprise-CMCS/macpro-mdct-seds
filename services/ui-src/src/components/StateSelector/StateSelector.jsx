@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
@@ -64,11 +64,8 @@ const StateSelector = () => {
         <>
           <h1>This account is not associated with any states</h1>
 
-          <label className="usa-label" htmlFor="state-select">
-            Please select your state:
-          </label>
+          <label htmlFor="state-select">Please select your state:</label>
           <select
-            className="usa-select"
             id="state-select"
             value={selectedState}
             onChange={(evt) => setSelectedState(evt.target.value)}
@@ -82,15 +79,14 @@ const StateSelector = () => {
           </select>
           <Button
             style={{ marginTop: "0.5rem" }}
-            type="button"
-            className="form-button"
+            variation="solid"
             data-testid="saveUpdatedUser"
             onClick={() => {
               saveUpdatedUser();
             }}
           >
             Update User
-            <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+            <FontAwesomeIcon icon={faUserCheck} />
           </Button>
         </>
       )}

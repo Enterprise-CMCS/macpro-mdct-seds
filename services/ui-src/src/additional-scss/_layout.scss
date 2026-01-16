@@ -1,13 +1,6 @@
 /**********************
   Layout
 **********************/
-
-.page-header {
-  border: none;
-  padding: 0;
-  margin-bottom: 5.5rem 0 1rem 0;
-}
-
 .page-subheader {
   @extend .padding-bottom-3;
 
@@ -77,36 +70,6 @@ label {
 
   a {
     text-decoration: none;
-  }
-}
-
-.center-content {
-  text-align: center;
-  .usa-table {
-    margin: auto !important;
-    text-align: center;
-    font-size: 16px;
-    border: thin solid $black;
-    th {
-      background-color: $alto;
-      @extend .text-bold;
-      border: thin solid $black;
-      padding: 1rem;
-    }
-    td {
-      padding: 1rem;
-    }
-  }
-}
-
-.unstyled {
-  .usa-table {
-    border: none !important;
-    box-shadow: none !important;
-
-    tr {
-      border: none !important;
-    }
   }
 }
 

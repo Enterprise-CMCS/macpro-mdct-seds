@@ -4,7 +4,7 @@ import {
   obtainFormTemplateYears,
   updateCreateFormTemplate,
 } from "../../libs/api";
-import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
+import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -89,12 +89,12 @@ const FormTemplates = () => {
 
   return (
     <div className="formTemplates">
-      <h1 className="page-header">Add/Edit Form Templates</h1>
+      <h1>Add/Edit Form Templates</h1>
       <div data-testid="formTemplates">
         {alert ? (
           <Alert
             className="margin-bottom-3"
-            type={alert.status === 200 ? "success" : "error"}
+            variation={alert.status === 200 ? "success" : "error"}
             headingLevel="h1"
           >
             {alert.message}
@@ -102,11 +102,8 @@ const FormTemplates = () => {
         ) : null}
         {formYears && selectedYear ? (
           <div className="year-selection-container">
-            <label className="usa-label" htmlFor="year-select">
-              Select Year or Create New
-            </label>
+            <label htmlFor="year-select">Select Year or Create New</label>
             <select
-              className="usa-select"
               id="year-select"
               value={selectedYear}
               onChange={(evt) => updateYear(evt.target.value)}
@@ -135,7 +132,8 @@ const FormTemplates = () => {
         ) : null}
         <div className="template-input margin-top-3 margin-bottom-4">
           <label htmlFor="templateInput">Enter or Modify Template</label>
-          <Textarea
+          <TextField
+            multiline
             id="templateInput"
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}
@@ -145,11 +143,11 @@ const FormTemplates = () => {
         </div>
         <Button
           id="save-button"
-          primary="true"
+          variation="solid"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          Save <FontAwesomeIcon icon={faSave} />
         </Button>
       </div>
     </div>

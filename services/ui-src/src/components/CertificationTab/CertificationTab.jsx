@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "react-tabs/style/react-tabs.css";
-import { Button, Alert } from "@trussworks/react-uswds";
-import "./CertificationTab.scss";
+import { Button, Alert } from "@cmsgov/design-system";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import {
   isFinalCertified,
@@ -65,19 +64,19 @@ const CertificationTab = () => {
 
   if (isFinal) {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b> Thank you for submitting your SEDS data!</b>
       </div>
     );
   } else if (isProvisional) {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b>Ready to final certify?</b>
       </div>
     );
   } else {
     certifyText = (
-      <div data-testid="certificationText" className="padding-y-2">
+      <div data-testid="certificationText">
         <b>Ready to certify?</b>
       </div>
     );
@@ -96,9 +95,9 @@ const CertificationTab = () => {
   return (
     <div>
       {isFinal ? (
-        <div className="padding-y-2">
+        <div>
           <Alert
-            type="success"
+            variation="success"
             heading="Thank you for submitting your SEDS data!"
             headingLevel="h1"
           >
@@ -109,20 +108,19 @@ const CertificationTab = () => {
       ) : null}
 
       {isProvisional ? (
-        <div className="padding-y-2">
+        <div>
           <Alert
-            type="info"
             heading="You have submitted provisional SEDS data"
             headingLevel="h1"
-          />
+          ></Alert>
         </div>
       ) : null}
 
-      <div className="age-range-description padding-y-2">
+      <div>
         <h3>Certify and Submit:</h3>
       </div>
       {certifyText}
-      <div className="padding-top-3">
+      <div>
         <p>
           Certify & Submit Provisional Data will allow you to submit your form
           now, but it will remain editable to allow you to submit final data.
@@ -137,15 +135,15 @@ const CertificationTab = () => {
       {showCertifyButtons ? (
         <div className="certify-btn ">
           <Button
+            variation="solid"
             onClick={() => submitProvisional()}
-            type="button"
             disabled={provCertDisabled}
           >
             {"Certify & Submit Provisional Data"}
           </Button>
           <Button
+            variation="solid"
             onClick={() => submitFinal()}
-            type="button"
             disabled={finalCertDisabled}
           >
             {"Certify & Submit Final Data"}
@@ -154,12 +152,16 @@ const CertificationTab = () => {
       ) : null}
       {isFinal ? (
         <div className="certify-btn uncertify">
-          <Button onClick={() => submitUncertify()} type="button">
+          <Button
+            variation="solid"
+            type="button"
+            onClick={() => submitUncertify()}
+          >
             {"Uncertify"}
           </Button>
         </div>
       ) : null}
-      <p className="padding-top-3">
+      <p>
         Certify & Submit Provisional Data will allow you to submit your form
         now, but it will remain editable to allow you to submit final data.
       </p>

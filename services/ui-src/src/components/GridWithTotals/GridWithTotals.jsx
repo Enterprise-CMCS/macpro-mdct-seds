@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Table } from "@trussworks/react-uswds";
+import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
 import "./GridWithTotals.scss";
@@ -295,7 +295,7 @@ const GridWithTotals = (props) => {
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     {!synthesized ? (
-                      <TextInput
+                      <TextField
                         style={{ width: "100%", padding: 0 }}
                         className="grid-column"
                         onChange={(event) =>
@@ -313,7 +313,7 @@ const GridWithTotals = (props) => {
                         disabled={props.disabled}
                       />
                     ) : (
-                      <span className="usa-input rid-column synthesized">
+                      <span>
                         {gridData[rowIndex][columnIndex] >= 0
                           ? addCommas(
                               parseFloat(
@@ -330,7 +330,7 @@ const GridWithTotals = (props) => {
               formattedCell = (
                 <td key={columnIndex}>
                   {!synthesized ? (
-                    <TextInput
+                    <TextField
                       style={{ width: "100%", padding: 0 }}
                       className="grid-column"
                       onChange={(event) =>
@@ -348,7 +348,7 @@ const GridWithTotals = (props) => {
                       disabled={props.disabled}
                     />
                   ) : (
-                    <span className="usa-input grid-column synthesized ">
+                    <span>
                       {column >= 0
                         ? addCommas(
                             parseFloat(column).toFixed(currentPrecision)
