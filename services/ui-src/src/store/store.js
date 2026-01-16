@@ -32,7 +32,7 @@ export const useStore = create((set, get) => ({
       const statuses = await getStateForms({ state, year, quarter });
       const answers = form.answers;
       const questions = form.questions.sort(sortQuestionsByNumber);
-      const statusData = statuses.Items.find(s => s.form === formName);
+      const statusData = statuses.Items.find((s) => s.form === formName);
       const tabs = extractAgeRanges(answers);
       set({ questions, answers, statusData, tabs, loadError: false });
     } catch (err) {
@@ -54,19 +54,17 @@ export const useStore = create((set, get) => ({
     set((state) => {
       const answers = insertFPL(structuredClone(state.answers), newFpl);
       return { answers };
-    })
+    });
   },
   wipeForm: () => {
     set((state) => {
       const timeStamp = new Date().toISOString();
-      const answers = structuredClone(state.answers).map(
-        answer => ({
-          ...answer,
-          rows: clearSingleQuestion(answer.rows),
-          last_modified: timeStamp,
-          last_modified_by: state.user.username,
-        })
-      );
+      const answers = structuredClone(state.answers).map((answer) => ({
+        ...answer,
+        rows: clearSingleQuestion(answer.rows),
+        last_modified: timeStamp,
+        last_modified_by: state.user.username,
+      }));
       return { answers };
     });
   },
@@ -79,7 +77,7 @@ export const useStore = create((set, get) => ({
         status_modified_by: state.user.username,
         last_modified: new Date().toISOString(),
         last_modified_by: state.user.username,
-      }
+      },
     }));
   },
   updateSummaryNotes: (notes) => {
@@ -93,7 +91,7 @@ export const useStore = create((set, get) => ({
           },
         ],
       },
-    }))
+    }));
   },
   saveForm: async () => {
     try {
@@ -126,7 +124,7 @@ export const useStore = create((set, get) => ({
         statusData: {
           ...state.statusData,
           save_error: true,
-        }
+        },
       }));
     }
   },

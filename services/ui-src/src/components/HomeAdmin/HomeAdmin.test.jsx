@@ -8,16 +8,16 @@ import userEvent from "@testing-library/user-event";
 import { buildSortedAccordionByYearQuarter } from "utility-functions/sortingFunctions";
 
 vi.mock("../../libs/contextLib", () => ({
-  useAppContext: vi.fn()
+  useAppContext: vi.fn(),
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: vi.fn()
+  getUserInfo: vi.fn(),
 }));
 
 vi.mock("utility-functions/sortingFunctions", async () => ({
   ...(await vi.importActual("utility-functions/sortingFunctions")),
-  buildSortedAccordionByYearQuarter: vi.fn().mockReturnValue([])
+  buildSortedAccordionByYearQuarter: vi.fn().mockReturnValue([]),
 }));
 
 const forms = [
@@ -27,8 +27,8 @@ const forms = [
     title: 2021,
     content: [<></>],
     headingLevel: "h1", // unsure
-    expanded: false
-  }
+    expanded: false,
+  },
 ];
 
 const renderComponent = () => {
@@ -48,25 +48,23 @@ describe("Tests for HomeAdmin.js", () => {
   it("should render navigation links", async () => {
     const { container } = renderComponent();
     const links = [...container.querySelectorAll("h1 ~ div ul li a")];
-    expect(links.map(a => a.textContent)).toEqual([
+    expect(links.map((a) => a.textContent)).toEqual([
       "View / Edit Users",
       "Add/Edit Form Templates",
       "Generate Quarterly Forms",
-      "Generate Total Enrollment Counts"
+      "Generate Total Enrollment Counts",
     ]);
   });
 
   it("should display an appropriate message for a state with no forms", async () => {
     renderComponent();
-    
+
     const stateDropdown = screen.getByRole("combobox", { name: /State/ });
     userEvent.selectOptions(stateDropdown, "Alabama");
 
     await waitFor(() =>
       expect(
-        screen.getByText(
-          "There are no forms available for the selected state"
-        )
+        screen.getByText("There are no forms available for the selected state")
       ).toBeInTheDocument()
     );
   });
@@ -75,7 +73,7 @@ describe("Tests for HomeAdmin.js", () => {
     buildSortedAccordionByYearQuarter.mockReturnValueOnce(forms);
 
     renderComponent();
-    
+
     const stateDropdown = screen.getByRole("combobox", { name: /State/ });
     userEvent.selectOptions(stateDropdown, "Alabama");
 

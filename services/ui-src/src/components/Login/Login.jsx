@@ -14,7 +14,7 @@ export default function Login() {
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
-    password: ""
+    password: "",
   });
 
   function validateForm() {
@@ -42,10 +42,10 @@ export default function Login() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await signIn({ 
-        username: fields.email, 
-        password: fields.password, 
-        options: {authFlowType: "USER_PASSWORD_AUTH"}
+      await signIn({
+        username: fields.email,
+        password: fields.password,
+        options: { authFlowType: "USER_PASSWORD_AUTH" },
       });
       window.location.href = "/";
     } catch (e) {

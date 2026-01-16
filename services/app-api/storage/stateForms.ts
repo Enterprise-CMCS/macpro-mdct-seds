@@ -1,8 +1,5 @@
 import dynamoDb from "../libs/dynamodb-lib.ts";
-import {
-  DateString,
-  FormStatusValue
-} from "../shared/types.ts";
+import { DateString, FormStatusValue } from "../shared/types.ts";
 
 /** The shape of an object in the `state-forms` table */
 export type StateForm = {
@@ -26,7 +23,7 @@ export type StateForm = {
 
   // Data fields
   status_id: FormStatusValue;
-  state_comments: [{ type: "text_multiline", entry: string | null }];
+  state_comments: [{ type: "text_multiline"; entry: string | null }];
 
   // Redundant fields
   /**
@@ -62,10 +59,15 @@ export const scanFormsByQuarter = async (year: number, quarter: number) => {
   return response.Items as StateForm[];
 };
 
-export const scanFormsByQuarterAndStatus = async (year: number, quarter: number, status_id: FormStatusValue) => {
+export const scanFormsByQuarterAndStatus = async (
+  year: number,
+  quarter: number,
+  status_id: FormStatusValue
+) => {
   const response = await dynamoDb.scan({
     TableName: process.env.StateFormsTable,
-    FilterExpression: "#year = :year AND quarter = :quarter AND status_id = :status_id",
+    FilterExpression:
+      "#year = :year AND quarter = :quarter AND status_id = :status_id",
     ExpressionAttributeNames: { "#year": "year" },
     ExpressionAttributeValues: {
       ":year": year,
@@ -80,6 +82,6 @@ export const writeAllStateForms = async (forms: StateForm[]) => {
   await dynamoDb.putMultiple(
     process.env.StateFormsTable!,
     forms,
-    form => form.state_form
+    (form) => form.state_form
   );
 };

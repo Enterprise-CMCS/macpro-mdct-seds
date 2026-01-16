@@ -1,21 +1,27 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TabContainer from "./TabContainer";
 import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div className="question-component">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../SummaryTab/SummaryTab", () => ({
-  default: (props) => (<div data-testid="summary-tab">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div data-testid="summary-tab">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../CertificationTab/CertificationTab", () => ({
-  default: (props) => (<div data-testid="certification-tab">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div data-testid="certification-tab">{JSON.stringify(props)}</div>
+  ),
 }));
 
 const renderComponent = (userRole) => {
@@ -23,7 +29,7 @@ const renderComponent = (userRole) => {
     ...fullStoreMock.currentForm,
     user: { role: userRole },
   });
-  return render(<TabContainer/>);
+  return render(<TabContainer />);
 };
 
 describe("TabContainer tests", () => {
@@ -94,7 +100,7 @@ describe("TabContainer tests", () => {
     for (let i = 0; i < 5; i += 1) {
       userEvent.click(tabs[i]);
       const questions = container.querySelectorAll(".question-component");
-      expect(questions.length).toBe(6)
+      expect(questions.length).toBe(6);
     }
   });
 });

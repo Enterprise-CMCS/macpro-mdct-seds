@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   calculateFiscalQuarterFromDate,
-  calculateFormQuarterFromDate
+  calculateFormQuarterFromDate,
 } from "./time.ts";
 
 /*
@@ -35,12 +35,12 @@ describe("Time functions", () => {
         const result = calculateFormQuarterFromDate(new Date(date));
         expect(result).toEqual({
           year: expectedYear,
-          quarter: expectedQuarter
+          quarter: expectedQuarter,
         });
       }
     );
   });
-  
+
   describe("calculateFiscalQuarterFromDate", () => {
     it.each([
       { date: "2025-01-02", expectedYear: 2025, expectedQuarter: 2 },
@@ -57,7 +57,7 @@ describe("Time functions", () => {
         const result = calculateFiscalQuarterFromDate(new Date(date));
         expect(result).toEqual({
           year: expectedYear,
-          quarter: expectedQuarter
+          quarter: expectedQuarter,
         });
       }
     );

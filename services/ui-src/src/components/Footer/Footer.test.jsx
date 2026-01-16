@@ -27,7 +27,9 @@ describe("Footer Component", () => {
 
   it("displays MDCT SEDS logo with correct src and alt text", () => {
     const { getByAltText } = render(<Footer />);
-    const image = getByAltText("MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool");
+    const image = getByAltText(
+      "MDCT SEDS: Statistical Enrollment Data Systems, Medicaid Data Collection Tool"
+    );
     expect(image).toBeVisible();
     expect(image.src).toContain("/img/seds-logo.svg");
   });
@@ -41,9 +43,11 @@ describe("Footer Component", () => {
 
   it("displays both Medicaid logos (mobile and desktop versions)", () => {
     const { getAllByAltText } = render(<Footer />);
-    const medicaidLogos = getAllByAltText("Medicaid.gov: Keeping America Healthy");
+    const medicaidLogos = getAllByAltText(
+      "Medicaid.gov: Keeping America Healthy"
+    );
     expect(medicaidLogos).toHaveLength(2);
-    medicaidLogos.forEach(logo => {
+    medicaidLogos.forEach((logo) => {
       expect(logo.src).toContain("/img/logo_medicaid.svg");
     });
   });
@@ -59,13 +63,18 @@ describe("Footer Component", () => {
     const { getByText } = render(<Footer />);
     const accessibilityLink = getByText("Accessibility Statement");
     expect(accessibilityLink).toBeVisible();
-    expect(accessibilityLink).toHaveAttribute("href", "https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice");
+    expect(accessibilityLink).toHaveAttribute(
+      "href",
+      "https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
+    );
     expect(accessibilityLink).toHaveAttribute("target", "_blank");
   });
 
   it("displays CMS copy text", () => {
     const { getByText } = render(<Footer />);
-    const copyText = getByText(/A federal government website managed and paid for by the U.S. Centers for Medicare and Medicaid Services/);
+    const copyText = getByText(
+      /A federal government website managed and paid for by the U.S. Centers for Medicare and Medicaid Services/
+    );
     expect(copyText).toBeVisible();
   });
 

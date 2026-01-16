@@ -36,7 +36,7 @@ describe("notification/businessUsers", () => {
   it("should send emails to business users regarding not-yet-certified forms", async () => {
     scanUsersByRole.mockResolvedValueOnce([
       mockBusinessUser1,
-      mockBusinessUser2
+      mockBusinessUser2,
     ]);
     scanFormsByQuarterAndStatus.mockResolvedValueOnce([
       mockFormCO21E,
@@ -46,22 +46,25 @@ describe("notification/businessUsers", () => {
 
     await notifyBusinessUsers({});
 
-    expect(mockSendEmail).toHaveBeenCalledWith({
-      Source: "mdct@cms.hhs.gov",
-      Destination: {
-        ToAddresses: ["bizuser1@test.com", "bizuser2@test.com"],
-      },
-      Message: {
-        Subject: {
-          Data: "FFY SEDS Enrollment Data Overdue",
+    expect(mockSendEmail).toHaveBeenCalledWith(
+      {
+        Source: "mdct@cms.hhs.gov",
+        Destination: {
+          ToAddresses: ["bizuser1@test.com", "bizuser2@test.com"],
         },
-        Body: {
-          Text: {
-            Data: expect.stringMatching(/have not certified .* for FFY\d{4}/),
-          }
-        }
-      }
-    }, expect.any(Function));
+        Message: {
+          Subject: {
+            Data: "FFY SEDS Enrollment Data Overdue",
+          },
+          Body: {
+            Text: {
+              Data: expect.stringMatching(/have not certified .* for FFY\d{4}/),
+            },
+          },
+        },
+      },
+      expect.any(Function)
+    );
 
     const bodyText = mockSendEmail.mock.calls[0][0].Message.Body.Text.Data;
     expect(bodyText).toContain("CO - 21E, GRE\nTX - 21E");

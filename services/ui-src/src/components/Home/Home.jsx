@@ -7,7 +7,7 @@ import Unauthorized from "../Unauthorized/Unauthorized";
 import { useStore } from "../../store/store";
 
 const Home = () => {
-  const userRole = useStore(state => state.user.role);
+  const userRole = useStore((state) => state.user.role);
   const { isAuthenticated } = useAppContext();
   /* eslint-disable no-unused-vars */
   const [isLoading, setIsLoading] = useState(true);

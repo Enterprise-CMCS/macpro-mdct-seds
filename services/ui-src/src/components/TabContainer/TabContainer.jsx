@@ -6,18 +6,22 @@ import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
 import "./TabContainer.scss";
-import { isFinalCertified, isNotRequired } from "../../utility-functions/formStatus";
+import {
+  isFinalCertified,
+  isNotRequired,
+} from "../../utility-functions/formStatus";
 import { getAgeRangeDetails } from "lookups/ageRanges";
 import { useStore } from "../../store/store";
 
 const TabContainer = ({ quarter }) => {
-  const userRole = useStore(state => state.user.role);
-  const questions = useStore(state => state.questions);
-  const answers = useStore(state => state.answers);
-  const currentTabs = useStore(state => state.tabs);
-  const statusData = useStore(state => state.statusData);
+  const userRole = useStore((state) => state.user.role);
+  const questions = useStore((state) => state.questions);
+  const answers = useStore((state) => state.answers);
+  const currentTabs = useStore((state) => state.tabs);
+  const statusData = useStore((state) => state.statusData);
 
-  const disabled = userRole !== "state" ||
+  const disabled =
+    userRole !== "state" ||
     isFinalCertified(statusData) ||
     isNotRequired(statusData);
 
@@ -26,9 +30,10 @@ const TabContainer = ({ quarter }) => {
       <TabList>
         {currentTabs.map((tab, idx) => {
           const ageRangeName = getAgeRangeDetails(tab)?.name;
-          const tabLabel = ageRangeName
+          const tabLabel =
+            ageRangeName ??
             // Default to dynamic label. Example: "1234" -> "Ages 12 - 34"
-            ?? `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
+            `Ages ${tab.slice(0, 2)} - ${tab.slice(-2)}`;
           return <Tab key={idx}>{tabLabel}</Tab>;
         })}
         <Tab>Summary</Tab>
@@ -37,8 +42,8 @@ const TabContainer = ({ quarter }) => {
 
       {currentTabs.map((tab, idx) => {
         // Filter out just the answer objects that belong in this tab
-        const tabAnswers = answers.filter(element => element.rangeId === tab);
-        
+        const tabAnswers = answers.filter((element) => element.rangeId === tab);
+
         const ageRangeDescription = getAgeRangeDetails(tab)?.description;
         return (
           <TabPanel key={idx}>
@@ -52,7 +57,7 @@ const TabContainer = ({ quarter }) => {
               // Extract the ID from each question and find its corresponding answer object
               const questionID = singleQuestion.question;
               const questionAnswer = tabAnswers.find(
-                element => element.question === questionID
+                (element) => element.question === questionID
               );
 
               let returnComponent = "";

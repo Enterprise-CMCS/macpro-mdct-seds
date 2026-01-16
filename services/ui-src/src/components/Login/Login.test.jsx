@@ -6,11 +6,11 @@ import userEvent from "@testing-library/user-event";
 import { signInWithRedirect } from "aws-amplify/auth";
 
 vi.mock("aws-amplify/auth", () => ({
-  signInWithRedirect: vi.fn()
+  signInWithRedirect: vi.fn(),
 }));
 
 vi.mock("libs/errorLib", () => ({
-  onError: vi.fn()
+  onError: vi.fn(),
 }));
 
 const currentlyOnDevelopmentBranch = () =>
@@ -26,7 +26,7 @@ describe("Test Login.js", () => {
     delete window.location;
     window.location = {
       ...originalLocation,
-      assign: vi.fn()
+      assign: vi.fn(),
     };
   });
 
@@ -58,7 +58,7 @@ describe("Test Login.js", () => {
     render(<Login />);
 
     const loginButton = screen.getByText("Login with EUA ID", {
-      selector: "button"
+      selector: "button",
     });
     await userEvent.click(loginButton);
 
@@ -72,7 +72,7 @@ describe("Test Login.js", () => {
     render(<Login />);
 
     const loginButton = screen.getByText("Login with EUA ID", {
-      selector: "button"
+      selector: "button",
     });
     await userEvent.click(loginButton);
     expect(signInWithRedirect).toHaveBeenCalled();

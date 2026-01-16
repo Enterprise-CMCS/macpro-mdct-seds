@@ -7,9 +7,7 @@ import {
   authorizeUserForState,
   authorizeStateUser,
 } from "./authConditions.ts";
-import {
-  getCurrentUserInfo as actualGetCurrentUserInfo
-} from "./cognito-auth.ts";
+import { getCurrentUserInfo as actualGetCurrentUserInfo } from "./cognito-auth.ts";
 
 vi.mock("./cognito-auth.ts", () => ({
   getCurrentUserInfo: vi.fn(),
@@ -70,7 +68,9 @@ describe("authConditions", () => {
   });
 
   test("authorizeAnyUser should reject token decoding fails", async () => {
-    getCurrentUserInfo.mockImplementationOnce(() => { throw new Error(); });
+    getCurrentUserInfo.mockImplementationOnce(() => {
+      throw new Error();
+    });
     await expect(authorizeAnyUser(mockEvent)).rejects.toThrow();
   });
 
@@ -83,7 +83,8 @@ describe("authConditions", () => {
   });
 
   test("authorizeAdminOrUserWithEmail should allow the expected users", async () => {
-    const authCall = () => authorizeAdminOrUserWithEmail(mockEvent, "stateuserCO@test.com");
+    const authCall = () =>
+      authorizeAdminOrUserWithEmail(mockEvent, "stateuserCO@test.com");
     await assertAllow(authCall, adminUser);
     await assertDeny(authCall, businessUser);
     await assertAllow(authCall, stateUserCO);

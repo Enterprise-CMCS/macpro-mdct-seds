@@ -26,7 +26,7 @@ const renderComponent = (role, statusData) => {
   });
   return render(
     <BrowserRouter>
-      <NotApplicable/>
+      <NotApplicable />
     </BrowserRouter>
   );
 };
@@ -80,11 +80,13 @@ describe("NotApplicable", () => {
 
   it("should save the form when it moves to Applicable", async () => {
     renderComponent("state", NotRequiredStatusFields());
-    
+
     const yesOption = screen.getByRole("radio", { name: "Yes" });
     userEvent.click(yesOption);
 
-    expect(updateFormStatus).toHaveBeenCalledWith(InProgressStatusFields().status_id);
+    expect(updateFormStatus).toHaveBeenCalledWith(
+      InProgressStatusFields().status_id
+    );
     await waitFor(() => expect(saveForm).toHaveBeenCalled());
   });
 
@@ -96,17 +98,19 @@ describe("NotApplicable", () => {
     userEvent.click(noOption);
 
     expect(wipeForm).toHaveBeenCalled();
-    expect(updateFormStatus).toHaveBeenCalledWith(NotRequiredStatusFields().status_id);
+    expect(updateFormStatus).toHaveBeenCalledWith(
+      NotRequiredStatusFields().status_id
+    );
     await waitFor(() => expect(saveForm).toHaveBeenCalled());
   });
-  
+
   it("should not wipe the form if the user does not confirm", async () => {
     const conf = vi.spyOn(window, "confirm").mockReturnValueOnce(false);
     renderComponent("state", ProvisionalCertifiedStatusFields());
 
     const noOption = screen.getByRole("radio", { name: "No" });
     userEvent.click(noOption);
-    
+
     await waitFor(() =>
       expect(conf).toHaveBeenCalledWith(expect.stringContaining("Are you sure"))
     );

@@ -78,5 +78,11 @@ describe("obtainFormTemplate.ts", () => {
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 });

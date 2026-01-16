@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as createUser } from "./createUser.ts";
-import {
-  getUserDetailsFromEvent as actualGetUserDetails
-} from "../../../libs/authorization.ts";
+import { getUserDetailsFromEvent as actualGetUserDetails } from "../../../libs/authorization.ts";
 import {
   DynamoDBDocumentClient,
   PutCommand,
@@ -12,7 +10,7 @@ import { mockClient } from "aws-sdk-client-mock";
 import {
   scanForUserByUsername as actualScanForUser,
   putUser as actualPutUser,
-  AuthUser
+  AuthUser,
 } from "../../../storage/users.ts";
 
 vi.mock("../../../libs/authorization.ts", () => ({
@@ -58,47 +56,53 @@ describe("createUser.ts", () => {
 
     const response = await createUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: `"User COLO Added!"`,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: `"User COLO Added!"`,
+      })
+    );
 
-    expect(mockPut).toHaveBeenCalledWith({
-      TableName: "local-auth-user",
-      Item: {
-        ...mockUser,
-        dateJoined: expect.stringMatching(ISO_DATE_REGEX),
-        lastLogin: expect.stringMatching(ISO_DATE_REGEX),
-        lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-        userId: "0",
+    expect(mockPut).toHaveBeenCalledWith(
+      {
+        TableName: "local-auth-user",
+        Item: {
+          ...mockUser,
+          dateJoined: expect.stringMatching(ISO_DATE_REGEX),
+          lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+          lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+          userId: "0",
+        },
       },
-    }, expect.any(Function));
+      expect.any(Function)
+    );
   });
 
   it("should assign the new user the next sequential ID", async () => {
     getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
     mockScan.mockResolvedValueOnce({
       Count: 3,
-      Items: [
-        { userId: "10" },
-        { userId: "30" },
-        { userId: "20" },
-      ]
+      Items: [{ userId: "10" }, { userId: "30" }, { userId: "20" }],
     });
 
     const response = await createUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: `"User COLO Added!"`,
-    }));
-
-    expect(mockPut).toHaveBeenCalledWith(expect.objectContaining({
-      TableName: "local-auth-user",
-      Item: expect.objectContaining({
-        userId: "31",
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: `"User COLO Added!"`,
       })
-    }), expect.any(Function));
+    );
+
+    expect(mockPut).toHaveBeenCalledWith(
+      expect.objectContaining({
+        TableName: "local-auth-user",
+        Item: expect.objectContaining({
+          userId: "31",
+        }),
+      }),
+      expect.any(Function)
+    );
   });
 
   it("should fail if the user has somehow created a Cognito account with no username", async () => {
@@ -107,10 +111,12 @@ describe("createUser.ts", () => {
 
     const response = await createUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: `"Please enter a username"`,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: `"Please enter a username"`,
+      })
+    );
 
     expect(mockPut).not.toHaveBeenCalled();
   });
@@ -122,10 +128,12 @@ describe("createUser.ts", () => {
 
     const response = await createUser(mockEvent);
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: `"User COLO already exists"`,
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: `"User COLO already exists"`,
+      })
+    );
 
     expect(mockPut).not.toHaveBeenCalled();
   });

@@ -106,14 +106,16 @@ const EditUser = () => {
               </tr>
               <tr>
                 <th>
-                  <label className="usa-label" htmlFor="role-select">Role</label>
+                  <label className="usa-label" htmlFor="role-select">
+                    Role
+                  </label>
                 </th>
                 <td>
                   <select
                     className="usa-select"
                     id="role-select"
                     value={role}
-                    onChange={evt => setRole(evt.target.value)}
+                    onChange={(evt) => setRole(evt.target.value)}
                   >
                     <option value>- Select a Role -</option>
                     <option value="admin">Admin User</option>
@@ -125,18 +127,22 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label className="usa-label" htmlFor="state-select">State</label>
+                    <label className="usa-label" htmlFor="state-select">
+                      State
+                    </label>
                   </th>
                   <td>
                     <select
                       className="usa-select"
                       id="state-select"
                       value={state}
-                      onChange={evt => setState(evt.target.value)}
+                      onChange={(evt) => setState(evt.target.value)}
                     >
                       <option value>- Select a State -</option>
                       {stateSelectOptions.map(({ label, value }) => (
-                        <option key={value} value={value}>{label}</option>
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
                       ))}
                     </select>
                   </td>

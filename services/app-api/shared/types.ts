@@ -5,7 +5,7 @@ export const FormStatus = {
   NotRequired: 4,
 } as const;
 
-export type FormStatusValue = typeof FormStatus[keyof typeof FormStatus];
+export type FormStatusValue = (typeof FormStatus)[keyof typeof FormStatus];
 
 /**
  * SEDS records timestamps as strings, with `Date.toISOString()`
