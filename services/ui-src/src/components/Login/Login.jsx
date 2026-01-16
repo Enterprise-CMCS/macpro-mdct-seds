@@ -3,7 +3,6 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-import "./Login.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
@@ -51,7 +50,7 @@ export default function Login() {
       await signIn({
         username: fields.email,
         password: fields.password,
-        options: { authFlowType: "USER_PASSWORD_AUTH" }
+        options: { authFlowType: "USER_PASSWORD_AUTH" },
       });
       window.location.href = "/";
     } catch (e) {
@@ -65,41 +64,39 @@ export default function Login() {
   const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
 
   return (
-    <div className="login-wrapper text-center" data-testid="Login">
-      <div className="padding-y-9" data-testid="OktaLogin">
+    <div data-testid="Login" id="login">
+      <div data-testid="OktaLogin">
         <LoaderButton
           type="button"
           onClick={handleSubmitOkta}
           isLoading={isLoadingOkta}
-          outline={true}
+          variation="outline"
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+          <FontAwesomeIcon icon={faSignInAlt} />
         </LoaderButton>
       </div>
       <form
         onSubmit={handleSubmit}
-        className="developer-login"
         hidden={hideCognitoLogin}
         data-testid="loginForm"
       >
         <TextField
           autoFocus
           label="Email"
+          name="email"
           value={fields.email}
           onChange={onFieldChange}
         ></TextField>
         <TextField
-          class="form-input"
           type="password"
-          key="password"
           name="password"
           label="Password"
           value={fields.password}
           onChange={onFieldChange}
         ></TextField>
-        <div className="padding-y-9">
+        <div>
           <LoaderButton
             type="submit"
             isLoading={isLoading}

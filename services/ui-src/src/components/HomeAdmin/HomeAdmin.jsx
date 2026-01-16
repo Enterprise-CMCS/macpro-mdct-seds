@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
 import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
-import "./HomeAdmin.scss";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 

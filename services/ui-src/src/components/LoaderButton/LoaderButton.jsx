@@ -6,11 +6,12 @@ export default function LoaderButton({
   isLoading,
   className = "",
   disabled = false,
+  variation = "solid",
   ...props
 }) {
   return (
     <Button
-      variation="solid"
+      variation={variation}
       className="login-button"
       disabled={disabled || isLoading}
       {...props}

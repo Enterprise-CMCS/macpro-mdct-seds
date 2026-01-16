@@ -2,11 +2,11 @@ $image-path: "~@cmsgov/design-system/dist/images";
 @use "@cmsgov/design-system/dist/css/index";
 @use "@cmsgov/design-system/dist/css/core-theme";
 
+@import "../../additional-scss/variables";
 @import "../../additional-scss/uswds_css";
 
 @import "../../additional-scss/pdf_generator";
 
-@import "../../additional-scss/variables";
 @import "../../additional-scss/mixins";
 @import "../../additional-scss/fonts";
 @import "../../additional-scss/globals";

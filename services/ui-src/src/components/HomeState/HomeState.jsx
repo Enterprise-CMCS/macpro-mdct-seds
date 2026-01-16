@@ -13,7 +13,7 @@ const HomeState = () => {
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
 
-  const loadForms = async stateId => {
+  const loadForms = async (stateId) => {
     try {
       const availableForms = await obtainAvailableForms({ stateId });
       return sortFormsByYearAndQuarter(availableForms);
@@ -34,16 +34,14 @@ const HomeState = () => {
     })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  console.log(accordionItems);
-
   return (
-    <div className="page-home-state">
-      <p className="instructions">
+    <div>
+      <p>
         Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
         to view available reports.
       </p>
 
-      <div className="quarterly-report-list">
+      <div>
         <Accordion bordered>
           {accordionItems.map((item, idx) => (
             <AccordionItem

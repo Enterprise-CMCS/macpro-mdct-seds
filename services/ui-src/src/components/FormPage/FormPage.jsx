@@ -78,9 +78,9 @@ const FormPage = () => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage" className="formPage">
+    <div data-testid="FormPage">
       {save_error ? (
-        <div className="save-error">
+        <div>
           <Alert variation="error" heading="Save Error:" headingLevel="h1">
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
@@ -94,7 +94,7 @@ const FormPage = () => {
           </Alert>
         </div>
       ) : saveAlert ? (
-        <div className="save-success">
+        <div>
           <Alert variation="success" heading="Save success:" headingLevel="h1">
             Form {formName} has been successfully saved.
           </Alert>
@@ -102,7 +102,7 @@ const FormPage = () => {
       ) : null}
       {hasAccess === true && !loadError ? (
         <>
-          <div className="margin-bottom-3">
+          <div>
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}
@@ -112,14 +112,14 @@ const FormPage = () => {
           </div>
           <Button variation="solid" onClick={redirectToPDF}>
             Print view / PDF
-            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+            <FontAwesomeIcon icon={faFilePdf} />
           </Button>
           <NotApplicable />
-          <div className="tab-container margin-y-3">
+          <div>
             <TabContainer quarter={quarter} />
           </div>
 
-          <div className="margin-top-2" data-testid="form-footer">
+          <div data-testid="form-footer">
             <FormFooter
               state={formattedStateName}
               year={year}
@@ -132,7 +132,7 @@ const FormPage = () => {
       {hasAccess === false ? <Unauthorized /> : null}
       {loadError ? (
         <>
-          <div className="margin-bottom-3">
+          <div>
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}

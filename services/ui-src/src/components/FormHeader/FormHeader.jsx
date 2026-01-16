@@ -75,15 +75,15 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <Link to={window.location.pathname}> {` Form ${form}`} </Link>
         </div>
       </div>
-      <h1 className="page-header">FORM {form}</h1>
+      <h1>FORM {form}</h1>
       <hr />
       <div>
-        <div className="margin-y-2">
-          <h2 className="form-name">{formDescription.form_name}</h2>
-          <p className="instructions"> {formDescription.form_text}</p>
+        <div>
+          <h2>{formDescription.form_name}</h2>
+          <p> {formDescription.form_text}</p>
         </div>
-        <div className="unstyled">
-          <table>
+        <div>
+          <table className="unstyled">
             <tbody>
               <tr>
                 <th>
@@ -106,8 +106,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div className="fpl-input-container">
-              <div className="fpl-input">
+            <div>
+              <div>
                 <TextInput
                   id="max-fpl"
                   name="max-fpl"
@@ -116,10 +116,9 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   value={maxFPL}
                 />
               </div>
-              <div className="fpl-button">
+              <div>
                 <Button
                   variation="solid"
-                  className="max-fpl-btn"
                   onClick={updateMaxFPL}
                   disabled={userRole !== "state"}
                 >
@@ -138,7 +137,7 @@ FormHeader.propTypes = {
   quarter: PropTypes.string.isRequired,
   form: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired
+  state: PropTypes.string.isRequired,
 };
 
 export default FormHeader;
