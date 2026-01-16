@@ -86,8 +86,6 @@ export default function Login() {
       >
         <TextField
           autoFocus
-          key="email"
-          name="email"
           label="Email"
           value={fields.email}
           onChange={onFieldChange}
