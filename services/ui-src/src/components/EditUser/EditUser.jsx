@@ -52,7 +52,7 @@ const EditUser = () => {
       </Link>
       <h1>Edit User</h1>
       {user ? (
-        <div className="center-content">
+        <div>
           <Table>
             <tbody>
               <tr>

@@ -2,35 +2,6 @@
   Buttons
 **********************/
 
-.usa-button {
-  background: $lochmara;
-  width: fit-content;
-  border: none;
-  margin: 0;
-
-  &.hollow {
-    background-color: $white;
-    border: 1px solid $cornflower;
-    color: $cornflower;
-
-    &:hover {
-      border: 1px solid $lochmara;
-      color: $lochmara;
-    }
-  }
-}
-
-.usa-button--secondary {
-  background: #b50909 !important;
-}
-
-.usa-button--outline {
-  background: $white !important;
-  :hover {
-    background: $lochmara !important;
-  }
-}
-
 .btn-secondary {
   background-color: $brand-quinary !important;
   color: $white;

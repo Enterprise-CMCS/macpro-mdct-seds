@@ -73,25 +73,6 @@ label {
   }
 }
 
-.center-content {
-  text-align: center;
-  .usa-table {
-    margin: auto !important;
-    text-align: center;
-    font-size: 16px;
-    border: thin solid $black;
-    th {
-      background-color: $alto;
-      @extend .text-bold;
-      border: thin solid $black;
-      padding: 1rem;
-    }
-    td {
-      padding: 1rem;
-    }
-  }
-}
-
 .formTemplates,
 .formPage {
   width: 100%;

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./SynthesizedGrid.scss";
 import { Table } from "@cmsgov/design-system";
 import { useStore } from "../../store/store";
 

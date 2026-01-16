@@ -4,8 +4,8 @@ const Footer = () => {
   return (
     <footer className="footerRoot" data-testid="Footer">
       <div className="footerTop">
-        <div className="footerTopContainer" containerSize="none">
-          <div row className="footerTopFlex">
+        <div className="footerTopContainer">
+          <div className="footerTopFlex">
             <div className="footerTopLeftContainer">
               <img
                 className="sedsLogo"
