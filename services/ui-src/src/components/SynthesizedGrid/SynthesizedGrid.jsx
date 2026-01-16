@@ -8,7 +8,7 @@ export const SynthesizedGrid = ({ range }) => {
   const answers = useStore((state) => state.answers);
   let answer_arr = [];
   // Retrieve the answers specific to the current tab
-  let tabAnswers = answers.filter(element => element.rangeId === range);
+  let tabAnswers = answers.filter((element) => element.rangeId === range);
   // Retrieve question 4 answer data for the current tab
   let q4arry = tabAnswers.filter((e) => e.question.includes("-04"));
   q4arry.map((e) => {

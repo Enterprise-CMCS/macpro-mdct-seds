@@ -31,7 +31,7 @@ const GenerateForms = () => {
       setLoading(true);
       const response = await generateQuarterlyForms({
         year: Number(selectedYear),
-        quarter: Number(selectedQuarter)
+        quarter: Number(selectedQuarter),
       });
       setLoading(false);
       setAlert(response);

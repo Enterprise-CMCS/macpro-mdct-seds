@@ -89,11 +89,7 @@ const EditUser = () => {
               <tr>
                 <th>Email</th>
                 <td>
-                   <TextField
-                    value={user.email}
-                    disabled={true}
-                    name="email"
-                  />
+                  <TextField value={user.email} disabled={true} name="email" />
                 </td>
               </tr>
               <tr>

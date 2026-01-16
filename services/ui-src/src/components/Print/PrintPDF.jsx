@@ -86,7 +86,7 @@ const PrintPDF = () => {
           <Button
             className="print-button margin-bottom-4"
             variation="solid"
-            onClick={e => handlePrint(e)}
+            onClick={(e) => handlePrint(e)}
           >
             Print / PDF
             <FontAwesomeIcon icon={faPrint} className="margin-left-2" />
