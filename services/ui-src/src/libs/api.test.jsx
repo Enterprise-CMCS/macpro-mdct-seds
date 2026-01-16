@@ -156,12 +156,13 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for generateQuarterlyForms", async () => {
-    const response = await generateQuarterlyForms(mockPayload);
+    const mockGeneratePayload = { year: 2022, quarter: 2 };
+    const response = await generateQuarterlyForms(mockGeneratePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/generate-forms",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/admin/generate-forms?year=${mockGeneratePayload.year}&quarter=${mockGeneratePayload.quarter}`,
+      options: { headers: expectedHeaders }
     });
   });
 

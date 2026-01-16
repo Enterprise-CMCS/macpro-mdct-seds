@@ -1,16 +1,13 @@
 import handler from "../../../libs/handler-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../../libs/time.ts";
-import { FormStatus } from "../../../shared/types.ts";
+import { FormStatus, APIGatewayProxyEvent } from "../../../shared/types.ts";
 import {
   FormAnswer,
   scanForAllFormIds,
-  writeAllFormAnswers
+  writeAllFormAnswers,
 } from "../../../storage/formAnswers.ts";
-import {
-  getTemplate,
-  putTemplate
-} from "../../../storage/formTemplates.ts";
+import { getTemplate, putTemplate } from "../../../storage/formTemplates.ts";
 import {
   scanQuestionsByYear,
   writeAllFormQuestions,
@@ -18,29 +15,29 @@ import {
 import {
   scanFormsByQuarter,
   StateForm,
-  writeAllStateForms
+  writeAllStateForms,
 } from "../../../storage/stateForms.ts";
 import { formTypes } from "../../../shared/formTypeList.ts";
 import { stateList } from "../../../shared/stateList.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event) => {
+export const scheduled = handler(async (event: APIGatewayProxyEvent) => {
   return await generateQuarterForms(event);
 });
 
 /*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-const generateQuarterForms = async (event) => {
+const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   let noMissingForms = true;
 
-  const determineAgeRanges = (questionId) => {
+  const determineAgeRanges = (questionId: string) => {
     const year = questionId.split("-")[0];
     const form = questionId.split("-")[1];
 
@@ -97,15 +94,11 @@ const generateQuarterForms = async (event) => {
   let specifiedQuarter;
   let restoreMissingAnswers = false;
 
-  // If a data object is sent use those values.
-  if (event.body && event.body !== "undefined") {
-    let data =
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    if (data) {
-      specifiedYear = parseInt(data.year);
-      specifiedQuarter = data.quarter;
-      restoreMissingAnswers = !!data.restoreMissingAnswers;
-    }
+  if (event.queryStringParameters) {
+    const qp = event.queryStringParameters;
+    if (qp.year) specifiedYear = parseInt(qp.year);
+    if (qp.quarter) specifiedQuarter = parseInt(qp.quarter);
+    if (qp.restore !== undefined) restoreMissingAnswers = qp.restore === "true";
   }
 
   // If not specified, determine the reporting period from the current date.
@@ -114,11 +107,8 @@ const generateQuarterForms = async (event) => {
   specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
 
   // Search for existing stateForms
-  const foundForms = await scanFormsByQuarter(
-    specifiedYear,
-    specifiedQuarter
-  );
-  const foundFormIds = new Set(foundForms.map(f => f.state_form));
+  const foundForms = await scanFormsByQuarter(specifiedYear, specifiedQuarter);
+  const foundFormIds = new Set(foundForms.map((f) => f.state_form));
 
   const stateFormsToCreate: StateForm[] = [];
 
@@ -155,8 +145,7 @@ const generateQuarterForms = async (event) => {
     }
   }
 
-
-  const newFormIds = new Set(stateFormsToCreate.map(f => f.state_form));
+  const newFormIds = new Set(stateFormsToCreate.map((f) => f.state_form));
 
   console.log(`Saving ${stateFormsToCreate.length} state forms`);
   if (stateFormsToCreate.length > 0) {
@@ -187,9 +176,8 @@ const generateQuarterForms = async (event) => {
         const currentForm = allQuestions[question].question.split("-")[1];
         const currentAgeRangeId = ageRanges[range].key;
         const currentAgeRangeLabel = ageRanges[range].label;
-        const currentQuestionNumber = allQuestions[question].question.split(
-          "-"
-        )[2];
+        const currentQuestionNumber =
+          allQuestions[question].question.split("-")[2];
         const answerEntry = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}-${currentAgeRangeId}-${currentQuestionNumber}`;
         const questionID = `${specifiedYear}-${currentForm}-${currentQuestionNumber}`;
         const stateFormID = `${currentState}-${specifiedYear}-${specifiedQuarter}-${currentForm}`;
@@ -272,13 +260,13 @@ export const getOrCreateQuestions = async (year: number) => {
     return questions;
   }
 
-  questions = (await getOrCreateFormTemplate(year)).map(question => ({
+  questions = (await getOrCreateFormTemplate(year)).map((question) => ({
     ...question,
     created_date: new Date().toISOString(),
     last_modified: new Date().toISOString(),
   }));
-  
+
   await writeAllFormQuestions(questions);
 
   return questions;
-}
+};

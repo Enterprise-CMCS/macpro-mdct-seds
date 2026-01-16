@@ -250,7 +250,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "generateQuarterForms", {
     entry: "services/app-api/handlers/forms/post/generateQuarterForms.ts",
     handler: "main",
-    path: "/generate-forms",
+    path: "/admin/generate-forms",
     method: "POST",
     timeout: Duration.minutes(15),
     ...commonProps,

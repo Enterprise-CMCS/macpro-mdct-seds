@@ -127,9 +127,11 @@ export const saveSingleForm = async data => {
 // *** generate quarterly forms
 export const generateQuarterlyForms = async data => {
   const opts = await requestOptions();
-  opts.body = data;
 
-  return await apiLib.post("/generate-forms", opts);
+  return await apiLib.post(
+    `/admin/generate-forms?year=${data.year}&quarter=${data.quarter}`,
+    opts
+  );
 };
 
 // *** get form template years
