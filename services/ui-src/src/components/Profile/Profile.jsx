@@ -4,9 +4,9 @@ import { useStore } from "../../store/store";
 import { TextField } from "@cmsgov/design-system";
 
 export default function Profile() {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
 
-  const capitalize = s => {
+  const capitalize = (s) => {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);
   };

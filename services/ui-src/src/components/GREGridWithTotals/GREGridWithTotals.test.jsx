@@ -12,7 +12,7 @@ const gridDataItems = [
     col3: "64.21E Enrolled",
     col4: "Total CHIP Enrolled",
     col5: "64.EC Enrolled",
-    col6: "21PW Enrolled"
+    col6: "21PW Enrolled",
   },
   {
     col1: "1. Female",
@@ -20,7 +20,7 @@ const gridDataItems = [
     col3: 15,
     col4: null,
     col5: 20,
-    col6: 25
+    col6: 25,
   },
   {
     col1: "2. Male",
@@ -28,7 +28,7 @@ const gridDataItems = [
     col3: 35,
     col4: null,
     col5: 40,
-    col6: 45
+    col6: 45,
   },
   {
     col1: "3. Unspecified Gender",
@@ -36,8 +36,8 @@ const gridDataItems = [
     col3: 55,
     col4: null,
     col5: 60,
-    col6: 65
-  }
+    col6: 65,
+  },
 ];
 
 const renderComponent = () => {
@@ -58,8 +58,9 @@ describe("Test GREGridWithTotals.js", () => {
   it("should render headers from provided grid data", () => {
     const { container } = renderComponent();
 
-    const columnHeaders = [...container.querySelectorAll("thead th")]
-      .map(th => th.textContent);
+    const columnHeaders = [...container.querySelectorAll("thead th")].map(
+      (th) => th.textContent
+    );
     expect(columnHeaders).toEqual([
       "", // spacer
       "21E Enrolled",
@@ -67,16 +68,17 @@ describe("Test GREGridWithTotals.js", () => {
       "Total CHIP Enrolled",
       "64.EC Enrolled",
       "21PW Enrolled",
-      "Totals"
+      "Totals",
     ]);
 
-    const rowHeaders = [...container.querySelectorAll("tbody tr th")]
-      .map(th => th.textContent);
+    const rowHeaders = [...container.querySelectorAll("tbody tr th")].map(
+      (th) => th.textContent
+    );
     expect(rowHeaders).toEqual([
       "1. Female",
       "2. Male",
       "3. Unspecified Gender",
-      "Totals:"
+      "Totals:",
     ]);
   });
 
@@ -84,8 +86,9 @@ describe("Test GREGridWithTotals.js", () => {
     const { container } = renderComponent();
 
     // We will only test the first row; the others are generated from the same code.
-    const firstRowInputValues = [...container.querySelectorAll("tbody tr:nth-child(1) td")]
-      .map(td => td.querySelector("input")?.value);
+    const firstRowInputValues = [
+      ...container.querySelectorAll("tbody tr:nth-child(1) td"),
+    ].map((td) => td.querySelector("input")?.value);
 
     expect(firstRowInputValues).toEqual([
       "10",
@@ -100,19 +103,14 @@ describe("Test GREGridWithTotals.js", () => {
   it("should calculate correct totals", () => {
     const { container } = renderComponent();
 
-    const firstRowSubtotals = [...container.querySelectorAll("tbody tr:nth-child(1) td.total-column")]
-      .map(td => td.textContent);
+    const firstRowSubtotals = [
+      ...container.querySelectorAll("tbody tr:nth-child(1) td.total-column"),
+    ].map((td) => td.textContent);
     expect(firstRowSubtotals).toEqual(["25", "70"]);
 
-    const grandTotals = [...container.querySelectorAll("tbody tr:nth-last-child(1) td")]
-      .map(td => td.textContent);
-    expect(grandTotals).toEqual([
-      "90",
-      "105",
-      "195",
-      "120",
-      "135",
-      "450",
-    ]);
+    const grandTotals = [
+      ...container.querySelectorAll("tbody tr:nth-last-child(1) td"),
+    ].map((td) => td.textContent);
+    expect(grandTotals).toEqual(["90", "105", "195", "120", "135", "450"]);
   });
 });

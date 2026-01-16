@@ -14,7 +14,7 @@ const gridDataItems = [
     col3: "% of FPL 134-200",
     col4: "% of FPL 201-250",
     col5: "% of FPL 251-300",
-    col6: "% of FPL 301-317"
+    col6: "% of FPL 301-317",
   },
   {
     col1: "A. Fee-for-Service",
@@ -22,7 +22,7 @@ const gridDataItems = [
     col3: 2,
     col4: 3,
     col5: 4,
-    col6: 5
+    col6: 5,
   },
   {
     col1: "B. Managed Care Arrangements",
@@ -30,7 +30,7 @@ const gridDataItems = [
     col3: 22,
     col4: 23,
     col5: 24,
-    col6: 25
+    col6: 25,
   },
   {
     col1: "C. Primary Care Case Management",
@@ -38,14 +38,14 @@ const gridDataItems = [
     col3: 27,
     col4: 28,
     col5: 29,
-    col6: 30
-  }
+    col6: 30,
+  },
 ];
 
 const renderComponent = (questionID = "42", questions) => {
   useStore.setState({
     ...currentFormMock_21E.currentForm,
-    updateAnswer: vi.fn()
+    updateAnswer: vi.fn(),
   });
   return render(
     <GridWithTotals
@@ -61,7 +61,7 @@ describe("Test GridWithTotals.js", () => {
     const { container } = renderComponent();
 
     const columnHeaders = [...container.querySelectorAll("thead th")].map(
-      th => th.textContent
+      (th) => th.textContent
     );
     expect(columnHeaders).toEqual([
       "", // spacer
@@ -70,17 +70,17 @@ describe("Test GridWithTotals.js", () => {
       "% of FPL 201-250",
       "% of FPL 251-300",
       "% of FPL 301-317",
-      "Totals"
+      "Totals",
     ]);
 
     const rowHeaders = [...container.querySelectorAll("tbody tr th")].map(
-      th => th.textContent
+      (th) => th.textContent
     );
     expect(rowHeaders).toEqual([
       "A. Fee-for-Service",
       "B. Managed Care Arrangements",
       "C. Primary Care Case Management",
-      "Totals:"
+      "Totals:",
     ]);
   });
 
@@ -89,8 +89,8 @@ describe("Test GridWithTotals.js", () => {
 
     // We will only test the first row; the others are generated from the same code.
     const firstRowInputValues = [
-      ...container.querySelectorAll("tbody tr:nth-child(1) td")
-    ].map(td => td.querySelector("input")?.value);
+      ...container.querySelectorAll("tbody tr:nth-child(1) td"),
+    ].map((td) => td.querySelector("input")?.value);
 
     expect(firstRowInputValues).toEqual([
       "1",
@@ -98,7 +98,7 @@ describe("Test GridWithTotals.js", () => {
       "3",
       "4",
       "5",
-      undefined // Total; not an input
+      undefined, // Total; not an input
     ]);
   });
 
@@ -111,8 +111,8 @@ describe("Test GridWithTotals.js", () => {
     expect(firstRowSubtotal).toBe("15");
 
     const grandTotals = [
-      ...container.querySelectorAll("tbody tr:nth-last-child(1) td")
-    ].map(td => td.textContent);
+      ...container.querySelectorAll("tbody tr:nth-last-child(1) td"),
+    ].map((td) => td.textContent);
     expect(grandTotals).toEqual(["48", "51", "54", "57", "60", "270"]);
   });
 
@@ -135,7 +135,7 @@ describe("Test GridWithTotals.js", () => {
       { rows: gridDataItems },
       { rows: gridDataItems },
       { rows: gridDataItems },
-      { rows: gridDataItems }
+      { rows: gridDataItems },
     ];
     const { container } = renderComponent("summary-synthesized", questions);
 

@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { selectRowColumnValueFromArray } from "./jsonPath";
 
-const sortQuestionColumns = columnArray => {
-  let sortedColumns = columnArray.map(singleRow =>
+const sortQuestionColumns = (columnArray) => {
+  let sortedColumns = columnArray.map((singleRow) =>
     Object.entries(singleRow)
       .sort((a, b) => a[0].slice(-1) - b[0].slice(-1))
       .reduce((accumulator, [k, v]) => ({ ...accumulator, [k]: v }), {})
@@ -17,9 +17,9 @@ const sortQuestionColumns = columnArray => {
  * @param {array} arrayOfRows - Rows array with column objects
  * @returns {array} - Sorted rows with the header first
  */
-const sortRowArray = arrayOfRows => {
+const sortRowArray = (arrayOfRows) => {
   let deepCopy = JSON.parse(JSON.stringify(arrayOfRows));
-  const headerIdx = deepCopy.findIndex(element => element["col1"] === "");
+  const headerIdx = deepCopy.findIndex((element) => element["col1"] === "");
   let header = deepCopy.splice(headerIdx, 1)[0];
   let sortedRows = deepCopy.sort((a, b) =>
     a["col1"][0] > b["col1"][0] ? 1 : b["col1"][0] > a["col1"][0] ? -1 : 0
@@ -35,7 +35,7 @@ const sortRowArray = arrayOfRows => {
  * @returns {string} The given date, converted to U.S. Eastern time,
  *  and formatted like `"10/5/2021 at 10:48:00 AM EDT"`
  */
-const dateFormatter = dateString => {
+const dateFormatter = (dateString) => {
   if (!dateString) {
     return "Date not supplied";
   }
@@ -78,7 +78,7 @@ const formattedPartsET = (date, options) => {
  * @param formsArray - multidimensional array of forms
  * @returns {*}
  */
-const sortFormsByYearAndQuarter = formsArray => {
+const sortFormsByYearAndQuarter = (formsArray) => {
   // Sort forms descending by year and then quarter
   formsArray.sort(function (a, b) {
     if (a.year === b.year) {
@@ -103,9 +103,11 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   let accordionItems = [];
   let uniqueYears;
   if (formsArray) {
-    uniqueYears = Array.from(new Set(formsArray.map(a => a.year))).map(year => {
-      return formsArray.find(a => a.year === year);
-    });
+    uniqueYears = Array.from(new Set(formsArray.map((a) => a.year))).map(
+      (year) => {
+        return formsArray.find((a) => a.year === year);
+      }
+    );
   }
 
   // Sort by years descending
@@ -126,9 +128,9 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
     // Remove duplicate quarters
     let uniqueQuarters;
     if (quarters) {
-      uniqueQuarters = Array.from(new Set(quarters.map(a => a.quarter))).map(
-        quarter => {
-          return quarters.find(a => a.quarter === quarter);
+      uniqueQuarters = Array.from(new Set(quarters.map((a) => a.quarter))).map(
+        (quarter) => {
+          return quarters.find((a) => a.quarter === quarter);
         }
       );
     }
@@ -139,7 +141,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
     // Build output for each accordion item
     let quartersOutput = (
       <ul className="quarterly-items">
-        {uniqueQuarters.map(element => {
+        {uniqueQuarters.map((element) => {
           return (
             <li key={`${element.quarter}`}>
               <Link
@@ -167,7 +169,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
       title: uniqueYears[year].year,
       content: quartersOutput,
       headingLevel: "h1", // unsure
-      expanded: expanded
+      expanded: expanded,
     };
 
     accordionItems.push(item);
@@ -183,11 +185,11 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
  * @returns {object} - An object with the questions nested by question then age range, see example below
  */
 
-const gatherByQuestion = answersArray => {
+const gatherByQuestion = (answersArray) => {
   let accumulator = {};
 
   // call back for a reduce method
-  answersArray.forEach(answer => {
+  answersArray.forEach((answer) => {
     let ageRange = answer.rangeId;
     let questionNumber = answer.question.slice(-2);
 
@@ -271,5 +273,5 @@ export {
   gatherByQuestion,
   reduceEntries,
   sortRowArray,
-  sortByCol1
+  sortByCol1,
 };

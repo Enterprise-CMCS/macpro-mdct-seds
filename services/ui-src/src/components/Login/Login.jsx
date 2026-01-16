@@ -13,7 +13,7 @@ export default function Login() {
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
   const [fields, setFieldChange] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   function validateForm() {

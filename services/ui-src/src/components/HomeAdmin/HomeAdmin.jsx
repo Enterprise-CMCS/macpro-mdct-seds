@@ -8,11 +8,11 @@ import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const HomeAdmin = () => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const [selectedState, setSelectedState] = useState();
   const [accordionItems, setAccordionItems] = useState("");
 
-  const updateUsState = async stateId => {
+  const updateUsState = async (stateId) => {
     setSelectedState(stateId);
 
     // Get list of all state forms
@@ -70,7 +70,7 @@ const HomeAdmin = () => {
             className="usa-select"
             id="state-select"
             value={selectedState}
-            onChange={evt => updateUsState(evt.target.value)}
+            onChange={(evt) => updateUsState(evt.target.value)}
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (

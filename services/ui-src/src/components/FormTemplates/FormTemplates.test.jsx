@@ -6,13 +6,13 @@ import FormTemplates from "./FormTemplates";
 import {
   obtainFormTemplate,
   obtainFormTemplateYears,
-  updateCreateFormTemplate
+  updateCreateFormTemplate,
 } from "../../libs/api";
 
 vi.mock("../../libs/api", () => ({
   obtainFormTemplate: vi.fn(),
   obtainFormTemplateYears: vi.fn(),
-  updateCreateFormTemplate: vi.fn()
+  updateCreateFormTemplate: vi.fn(),
 }));
 
 vi.spyOn(window, "confirm").mockImplementation(() => true);
@@ -58,9 +58,7 @@ describe("Tests for FormTemplates.js", () => {
     const templateInput = screen.getByRole("textbox", { name: /Template/ });
     expect(templateInput).toHaveValue(JSON.stringify(mockTemplate, null, 2));
 
-    expect(
-      screen.getByRole("button", { name: "Save" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
   test("Should reset when dropdown is set to + Create New Template", async () => {
@@ -69,7 +67,7 @@ describe("Tests for FormTemplates.js", () => {
       expect(obtainFormTemplateYears).toHaveBeenCalled();
       expect(obtainFormTemplate).toHaveBeenCalled();
     });
-    
+
     const templateInput = screen.getByRole("textbox", { name: /Template/ });
     expect(templateInput).toHaveValue(JSON.stringify(mockTemplate, null, 2));
 
@@ -87,7 +85,7 @@ describe("Tests for FormTemplates.js", () => {
     updateCreateFormTemplate.mockResolvedValue({
       year: 2021,
       template: { ...mockTemplate },
-      message: "create form template is successful"
+      message: "create form template is successful",
     });
     render(<FormTemplates />);
     await waitFor(() => {
@@ -99,7 +97,7 @@ describe("Tests for FormTemplates.js", () => {
     await waitFor(() => {
       expect(updateCreateFormTemplate).toHaveBeenCalledWith({
         year: 2021,
-        template: { ...mockTemplate }
+        template: { ...mockTemplate },
       });
     });
   });

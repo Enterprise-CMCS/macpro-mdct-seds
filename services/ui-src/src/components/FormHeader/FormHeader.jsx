@@ -7,15 +7,15 @@ import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
 
 const FormHeader = ({ quarter, form, year, state }) => {
-  const updateFPL = useStore(state => state.updateFpl);
-  const userRole = useStore(state => state.user.role);
-  const saveForm = useStore(state => state.saveForm);
-  const formDescription = formTypes.find(element => element.form === form);
+  const updateFPL = useStore((state) => state.updateFpl);
+  const userRole = useStore((state) => state.user.role);
+  const saveForm = useStore((state) => state.saveForm);
+  const formDescription = formTypes.find((element) => element.form === form);
   const [maxFPL, setMaxFPL] = useState("");
   const [showFPL, setShowFPL] = useState(false);
 
   // Returns last three digits of maximum FPL range
-  const getMaxFPL = answers => {
+  const getMaxFPL = (answers) => {
     // Finds first question (in answers), first row, then column 6
     const fplRange = answers[0]["rows"][0].col6;
 
@@ -27,7 +27,6 @@ const FormHeader = ({ quarter, form, year, state }) => {
     // List of forms that do NOT show fpl
     const formsWithOutFPL = ["GRE"];
     async function fetchData() {
-
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {
         // Get answers for this form from DB
@@ -48,7 +47,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
   };
 
   // Ensure user input is valid for max FPL
-  const validateFPL = e => {
+  const validateFPL = (e) => {
     let value = e.target.value;
 
     // Halt input if greater than 3 chars
@@ -113,7 +112,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   id="max-fpl"
                   name="max-fpl"
                   type="number"
-                  onChange={e => validateFPL(e)}
+                  onChange={(e) => validateFPL(e)}
                   value={maxFPL}
                 />
               </div>

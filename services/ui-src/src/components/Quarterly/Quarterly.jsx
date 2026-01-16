@@ -13,7 +13,7 @@ import { canViewStateData } from "../../utility-functions/permissions";
 import "./Quarterly.scss";
 
 const Quarterly = () => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const { state, year, quarter } = useParams();
   const [stateFormsList, setStateFormsList] = useState();
   const [hasAccess, setHasAccess] = useState();
@@ -25,7 +25,7 @@ const Quarterly = () => {
       if (canViewStateData(user, state)) {
         let data = await recursiveGetStateForms({ state, year, quarter });
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
-        data = data.filter(i => i.form !== "64.ECI");
+        data = data.filter((i) => i.form !== "64.ECI");
         setStateFormsList(data);
         setHasAccess(true);
       } else {
@@ -37,7 +37,7 @@ const Quarterly = () => {
   }, [state, year, quarter]);
 
   // Translate form name into url value
-  const getFormSegment = form => form.form?.replace(".", "-");
+  const getFormSegment = (form) => form.form?.replace(".", "-");
 
   return (
     <div className="page-quarterly">
@@ -65,7 +65,7 @@ const Quarterly = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {stateFormsList.map(form => (
+                  {stateFormsList.map((form) => (
                     <tr key={form.form}>
                       <td>
                         <Link
@@ -80,7 +80,9 @@ const Quarterly = () => {
                         <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div className="form-status-pill">{getStatusDisplay(form)}</div>
+                        <div className="form-status-pill">
+                          {getStatusDisplay(form)}
+                        </div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
                       <td style={{ textAlign: "center" }}>

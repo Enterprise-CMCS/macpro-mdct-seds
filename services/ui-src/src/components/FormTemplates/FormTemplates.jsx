@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import {
   obtainFormTemplate,
   obtainFormTemplateYears,
-  updateCreateFormTemplate
+  updateCreateFormTemplate,
 } from "../../libs/api";
 import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,13 +29,13 @@ const FormTemplates = () => {
       try {
         response = await updateCreateFormTemplate({
           year: Number(inputYear),
-          template: JSON.parse(currentTemplate)
+          template: JSON.parse(currentTemplate),
         });
       } catch (e) {
         setAlert({
           status: 400,
           message:
-            "Unable to save. Please verify that the template contains valid JSON"
+            "Unable to save. Please verify that the template contains valid JSON",
         });
       }
       if (response) {
@@ -45,7 +45,7 @@ const FormTemplates = () => {
     }
   };
 
-  const updateYear = async year => {
+  const updateYear = async (year) => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
       const template = await obtainFormTemplate({ year: Number(year) });
@@ -68,12 +68,12 @@ const FormTemplates = () => {
       let yearsObjects = [
         {
           label: "+ Create New Template",
-          value: "CREATE_NEW"
+          value: "CREATE_NEW",
         },
-        ...yearsArray.map(year => ({
+        ...yearsArray.map((year) => ({
           label: year.toString(),
-          value: year.toString()
-        }))
+          value: year.toString(),
+        })),
       ];
 
       setFormYears(yearsObjects);
@@ -109,7 +109,7 @@ const FormTemplates = () => {
               className="usa-select"
               id="year-select"
               value={selectedYear}
-              onChange={evt => updateYear(evt.target.value)}
+              onChange={(evt) => updateYear(evt.target.value)}
             >
               {formYears.map(({ label, value }) => (
                 <option key={value} value={value}>
@@ -128,7 +128,7 @@ const FormTemplates = () => {
               id="year-input"
               name="year-input"
               type="number"
-              onChange={e => setInputYear(e.target.value)}
+              onChange={(e) => setInputYear(e.target.value)}
               defaultValue={nextYear}
             />
           </>
@@ -141,7 +141,7 @@ const FormTemplates = () => {
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}
             type="text"
-            onChange={e => setCurrentTemplate(e.target.value)}
+            onChange={(e) => setCurrentTemplate(e.target.value)}
           />
         </div>
         <Button

@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { main as generateQuarterForms, scheduled } from "./generateQuarterForms.ts";
 import {
-  authorizeAdmin as actualAuthorizeAdmin
-} from "../../../auth/authConditions.ts";
+  main as generateQuarterForms,
+  scheduled,
+} from "./generateQuarterForms.ts";
+import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
 import { FormStatus } from "../../../shared/types.ts";
 import {
   scanForAllFormIds as actualScanForAllFormIds,
@@ -36,11 +37,13 @@ vi.mock("../../../shared/stateList.ts", () => ({
   stateList: [
     { state_id: "CO", state_name: "Colorado" },
     { state_id: "TX", state_name: "Texas" },
-  ]
+  ],
 }));
 
 vi.mock("../../../libs/time.ts", () => ({
-  calculateFormQuarterFromDate: vi.fn().mockReturnValue({ year: 2025, quarter: 1 }),
+  calculateFormQuarterFromDate: vi
+    .fn()
+    .mockReturnValue({ year: 2025, quarter: 1 }),
 }));
 
 vi.mock("../../../auth/authConditions.ts", () => ({
@@ -82,16 +85,16 @@ const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 const mockQuestion1 = {
   question: "Q1-21E-42",
   age_ranges: [
-    { key: "0001", label: "birth to age 1"},
-    { key: "0105", label: "ages 1 to 5" }
+    { key: "0001", label: "birth to age 1" },
+    { key: "0105", label: "ages 1 to 5" },
   ],
   rows: [],
 };
 const mockQuestion2 = {
   question: "Q2-GRE-76",
   age_ranges: [
-    { key: "0001", label: "birth to age 1"},
-    { key: "0105", label: "ages 1 to 5" }
+    { key: "0001", label: "birth to age 1" },
+    { key: "0105", label: "ages 1 to 5" },
   ],
   rows: [],
 };
@@ -107,16 +110,18 @@ describe("generateQuarterForms.ts", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Forms successfully created for Quarter 1 of 2025",
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Forms successfully created for Quarter 1 of 2025",
+        }),
+      })
+    );
 
     expect(writeAllStateForms).toHaveBeenCalled();
-    
+
     const writtenStateForms = writeAllStateForms.mock.calls[0][0];
     const expectedStateFormIds = [
       "CO-2025-1-21E",
@@ -132,7 +137,7 @@ describe("generateQuarterForms.ts", () => {
       "TX-2025-1-GRE",
       "TX-2025-1-21PW",
     ];
-    const actualStateForms = writtenStateForms.map(f => f.state_form);
+    const actualStateForms = writtenStateForms.map((f) => f.state_form);
     expect(actualStateForms).toEqual(expectedStateFormIds);
 
     for (let form of writtenStateForms) {
@@ -183,7 +188,7 @@ describe("generateQuarterForms.ts", () => {
     await generateQuarterForms({});
 
     expect(writeAllStateForms).toHaveBeenCalledWith([
-      expect.objectContaining({ state_form: "TX-2025-1-21E" })
+      expect.objectContaining({ state_form: "TX-2025-1-21E" }),
     ]);
   });
 
@@ -208,7 +213,7 @@ describe("generateQuarterForms.ts", () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    await generateQuarterForms({ });
+    await generateQuarterForms({});
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
 
@@ -221,15 +226,17 @@ describe("generateQuarterForms.ts", () => {
       "CO-2025-1-21E-0001-42",
       "CO-2025-1-21E-0105-42",
       "TX-2025-1-21E-0001-42",
-      "TX-2025-1-21E-0105-42"
+      "TX-2025-1-21E-0105-42",
     ];
     const writtenFormAnswers = writeAllFormAnswers.mock.calls[0][0];
-    const actualEntries = writtenFormAnswers.map(ans => ans.answer_entry);
+    const actualEntries = writtenFormAnswers.map((ans) => ans.answer_entry);
     expect(actualEntries).toEqual(expectedEntries);
     for (let answer of writtenFormAnswers) {
       expect(answer).toEqual({
         age_range: expect.stringMatching(/^(birth to age 1|ages 1 to 5)$/),
-        answer_entry: expect.stringMatching(/^(CO|TX)-2025-1-21E+-(0001|0105)-42$/),
+        answer_entry: expect.stringMatching(
+          /^(CO|TX)-2025-1-21E+-(0001|0105)-42$/
+        ),
         created_by: "seed",
         created_date: expect.stringMatching(ISO_DATE_REGEX),
         last_modified: expect.stringMatching(ISO_DATE_REGEX),
@@ -260,7 +267,9 @@ describe("generateQuarterForms.ts", () => {
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
     scanForAllFormIds.mockResolvedValueOnce([]);
 
-    await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
+    await generateQuarterForms({
+      body: JSON.stringify({ restoreMissingAnswers: true }),
+    });
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
     expect(writeAllFormAnswers.mock.calls[0][0]).toHaveLength(4);
@@ -283,15 +292,18 @@ describe("generateQuarterForms.ts", () => {
     ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    const response = await generateQuarterForms({ });
+    const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 204,
-        message: "All forms, for Quarter 1 of 2025, previously existed. No new forms added"
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 204,
+          message:
+            "All forms, for Quarter 1 of 2025, previously existed. No new forms added",
+        }),
       })
-    }));
+    );
     expect(writeAllStateForms).not.toHaveBeenCalled();
     expect(writeAllFormAnswers).not.toHaveBeenCalled();
   });
@@ -327,8 +339,10 @@ describe("generateQuarterForms.ts", () => {
       "TX-2025-1-21PW",
     ]);
 
-    await generateQuarterForms({ body: JSON.stringify({ restoreMissingAnswers: true })});
-    
+    await generateQuarterForms({
+      body: JSON.stringify({ restoreMissingAnswers: true }),
+    });
+
     expect(writeAllFormAnswers).toHaveBeenCalled();
     const expectedEntries = [
       /*
@@ -338,7 +352,9 @@ describe("generateQuarterForms.ts", () => {
       "CO-2025-1-21E-0001-42",
       "CO-2025-1-21E-0105-42",
     ];
-    const actualEntries = writeAllFormAnswers.mock.calls[0][0].map(ans => ans.answer_entry);
+    const actualEntries = writeAllFormAnswers.mock.calls[0][0].map(
+      (ans) => ans.answer_entry
+    );
     expect(actualEntries).toEqual(expectedEntries);
   });
 
@@ -347,10 +363,10 @@ describe("generateQuarterForms.ts", () => {
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce({
       year: 2025,
-      template: [mockQuestion2]
-    })
+      template: [mockQuestion2],
+    });
 
-    await generateQuarterForms({ });
+    await generateQuarterForms({});
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
     const writtenFormAnswers = writeAllFormAnswers.mock.calls[0][0];
@@ -364,20 +380,19 @@ describe("generateQuarterForms.ts", () => {
   it("should copy the template from the previous year if necessary", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
-    getTemplate.mockResolvedValueOnce(undefined)
-      .mockResolvedValueOnce({
-        year: 2024,
-        template: [mockQuestion2]
-      });
+    getTemplate.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
+      year: 2024,
+      template: [mockQuestion2],
+    });
 
-    await generateQuarterForms({ });
+    await generateQuarterForms({});
 
     expect(putTemplate).toHaveBeenCalledWith({
       year: 2025,
       template: [mockQuestion2],
       lastSynced: expect.stringMatching(ISO_DATE_REGEX),
     });
-  
+
     expect(writeAllFormQuestions).toHaveBeenCalledWith([
       {
         ...mockQuestion2,
@@ -398,15 +413,18 @@ describe("generateQuarterForms.ts", () => {
   it("should fail if no template exists for this year or the previous", async () => {
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
-    getTemplate.mockResolvedValueOnce(undefined)
+    getTemplate
+      .mockResolvedValueOnce(undefined)
       .mockResolvedValueOnce(undefined);
 
-    const response = await generateQuarterForms({ });
+    const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: expect.stringContaining("No template found for 2025 or 2024!")
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: expect.stringContaining("No template found for 2025 or 2024!"),
+      })
+    );
   });
 
   it("should return Internal Server Error if the user is not an admin", async () => {
@@ -414,10 +432,12 @@ describe("generateQuarterForms.ts", () => {
 
     const response = await generateQuarterForms({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 500,
-      body: JSON.stringify({ error: "Forbidden" }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 500,
+        body: JSON.stringify({ error: "Forbidden" }),
+      })
+    );
   });
 
   it("should not require authorization if invoked from a scheduled job", async () => {
@@ -427,16 +447,18 @@ describe("generateQuarterForms.ts", () => {
 
     const response = await scheduled({});
 
-    expect(response).toEqual(expect.objectContaining({
-      statusCode: 200,
-      body: JSON.stringify({
-        status: 200,
-        message: "Forms successfully created for Quarter 1 of 2025"
-      }),
-    }));
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: 200,
+        body: JSON.stringify({
+          status: 200,
+          message: "Forms successfully created for Quarter 1 of 2025",
+        }),
+      })
+    );
 
     expect(writeAllStateForms).toHaveBeenCalled();
     // We did not exercise this mock rejection; reset it to a no-op.
-    authorizeAdmin.mockReset().mockResolvedValueOnce()
+    authorizeAdmin.mockReset().mockResolvedValueOnce();
   });
 });

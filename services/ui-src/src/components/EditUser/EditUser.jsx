@@ -107,7 +107,7 @@ const EditUser = () => {
                     className="usa-select"
                     id="role-select"
                     value={role}
-                    onChange={evt => setRole(evt.target.value)}
+                    onChange={(evt) => setRole(evt.target.value)}
                   >
                     <option value>- Select a Role -</option>
                     <option value="admin">Admin User</option>
@@ -128,7 +128,7 @@ const EditUser = () => {
                       className="usa-select"
                       id="state-select"
                       value={state}
-                      onChange={evt => setState(evt.target.value)}
+                      onChange={(evt) => setState(evt.target.value)}
                     >
                       <option value>- Select a State -</option>
                       {stateSelectOptions.map(({ label, value }) => (

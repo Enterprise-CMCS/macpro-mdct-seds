@@ -42,7 +42,7 @@ function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {
   return false;
 }
 
-function assertPayloadIsValid (data) {
+function assertPayloadIsValid(data) {
   if (!data) {
     throw new Error("User update payload is missing");
   }

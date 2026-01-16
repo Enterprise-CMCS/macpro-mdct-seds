@@ -8,8 +8,8 @@ import { getStateName, stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const StateSelector = () => {
-  const user = useStore(state => state.user);
-  const loadUser = useStore(state => state.loadUser);
+  const user = useStore((state) => state.user);
+  const loadUser = useStore((state) => state.loadUser);
   const history = useHistory();
   const [selectedState, setSelectedState] = useState();
 
@@ -71,7 +71,7 @@ const StateSelector = () => {
             className="usa-select"
             id="state-select"
             value={selectedState}
-            onChange={evt => setSelectedState(evt.target.value)}
+            onChange={(evt) => setSelectedState(evt.target.value)}
           >
             <option value>- Select a State -</option>
             {stateSelectOptions.map(({ label, value }) => (

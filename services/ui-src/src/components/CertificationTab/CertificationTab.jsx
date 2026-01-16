@@ -6,15 +6,15 @@ import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import {
   isFinalCertified,
   isProvisionalCertified,
-  getStatusDisplay
+  getStatusDisplay,
 } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
 
 const CertificationTab = () => {
-  const statusData = useStore(state => state.statusData);
-  const userRole = useStore(state => state.user.role);
-  const updateFormStatus = useStore(state => state.updateFormStatus);
-  const saveForm = useStore(state => state.saveForm);
+  const statusData = useStore((state) => state.statusData);
+  const userRole = useStore((state) => state.user.role);
+  const updateFormStatus = useStore((state) => state.updateFormStatus);
+  const saveForm = useStore((state) => state.saveForm);
 
   const isProvisional = isProvisionalCertified(statusData);
   const isFinal = isFinalCertified(statusData);
@@ -50,7 +50,7 @@ const CertificationTab = () => {
     }
   };
 
-  /* 
+  /*
     NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
     able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
     

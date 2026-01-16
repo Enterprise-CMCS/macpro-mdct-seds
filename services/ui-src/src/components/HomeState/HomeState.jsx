@@ -4,12 +4,12 @@ import { useHistory } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
 import {
   sortFormsByYearAndQuarter,
-  buildSortedAccordionByYearQuarter
+  buildSortedAccordionByYearQuarter,
 } from "../../utility-functions/sortingFunctions";
 import { useStore } from "../../store/store";
 
 const HomeState = () => {
-  const user = useStore(state => state.user);
+  const user = useStore((state) => state.user);
   const [accordionItems, setAccordionItems] = useState([]);
   let history = useHistory();
 

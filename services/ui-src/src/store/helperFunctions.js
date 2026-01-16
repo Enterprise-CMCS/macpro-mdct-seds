@@ -6,14 +6,14 @@ const sortQuestionsByNumber = (q1, q2) => {
   return q1Number > q2Number ? 1 : -1;
 };
 
-const formatAnswerData = answerArray => {
+const formatAnswerData = (answerArray) => {
   const rowArray = [];
 
   // The first two values of the state data from GridWithTotals are undefined and always will be
   const rows = answerArray.slice(2);
 
   // for each row, build an object representing the column data
-  rows.forEach(singleRow => {
+  rows.forEach((singleRow) => {
     let rowObject = {};
     // The first two elements of each array is undefined, remove them
     const filteredRow = singleRow.slice(2);
@@ -55,7 +55,7 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
 
   // find the location of this specific answer object
   const idx = stateAnswers.findIndex(
-    answerObject => answerObject.answer_entry === questionID
+    (answerObject) => answerObject.answer_entry === questionID
   );
 
   // replace the entire answer object
@@ -64,11 +64,11 @@ const insertAnswer = (stateAnswers, dataArray, questionID) => {
   return stateAnswers;
 };
 
-const clearSingleQuestion = populatedRows => {
-  const clearedRows = populatedRows.map(singleRow => {
+const clearSingleQuestion = (populatedRows) => {
+  const clearedRows = populatedRows.map((singleRow) => {
     const accumulator = {};
 
-    Object.keys(singleRow).forEach(element => {
+    Object.keys(singleRow).forEach((element) => {
       if (element !== "col1") {
         accumulator[element] = null;
       }
@@ -87,7 +87,7 @@ const clearSingleQuestion = populatedRows => {
   return clearedRows;
 };
 
-const extractAgeRanges = answersArray => {
+const extractAgeRanges = (answersArray) => {
   // call back for a reduce method
   const findAges = (accumulator, answer) => {
     let ageRange = answer.rangeId;
@@ -107,7 +107,7 @@ const extractAgeRanges = answersArray => {
 };
 
 const insertFPL = (answers, fpl) => {
-  const updatedAnswers = answers.map(singleAnswer => {
+  const updatedAnswers = answers.map((singleAnswer) => {
     const rowHeader = singleAnswer.rows[0]["col6"];
     let newHeader;
 
@@ -129,8 +129,10 @@ const insertFPL = (answers, fpl) => {
 
 const computeTotalEnrollment = (statusData, answers) => {
   let total = 0;
-  if ((statusData.form === "21E" || statusData.form === "64.21E") &&
-    statusData.quarter === 4) {
+  if (
+    (statusData.form === "21E" || statusData.form === "64.21E") &&
+    statusData.quarter === 4
+  ) {
     for (const i in answers) {
       if (answers[i].question === `${statusData.year}-${statusData.form}-07`) {
         let temp;

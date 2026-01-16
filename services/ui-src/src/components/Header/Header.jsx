@@ -8,7 +8,7 @@ import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
-  const wipeUser = useStore(state => state.wipeUser);
+  const wipeUser = useStore((state) => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [navigation, setNavigation] = useState(false);
 

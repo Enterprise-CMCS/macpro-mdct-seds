@@ -14,10 +14,10 @@ import { useStore } from "../../store/store";
 import { canViewStateData } from "../../utility-functions/permissions";
 
 const FormPage = () => {
-  const user = useStore(state => state.user);
-  const statusData = useStore(state => state.statusData);
-  const loadError = useStore(state => state.loadError);
-  const getForm = useStore(state => state.loadForm);
+  const user = useStore((state) => state.user);
+  const statusData = useStore((state) => state.statusData);
+  const loadError = useStore((state) => state.loadError);
+  const getForm = useStore((state) => state.loadForm);
 
   let history = useHistory();
 
