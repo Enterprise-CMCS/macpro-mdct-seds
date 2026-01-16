@@ -25,21 +25,3 @@
   }
 }
 
-.formfooter {
-  .grid-container {
-    max-width: none;
-    padding: 1rem 0 0 0;
-
-    .form-actions {
-      .grid-row {
-        text-align: right;
-        align-items: center;
-      }
-    }
-  }
-  .row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
