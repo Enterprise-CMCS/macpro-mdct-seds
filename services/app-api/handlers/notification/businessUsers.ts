@@ -31,15 +31,20 @@ export const main = handler(async (event, context) => {
 async function businessOwnersTemplate() {
   const { year, quarter } = calculateFiscalQuarterFromDate(new Date());
   const inProgressForms = await scanFormsByQuarterAndStatus(
-    year, quarter, FormStatus.InProgress
+    year,
+    quarter,
+    FormStatus.InProgress
   );
-  const usersToEmail = (await scanUsersByRole("business")).map(u => u.email);
+  const usersToEmail = (await scanUsersByRole("business")).map((u) => u.email);
 
-  const formsByState = Object_groupBy(inProgressForms, form => form.state_id);
+  const formsByState = Object_groupBy(inProgressForms, (form) => form.state_id);
   const formattedFormList = Object.entries(formsByState)
     .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
     .map(([stateAbbr, forms]) => {
-      const formTypes = forms!.map(f => f.form).sort().join(", ");
+      const formTypes = forms!
+        .map((f) => f.form)
+        .sort()
+        .join(", ");
       return `${stateAbbr} - ${formTypes}`;
     })
     .join("\n");

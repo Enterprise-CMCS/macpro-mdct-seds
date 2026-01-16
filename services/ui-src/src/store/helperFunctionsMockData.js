@@ -9,8 +9,9 @@ export const statusData = {
   state_comments: [
     {
       type: "text_multiline",
-      entry: "This is an example of summary notes on the state form 21PW for PA"
-    }
+      entry:
+        "This is an example of summary notes on the state form 21PW for PA",
+    },
   ],
   form_id: "6",
   last_modified_by: "Timothy Griesemer",
@@ -24,7 +25,7 @@ export const statusData = {
   form_name: "Number of Pregnant Women Served",
   last_modified: "2021-04-09T12:46:35.838Z",
   quarter: 1,
-  ...InProgressStatusFields()
+  ...InProgressStatusFields(),
 };
 
 export const answers = [
@@ -42,7 +43,7 @@ export const answers = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -50,7 +51,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -58,7 +59,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -66,12 +67,12 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
-    answer_entry: "AL-2021-1-21E-0612-03"
+    answer_entry: "AL-2021-1-21E-0612-03",
   },
   {
     ageRange: "Ages 1 - 5",
@@ -87,7 +88,7 @@ export const answers = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -95,7 +96,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -103,7 +104,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -111,12 +112,12 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
-    answer_entry: "AL-2021-1-21E-0105-08"
+    answer_entry: "AL-2021-1-21E-0105-08",
   },
   {
     ageRange: "Ages 6 - 12",
@@ -132,7 +133,7 @@ export const answers = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -140,7 +141,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -148,7 +149,7 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -156,13 +157,13 @@ export const answers = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     last_modified: "2021-01-15T12:46:35.838Z",
     created_by: "seed",
-    answer_entry: "AL-2021-1-21E-0612-09"
-  }
+    answer_entry: "AL-2021-1-21E-0612-09",
+  },
 ];
 
 export const questions = [
@@ -183,7 +184,7 @@ export const questions = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -191,7 +192,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -199,7 +200,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -207,13 +208,13 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     created_by: "seed",
     form: "21E",
     created_date: "2021-01-15T12:46:35.838Z",
-    last_modified: "2021-01-15T12:46:35.838Z"
+    last_modified: "2021-01-15T12:46:35.838Z",
   },
   {
     question: "2021-21E-02",
@@ -232,7 +233,7 @@ export const questions = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -240,7 +241,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -248,7 +249,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -256,13 +257,13 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     created_by: "seed",
     form: "21E",
     created_date: "2021-01-15T12:46:35.838Z",
-    last_modified: "2021-01-15T12:46:35.838Z"
+    last_modified: "2021-01-15T12:46:35.838Z",
   },
   {
     question: "2021-21E-01",
@@ -281,7 +282,7 @@ export const questions = [
         col5: "% of FPL 251-300",
         col2: "% of FPL 0-133",
         col3: "% of FPL 134-200",
-        col1: ""
+        col1: "",
       },
       {
         col6: null,
@@ -289,7 +290,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "A. Fee-for-Service"
+        col1: "A. Fee-for-Service",
       },
       {
         col6: null,
@@ -297,7 +298,7 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "B. Managed Care Arrangements"
+        col1: "B. Managed Care Arrangements",
       },
       {
         col6: null,
@@ -305,12 +306,12 @@ export const questions = [
         col5: null,
         col2: null,
         col3: null,
-        col1: "C. Primary Care Case Management"
-      }
+        col1: "C. Primary Care Case Management",
+      },
     ],
     created_by: "seed",
     form: "21E",
     created_date: "2021-01-15T12:46:35.838Z",
-    last_modified: "2021-01-15T12:46:35.838Z"
-  }
+    last_modified: "2021-01-15T12:46:35.838Z",
+  },
 ];

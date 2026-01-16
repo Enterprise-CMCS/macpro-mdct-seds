@@ -17,7 +17,7 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 }));
 
 vi.mock("../../utility-functions/exportFunctions", () => ({
-  handleExport: vi.fn()
+  handleExport: vi.fn(),
 }));
 
 // Note that the default sort is by username,
@@ -51,7 +51,7 @@ listUsers.mockResolvedValue(mockUsers);
 const renderComponent = () => {
   return render(
     <BrowserRouter>
-      <Users/>
+      <Users />
     </BrowserRouter>
   );
 };
@@ -64,16 +64,10 @@ describe("Test Users.js", () => {
   it("should render the correct controls", async () => {
     renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
-    
-    expect(screen.getByText(
-      "CSV",
-      { selector: "button" }
-    )).toBeInTheDocument();
 
-    expect(screen.getByText(
-      "PDF",
-      { selector: "button" }
-    )).toBeInTheDocument();
+    expect(screen.getByText("CSV", { selector: "button" })).toBeInTheDocument();
+
+    expect(screen.getByText("PDF", { selector: "button" })).toBeInTheDocument();
   });
 
   it("should render the correct headers", async () => {
@@ -89,7 +83,7 @@ describe("Test Users.js", () => {
       "Registration Date",
       "Last Login",
       "State",
-    ]
+    ];
     const headers = screen.getAllByRole("columnheader");
     expect(headers.length).toBe(expectedHeaders.length);
     for (let i = 0; i < expectedHeaders.length; i += 1) {
@@ -106,7 +100,7 @@ describe("Test Users.js", () => {
 
     let row1cells = rows[0].childNodes;
     expect(row1cells.length).toBe(8);
-    
+
     const editLink = row1cells[0].querySelector("a");
     expect(editLink).toBeInTheDocument();
     expect(editLink.textContent).toBe("ASDF");
@@ -134,12 +128,9 @@ describe("Test Users.js", () => {
     renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
-    const csvButton = screen.getByText(
-      "CSV",
-      { selector: "button" }
-    );
+    const csvButton = screen.getByText("CSV", { selector: "button" });
     userEvent.click(csvButton);
-    
+
     expect(handleExport).toHaveBeenCalledWith(
       "csv",
       "MDCT Users Export.csv",
@@ -153,17 +144,14 @@ describe("Test Users.js", () => {
     renderComponent();
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
-    const pdfButton = screen.getByText(
-      "PDF",
-      { selector: "button" }
-    );
+    const pdfButton = screen.getByText("PDF", { selector: "button" });
     userEvent.click(pdfButton);
-    
+
     expect(handleExport).toHaveBeenCalledWith(
       "pdf",
       "MDCT Users Export.pdf",
       ".user-profiles",
-      "html-selector",
+      "html-selector"
     );
   });
 });

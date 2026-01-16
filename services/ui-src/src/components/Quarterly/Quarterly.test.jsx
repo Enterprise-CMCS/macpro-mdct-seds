@@ -8,17 +8,17 @@ import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 import { useStore } from "../../store/store";
 import { getStateForms } from "libs/api";
 
-vi.mock("react-router-dom", async importOriginal => ({
+vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({
     state: "AL",
     year: "2021",
-    quarter: "01"
-  })
+    quarter: "01",
+  }),
 }));
 
 vi.mock("libs/api", () => ({
-  getStateForms: vi.fn()
+  getStateForms: vi.fn(),
 }));
 getStateForms.mockResolvedValue({ Items: quarterlyDataMock });
 
@@ -27,37 +27,37 @@ const forms = [
     id: "GRE",
     name: "Gender, Race & Ethnicity",
     status: "In Progress",
-    date: "4/8/2021 at 8:46:35 AM EDT"
+    date: "4/8/2021 at 8:46:35 AM EDT",
   },
   {
     id: "21PW",
     name: "Number of Pregnant Women Served",
     status: "In Progress",
-    date: "4/7/2021 at 8:46:35 AM EDT"
+    date: "4/7/2021 at 8:46:35 AM EDT",
   },
   {
     id: "64.21E",
     name: "Number of Children Served in Medicaid Expansion Program",
     status: "Provisional Data Certified and Submitted",
-    date: "4/6/2021 at 8:46:35 AM EDT"
+    date: "4/6/2021 at 8:46:35 AM EDT",
   },
   {
     id: "21E",
     name: "Number of Children Served in Separate CHIP Program",
     status: "Final Data Certified and Submitted",
-    date: "4/5/2021 at 8:46:35 AM EDT"
+    date: "4/5/2021 at 8:46:35 AM EDT",
   },
   {
     id: "64.EC",
     name: "Number of Children Served in Medicaid Program",
     status: "Final Data Certified and Submitted",
-    date: "4/4/2021 at 8:46:35 AM EDT"
-  }
+    date: "4/4/2021 at 8:46:35 AM EDT",
+  },
 ];
 
 const renderComponent = () => {
   useStore.setState({
-    user: { role: "state", state: "AL" }
+    user: { role: "state", state: "AL" },
   });
   return render(
     <BrowserRouter>

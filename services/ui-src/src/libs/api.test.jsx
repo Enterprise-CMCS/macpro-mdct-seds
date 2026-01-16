@@ -14,32 +14,35 @@ import {
   sendUncertifyEmail,
   updateCreateFormTemplate,
   updateStateForm,
-  updateUser
+  updateUser,
 } from "./api";
 
 const mockResponse = (method) => ({
   response: {
     body: {
       text: () => Promise.resolve(`{"responseAttr":"${method}"}`),
-    }
-  }
- });
+    },
+  },
+});
 
-const mockGet = vi.fn().mockImplementation(() => mockResponse("mock get response"));
-const mockPost = vi.fn().mockImplementation(() => mockResponse("mock post response"));
+const mockGet = vi
+  .fn()
+  .mockImplementation(() => mockResponse("mock get response"));
+const mockPost = vi
+  .fn()
+  .mockImplementation(() => mockResponse("mock post response"));
 
 vi.mock("aws-amplify/api", () => ({
   get: (args) => mockGet(args),
   post: (args) => mockPost(args),
 }));
 
-
 vi.mock("aws-amplify/auth", () => ({
   fetchAuthSession: vi.fn().mockResolvedValue({
     tokens: {
-      idToken: "mock-token"
-    }
-  })
+      idToken: "mock-token",
+    },
+  }),
 }));
 
 const expectedHeaders = { "x-api-key": "mock-token" };
@@ -55,7 +58,7 @@ describe("libs/api", () => {
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/users",
-      options: { headers: expectedHeaders}
+      options: { headers: expectedHeaders },
     });
   });
 
@@ -66,7 +69,7 @@ describe("libs/api", () => {
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/users/123",
-      options: { headers: expectedHeaders}
+      options: { headers: expectedHeaders },
     });
   });
 
@@ -76,7 +79,7 @@ describe("libs/api", () => {
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/getCurrentUser",
-      options: { headers: expectedHeaders, body: undefined}
+      options: { headers: expectedHeaders, body: undefined },
     });
   });
 
@@ -87,7 +90,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/users/update/123",
-      options: { headers: expectedHeaders, body: mockUser}
+      options: { headers: expectedHeaders, body: mockUser },
     });
   });
 
@@ -97,7 +100,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/forms/obtain-state-forms",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -107,7 +110,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/state-forms/update",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -117,7 +120,7 @@ describe("libs/api", () => {
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/single-form/CO/2025/4/21E",
-      options: { headers: expectedHeaders}
+      options: { headers: expectedHeaders },
     });
   });
 
@@ -127,7 +130,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/forms/obtainAvailableForms",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -137,7 +140,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/single-form/save",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -147,7 +150,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/generate-forms",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -157,7 +160,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/form-templates/years",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -167,7 +170,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/form-template",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -177,7 +180,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/form-templates/add",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -187,7 +190,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/generate-enrollment-totals",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 
@@ -197,7 +200,7 @@ describe("libs/api", () => {
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/notification/uncertified",
-      options: { headers: expectedHeaders, body: mockPayload}
+      options: { headers: expectedHeaders, body: mockPayload },
     });
   });
 });

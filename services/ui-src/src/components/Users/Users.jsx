@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserPlus,
   faFileCsv,
-  faFilePdf
+  faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
@@ -54,9 +54,9 @@ const Users = () => {
                 { name: "Role", selector: "role" },
                 { name: "Registration Date", selector: "dateJoined" },
                 { name: "Last Login", selector: "lastLogin" },
-                { name: "State", selector: "state" }
+                { name: "State", selector: "state" },
               ],
-              data: users
+              data: users,
             })
           }
         >
@@ -96,7 +96,7 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {users.map((user) => (
                 <tr key={user.userId}>
                   <td>
                     <Link to={`/users/${user.userId}/edit`}>

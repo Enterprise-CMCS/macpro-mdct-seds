@@ -10,13 +10,13 @@ import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
-  const wipeUser = useStore(state => state.wipeUser);
+  const wipeUser = useStore((state) => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const authSession = (await fetchAuthSession());
+        const authSession = await fetchAuthSession();
         setIsAuthenticated(!!authSession?.tokens);
         // eslint-disable-next-line no-empty
       } catch (error) {}

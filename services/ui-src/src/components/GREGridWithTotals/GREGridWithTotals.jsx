@@ -11,8 +11,8 @@ import "./GREGridWithTotals.scss";
  * [0] Row Header, [1] 21E, [2] 64.21E, [3] Total CHIP ([1] + [2]), [4] 64.EC, [5] 21PW
  * The Totals column will then be a sum of [1] + [2] + [4] + [5]*/
 
-const GREGridWithTotals = props => {
-  const setAnswer = useStore(state => state.updateAnswer);
+const GREGridWithTotals = (props) => {
+  const setAnswer = useStore((state) => state.updateAnswer);
   function compare(a, b) {
     const first = a.col1 !== "" ? parseInt(a.col1.split(".")[0]) : null;
     const second = b.col1 !== "" ? parseInt(b.col1.split(".")[0]) : null;
@@ -238,7 +238,7 @@ const GREGridWithTotals = props => {
                   <td>
                     <TextInput
                       className="grid-column"
-                      onChange={event =>
+                      onChange={(event) =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
                       defaultValue={parseFloat(column).toFixed(
@@ -270,7 +270,9 @@ const GREGridWithTotals = props => {
                 <td key={columnIndex}>
                   <TextInput
                     className="grid-column"
-                    onChange={event => updateGrid(rowIndex, columnIndex, event)}
+                    onChange={(event) =>
+                      updateGrid(rowIndex, columnIndex, event)
+                    }
                     defaultValue={parseFloat(column).toFixed(currentPrecision)}
                     value={addCommas(
                       parseFloat(gridData[rowIndex][columnIndex]).toFixed(
@@ -351,12 +353,12 @@ const GREGridWithTotals = props => {
   );
 };
 
-const translateInitialData = gridDataObject => {
+const translateInitialData = (gridDataObject) => {
   let rowCounter = 1;
   let colCounter = 1;
   let translatedData = [];
 
-  gridDataObject.forEach(row => {
+  gridDataObject.forEach((row) => {
     // *** skip the first row (headers)
     if (rowCounter > 1) {
       colCounter = 1;
@@ -380,7 +382,7 @@ const translateInitialData = gridDataObject => {
 GREGridWithTotals.propTypes = {
   gridData: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default GREGridWithTotals;

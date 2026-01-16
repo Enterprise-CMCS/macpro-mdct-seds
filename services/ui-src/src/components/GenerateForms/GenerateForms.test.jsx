@@ -9,7 +9,7 @@ vi.spyOn(window, "alert").mockImplementation(() => {});
 vi.spyOn(window, "confirm").mockImplementation(() => true);
 
 vi.mock("../../libs/api", () => ({
-  generateQuarterlyForms: vi.fn()
+  generateQuarterlyForms: vi.fn(),
 }));
 
 describe("Test GenerateForms.js", () => {
@@ -31,7 +31,7 @@ describe("Test GenerateForms.js", () => {
       year: 2022,
       quarter: 2,
       status: 200,
-      message: "success"
+      message: "success",
     });
 
     render(<GenerateForms />);
@@ -47,7 +47,7 @@ describe("Test GenerateForms.js", () => {
 
     expect(generateQuarterlyForms).toHaveBeenCalledWith({
       year: 2022,
-      quarter: 2
+      quarter: 2,
     });
   });
 
