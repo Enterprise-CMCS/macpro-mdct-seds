@@ -144,7 +144,7 @@ export const obtainFormTemplateYears = async () => {
 // *** get a form template by year
 export const obtainFormTemplate = async year => {
   const opts = await requestOptions();
-  console.log("CALLING obtainFormTemplate");
+
   return await apiLib.get(`/templates/${year}`, opts);
 };
 
@@ -153,7 +153,7 @@ export const updateCreateFormTemplate = async data => {
   const opts = await requestOptions();
   opts.body = data;
 
-  return await apiLib.post("/form-templates/add", opts);
+  return await apiLib.post(`/templates/${data.year}`, opts);
 };
 
 // *** generate enrollment totals
@@ -164,9 +164,13 @@ export const generateEnrollmentTotals = async data => {
   return await apiLib.post("/admin/generate-totals", opts);
 };
 
-// **
-export const sendUncertifyEmail = async data => {
-  const opts = await requestOptions();
-  opts.body = data;
-  return await apiLib.post(`/notification/uncertified`, opts);
-};
+/* 
+    NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
+    able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
+  
+  export const sendUncertifyEmail = async data => {
+    const opts = await requestOptions();
+    opts.body = data;
+    return await apiLib.post(`/notification/uncertified`, opts);
+  };
+  */

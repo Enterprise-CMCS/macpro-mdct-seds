@@ -350,7 +350,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry:
       "services/app-api/handlers/form-templates/post/updateCreateFormTemplate.ts",
     handler: "main",
-    path: "/form-templates/add",
+    path: "/templates/{year}",
     method: "POST",
     ...commonProps,
   });

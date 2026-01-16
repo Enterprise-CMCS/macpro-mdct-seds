@@ -11,7 +11,6 @@ import {
   obtainFormTemplate,
   obtainFormTemplateYears,
   saveSingleForm,
-  sendUncertifyEmail,
   updateCreateFormTemplate,
   updateStateForm,
   updateUser
@@ -188,12 +187,13 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for updateCreateFormTemplate", async () => {
-    const response = await updateCreateFormTemplate(mockPayload);
+    const mockFormPayload = { year: 2022, template: { foo: "bar" } };
+    const response = await updateCreateFormTemplate(mockFormPayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/form-templates/add",
-      options: { headers: expectedHeaders, body: mockPayload }
+      path: `/templates/${mockFormPayload.year}`,
+      options: { headers: expectedHeaders, body: mockFormPayload }
     });
   });
 
@@ -206,7 +206,10 @@ describe("libs/api", () => {
       options: { headers: expectedHeaders, body: mockPayload }
     });
   });
-
+  /* 
+    NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
+    able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
+  
   it("should make the expected API call for sendUncertifyEmail", async () => {
     const response = await sendUncertifyEmail(mockPayload);
     expect(response.responseAttr).toBe("mock post response");
@@ -216,4 +219,5 @@ describe("libs/api", () => {
       options: { headers: expectedHeaders, body: mockPayload }
     });
   });
+  */
 });
