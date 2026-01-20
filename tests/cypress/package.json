@@ -1,9 +1,15 @@
 {
   "name": "cypress-tests",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
+  "scripts": {
+    "start": "cd ../../ && ./run local && cd -",
+    "test:ci": "yarn cypress run --browser chrome --headless",
+    "test": "concurrently --kill-others \"yarn start\" \"yarn cypress open\""
+  },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^11.5.1",
     "@cypress/webpack-preprocessor": "^6.0.0",
@@ -13,20 +19,14 @@
     "cypress-xpath": "^1.6.2",
     "webpack": "^5.97.1"
   },
+  "resolutions": {
+    "form-data": "^4.0.4"
+  },
+  "packageManager": "yarn@4.12.0",
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
       "support/step_definitions/**/*.{js,ts}"
     ]
-  },
-  "scripts": {
-    "start": "cd ../../ && ./run local && cd -",
-    "test:ci": "yarn cypress run --browser chrome --headless",
-    "test": "concurrently --kill-others \"yarn start\" \"yarn cypress open\""
-  },
-  "author": "",
-  "license": "ISC",
-  "resolutions": {
-    "form-data": "^4.0.4"
   }
 }
