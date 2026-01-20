@@ -2,14 +2,15 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { getUserDetailsFromEvent } from "../../../libs/authorization.ts";
 import { scanForUserByUsername } from "../../../storage/users.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const userData = await getUserDetailsFromEvent(event);
 
-  return await createUser(userData);
+  return ok(await createUser(userData));
 });
 
-export const createUser = async (userData) => {
+export const createUser = async (userData: any) => {
   if (!userData.username) {
     return `Please enter a username`;
   }

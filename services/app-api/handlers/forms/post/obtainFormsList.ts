@@ -1,8 +1,9 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
 
   await authorizeAdminOrUserForState(event, data.state);
@@ -23,5 +24,6 @@ export const main = handler(async (event, context) => {
       "state_id = :state and quarter = :quarter and #theYear = :year",
   };
 
-  return await dynamoDb.scan(params);
+  const result = await dynamoDb.scan(params);
+  return ok(result);
 });

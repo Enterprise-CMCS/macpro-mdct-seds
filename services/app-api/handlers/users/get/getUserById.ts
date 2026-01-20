@@ -4,6 +4,7 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
+import { ok, notFound } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event) => {
   await authorizeAnyUser(event);
@@ -19,21 +20,17 @@ export const main = handler(async (event) => {
 
   const queryResult = await dynamoDb.scan(params);
 
-  let returnResult;
-
   if (!queryResult["Items"]) {
-    returnResult = {
+    return notFound({
       status: "error",
       message: "No user by specified id found",
-    };
-  } else {
-    const foundUser = queryResult.Items[0];
-    await authorizeAdminOrUserWithEmail(event, foundUser.userId);
-    returnResult = {
-      status: "success",
-      data: queryResult["Items"][0],
-    };
+    });
   }
 
-  return returnResult;
+  const foundUser = queryResult.Items[0];
+  await authorizeAdminOrUserWithEmail(event, foundUser.userId);
+  return ok({
+    status: "success",
+    data: queryResult["Items"][0],
+  });
 });

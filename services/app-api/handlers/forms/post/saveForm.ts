@@ -3,12 +3,13 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { getCurrentUserInfo } from "../../../auth/cognito-auth.ts";
 import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
+import { ok } from "../../../libs/response-lib.ts";
 
 /**
  * This handler will loop through a question array and save each row
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
 
   for (let stateId of stateIdsPresentInForm(data.formAnswers)) {
@@ -24,10 +25,12 @@ export const main = handler(async (event, context) => {
     await updateAnswers(answers, user);
   }
   await updateStateForm(stateFormId, statusData, user);
+
+  return ok();
 });
 
 // TODO this seems a bit fragile. We should make stateId part of the payload, or, ideally, the path.
-const stateIdsPresentInForm = (answers) => {
+const stateIdsPresentInForm = (answers: any) => {
   const foundStateIds = new Set();
   for (let answer of answers) {
     foundStateIds.add(answer.state_form.substring(0, 2));
@@ -35,9 +38,9 @@ const stateIdsPresentInForm = (answers) => {
   return foundStateIds;
 };
 
-const updateAnswers = async (answers, user) => {
+const updateAnswers = async (answers: any, user: any) => {
   let questionResult: UpdateCommandOutput[] = [];
-  answers.sort(function (a, b) {
+  answers.sort(function (a: any, b: any) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
   });
 
@@ -166,7 +169,11 @@ const updateAnswers = async (answers, user) => {
   }
 };
 
-const updateStateForm = async (stateFormId, statusData, user) => {
+const updateStateForm = async (
+  stateFormId: any,
+  statusData: any,
+  user: any
+) => {
   // Get existing form to compare changes
   const params = {
     TableName: process.env.StateFormsTable,
@@ -184,7 +191,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
   }
 
   const currentForm = result.Items![0];
-  let statusFlags = {};
+  let statusFlags: any = {};
   if (currentForm.status_id !== statusData.status_id) {
     statusFlags[":status_modified_by"] = user.username;
     statusFlags[":status_date"] = new Date().toISOString();
@@ -221,7 +228,7 @@ const updateStateForm = async (stateFormId, statusData, user) => {
  * Guaranteed to work on state forms.
  * Not guaranteed to work with _any_ object in the universe.
  */
-function replaceNullsWithZeros(obj) {
+function replaceNullsWithZeros(obj: any): any {
   if (obj === null) {
     return 0;
   } else if (Array.isArray(obj)) {

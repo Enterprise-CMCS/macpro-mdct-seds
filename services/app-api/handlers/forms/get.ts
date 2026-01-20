@@ -1,8 +1,9 @@
 import handler from "./../../libs/handler-lib.ts";
 import dynamoDb from "./../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../auth/authConditions.ts";
+import { ok } from "../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   // Deconstruct variables from URL string
   const { state, specifiedYear, quarter, form } = event.pathParameters;
 
@@ -45,8 +46,8 @@ export const main = handler(async (event, context) => {
     throw new Error("Questions for Single form not found.");
   }
 
-  return {
+  return ok({
     answers: answersResult.Items,
     questions: questionsResult.Items,
-  };
+  });
 });
