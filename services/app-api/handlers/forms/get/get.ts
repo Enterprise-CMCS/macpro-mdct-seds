@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter, form } = event.pathParameters!;
@@ -45,8 +46,8 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     throw new Error("Questions for Single form not found.");
   }
 
-  return {
+  return ok({
     answers: answersResult.Items,
     questions: questionsResult.Items,
-  };
+  });
 });

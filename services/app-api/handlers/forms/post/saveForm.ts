@@ -7,6 +7,8 @@ import { AuthUser } from "../../../storage/users.ts";
 import { FormAnswer } from "../../../storage/formAnswers.ts";
 import { StateForm } from "../../../storage/stateForms.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
+
 /**
  * This handler will loop through a question array and save each row
  */
@@ -33,11 +35,13 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     await updateAnswers(answers, user);
   }
   await updateStateForm(stateFormId, statusData, user);
+
+  return ok();
 });
 
 const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
   let questionResult: UpdateCommandOutput[] = [];
-  answers.sort(function (a, b) {
+  answers.sort(function (a: any, b: any) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
   });
 
@@ -188,7 +192,7 @@ const updateStateForm = async (
   }
 
   const currentForm = result.Items![0];
-  let statusFlags = {};
+  let statusFlags: any = {};
   if (currentForm.status_id !== statusData.status_id) {
     statusFlags[":status_modified_by"] = user.username;
     statusFlags[":status_date"] = new Date().toISOString();
@@ -225,7 +229,7 @@ const updateStateForm = async (
  * Guaranteed to work on state forms.
  * Not guaranteed to work with _any_ object in the universe.
  */
-function replaceNullsWithZeros(obj) {
+function replaceNullsWithZeros(obj: any): any {
   if (obj === null) {
     return 0;
   } else if (Array.isArray(obj)) {

@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../../libs/time.ts";
 import { FormStatus, APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 import {
   FormAnswer,
   scanForAllFormIds,
@@ -170,6 +171,8 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
         allQuestions[question].age_ranges ??
         determineAgeRanges(allQuestions[question].question);
       // Loop through each age range and insert row
+      if (!ageRanges) continue;
+
       for (const range in ageRanges) {
         // Get reusable values
         const currentState = stateList[state].state_id;
@@ -215,20 +218,20 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
     console.log(message);
-    return {
+    return ok({
       status: 204,
       message: message,
-    };
+    });
   }
 
   if (formAnswersToCreate.length > 0) {
     await writeAllFormAnswers(formAnswersToCreate);
   }
 
-  return {
+  return ok({
     status: 200,
     message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-  };
+  });
 };
 
 export const getOrCreateFormTemplate = async (year: number) => {
@@ -260,7 +263,7 @@ export const getOrCreateQuestions = async (year: number) => {
     return questions;
   }
 
-  questions = (await getOrCreateFormTemplate(year)).map((question) => ({
+  questions = (await getOrCreateFormTemplate(year)).map((question: any) => ({
     ...question,
     created_date: new Date().toISOString(),
     last_modified: new Date().toISOString(),

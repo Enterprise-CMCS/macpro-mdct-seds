@@ -5,8 +5,9 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
-import { putUser } from "../../../storage/users.ts";
+import { putUser, AuthUser } from "../../../storage/users.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
@@ -33,9 +34,14 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   };
 
   await putUser(updatedUser);
+
+  return ok(updatedUser);
 });
 
-function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {
+function modifyingAnythingButAnUndefinedState(
+  incomingUser: any,
+  existingUser: AuthUser
+) {
   if (incomingUser.username !== existingUser.username) return true;
   if (incomingUser.role !== existingUser.role) return true;
   if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
@@ -43,7 +49,7 @@ function modifyingAnythingButAnUndefinedState(incomingUser, existingUser) {
   return false;
 }
 
-function assertPayloadIsValid(data) {
+function assertPayloadIsValid(data: any) {
   if (!data) {
     throw new Error("User update payload is missing");
   }

@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter, form } = event.pathParameters!;
@@ -23,7 +24,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   const result = await dynamoDb.query(params);
   if (result.Count === 0) {
-    return [];
+    return ok([]);
   }
 
   const record = result.Items![0];
@@ -54,8 +55,8 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     throw new Error("Table params update failed", { cause: e });
   }
 
-  return {
+  return ok({
     status: 200,
     message: "Enrollment Data successfully updated",
-  };
+  });
 });

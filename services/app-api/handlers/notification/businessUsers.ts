@@ -4,6 +4,7 @@ import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { calculateFiscalQuarterFromDate } from "../../libs/time.ts";
 import { FormStatus } from "../../shared/types.ts";
+import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -13,19 +14,19 @@ const client = new SESClient({ region: "us-east-1" });
  * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const email = await businessOwnersTemplate();
   const command = new SendEmailCommand(email);
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
-  return {
+  return ok({
     status: "success",
     message: "Quarterly Business owners email sent",
-  };
+  });
 });
 
 async function businessOwnersTemplate() {

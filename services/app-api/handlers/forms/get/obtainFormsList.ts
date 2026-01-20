@@ -2,6 +2,7 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter } = event.pathParameters!;
@@ -24,5 +25,6 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
       "state_id = :state and quarter = :quarter and #theYear = :year",
   };
 
-  return await dynamoDb.scan(params);
+  const result = await dynamoDb.scan(params);
+  return ok(result);
 });

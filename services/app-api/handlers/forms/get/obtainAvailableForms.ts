@@ -2,6 +2,8 @@ import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import dynamodbLib from "../../../libs/dynamodb-lib.ts";
 import handler from "../../../libs/handler-lib.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
+
 /**
  * Returns list of all forms based on state
  * This can be used for displaying a list of years and quarters available
@@ -26,5 +28,5 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     throw new Error("No state form list found for this state");
   }
   // Return the matching list of items in response body
-  return result.Items;
+  return ok(result.Items);
 });

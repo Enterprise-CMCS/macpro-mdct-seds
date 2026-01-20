@@ -4,6 +4,7 @@ import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { StateForm, writeAllStateForms } from "../../../storage/stateForms.ts";
 import { FormQuestion } from "../../../storage/formQuestions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok, notFound } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAdmin(event);
@@ -13,21 +14,25 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   // Get all State Forms
   const stateForms = await getStateForms();
   if (stateForms.status === 404) {
-    return stateForms;
+    return notFound({
+      message: stateForms.message,
+    });
   }
 
   // Get answer entries from forms and bundle totals together
   const generatedTotals = await generateTotals(stateForms.entries, ageRanges);
   if (generatedTotals.status === 404) {
-    return generatedTotals;
+    return notFound({
+      message: generatedTotals.message,
+    });
   }
 
   await writeAllStateForms(generatedTotals.countsToWrite!);
 
-  return {
+  return ok({
     status: 200,
     message: `Generated Totals Successfully`,
-  };
+  });
 });
 
 const getStateForms = async () => {
@@ -66,7 +71,7 @@ const getStateForms = async () => {
   }
 };
 
-const generateTotals = async (stateForms, ageRange) => {
+const generateTotals = async (stateForms: any, ageRange: any) => {
   try {
     const countsToWrite: StateForm[] = [];
     // Loop through all stateForms
@@ -131,8 +136,8 @@ const generateTotals = async (stateForms, ageRange) => {
   }
 };
 
-const totalEnrollmentCount = (questionAccumulator) => {
-  return questionAccumulator.reduce((accumulator, currentArr) => {
+const totalEnrollmentCount = (questionAccumulator: any) => {
+  return questionAccumulator.reduce((accumulator: any, currentArr: any) => {
     let currentTotal = 0;
     let currentArrayLength = currentArr.length;
     for (let i = 0; i < currentArrayLength; i++) {
