@@ -79,11 +79,5 @@ describe("obtainFormTemplate.ts", () => {
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({ error: "Forbidden" }),
-      })
-    );
   });
 });
