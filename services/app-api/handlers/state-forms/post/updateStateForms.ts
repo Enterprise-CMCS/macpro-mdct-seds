@@ -6,7 +6,7 @@ import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter, form } = event.pathParameters!;
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event.body!);
 
   await authorizeUserForState(event, state);
 

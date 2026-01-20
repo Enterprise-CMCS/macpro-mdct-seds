@@ -12,7 +12,7 @@ import { ok } from "../../../libs/response-lib.ts";
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
 
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event.body!);
   const currentUser = await scanForUserWithSub(data.usernameSub);
   if (!currentUser) {
     // TODO, return a nice 404 response object instead

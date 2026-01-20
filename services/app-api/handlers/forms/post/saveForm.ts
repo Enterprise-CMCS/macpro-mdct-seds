@@ -15,7 +15,7 @@ import { ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter, form } = event.pathParameters!;
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event.body!);
 
   await authorizeUserForState(event, state);
 
@@ -173,7 +173,7 @@ const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
 const updateStateForm = async (
   stateFormId: string,
   statusData: StateForm,
-  user: AuthUser
+  user: any
 ) => {
   // Get existing form to compare changes
   const params = {

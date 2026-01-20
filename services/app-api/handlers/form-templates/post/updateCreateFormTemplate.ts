@@ -24,7 +24,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     return false;
   };
 
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event.body!);
 
   if (!year || !data.template) {
     return badRequest({
