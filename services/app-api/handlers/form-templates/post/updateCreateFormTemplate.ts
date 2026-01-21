@@ -1,10 +1,13 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
 import { ok, badRequest } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAdmin(event);
+
+  const { year } = event.pathParameters!;
 
   const isJsonString = (jsonString: any) => {
     try {
@@ -21,9 +24,9 @@ export const main = handler(async (event) => {
     return false;
   };
 
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event.body!);
 
-  if (!data.year || !data.template) {
+  if (!year || !data.template) {
     return badRequest({
       status: 422,
       message: `Please specify both a year and a template`,
@@ -40,7 +43,7 @@ export const main = handler(async (event) => {
   const params = {
     TableName: process.env.FormTemplatesTable,
     Item: {
-      year: parseInt(data.year),
+      year: parseInt(year),
       template: data.template,
       lastSynced: new Date().toISOString(),
     },
@@ -50,6 +53,6 @@ export const main = handler(async (event) => {
 
   return ok({
     status: 200,
-    message: `Template updated for ${data.year}!`,
+    message: `Template updated for ${year}!`,
   });
 });

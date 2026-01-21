@@ -26,7 +26,16 @@ const mockEventBody = {
   form: "21E",
   totalEnrollment: 42,
 };
-const mockEvent = { body: JSON.stringify(mockEventBody) };
+const mockParams = {
+  state: "CO",
+  year: 2025,
+  quarter: 1,
+  form: "21E",
+};
+const mockEvent = {
+  body: JSON.stringify(mockEventBody),
+  pathParameters: mockParams,
+};
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -99,7 +108,8 @@ describe("updateStateForms.ts", () => {
     });
 
     const response = await updateStateForms({
-      body: JSON.stringify({ ...mockEventBody, form: "64.21E" }),
+      body: JSON.stringify(mockEventBody),
+      pathParameters: { ...mockParams, form: "64.21E" },
     });
 
     expect(response.statusCode).toBe(200);
@@ -136,7 +146,8 @@ describe("updateStateForms.ts", () => {
     });
 
     const response = await updateStateForms({
-      body: JSON.stringify({ ...mockEventBody, form: "GRE" }),
+      body: JSON.stringify(mockEventBody),
+      pathParameters: { ...mockParams, form: "GRE" },
     });
 
     expect(response.statusCode).toBe(200);

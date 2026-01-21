@@ -1,7 +1,7 @@
 import handler from "../../../libs/handler-lib.ts";
 import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../../libs/time.ts";
-import { FormStatus } from "../../../shared/types.ts";
+import { FormStatus, APIGatewayProxyEvent } from "../../../shared/types.ts";
 import { ok } from "../../../libs/response-lib.ts";
 import {
   FormAnswer,
@@ -22,23 +22,23 @@ import { formTypes } from "../../../shared/formTypeList.ts";
 import { stateList } from "../../../shared/stateList.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAdmin(event);
   return await generateQuarterForms(event);
 });
 
 /** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event) => {
+export const scheduled = handler(async (event: APIGatewayProxyEvent) => {
   return await generateQuarterForms(event);
 });
 
 /*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-const generateQuarterForms = async (event: any) => {
+const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   let noMissingForms = true;
 
-  const determineAgeRanges = (questionId: any) => {
+  const determineAgeRanges = (questionId: string) => {
     const year = questionId.split("-")[0];
     const form = questionId.split("-")[1];
 
@@ -95,15 +95,11 @@ const generateQuarterForms = async (event: any) => {
   let specifiedQuarter;
   let restoreMissingAnswers = false;
 
-  // If a data object is sent use those values.
-  if (event.body && event.body !== "undefined") {
-    let data =
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    if (data) {
-      specifiedYear = parseInt(data.year);
-      specifiedQuarter = data.quarter;
-      restoreMissingAnswers = !!data.restoreMissingAnswers;
-    }
+  if (event.queryStringParameters) {
+    const qp = event.queryStringParameters;
+    if (qp.year) specifiedYear = parseInt(qp.year);
+    if (qp.quarter) specifiedQuarter = parseInt(qp.quarter);
+    if (qp.restore !== undefined) restoreMissingAnswers = qp.restore === "true";
   }
 
   // If not specified, determine the reporting period from the current date.

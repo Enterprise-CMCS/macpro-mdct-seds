@@ -30,24 +30,24 @@ mockDynamo.on(QueryCommand).callsFake(mockQuery);
 mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
 
 const mockFormAnswer1 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0001",
-  answer_entry: "CO-2025-F1-A-0001-Q1",
+  answer_entry: "CO-2025-1-A-0001-Q1",
   rows: [{ col1: 12 }],
 } as FormAnswer;
 const mockFormAnswer2 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0105",
-  answer_entry: "CO-2025-F1-A-0105-Q1",
+  answer_entry: "CO-2025-1-A-0105-Q1",
   rows: [{ col1: 23 }],
 } as FormAnswer;
 const mockFormAnswer3 = {
-  state_form: "CO-2025-F1-A",
+  state_form: "CO-2025-1-A",
   question: "mock-Question-Q1",
   rangeId: "0618",
-  answer_entry: "CO-2025-F1-A-0618-Q1",
+  answer_entry: "CO-2025-1-A-0618-Q1",
   rows: [{ col1: 34 }],
 } as FormAnswer;
 const mockStatusData = {
@@ -70,6 +70,12 @@ const mockStateForm = {
   status_modified_by: "PREV",
   status_date: "2025-02-02T19:41:00.770Z",
 } as StateForm;
+const mockPathParams = {
+  state: "CO",
+  year: "2025",
+  quarter: "1",
+  form: "A",
+};
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -84,6 +90,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1, mockFormAnswer2],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -104,7 +111,7 @@ describe("saveForm.ts", () => {
     expect(mockUpdate).toHaveBeenCalledWith(
       {
         TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-F1-A-0001-Q1" },
+        Key: { answer_entry: "CO-2025-1-A-0001-Q1" },
         UpdateExpression:
           "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
         ExpressionAttributeValues: {
@@ -120,7 +127,7 @@ describe("saveForm.ts", () => {
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-F1-A-0105-Q1" },
+        Key: { answer_entry: "CO-2025-1-A-0105-Q1" },
       }),
       expect.any(Function)
     );
@@ -128,7 +135,7 @@ describe("saveForm.ts", () => {
     expect(mockUpdate).toHaveBeenCalledWith(
       {
         TableName: "local-state-forms",
-        Key: { state_form: "CO-2025-F1-A" },
+        Key: { state_form: "CO-2025-1-A" },
         UpdateExpression:
           "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
         ExpressionAttributeValues: {
@@ -155,7 +162,7 @@ describe("saveForm.ts", () => {
       body: JSON.stringify({
         formAnswers: [
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-Q1",
             rangeId: "0001",
             rows: [{ foo: { bar: null } }],
@@ -163,6 +170,7 @@ describe("saveForm.ts", () => {
         ],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -190,6 +198,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer2, mockFormAnswer3, mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -204,9 +213,9 @@ describe("saveForm.ts", () => {
       .filter((call) => call[0].TableName === "local-form-answers")
       .map((call) => call[0].Key.answer_entry);
     const expectedAnswerEntries = [
-      "CO-2025-F1-A-0001-Q1",
-      "CO-2025-F1-A-0105-Q1",
-      "CO-2025-F1-A-0618-Q1",
+      "CO-2025-1-A-0001-Q1",
+      "CO-2025-1-A-0105-Q1",
+      "CO-2025-1-A-0618-Q1",
     ];
     expect(savedAnswerEntries).toEqual(expectedAnswerEntries);
   });
@@ -217,6 +226,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -248,6 +258,7 @@ describe("saveForm.ts", () => {
           status_id: FormStatus.FinalCert,
         },
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -280,10 +291,10 @@ describe("saveForm.ts", () => {
       body: JSON.stringify({
         formAnswers: [
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-01",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-01",
+            answer_entry: "CO-2025-1-A-0001-01",
             rows: [
               {},
               {
@@ -310,10 +321,10 @@ describe("saveForm.ts", () => {
             ],
           },
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-04",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-04",
+            answer_entry: "CO-2025-1-A-0001-04",
             rows: [
               {},
               {
@@ -340,10 +351,10 @@ describe("saveForm.ts", () => {
             ],
           },
           {
-            state_form: "CO-2025-F1-A",
+            state_form: "CO-2025-1-A",
             question: "mock-Question-05",
             rangeId: "0001",
-            answer_entry: "CO-2025-F1-A-0001-05",
+            answer_entry: "CO-2025-1-A-0001-05",
             rows: [
               {},
               {
@@ -372,6 +383,7 @@ describe("saveForm.ts", () => {
         ],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -391,7 +403,7 @@ describe("saveForm.ts", () => {
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-F1-A-0001-05" },
+        Key: { answer_entry: "CO-2025-1-A-0001-05" },
         ExpressionAttributeValues: expect.objectContaining({
           ":rows": [
             {},
@@ -429,6 +441,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1, mockFormAnswer2],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
     getCurrentUserInfo.mockResolvedValueOnce({
       status: "success",
@@ -464,6 +477,7 @@ describe("saveForm.ts", () => {
         formAnswers: [mockFormAnswer1],
         statusData: mockStatusData,
       }),
+      pathParameters: mockPathParams,
     };
 
     const response = await saveForm(mockEvent);

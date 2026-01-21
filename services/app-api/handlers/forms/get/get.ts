@@ -1,15 +1,15 @@
-import handler from "./../../libs/handler-lib.ts";
-import dynamoDb from "./../../libs/dynamodb-lib.ts";
-import { authorizeAdminOrUserForState } from "../../auth/authConditions.ts";
-import { ok } from "../../libs/response-lib.ts";
+import handler from "../../../libs/handler-lib.ts";
+import dynamoDb from "../../../libs/dynamodb-lib.ts";
+import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event) => {
-  // Deconstruct variables from URL string
-  const { state, specifiedYear, quarter, form } = event.pathParameters;
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter, form } = event.pathParameters!;
 
   await authorizeAdminOrUserForState(event, state);
 
-  const answerFormID = `${state}-${specifiedYear}-${parseInt(quarter)}-${form}`;
+  const answerFormID = `${state}-${year}-${parseInt(quarter!)}-${form}`;
 
   const answerParams = {
     TableName: process.env.FormAnswersTable,
@@ -30,10 +30,10 @@ export const main = handler(async (event) => {
       "#theYear": "year",
     },
     ExpressionAttributeValues: {
-      ":specifiedYear": parseInt(specifiedYear),
+      ":year": parseInt(year!),
       ":form": form,
     },
-    FilterExpression: "form = :form and #theYear = :specifiedYear",
+    FilterExpression: "form = :form and #theYear = :year",
   };
 
   const answersResult = await dynamoDb.query(answerParams);
