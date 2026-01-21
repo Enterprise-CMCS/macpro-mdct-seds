@@ -173,13 +173,13 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables: dataConnectTables,
   });
 
-  new Lambda(scope, "getUserById", {
-    entry: "services/app-api/handlers/users/get/getUserById.ts",
-    handler: "main",
-    path: "/users/{userId}",
-    method: "GET",
-    ...commonProps,
-  });
+  // new Lambda(scope, "getUserById", {
+  //   entry: "services/app-api/handlers/users/get/getUserById.ts",
+  //   handler: "main",
+  //   path: "/users/{userId}",
+  //   method: "GET",
+  //   ...commonProps,
+  // });
 
   new Lambda(scope, "getUsers", {
     entry: "services/app-api/handlers/users/get/listUsers.ts",
@@ -197,13 +197,13 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "updateUser", {
-    entry: "services/app-api/handlers/users/post/updateUser.ts",
-    handler: "main",
-    path: "/users/{userId}",
-    method: "POST",
-    ...commonProps,
-  });
+  // new Lambda(scope, "updateUser", {
+  //   entry: "services/app-api/handlers/users/post/updateUser.ts",
+  //   handler: "main",
+  //   path: "/users/{userId}",
+  //   method: "POST",
+  //   ...commonProps,
+  // });
 
   new Lambda(scope, "getForm", {
     entry: "services/app-api/handlers/forms/get/get.ts",
