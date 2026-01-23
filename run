@@ -68,10 +68,13 @@ if [ "$LOCAL" = true ]; then
     fi
 fi
 
-yarn install --immutable >/dev/null 2>&1 || {
+IMMUTABLE_FLAG=""
+[ -n "${CI:-}" ] && IMMUTABLE_FLAG="--immutable"
+
+yarn install $IMMUTABLE_FLAG >/dev/null 2>&1 || {
 echo "Dependency install failed (root)" >&2; exit 1; }
 pushd cli >/dev/null
-yarn install --immutable >/dev/null 2>&1 || {
+yarn install $IMMUTABLE_FLAG >/dev/null 2>&1 || {
 echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
 popd >/dev/null
 
