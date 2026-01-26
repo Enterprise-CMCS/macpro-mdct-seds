@@ -161,9 +161,7 @@ describe("updateStateForms.ts", () => {
 
     const response = await updateStateForms(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({ statusCode: StatusCodes.NotFound })
-    );
+    expect(response.statusCode).toBe(StatusCodes.NotFound);
     expect(mockPut).not.toHaveBeenCalled();
   });
 

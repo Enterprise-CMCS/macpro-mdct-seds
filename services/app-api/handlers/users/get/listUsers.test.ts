@@ -43,7 +43,7 @@ describe("listUsers.ts", () => {
     );
   });
 
-  it("should return an error if no users exist", async () => {
+  it("should return an empty array if no users exist", async () => {
     mockScan.mockResolvedValueOnce({ Count: 0 });
 
     const response = await listUsers(mockEvent);

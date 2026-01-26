@@ -37,7 +37,7 @@ describe("generateEnrollmentTotals.ts", () => {
     vi.clearAllMocks();
   });
 
-  it.only("should query answers from dynamo, and write totals back", async () => {
+  it("should query answers from dynamo, and write totals back", async () => {
     mockScan.mockResolvedValueOnce({
       Count: 1,
       Items: [
