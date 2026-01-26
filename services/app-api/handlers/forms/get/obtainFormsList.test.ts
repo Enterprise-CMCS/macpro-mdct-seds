@@ -3,6 +3,7 @@ import { main as obtainFormsList } from "./obtainFormsList.ts";
 import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
@@ -39,8 +40,8 @@ describe("obtainFormsList.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify(mockScanResponse),
+        statusCode: StatusCodes.Ok,
+        body: JSON.stringify([{ mockForm: 1 }, { mockForm: 2 }]),
       })
     );
 
@@ -87,7 +88,7 @@ describe("obtainFormsList.ts", () => {
 
     const response = await obtainFormsList(mockEventWithKey);
 
-    expect(response).toEqual(expect.objectContaining({ statusCode: 200 }));
+    expect(response.statusCode).toEqual(StatusCodes.Ok);
 
     expect(mockScan).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -104,7 +105,7 @@ describe("obtainFormsList.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

@@ -114,11 +114,11 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   const stateFormsToCreate: StateForm[] = [];
 
   // Loop through all states
-  for (const state in stateList) {
+  for (const state_id of stateList.map((st) => st.state_id)) {
     // Loop through form descriptions for each state
-    for (const form in formTypes) {
+    for (const form of formTypes) {
       // Build lengthy strings
-      const stateFormString = `${stateList[state].state_id}-${specifiedYear}-${specifiedQuarter}-${formTypes[form].form}`;
+      const stateFormString = `${state_id}-${specifiedYear}-${specifiedQuarter}-${form.form}`;
 
       if (!foundFormIds.has(stateFormString)) {
         noMissingForms = false;
@@ -128,17 +128,17 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
           status_date: new Date().toISOString(),
           year: specifiedYear,
           state_comments: [{ type: "text_multiline", entry: "" }],
-          form_id: formTypes[form].form_id,
+          form_id: form.form_id,
           last_modified_by: "seed",
           status_modified_by: "seed",
           created_by: "seed",
           validation_percent: "0.03",
           status_id: FormStatus.InProgress,
-          form: formTypes[form].form,
+          form: form.form,
           program_code: "All",
-          state_id: stateList[state].state_id,
+          state_id: state_id,
           created_date: new Date().toISOString(),
-          form_name: formTypes[form].form_name,
+          form_name: form.form_name,
           last_modified: new Date().toISOString(),
           quarter: specifiedQuarter,
         });
@@ -218,20 +218,16 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   if (noMissingForms) {
     const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
     console.log(message);
-    return ok({
-      status: 204,
-      message: message,
-    });
+    return ok(message);
   }
 
   if (formAnswersToCreate.length > 0) {
     await writeAllFormAnswers(formAnswersToCreate);
   }
 
-  return ok({
-    status: 200,
-    message: `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`,
-  });
+  return ok(
+    `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`
+  );
 };
 
 export const getOrCreateFormTemplate = async (year: number) => {

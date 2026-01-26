@@ -45,7 +45,6 @@ vi.mock("aws-amplify/auth", () => ({
 }));
 
 const expectedHeaders = { "x-api-key": "mock-token" };
-const mockPayload = { foo: "bar" };
 
 describe("libs/api", () => {
   beforeEach(() => {
@@ -62,7 +61,7 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for getUserById", async () => {
-    const response = await getUserById({ userId: "123" });
+    const response = await getUserById("123");
     expect(response.responseAttr).toBe("mock get response");
 
     expect(mockGet).toHaveBeenCalledWith({
@@ -131,12 +130,11 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for obtainAvailableForms", async () => {
-    const mockState = { stateId: "CO" };
-    const response = await obtainAvailableForms(mockState);
+    const response = await obtainAvailableForms("CO");
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: `/forms/${mockState.stateId}`,
+      path: `/forms/CO`,
       options: { headers: expectedHeaders },
     });
   });
@@ -198,12 +196,12 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for generateEnrollmentTotals", async () => {
-    const response = await generateEnrollmentTotals(mockPayload);
+    const response = await generateEnrollmentTotals();
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/admin/generate-totals",
-      options: { headers: expectedHeaders, body: mockPayload },
+      options: { headers: expectedHeaders },
     });
   });
   /*

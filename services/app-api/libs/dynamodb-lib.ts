@@ -54,10 +54,10 @@ export default {
    * @param keySelector - Given an item, select its identifier.
    *                      Used for exception logging purposes.
    */
-  putMultiple: async (
+  putMultiple: async <T extends object>(
     tableName: string,
-    items: object[],
-    keySelector: Function
+    items: T[],
+    keySelector: (item: T) => string
   ) => {
     /** DynamoDB only allows this many items in a single BatchWriteCommand */
     const MAX_BATCH_SIZE = 25;
@@ -75,7 +75,7 @@ export default {
       const response = await client.send(command);
       if (response.UnprocessedItems?.[tableName]?.length) {
         const unprocessedIds = response.UnprocessedItems[tableName]
-          .map((req) => keySelector(req.PutRequest!.Item))
+          .map((req) => keySelector(req.PutRequest!.Item as T))
           .join(", ");
         throw new Error(`Failed to insert item(s): [${unprocessedIds}]`);
       }

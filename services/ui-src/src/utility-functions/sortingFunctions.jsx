@@ -75,7 +75,7 @@ const formattedPartsET = (date, options) => {
 
 /**
  * Sorts array by year and quarter descending
- * @param formsArray - multidimensional array of forms
+ * @param {{ year: number, quarter: number }[]} formsArray
  * @returns {*}
  */
 const sortFormsByYearAndQuarter = (formsArray) => {

@@ -26,7 +26,7 @@ const Users = () => {
 
   const loadUserData = async () => {
     const userList = await listUsers();
-    userList?.sort((a, b) => a.username?.localeCompare(b.username));
+    userList.sort((a, b) => a.username?.localeCompare(b.username));
     setUsers(userList);
   };
 

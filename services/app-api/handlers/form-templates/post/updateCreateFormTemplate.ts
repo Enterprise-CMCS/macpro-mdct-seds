@@ -27,17 +27,11 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   const data = JSON.parse(event.body!);
 
   if (!year || !data.template) {
-    return badRequest({
-      status: 422,
-      message: `Please specify both a year and a template`,
-    });
+    return badRequest("Please specify both a year and a template");
   }
 
   if (!isJsonString(data.template[0])) {
-    return badRequest({
-      status: 400,
-      message: `Invalid JSON. Please review your template.`,
-    });
+    return badRequest("Invalid JSON. Please review your template.");
   }
 
   const params = {
@@ -51,8 +45,5 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   await dynamoDb.put(params);
 
-  return ok({
-    status: 200,
-    message: `Template updated for ${year}!`,
-  });
+  return ok(`Template updated for ${year}!`);
 });

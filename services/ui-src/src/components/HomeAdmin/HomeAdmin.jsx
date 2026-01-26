@@ -18,7 +18,7 @@ const HomeAdmin = () => {
     // Get list of all state forms
     let forms = [];
     try {
-      forms = await obtainAvailableForms({ stateId });
+      forms = await obtainAvailableForms(stateId);
     } catch (e) {
       /* no-op */
     }

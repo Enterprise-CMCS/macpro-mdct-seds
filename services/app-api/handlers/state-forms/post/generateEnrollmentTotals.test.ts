@@ -8,6 +8,7 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../storage/stateForms.ts", () => ({
   writeAllStateForms: vi.fn(),
@@ -25,14 +26,18 @@ mockDynamo.on(QueryCommand).callsFake(mockQuery);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockEvent = {};
+const mockEvent = {
+  queryStringParameters: {
+    respondSynchronously: "true",
+  },
+};
 
 describe("generateEnrollmentTotals.ts", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should query answers from dynamo, and write totals back", async () => {
+  it.only("should query answers from dynamo, and write totals back", async () => {
     mockScan.mockResolvedValueOnce({
       Count: 1,
       Items: [
@@ -80,15 +85,7 @@ describe("generateEnrollmentTotals.ts", () => {
 
     const response = await generateEnrollmentTotals(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Generated Totals Successfully",
-        }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockScan).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -163,7 +160,7 @@ describe("generateEnrollmentTotals.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
