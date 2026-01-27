@@ -4,8 +4,8 @@ import { generateQuarterlyForms } from "../../libs/api";
 import "./GenerateForms.scss";
 
 const GenerateForms = () => {
-  const [selectedYear, setSelectedYear] = useState();
-  const [selectedQuarter, setSelectedQuarter] = useState();
+  const [selectedYear, setSelectedYear] = useState("2019");
+  const [selectedQuarter, setSelectedQuarter] = useState("1");
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
 
