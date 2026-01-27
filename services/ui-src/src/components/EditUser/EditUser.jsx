@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, TextInput, Button } from "@trussworks/react-uswds";
+import { Button, Table, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
-import "./EditUser.scss";
 
 /**
  * Admin-only page for viewing & editing other users' permissions.
@@ -48,71 +47,56 @@ const EditUser = () => {
 
   return (
     <div className="edit-user" data-testid="EditUser">
-      <Link to="/users" className="userListLink text-bold">
+      <Link to="/users" className="text-bold">
         &laquo; Back to User List
       </Link>
-      <h1 className="page-header">Edit User</h1>
+      <h1>Edit User</h1>
       {user ? (
-        <div className="center-content">
+        <div>
           <Table>
             <tbody>
-              <tr className="userName">
+              <tr>
                 <th>Username</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.username}
-                    type="text"
                     disabled={true}
                     name="username"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>First Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.firstName}
-                    type="text"
                     disabled={true}
                     name="firstName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Last Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.lastName}
-                    type="text"
                     disabled={true}
                     name="lastName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Email</th>
                 <td>
-                  <TextInput
-                    value={user.email}
-                    type="text"
-                    disabled={true}
-                    name="email"
-                    className="form-input"
-                  />
+                  <TextField value={user.email} disabled={true} name="email" />
                 </td>
               </tr>
               <tr>
                 <th>
-                  <label className="usa-label" htmlFor="role-select">
-                    Role
-                  </label>
+                  <label htmlFor="role-select">Role</label>
                 </th>
                 <td>
                   <select
-                    className="usa-select"
                     id="role-select"
                     value={role}
                     onChange={(evt) => setRole(evt.target.value)}
@@ -127,13 +111,10 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label className="usa-label" htmlFor="state-select">
-                      State
-                    </label>
+                    <label htmlFor="state-select">State</label>
                   </th>
                   <td>
                     <select
-                      className="usa-select"
                       id="state-select"
                       value={state}
                       onChange={(evt) => setState(evt.target.value)}
@@ -162,14 +143,10 @@ const EditUser = () => {
               </tr>
             </tbody>
           </Table>
-          <div className="action-buttons margin-top-4">
-            <Button
-              type="button"
-              className="form-button"
-              onClick={handleUpdateClick}
-            >
+          <div>
+            <Button type="button" variation="solid" onClick={handleUpdateClick}>
               Update User
-              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+              <FontAwesomeIcon icon={faUserCheck} />
             </Button>
           </div>
         </div>

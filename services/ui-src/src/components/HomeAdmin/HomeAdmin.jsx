@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
 import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
-import { Accordion } from "@trussworks/react-uswds";
-import "./HomeAdmin.scss";
+import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
@@ -32,7 +31,7 @@ const HomeAdmin = () => {
     <div className="HomeAdmin" data-testid="HomeAdmin">
       {role === "admin" ? (
         <div>
-          <h1 className="page-header">Home Admin User Page</h1>
+          <h1>Home Admin User Page</h1>
           <div className="list-display-container">
             <ul>
               <li className="user-view-edit">
@@ -59,15 +58,12 @@ const HomeAdmin = () => {
           </div>
         </div>
       ) : (
-        <h1 className="page-header">Home Business User Page</h1>
+        <h1>Home Business User Page</h1>
       )}
       <div className="state-coreset-container margin-bottom-2">
         <div className="state-selector">
-          <label className="usa-label" htmlFor="state-select">
-            Select State to View
-          </label>
+          <label htmlFor="state-select">Select State to View</label>
           <select
-            className="usa-select"
             id="state-select"
             value={selectedState}
             onChange={(evt) => updateUsState(evt.target.value)}
@@ -90,7 +86,17 @@ const HomeAdmin = () => {
               </p>
 
               <div className="quarterly-report-list">
-                <Accordion bordered={true} items={accordionItems} />
+                <Accordion bordered>
+                  {accordionItems.map((item, idx) => (
+                    <AccordionItem
+                      key={idx}
+                      defaultOpen={item.expanded}
+                      heading={item.title}
+                    >
+                      {item.content}
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
             </>
           ) : (

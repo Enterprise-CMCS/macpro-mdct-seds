@@ -1,0 +1,39 @@
+.navigation {
+  padding: 0 0 0 40px;
+}
+
+.navbar {
+  position: relative;
+  display: block;
+  width: 125px;
+  margin: 0;
+
+  .dropbtn {
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 15px;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    background-color: white;
+    width: 158px;
+    right: -8px;
+    top: 21px;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+
+    ul,
+    li {
+      list-style: none;
+      a {
+        display: block;
+        padding: 12px 16px;
+        color: #333;
+        font-size: 14px;
+      }
+    }
+  }
+}

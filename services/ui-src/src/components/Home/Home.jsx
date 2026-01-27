@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../libs/contextLib";
-import "./Home.scss";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";

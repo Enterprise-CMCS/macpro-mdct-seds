@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Alert, Button } from "@trussworks/react-uswds";
+import { Button, Alert } from "@cmsgov/design-system";
 import { generateQuarterlyForms } from "../../libs/api";
-import "./GenerateForms.scss";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState();
@@ -48,30 +47,29 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert && alert.status === 200 ? (
-        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
+        <Alert variation="success" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && alert.status === 204 ? (
-        <Alert className="margin-bottom-3" type="warning" headingLevel="h1">
+        <Alert variation="warn" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
 
       {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert className="margin-bottom-3" type="error" headingLevel="h1">
+        <Alert variation="error" headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}
-      <h1 className="page-header">Generate Quarterly Forms</h1>
-      <p className="margin-bottom-4">
+      <h1>Generate Quarterly Forms</h1>
+      <p>
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
       <label htmlFor="year-select">Select the Year</label>
       <select
-        className="usa-select"
         id="year-select"
         value={selectedYear}
         onChange={(evt) => setSelectedYear(evt.target.value)}
@@ -86,7 +84,6 @@ const GenerateForms = () => {
         Select the Quarter
       </label>
       <select
-        className="usa-select"
         id="quarter-select"
         value={selectedQuarter}
         onChange={(evt) => setSelectedQuarter(evt.target.value)}
@@ -97,11 +94,9 @@ const GenerateForms = () => {
         <option value="4">Q4</option>
       </select>
       <Button
-        type="button"
-        style={{ marginTop: "0.5rem" }}
+        variation="solid"
         data-testid="generateFormsButton"
         onClick={() => generateForms()}
-        className="margin-bottom-5"
       >
         Generate Forms
       </Button>

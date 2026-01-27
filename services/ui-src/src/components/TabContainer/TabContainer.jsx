@@ -5,7 +5,6 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import SummaryTab from "../SummaryTab/SummaryTab";
 import PropTypes from "prop-types";
 import QuestionComponent from "../Question/Question";
-import "./TabContainer.scss";
 import {
   isFinalCertified,
   isNotRequired,
