@@ -6,7 +6,7 @@ export type StateForm = {
   // Identifier fields
   /**
    * Format `state-year-quarter-form`.
-   * @xample "CO-2025-4-21E"
+   * @example "CO-2025-4-21E"
    */
   state_form: string;
   /**
@@ -24,6 +24,15 @@ export type StateForm = {
   // Data fields
   status_id: FormStatusValue;
   state_comments: [{ type: "text_multiline"; entry: string | null }];
+  /** Present only for 21E and 64.21E forms, and only for Q4. */
+  enrollmentCounts?: {
+    /** Separate for 21E, Expansion for 64.21E */
+    type: "separate" | "expansion";
+    /** Redundant with StateForm.year */
+    year: number;
+    /** The sum of all numbers entered for Question 7. */
+    count: number;
+  };
 
   // Redundant fields
   /**

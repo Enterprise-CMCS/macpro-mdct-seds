@@ -15,7 +15,6 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     ExpressionAttributeNames: {
       "#theYear": "year",
     },
-
     ExpressionAttributeValues: {
       ":state": state,
       ":year": parseInt(year!),
@@ -26,5 +25,5 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   };
 
   const result = await dynamoDb.scan(params);
-  return ok(result);
+  return ok(result.Items);
 });

@@ -2,52 +2,47 @@ import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
-import { ok } from "../../../libs/response-lib.ts";
+import { notFound, ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   const { state, year, quarter, form } = event.pathParameters!;
 
   await authorizeAdminOrUserForState(event, state);
 
-  const answerFormID = `${state}-${year}-${parseInt(quarter!)}-${form}`;
+  const state_form = `${state}-${year}-${parseInt(quarter!)}-${form}`;
+
+  const stateFormParams = {
+    TableName: process.env.StateFormsTable,
+    Key: { state_form },
+  };
+  const statusData = (await dynamoDb.get(stateFormParams)).Item;
+
+  if (!statusData) {
+    return notFound(`Could not find form with ID ${state_form}`);
+  }
 
   const answerParams = {
     TableName: process.env.FormAnswersTable,
     IndexName: "state-form-index",
-    /*Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeNames: {
-      "#answer_entry": "answer_entry"
-    },*/
+    KeyConditionExpression: "state_form = :state_form",
     ExpressionAttributeValues: {
-      ":answerFormID": answerFormID,
+      ":state_form": state_form,
     },
-    KeyConditionExpression: "state_form = :answerFormID",
   };
+  const answers = (await dynamoDb.query(answerParams)).Items;
 
   const questionParams = {
     TableName: process.env.FormQuestionsTable,
+    FilterExpression: "form = :form and #year = :year",
     ExpressionAttributeNames: {
-      "#theYear": "year",
+      "#year": "year",
     },
     ExpressionAttributeValues: {
       ":year": parseInt(year!),
       ":form": form,
     },
-    FilterExpression: "form = :form and #theYear = :year",
   };
+  const questions = (await dynamoDb.scan(questionParams)).Items;
 
-  const answersResult = await dynamoDb.query(answerParams);
-  const questionsResult = await dynamoDb.scan(questionParams);
-
-  if (answersResult.Count === 0) {
-    throw new Error("Answers for Single form not found.");
-  }
-  if (questionsResult.Count === 0) {
-    throw new Error("Questions for Single form not found.");
-  }
-
-  return ok({
-    answers: answersResult.Items,
-    questions: questionsResult.Items,
-  });
+  return ok({ statusData, questions, answers });
 });

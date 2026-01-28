@@ -7,6 +7,7 @@ import {
   authorizeAdmin as actualAuthorizeAdmin,
 } from "../../../auth/authConditions.ts";
 import { AuthUser, putUser as actualPutUser } from "../../../storage/users.ts";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAnyUser: vi.fn(),
@@ -57,11 +58,7 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(putUser).toHaveBeenCalledWith({
       userId: "42",
@@ -84,11 +81,7 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(putUser).toHaveBeenCalledWith({
       userId: "42",
@@ -107,7 +100,7 @@ describe("updateUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
@@ -121,7 +114,7 @@ describe("updateUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
@@ -136,7 +129,7 @@ describe("updateUser.ts", () => {
         body: JSON.stringify({ ...mockUser, ...changedProperty }),
       };
       const response = await updateUser(evt);
-      expect(response.statusCode).toBe(500);
+      expect(response.statusCode).toBe(StatusCodes.InternalServerError);
     };
 
     await expectFieldChangeToError({ username: "WISC" });
@@ -158,7 +151,7 @@ describe("updateUser.ts", () => {
 
     const response = await updateUser(evt);
 
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     // We didn't exercise the mock rejection; reset the mock to no-op
     authorizeAdmin.mockReset().mockResolvedValue();
@@ -170,7 +163,7 @@ describe("updateUser.ts", () => {
     const expectFieldChangeToError = async (payload) => {
       const evt = { body: JSON.stringify(payload) };
       const response = await updateUser(evt);
-      expect(response.statusCode).toBe(500);
+      expect(response.statusCode).toBe(StatusCodes.InternalServerError);
     };
 
     // Payload must exist

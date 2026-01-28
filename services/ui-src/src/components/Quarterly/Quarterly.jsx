@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
+import { getStateForms } from "../../libs/api";
 import { getStatusDisplay } from "../../utility-functions/formStatus";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 import { useStore } from "../../store/store";
 import { canViewStateData } from "../../utility-functions/permissions";
 
@@ -23,10 +23,17 @@ const Quarterly = () => {
   useEffect(() => {
     async function fetchData() {
       if (canViewStateData(user, state)) {
-        let data = await recursiveGetStateForms({ state, year, quarter });
+        const params = {
+          state,
+          year: parseInt(year),
+          quarter: parseInt(quarter),
+        };
+        let forms = await getStateForms(params);
+
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
-        data = data.filter((i) => i.form !== "64.ECI");
-        setStateFormsList(data);
+        forms = forms.filter((i) => i.form !== "64.ECI");
+
+        setStateFormsList(forms);
         setHasAccess(true);
       } else {
         setHasAccess(false);

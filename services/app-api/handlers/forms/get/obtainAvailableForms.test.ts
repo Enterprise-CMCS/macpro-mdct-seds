@@ -3,6 +3,7 @@ import { main as obtainAvailableForms } from "./obtainAvailableForms.ts";
 import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
@@ -35,7 +36,7 @@ describe("obtainAvailableForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify(mockForms),
       })
     );
@@ -61,7 +62,7 @@ describe("obtainAvailableForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({
           error: "No state form list found for this state",
         }),
@@ -76,7 +77,7 @@ describe("obtainAvailableForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

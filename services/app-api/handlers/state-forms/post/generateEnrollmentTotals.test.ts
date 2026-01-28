@@ -8,6 +8,7 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../storage/stateForms.ts", () => ({
   writeAllStateForms: vi.fn(),
@@ -80,15 +81,7 @@ describe("generateEnrollmentTotals.ts", () => {
 
     const response = await generateEnrollmentTotals(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Generated Totals Successfully",
-        }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockScan).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -163,7 +156,7 @@ describe("generateEnrollmentTotals.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

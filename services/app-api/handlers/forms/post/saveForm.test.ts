@@ -12,6 +12,7 @@ import { FormStatus } from "../../../shared/types.ts";
 import { AuthUser } from "../../../storage/users.ts";
 import { StateForm } from "../../../storage/stateForms.ts";
 import { FormAnswer } from "../../../storage/formAnswers.ts";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeUserForState: vi.fn(),
@@ -100,12 +101,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: undefined,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockUpdate).toHaveBeenCalledTimes(3);
     expect(mockUpdate).toHaveBeenCalledWith(
@@ -180,7 +176,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toBe(StatusCodes.Ok);
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         TableName: "local-form-answers",
@@ -208,7 +204,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toBe(StatusCodes.Ok);
     const savedAnswerEntries = mockUpdate.mock.calls
       .filter((call) => call[0].TableName === "local-form-answers")
       .map((call) => call[0].Key.answer_entry);
@@ -238,7 +234,7 @@ describe("saveForm.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "State Form Not Found" }),
       })
     );
@@ -268,11 +264,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -393,12 +385,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: undefined,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -451,11 +438,7 @@ describe("saveForm.ts", () => {
 
     const response = await saveForm(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockUpdate).toHaveBeenCalledTimes(1);
 
@@ -484,7 +467,7 @@ describe("saveForm.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

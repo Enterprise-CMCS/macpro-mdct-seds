@@ -3,10 +3,13 @@ import { main as get } from "./get.ts";
 import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
+  GetCommand,
   QueryCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { FormStatus } from "../../../shared/types.ts";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
@@ -15,12 +18,18 @@ const authorizeAdminOrUserForState = vi.mocked(
   actualAuthorizeAdminOrUserForState
 );
 
-const mockQuery = vi.fn();
-const mockScan = vi.fn();
 const mockDynamo = mockClient(DynamoDBDocumentClient);
+const mockGet = vi.fn();
+mockDynamo.on(GetCommand).callsFake(mockGet);
+const mockQuery = vi.fn();
 mockDynamo.on(QueryCommand).callsFake(mockQuery);
+const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
+const mockStateForm = {
+  state_form: "CO-2025-F1-A",
+  status_id: FormStatus.InProgress,
+};
 const mockFormAnswer = {
   state_form: "CO-2025-F1-A",
   question: "mock-Question-Q1",
@@ -46,7 +55,8 @@ describe("get.ts", () => {
     vi.clearAllMocks();
   });
 
-  it("should query Dynamo for for answers and questions", async () => {
+  it("should query Dynamo for form status, answers and questions", async () => {
+    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
     mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer], Count: 1 });
     mockScan.mockResolvedValueOnce({ Items: [mockFormQuestion], Count: 1 });
 
@@ -54,10 +64,11 @@ describe("get.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify({
-          answers: [mockFormAnswer],
+          statusData: mockStateForm,
           questions: [mockFormQuestion],
+          answers: [mockFormAnswer],
         }),
       })
     );
@@ -67,9 +78,9 @@ describe("get.ts", () => {
         TableName: "local-form-answers",
         IndexName: "state-form-index",
         ExpressionAttributeValues: {
-          ":answerFormID": "CO-2025-1-F1",
+          ":state_form": "CO-2025-1-F1",
         },
-        KeyConditionExpression: "state_form = :answerFormID",
+        KeyConditionExpression: "state_form = :state_form",
       },
       expect.any(Function)
     );
@@ -77,18 +88,19 @@ describe("get.ts", () => {
     expect(mockScan).toHaveBeenCalledWith(
       {
         TableName: "local-form-questions",
-        ExpressionAttributeNames: { "#theYear": "year" },
+        ExpressionAttributeNames: { "#year": "year" },
         ExpressionAttributeValues: {
           ":year": 2025,
           ":form": "F1",
         },
-        FilterExpression: "form = :form and #theYear = :year",
+        FilterExpression: "form = :form and #year = :year",
       },
       expect.any(Function)
     );
   });
 
-  it("should return an error if no answers can be found", async () => {
+  it("should continue even if no answers can be found", async () => {
+    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
     mockQuery.mockResolvedValueOnce({ Items: [], Count: 0 });
     mockScan.mockResolvedValueOnce({ Items: [mockFormQuestion], Count: 1 });
 
@@ -96,25 +108,30 @@ describe("get.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify({
-          error: "Answers for Single form not found.",
+          statusData: mockStateForm,
+          questions: [mockFormQuestion],
+          answers: [],
         }),
       })
     );
   });
 
-  it("should return an error if no questions can be found", async () => {
-    mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer], Count: 1 });
-    mockScan.mockResolvedValueOnce({ Items: [], Count: 0 });
+  it("should continue even if no questions can be found", async () => {
+    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer] });
+    mockScan.mockResolvedValueOnce({ Items: [] });
 
     const response = await get(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify({
-          error: "Questions for Single form not found.",
+          statusData: mockStateForm,
+          questions: [],
+          answers: [mockFormAnswer],
         }),
       })
     );
@@ -127,7 +144,7 @@ describe("get.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
