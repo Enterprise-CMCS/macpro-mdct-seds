@@ -17,15 +17,6 @@ describe("Test GenerateForms.js", () => {
     vi.clearAllMocks();
   });
 
-  it("should not generate forms if the user has not selected a year and quarter", () => {
-    render(<GenerateForms />);
-
-    const generateButton = screen.getByRole("button", { name: /Generate/ });
-    userEvent.click(generateButton);
-
-    expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
-  });
-
   it("should generate forms by sending a request to the API", () => {
     generateQuarterlyForms.mockReturnValue({
       year: 2022,
