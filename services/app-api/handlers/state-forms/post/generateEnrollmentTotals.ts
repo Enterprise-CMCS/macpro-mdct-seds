@@ -14,16 +14,9 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     return notFound("No 21E or 64.21E forms exist, for quarter 4 of any year.");
   }
 
-  const work = recalculateTotals(stateForms).then(() =>
-    writeAllStateForms(stateForms)
-  );
+  await recalculateTotals(stateForms);
 
-  const isSync = event.queryStringParameters?.respondSynchronously === "true";
-  if (isSync) {
-    // When called from the UI, this endpoint is fire-and-forget.
-    // When called from tests, we want to block until the work is complete.
-    await work;
-  }
+  await writeAllStateForms(stateForms);
 
   return ok();
 });

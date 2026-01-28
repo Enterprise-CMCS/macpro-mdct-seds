@@ -26,11 +26,7 @@ mockDynamo.on(QueryCommand).callsFake(mockQuery);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockEvent = {
-  queryStringParameters: {
-    respondSynchronously: "true",
-  },
-};
+const mockEvent = {};
 
 describe("generateEnrollmentTotals.ts", () => {
   beforeEach(() => {
