@@ -17,15 +17,6 @@ describe("Test GenerateForms.js", () => {
     vi.clearAllMocks();
   });
 
-  it("should not generate forms if the user has not selected a year and quarter", () => {
-    render(<GenerateForms />);
-
-    const generateButton = screen.getByRole("button", { name: /Generate/ });
-    userEvent.click(generateButton);
-
-    expect(window.alert).toBeCalledWith("Please select a Year and Quarter");
-  });
-
   it("should generate forms by sending a request to the API", () => {
     generateQuarterlyForms.mockReturnValue({
       year: 2022,
@@ -51,27 +42,8 @@ describe("Test GenerateForms.js", () => {
     });
   });
 
-  it("should display an informative warning message if the request fails", async () => {
-    const warnText = "some warning message directly from the API";
-    generateQuarterlyForms.mockReturnValue({ status: 204, message: warnText });
-
-    render(<GenerateForms />);
-
-    const yearDropdown = screen.getByRole("combobox", { name: /Year/ });
-    userEvent.selectOptions(yearDropdown, "2022");
-
-    const quarterDropdown = screen.getByRole("combobox", { name: /Quarter/ });
-    userEvent.selectOptions(quarterDropdown, "Q2");
-
-    const generateButton = screen.getByRole("button", { name: /Generate/ });
-    userEvent.click(generateButton);
-
-    await waitFor(() => expect(screen.getByText(warnText)).toBeVisible());
-  });
-
   it("should display an informative error message if the request fails", async () => {
-    const errorText = "some error message directly from the API";
-    generateQuarterlyForms.mockReturnValue({ status: 500, message: errorText });
+    generateQuarterlyForms.mockRejectedValue(new Error("mock error text"));
 
     render(<GenerateForms />);
 
@@ -84,6 +56,8 @@ describe("Test GenerateForms.js", () => {
     const generateButton = screen.getByRole("button", { name: /Generate/ });
     userEvent.click(generateButton);
 
-    await waitFor(() => expect(screen.getByText(errorText)).toBeVisible());
+    await waitFor(() =>
+      expect(screen.getByText(/mock error text/)).toBeVisible()
+    );
   });
 });

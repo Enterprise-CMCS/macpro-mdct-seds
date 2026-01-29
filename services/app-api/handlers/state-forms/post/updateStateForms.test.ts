@@ -7,6 +7,7 @@ import {
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeUserForState: vi.fn(),
@@ -57,15 +58,7 @@ describe("updateStateForms.ts", () => {
 
     const response = await updateStateForms(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Enrollment Data successfully updated",
-        }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockQuery).toHaveBeenCalledWith(
       {
@@ -112,7 +105,7 @@ describe("updateStateForms.ts", () => {
       pathParameters: { ...mockParams, form: "64.21E" },
     });
 
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(StatusCodes.Ok);
 
     expect(mockQuery).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -150,7 +143,7 @@ describe("updateStateForms.ts", () => {
       pathParameters: { ...mockParams, form: "GRE" },
     });
 
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(StatusCodes.Ok);
     expect(mockPut).toHaveBeenCalledWith(
       expect.objectContaining({
         Item: {
@@ -168,14 +161,7 @@ describe("updateStateForms.ts", () => {
 
     const response = await updateStateForms(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify([]),
-      })
-    );
-
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(StatusCodes.NotFound);
     expect(mockPut).not.toHaveBeenCalled();
   });
 
@@ -186,7 +172,7 @@ describe("updateStateForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

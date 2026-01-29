@@ -7,7 +7,7 @@ import { AuthUser } from "../../../storage/users.ts";
 import { FormAnswer } from "../../../storage/formAnswers.ts";
 import { StateForm } from "../../../storage/stateForms.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
-import { ok } from "../../../libs/response-lib.ts";
+import { badRequest, ok } from "../../../libs/response-lib.ts";
 
 /**
  * This handler will loop through a question array and save each row
@@ -23,7 +23,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   for (const answer of data.formAnswers) {
     if (answer.state_form !== stateFormId) {
-      throw new Error("Answer state_form does not match URL parameters.");
+      return badRequest("Answer state_form does not match URL parameters.");
     }
   }
 

@@ -44,7 +44,7 @@ describe("Tests for FormTemplates.js", () => {
 
   test("Should render correctly when years exist", async () => {
     obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
-    obtainFormTemplate.mockResolvedValue([{ template: mockTemplate }]);
+    obtainFormTemplate.mockResolvedValue({ template: mockTemplate });
 
     render(<FormTemplates />);
     await waitFor(() => {
@@ -53,7 +53,7 @@ describe("Tests for FormTemplates.js", () => {
     });
 
     const yearDropdown = screen.getByRole("combobox", { name: /Year/ });
-    expect(yearDropdown).toHaveValue("2021");
+    expect(yearDropdown).toHaveValue("2022");
 
     const templateInput = screen.getByRole("textbox", { name: /Template/ });
     expect(templateInput).toHaveValue(JSON.stringify(mockTemplate, null, 2));
@@ -80,13 +80,8 @@ describe("Tests for FormTemplates.js", () => {
   test("Should send saved templates back to the API", async () => {
     const mockTemplate = { foo: "bar" };
     obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
-    obtainFormTemplate.mockResolvedValue([{ template: mockTemplate }]);
+    obtainFormTemplate.mockResolvedValue({ template: mockTemplate });
 
-    updateCreateFormTemplate.mockResolvedValue({
-      year: 2021,
-      template: { ...mockTemplate },
-      message: "create form template is successful",
-    });
     render(<FormTemplates />);
     await waitFor(() => {
       expect(obtainFormTemplateYears).toHaveBeenCalled();
@@ -96,22 +91,18 @@ describe("Tests for FormTemplates.js", () => {
     userEvent.click(screen.getByText("Save", { selector: "button" }));
     await waitFor(() => {
       expect(updateCreateFormTemplate).toHaveBeenCalledWith({
-        year: 2021,
+        year: 2022,
         template: { ...mockTemplate },
       });
     });
   });
 
   test("should render an error message when the form has failed to save", async () => {
-    updateCreateFormTemplate.mockRejectedValue(
-      new Error("Failed to fetch public IP. Error thrown from Vitest")
-    );
+    updateCreateFormTemplate.mockRejectedValue(new Error("mock error text"));
     render(<FormTemplates />);
     userEvent.click(screen.getByText("Save", { selector: "button" }));
     await waitFor(() =>
-      screen.getByText(
-        "Unable to save. Please verify that the template contains valid JSON"
-      )
+      expect(screen.getByText("Save failed: mock error text")).toBeVisible()
     );
   });
 });

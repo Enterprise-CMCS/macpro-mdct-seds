@@ -1,14 +1,12 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
-import {
-  authorizeAdminOrUserWithEmail,
-  authorizeAnyUser,
-} from "../../../auth/authConditions.ts";
+import { authorizeAdmin } from "../../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
-import { ok, notFound } from "../../../libs/response-lib.ts";
+import { notFound, ok } from "../../../libs/response-lib.ts";
+import { AuthUser } from "../../../storage/users.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
-  await authorizeAnyUser(event);
+  await authorizeAdmin(event);
 
   const params = {
     TableName: process.env.AuthUserTable,
@@ -19,19 +17,12 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
     FilterExpression: "userId = :userId",
   };
 
-  const queryResult = await dynamoDb.scan(params);
+  const scanResult = await dynamoDb.scan(params);
+  const user = scanResult.Items[0] as AuthUser | undefined;
 
-  if (!queryResult["Items"]) {
-    return notFound({
-      status: "error",
-      message: "No user by specified id found",
-    });
+  if (!user) {
+    return notFound();
   }
 
-  const foundUser = queryResult.Items[0];
-  await authorizeAdminOrUserWithEmail(event, foundUser.userId);
-  return ok({
-    status: "success",
-    data: queryResult["Items"][0],
-  });
+  return ok(user);
 });

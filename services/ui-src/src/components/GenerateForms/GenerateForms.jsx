@@ -4,8 +4,8 @@ import { generateQuarterlyForms } from "../../libs/api";
 import "./GenerateForms.scss";
 
 const GenerateForms = () => {
-  const [selectedYear, setSelectedYear] = useState();
-  const [selectedQuarter, setSelectedQuarter] = useState();
+  const [selectedYear, setSelectedYear] = useState("2019");
+  const [selectedQuarter, setSelectedQuarter] = useState("1");
   const [alert, setAlert] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -29,12 +29,22 @@ const GenerateForms = () => {
     ) {
       // send year and quarter to lambda which will create the table rows
       setLoading(true);
-      const response = await generateQuarterlyForms({
-        year: Number(selectedYear),
-        quarter: Number(selectedQuarter),
-      });
-      setLoading(false);
-      setAlert(response);
+      setAlert(undefined);
+      try {
+        await generateQuarterlyForms({
+          year: Number(selectedYear),
+          quarter: Number(selectedQuarter),
+        });
+        setAlert({ type: "success", message: "Form creation successful." });
+      } catch (err) {
+        const message =
+          err instanceof Error
+            ? `Form creation failed: ${err.message}`
+            : "Form creation failed.";
+        setAlert({ type: "error", message });
+      } finally {
+        setLoading(false);
+      }
     }
   };
   return (
@@ -47,20 +57,8 @@ const GenerateForms = () => {
           </div>
         </div>
       ) : null}
-      {alert && alert.status === 200 ? (
-        <Alert className="margin-bottom-3" type="success" headingLevel="h1">
-          {alert.message}
-        </Alert>
-      ) : null}
-
-      {alert && alert.status === 204 ? (
-        <Alert className="margin-bottom-3" type="warning" headingLevel="h1">
-          {alert.message}
-        </Alert>
-      ) : null}
-
-      {alert && (alert.status === 500 || alert.status === 409) ? (
-        <Alert className="margin-bottom-3" type="error" headingLevel="h1">
+      {alert ? (
+        <Alert className="margin-bottom-3" type={alert.type} headingLevel="h1">
           {alert.message}
         </Alert>
       ) : null}

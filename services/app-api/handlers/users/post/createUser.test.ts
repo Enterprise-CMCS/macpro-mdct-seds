@@ -12,6 +12,7 @@ import {
   putUser as actualPutUser,
   AuthUser,
 } from "../../../storage/users.ts";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../libs/authorization.ts", () => ({
   getUserDetailsFromEvent: vi.fn(),
@@ -58,7 +59,7 @@ describe("createUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: `"User COLO Added!"`,
       })
     );
@@ -89,7 +90,7 @@ describe("createUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: `"User COLO Added!"`,
       })
     );
@@ -113,7 +114,7 @@ describe("createUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: `"Please enter a username"`,
       })
     );
@@ -130,7 +131,7 @@ describe("createUser.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: `"User COLO already exists"`,
       })
     );

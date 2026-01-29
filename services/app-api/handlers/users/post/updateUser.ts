@@ -7,7 +7,7 @@ import {
 } from "../../../auth/authConditions.ts";
 import { putUser, AuthUser } from "../../../storage/users.ts";
 import { APIGatewayProxyEvent } from "../../../shared/types.ts";
-import { ok } from "../../../libs/response-lib.ts";
+import { notFound, ok } from "../../../libs/response-lib.ts";
 
 export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
@@ -15,8 +15,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   const data = JSON.parse(event.body!);
   const currentUser = await scanForUserWithSub(data.usernameSub);
   if (!currentUser) {
-    // TODO, return a nice 404 response object instead
-    throw new Error(`User not found! Scanned for sub: ${data.usernameSub}`);
+    return notFound(`User with sub ${data.usernameSub} could not be found`);
   }
 
   await authorizeAdminOrUserWithEmail(event, currentUser!.email);

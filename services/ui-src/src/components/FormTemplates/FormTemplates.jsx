@@ -14,7 +14,7 @@ const FormTemplates = () => {
   const [inputYear, setInputYear] = React.useState();
   const [currentTemplate, setCurrentTemplate] = React.useState(false);
   const [showYearInput, setShowYearInput] = React.useState(false);
-  const [alert, setAlert] = React.useState(false);
+  const [alert, setAlert] = React.useState(undefined);
 
   let nextYear = new Date(
     new Date().setFullYear(new Date().getFullYear() + 1)
@@ -26,21 +26,17 @@ const FormTemplates = () => {
     );
     let response;
     if (confirm) {
+      setAlert(undefined);
       try {
         response = await updateCreateFormTemplate({
           year: Number(inputYear),
           template: JSON.parse(currentTemplate),
         });
-      } catch (e) {
-        setAlert({
-          status: 400,
-          message:
-            "Unable to save. Please verify that the template contains valid JSON",
-        });
-      }
-      if (response) {
-        console.log(response);
-        setAlert(response);
+        setAlert({ type: "success", message: "Template saved successfully." });
+      } catch (err) {
+        const message =
+          err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
+        setAlert({ type: "error", message });
       }
     }
   };
@@ -49,7 +45,7 @@ const FormTemplates = () => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
       const template = await obtainFormTemplate(Number(year));
-      setCurrentTemplate(JSON.stringify(template[0].template, null, 2));
+      setCurrentTemplate(JSON.stringify(template.template, null, 2));
       setShowYearInput(false);
       setInputYear(year);
     } else {
@@ -61,6 +57,7 @@ const FormTemplates = () => {
 
   const onLoad = async () => {
     let yearsArray = await obtainFormTemplateYears();
+    yearsArray.sort((a, b) => b - a);
     if (!yearsArray.length) {
       setShowYearInput(true);
       setInputYear(nextYear);
@@ -94,7 +91,7 @@ const FormTemplates = () => {
         {alert ? (
           <Alert
             className="margin-bottom-3"
-            type={alert.status === 200 ? "success" : "error"}
+            type={alert.type}
             headingLevel="h1"
           >
             {alert.message}

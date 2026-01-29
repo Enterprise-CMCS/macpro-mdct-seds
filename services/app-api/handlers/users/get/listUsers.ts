@@ -13,9 +13,5 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   const result = await dynamoDb.scan(params);
 
-  if (!result.Items) {
-    throw new Error("No Users not found.");
-  }
-
   return ok(result.Items);
 });
