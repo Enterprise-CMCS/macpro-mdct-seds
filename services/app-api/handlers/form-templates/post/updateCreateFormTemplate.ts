@@ -27,7 +27,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   const data = JSON.parse(event.body!);
 
   if (!year || !data.template) {
-    return badRequest("Please specify both a year and a template");
+    return badRequest("Please specify both a year and a template.");
   }
 
   if (!isJsonString(data.template[0])) {

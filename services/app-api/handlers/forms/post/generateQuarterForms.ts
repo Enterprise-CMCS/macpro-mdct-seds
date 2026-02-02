@@ -216,7 +216,7 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   // This will only be true if neither !foundForms.includes statements pass,
   // Everything was found in the list, nothing is to be created
   if (noMissingForms) {
-    const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added`;
+    const message = `All forms, for Quarter ${specifiedQuarter} of ${specifiedYear}, previously existed. No new forms added.`;
     console.log(message);
     return ok(message);
   }
@@ -226,7 +226,7 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
   }
 
   return ok(
-    `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}`
+    `Forms successfully created for Quarter ${specifiedQuarter} of ${specifiedYear}.`
   );
 };
 
