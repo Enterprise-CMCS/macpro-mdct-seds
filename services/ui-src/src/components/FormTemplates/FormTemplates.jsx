@@ -133,7 +133,7 @@ const FormTemplates = () => {
         <div className="template-input margin-top-3 margin-bottom-4">
           <label htmlFor="templateInput">Enter or Modify Template</label>
           <TextField
-            multiline
+            multiline={true}
             id="templateInput"
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}

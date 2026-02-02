@@ -34,8 +34,6 @@ const Header = () => {
     }
   };
 
-  const menuItems = [<Link to="/">Home</Link>];
-
   return (
     <div className="header" data-testid="Header">
       <UsaBanner className="padding-y-1px" />
@@ -62,11 +60,11 @@ const Header = () => {
               </button>
               {navigation && (
                 <div className="dropdown-content">
-                  <ui className="dropdown-content">
-                    <li role="presentation">
+                  <ui className="dropdown-content" role="presentation">
+                    <li>
                       <a href="/profile">User Profile</a>
                     </li>
-                    <li role="presentation">
+                    <li>
                       <a role="button" href="#" onClick={handleLogout}>
                         Logout
                       </a>
