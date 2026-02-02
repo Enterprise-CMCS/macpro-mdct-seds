@@ -83,7 +83,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <p> {formDescription.form_text}</p>
         </div>
         <div>
-          <table>
+          <table className="unstyled">
             <tbody>
               <tr>
                 <th>

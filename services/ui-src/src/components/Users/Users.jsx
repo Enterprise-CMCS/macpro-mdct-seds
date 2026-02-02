@@ -35,7 +35,7 @@ const Users = () => {
   return (
     <div data-testid="users">
       <h1>Users</h1>
-      <div>
+      <div className="exclude-from-pdf">
         <Button
           variation="solid"
           onClick={() =>

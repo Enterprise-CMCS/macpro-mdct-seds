@@ -88,7 +88,7 @@ const QuestionComponent = ({
     }
   }
   return (
-    <div>
+    <div className="question-component padding-1">
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>

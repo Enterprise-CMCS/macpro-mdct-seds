@@ -6,12 +6,8 @@ $image-path: "~@cmsgov/design-system/dist/images";
 
 @import "../../additional-scss/globals2";
 @import "../../additional-scss/component";
-// @import "../../additional-scss/pdf_generator";
+@import "../../additional-scss/print";
 // @import "../../additional-scss/globals";
 // @import "../../additional-scss/layout";
-// @import "../../additional-scss/buttons";
-// @import "../../additional-scss/tabs";
-// @import "../../additional-scss/tables";
-// @import "../../additional-scss/alerts";
 @import "../../additional-scss/header";
 @import "../../additional-scss/footer";

@@ -7,6 +7,7 @@
   > div {
     display: flex;
     flex-direction: column;
+    min-width: 46rem;
     max-width: 1200px;
     height: 100%;
     padding: 56px;
@@ -22,11 +23,75 @@
   }
 }
 
+//-----------------------
+//  Headers
+//-----------------------
+
 h1 {
   font-weight: 400;
   font-size: 2em;
-  margin: 20px 0;
+  margin: 0;
 }
+
+h3 {
+  font-weight: 500;
+  margin: 0.8rem 0;
+  font-size: 24px;
+}
+
+//-----------------------
+//  Tables
+//-----------------------
+
+.ds-c-table tbody th {
+  font-weight: 700;
+}
+
+table {
+  border-collapse: collapse;
+
+  &:not(.unstyled) {
+    th,
+    td {
+      border: 1px solid #262626;
+      padding: 1rem;
+    }
+    th {
+      background-color: #f2f2f2;
+
+      &.total-header-cell {
+        background-color: #717698 !important;
+        color: white;
+        width: 70px;
+        line-height: 1.3;
+      }
+    }
+
+    td {
+      &.total-column {
+        background: #e6f9fd;
+        font-weight: 700;
+      }
+    }
+    .ds-c-label {
+      margin: 0;
+    }
+  }
+
+  &.unstyled {
+    // background-color: red;
+    th,
+    td {
+      border: 1px solid black;
+      padding: 0.5rem 1rem;
+      border-width: 1px 0;
+    }
+  }
+}
+
+//-----------------------
+//  Tags
+//-----------------------
 
 select {
   height: 40px;
@@ -47,37 +112,24 @@ ul {
   }
 }
 
-.ds-c-table tbody th {
-  font-weight: 700;
-}
-
-table {
-  border-collapse: collapse;
-  th,
-  td {
-    border: 1px solid #262626;
-    padding: 1rem;
-  }
-  th {
-    background-color: #f2f2f2;
-
-    &.total-header-cell {
-      background-color: #717698 !important;
-      color: white;
-      width: 70px;
-      line-height: 1.3;
-    }
-  }
-
-  td {
-    &.total-column {
-      background: #e6f9fd;
-      font-weight: 700;
-    }
-  }
-}
-
 input {
   min-width: 20px;
   min-height: 20px;
+}
+
+//-----------------------
+//  Custom
+//-----------------------
+
+.padding-1 {
+  padding: 1rem 0;
+}
+
+.question-component {
+  border-top: 1px solid;
+  padding-top: 2.5rem;
+}
+
+.ds-c-field {
+  max-width: 100%;
 }
