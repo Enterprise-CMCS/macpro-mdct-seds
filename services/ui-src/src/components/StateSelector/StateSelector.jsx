@@ -40,7 +40,7 @@ const StateSelector = () => {
   };
 
   return (
-    <div className="page-state-selector">
+    <div>
       {user?.state ? (
         <>
           <h2>

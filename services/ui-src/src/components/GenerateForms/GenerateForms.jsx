@@ -37,11 +37,11 @@ const GenerateForms = () => {
     }
   };
   return (
-    <div className="generate-forms-container">
+    <div>
       {loading ? (
-        <div className="loader">
-          <div className="loader-content">
-            <div className="loader-icon"></div>Generating new forms
+        <div>
+          <div>
+            <div></div>Generating new forms
             <br /> Please Wait...
           </div>
         </div>

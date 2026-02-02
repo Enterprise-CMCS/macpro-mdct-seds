@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
-import "./GridWithTotals.scss";
 
 const GridWithTotals = (props) => {
   const setAnswer = useStore((state) => state.updateAnswer);

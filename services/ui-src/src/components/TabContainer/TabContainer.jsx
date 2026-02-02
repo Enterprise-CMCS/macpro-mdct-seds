@@ -25,7 +25,7 @@ const TabContainer = ({ quarter }) => {
     isNotRequired(statusData);
 
   return (
-    <Tabs className="tab-container-main">
+    <Tabs>
       <TabList>
         {currentTabs.map((tab, idx) => {
           const ageRangeName = getAgeRangeDetails(tab)?.name;
@@ -47,7 +47,7 @@ const TabContainer = ({ quarter }) => {
         return (
           <TabPanel key={idx}>
             {ageRangeDescription ? (
-              <div className="age-range-description padding-y-2">
+              <div>
                 <h3>{ageRangeDescription}:</h3>
               </div>
             ) : null}

@@ -77,7 +77,7 @@ const FormPage = () => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage" className="col-gap-2">
+    <div data-testid="FormPage">
       {save_error ? (
         <div>
           <Alert variation="error" heading="Save Error:" headingLevel="h1">

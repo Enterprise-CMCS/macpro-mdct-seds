@@ -34,7 +34,7 @@ const Home = () => {
   };
 
   return (
-    <div className="Home" data-testid="Home">
+    <div data-testid="Home">
       {renderLander()}
     </div>
   );

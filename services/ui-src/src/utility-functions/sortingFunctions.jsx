@@ -140,7 +140,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
 
     // Build output for each accordion item
     let quartersOutput = (
-      <ul className="quarterly-items">
+      <ul>
         {uniqueQuarters.map((element) => {
           return (
             <li key={`${element.quarter}`}>

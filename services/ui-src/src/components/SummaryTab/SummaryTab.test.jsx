@@ -8,7 +8,7 @@ import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
   default: (props) => (
-    <div className="question-component">{JSON.stringify(props)}</div>
+    <div>{JSON.stringify(props)}</div>
   ),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("../SummaryNotes/SummaryNotes", () => ({
 
 vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
   default: (props) => (
-    <div className="synth-grid-summary">{JSON.stringify(props)}</div>
+    <div>{JSON.stringify(props)}</div>
   ),
 }));
 

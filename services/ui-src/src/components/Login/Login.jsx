@@ -64,7 +64,7 @@ export default function Login() {
   const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
 
   return (
-    <div data-testid="Login" id="login">
+    <div data-testid="Login">
       <div data-testid="OktaLogin">
         <LoaderButton
           type="button"

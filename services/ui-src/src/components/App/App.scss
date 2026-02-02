@@ -3,17 +3,15 @@ $image-path: "~@cmsgov/design-system/dist/images";
 @use "@cmsgov/design-system/dist/css/core-theme";
 
 @import "../../additional-scss/variables";
-@import "../../additional-scss/uswds_css";
 
-@import "../../additional-scss/pdf_generator";
-@import "../../additional-scss/globals";
-@import "../../additional-scss/layout";
-@import "../../additional-scss/buttons";
-@import "../../additional-scss/tabs";
-@import "../../additional-scss/tables";
-@import "../../additional-scss/alerts";
+@import "../../additional-scss/globals2";
+@import "../../additional-scss/component";
+// @import "../../additional-scss/pdf_generator";
+// @import "../../additional-scss/globals";
+// @import "../../additional-scss/layout";
+// @import "../../additional-scss/buttons";
+// @import "../../additional-scss/tabs";
+// @import "../../additional-scss/tables";
+// @import "../../additional-scss/alerts";
 @import "../../additional-scss/header";
 @import "../../additional-scss/footer";
-@import "../../additional-scss/form";
-@import "../../additional-scss/main";
-@import "../../additional-scss/print";

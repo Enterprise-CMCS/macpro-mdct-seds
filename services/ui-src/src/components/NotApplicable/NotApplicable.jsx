@@ -43,7 +43,7 @@ const NotApplicable = () => {
     <div>
       <fieldset>
         <legend>Does this form apply to your state?</legend>
-        <div className="form-radio">
+        <div>
           <input
             id="applicable-yes"
             type="radio"
@@ -55,7 +55,7 @@ const NotApplicable = () => {
           />
           <label htmlFor="applicable-yes">Yes</label>
         </div>
-        <div className="form-radio">
+        <div>
           <input
             id="applicable-no"
             type="radio"

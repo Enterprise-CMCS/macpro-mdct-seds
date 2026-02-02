@@ -88,12 +88,11 @@ const FormTemplates = () => {
   }, []);
 
   return (
-    <div className="formTemplates">
+    <div>
       <h1>Add/Edit Form Templates</h1>
       <div data-testid="formTemplates">
         {alert ? (
           <Alert
-            className="margin-bottom-3"
             variation={alert.status === 200 ? "success" : "error"}
             headingLevel="h1"
           >

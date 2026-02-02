@@ -46,8 +46,8 @@ const EditUser = () => {
   };
 
   return (
-    <div className="edit-user" data-testid="EditUser">
-      <Link to="/users" className="text-bold">
+    <div data-testid="EditUser">
+      <Link to="/users">
         &laquo; Back to User List
       </Link>
       <h1>Edit User</h1>

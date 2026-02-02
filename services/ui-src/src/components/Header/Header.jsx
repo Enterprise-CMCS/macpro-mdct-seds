@@ -3,8 +3,6 @@ import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { useStore } from "../../store/store";
-
-import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
@@ -36,7 +34,7 @@ const Header = () => {
 
   return (
     <div className="header" data-testid="Header">
-      <UsaBanner className="padding-y-1px" />
+      <UsaBanner />
 
       <div className="logo">
         <Link to="/">

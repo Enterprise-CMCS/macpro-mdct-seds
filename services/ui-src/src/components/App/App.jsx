@@ -41,7 +41,7 @@ function App() {
         <>
           <Header displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-            <div className="main">
+            <div className="app">
               <Routes isAuthorized={isAuthorized} />
             </div>
           </AppContext.Provider>

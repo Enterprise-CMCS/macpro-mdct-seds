@@ -4,7 +4,6 @@ import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
-import "./PrintPDF.scss";
 import { NavLink, useParams } from "react-router-dom";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
@@ -49,32 +48,28 @@ const PrintPDF = () => {
   };
 
   return (
-    <div className="print-page padding-x-5 ">
+    <div>
       {loading ? (
-        <div className="loader">
-          <div className="loader-content">
-            <div className="loader-icon"></div>Generating print view
+        <div>
+          <div>
+            <div></div>Generating print view
             <br /> Please Wait...
           </div>
         </div>
       ) : null}
       {hasAccess === true ? (
         <>
-          <div className="form-header upper-form-nav">
-            <div className="breadcrumbs">
-              <NavLink className="breadcrumb" to="/">
+          <div>
+            <div>
+              <NavLink to="/">
                 {" "}
                 Enrollment Data Home {">"}
                 {"   "}
               </NavLink>
-              <NavLink
-                className="breadcrumb"
-                to={`/forms/${formattedStateName}/${year}/${quarter}`}
-              >
+              <NavLink to={`/forms/${formattedStateName}/${year}/${quarter}`}>
                 {`${formattedStateName} Q${quarter} ${year} > `}
               </NavLink>
               <NavLink
-                className="breadcrumb"
                 to={`/forms/${formattedStateName}/${year}/${quarter}/${form}`}
               >
                 {" "}
@@ -83,18 +78,14 @@ const PrintPDF = () => {
             </div>
           </div>
 
-          <Button
-            className="print-button margin-bottom-4"
-            variation="solid"
-            onClick={(e) => handlePrint(e)}
-          >
+          <Button variation="solid" onClick={(e) => handlePrint(e)}>
             Print / PDF
             <FontAwesomeIcon icon={faPrint} />
           </Button>
 
-          <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
+          <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
 
-          <div id="TheDiv" className="tab-container-main testClass">
+          <div id="TheDiv">
             {currentTabs.map((tab, tabIndex) => {
               // Filter out just the answer objects that belong in this tab
               const tabAnswers = answers.filter(
@@ -105,7 +96,7 @@ const PrintPDF = () => {
               return (
                 <React.Fragment key={tabIndex}>
                   {ageRangeDescription ? (
-                    <div className="age-range-description padding-y-2">
+                    <div>
                       <h3>{ageRangeDescription}:</h3>
                     </div>
                   ) : null}
@@ -143,17 +134,17 @@ const PrintPDF = () => {
                 </React.Fragment>
               );
             })}
-            <div className="summary-notes">
-              <strong className="summary-label">
+            <div>
+              <strong>
                 Add any notes here to accompany the form submission:
               </strong>
-              <div className="summary-text">
+              <div>
                 {!null || statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
                 ) : null}
               </div>
             </div>
-            <h2 className="form-name">{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
+            <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
           </div>
         </>
       ) : null}

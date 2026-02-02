@@ -8,8 +8,8 @@
 }
 
 .status {
-  @extend .radius-pill;
-  @extend .font-body-sm;
+  border-radius: 99rem;
+  font-size: 1.06rem;
   line-height: 1.1rem;
   margin: 0.6rem 0;
   min-height: 58px;

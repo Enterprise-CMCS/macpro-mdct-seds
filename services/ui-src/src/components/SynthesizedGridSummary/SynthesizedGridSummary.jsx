@@ -107,11 +107,8 @@ const SynthesizedGridSummary = ({
 
   return (
     <>
-      <div className="question-component padding-top-5 border-top-1px">
-        <b
-          className="synthesized-summary-label"
-          data-testid="synthesized-summary-label"
-        >
+      <div>
+        <b data-testid="synthesized-summary-label">
           {formattedQuestionNumber}. {labelWithAgeVariable}
         </b>
         <GridWithTotals
@@ -122,7 +119,7 @@ const SynthesizedGridSummary = ({
           precision={1}
           questions={questions}
         />
-        <div className="disclaimer" data-testid="synthesized-disclaimer">
+        <div data-testid="synthesized-disclaimer">
           {" "}
           Values will not appear until source data is provided
         </div>

@@ -21,8 +21,8 @@ const SummaryTab = () => {
   }
 
   return (
-    <div className="summary-tab">
-      <div className="age-range-description padding-y-2">
+    <div>
+      <div>
         <h3>Summary:</h3>
       </div>
 

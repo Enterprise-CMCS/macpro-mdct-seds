@@ -4,12 +4,12 @@
 
 .header {
   .logo {
-    @extend .padding-left-4;
     background-color: #00395e;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-right: 1rem;
+    padding-left: 2rem;
 
     .dropdown-toggle {
       color: white;
@@ -26,16 +26,18 @@
 }
 
 .app-title {
-  @extend .text-white;
-  @extend .text-bold;
-  @extend .padding-y-3;
-  @extend .padding-left-9;
+  color: white;
+  font-weight: 700;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 4.5rem;
 }
 
 .navigation {
   background-color: #eefbff;
-  @extend .text-bold;
-  @extend .padding-y-1;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 9px;
   display: flex;
   justify-content: space-between;
@@ -50,6 +52,6 @@
   }
 
   .dropdown-toggle {
-    @extend .text-bold;
+    font-weight: 700;
   }
 }

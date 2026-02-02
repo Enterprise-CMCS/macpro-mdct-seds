@@ -28,29 +28,29 @@ const HomeAdmin = () => {
 
   let role = user.role;
   return (
-    <div className="HomeAdmin" data-testid="HomeAdmin">
+    <div data-testid="HomeAdmin">
       {role === "admin" ? (
         <div>
           <h1>Home Admin User Page</h1>
-          <div className="list-display-container">
+          <div>
             <ul>
-              <li className="user-view-edit">
-                <Link to="/users" className="text-bold">
+              <li>
+                <Link to="/users">
                   View / Edit Users
                 </Link>
               </li>
-              <li className="form-templates">
-                <Link to="/form-templates" className="text-bold">
+              <li>
+                <Link to="/form-templates">
                   Add/Edit Form Templates
                 </Link>
               </li>
-              <li className="generate-forms">
-                <Link to="/generate-forms" className="text-bold">
+              <li>
+                <Link to="/generate-forms">
                   Generate Quarterly Forms
                 </Link>
               </li>
-              <li className="generate-counts">
-                <Link to="/generate-counts" className="text-bold">
+              <li>
+                <Link to="/generate-counts">
                   Generate Total Enrollment Counts
                 </Link>
               </li>
@@ -60,8 +60,8 @@ const HomeAdmin = () => {
       ) : (
         <h1>Home Business User Page</h1>
       )}
-      <div className="state-coreset-container margin-bottom-2">
-        <div className="state-selector">
+      <div>
+        <div>
           <label htmlFor="state-select">Select State to View</label>
           <select
             id="state-select"
@@ -77,15 +77,15 @@ const HomeAdmin = () => {
           </select>
         </div>
 
-        <div className="year-coreset-selector">
+        <div>
           {accordionItems && accordionItems.length !== 0 ? (
             <>
-              <p className="instructions">
+              <p>
                 Welcome to SEDS! Please select a Federal Fiscal Year and quarter
                 below to view available reports.
               </p>
 
-              <div className="quarterly-report-list">
+              <div>
                 <Accordion bordered>
                   {accordionItems.map((item, idx) => (
                     <AccordionItem

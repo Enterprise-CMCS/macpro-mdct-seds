@@ -33,9 +33,9 @@ const Users = () => {
   }, []);
 
   return (
-    <div className="user-profiles col-gap-1-half" data-testid="users">
+    <div data-testid="users">
       <h1>Users</h1>
-      <div className="row-gap-1">
+      <div>
         <Button
           variation="solid"
           onClick={() =>

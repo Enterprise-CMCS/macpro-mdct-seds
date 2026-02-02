@@ -7,8 +7,8 @@ import React from "react";
  */
 const FormLoadError = () => {
   return (
-    <div className="formLoadError" data-testid="formLoadTest">
-      <div className="container">
+    <div data-testid="formLoadTest">
+      <div>
         <div row>
           <div>
             <h1>Error Retrieving Form</h1>

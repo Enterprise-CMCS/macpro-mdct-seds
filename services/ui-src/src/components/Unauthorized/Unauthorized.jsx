@@ -2,8 +2,8 @@ import React from "react";
 
 const Unauthorized = () => {
   return (
-    <div className="unauthorized" data-testid="unauthorizedTest">
-      <div className="container page-login">
+    <div data-testid="unauthorizedTest">
+      <div>
         <div>
           <div>
             <h1>Unauthorized</h1>

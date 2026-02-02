@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "@cmsgov/design-system";
-import "./LoaderButton.scss";
 
 export default function LoaderButton({
   isLoading,
@@ -12,7 +11,6 @@ export default function LoaderButton({
   return (
     <Button
       variation={variation}
-      className="login-button"
       disabled={disabled || isLoading}
       {...props}
       data-testid="LoaderButton"
@@ -23,7 +21,6 @@ export default function LoaderButton({
           src="preloaders/spheres.gif"
           alt="Loading... Please wait..."
           title="Loading... Please wait..."
-          className="display-inline"
         />
       )}
     </Button>

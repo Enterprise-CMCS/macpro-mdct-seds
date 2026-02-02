@@ -144,7 +144,7 @@ export const SynthesizedGrid = ({ range }) => {
           </tr>
         </tbody>
       </Table>
-      <div className="disclaimer">
+      <div>
         Values will not appear until source data is provided
       </div>
     </div>

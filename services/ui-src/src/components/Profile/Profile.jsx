@@ -1,5 +1,4 @@
 import React from "react";
-import "./Profile.scss";
 import { useStore } from "../../store/store";
 import { TextField } from "@cmsgov/design-system";
 
@@ -18,7 +17,7 @@ export default function Profile() {
   const state = user.state ?? "";
 
   return (
-    <div className="Profile center">
+    <div>
       <h1>Profile</h1>
       <div>
         <div>

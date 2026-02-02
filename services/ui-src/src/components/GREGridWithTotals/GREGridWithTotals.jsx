@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
-import "./GREGridWithTotals.scss";
 
 /*This component is specifically designed to for the Gender/Race/Ethnicity form as of 2021.
  * It is based off of the GridWithTotals component.

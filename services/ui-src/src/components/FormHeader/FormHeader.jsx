@@ -62,8 +62,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
 
   return (
     <>
-      <div className="form-header upper-form-nav">
-        <div className="breadcrumbs">
+      <div>
+        <div>
           <Link to="/">
             {" "}
             Enrollment Data Home {">"}
@@ -83,7 +83,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <p> {formDescription.form_text}</p>
         </div>
         <div>
-          <table className="unstyled">
+          <table>
             <tbody>
               <tr>
                 <th>
