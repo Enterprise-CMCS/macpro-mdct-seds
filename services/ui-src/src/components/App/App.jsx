@@ -36,7 +36,7 @@ function App() {
   }, [pathname, isAuthenticating, isAuthenticated]);
 
   return (
-    <div>
+    <>
       {!isAuthenticating && (
         <>
           <Header displayHeader={true} />
@@ -48,7 +48,7 @@ function App() {
           <Footer />
         </>
       )}
-    </div>
+    </>
   );
 }
 

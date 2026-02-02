@@ -7,6 +7,7 @@
   display: block;
   width: 125px;
   margin: 0;
+  z-index: 99;
 
   .dropbtn {
     background-color: transparent;
@@ -25,15 +26,21 @@
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 
-    ul,
+    ul {
+      padding: 0;
+    }
     li {
       list-style: none;
       a {
         display: block;
-        padding: 12px 16px;
+        padding: 12px 20px;
         color: #333;
         font-size: 14px;
       }
+    }
+
+    a:hover {
+      background-color: #f5f5f5;
     }
   }
 }

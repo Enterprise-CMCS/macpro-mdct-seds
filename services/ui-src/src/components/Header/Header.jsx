@@ -60,7 +60,7 @@ const Header = () => {
               </button>
               {navigation && (
                 <div className="dropdown-content">
-                  <ui className="dropdown-content" role="presentation">
+                  <ul className="dropdown-content" role="presentation">
                     <li>
                       <a href="/profile">User Profile</a>
                     </li>
@@ -69,7 +69,7 @@ const Header = () => {
                         Logout
                       </a>
                     </li>
-                  </ui>
+                  </ul>
                 </div>
               )}
             </div>
