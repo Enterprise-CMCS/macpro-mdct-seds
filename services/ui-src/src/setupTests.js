@@ -44,11 +44,6 @@ vi.mock("aws-amplify", () => ({
   },
 }));
 
-vi.mock("./utility-functions/environment", () => ({
-  MODE: "production",
-  BASE_URL: "mdctcartsdev.cms.gov",
-}));
-
 HTMLCanvasElement.prototype.getContext = () => {
   /* Nothing; we don't unit test our jsPDF integration */
 };

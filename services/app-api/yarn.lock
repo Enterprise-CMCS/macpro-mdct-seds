@@ -2000,7 +2000,6 @@ __metadata:
     jwt-decode: "npm:^4.0.0"
     kafkajs: "npm:^1.16.0"
     typescript: "npm:^5.9.3"
-    uuid: "npm:^7.0.3"
     vitest: "npm:^3.0.5"
   languageName: unknown
   linkType: soft
@@ -3544,15 +3543,6 @@ __metadata:
   dependencies:
     imurmurhash: "npm:^0.1.4"
   checksum: 10c0/da7ade4cb04eb33ad0499861f82fe95ce9c7c878b7139dc54d140ecfb6a6541c18a5c8dac16188b8b379fe62c0c1f1b710814baac910cde5f4fec06212126c6a
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "uuid@npm:7.0.3"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 10c0/2eee5723b0fcce8256f5bfd3112af6c453b5471db00af9c3533e3d5a6e57de83513f9a145a570890457bd7abf2c2aa05797291d950ac666e5a074895dc63168b
   languageName: node
   linkType: hard
 

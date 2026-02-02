@@ -3,6 +3,7 @@ import { main as obtainFormTemplate } from "./obtainFormTemplate.ts";
 import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
@@ -12,7 +13,9 @@ const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 
 const mockEvent = {
-  body: JSON.stringify({ year: 2025 }),
+  pathParameters: {
+    year: "2025",
+  },
 };
 
 const mockFormTemplate = {
@@ -58,9 +61,9 @@ describe("obtainFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.NotFound,
         body: JSON.stringify({
-          status: 404,
+          status: StatusCodes.NotFound,
           message: "Could not find form template for year: 2025",
         }),
       })
@@ -74,7 +77,7 @@ describe("obtainFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

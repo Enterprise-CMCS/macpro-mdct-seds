@@ -13,8 +13,8 @@ tests_output
 tests/cypress/videos
 tests/cypress/screenshots
 tests/cypress/downloads
-.vscode
 /.cdk
 cdk.context.json
 **/.yarn/*
 services/ui-src/public/env-config.ts
+.vscode/settings.json

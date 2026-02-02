@@ -4,36 +4,34 @@ import {
   authorizeAdminOrUserWithEmail,
   authorizeAnyUser,
 } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { ok, notFound } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event) => {
+export const main = handler(async (event: APIGatewayProxyEvent) => {
   await authorizeAnyUser(event);
 
   const params = {
     TableName: process.env.AuthUserTable,
     Select: "ALL_ATTRIBUTES",
     ExpressionAttributeValues: {
-      ":userId": event.pathParameters["id"],
+      ":userId": event.pathParameters!["userId"],
     },
     FilterExpression: "userId = :userId",
   };
 
   const queryResult = await dynamoDb.scan(params);
 
-  let returnResult;
-
   if (!queryResult["Items"]) {
-    returnResult = {
+    return notFound({
       status: "error",
       message: "No user by specified id found",
-    };
-  } else {
-    const foundUser = queryResult.Items[0];
-    await authorizeAdminOrUserWithEmail(event, foundUser.userId);
-    returnResult = {
-      status: "success",
-      data: queryResult["Items"][0],
-    };
+    });
   }
 
-  return returnResult;
+  const foundUser = queryResult.Items[0];
+  await authorizeAdminOrUserWithEmail(event, foundUser.userId);
+  return ok({
+    status: "success",
+    data: queryResult["Items"][0],
+  });
 });

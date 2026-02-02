@@ -1,18 +1,26 @@
 {
   "name": "app-api",
-  "description": "",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
+  "description": "",
+  "license": "CC0-1.0",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds.git"
+  },
   "type": "module",
   "scripts": {
     "test": "vitest",
     "coverage": "vitest --run --coverage"
   },
-  "author": "",
-  "license": "CC0-1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-seds.git"
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.946.0",
+    "@aws-sdk/client-ses": "^3.946.0",
+    "@aws-sdk/lib-dynamodb": "^3.946.0",
+    "dompurify": "3.3.1",
+    "jsdom": "26.1.0",
+    "jwt-decode": "^4.0.0",
+    "kafkajs": "^1.16.0"
   },
   "devDependencies": {
     "@types/jsdom": "27.0.0",
@@ -22,14 +30,5 @@
     "typescript": "^5.9.3",
     "vitest": "^3.0.5"
   },
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.946.0",
-    "@aws-sdk/client-ses": "^3.946.0",
-    "@aws-sdk/lib-dynamodb": "^3.946.0",
-    "dompurify": "3.3.1",
-    "jsdom": "26.1.0",
-    "jwt-decode": "^4.0.0",
-    "kafkajs": "^1.16.0",
-    "uuid": "^7.0.3"
-  }
+  "packageManager": "yarn@4.12.0"
 }

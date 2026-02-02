@@ -176,7 +176,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/get/getUserById.ts",
     handler: "main",
-    path: "/users/{id}",
+    path: "/users/{userId}",
     method: "GET",
     ...commonProps,
   });
@@ -197,50 +197,34 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "createUser", {
-    entry: "services/app-api/handlers/users/post/createUser.ts",
-    handler: "main",
-    path: "/users/add",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "adminCreateUser", {
-    entry: "services/app-api/handlers/users/post/createUser.ts",
-    handler: "adminCreateUser",
-    path: "/users/admin-add",
-    method: "POST",
-    ...commonProps,
-  });
-
   new Lambda(scope, "updateUser", {
     entry: "services/app-api/handlers/users/post/updateUser.ts",
     handler: "main",
-    path: "/users/update/{userId}",
+    path: "/users/{userId}",
     method: "POST",
     ...commonProps,
   });
 
   new Lambda(scope, "getForm", {
-    entry: "services/app-api/handlers/forms/get.ts",
+    entry: "services/app-api/handlers/forms/get/get.ts",
     handler: "main",
-    path: "/single-form/{state}/{specifiedYear}/{quarter}/{form}",
+    path: "/forms/{state}/{year}/{quarter}/{form}",
     method: "GET",
     ...commonProps,
   });
 
   new Lambda(scope, "getStateFormList", {
-    entry: "services/app-api/handlers/forms/post/obtainFormsList.ts",
+    entry: "services/app-api/handlers/forms/get/obtainFormsList.ts",
     handler: "main",
-    path: "/forms/obtain-state-forms",
-    method: "POST",
+    path: "/forms/{state}/{year}/{quarter}",
+    method: "GET",
     ...commonProps,
   });
 
   new Lambda(scope, "updateStateFormList", {
     entry: "services/app-api/handlers/state-forms/post/updateStateForms.ts",
     handler: "main",
-    path: "/state-forms/update",
+    path: "/forms/{state}/{year}/{quarter}/{form}/totals",
     method: "POST",
     ...commonProps,
   });
@@ -249,24 +233,24 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry:
       "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.ts",
     handler: "main",
-    path: "/generate-enrollment-totals",
+    path: "/admin/generate-totals",
     method: "POST",
     timeout: Duration.minutes(15),
     ...commonProps,
   });
 
   new Lambda(scope, "obtainAvailableForms", {
-    entry: "services/app-api/handlers/forms/post/obtainAvailableForms.ts",
+    entry: "services/app-api/handlers/forms/get/obtainAvailableForms.ts",
     handler: "main",
-    path: "/forms/obtainAvailableForms",
-    method: "POST",
+    path: "/forms/{state}",
+    method: "GET",
     ...commonProps,
   });
 
   new Lambda(scope, "generateQuarterForms", {
     entry: "services/app-api/handlers/forms/post/generateQuarterForms.ts",
     handler: "main",
-    path: "/generate-forms",
+    path: "/admin/generate-forms",
     method: "POST",
     timeout: Duration.minutes(15),
     ...commonProps,
@@ -340,26 +324,25 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "saveForm", {
     entry: "services/app-api/handlers/forms/post/saveForm.ts",
     handler: "main",
-    path: "/single-form/save",
+    path: "/forms/{state}/{year}/{quarter}/{form}",
     method: "POST",
     ...commonProps,
   });
 
   new Lambda(scope, "getFormTemplate", {
-    entry:
-      "services/app-api/handlers/form-templates/post/obtainFormTemplate.ts",
+    entry: "services/app-api/handlers/form-templates/get/obtainFormTemplate.ts",
     handler: "main",
-    path: "/form-template",
-    method: "POST",
+    path: "/templates/{year}",
+    method: "GET",
     ...commonProps,
   });
 
   new Lambda(scope, "getFormTemplateYears", {
     entry:
-      "services/app-api/handlers/form-templates/post/obtainFormTemplateYears.ts",
+      "services/app-api/handlers/form-templates/get/obtainFormTemplateYears.ts",
     handler: "main",
-    path: "/form-templates/years",
-    method: "POST",
+    path: "/templates",
+    method: "GET",
     ...commonProps,
   });
 
@@ -367,7 +350,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry:
       "services/app-api/handlers/form-templates/post/updateCreateFormTemplate.ts",
     handler: "main",
-    path: "/form-templates/add",
+    path: "/templates/{year}",
     method: "POST",
     ...commonProps,
   });

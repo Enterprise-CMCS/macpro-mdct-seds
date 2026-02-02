@@ -3,6 +3,7 @@ import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { getUserDetailsFromEvent } from "../../../libs/authorization.ts";
 import { createUser } from "../post/createUser.ts";
 import { AuthUser } from "../../../storage/users.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 /**
  * Get **or** create the AuthUser record matching this request's auth token.
@@ -25,7 +26,7 @@ export const main = handler(async (event) => {
     await recordLogin(authUser, userDetails);
   }
 
-  return authUser;
+  return ok(authUser);
 });
 
 /**
@@ -54,7 +55,7 @@ export const scanForUserWithSub = async (usernameSub: string) => {
  * The date usually matters more than the exact time,
  * so this is still valuable information.
  */
-const recordLogin = async (authUser, userDetails) => {
+const recordLogin = async (authUser: any, userDetails: any) => {
   await dynamoDb.update({
     TableName: process.env.AuthUserTable,
     Key: { userId: authUser.userId },

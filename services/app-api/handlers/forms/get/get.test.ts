@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as get } from "./get.ts";
-import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../auth/authConditions.ts";
+import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
@@ -8,7 +8,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
-vi.mock("../../auth/authConditions.ts", () => ({
+vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
 }));
 const authorizeAdminOrUserForState = vi.mocked(
@@ -35,7 +35,7 @@ const mockFormQuestion = {
 const mockEvent = {
   pathParameters: {
     state: "CO",
-    specifiedYear: "2025",
+    year: "2025",
     quarter: "1",
     form: "F1",
   },
@@ -79,10 +79,10 @@ describe("get.ts", () => {
         TableName: "local-form-questions",
         ExpressionAttributeNames: { "#theYear": "year" },
         ExpressionAttributeValues: {
-          ":specifiedYear": 2025,
+          ":year": 2025,
           ":form": "F1",
         },
-        FilterExpression: "form = :form and #theYear = :specifiedYear",
+        FilterExpression: "form = :form and #theYear = :year",
       },
       expect.any(Function)
     );

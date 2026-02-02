@@ -3,6 +3,7 @@ import { main as updateCreateFormTemplate } from "./updateCreateFormTemplate.ts"
 import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
@@ -19,9 +20,11 @@ const mockTemplate = {
 
 const mockEvent = {
   body: JSON.stringify({
-    year: 2025,
     template: [mockTemplate],
   }),
+  pathParameters: {
+    year: "2025",
+  },
 };
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
@@ -63,16 +66,16 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({
-        year: 2025,
         template: [42],
       }),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
-          status: 400,
+          status: StatusCodes.BadRequest,
           message: "Invalid JSON. Please review your template.",
         }),
       })
@@ -86,16 +89,16 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({
-        year: 2025,
         template: [],
       }),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
-          status: 400,
+          status: StatusCodes.BadRequest,
           message: "Invalid JSON. Please review your template.",
         }),
       })
@@ -109,11 +112,12 @@ describe("updateCreateFormTemplate.ts", () => {
 
     const response = await updateCreateFormTemplate({
       body: JSON.stringify({}),
+      pathParameters: { year: "2025" },
     });
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.BadRequest,
         body: JSON.stringify({
           status: 422,
           message: "Please specify both a year and a template",

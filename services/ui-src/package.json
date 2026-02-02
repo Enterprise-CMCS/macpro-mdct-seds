@@ -1,27 +1,8 @@
 {
   "name": "ui-src",
-  "license": "CC0-1.0",
-  "description": "",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
-  "dependencies": {
-    "@cmsgov/design-system": "^13.0.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.32",
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "aws-amplify": "^6.15.8",
-    "file-saver": "^2.0.5",
-    "jsonpath": "^1.1.1",
-    "jspdf": "^3.0.2",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
-    "react-tabs": "^3.1.2",
-    "sass": "^1.77.6",
-    "zustand": "^4.5.7"
-  },
+  "description": "",
+  "license": "CC0-1.0",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -30,24 +11,25 @@
     "coverage": "vitest --run --coverage",
     "lint": "eslint ."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "eslint:recommended",
-      "google"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@trussworks/react-uswds": "^7.0.0",
+    "aws-amplify": "^6.15.8",
+    "file-saver": "^2.0.5",
+    "jsonpath": "^1.1.1",
+    "jspdf": "^3.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-bootstrap": "^0.33.1",
+    "react-dom": "^16.13.1",
+    "react-router-bootstrap": "^0.25.0",
+    "react-router-dom": "^5.1.2",
+    "react-tabs": "^3.1.2",
+    "sass": "^1.77.6",
+    "uswds": "^2.14.0",
+    "zustand": "^4.5.7"
   },
   "devDependencies": {
     "@testing-library/dom": "7.31.2",
@@ -76,5 +58,25 @@
   },
   "resolutions": {
     "form-data": "^4.0.4"
-  }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended",
+      "google"
+    ]
+  },
+  "packageManager": "yarn@4.12.0"
 }

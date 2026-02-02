@@ -84,9 +84,6 @@ export default function Routes({ isAuthorized }) {
           <AuthenticatedRoute exact path="/generate-counts">
             <GenerateTotals />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="*">
-            {/* <Redirect to="/" /> */}
-          </AuthenticatedRoute>
         </>
       ) : null}
       <AuthenticatedRoute path="*">
