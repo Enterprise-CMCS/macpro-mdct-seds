@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
   Local:
     DYNAMODB_URL="http://localhost:8000" dynamoPrefix="local" node services/database/scripts/sync-kafka-2024.js

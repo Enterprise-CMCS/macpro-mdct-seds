@@ -21,10 +21,8 @@ const GREGridWithTotals = (props) => {
       return 0;
     }
     // nulls sort after anything else
-    /* eslint-disable valid-typeof */
     else if (typeof first == null) {
       return 1;
-      /* eslint-disable valid-typeof */
     } else if (typeof second == null) {
       return -1;
     }
@@ -49,7 +47,7 @@ const GREGridWithTotals = (props) => {
 
   useEffect(() => {
     updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
