@@ -60,7 +60,7 @@ const PrintPDF = () => {
       {hasAccess === true ? (
         <>
           <div>
-            <div>
+            <div className="breadcrumbs">
               <NavLink to="/">
                 {" "}
                 Enrollment Data Home {">"}

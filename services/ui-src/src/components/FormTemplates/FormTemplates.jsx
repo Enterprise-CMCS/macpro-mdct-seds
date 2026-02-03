@@ -88,9 +88,9 @@ const FormTemplates = () => {
   }, []);
 
   return (
-    <div>
+    <div className="flex-col-gap-1half">
       <h1>Add/Edit Form Templates</h1>
-      <div data-testid="formTemplates">
+      <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
           <Alert
             variation={alert.status === 200 ? "success" : "error"}
@@ -100,7 +100,7 @@ const FormTemplates = () => {
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="year-selection-container">
+          <div>
             <label htmlFor="year-select">Select Year or Create New</label>
             <select
               id="year-select"
@@ -143,6 +143,7 @@ const FormTemplates = () => {
         <Button
           id="save-button"
           variation="solid"
+          className="flex-end"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >

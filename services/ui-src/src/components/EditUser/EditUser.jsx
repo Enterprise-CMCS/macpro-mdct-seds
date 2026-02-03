@@ -46,13 +46,11 @@ const EditUser = () => {
   };
 
   return (
-    <div data-testid="EditUser">
-      <Link to="/users">
-        &laquo; Back to User List
-      </Link>
+    <div data-testid="EditUser" className="flex-col-gap-1half">
+      <Link to="/users">&laquo; Back to User List</Link>
       <h1>Edit User</h1>
       {user ? (
-        <div>
+        <div className="flex-col-gap-1half">
           <Table>
             <tbody>
               <tr>
@@ -143,12 +141,15 @@ const EditUser = () => {
               </tr>
             </tbody>
           </Table>
-          <div>
-            <Button type="button" variation="solid" onClick={handleUpdateClick}>
-              Update User
-              <FontAwesomeIcon icon={faUserCheck} />
-            </Button>
-          </div>
+          <Button
+            type="button"
+            variation="solid"
+            className="flex-end"
+            onClick={handleUpdateClick}
+          >
+            Update User
+            <FontAwesomeIcon icon={faUserCheck} />
+          </Button>
         </div>
       ) : (
         `Cannot find user with id ${id}`

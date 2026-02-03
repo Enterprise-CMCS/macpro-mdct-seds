@@ -63,7 +63,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
   return (
     <>
       <div>
-        <div>
+        <div className="breadcrumbs">
           <Link to="/">
             {" "}
             Enrollment Data Home {">"}

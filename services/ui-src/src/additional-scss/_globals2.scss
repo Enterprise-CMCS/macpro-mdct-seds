@@ -23,6 +23,10 @@
   }
 }
 
+.half-width{
+  width: 46rem;
+}
+
 //-----------------------
 //  Headers
 //-----------------------
@@ -54,23 +58,31 @@ table {
     th,
     td {
       border: 1px solid #262626;
-      padding: 1rem;
+      padding: 0.5rem 1rem;
     }
     th {
       background-color: #f2f2f2;
+      line-height: 1.3;
 
       &.total-header-cell {
         background-color: #717698 !important;
         color: white;
         width: 70px;
-        line-height: 1.3;
       }
     }
-
+    tr th:first-child {
+      width: 20%;
+    }
     td {
       &.total-column {
         background: #e6f9fd;
         font-weight: 700;
+      }
+      svg {
+        font-size: 2.75rem;
+      }
+      p {
+        margin: 0;
       }
     }
     .ds-c-label {
@@ -93,10 +105,21 @@ table {
 //  Tags
 //-----------------------
 
-select {
-  height: 40px;
+select,
+input[type="text"] {
+  height: 2.5rem;
   width: 100%;
   padding: 8px 32px 8px 8px;
+  border: 2px solid #262626;
+}
+
+input[type="radio"] {
+  min-width: 20px;
+  min-height: 20px;
+}
+
+textarea {
+  min-height: 10rem;
 }
 
 button {
@@ -107,29 +130,110 @@ button {
 
 ul {
   padding: 0;
+  margin: 0;
   li {
     list-style: none;
   }
 }
 
-input {
-  min-width: 20px;
-  min-height: 20px;
+caption {
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+label,
+p {
+  margin: 0;
 }
 
 //-----------------------
-//  Custom
+//  CMSDS overrides
+//-----------------------
+
+.ds-c-field {
+  max-width: 100%;
+}
+
+.ds-c-usa-banner__header {
+  margin: 0;
+}
+
+//-----------------------
+//  Spacing
 //-----------------------
 
 .padding-1 {
   padding: 1rem 0;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row-gap-1 {
+  @extend .flex-row;
+  gap: 1rem;
+}
+
+.flex-col-gap-1 {
+  @extend .flex-col;
+  gap: 1rem;
+}
+
+.flex-col-gap-1half {
+  @extend .flex-col;
+  gap: 1.5rem;
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+//-----------------------
+//  Custom
+//-----------------------
 .question-component {
   border-top: 1px solid;
   padding-top: 2.5rem;
 }
 
-.ds-c-field {
-  max-width: 100%;
+.breadcrumbs {
+  font-size: 1.04rem;
+  font-style: italic;
+  color: #565c65;
+  text-decoration: underline !important;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.pill {
+  text-align: center;
+  color: #fff;
+  background-color: #0071bc;
+  border-radius: 1.5rem;
+  width: 10rem;
+  padding: 0.75rem 1.25rem;
+  line-height: 1.1rem;
+  font-weight: 700;
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid\9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
 }

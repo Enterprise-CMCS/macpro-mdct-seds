@@ -24,7 +24,7 @@ const GenerateTotals = () => {
   };
 
   return (
-    <div>
+    <div className="flex-col-gap-1half half-width">
       <h1>Generate Total Enrollment Counts</h1>
       {loading ? (
         <div>

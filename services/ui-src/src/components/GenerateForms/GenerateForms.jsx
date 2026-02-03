@@ -37,7 +37,7 @@ const GenerateForms = () => {
     }
   };
   return (
-    <div>
+    <div className="flex-col-gap-1half half-width">
       {loading ? (
         <div>
           <div>
@@ -68,34 +68,39 @@ const GenerateForms = () => {
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
-      <label htmlFor="year-select">Select the Year</label>
-      <select
-        id="year-select"
-        value={selectedYear}
-        onChange={(evt) => setSelectedYear(evt.target.value)}
-      >
-        {yearSelections.map(({ label, value }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
-        Select the Quarter
-      </label>
-      <select
-        id="quarter-select"
-        value={selectedQuarter}
-        onChange={(evt) => setSelectedQuarter(evt.target.value)}
-      >
-        <option value="1">Q1</option>
-        <option value="2">Q2</option>
-        <option value="3">Q3</option>
-        <option value="4">Q4</option>
-      </select>
+      <div>
+        <label htmlFor="year-select">Select the Year</label>
+        <select
+          id="year-select"
+          value={selectedYear}
+          onChange={(evt) => setSelectedYear(evt.target.value)}
+        >
+          {yearSelections.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
+          Select the Quarter
+        </label>
+        <select
+          id="quarter-select"
+          value={selectedQuarter}
+          onChange={(evt) => setSelectedQuarter(evt.target.value)}
+        >
+          <option value="1">Q1</option>
+          <option value="2">Q2</option>
+          <option value="3">Q3</option>
+          <option value="4">Q4</option>
+        </select>
+      </div>
       <Button
         variation="solid"
         data-testid="generateFormsButton"
+        className="flex-end"
         onClick={() => generateForms()}
       >
         Generate Forms

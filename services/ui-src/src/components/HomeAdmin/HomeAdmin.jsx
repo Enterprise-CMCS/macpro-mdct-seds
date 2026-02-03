@@ -28,26 +28,20 @@ const HomeAdmin = () => {
 
   let role = user.role;
   return (
-    <div data-testid="HomeAdmin">
+    <div data-testid="HomeAdmin" className="flex-col-gap-1half">
       {role === "admin" ? (
-        <div>
+        <div className="flex-col-gap-1half">
           <h1>Home Admin User Page</h1>
           <div>
-            <ul>
+            <ul className="flex-col-gap-1">
               <li>
-                <Link to="/users">
-                  View / Edit Users
-                </Link>
+                <Link to="/users">View / Edit Users</Link>
               </li>
               <li>
-                <Link to="/form-templates">
-                  Add/Edit Form Templates
-                </Link>
+                <Link to="/form-templates">Add/Edit Form Templates</Link>
               </li>
               <li>
-                <Link to="/generate-forms">
-                  Generate Quarterly Forms
-                </Link>
+                <Link to="/generate-forms">Generate Quarterly Forms</Link>
               </li>
               <li>
                 <Link to="/generate-counts">

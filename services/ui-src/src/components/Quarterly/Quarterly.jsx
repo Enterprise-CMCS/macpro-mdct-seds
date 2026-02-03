@@ -39,7 +39,7 @@ const Quarterly = () => {
 
   return (
     <div>
-      <div>
+      <div className="breadcrumbs">
         <Link to="/">Enrollment Data Home</Link> &gt;{" "}
         {`${state} Q${quarter} ${year}`}
       </div>
@@ -78,7 +78,7 @@ const Quarterly = () => {
                         <p>{form.form_name}</p>
                       </td>
                       <td>
-                        <div>{getStatusDisplay(form)}</div>
+                        <div className="pill">{getStatusDisplay(form)}</div>
                       </td>
                       <td>{dateFormatter(form.last_modified)}</td>
                       <td>

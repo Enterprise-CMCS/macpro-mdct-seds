@@ -55,6 +55,7 @@ const Header = () => {
                 }}
               >
                 My Profile
+                <span className="caret"></span>
               </button>
               {navigation && (
                 <div className="dropdown-content">

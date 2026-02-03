@@ -33,9 +33,9 @@ const Users = () => {
   }, []);
 
   return (
-    <div data-testid="users">
+    <div data-testid="users" className="flex-col-gap-1half">
       <h1>Users</h1>
-      <div className="exclude-from-pdf">
+      <div className="exclude-from-pdf flex-row-gap-1">
         <Button
           variation="solid"
           onClick={() =>
