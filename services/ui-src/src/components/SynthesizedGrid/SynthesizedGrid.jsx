@@ -92,7 +92,7 @@ export const SynthesizedGrid = ({ range }) => {
   let Q5Col5Total = getColumnTotalAverage("col6");
 
   return (
-    <div className="grid-with-totals">
+    <div className="flex-col-gap-1">
       <Table bordered={true} fullWidth={true}>
         <thead>
           <tr>
@@ -144,7 +144,7 @@ export const SynthesizedGrid = ({ range }) => {
           </tr>
         </tbody>
       </Table>
-      <div>
+      <div className="disclaimer">
         Values will not appear until source data is provided
       </div>
     </div>

@@ -5,7 +5,6 @@ import {
   isNotRequired,
   NotRequiredStatusFields,
 } from "../../utility-functions/formStatus";
-import { ChoiceList } from "@cmsgov/design-system";
 import { useStore } from "../../store/store";
 
 const NotApplicable = () => {
@@ -40,7 +39,7 @@ const NotApplicable = () => {
   };
 
   return (
-    <div>
+    <div className="radio-fieldset">
       <fieldset>
         <legend>Does this form apply to your state?</legend>
         <div>

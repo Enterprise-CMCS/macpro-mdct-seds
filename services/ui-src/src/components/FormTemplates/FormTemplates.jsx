@@ -129,7 +129,7 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3 margin-bottom-4">
+        <div>
           <label htmlFor="templateInput">Enter or Modify Template</label>
           <TextField
             multiline={true}

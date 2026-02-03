@@ -1,18 +1,6 @@
 /**********************
   GLOBALS
 **********************/
-* {
-  box-sizing: border-box;
-}
-
-h1 {
-  font-weight: $font-weight-normal;
-}
-
-h4 {
-  color: $brand-primary;
-}
-
 img {
   max-width: 100%;
 }
@@ -35,89 +23,6 @@ a:active {
 .nav .open > a:hover {
   background-color: transparent;
   text-decoration: underline;
-}
-
-//global changes
-.ds-c-accordion {
-  margin: 2rem 0;
-}
-
-.quarterly-items {
-  li {
-    list-style-type: none;
-  }
-}
-
-h1 {
-  font-size: 32px;
-  margin: 40px 0 20px;
-}
-
-h2 {
-  font-size: 30px;
-  margin: 0.8rem 0;
-}
-
-h3 {
-  font-size: 24px;
-  margin: 0.8rem 0;
-}
-
-legend {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.form-radio {
-  display: flex;
-  height: 24px;
-  flex-direction: row;
-  margin: 0.5rem 0;
-
-  input,
-  label {
-    margin: 0;
-  }
-  input {
-    min-width: 20px;
-    min-height: 20px;
-    margin-right: 10px;
-  }
-}
-
-button {
-  svg {
-    margin-left: 20px;
-  }
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-}
-
-//page specifica changes
-#login {
-  form {
-    width: 424px;
-  }
-  .ds-c-field,
-  button {
-    height: 40px;
-    width: 100%;
-  }
-
-  button {
-    margin: 4rem 0;
-  }
-}
-
-.Home {
-  p:first-of-type {
-    padding: 16px 0;
-  }
 }
 
 .loader {

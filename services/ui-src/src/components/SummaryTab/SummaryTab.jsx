@@ -21,8 +21,8 @@ const SummaryTab = () => {
   }
 
   return (
-    <div>
-      <div>
+    <>
+      <div className="padding-1">
         <h3>Summary:</h3>
       </div>
 
@@ -129,7 +129,7 @@ const SummaryTab = () => {
         }
       })}
       <SummaryNotes />
-    </div>
+    </>
   );
 };
 

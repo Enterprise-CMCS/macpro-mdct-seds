@@ -4,10 +4,8 @@ $image-path: "~@cmsgov/design-system/dist/images";
 
 @import "../../additional-scss/variables";
 
-@import "../../additional-scss/globals2";
-@import "../../additional-scss/component";
 @import "../../additional-scss/print";
+@import "../../additional-scss/globals2";
 // @import "../../additional-scss/globals";
-// @import "../../additional-scss/layout";
 @import "../../additional-scss/header";
 @import "../../additional-scss/footer";

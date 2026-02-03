@@ -61,7 +61,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
   };
 
   return (
-    <>
+    <div className="flex-col-gap-1half">
       <div>
         <div className="breadcrumbs">
           <Link to="/">
@@ -77,10 +77,10 @@ const FormHeader = ({ quarter, form, year, state }) => {
       </div>
       <h1>FORM {form}</h1>
       <hr />
-      <div>
-        <div>
+      <div className="flex-col-gap-1half">
+        <div className="flex-col-gap-1half">
           <h2>{formDescription.form_name}</h2>
-          <p> {formDescription.form_text}</p>
+          <i> {formDescription.form_text}</i>
         </div>
         <div>
           <table className="unstyled">
@@ -101,12 +101,12 @@ const FormHeader = ({ quarter, form, year, state }) => {
         </div>
 
         {showFPL ? (
-          <div data-testid="form-max-fpl">
+          <div data-testid="form-max-fpl" className="flex-col-gap-1 ">
             <p>What is the upper income eligibility limit for this program?</p>
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div>
+            <div className="form-input-row ">
               <div>
                 <TextInput
                   id="max-fpl"
@@ -116,20 +116,18 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   value={maxFPL}
                 />
               </div>
-              <div>
-                <Button
-                  variation="solid"
-                  onClick={updateMaxFPL}
-                  disabled={userRole !== "state"}
-                >
-                  Apply FPL Changes
-                </Button>
-              </div>
+              <Button
+                variation="solid"
+                onClick={updateMaxFPL}
+                disabled={userRole !== "state"}
+              >
+                Apply FPL Changes
+              </Button>
             </div>
           </div>
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 

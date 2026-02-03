@@ -54,7 +54,7 @@ const HomeAdmin = () => {
       ) : (
         <h1>Home Business User Page</h1>
       )}
-      <div>
+      <div className="flex-col-gap-1half">
         <div>
           <label htmlFor="state-select">Select State to View</label>
           <select
@@ -71,7 +71,7 @@ const HomeAdmin = () => {
           </select>
         </div>
 
-        <div>
+        <div className="flex-col-gap-1">
           {accordionItems && accordionItems.length !== 0 ? (
             <>
               <p>

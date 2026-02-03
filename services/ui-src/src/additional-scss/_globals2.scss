@@ -23,7 +23,7 @@
   }
 }
 
-.half-width{
+.half-width {
   width: 46rem;
 }
 
@@ -37,9 +37,15 @@ h1 {
   margin: 0;
 }
 
+h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+}
+
 h3 {
   font-weight: 500;
-  margin: 0.8rem 0;
+  margin: 0;
   font-size: 24px;
 }
 
@@ -116,6 +122,7 @@ input[type="text"] {
 input[type="radio"] {
   min-width: 20px;
   min-height: 20px;
+  margin: 0;
 }
 
 textarea {
@@ -140,11 +147,20 @@ caption {
   text-align: left;
   font-weight: 700;
   font-size: 1.1rem;
+  padding-bottom: 0.5rem;
 }
 
 label,
 p {
   margin: 0;
+}
+
+label {
+  font-weight: 700;
+}
+
+hr {
+  border-top: 1px solid #eee;
 }
 
 //-----------------------
@@ -153,10 +169,24 @@ p {
 
 .ds-c-field {
   max-width: 100%;
+  margin-block: 0;
 }
 
 .ds-c-usa-banner__header {
   margin: 0;
+}
+
+.react-tabs {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.react-tabs__tab-panel {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
 }
 
 //-----------------------
@@ -194,6 +224,10 @@ p {
 
 .flex-end {
   align-self: flex-end;
+}
+
+.flex-start {
+  align-self: flex-start;
 }
 
 //-----------------------
@@ -236,4 +270,48 @@ p {
   border-top: 4px solid\9;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
+}
+
+.radio-fieldset {
+  legend {
+    font-weight: 800;
+  }
+
+  div {
+    min-height: 2rem;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.form-footer {
+  @extend .flex-row;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    align-items: center;
+  }
+  button {
+    margin-left: 2rem;
+  }
+}
+
+.form-input-row {
+  @extend .flex-row;
+  align-items: center;
+  input {
+    margin-block: 0;
+  }
+  button {
+    margin-left: 2rem;
+    height: 40px;
+  }
+}
+
+.disclaimer {
+  font-weight: lighter;
+  text-align: center;
 }

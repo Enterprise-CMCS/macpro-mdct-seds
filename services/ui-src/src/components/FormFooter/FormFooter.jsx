@@ -14,14 +14,14 @@ const FormFooter = ({ state, year, quarter }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
 
   return (
-    <div data-testid="FormFooter">
+    <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
           <FontAwesomeIcon icon={faArrowLeft} /> Back to {`Q${quarter} ${year}`}
         </Link>
       </div>
 
-      <div>
+      <div className="flex-row">
         {lastModified ? (
           <div data-testid="lastModified">
             {" "}

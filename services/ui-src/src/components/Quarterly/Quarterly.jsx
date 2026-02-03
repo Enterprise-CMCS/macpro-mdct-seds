@@ -38,7 +38,7 @@ const Quarterly = () => {
   const getFormSegment = (form) => form.form?.replace(".", "-");
 
   return (
-    <div>
+    <div className="flex-col-gap-1">
       <div className="breadcrumbs">
         <Link to="/">Enrollment Data Home</Link> &gt;{" "}
         {`${state} Q${quarter} ${year}`}

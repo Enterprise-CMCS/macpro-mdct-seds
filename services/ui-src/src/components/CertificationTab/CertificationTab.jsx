@@ -93,7 +93,7 @@ const CertificationTab = () => {
   );
 
   return (
-    <div>
+    <div className="flex-col-gap-1half">
       {isFinal ? (
         <div>
           <Alert

@@ -47,7 +47,7 @@ const TabContainer = ({ quarter }) => {
         return (
           <TabPanel key={idx}>
             {ageRangeDescription ? (
-              <div>
+              <div className="padding-1">
                 <h3>{ageRangeDescription}:</h3>
               </div>
             ) : null}

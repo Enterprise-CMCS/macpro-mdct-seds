@@ -33,11 +33,7 @@ const Home = () => {
     return content;
   };
 
-  return (
-    <div data-testid="Home">
-      {renderLander()}
-    </div>
-  );
+  return <div data-testid="Home">{renderLander()}</div>;
 };
 
 Home.propTypes = {};

@@ -77,7 +77,7 @@ const FormPage = () => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage">
+    <div data-testid="FormPage" className="flex-col-gap-1half">
       {save_error ? (
         <div>
           <Alert variation="error" heading="Save Error:" headingLevel="h1">
@@ -100,7 +100,7 @@ const FormPage = () => {
         </div>
       ) : null}
       {hasAccess === true && !loadError ? (
-        <>
+        <div className="flex-col-gap-1">
           <div>
             <FormHeader
               quarter={quarterInt}
@@ -109,7 +109,11 @@ const FormPage = () => {
               state={formattedStateName}
             />
           </div>
-          <Button variation="solid" onClick={redirectToPDF}>
+          <Button
+            className="flex-start"
+            variation="solid"
+            onClick={redirectToPDF}
+          >
             Print view / PDF
             <FontAwesomeIcon icon={faFilePdf} />
           </Button>
@@ -121,7 +125,7 @@ const FormPage = () => {
             quarter={quarterInt}
             lastModified={last_modified}
           />
-        </>
+        </div>
       ) : null}
       {hasAccess === false ? <Unauthorized /> : null}
       {loadError ? (
