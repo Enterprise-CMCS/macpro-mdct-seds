@@ -345,6 +345,14 @@ a:focus {
   }
 }
 
+.form-button-row {
+  @extend .flex-row;
+
+  button:not(:last-child) {
+    margin-right: 1.5rem;
+  }
+}
+
 .disclaimer {
   font-weight: lighter;
   text-align: center;

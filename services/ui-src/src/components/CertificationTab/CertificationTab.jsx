@@ -133,7 +133,7 @@ const CertificationTab = () => {
         {isFinal || isProvisional ? statusText : null}
       </div>
       {showCertifyButtons ? (
-        <div>
+        <div className="form-button-row">
           <Button
             variation="solid"
             onClick={() => submitProvisional()}
