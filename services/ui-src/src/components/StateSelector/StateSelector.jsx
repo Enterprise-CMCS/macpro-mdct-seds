@@ -40,7 +40,7 @@ const StateSelector = () => {
   };
 
   return (
-    <div>
+    <div className="flex-col-gap-1half">
       {user?.state ? (
         <>
           <h2>
@@ -63,23 +63,25 @@ const StateSelector = () => {
       ) : (
         <>
           <h1>This account is not associated with any states</h1>
-
-          <label htmlFor="state-select">Please select your state:</label>
-          <select
-            id="state-select"
-            value={selectedState}
-            onChange={(evt) => setSelectedState(evt.target.value)}
-          >
-            <option value>- Select a State -</option>
-            {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label htmlFor="state-select">Please select your state:</label>
+            <select
+              id="state-select"
+              value={selectedState}
+              onChange={(evt) => setSelectedState(evt.target.value)}
+            >
+              <option value>- Select a State -</option>
+              {stateSelectOptions.map(({ label, value }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
           <Button
             style={{ marginTop: "0.5rem" }}
             variation="solid"
+            className="flex-end"
             data-testid="saveUpdatedUser"
             onClick={() => {
               saveUpdatedUser();

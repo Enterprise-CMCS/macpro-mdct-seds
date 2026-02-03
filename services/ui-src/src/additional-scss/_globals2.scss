@@ -21,6 +21,25 @@
       width: 100%;
     }
   }
+
+  .login {
+    min-width: 424px;
+    max-width: 424px;
+    flex-grow: 1;
+    gap: 3rem;
+    justify-content: center;
+
+    button,
+    form,
+    input,
+    div {
+      width: 100%;
+    }
+
+    form > div > button {
+      margin: 2rem 0;
+    }
+  }
 }
 
 .half-width {
@@ -163,6 +182,16 @@ hr {
   border-top: 1px solid #eee;
 }
 
+a,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: underline;
+}
+a:focus {
+  background: transparent;
+}
+
 //-----------------------
 //  CMSDS overrides
 //-----------------------
@@ -228,6 +257,11 @@ hr {
 
 .flex-start {
   align-self: flex-start;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
 }
 
 //-----------------------

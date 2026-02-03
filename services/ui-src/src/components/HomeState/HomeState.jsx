@@ -35,7 +35,7 @@ const HomeState = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div>
+    <div className="flex-col-gap-1half">
       <p>
         Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
         to view available reports.

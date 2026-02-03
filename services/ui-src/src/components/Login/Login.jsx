@@ -64,7 +64,7 @@ export default function Login() {
   const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
 
   return (
-    <div data-testid="Login">
+    <div data-testid="Login" className="login">
       <div data-testid="OktaLogin">
         <LoaderButton
           type="button"
@@ -81,6 +81,7 @@ export default function Login() {
         onSubmit={handleSubmit}
         hidden={hideCognitoLogin}
         data-testid="loginForm"
+        className="flex-col-gap-1half center"
       >
         <TextField
           autoFocus

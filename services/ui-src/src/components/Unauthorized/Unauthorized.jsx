@@ -2,7 +2,7 @@ import React from "react";
 
 const Unauthorized = () => {
   return (
-    <div data-testid="unauthorizedTest">
+    <div data-testid="unauthorizedTest" className="flex-col-gap-1half">
       <div>
         <div>
           <div>

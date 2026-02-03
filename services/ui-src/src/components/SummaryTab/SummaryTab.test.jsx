@@ -7,9 +7,7 @@ import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => (
-    <div>{JSON.stringify(props)}</div>
-  ),
+  default: (props) => <div>{JSON.stringify(props)}</div>,
 }));
 
 vi.mock("../SummaryNotes/SummaryNotes", () => ({
@@ -19,9 +17,7 @@ vi.mock("../SummaryNotes/SummaryNotes", () => ({
 }));
 
 vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
-  default: (props) => (
-    <div>{JSON.stringify(props)}</div>
-  ),
+  default: (props) => <div>{JSON.stringify(props)}</div>,
 }));
 
 vi.mock("react-router-dom", async (importOriginal) => ({
