@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { obtainAvailableForms } from "../../libs/api";
+import { listFormsForState } from "../../libs/api";
 import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
 import { Accordion } from "@trussworks/react-uswds";
 import "./HomeAdmin.scss";
@@ -18,7 +18,7 @@ const HomeAdmin = () => {
     // Get list of all state forms
     let forms = [];
     try {
-      forms = await obtainAvailableForms(stateId);
+      forms = await listFormsForState(stateId);
     } catch (e) {
       /* no-op */
     }

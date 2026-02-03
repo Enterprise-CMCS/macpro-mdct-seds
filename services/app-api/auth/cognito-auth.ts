@@ -1,5 +1,5 @@
 import { getUserDetailsFromEvent } from "../libs/authorization.ts";
-import { scanForUserWithSub } from "../handlers/users/get/getCurrentUser.ts";
+import { scanForUserWithSub } from "../handlers/users/getCurrentUser.ts";
 
 export const getCurrentUserInfo = async (event) => {
   const user = await getUserDetailsFromEvent(event);

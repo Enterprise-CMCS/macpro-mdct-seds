@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getCurrentUserInfo } from "./cognito-auth.ts";
 import { getUserDetailsFromEvent as actualGetUserDetailsFromEvent } from "../libs/authorization.ts";
-import { scanForUserWithSub as actualScanForUserWithSub } from "../handlers/users/get/getCurrentUser.ts";
+import { scanForUserWithSub as actualScanForUserWithSub } from "../handlers/users/getCurrentUser.ts";
 import { AuthUser } from "../storage/users.ts";
 
 vi.mock("../libs/authorization.ts", () => ({
@@ -9,7 +9,7 @@ vi.mock("../libs/authorization.ts", () => ({
 }));
 const getUserDetailsFromEvent = vi.mocked(actualGetUserDetailsFromEvent);
 
-vi.mock("../handlers/users/get/getCurrentUser.ts", () => ({
+vi.mock("../handlers/users/getCurrentUser.ts", () => ({
   scanForUserWithSub: vi.fn(),
 }));
 const scanForUserWithSub = vi.mocked(actualScanForUserWithSub);

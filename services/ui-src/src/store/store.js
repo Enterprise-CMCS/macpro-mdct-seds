@@ -8,12 +8,7 @@ import {
   insertFPL,
   sortQuestionsByNumber,
 } from "./helperFunctions";
-import {
-  getCurrentUser,
-  getSingleForm,
-  saveSingleForm,
-  updateStateForm,
-} from "../libs/api";
+import { getCurrentUser, getForm, updateForm, updateTotals } from "../libs/api";
 
 export const useStore = create((set, get) => ({
   // Initial state
@@ -27,7 +22,7 @@ export const useStore = create((set, get) => ({
   // Actions
   loadForm: async (state, year, quarter, formName) => {
     try {
-      const form = await getSingleForm(state, year, quarter, formName);
+      const form = await getForm(state, year, quarter, formName);
       const { statusData, questions, answers } = form;
       questions.sort(sortQuestionsByNumber);
       const tabs = extractAgeRanges(answers);
@@ -94,12 +89,12 @@ export const useStore = create((set, get) => ({
     try {
       const { answers, statusData, user } = get();
 
-      await saveSingleForm({
+      await updateForm({
         formAnswers: answers,
         statusData: statusData,
       });
 
-      await updateStateForm({
+      await updateTotals({
         state: statusData.state_id,
         year: statusData.year,
         quarter: statusData.quarter,

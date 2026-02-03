@@ -88,7 +88,7 @@ export const updateUser = async (user) => {
  * @param {{ state: string, year: number, quarter: number }} data
  * @returns {Promise<StateForm[]>}
  */
-export const getStateForms = async (data) => {
+export const listFormsForQuarter = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.get(
@@ -101,7 +101,7 @@ export const getStateForms = async (data) => {
  * @param {{ state: string, year: number, quarter: number, form: FormAbbr, totalEnrollment: number }} data
  * @returns {Promise<void>}
  */
-export const updateStateForm = async (data) => {
+export const updateTotals = async (data) => {
   const { state, year, quarter, form } = data;
   const opts = await requestOptions();
   opts.body = data;
@@ -119,7 +119,7 @@ export const updateStateForm = async (data) => {
  * @param {FormAbbr} form
  * @returns {Promise<{ statusData: StateForm, questions: FormQuestion[], answers: FormAnswer[] }>}
  */
-export const getSingleForm = async (state, year, quarter, form) => {
+export const getForm = async (state, year, quarter, form) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/forms/${state}/${year}/${quarter}/${form}`, opts);
@@ -129,7 +129,7 @@ export const getSingleForm = async (state, year, quarter, form) => {
  * @param {string} stateId A two-letter U.S. state abbreviation
  * @returns {Promise<StateForm[]>}
  */
-export const obtainAvailableForms = async (stateId) => {
+export const listFormsForState = async (stateId) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/forms/${stateId}`, opts);
@@ -139,7 +139,7 @@ export const obtainAvailableForms = async (stateId) => {
  * @param {{ statusData: StateForm, formAnswers: FormAnswer[] }} data
  * @returns {Promise<void>}
  */
-export const saveSingleForm = async (data) => {
+export const updateForm = async (data) => {
   const { state_id, year, quarter, form } = data.statusData;
   const opts = await requestOptions();
   opts.body = data;
@@ -154,7 +154,7 @@ export const saveSingleForm = async (data) => {
  * @param {{ year: number, quarter: number }} data
  * @returns {Promise<void>}
  */
-export const generateQuarterlyForms = async (data) => {
+export const generateQuarterForms = async (data) => {
   const opts = await requestOptions();
 
   return await apiLib.post(
@@ -166,7 +166,7 @@ export const generateQuarterlyForms = async (data) => {
 /**
  * @returns {Promise<number[]>}
  */
-export const obtainFormTemplateYears = async () => {
+export const listTemplateYears = async () => {
   const opts = await requestOptions();
 
   return await apiLib.get("/templates", opts);
@@ -176,7 +176,7 @@ export const obtainFormTemplateYears = async () => {
  * @param {number} year
  * @returns {Promise<FormTemplate>}
  */
-export const obtainFormTemplate = async (year) => {
+export const getTemplate = async (year) => {
   const opts = await requestOptions();
 
   return await apiLib.get(`/templates/${year}`, opts);
@@ -186,7 +186,7 @@ export const obtainFormTemplate = async (year) => {
  * @param {FormTemplate}
  * @returns {Promise<void>}
  */
-export const updateCreateFormTemplate = async (data) => {
+export const updateTemplate = async (data) => {
   const opts = await requestOptions();
   opts.body = data;
 

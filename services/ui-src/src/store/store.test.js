@@ -1,17 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useStore } from "./store";
-import {
-  getSingleForm,
-  getStateForms,
-  saveSingleForm,
-  updateStateForm,
-} from "../libs/api";
+import { getForm, updateForm, updateTotals } from "../libs/api";
 
 vi.mock("../libs/api", () => ({
   getCurrentUser: vi.fn().mockResolvedValue({ username: "mockUsername" }),
-  getSingleForm: vi.fn(),
-  saveSingleForm: vi.fn(),
-  updateStateForm: vi.fn(),
+  getForm: vi.fn(),
+  updateForm: vi.fn(),
+  updateTotals: vi.fn(),
 }));
 
 const mockStatusData = { state_id: "CO", year: 2025, quarter: 4, form: "21E" };
@@ -37,7 +32,7 @@ describe("useStore actions", () => {
 
   describe("loadForm", () => {
     it("should call both API endpoints to populate the store", async () => {
-      getSingleForm.mockResolvedValueOnce({
+      getForm.mockResolvedValueOnce({
         statusData: mockStatusData,
         questions: mockQuestions,
         answers: mockAnswers,
@@ -55,7 +50,7 @@ describe("useStore actions", () => {
     });
 
     it("should flag a load error if an API call fails", async () => {
-      getSingleForm.mockRejectedValueOnce("Mock Server Error");
+      getForm.mockRejectedValueOnce("Mock Server Error");
 
       const { loadForm } = useStore.getState();
       await loadForm("CO", 2025, 4, "21E");
@@ -65,7 +60,7 @@ describe("useStore actions", () => {
     });
 
     it("should sort questions by number", async () => {
-      getSingleForm.mockResolvedValueOnce({
+      getForm.mockResolvedValueOnce({
         questions: [
           { question: "2025-21E-01" },
           { question: "2025-21E-04" },
@@ -277,11 +272,11 @@ describe("useStore actions", () => {
           },
         })
       );
-      expect(saveSingleForm).toHaveBeenCalledWith({
+      expect(updateForm).toHaveBeenCalledWith({
         formAnswers: mockAnswers,
         statusData: mockStatusData,
       });
-      expect(updateStateForm).toHaveBeenCalledWith({
+      expect(updateTotals).toHaveBeenCalledWith({
         state: "CO",
         form: "21E",
         year: 2025,
@@ -318,7 +313,7 @@ describe("useStore actions", () => {
       const { saveForm } = useStore.getState();
       await saveForm();
 
-      expect(updateStateForm).toHaveBeenCalledWith(
+      expect(updateTotals).toHaveBeenCalledWith(
         expect.objectContaining({
           totalEnrollment: 460,
         })
@@ -329,7 +324,7 @@ describe("useStore actions", () => {
       useStore.setState({
         statusData: { save_error: false },
       });
-      updateStateForm.mockRejectedValueOnce("Mock Server Error");
+      updateTotals.mockRejectedValueOnce("Mock Server Error");
 
       const { saveForm } = useStore.getState();
       await saveForm();

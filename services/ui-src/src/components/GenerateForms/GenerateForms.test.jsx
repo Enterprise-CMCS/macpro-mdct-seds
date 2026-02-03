@@ -3,13 +3,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import GenerateForms from "./GenerateForms";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { generateQuarterlyForms } from "../../libs/api";
+import { generateQuarterForms } from "../../libs/api";
 
 vi.spyOn(window, "alert").mockImplementation(() => {});
 vi.spyOn(window, "confirm").mockImplementation(() => true);
 
 vi.mock("../../libs/api", () => ({
-  generateQuarterlyForms: vi.fn(),
+  generateQuarterForms: vi.fn(),
 }));
 
 describe("Test GenerateForms.js", () => {
@@ -18,7 +18,7 @@ describe("Test GenerateForms.js", () => {
   });
 
   it("should generate forms by sending a request to the API", () => {
-    generateQuarterlyForms.mockReturnValue({
+    generateQuarterForms.mockReturnValue({
       year: 2022,
       quarter: 2,
       status: 200,
@@ -36,14 +36,15 @@ describe("Test GenerateForms.js", () => {
     const generateButton = screen.getByRole("button", { name: /Generate/ });
     userEvent.click(generateButton);
 
-    expect(generateQuarterlyForms).toHaveBeenCalledWith({
+    expect(generateQuarterForms).toHaveBeenCalledWith({
       year: 2022,
       quarter: 2,
     });
   });
 
   it("should display an informative error message if the request fails", async () => {
-    generateQuarterlyForms.mockRejectedValue(new Error("mock error text"));
+    const errorText = "some error message directly from the API";
+    generateQuarterForms.mockRejectedValue(new Error("mock error text"));
 
     render(<GenerateForms />);
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Button } from "@trussworks/react-uswds";
-import { generateQuarterlyForms } from "../../libs/api";
+import { generateQuarterForms } from "../../libs/api";
 import "./GenerateForms.scss";
 
 const GenerateForms = () => {
@@ -31,7 +31,7 @@ const GenerateForms = () => {
       setLoading(true);
       setAlert(undefined);
       try {
-        await generateQuarterlyForms({
+        await generateQuarterForms({
           year: Number(selectedYear),
           quarter: Number(selectedQuarter),
         });
