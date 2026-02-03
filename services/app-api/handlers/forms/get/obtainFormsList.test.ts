@@ -3,6 +3,7 @@ import { main as obtainFormsList } from "./obtainFormsList.ts";
 import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdminOrUserForState: vi.fn(),
@@ -39,8 +40,8 @@ describe("obtainFormsList.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify(mockScanResponse),
+        statusCode: StatusCodes.Ok,
+        body: JSON.stringify([{ mockForm: 1 }, { mockForm: 2 }]),
       })
     );
 
@@ -61,42 +62,6 @@ describe("obtainFormsList.ts", () => {
     );
   });
 
-  /*
-   * Note: Although obtainFormsList sends ExclusiveStartKey to dynamoDb.scan,
-   * the dynamoDb.scan method ignores that key,
-   * because it performs a complete scan every time.
-   * This does not lead to buggy behavior;
-   * Callers provide startKey only if they believe they've received a partial
-   * result (that is, if they received a LastEvaluatedKey in a prior response).
-   * Since we only perform complete scans, we never send this,
-   * so we are never asked for continuations.
-   * In any case, the startKey logic in obtainFormsList is uncovered for now.
-   */
-  it.skip("should continue a prior scan if a key is provided", async () => {
-    mockScan.mockResolvedValueOnce(mockScanResponse);
-    const mockEventWithKey = {
-      pathParameters: {
-        state: "CO",
-        year: "2025",
-        quarter: "1",
-      },
-      body: JSON.stringify({
-        startKey: "mockKey",
-      }),
-    };
-
-    const response = await obtainFormsList(mockEventWithKey);
-
-    expect(response).toEqual(expect.objectContaining({ statusCode: 200 }));
-
-    expect(mockScan).toHaveBeenCalledWith(
-      expect.objectContaining({
-        ExclusiveStartKey: "mockKey",
-      }),
-      expect.any(Function)
-    );
-  });
-
   it("should return Internal Server Error if the user is not an admin", async () => {
     authorizeAdminOrUserForState.mockRejectedValueOnce(new Error("Forbidden"));
 
@@ -104,7 +69,7 @@ describe("obtainFormsList.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

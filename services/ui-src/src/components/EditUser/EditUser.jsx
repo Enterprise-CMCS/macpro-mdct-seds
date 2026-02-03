@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table, TextInput, Button } from "@trussworks/react-uswds";
+import Preloader from "../Preloader/Preloader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { getUserById, updateUser } from "../../libs/api";
@@ -15,18 +16,22 @@ import "./EditUser.scss";
  */
 const EditUser = () => {
   let { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState();
   const [role, setRole] = useState();
   const [state, setState] = useState();
 
   useEffect(() => {
     (async () => {
-      const response = await getUserById({ userId: id });
-      if (response.status === "success") {
-        const user = response.data;
-        setUser(user);
-        setRole(user.role);
-        setState(user.state);
+      try {
+        const response = await getUserById(id);
+        setUser(response);
+        setRole(response.role);
+        setState(response.state);
+      } catch {
+        /* no-op */
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -52,7 +57,9 @@ const EditUser = () => {
         &laquo; Back to User List
       </Link>
       <h1 className="page-header">Edit User</h1>
-      {user ? (
+      {isLoading ? (
+        <Preloader />
+      ) : user ? (
         <div className="center-content">
           <Table>
             <tbody>

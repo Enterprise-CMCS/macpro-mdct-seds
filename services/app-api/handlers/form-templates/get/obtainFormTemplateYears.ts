@@ -9,19 +9,13 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   const params = {
     TableName: process.env.FormTemplatesTable,
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ProjectionExpression: "#theYear",
+    ProjectionExpression: "#year",
+    ExpressionAttributeNames: { "#year": "year" },
   };
 
   const result = await dynamoDb.scan(params);
 
-  if (result.Count === 0) {
-    return ok([]);
-  }
+  const years = result.Items.map((i) => i.year);
 
-  const resultsArray = result.Items.map((i) => i.year);
-
-  return ok(resultsArray.sort((a, b) => b - a));
+  return ok(years);
 });
