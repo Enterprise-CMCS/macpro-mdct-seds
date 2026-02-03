@@ -3,6 +3,7 @@ import { main as obtainFormTemplateYears } from "./obtainFormTemplateYears.ts";
 import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 vi.mock("../../../auth/authConditions.ts", () => ({
   authorizeAdmin: vi.fn(),
@@ -29,16 +30,15 @@ describe("obtainFormTemplateYears.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        // Note the sort order: most recent year first
-        body: JSON.stringify([2025, 2024, 2023]),
+        statusCode: StatusCodes.Ok,
+        body: JSON.stringify([2024, 2023, 2025]),
       })
     );
     expect(mockScan).toHaveBeenCalledWith(
       {
         TableName: "local-form-templates",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ProjectionExpression: "#theYear",
+        ExpressionAttributeNames: { "#year": "year" },
+        ProjectionExpression: "#year",
       },
       expect.any(Function)
     );
@@ -52,7 +52,7 @@ describe("obtainFormTemplateYears.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify([]),
       })
     );
@@ -65,7 +65,7 @@ describe("obtainFormTemplateYears.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );

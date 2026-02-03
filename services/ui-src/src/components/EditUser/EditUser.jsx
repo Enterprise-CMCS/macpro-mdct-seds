@@ -14,18 +14,22 @@ import { stateSelectOptions } from "../../lookups/states";
  */
 const EditUser = () => {
   let { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState();
   const [role, setRole] = useState();
   const [state, setState] = useState();
 
   useEffect(() => {
     (async () => {
-      const response = await getUserById({ userId: id });
-      if (response.status === "success") {
-        const user = response.data;
-        setUser(user);
-        setRole(user.role);
-        setState(user.state);
+      try {
+        const response = await getUserById(id);
+        setUser(response);
+        setRole(response.role);
+        setState(response.state);
+      } catch {
+        /* no-op */
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);

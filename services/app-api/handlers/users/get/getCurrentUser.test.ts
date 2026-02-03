@@ -7,6 +7,7 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
@@ -71,7 +72,7 @@ describe("getUserById.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify(mockUser),
       })
     );
@@ -84,7 +85,7 @@ describe("getUserById.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: expect.stringContaining("token must contain"),
       })
     );
@@ -111,7 +112,7 @@ describe("getUserById.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
+        statusCode: StatusCodes.Ok,
         body: JSON.stringify(mockUser),
       })
     );
@@ -124,7 +125,7 @@ describe("getUserById.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: expect.stringContaining("Failed to create"),
       })
     );

@@ -16,23 +16,14 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   const params = {
     TableName: process.env.FormTemplatesTable,
-    // IndexName: "year",
-    ExpressionAttributeNames: {
-      "#theYear": "year",
-    },
-    ExpressionAttributeValues: {
-      ":year": parseInt(year!),
-    },
-    KeyConditionExpression: "#theYear = :year",
+    Key: { year: parseInt(year!) },
   };
 
-  const result = await dynamoDb.query(params);
-  if (result.Count === 0) {
-    return notFound({
-      status: 404,
-      message: `Could not find form template for year: ${year}`,
-    });
+  const template = (await dynamoDb.get(params)).Item;
+
+  if (!template) {
+    return notFound(`Could not find form template for year: ${year}`);
   }
-  // Return the matching list of items in response body
-  return ok(result.Items);
+
+  return ok(template);
 });

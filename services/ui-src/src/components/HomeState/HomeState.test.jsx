@@ -46,7 +46,7 @@ describe("Test HomeState.js", () => {
 
     const { container } = renderComponent("CO");
     await waitFor(() => {
-      expect(obtainAvailableForms).toHaveBeenCalledWith({ stateId: "CO" });
+      expect(obtainAvailableForms).toHaveBeenCalledWith("CO");
     });
 
     const expectedUrls = [

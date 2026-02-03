@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import Quarterly from "../Quarterly/Quarterly";
 import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
-import { recursiveGetStateForms } from "../../utility-functions/dbFunctions";
 import { useStore } from "../../store/store";
 import { getStateForms } from "libs/api";
 
@@ -20,7 +19,7 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 vi.mock("libs/api", () => ({
   getStateForms: vi.fn(),
 }));
-getStateForms.mockResolvedValue({ Items: quarterlyDataMock });
+getStateForms.mockResolvedValue(quarterlyDataMock);
 
 const forms = [
   {

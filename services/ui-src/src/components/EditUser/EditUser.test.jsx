@@ -1,5 +1,5 @@
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import EditUser from "./EditUser";
 import { BrowserRouter } from "react-router-dom";
 import { render, screen, waitFor } from "@testing-library/react";
@@ -16,25 +16,11 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   useParams: vi.fn().mockReturnValue({ id: "23" }),
 }));
 
-const renderComponent = (user) => {
-  if (user) {
-    getUserById.mockResolvedValue({
-      status: "success",
-      data: user,
-    });
-  } else {
-    getUserById.mockResolvedValue({
-      status: "error",
-      message: "No user by specified id found",
-    });
-  }
-
-  return render(
-    <BrowserRouter>
-      <EditUser />
-    </BrowserRouter>
-  );
-};
+const component = (
+  <BrowserRouter>
+    <EditUser />
+  </BrowserRouter>
+);
 
 const mockUser = {
   userId: 23,
@@ -49,8 +35,14 @@ const mockUser = {
 };
 
 describe("Test EditUser.js", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render header and button when user is found", async () => {
-    renderComponent(mockUser);
+    getUserById.mockResolvedValueOnce(mockUser);
+
+    render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
     const backLink = screen.getByRole("link", { name: /Back to User List/ });
@@ -61,7 +53,9 @@ describe("Test EditUser.js", () => {
   });
 
   it("should render error when user is not found", async () => {
-    renderComponent(undefined);
+    getUserById.mockRejectedValueOnce("Mock 404 text");
+
+    render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
     const errorMessage = screen.getByText("Cannot find user with id 23");
@@ -69,7 +63,9 @@ describe("Test EditUser.js", () => {
   });
 
   it("should render user details in a table", async () => {
-    renderComponent(mockUser);
+    getUserById.mockResolvedValueOnce(mockUser);
+
+    render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
     expect(screen.getByRole("row", { name: "Username QWER" })).toBeVisible();
@@ -98,7 +94,9 @@ describe("Test EditUser.js", () => {
       role: "admin",
       state: undefined,
     };
-    renderComponent(user);
+    getUserById.mockResolvedValueOnce(user);
+
+    render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
     expect(
@@ -107,7 +105,9 @@ describe("Test EditUser.js", () => {
   });
 
   it("should call the API to save updated user details", async () => {
-    renderComponent(mockUser);
+    getUserById.mockResolvedValueOnce(mockUser);
+
+    render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());
 
     const roleSelect = screen.getByRole("combobox", { name: "Role" });

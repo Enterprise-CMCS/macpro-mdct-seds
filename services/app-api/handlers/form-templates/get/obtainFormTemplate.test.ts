@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { main as obtainFormTemplate } from "./obtainFormTemplate.ts";
 import { authorizeAdmin as actualAuthorizeAdmin } from "../../../auth/authConditions.ts";
-import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../../libs/response-lib.ts";
 
@@ -11,6 +11,8 @@ vi.mock("../../../auth/authConditions.ts", () => ({
 const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
+const mockGet = vi.fn();
+mockDynamo.on(GetCommand).callsFake(mockGet);
 
 const mockEvent = {
   pathParameters: {
@@ -24,48 +26,38 @@ const mockFormTemplate = {
 
 describe("obtainFormTemplate.ts", () => {
   beforeEach(() => {
-    mockDynamo.reset();
+    vi.clearAllMocks();
   });
 
   it("should query dynamo for the appropriate data", async () => {
-    const mockQuery = vi.fn().mockResolvedValueOnce({
-      Count: 1,
-      Items: [mockFormTemplate],
-    });
-    mockDynamo.on(QueryCommand).callsFakeOnce(mockQuery);
+    mockGet.mockResolvedValueOnce({ Item: mockFormTemplate });
 
     const response = await obtainFormTemplate(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify([mockFormTemplate]),
+        statusCode: StatusCodes.Ok,
+        body: JSON.stringify(mockFormTemplate),
       })
     );
-    expect(mockQuery).toHaveBeenCalledWith(
+    expect(mockGet).toHaveBeenCalledWith(
       {
         TableName: "local-form-templates",
-        ExpressionAttributeNames: { "#theYear": "year" },
-        ExpressionAttributeValues: { ":year": 2025 },
-        KeyConditionExpression: "#theYear = :year",
+        Key: { year: 2025 },
       },
       expect.any(Function)
     );
   });
 
   it("should return Not Found if there are no results", async () => {
-    const mockQuery = vi.fn().mockResolvedValueOnce({ Count: 0 });
-    mockDynamo.on(QueryCommand).callsFakeOnce(mockQuery);
+    mockGet.mockResolvedValueOnce({});
 
     const response = await obtainFormTemplate(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.NotFound,
-        body: JSON.stringify({
-          status: StatusCodes.NotFound,
-          message: "Could not find form template for year: 2025",
-        }),
+        body: '"Could not find form template for year: 2025"',
       })
     );
   });

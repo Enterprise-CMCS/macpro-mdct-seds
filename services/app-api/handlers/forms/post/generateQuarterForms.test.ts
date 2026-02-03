@@ -22,6 +22,7 @@ import {
   writeAllStateForms as actualWriteAllStateForms,
   StateForm,
 } from "../../../storage/stateForms.ts";
+import { StatusCodes } from "../../../libs/response-lib.ts";
 
 /*
  * Coverage notes:
@@ -112,11 +113,8 @@ describe("generateQuarterForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Forms successfully created for Quarter 1 of 2025",
-        }),
+        statusCode: StatusCodes.Ok,
+        body: '"Forms successfully created for Quarter 1 of 2025."',
       })
     );
 
@@ -296,12 +294,8 @@ describe("generateQuarterForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 204,
-          message:
-            "All forms, for Quarter 1 of 2025, previously existed. No new forms added",
-        }),
+        statusCode: StatusCodes.Ok,
+        body: '"All forms, for Quarter 1 of 2025, previously existed. No new forms added."',
       })
     );
     expect(writeAllStateForms).not.toHaveBeenCalled();
@@ -421,7 +415,7 @@ describe("generateQuarterForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: expect.stringContaining("No template found for 2025 or 2024!"),
       })
     );
@@ -434,7 +428,7 @@ describe("generateQuarterForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
@@ -449,11 +443,8 @@ describe("generateQuarterForms.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Forms successfully created for Quarter 1 of 2025",
-        }),
+        statusCode: StatusCodes.Ok,
+        body: '"Forms successfully created for Quarter 1 of 2025."',
       })
     );
 

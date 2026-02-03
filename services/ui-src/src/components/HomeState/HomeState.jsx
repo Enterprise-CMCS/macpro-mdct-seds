@@ -15,7 +15,7 @@ const HomeState = () => {
 
   const loadForms = async (stateId) => {
     try {
-      const availableForms = await obtainAvailableForms({ stateId });
+      const availableForms = await obtainAvailableForms(stateId);
       return sortFormsByYearAndQuarter(availableForms);
     } catch (error) {
       console.log(error);

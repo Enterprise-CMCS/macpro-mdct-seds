@@ -39,11 +39,8 @@ describe("updateCreateFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 200,
-        body: JSON.stringify({
-          status: 200,
-          message: "Template updated for 2025!",
-        }),
+        statusCode: StatusCodes.Ok,
+        body: '"Template updated for 2025!"',
       })
     );
 
@@ -74,10 +71,7 @@ describe("updateCreateFormTemplate.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.BadRequest,
-        body: JSON.stringify({
-          status: StatusCodes.BadRequest,
-          message: "Invalid JSON. Please review your template.",
-        }),
+        body: '"Invalid JSON. Please review your template."',
       })
     );
     expect(mockPut).not.toHaveBeenCalled();
@@ -97,10 +91,7 @@ describe("updateCreateFormTemplate.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.BadRequest,
-        body: JSON.stringify({
-          status: StatusCodes.BadRequest,
-          message: "Invalid JSON. Please review your template.",
-        }),
+        body: '"Invalid JSON. Please review your template."',
       })
     );
     expect(mockPut).not.toHaveBeenCalled();
@@ -118,10 +109,7 @@ describe("updateCreateFormTemplate.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.BadRequest,
-        body: JSON.stringify({
-          status: 422,
-          message: "Please specify both a year and a template",
-        }),
+        body: '"Please specify both a year and a template."',
       })
     );
     expect(mockPut).not.toHaveBeenCalled();
@@ -134,7 +122,7 @@ describe("updateCreateFormTemplate.ts", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: 500,
+        statusCode: StatusCodes.InternalServerError,
         body: JSON.stringify({ error: "Forbidden" }),
       })
     );
