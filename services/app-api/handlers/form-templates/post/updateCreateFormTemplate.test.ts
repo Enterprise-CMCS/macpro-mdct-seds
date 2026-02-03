@@ -109,7 +109,7 @@ describe("updateCreateFormTemplate.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.BadRequest,
-        body: '"Please specify both a year and a template"',
+        body: '"Please specify both a year and a template."',
       })
     );
     expect(mockPut).not.toHaveBeenCalled();

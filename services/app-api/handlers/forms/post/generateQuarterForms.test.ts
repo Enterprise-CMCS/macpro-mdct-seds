@@ -114,7 +114,7 @@ describe("generateQuarterForms.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.Ok,
-        body: '"Forms successfully created for Quarter 1 of 2025"',
+        body: '"Forms successfully created for Quarter 1 of 2025."',
       })
     );
 
@@ -295,7 +295,7 @@ describe("generateQuarterForms.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.Ok,
-        body: '"All forms, for Quarter 1 of 2025, previously existed. No new forms added"',
+        body: '"All forms, for Quarter 1 of 2025, previously existed. No new forms added."',
       })
     );
     expect(writeAllStateForms).not.toHaveBeenCalled();
@@ -444,7 +444,7 @@ describe("generateQuarterForms.ts", () => {
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.Ok,
-        body: '"Forms successfully created for Quarter 1 of 2025"',
+        body: '"Forms successfully created for Quarter 1 of 2025."',
       })
     );
 
