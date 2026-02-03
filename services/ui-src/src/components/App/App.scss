@@ -3,9 +3,7 @@ $image-path: "~@cmsgov/design-system/dist/images";
 @use "@cmsgov/design-system/dist/css/core-theme";
 
 @import "../../additional-scss/variables";
-
-@import "../../additional-scss/print";
-@import "../../additional-scss/globals2";
-// @import "../../additional-scss/globals";
+@import "../../additional-scss/globals";
 @import "../../additional-scss/header";
 @import "../../additional-scss/footer";
+@import "../../additional-scss/print";
