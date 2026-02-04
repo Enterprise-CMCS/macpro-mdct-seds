@@ -7,27 +7,39 @@ import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("../FormHeader/FormHeader", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="form-header">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../NotApplicable/NotApplicable", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="not-applicable">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../TabContainer/TabContainer", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="tab-container">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../FormFooter/FormFooter", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="form-footer">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../FormLoadError/FormLoadError", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="form-load-error">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../Unauthorized/Unauthorized", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="unauth-cmpt">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../../utility-functions/userFunctions", () => ({

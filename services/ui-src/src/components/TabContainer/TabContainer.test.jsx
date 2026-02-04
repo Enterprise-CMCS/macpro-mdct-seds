@@ -7,7 +7,9 @@ import fullStoreMock from "../../provider-mocks/fullStoreMock";
 import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => <div>{JSON.stringify(props)}</div>,
+  default: (props) => (
+    <div className="question-component">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../SummaryTab/SummaryTab", () => ({
