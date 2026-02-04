@@ -48,7 +48,7 @@ const PrintPDF = () => {
   };
 
   return (
-    <div>
+    <div className="flex-col-gap-1">
       {loading ? (
         <div>
           <div>
@@ -85,7 +85,7 @@ const PrintPDF = () => {
 
           <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
 
-          <div id="TheDiv">
+          <div id="TheDiv" className="flex-col-gap-1">
             {currentTabs.map((tab, tabIndex) => {
               // Filter out just the answer objects that belong in this tab
               const tabAnswers = answers.filter(
@@ -96,7 +96,7 @@ const PrintPDF = () => {
               return (
                 <React.Fragment key={tabIndex}>
                   {ageRangeDescription ? (
-                    <div>
+                    <div className="padding-1">
                       <h3>{ageRangeDescription}:</h3>
                     </div>
                   ) : null}
@@ -134,11 +134,11 @@ const PrintPDF = () => {
                 </React.Fragment>
               );
             })}
-            <div>
+            <div className="flex-col-gap-1 summary-notes">
               <strong>
                 Add any notes here to accompany the form submission:
               </strong>
-              <div>
+              <div className="summary-text">
                 {!null || statusData.state_comments[0].entry.length ? (
                   <div>{`${statusData.state_comments[0].entry}`}</div>
                 ) : null}

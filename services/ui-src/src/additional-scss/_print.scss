@@ -3,7 +3,10 @@
  */
 
 @media print {
-  textarea {
+  textarea,
+  .breadcrumbs,
+  .header,
+  button {
     display: none !important;
   }
 
@@ -13,8 +16,10 @@
     display: none;
   }
 
-  .logo {
-    text-align: center;
+  input[type="text"],
+  input[type="text"]:disabled {
+    background-color: transparent;
+    border: none;
   }
 
   .question-component {
@@ -43,9 +48,6 @@
 
   .print-only {
     display: block;
-  }
-  .breadcrumb {
-    display: none !important;
   }
   .print-button {
     display: none !important;

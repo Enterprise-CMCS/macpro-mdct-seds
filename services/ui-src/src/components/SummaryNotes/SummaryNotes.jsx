@@ -35,7 +35,7 @@ const SummaryNotes = () => {
         id="summaryNotesInput"
         name="summaryNotesInput"
         value={summaryNotes ?? ""}
-        multiline
+        multiline={true}
         type="text"
         onChange={(e) => updateTempSummaryNotes(e)}
         onBlur={(e) => saveSummaryNotes(e.target.value)}
