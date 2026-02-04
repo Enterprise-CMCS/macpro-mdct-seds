@@ -8,6 +8,7 @@
     "no-duplicate-imports": "error",
     "no-empty": "off",
     "no-extra-boolean-cast": "off",
+    "no-param-reassign": "error",
     "no-restricted-globals": "error",
     "no-unreachable": "off",
     "no-unsafe-optional-chaining": "off",
@@ -25,6 +26,7 @@
     // React
     "rules-of-hooks": "off",
     "exhaustive-deps": "off",
+    "jsx-filename-extension": "error",
     "jsx-key": "off",
     "no-children-prop": "off"
   }

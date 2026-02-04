@@ -232,6 +232,7 @@ const reduceEntries = (answersByAgeRange, targetID) => {
       [answersByAgeRange[singleAgeRange]],
       targetID
     );
+    // oxlint-disable-next-line no-param-reassign
     return (accumulator += foundEntry); // add to the accumulator
   };
   return Object.keys(answersByAgeRange).reduce(findEntries, 0); // return the accumulated value
