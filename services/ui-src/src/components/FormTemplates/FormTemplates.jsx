@@ -32,11 +32,14 @@ const FormTemplates = () => {
           year: Number(inputYear),
           template: JSON.parse(currentTemplate),
         });
-        setAlert({ type: "success", message: "Template saved successfully." });
+        setAlert({
+          variation: "success",
+          message: "Template saved successfully.",
+        });
       } catch (err) {
         const message =
           err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
-        setAlert({ type: "error", message });
+        setAlert({ variation: "error", message });
       }
     }
   };
@@ -89,10 +92,7 @@ const FormTemplates = () => {
       <h1>Add/Edit Form Templates</h1>
       <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
-          <Alert
-            variation={alert.status === 200 ? "success" : "error"}
-            headingLevel="h1"
-          >
+          <Alert variation={alert.variation} headingLevel="h1">
             {alert.message}
           </Alert>
         ) : null}
