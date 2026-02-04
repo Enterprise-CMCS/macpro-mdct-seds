@@ -8,8 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest --run --coverage",
-    "lint": "eslint ."
+    "coverage": "vitest --run --coverage"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -36,19 +35,9 @@
     "@testing-library/jest-dom": "6.4.6",
     "@testing-library/react": "12.1.5",
     "@testing-library/user-event": "13.5.0",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "3.0.5",
-    "babel-eslint": "10.1.0",
     "dotenv": "8.2.0",
-    "eslint": "^6.6.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "4.6.0",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "history": "^4.9.0",
     "jsdom": "^27.0.0",
     "typescript": "^5.9.3",
@@ -69,13 +58,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "eslint:recommended",
-      "google"
     ]
   },
   "packageManager": "yarn@4.12.0"
