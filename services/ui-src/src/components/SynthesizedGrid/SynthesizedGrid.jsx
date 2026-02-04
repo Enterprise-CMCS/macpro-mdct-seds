@@ -93,7 +93,7 @@ export const SynthesizedGrid = ({ range }) => {
 
   return (
     <div className="flex-col-gap-1">
-      <Table bordered={true} fullWidth={true}>
+      <Table>
         <thead>
           <tr>
             <th></th>

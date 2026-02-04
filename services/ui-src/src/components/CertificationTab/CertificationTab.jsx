@@ -99,7 +99,7 @@ const CertificationTab = () => {
           <Alert
             variation="success"
             heading="Thank you for submitting your SEDS data!"
-            headingLevel="h1"
+            headingLevel="1"
           >
             <b> What to expect next:</b> You will hear from CMS if they have any
             questions about your report.
@@ -111,7 +111,7 @@ const CertificationTab = () => {
         <div>
           <Alert
             heading="You have submitted provisional SEDS data"
-            headingLevel="h1"
+            headingLevel="1"
           ></Alert>
         </div>
       ) : null}

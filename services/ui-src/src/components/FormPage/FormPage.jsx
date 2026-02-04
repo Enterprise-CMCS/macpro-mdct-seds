@@ -80,7 +80,7 @@ const FormPage = () => {
     <div data-testid="FormPage" className="flex-col-gap-1half">
       {save_error ? (
         <div>
-          <Alert variation="error" heading="Save Error:" headingLevel="h1">
+          <Alert variation="error" heading="Save Error:" headingLevel="1">
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
             <a
@@ -94,7 +94,7 @@ const FormPage = () => {
         </div>
       ) : saveAlert ? (
         <div>
-          <Alert variation="success" heading="Save success:" headingLevel="h1">
+          <Alert variation="success" heading="Save success:" headingLevel="1">
             Form {formName} has been successfully saved.
           </Alert>
         </div>

@@ -34,13 +34,16 @@ const GenerateForms = () => {
           year: Number(selectedYear),
           quarter: Number(selectedQuarter),
         });
-        setAlert({ type: "success", message: "Form creation successful." });
+        setAlert({
+          variation: "success",
+          message: "Form creation successful.",
+        });
       } catch (err) {
         const message =
           err instanceof Error
             ? `Form creation failed: ${err.message}`
             : "Form creation failed.";
-        setAlert({ type: "error", message });
+        setAlert({ variation: "error", message });
       } finally {
         setLoading(false);
       }
@@ -57,7 +60,7 @@ const GenerateForms = () => {
         </div>
       ) : null}
       {alert ? (
-        <Alert variation={alert.type} headingLevel="h1">
+        <Alert variation={alert.variation} headingLevel="1">
           {alert.message}
         </Alert>
       ) : null}

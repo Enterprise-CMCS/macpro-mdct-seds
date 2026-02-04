@@ -92,7 +92,7 @@ const FormTemplates = () => {
       <h1>Add/Edit Form Templates</h1>
       <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
-          <Alert variation={alert.variation} headingLevel="h1">
+          <Alert variation={alert.variation} headingLevel="1">
             {alert.message}
           </Alert>
         ) : null}
