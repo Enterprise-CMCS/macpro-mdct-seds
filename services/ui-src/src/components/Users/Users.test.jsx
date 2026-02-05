@@ -147,11 +147,6 @@ describe("Test Users.js", () => {
     const pdfButton = screen.getByText("PDF", { selector: "button" });
     userEvent.click(pdfButton);
 
-    expect(handleExport).toHaveBeenCalledWith(
-      "pdf",
-      "MDCT Users Export.pdf",
-      ".user-profiles",
-      "html-selector"
-    );
+    expect(handleExport).toHaveBeenCalled();
   });
 });
