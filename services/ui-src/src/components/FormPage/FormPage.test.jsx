@@ -159,12 +159,10 @@ describe("FormPage", () => {
         last_modified: new Date().toISOString(),
       },
     };
-    const { container } = renderComponent(form, mockUser);
+    renderComponent(form, mockUser);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
 
-    const saveMessage = container.querySelector(".ds-c-alert");
-
-    expect(saveMessage.textContent).toBe(
+    expect(screen.getByRole("status")).toHaveTextContent(
       "Success: Save success:Form 21E has been successfully saved."
     );
   });
@@ -177,11 +175,10 @@ describe("FormPage", () => {
         save_error: true,
       },
     };
-    const { container } = renderComponent(form, mockUser);
+    renderComponent(form, mockUser);
     await waitFor(() => expect(useStore.getState().loadForm).toBeCalled());
 
-    const errorMessage = container.querySelector(".ds-c-alert");
-    expect(errorMessage.textContent).toBe(
+    expect(screen.getByRole("alert")).toHaveTextContent(
       "Alert: Save Error:A problem occurred while saving. Please save again. If the problem persists, contact MDCT_Help@cms.hhs.gov"
     );
   });
