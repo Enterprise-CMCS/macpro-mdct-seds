@@ -23,41 +23,11 @@ export default function Profile() {
         <div>
           <div>
             <form>
-              <TextField
-                key="email"
-                name="email"
-                label="Email"
-                value={email}
-                disabled={true}
-              ></TextField>
-              <TextField
-                key="firstName"
-                name="firstName"
-                label="First Name"
-                value={firstName}
-                disabled={true}
-              ></TextField>
-              <TextField
-                key="lastName"
-                name="lastName"
-                label="Last Name"
-                value={lastName}
-                disabled={true}
-              ></TextField>
-              <TextField
-                key="role"
-                name="role"
-                label="Role"
-                value={role}
-                disabled={true}
-              ></TextField>
-              <TextField
-                key="state"
-                name="state"
-                label="State"
-                value={state}
-                disabled={true}
-              ></TextField>
+              <TextField label="Email" value={email} disabled={true} />
+              <TextField label="First Name" value={firstName} disabled={true} />
+              <TextField label="Last Name" value={lastName} disabled={true} />
+              <TextField label="Role" value={role} disabled={true} />
+              <TextField label="State" value={state} disabled={true} />
             </form>
           </div>
         </div>
