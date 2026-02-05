@@ -4877,17 +4877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trussworks/react-uswds@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@trussworks/react-uswds@npm:7.0.0"
-  peerDependencies:
-    "@uswds/uswds": ^3.7.1
-    react: ^16.x || ^17.x || ^18.x
-    react-dom: ^16.x || ^17.x || ^18.x
-  checksum: 10c0/09cd75ff6b5849f50114bb0243773280a463ffba3a59f83d2af2302a2fb1dd36f8efec09f60245ffc2690660b4aa4169b1e40480d53e252a837936c03d78623a
-  languageName: node
-  linkType: hard
-
 "@types/aria-query@npm:^4.2.0":
   version: 4.2.2
   resolution: "@types/aria-query@npm:4.2.2"
@@ -12077,7 +12066,6 @@ __metadata:
     "@testing-library/jest-dom": "npm:6.4.6"
     "@testing-library/react": "npm:12.1.5"
     "@testing-library/user-event": "npm:13.5.0"
-    "@trussworks/react-uswds": "npm:^7.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^2.10.0"
     "@typescript-eslint/parser": "npm:^2.10.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
