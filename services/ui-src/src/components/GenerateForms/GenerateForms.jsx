@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
 import { generateQuarterlyForms } from "../../libs/api";
 
@@ -6,7 +6,7 @@ const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState("2019");
   const [selectedQuarter, setSelectedQuarter] = useState("1");
   const [alert, setAlert] = useState();
-  const [loading, setLoading] = useState(false);
+  const loader = useRef(null);
 
   // Build options for year dropdown. From 2019 until next year, inclusive.
   const firstYear = 2019;
@@ -27,7 +27,7 @@ const GenerateForms = () => {
       )
     ) {
       // send year and quarter to lambda which will create the table rows
-      setLoading(true);
+      loader.current.showModal();
       setAlert(undefined);
       try {
         await generateQuarterlyForms({
@@ -45,20 +45,16 @@ const GenerateForms = () => {
             : "Form creation failed.";
         setAlert({ variation: "error", message });
       } finally {
-        setLoading(false);
+        loader.current.close();
       }
     }
   };
   return (
     <div className="flex-col-gap-1half half-width">
-      {loading ? (
-        <div>
-          <div>
-            <div></div>Generating new forms
-            <br /> Please Wait...
-          </div>
-        </div>
-      ) : null}
+      <dialog ref={loader} closedby="none">
+        <p>Generating new forms</p>
+        <p>Please wait...</p>
+      </dialog>
       {alert ? (
         <Alert variation={alert.variation} headingLevel="1">
           {alert.message}

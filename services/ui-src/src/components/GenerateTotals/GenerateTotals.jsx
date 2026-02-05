@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
 
 import { generateEnrollmentTotals } from "../../libs/api";
 
 const GenerateTotals = () => {
   const [alert, setAlert] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const loader = useRef(null);
 
   const handleSubmit = async (e) => {
     const proceed = window.confirm(
@@ -13,27 +13,23 @@ const GenerateTotals = () => {
     );
 
     if (proceed) {
-      // Start loading icon
-      setLoading(true);
-
-      await generateEnrollmentTotals(); // Async request, just returns an immediate 200 and starts processing.
-
-      setLoading(false);
-      setAlert(true);
+      try {
+        loader.current.showModal();
+        await generateEnrollmentTotals(); // Async request, just returns an immediate 200 and starts processing.
+      } finally {
+        loader.current.close();
+        setAlert(true);
+      }
     }
   };
 
   return (
     <div className="flex-col-gap-1half half-width">
       <h1>Generate Total Enrollment Counts</h1>
-      {loading ? (
-        <div>
-          <div>
-            <div></div>Generating New Enrollment Counts
-            <br /> Please Wait...
-          </div>
-        </div>
-      ) : null}
+      <dialog ref={loader} closedby="none">
+        <p>Generating Enrollment Counts</p>
+        <p>Please wait...</p>
+      </dialog>
       {alert && (
         <Alert variation="success" headingLevel="1">
           Enrollment Totals have been requested! Please wait at least 1 minute

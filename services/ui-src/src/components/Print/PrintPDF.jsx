@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@cmsgov/design-system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import { NavLink, useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ const PrintPDF = () => {
   const statusData = useStore((state) => state.statusData);
   const getForm = useStore((state) => state.loadForm);
 
-  const [loading, setLoading] = useState(true);
+  const loader = useRef(null);
 
   const { state, year, quarter, formName } = useParams();
   const [hasAccess, setHasAccess] = React.useState(false);
@@ -29,6 +29,7 @@ const PrintPDF = () => {
   const form = formName.toUpperCase().replace("-", ".");
 
   useEffect(() => {
+    loader.current.showModal();
     const fetchData = async () => {
       if (canViewStateData(user, state)) {
         await getForm(formattedStateName, year, quarterInt, form);
@@ -36,7 +37,7 @@ const PrintPDF = () => {
       } else {
         setHasAccess(false);
       }
-      setLoading(false);
+      loader.current.close();
     };
 
     fetchData();
@@ -49,14 +50,10 @@ const PrintPDF = () => {
 
   return (
     <div className="flex-col-gap-1">
-      {loading ? (
-        <div>
-          <div>
-            <div></div>Generating print view
-            <br /> Please Wait...
-          </div>
-        </div>
-      ) : null}
+      <dialog ref={loader} closedby="none">
+        <p>Generating print view</p>
+        <p>Please wait...</p>
+      </dialog>
       {hasAccess === true ? (
         <>
           <div>
