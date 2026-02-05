@@ -64,7 +64,7 @@ const Users = () => {
             await handleExport(
               "pdf",
               "MDCT Users Export.pdf",
-              ".user-profiles",
+              "table",
               "html-selector"
             )
           }
