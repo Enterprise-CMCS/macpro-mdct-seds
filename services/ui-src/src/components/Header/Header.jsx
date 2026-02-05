@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Nav, NavDropdown, NavItem } from "react-bootstrap";
+import { Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { GovBanner, NavList } from "@trussworks/react-uswds";
@@ -50,14 +50,16 @@ const Header = () => {
             height={90}
           />
         </Link>
-        <Nav pullRight={true}>
+        <Nav className="ms-auto">
           {isAuthenticated ? (
             <>
               <NavDropdown id="User" title="My Profile">
                 <LinkContainer to="/profile">
-                  <NavItem>User Profile</NavItem>
+                  <NavDropdown.Item>User Profile</NavDropdown.Item>
                 </LinkContainer>
-                <NavItem onClick={handleLogout}>Logout</NavItem>
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             </>
           ) : null}
@@ -66,7 +68,7 @@ const Header = () => {
 
       <div className="navigation">
         {isAuthenticated ? (
-          <Nav pullLeft={true}>
+          <Nav>
             <NavList items={menuItems} />
           </Nav>
         ) : null}

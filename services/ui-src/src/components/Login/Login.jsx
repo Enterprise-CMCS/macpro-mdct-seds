@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signIn, signInWithRedirect } from "aws-amplify/auth";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { useFormFields } from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
@@ -78,25 +78,25 @@ export default function Login() {
         hidden={hideCognitoLogin}
         data-testid="loginForm"
       >
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
+        <Form.Group controlId="email" bsSize="large">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
             autoFocus
             type="email"
             value={fields.email}
             onChange={handleFieldChange}
             className="form-input"
           />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
+        </Form.Group>
+        <Form.Group controlId="password" bsSize="large">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
             value={fields.password}
             onChange={handleFieldChange}
             className="form-input"
           />
-        </FormGroup>
+        </Form.Group>
         <div className="padding-y-9">
           <LoaderButton
             type="submit"

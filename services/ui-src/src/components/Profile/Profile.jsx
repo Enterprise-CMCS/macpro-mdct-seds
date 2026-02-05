@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import "./Profile.scss";
 import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
@@ -25,26 +25,26 @@ export default function Profile() {
         <Grid row>
           <Grid col={12}>
             <form>
-              <FormGroup controlId="email">
-                <ControlLabel>Email</ControlLabel>
-                <FormControl value={email} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="firstName">
-                <ControlLabel>First Name</ControlLabel>
-                <FormControl value={firstName} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="lastName">
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl value={lastName} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="role">
-                <ControlLabel>Role</ControlLabel>
-                <FormControl value={role} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="state">
-                <ControlLabel>State</ControlLabel>
-                <FormControl value={state} disabled={true} />
-              </FormGroup>
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control value={email} disabled={true} />
+              </Form.Group>
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control value={firstName} disabled={true} />
+              </Form.Group>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control value={lastName} disabled={true} />
+              </Form.Group>
+              <Form.Group controlId="role">
+                <Form.Label>Role</Form.Label>
+                <Form.Control value={role} disabled={true} />
+              </Form.Group>
+              <Form.Group controlId="state">
+                <Form.Label>State</Form.Label>
+                <Form.Control value={state} disabled={true} />
+              </Form.Group>
             </form>
           </Grid>
         </Grid>
