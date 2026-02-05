@@ -79,10 +79,10 @@ describe("Test Login.js", () => {
   });
 
   it("should login successfully", () => {
-    const { container } = render(<Login />);
+    render(<Login />);
 
     const email = screen.getByRole("textbox", { name: "Email" });
-    const password = container.querySelectorAll("input")[1];
+    const password = screen.getByLabelText("Password");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
     fireEvent.change(email, { target: { value: "mail@mail.com" } });
