@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button, Table, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+import Preloader from "../Preloader/Preloader";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
 
@@ -53,7 +54,9 @@ const EditUser = () => {
     <div data-testid="EditUser" className="flex-col-gap-1half">
       <Link to="/users">&laquo; Back to User List</Link>
       <h1>Edit User</h1>
-      {user ? (
+      {isLoading ? (
+        <Preloader />
+      ) : user ? (
         <div className="flex-col-gap-1half">
           <Table>
             <tbody>
