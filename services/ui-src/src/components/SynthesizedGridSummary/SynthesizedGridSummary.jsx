@@ -21,7 +21,7 @@ const SynthesizedGridSummary = ({
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, allAnswers]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData, allAnswers]);
 
   const updateSynthesizedGrid = () => {
     // Make a deep copy of this single question & sort

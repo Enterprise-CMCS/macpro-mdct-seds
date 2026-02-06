@@ -12,7 +12,7 @@ const GenerateForms = () => {
   // Build options for year dropdown. From 2019 until next year, inclusive.
   const firstYear = 2019;
   const nextYear = new Date().getFullYear() + 1;
-  const yearSelections = [...new Array(nextYear - firstYear + 1)]
+  const yearSelections = Array.from({ length: nextYear - firstYear + 1 })
     .map((_, i) => (i + 2019).toString())
     .map((year) => ({ label: year, value: year }));
 

@@ -211,7 +211,7 @@ async function sendBatch(batch) {
 
 (async function () {
   throw new Error("Stop. Talk to Ben. And/or read his copious comments.");
-
+  // oxlint-disable no-unreachable
   let updatedCount = 0;
   try {
     let batch = [];
@@ -241,4 +241,5 @@ async function sendBatch(batch) {
       `${logPrefix()}Updated at least ${updatedCount} state forms before exiting.`
     );
   }
+  // oxlint-enable no-unreachable
 })();

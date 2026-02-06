@@ -55,7 +55,7 @@ describe("DynamoDB library functions", () => {
   describe("putMultiple", () => {
     it("should batch items appropriately", async () => {
       mockBatchWrite.mockResolvedValue({});
-      const items = [...new Array(60)].map((_, id) => ({ id }));
+      const items = Array.from({ length: 60 }).map((_, id) => ({ id }));
 
       await dynamodbLib.putMultiple("mockTableName", items, (item) => item.id);
 
@@ -89,7 +89,7 @@ describe("DynamoDB library functions", () => {
           });
         }
       });
-      const items = [...new Array(60)].map((_, id) => ({ id }));
+      const items = Array.from({ length: 60 }).map((_, id) => ({ id }));
 
       const tryPutMultiple = async () =>
         await dynamodbLib.putMultiple(

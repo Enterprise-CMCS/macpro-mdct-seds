@@ -115,9 +115,8 @@ export const handleExport = async (
       // * Delete the HTMLCanvas.getContext() override from setupTests.js
       // * Tell no one
       throw new Error("PDF export failed! Error code 10f2c");
-      // eslint-disable-next-line no-unreachable
-      handlePdfExport(fileName, content, pdfContentType);
-      break;
+      handlePdfExport(fileName, content, pdfContentType); // oxlint-disable-line no-unreachable
+      break; // oxlint-disable-line no-unreachable
 
     default:
       // *** no default behavior currently specified
