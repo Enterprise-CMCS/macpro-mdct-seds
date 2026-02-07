@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handler from "../../libs/handler-mocking.ts";
 import {
   main as generateQuarterForms,
   scheduled,
 } from "./generateQuarterForms.ts";
-import { authorizeAdmin as actualAuthorizeAdmin } from "../../auth/authConditions.ts";
-import { FormStatus } from "../../shared/types.ts";
+import { APIGatewayProxyEvent, FormStatus } from "../../shared/types.ts";
 import {
   scanForAllFormIds as actualScanForAllFormIds,
   writeAllFormAnswers as actualWriteAllFormAnswers,
@@ -47,10 +47,6 @@ vi.mock("../../libs/time.ts", () => ({
     .mockReturnValue({ year: 2025, quarter: 1 }),
 }));
 
-vi.mock("../../auth/authConditions.ts", () => ({
-  authorizeAdmin: vi.fn(),
-}));
-
 vi.mock("../../storage/formAnswers.ts", () => ({
   scanForAllFormIds: vi.fn(),
   writeAllFormAnswers: vi.fn(),
@@ -71,7 +67,6 @@ vi.mock("../../storage/stateForms.ts", () => ({
   writeAllStateForms: vi.fn(),
 }));
 
-const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
 const scanForAllFormIds = vi.mocked(actualScanForAllFormIds);
 const writeAllFormAnswers = vi.mocked(actualWriteAllFormAnswers);
 const scanQuestionsByYear = vi.mocked(actualScanQuestionsByYear);
@@ -99,6 +94,7 @@ const mockQuestion2 = {
   ],
   rows: [],
 };
+const mockEvent = {} as APIGatewayProxyEvent;
 
 describe("generateQuarterForms", () => {
   beforeEach(() => {
@@ -106,10 +102,11 @@ describe("generateQuarterForms", () => {
   });
 
   it("should create state forms for the current quarter", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    const response = await generateQuarterForms({});
+    const response = await generateQuarterForms(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -167,6 +164,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should only create missing forms", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
@@ -183,7 +181,7 @@ describe("generateQuarterForms", () => {
     ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    await generateQuarterForms({});
+    await generateQuarterForms(mockEvent);
 
     expect(writeAllStateForms).toHaveBeenCalledWith([
       expect.objectContaining({ state_form: "TX-2025-1-21E" }),
@@ -191,10 +189,12 @@ describe("generateQuarterForms", () => {
   });
 
   it("should create forms for the specified year and quarter if provided", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
     await generateQuarterForms({
+      ...mockEvent,
       // We mocked calculateFormQuarterFromDate to give 2025, but pass 2026 here
       queryStringParameters: { year: "2026", quarter: "2" },
     });
@@ -208,10 +208,11 @@ describe("generateQuarterForms", () => {
   });
 
   it("should populate state answers for newly generated forms", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    await generateQuarterForms({});
+    await generateQuarterForms(mockEvent);
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
 
@@ -248,6 +249,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should populate missing state answers if specified", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
@@ -266,6 +268,7 @@ describe("generateQuarterForms", () => {
     scanForAllFormIds.mockResolvedValueOnce([]);
 
     await generateQuarterForms({
+      ...mockEvent,
       queryStringParameters: { restore: "true" },
     });
 
@@ -274,6 +277,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should not populate missing state answers if not specified", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
@@ -290,7 +294,7 @@ describe("generateQuarterForms", () => {
     ] as StateForm[]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    const response = await generateQuarterForms({});
+    const response = await generateQuarterForms(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -303,6 +307,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should populate only the missing state answers if specified", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([
       { state_form: "CO-2025-1-21E" },
       { state_form: "CO-2025-1-64.EC" },
@@ -334,6 +339,7 @@ describe("generateQuarterForms", () => {
     ]);
 
     await generateQuarterForms({
+      ...mockEvent,
       queryStringParameters: { restore: "true" },
     });
 
@@ -353,6 +359,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should query the template table for questions if they are not in the questions table for this year", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce({
@@ -360,7 +367,7 @@ describe("generateQuarterForms", () => {
       template: [mockQuestion2],
     });
 
-    await generateQuarterForms({});
+    await generateQuarterForms(mockEvent);
 
     expect(writeAllFormAnswers).toHaveBeenCalled();
     const writtenFormAnswers = writeAllFormAnswers.mock.calls[0][0];
@@ -372,6 +379,7 @@ describe("generateQuarterForms", () => {
   });
 
   it("should copy the template from the previous year if necessary", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
@@ -379,7 +387,7 @@ describe("generateQuarterForms", () => {
       template: [mockQuestion2],
     });
 
-    await generateQuarterForms({});
+    await generateQuarterForms(mockEvent);
 
     expect(putTemplate).toHaveBeenCalledWith({
       year: 2025,
@@ -405,41 +413,32 @@ describe("generateQuarterForms", () => {
   });
 
   it("should fail if no template exists for this year or the previous", async () => {
+    handler.setupAdminUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([]);
     getTemplate
       .mockResolvedValueOnce(undefined)
       .mockResolvedValueOnce(undefined);
 
-    const response = await generateQuarterForms({});
-
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: expect.stringContaining("No template found for 2025 or 2024!"),
-      })
+    await expect(generateQuarterForms(mockEvent)).rejects.toThrow(
+      "No template found for 2025 or 2024!"
     );
   });
 
-  it("should return Internal Server Error if the user is not an admin", async () => {
-    authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
+  it("should return an error if the user does not have permissions", async () => {
+    handler.setupBusinessUser();
 
-    const response = await generateQuarterForms({});
+    const response = await generateQuarterForms(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({ error: "Forbidden" }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
   it("should not require authorization if invoked from a scheduled job", async () => {
-    authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
+    handler.setupBusinessUser();
     scanFormsByQuarter.mockResolvedValueOnce([]);
     scanQuestionsByYear.mockResolvedValueOnce([mockQuestion1]);
 
-    const response = await scheduled({});
+    const response = await scheduled(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -449,7 +448,5 @@ describe("generateQuarterForms", () => {
     );
 
     expect(writeAllStateForms).toHaveBeenCalled();
-    // We did not exercise this mock rejection; reset it to a no-op.
-    authorizeAdmin.mockReset().mockResolvedValueOnce();
   });
 });

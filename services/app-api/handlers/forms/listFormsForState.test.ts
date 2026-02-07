@@ -1,22 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handler from "../../libs/handler-mocking.ts";
 import { main as listFormsForState } from "./listFormsForState.ts";
-import { authorizeAdminOrUserForState as actualAuthorizeAdminOrUserForState } from "../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
-
-vi.mock("../../auth/authConditions.ts", () => ({
-  authorizeAdminOrUserForState: vi.fn(),
-}));
-const authorizeAdminOrUserForState = vi.mocked(
-  actualAuthorizeAdminOrUserForState
-);
+import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
 const mockScan = vi.fn();
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockEvent = { pathParameters: { state: "CO" } };
+const mockEvent = {
+  pathParameters: {
+    state: "CO",
+  } as Record<string, string>,
+} as APIGatewayProxyEvent;
 const mockForm1 = { mockForm: 1 };
 const mockForm2 = { mockForm: 2 };
 const mockForms = [mockForm1, mockForm2];
@@ -27,6 +25,7 @@ describe("listFormsForState", () => {
   });
 
   it("should query dynamo for state forms", async () => {
+    handler.setupBusinessUser();
     mockScan.mockResolvedValueOnce({
       Count: 2,
       Items: mockForms,
@@ -44,42 +43,28 @@ describe("listFormsForState", () => {
     expect(mockScan).toHaveBeenCalledWith(
       expect.objectContaining({
         TableName: "local-state-forms",
-        Select: "ALL_ATTRIBUTES",
-        ExpressionAttributeValues: { ":stateId": "CO" },
         FilterExpression: "state_id = :stateId",
+        ExpressionAttributeValues: { ":stateId": "CO" },
         ConsistentRead: true,
       }),
       expect.any(Function)
     );
   });
 
-  it("should return an error if there are no state forms", async () => {
+  it("should throw an error if there are no state forms", async () => {
+    handler.setupStateUser("CO");
     mockScan.mockResolvedValueOnce({
       Count: 0,
     });
 
-    const response = await listFormsForState(mockEvent);
-
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({
-          error: "No state form list found for this state",
-        }),
-      })
-    );
+    await expect(listFormsForState(mockEvent)).rejects.toThrow(/No state form/);
   });
 
-  it("should return Internal Server Error if the user is not an admin", async () => {
-    authorizeAdminOrUserForState.mockRejectedValueOnce(new Error("Forbidden"));
+  it("should return an error if the user does not have permissions", async () => {
+    handler.setupStateUser("TX");
 
     const response = await listFormsForState(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({ error: "Forbidden" }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 });

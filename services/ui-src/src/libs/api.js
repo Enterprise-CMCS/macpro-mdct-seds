@@ -201,8 +201,7 @@ export const generateEnrollmentTotals = async () => {
 };
 
 /*
-    NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
-    able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
+  Endpoint disabled; see docs/uncertified_emails.md
   
   export const sendUncertifyEmail = async data => {
     const opts = await requestOptions();

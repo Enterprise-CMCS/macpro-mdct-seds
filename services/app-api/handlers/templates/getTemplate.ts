@@ -1,22 +1,20 @@
 import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { authorizeAdmin } from "../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { ok, notFound } from "../../libs/response-lib.ts";
+import { ok, notFound, forbidden } from "../../libs/response-lib.ts";
+import { isIntegral } from "../../libs/parsing.ts";
+import { logger } from "../../libs/debug-lib.ts";
 
-/**
- * Returns a single form template
- * This can be used for generating form Answers and Questions
- */
+export const main = handler(readYearFromPath, async (request) => {
+  if (request.user.role !== "admin") {
+    return forbidden();
+  }
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  await authorizeAdmin(event);
-
-  const { year } = event.pathParameters!;
+  const year = request.parameters.year;
 
   const params = {
     TableName: process.env.FormTemplatesTable,
-    Key: { year: parseInt(year!) },
+    Key: { year },
   };
 
   const template = (await dynamoDb.get(params)).Item;
@@ -27,3 +25,12 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
 
   return ok(template);
 });
+
+function readYearFromPath(evt: APIGatewayProxyEvent) {
+  const yearStr = evt.pathParameters?.year;
+  if (!isIntegral(yearStr)) {
+    logger.warn("Invalid year in path.");
+    return undefined;
+  }
+  return { year: Number(yearStr) };
+}

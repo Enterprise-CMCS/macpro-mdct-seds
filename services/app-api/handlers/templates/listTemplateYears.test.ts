@@ -1,18 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handler from "../../libs/handler-mocking.ts";
 import { main as listTemplateYears } from "./listTemplateYears.ts";
-import { authorizeAdmin as actualAuthorizeAdmin } from "../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
-
-vi.mock("../../auth/authConditions.ts", () => ({
-  authorizeAdmin: vi.fn(),
-}));
-const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 
-const mockEvent = {};
+const mockEvent = {} as APIGatewayProxyEvent;
 
 describe("listTemplateYears", () => {
   beforeEach(() => {
@@ -20,6 +16,7 @@ describe("listTemplateYears", () => {
   });
 
   it("should query dynamo for the appropriate data", async () => {
+    handler.setupAdminUser();
     const mockScan = vi.fn().mockResolvedValueOnce({
       Count: 1,
       Items: [{ year: 2024 }, { year: 2023 }, { year: 2025 }],
@@ -45,6 +42,7 @@ describe("listTemplateYears", () => {
   });
 
   it("should return Not Found if there are no results", async () => {
+    handler.setupAdminUser();
     const mockScan = vi.fn().mockResolvedValueOnce({ Count: 0 });
     mockDynamo.on(ScanCommand).callsFakeOnce(mockScan);
 
@@ -58,16 +56,11 @@ describe("listTemplateYears", () => {
     );
   });
 
-  it("should return Internal Server Error if the user is not an admin", async () => {
-    authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
+  it("should return an error if the user does not have permissions", async () => {
+    handler.setupStateUser("CO");
 
     const response = await listTemplateYears(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({ error: "Forbidden" }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 });

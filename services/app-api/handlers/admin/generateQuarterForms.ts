@@ -1,8 +1,11 @@
 import handler from "../../libs/handler-lib.ts";
-import { authorizeAdmin } from "../../auth/authConditions.ts";
 import { calculateFormQuarterFromDate } from "../../libs/time.ts";
-import { FormStatus, APIGatewayProxyEvent } from "../../shared/types.ts";
-import { ok } from "../../libs/response-lib.ts";
+import {
+  FormStatus,
+  APIGatewayProxyEvent,
+  AuthenticatedRequest,
+} from "../../shared/types.ts";
+import { forbidden, ok } from "../../libs/response-lib.ts";
 import {
   FormAnswer,
   scanForAllFormIds,
@@ -20,22 +23,38 @@ import {
 } from "../../storage/stateForms.ts";
 import { formTypes } from "../../shared/formTypeList.ts";
 import { stateList } from "../../shared/stateList.ts";
+import { isIntegral } from "../../libs/parsing.ts";
+import { AuthUser } from "../../storage/users.ts";
 
 /** Called from the API; admin access required */
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  await authorizeAdmin(event);
-  return await generateQuarterForms(event);
+export const main = handler(parseParameters, async (request) => {
+  if (request.user.role !== "admin") {
+    return forbidden();
+  }
+
+  return await generateQuarterForms(request);
 });
 
-/** Called from a scheduled job; no specific user privileges required */
-export const scheduled = handler(async (event: APIGatewayProxyEvent) => {
-  return await generateQuarterForms(event);
-});
+/**
+ * Called from a scheduled job. The scheduler will not provide a user token,
+ * so we cannot (and don't need to) use the standard `handler()` wrapper.
+ */
+export const scheduled = async (event: APIGatewayProxyEvent) => {
+  const parameters = parseParameters(event);
+  const request = {
+    parameters,
+    user: {} as AuthUser,
+    body: undefined,
+  };
+  return await generateQuarterForms(request);
+};
 
 /*
  * Generates initial form data and statuses for all states given a year and quarter
  */
-const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
+const generateQuarterForms = async (
+  request: AuthenticatedRequest<Parameters>
+) => {
   let noMissingForms = true;
 
   const determineAgeRanges = (questionId: string) => {
@@ -90,22 +109,11 @@ const generateQuarterForms = async (event: APIGatewayProxyEvent) => {
     return ageRanges;
   };
 
-  // Get year and quarter from request, or the current date for automated jobs
-  let specifiedYear;
-  let specifiedQuarter;
-  let restoreMissingAnswers = false;
-
-  if (event.queryStringParameters) {
-    const qp = event.queryStringParameters;
-    if (qp.year) specifiedYear = parseInt(qp.year);
-    if (qp.quarter) specifiedQuarter = parseInt(qp.quarter);
-    if (qp.restore !== undefined) restoreMissingAnswers = qp.restore === "true";
-  }
-
   // If not specified, determine the reporting period from the current date.
   const currentQuarter = calculateFormQuarterFromDate(new Date());
-  specifiedYear = specifiedYear || currentQuarter.year;
-  specifiedQuarter = specifiedQuarter || currentQuarter.quarter;
+  const specifiedYear = request.parameters.year ?? currentQuarter.year;
+  const specifiedQuarter = request.parameters.quarter ?? currentQuarter.quarter;
+  const restoreMissingAnswers = request.parameters.restore;
 
   // Search for existing stateForms
   const foundForms = await scanFormsByQuarter(specifiedYear, specifiedQuarter);
@@ -269,3 +277,22 @@ export const getOrCreateQuestions = async (year: number) => {
 
   return questions;
 };
+
+type Parameters = {
+  year: number | undefined;
+  quarter: number | undefined;
+  restore: boolean;
+};
+
+function parseParameters(evt: APIGatewayProxyEvent): Parameters {
+  const yearStr = evt.queryStringParameters?.year;
+  const year = isIntegral(yearStr) ? Number(yearStr) : undefined;
+
+  const quarterStr = evt.queryStringParameters?.quarter;
+  const quarter = isIntegral(quarterStr) ? Number(quarterStr) : undefined;
+
+  const restoreStr = evt.queryStringParameters?.restore;
+  const restore = restoreStr === "true";
+
+  return { year, quarter, restore };
+}

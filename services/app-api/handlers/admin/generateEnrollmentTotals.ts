@@ -1,13 +1,14 @@
 import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { authorizeAdmin } from "../../auth/authConditions.ts";
 import { StateForm, writeAllStateForms } from "../../storage/stateForms.ts";
-import { FormQuestion } from "../../storage/formQuestions.ts";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { ok, notFound } from "../../libs/response-lib.ts";
+import { ok, notFound, forbidden } from "../../libs/response-lib.ts";
+import { emptyParser } from "../../libs/parsing.ts";
+import { FormAnswer } from "../../storage/formAnswers.ts";
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  await authorizeAdmin(event);
+export const main = handler(emptyParser, async (request) => {
+  if (request.user.role !== "admin") {
+    return forbidden();
+  }
 
   const stateForms = await getStateFormsWithTotals();
   if (stateForms.length === 0) {

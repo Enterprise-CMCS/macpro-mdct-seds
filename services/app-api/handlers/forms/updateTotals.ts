@@ -1,53 +1,87 @@
 import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { authorizeUserForState } from "../../auth/authConditions.ts";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { notFound, ok } from "../../libs/response-lib.ts";
+import { canWriteAnswersForState } from "../../auth/authConditions.ts";
+import {
+  badRequest,
+  forbidden,
+  notFound,
+  ok,
+} from "../../libs/response-lib.ts";
+import { readFormIdentifiersFromPath } from "../../libs/parsing.ts";
+import { logger } from "../../libs/debug-lib.ts";
+import { FormTypes } from "../../shared/types.ts";
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  const { state, year, quarter, form } = event.pathParameters!;
-  const data = JSON.parse(event.body!);
+export const main = handler(readFormIdentifiersFromPath, async (request) => {
+  const { state, year, quarter, form } = request.parameters;
 
-  await authorizeUserForState(event, state);
+  if (form !== FormTypes["21E"] && form !== FormTypes["64.21E"]) {
+    return ok();
+  }
 
-  const stateFormId = `${state}-${year}-${quarter}-${form}`;
+  if (!canWriteAnswersForState(request.user, state)) {
+    return forbidden();
+  }
 
-  const params = {
+  if (!isValidBody(request.body)) {
+    return badRequest();
+  }
+
+  const state_form = `${state}-${year}-${quarter}-${form}`;
+
+  const getParams = {
     TableName: process.env.StateFormsTable,
-    Select: "ALL_ATTRIBUTES",
-    ExpressionAttributeValues: {
-      ":state_form": stateFormId,
-    },
-    KeyConditionExpression: "state_form = :state_form",
+    Key: { state_form },
     ConsistentRead: true,
   };
 
-  const result = await dynamoDb.query(params);
-  if (result.Items.length === 0) {
+  const result = await dynamoDb.get(getParams);
+  if (!result.Item) {
     return notFound();
   }
 
-  const record = result.Items[0];
-  if (record.form === "21E") {
-    record.enrollmentCounts = {
-      type: "separate",
-      year,
-      count: data.totalEnrollment,
-    };
-  }
-  if (record.form === "64.21E") {
-    record.enrollmentCounts = {
-      type: "expansion",
-      year,
-      count: data.totalEnrollment,
-    };
-  }
-  record.lastSynced = new Date().toISOString();
+  const updateParams = {
+    TableName: process.env.StateFormsTable,
+    Key: { state_form },
+    UpdateExpression:
+      "SET last_modified = :last_modified, last_modified_by = :last_modified_by, enrollmentCounts = :enrollmentCounts",
+    ExpressionAttributeValues: {
+      ":last_modified": new Date().toISOString(),
+      ":last_modified_by": request.user.username,
+      ":enrollmentCounts": {
+        year,
+        type: EnrollmentTypes[form],
+        count: request.body.totalEnrollment,
+      },
+    },
+  };
 
-  await dynamoDb.put({
-    TableName: params.TableName,
-    Item: record,
-  });
+  await dynamoDb.update(updateParams);
 
   return ok();
 });
+
+const EnrollmentTypes = {
+  [FormTypes["21E"]]: "separate",
+  [FormTypes["64.21E"]]: "expansion",
+} as const;
+
+type RequestBody = {
+  totalEnrollment: number;
+};
+
+const isValidBody = (body: unknown): body is RequestBody => {
+  if (!body || "object" !== typeof body) {
+    logger.warn("body is required.");
+    return false;
+  }
+
+  if (
+    !("totalEnrollment" in body) ||
+    "number" !== typeof body.totalEnrollment
+  ) {
+    logger.warn("body.totalEnrollment must be a number.");
+    return false;
+  }
+
+  return true;
+};

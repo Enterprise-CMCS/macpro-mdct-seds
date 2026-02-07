@@ -1,20 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handler from "../../libs/handler-mocking.ts";
 import { main as listUsers } from "./listUsers.ts";
-import { authorizeAdmin as actualAuthorizeAdmin } from "../../auth/authConditions.ts";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
-
-vi.mock("../../auth/authConditions.ts", () => ({
-  authorizeAdmin: vi.fn(),
-}));
-const authorizeAdmin = vi.mocked(actualAuthorizeAdmin);
+import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
-const mockEvent = {};
+const mockEvent = {} as APIGatewayProxyEvent;
 
 const mockUser1 = {
   id: 1,
@@ -31,6 +27,7 @@ describe("listUsers", () => {
   });
 
   it("should fetch user data from dynamo", async () => {
+    handler.setupAdminUser();
     mockScan.mockResolvedValueOnce({ Count: 2, Items: [mockUser1, mockUser2] });
 
     const response = await listUsers(mockEvent);
@@ -44,6 +41,7 @@ describe("listUsers", () => {
   });
 
   it("should return an empty array if no users exist", async () => {
+    handler.setupAdminUser();
     mockScan.mockResolvedValueOnce({ Count: 0 });
 
     const response = await listUsers(mockEvent);
@@ -56,16 +54,11 @@ describe("listUsers", () => {
     );
   });
 
-  it("should return Internal Server Error if the user is not authorized", async () => {
-    authorizeAdmin.mockRejectedValueOnce(new Error("Forbidden"));
+  it("should return an error if the user does not have permissions", async () => {
+    handler.setupStateUser("CO");
 
     const response = await listUsers(mockEvent);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
-        body: JSON.stringify({ error: "Forbidden" }),
-      })
-    );
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 });

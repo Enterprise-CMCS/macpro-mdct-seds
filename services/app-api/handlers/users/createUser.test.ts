@@ -1,23 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { main as createUser } from "./createUser.ts";
-import { getUserDetailsFromEvent as actualGetUserDetails } from "../../libs/authorization.ts";
-import {
-  DynamoDBDocumentClient,
-  PutCommand,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { createUser } from "./createUser.ts";
+import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import {
   scanForUserByUsername as actualScanForUser,
   putUser as actualPutUser,
   AuthUser,
 } from "../../storage/users.ts";
-import { StatusCodes } from "../../libs/response-lib.ts";
-
-vi.mock("../../libs/authorization.ts", () => ({
-  getUserDetailsFromEvent: vi.fn(),
-}));
-const getUserDetailsFromEvent = vi.mocked(actualGetUserDetails);
 
 vi.mock("../../storage/users.ts", () => ({
   scanForUserByUsername: vi.fn(),
@@ -27,12 +16,8 @@ const scanForUserByUsername = vi.mocked(actualScanForUser);
 const putUser = vi.mocked(actualPutUser);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockPut = vi.fn();
-mockDynamo.on(PutCommand).callsFake(mockPut);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
-
-const mockEvent = {};
 
 const mockUser = {
   userId: "42",
@@ -52,90 +37,54 @@ describe("createUser", () => {
   });
 
   it("should read user data from the event headers and store it in dynamo", async () => {
-    getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
     mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
-    const response = await createUser(mockEvent);
+    const response = await createUser(mockUser);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.Ok,
-        body: `"User COLO Added!"`,
-      })
-    );
+    expect(response).toBe("User COLO Added!");
 
-    expect(mockPut).toHaveBeenCalledWith(
-      {
-        TableName: "local-auth-user",
-        Item: {
-          ...mockUser,
-          dateJoined: expect.stringMatching(ISO_DATE_REGEX),
-          lastLogin: expect.stringMatching(ISO_DATE_REGEX),
-          lastSynced: expect.stringMatching(ISO_DATE_REGEX),
-          userId: "0",
-        },
-      },
-      expect.any(Function)
-    );
+    expect(putUser).toHaveBeenCalledWith({
+      ...mockUser,
+      dateJoined: expect.stringMatching(ISO_DATE_REGEX),
+      lastLogin: expect.stringMatching(ISO_DATE_REGEX),
+      lastSynced: expect.stringMatching(ISO_DATE_REGEX),
+      userId: "1",
+    });
   });
 
   it("should assign the new user the next sequential ID", async () => {
-    getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
     mockScan.mockResolvedValueOnce({
       Count: 3,
       Items: [{ userId: "10" }, { userId: "30" }, { userId: "20" }],
     });
 
-    const response = await createUser(mockEvent);
+    const response = await createUser(mockUser);
 
-    expect(response).toEqual(
+    expect(response).toBe("User COLO Added!");
+
+    expect(putUser).toHaveBeenCalledWith(
       expect.objectContaining({
-        statusCode: StatusCodes.Ok,
-        body: `"User COLO Added!"`,
+        userId: "31",
       })
-    );
-
-    expect(mockPut).toHaveBeenCalledWith(
-      expect.objectContaining({
-        TableName: "local-auth-user",
-        Item: expect.objectContaining({
-          userId: "31",
-        }),
-      }),
-      expect.any(Function)
     );
   });
 
   it("should fail if the user has somehow created a Cognito account with no username", async () => {
     const invalidUser = { username: undefined } as any;
-    getUserDetailsFromEvent.mockResolvedValueOnce(invalidUser);
 
-    const response = await createUser(mockEvent);
+    const response = await createUser(invalidUser);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.Ok,
-        body: `"Please enter a username"`,
-      })
-    );
-
-    expect(mockPut).not.toHaveBeenCalled();
+    expect(response).toBe("Please enter a username");
   });
 
   it("should do nothing if the user already exists", async () => {
-    getUserDetailsFromEvent.mockResolvedValueOnce(mockUser);
     scanForUserByUsername.mockResolvedValueOnce(mockUser as AuthUser);
     mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
-    const response = await createUser(mockEvent);
+    const response = await createUser(mockUser);
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        statusCode: StatusCodes.Ok,
-        body: `"User COLO already exists"`,
-      })
-    );
+    expect(response).toBe("User COLO already exists");
 
-    expect(mockPut).not.toHaveBeenCalled();
+    expect(putUser).not.toHaveBeenCalled();
   });
 });

@@ -1,6 +1,4 @@
-import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { ok } from "../../libs/response-lib.ts";
 
 const tableNames = [
   process.env.FormAnswersTable,
@@ -13,7 +11,11 @@ const tableNames = [
 const mergeLastSynced = (items: any[], syncDateTime: string) =>
   items.map((item: any) => ({ ...item, lastSynced: syncDateTime }));
 
-export const main = handler(async (event) => {
+/**
+ * Only called manually, via the AWS web UI. We will not have a user token,
+ * so we cannot (and don't need to) use the standard `handler()` wrapper.
+ */
+export const main = async () => {
   const syncDateTime = new Date().toISOString();
 
   for (const tableName of tableNames) {
@@ -40,5 +42,5 @@ export const main = handler(async (event) => {
     }
   }
 
-  return ok();
-});
+  return "Success!";
+};

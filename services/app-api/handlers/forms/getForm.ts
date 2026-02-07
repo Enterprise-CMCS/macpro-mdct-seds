@@ -1,15 +1,17 @@
 import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { authorizeAdminOrUserForState } from "../../auth/authConditions.ts";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { notFound, ok } from "../../libs/response-lib.ts";
+import { canReadDataForState } from "../../auth/authConditions.ts";
+import { forbidden, notFound, ok } from "../../libs/response-lib.ts";
+import { readFormIdentifiersFromPath } from "../../libs/parsing.ts";
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  const { state, year, quarter, form } = event.pathParameters!;
+export const main = handler(readFormIdentifiersFromPath, async (request) => {
+  const { state, year, quarter, form } = request.parameters;
 
-  await authorizeAdminOrUserForState(event, state);
+  if (!canReadDataForState(request.user, state)) {
+    return forbidden();
+  }
 
-  const state_form = `${state}-${year}-${parseInt(quarter!)}-${form}`;
+  const state_form = `${state}-${year}-${quarter}-${form}`;
 
   const stateFormParams = {
     TableName: process.env.StateFormsTable,
@@ -38,7 +40,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
       "#year": "year",
     },
     ExpressionAttributeValues: {
-      ":year": parseInt(year!),
+      ":year": year,
       ":form": form,
     },
   };

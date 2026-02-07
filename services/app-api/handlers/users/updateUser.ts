@@ -1,35 +1,42 @@
 import handler from "../../libs/handler-lib.ts";
-import { scanForUserWithSub } from "./getCurrentUser.ts";
+import { putUser, scanForUserWithSub } from "../../storage/users.ts";
 import {
-  authorizeAdmin,
-  authorizeAdminOrUserWithEmail,
-  authorizeAnyUser,
-} from "../../auth/authConditions.ts";
-import { putUser, AuthUser } from "../../storage/users.ts";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { notFound, ok } from "../../libs/response-lib.ts";
+  badRequest,
+  forbidden,
+  notFound,
+  ok,
+} from "../../libs/response-lib.ts";
+import { emptyParser, isStateAbbr } from "../../libs/parsing.ts";
+import { logger } from "../../libs/debug-lib.ts";
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  await authorizeAnyUser(event);
+export const main = handler(emptyParser, async (request) => {
+  const { body, user: requestingUser } = request;
 
-  const data = JSON.parse(event.body!);
-  const currentUser = await scanForUserWithSub(data.usernameSub);
-  if (!currentUser) {
-    return notFound(`User with sub ${data.usernameSub} could not be found`);
+  if (!isValidBody(body)) {
+    return badRequest();
   }
 
-  await authorizeAdminOrUserWithEmail(event, currentUser!.email);
-
-  if (modifyingAnythingButAnUndefinedState(data, currentUser)) {
-    await authorizeAdmin(event);
+  const userBeingModified = await scanForUserWithSub(body.usernameSub);
+  if (!userBeingModified) {
+    return notFound(`User with sub ${body.usernameSub} could not be found.`);
   }
 
-  assertPayloadIsValid(data);
+  if (requestingUser.role !== "admin") {
+    if (
+      userBeingModified.usernameSub !== requestingUser.usernameSub ||
+      userBeingModified.role !== body.role ||
+      userBeingModified.state !== undefined
+    ) {
+      // Non-admins can only change their own AuthUser record,
+      // and even then only the state, and even then only if it was absent.
+      return forbidden();
+    }
+  }
 
   const updatedUser = {
-    ...currentUser,
-    role: data.role,
-    state: data.state,
+    ...userBeingModified,
+    role: body.role,
+    state: body.state,
   };
 
   await putUser(updatedUser);
@@ -37,35 +44,33 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
   return ok(updatedUser);
 });
 
-function modifyingAnythingButAnUndefinedState(
-  incomingUser: any,
-  existingUser: AuthUser
-) {
-  if (incomingUser.username !== existingUser.username) return true;
-  if (incomingUser.role !== existingUser.role) return true;
-  if (incomingUser.usernameSub !== existingUser.usernameSub) return true;
-  if (existingUser.state !== undefined) return true;
-  return false;
-}
+type RequestBody = {
+  usernameSub: string;
+  role: "state" | "business" | "admin";
+  state: string;
+};
 
-function assertPayloadIsValid(data: any) {
-  if (!data) {
-    throw new Error("User update payload is missing");
+function isValidBody(body: unknown): body is RequestBody {
+  if (!body || "object" !== typeof body) {
+    logger.warn("Body is empty.");
+    return false;
   }
-
-  if (typeof data.role !== "string" || !data.role) {
-    throw new Error("Invalid user role - must be a nonempty string");
+  if (!("usernameSub" in body) || "string" !== typeof body.usernameSub) {
+    logger.warn("body.usernameSub must be a string");
+    return false;
   }
-  if (!["admin", "business", "state"].includes(data.role)) {
-    throw new Error("Invalid user role - must be an existing role");
+  if (
+    !("role" in body) ||
+    !["state", "business", "admin"].includes(body.role as string)
+  ) {
+    logger.warn("body.role must be 'state', 'business', or 'admin'.");
+    return false;
   }
-
-  if (data.state !== undefined) {
-    if (typeof data.state !== "string") {
-      throw new Error("Invalid user state - must be a string");
-    }
-    if (!/^[A-Z]{2}$/.test(data.state)) {
-      throw new Error("Invalid user state - must be 2-letter abbreviations");
+  if ("state" in body) {
+    if ("string" !== typeof body.state || !isStateAbbr(body.state)) {
+      logger.warn("body.state must be a 2-letter state abbreviation");
+      return false;
     }
   }
+  return true;
 }

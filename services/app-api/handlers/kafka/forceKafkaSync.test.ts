@@ -26,7 +26,7 @@ describe("forceKafkaSync", () => {
     // We will mock only the first scan
     mockScan.mockResolvedValueOnce({ Count: 1, Items: [{ foo: "bar" }] });
 
-    await forceKafkaSync({});
+    await forceKafkaSync();
 
     expect(mockScan).toHaveBeenCalledTimes(5);
     expect(mockBatchWrite).toHaveBeenCalled();
@@ -36,7 +36,8 @@ describe("forceKafkaSync", () => {
     // So digging into the params object gets a bit awkward here.
     // What I do want to verify is that the lastSynced property was added.
     const firstBatchWriteParams = mockBatchWrite.mock.calls[0][0];
-    const request = Object.values(firstBatchWriteParams.RequestItems)[0]![0];
+    const requestItems = Object.values(firstBatchWriteParams.RequestItems);
+    const request = (requestItems as any)[0][0];
     expect(request.PutRequest.Item).toEqual({
       foo: "bar",
       lastSynced: expect.stringMatching(ISO_DATE_REGEX),

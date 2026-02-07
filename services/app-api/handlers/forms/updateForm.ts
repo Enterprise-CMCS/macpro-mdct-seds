@@ -1,45 +1,57 @@
 import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { authorizeUserForState } from "../../auth/authConditions.ts";
-import { getCurrentUserInfo } from "../../auth/cognito-auth.ts";
+import {
+  canWriteAnswersForState,
+  canWriteStatusForState,
+} from "../../auth/authConditions.ts";
 import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
 import { AuthUser } from "../../storage/users.ts";
-import { FormAnswer } from "../../storage/formAnswers.ts";
 import { StateForm } from "../../storage/stateForms.ts";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { badRequest, ok } from "../../libs/response-lib.ts";
+import { badRequest, forbidden, ok } from "../../libs/response-lib.ts";
+import {
+  isFormId,
+  isStatusId as isFormStatus,
+  readFormIdentifiersFromPath,
+} from "../../libs/parsing.ts";
+import { logger } from "../../libs/debug-lib.ts";
+import { FormStatusValue } from "../../shared/types.ts";
 
-/**
- * This handler will loop through a question array and save each row
- */
+export const main = handler(readFormIdentifiersFromPath, async (request) => {
+  const { state, year, quarter, form } = request.parameters;
 
-export const main = handler(async (event: APIGatewayProxyEvent) => {
-  const { state, year, quarter, form } = event.pathParameters!;
-  const data = JSON.parse(event.body!);
+  if (!canWriteStatusForState(request.user, state)) {
+    return forbidden();
+  }
 
-  await authorizeUserForState(event, state);
+  if (!isValidBody(request.body)) {
+    return badRequest();
+  }
+  const { statusData, formAnswers } = request.body;
 
-  const stateFormId = `${state}-${year}-${quarter}-${form}`;
+  const state_form = `${state}-${year}-${quarter}-${form}`;
 
-  for (const answer of data.formAnswers) {
-    if (answer.state_form !== stateFormId) {
+  if (statusData.state_form !== state_form) {
+    return badRequest("Body state_form does not match URL parameters.");
+  }
+
+  for (const answer of formAnswers) {
+    if (answer.state_form !== state_form) {
       return badRequest("Answer state_form does not match URL parameters.");
     }
   }
 
-  const user = (await getCurrentUserInfo(event)).data;
-  const answers = data.formAnswers;
-  const statusData = data.statusData;
-
-  if (user.role === "state") {
-    await updateAnswers(answers, user);
+  if (canWriteAnswersForState(request.user, state)) {
+    await updateAnswers(formAnswers, request.user);
   }
-  await updateStateForm(stateFormId, statusData, user);
+  await updateStateForm(state_form, statusData, request.user);
 
   return ok();
 });
 
-const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
+const updateAnswers = async (
+  answers: RequestBody["formAnswers"],
+  user: AuthUser
+) => {
   let questionResult: UpdateCommandOutput[] = [];
   answers.sort(function (a: any, b: any) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
@@ -162,7 +174,7 @@ const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
         "#r": "rows",
       },
 
-      ReturnValues: "ALL_NEW",
+      ReturnValues: "ALL_NEW" as const,
     };
 
     const dbResult = await dynamoDb.update(questionParams);
@@ -171,57 +183,49 @@ const updateAnswers = async (answers: FormAnswer[], user: AuthUser) => {
 };
 
 const updateStateForm = async (
-  stateFormId: string,
-  statusData: StateForm,
+  state_form: string,
+  statusData: RequestBody["statusData"],
   user: any
 ) => {
   // Get existing form to compare changes
   const params = {
     TableName: process.env.StateFormsTable,
-    ExpressionAttributeNames: {
-      "#state_form": "state_form",
-    },
-    ExpressionAttributeValues: {
-      ":state_form": stateFormId,
-    },
-    KeyConditionExpression: "#state_form = :state_form",
+    Key: { state_form },
   };
-  const result = await dynamoDb.query(params);
-  if (result.Count === 0) {
+  const result = await dynamoDb.get(params);
+  if (!result.Item) {
     throw new Error("State Form Not Found");
   }
+  const currentForm = result.Item as StateForm;
 
-  const currentForm = result.Items![0];
-  let statusFlags: any = {};
+  const currentTimestamp = new Date().toISOString();
+
+  const statusFlags = {
+    ":status_modified_by": currentForm.status_modified_by,
+    ":status_date": currentForm.status_date,
+  };
   if (currentForm.status_id !== statusData.status_id) {
     statusFlags[":status_modified_by"] = user.username;
-    statusFlags[":status_date"] = new Date().toISOString();
+    statusFlags[":status_date"] = currentTimestamp;
   }
+
   // Params for updating for statusData;
   const formParams = {
     TableName: params.TableName,
-    Key: {
-      state_form: stateFormId,
-    },
+    Key: { state_form },
     UpdateExpression:
       "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
     ExpressionAttributeValues: {
       ":last_modified_by": user.username,
-      ":last_modified": statusData.last_modified,
-      ":status_modified_by": currentForm.status_modified_by,
-      ":status_date": currentForm.status_date,
+      ":last_modified": currentTimestamp,
       ":status_id": statusData.status_id,
       ":state_comments": statusData.state_comments,
       ...statusFlags,
     },
-    ReturnValues: "ALL_NEW",
+    ReturnValues: "ALL_NEW" as const,
   };
 
-  try {
-    await dynamoDb.update(formParams);
-  } catch (e) {
-    throw new Error("Form params update failed", { cause: e });
-  }
+  await dynamoDb.update(formParams);
 };
 
 /**
@@ -241,4 +245,124 @@ function replaceNullsWithZeros(obj: any): any {
   } else {
     return obj;
   }
+}
+
+type RequestBody = {
+  statusData: {
+    state_form: string;
+    status_id: FormStatusValue;
+    state_comments: [{ type: "text_multiline"; entry: string | null }];
+  };
+  formAnswers: {
+    state_form: string;
+    question: string;
+    rangeId: string;
+    rows: {
+      col1: any;
+      col2: any;
+      col3: any;
+      col4: any;
+      col5: any;
+      col6: any;
+    }[];
+  }[];
+};
+
+function isValidBody(body: unknown): body is RequestBody {
+  if (!body || "object" !== typeof body) {
+    logger.warn("body is required.");
+    return false;
+  }
+
+  if (
+    !("statusData" in body) ||
+    "object" !== typeof body.statusData ||
+    !body.statusData
+  ) {
+    logger.warn("body.statusData is required.");
+    return false;
+  }
+  const statusData = body.statusData;
+
+  if (!("state_form" in statusData) || !isFormId(statusData.state_form)) {
+    logger.warn("body.statusData.state_form is invalid.");
+    return false;
+  }
+
+  if (!("status_id" in statusData) || !isFormStatus(statusData.status_id)) {
+    logger.warn("body.statusData.status_id is invalid.");
+    return false;
+  }
+
+  if (
+    !("state_comments" in statusData) ||
+    !Array.isArray(statusData.state_comments) ||
+    statusData.state_comments.length !== 1
+  ) {
+    logger.warn("body.statusData.state_comments must be a singleton array.");
+    return false;
+  }
+  const comment = statusData.state_comments[0] as unknown;
+
+  if (
+    "object" !== typeof comment ||
+    !comment ||
+    !("type" in comment) ||
+    comment.type !== "text_multiline" ||
+    !("entry" in comment) ||
+    ("string" !== typeof comment.entry && null !== comment.entry)
+  ) {
+    logger.warn("body.statusData.state_comments is invalid.");
+    return false;
+  }
+
+  if (!("formAnswers" in body) || !Array.isArray(body.formAnswers)) {
+    logger.warn("body.formAnswers is required.");
+    return false;
+  }
+  for (let formAnswer of body.formAnswers as unknown[]) {
+    if ("object" !== typeof formAnswer || !formAnswer) {
+      logger.warn("Each element of body.formAnswers must be an object.");
+      return false;
+    }
+
+    if (!("state_form" in formAnswer) || !isFormId(formAnswer.state_form)) {
+      logger.warn("body.formAnswers[i].state_form must is invalid.");
+      return false;
+    }
+
+    if (
+      !("question" in formAnswer) ||
+      "string" !== typeof formAnswer.question
+    ) {
+      logger.warn("body.formAnswers[i].question must be a string.");
+      return false;
+    }
+
+    if (!("rangeId" in formAnswer) || "string" !== typeof formAnswer.rangeId) {
+      logger.warn("body.formAnswers[i].rangeId must be a string.");
+      return false;
+    }
+
+    if (!("rows" in formAnswer) || !Array.isArray(formAnswer.rows)) {
+      logger.warn("body.formAnswers[i].rows must be an array.");
+      return false;
+    }
+
+    for (let row of formAnswer.rows as unknown[]) {
+      if ("object" !== typeof row || !row) {
+        logger.warn("body.formAnswers[i].rows[j] must be an object.");
+        return false;
+      }
+
+      for (let col of ["col1", "col2", "col3", "col4", "col5", "col6"]) {
+        if (!(col in row)) {
+          logger.warn(`body.formAnswers[i].rows[j].${col} is required.`);
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
 }

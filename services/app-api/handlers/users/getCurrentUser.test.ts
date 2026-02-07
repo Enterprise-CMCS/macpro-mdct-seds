@@ -8,6 +8,9 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
+import { APIGatewayProxyEvent } from "../../shared/types.ts";
+import { jwtDecode } from "jwt-decode";
+import { CmsAmplifyToken } from "../../libs/authorization.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
@@ -19,16 +22,24 @@ vi.mock("./createUser.ts", () => ({
   createUser: vi.fn(),
 }));
 
-const JWT_WITH_MOCK_SUB =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtb2NrLXN1YiIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6IkVVQTAifV0sImN1c3RvbTppc21lbWJlcm9mIjoiQ0hJUF9EX1VTRVJfR1JPVVAiLCJnaXZlbl9uYW1lIjoibW9ja0dpdmVuIiwiZmFtaWx5X25hbWUiOiJtb2NrRmFtaWx5IiwiZW1haWwiOiJtb2NrRW1haWxAZXhhbXBsZS5jb20ifQ.q2EEbK5DtitfR5-B6gX39h2MsSnJvCiNdTSR2yIcg5Y"; // pragma: allowlist secret
-const JWT_WITH_NO_SUB =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGl0aWVzIjpbeyJ1c2VySWQiOiJFVUEwIn1dLCJjdXN0b206aXNtZW1iZXJvZiI6IkNISVBfRF9VU0VSX0dST1VQIn0.31FVSzo6xSqvA5-WSpjFgnk3mgEq9_0WWQX_STuJ7CA"; // pragma: allowlist secret
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-const mockEvent = {
-  headers: {
-    "x-api-key": JWT_WITH_MOCK_SUB,
-  },
+
+const cognitoTokenWithSub: CmsAmplifyToken = {
+  sub: "mock-sub",
+  identities: [{ userId: "EUA0" }],
+  "custom:ismemberof": "CHIP_D_USER_GROUP",
+  given_name: "mockGiven",
+  family_name: "mockFamily",
+  email: "mockEmail@example.com",
 };
+
+const encodeJwt = (x: any) => `eyJhbGciOiJub25lIn0.${btoa(JSON.stringify(x))}.`;
+const mockEvent = {
+  path: "/getCurrentUser",
+  headers: {
+    "x-api-key": encodeJwt(cognitoTokenWithSub),
+  } as Record<string, string | null>,
+} as APIGatewayProxyEvent;
 
 const mockUser = {
   userId: "42",
@@ -41,9 +52,16 @@ describe("getCurrentUser", () => {
   });
 
   it("should fetch the requested user data from dynamo, updating lastLogin", async () => {
-    mockScan.mockResolvedValueOnce({ Count: 1, Items: [mockUser] });
+    mockScan.mockResolvedValueOnce({ Items: [mockUser] });
 
     const response = await getCurrentUser(mockEvent);
+
+    expect(response).toEqual(
+      expect.objectContaining({
+        statusCode: StatusCodes.Ok,
+        body: JSON.stringify(mockUser),
+      })
+    );
 
     expect(createUser).not.toHaveBeenCalled();
     expect(mockScan).toHaveBeenCalledWith(
@@ -80,7 +98,10 @@ describe("getCurrentUser", () => {
 
   it("should return an error if sub is missing from token", async () => {
     const response = await getCurrentUser({
-      headers: { "x-api-key": JWT_WITH_NO_SUB },
+      ...mockEvent,
+      headers: {
+        "x-api-key": encodeJwt({ "custom:ismemberof": "CHIP_D_USER_GROUP" }),
+      },
     });
 
     expect(response).toEqual(
