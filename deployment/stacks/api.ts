@@ -142,7 +142,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   };
 
   new Lambda(scope, "ForceKafkaSync", {
-    entry: "services/app-api/handlers/kafka/get/forceKafkaSync.ts",
+    entry: "services/app-api/handlers/kafka/forceKafkaSync.ts",
     handler: "main",
     timeout: Duration.minutes(15),
     memorySize: 3072,
