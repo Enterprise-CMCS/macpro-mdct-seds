@@ -29,7 +29,7 @@
     "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.946.0",
+    "@aws-sdk/client-cloudformation": "^3.985.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
