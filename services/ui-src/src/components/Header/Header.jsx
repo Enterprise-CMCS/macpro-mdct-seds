@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Nav, NavDropdown, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
-import { GovBanner, NavList } from "@trussworks/react-uswds";
+import { UsaBanner } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { useStore } from "../../store/store";
-
-import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
   const wipeUser = useStore((state) => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [navigation, setNavigation] = useState(false);
 
   useEffect(() => {
     const onLoad = async () => {
@@ -34,11 +31,9 @@ const Header = () => {
     }
   };
 
-  const menuItems = [<Link to="/">Home</Link>];
-
   return (
     <div className="header" data-testid="Header">
-      <GovBanner className="padding-y-1px" />
+      <UsaBanner />
 
       <div className="logo">
         <Link to="/">
@@ -49,25 +44,42 @@ const Header = () => {
             height={90}
           />
         </Link>
-        <Nav pullRight={true}>
+        <nav className="navbar">
           {isAuthenticated ? (
-            <>
-              <NavDropdown id="User" title="My Profile">
-                <LinkContainer to="/profile">
-                  <NavItem>User Profile</NavItem>
-                </LinkContainer>
-                <NavItem onClick={handleLogout}>Logout</NavItem>
-              </NavDropdown>
-            </>
+            <div id="User" className="dropdown">
+              <button
+                className="dropbtn"
+                onClick={() => {
+                  setNavigation(!navigation);
+                }}
+              >
+                My Profile
+                <span className="caret"></span>
+              </button>
+              {navigation && (
+                <div className="dropdown-content">
+                  <ul className="dropdown-content" role="presentation">
+                    <li>
+                      <a href="/profile">User Profile</a>
+                    </li>
+                    <li>
+                      <a role="button" href="#" onClick={handleLogout}>
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           ) : null}
-        </Nav>
+        </nav>
       </div>
 
       <div className="navigation">
         {isAuthenticated ? (
-          <Nav pullLeft={true}>
-            <NavList items={menuItems} />
-          </Nav>
+          <nav>
+            <Link to="/">Home</Link>
+          </nav>
         ) : null}
       </div>
     </div>

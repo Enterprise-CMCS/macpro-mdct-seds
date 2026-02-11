@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../libs/contextLib";
-import "./Home.scss";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -33,11 +32,7 @@ const Home = () => {
     return content;
   };
 
-  return (
-    <div className="Home" data-testid="Home">
-      {renderLander()}
-    </div>
-  );
+  return <div data-testid="Home">{renderLander()}</div>;
 };
 
 Home.propTypes = {};

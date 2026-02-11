@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
-import "./SynthesizedGridSummary.scss";
 import {
   sortQuestionColumns,
   gatherByQuestion,
@@ -108,11 +107,8 @@ const SynthesizedGridSummary = ({
 
   return (
     <>
-      <div className="question-component padding-top-5 border-top-1px">
-        <b
-          className="synthesized-summary-label"
-          data-testid="synthesized-summary-label"
-        >
+      <div className="flex-col-gap-1">
+        <b data-testid="synthesized-summary-label">
           {formattedQuestionNumber}. {labelWithAgeVariable}
         </b>
         <GridWithTotals
@@ -123,8 +119,7 @@ const SynthesizedGridSummary = ({
           precision={1}
           questions={questions}
         />
-        <div className="disclaimer" data-testid="synthesized-disclaimer">
-          {" "}
+        <div data-testid="synthesized-disclaimer" className="disclaimer">
           Values will not appear until source data is provided
         </div>
       </div>

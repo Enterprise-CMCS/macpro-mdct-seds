@@ -4,7 +4,7 @@ import {
   obtainFormTemplateYears,
   updateCreateFormTemplate,
 } from "../../libs/api";
-import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
+import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -32,11 +32,14 @@ const FormTemplates = () => {
           year: Number(inputYear),
           template: JSON.parse(currentTemplate),
         });
-        setAlert({ type: "success", message: "Template saved successfully." });
+        setAlert({
+          variation: "success",
+          message: "Template saved successfully.",
+        });
       } catch (err) {
         const message =
           err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
-        setAlert({ type: "error", message });
+        setAlert({ variation: "error", message });
       }
     }
   };
@@ -84,25 +87,18 @@ const FormTemplates = () => {
   }, []);
 
   return (
-    <div className="formTemplates">
-      <h1 className="page-header">Add/Edit Form Templates</h1>
-      <div data-testid="formTemplates">
+    <div className="flex-col-gap-1half">
+      <h1>Add/Edit Form Templates</h1>
+      <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
-          <Alert
-            className="margin-bottom-3"
-            type={alert.type}
-            headingLevel="h1"
-          >
+          <Alert variation={alert.variation} headingLevel="1">
             {alert.message}
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="year-selection-container">
-            <label className="usa-label" htmlFor="year-select">
-              Select Year or Create New
-            </label>
+          <div>
+            <label htmlFor="year-select">Select Year or Create New</label>
             <select
-              className="usa-select"
               id="year-select"
               value={selectedYear}
               onChange={(evt) => updateYear(evt.target.value)}
@@ -129,9 +125,10 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3 margin-bottom-4">
+        <div>
           <label htmlFor="templateInput">Enter or Modify Template</label>
-          <Textarea
+          <TextField
+            multiline={true}
             id="templateInput"
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}
@@ -141,11 +138,12 @@ const FormTemplates = () => {
         </div>
         <Button
           id="save-button"
-          primary="true"
+          variation="solid"
+          className="flex-end"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          Save <FontAwesomeIcon icon={faSave} />
         </Button>
       </div>
     </div>

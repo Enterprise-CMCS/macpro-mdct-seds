@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Alert, Button } from "@trussworks/react-uswds";
+import React, { useRef, useState } from "react";
+import { Button, Alert } from "@cmsgov/design-system";
 import { generateQuarterlyForms } from "../../libs/api";
-import "./GenerateForms.scss";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState("2019");
   const [selectedQuarter, setSelectedQuarter] = useState("1");
   const [alert, setAlert] = useState();
-  const [loading, setLoading] = useState(false);
+  const loader = useRef(null);
 
   // Build options for year dropdown. From 2019 until next year, inclusive.
   const firstYear = 2019;
@@ -28,78 +27,78 @@ const GenerateForms = () => {
       )
     ) {
       // send year and quarter to lambda which will create the table rows
-      setLoading(true);
+      loader.current.showModal();
       setAlert(undefined);
       try {
         await generateQuarterlyForms({
           year: Number(selectedYear),
           quarter: Number(selectedQuarter),
         });
-        setAlert({ type: "success", message: "Form creation successful." });
+        setAlert({
+          variation: "success",
+          message: "Form creation successful.",
+        });
       } catch (err) {
         const message =
           err instanceof Error
             ? `Form creation failed: ${err.message}`
             : "Form creation failed.";
-        setAlert({ type: "error", message });
+        setAlert({ variation: "error", message });
       } finally {
-        setLoading(false);
+        loader.current.close();
       }
     }
   };
   return (
-    <div className="generate-forms-container">
-      {loading ? (
-        <div className="loader">
-          <div className="loader-content">
-            <div className="loader-icon"></div>Generating new forms
-            <br /> Please Wait...
-          </div>
-        </div>
-      ) : null}
+    <div className="flex-col-gap-1half half-width">
+      <dialog ref={loader} closedby="none">
+        <p>Generating new forms</p>
+        <p>Please wait...</p>
+      </dialog>
       {alert ? (
-        <Alert className="margin-bottom-3" type={alert.type} headingLevel="h1">
+        <Alert variation={alert.variation} headingLevel="1">
           {alert.message}
         </Alert>
       ) : null}
-      <h1 className="page-header">Generate Quarterly Forms</h1>
-      <p className="margin-bottom-4">
+      <h1>Generate Quarterly Forms</h1>
+      <p>
         Create new forms for each state by filling out the form below. Please
         select the year and quarter you wish to create form template from.
       </p>
-      <label htmlFor="year-select">Select the Year</label>
-      <select
-        className="usa-select"
-        id="year-select"
-        value={selectedYear}
-        onChange={(evt) => setSelectedYear(evt.target.value)}
-      >
-        {yearSelections.map(({ label, value }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
-        Select the Quarter
-      </label>
-      <select
-        className="usa-select"
-        id="quarter-select"
-        value={selectedQuarter}
-        onChange={(evt) => setSelectedQuarter(evt.target.value)}
-      >
-        <option value="1">Q1</option>
-        <option value="2">Q2</option>
-        <option value="3">Q3</option>
-        <option value="4">Q4</option>
-      </select>
+      <div>
+        <label htmlFor="year-select">Select the Year</label>
+        <select
+          id="year-select"
+          value={selectedYear}
+          onChange={(evt) => setSelectedYear(evt.target.value)}
+        >
+          {yearSelections.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="quarter-select" style={{ marginTop: "0.5rem" }}>
+          Select the Quarter
+        </label>
+        <select
+          id="quarter-select"
+          value={selectedQuarter}
+          onChange={(evt) => setSelectedQuarter(evt.target.value)}
+        >
+          <option value="1">Q1</option>
+          <option value="2">Q2</option>
+          <option value="3">Q3</option>
+          <option value="4">Q4</option>
+        </select>
+      </div>
       <Button
-        type="button"
-        style={{ marginTop: "0.5rem" }}
+        variation="solid"
         data-testid="generateFormsButton"
+        className="flex-end"
         onClick={() => generateForms()}
-        className="margin-bottom-5"
       >
         Generate Forms
       </Button>

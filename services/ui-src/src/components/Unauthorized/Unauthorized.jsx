@@ -1,21 +1,20 @@
 import React from "react";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 
 const Unauthorized = () => {
   return (
-    <div className="unauthorized" data-testid="unauthorizedTest">
-      <GridContainer className="container page-login">
-        <Grid row>
-          <Grid col={12}>
+    <div data-testid="unauthorizedTest" className="flex-col-gap-1half">
+      <div>
+        <div>
+          <div>
             <h1>Unauthorized</h1>
             <p>You are not authorized to view this page.</p>
             <p>
               If you feel this is an error, please contact the helpdesk{" "}
               <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
             </p>
-          </Grid>
-        </Grid>
-      </GridContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

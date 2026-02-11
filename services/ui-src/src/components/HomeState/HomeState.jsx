@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Accordion } from "@trussworks/react-uswds";
+import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { useHistory } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
 import {
@@ -35,14 +35,24 @@ const HomeState = () => {
   }, []);
 
   return (
-    <div className="page-home-state">
-      <p className="instructions">
+    <div className="flex-col-gap-1half">
+      <p>
         Welcome to SEDS! Please select a Federal Fiscal Year and quarter below
         to view available reports.
       </p>
 
-      <div className="quarterly-report-list">
-        <Accordion bordered={true} items={accordionItems} />
+      <div>
+        <Accordion bordered>
+          {accordionItems.map((item, idx) => (
+            <AccordionItem
+              key={idx}
+              defaultOpen={item.expanded}
+              heading={item.title}
+            >
+              {item.content}
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
     </div>
   );

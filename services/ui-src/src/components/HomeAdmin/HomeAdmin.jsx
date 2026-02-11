@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { obtainAvailableForms } from "../../libs/api";
 import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
-import { Accordion } from "@trussworks/react-uswds";
-import "./HomeAdmin.scss";
+import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
@@ -29,29 +28,23 @@ const HomeAdmin = () => {
 
   let role = user.role;
   return (
-    <div className="HomeAdmin" data-testid="HomeAdmin">
+    <div data-testid="HomeAdmin" className="flex-col-gap-1half">
       {role === "admin" ? (
-        <div>
-          <h1 className="page-header">Home Admin User Page</h1>
-          <div className="list-display-container">
-            <ul>
-              <li className="user-view-edit">
-                <Link to="/users" className="text-bold">
-                  View / Edit Users
-                </Link>
+        <div className="flex-col-gap-1half">
+          <h1>Home Admin User Page</h1>
+          <div>
+            <ul className="flex-col-gap-1">
+              <li>
+                <Link to="/users">View / Edit Users</Link>
               </li>
-              <li className="form-templates">
-                <Link to="/form-templates" className="text-bold">
-                  Add/Edit Form Templates
-                </Link>
+              <li>
+                <Link to="/form-templates">Add/Edit Form Templates</Link>
               </li>
-              <li className="generate-forms">
-                <Link to="/generate-forms" className="text-bold">
-                  Generate Quarterly Forms
-                </Link>
+              <li>
+                <Link to="/generate-forms">Generate Quarterly Forms</Link>
               </li>
-              <li className="generate-counts">
-                <Link to="/generate-counts" className="text-bold">
+              <li>
+                <Link to="/generate-counts">
                   Generate Total Enrollment Counts
                 </Link>
               </li>
@@ -59,15 +52,12 @@ const HomeAdmin = () => {
           </div>
         </div>
       ) : (
-        <h1 className="page-header">Home Business User Page</h1>
+        <h1>Home Business User Page</h1>
       )}
-      <div className="state-coreset-container margin-bottom-2">
-        <div className="state-selector">
-          <label className="usa-label" htmlFor="state-select">
-            Select State to View
-          </label>
+      <div className="flex-col-gap-1half">
+        <div>
+          <label htmlFor="state-select">Select State to View</label>
           <select
-            className="usa-select"
             id="state-select"
             value={selectedState}
             onChange={(evt) => updateUsState(evt.target.value)}
@@ -81,16 +71,26 @@ const HomeAdmin = () => {
           </select>
         </div>
 
-        <div className="year-coreset-selector">
+        <div className="flex-col-gap-1">
           {accordionItems && accordionItems.length !== 0 ? (
             <>
-              <p className="instructions">
+              <p>
                 Welcome to SEDS! Please select a Federal Fiscal Year and quarter
                 below to view available reports.
               </p>
 
-              <div className="quarterly-report-list">
-                <Accordion bordered={true} items={accordionItems} />
+              <div>
+                <Accordion bordered>
+                  {accordionItems.map((item, idx) => (
+                    <AccordionItem
+                      key={idx}
+                      defaultOpen={item.expanded}
+                      heading={item.title}
+                    >
+                      {item.content}
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
             </>
           ) : (

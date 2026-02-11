@@ -88,7 +88,7 @@ const QuestionComponent = ({
     }
   }
   return (
-    <div className="question-component padding-top-5 border-top-1px">
+    <div className="question-component flex-col-gap-1">
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>

@@ -1,8 +1,6 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import "./Profile.scss";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
+import { TextField } from "@cmsgov/design-system";
 
 export default function Profile() {
   const user = useStore((state) => state.user);
@@ -19,36 +17,21 @@ export default function Profile() {
   const state = user.state ?? "";
 
   return (
-    <div className="Profile">
-      <h1 className="page-header">Profile</h1>
-      <GridContainer className="container">
-        <Grid row>
-          <Grid col={12}>
+    <div>
+      <h1>Profile</h1>
+      <div>
+        <div>
+          <div>
             <form>
-              <FormGroup controlId="email">
-                <ControlLabel>Email</ControlLabel>
-                <FormControl value={email} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="firstName">
-                <ControlLabel>First Name</ControlLabel>
-                <FormControl value={firstName} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="lastName">
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl value={lastName} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="role">
-                <ControlLabel>Role</ControlLabel>
-                <FormControl value={role} disabled={true} />
-              </FormGroup>
-              <FormGroup controlId="state">
-                <ControlLabel>State</ControlLabel>
-                <FormControl value={state} disabled={true} />
-              </FormGroup>
+              <TextField label="Email" value={email} disabled={true} />
+              <TextField label="First Name" value={firstName} disabled={true} />
+              <TextField label="Last Name" value={lastName} disabled={true} />
+              <TextField label="Role" value={role} disabled={true} />
+              <TextField label="State" value={state} disabled={true} />
             </form>
-          </Grid>
-        </Grid>
-      </GridContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { Alert, Button } from "@trussworks/react-uswds";
+import { Alert, Button } from "@cmsgov/design-system";
 import TabContainer from "../TabContainer/TabContainer";
 import { useParams, useHistory } from "react-router-dom";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
-import "./FormPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -78,10 +77,10 @@ const FormPage = () => {
     }
   }, [last_modified]);
   return (
-    <div data-testid="FormPage" className="formPage">
+    <div data-testid="FormPage" className="flex-col-gap-1half">
       {save_error ? (
-        <div className="save-error">
-          <Alert type="error" heading="Save Error:" headingLevel="h1">
+        <div>
+          <Alert variation="error" heading="Save Error:" headingLevel="1">
             A problem occurred while saving. Please save again. If the problem
             persists, contact{" "}
             <a
@@ -94,15 +93,15 @@ const FormPage = () => {
           </Alert>
         </div>
       ) : saveAlert ? (
-        <div className="save-success">
-          <Alert type="success" heading="Save success:" headingLevel="h1">
+        <div>
+          <Alert variation="success" heading="Save success:" headingLevel="1">
             Form {formName} has been successfully saved.
           </Alert>
         </div>
       ) : null}
       {hasAccess === true && !loadError ? (
-        <>
-          <div className="margin-bottom-3">
+        <div className="flex-col-gap-1">
+          <div>
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}
@@ -111,32 +110,27 @@ const FormPage = () => {
             />
           </div>
           <Button
-            className="action-button"
-            primary="true"
+            className="flex-start"
+            variation="solid"
             onClick={redirectToPDF}
           >
             Print view / PDF
-            <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+            <FontAwesomeIcon icon={faFilePdf} />
           </Button>
           <NotApplicable />
-          <div className="tab-container margin-y-3">
-            <TabContainer quarter={quarter} />
-          </div>
-
-          <div className="margin-top-2" data-testid="form-footer">
-            <FormFooter
-              state={formattedStateName}
-              year={year}
-              quarter={quarterInt}
-              lastModified={last_modified}
-            />
-          </div>
-        </>
+          <TabContainer quarter={quarter} />
+          <FormFooter
+            state={formattedStateName}
+            year={year}
+            quarter={quarterInt}
+            lastModified={last_modified}
+          />
+        </div>
       ) : null}
       {hasAccess === false ? <Unauthorized /> : null}
       {loadError ? (
         <>
-          <div className="margin-bottom-3">
+          <div>
             <FormHeader
               quarter={quarterInt}
               form={formattedFormName}
