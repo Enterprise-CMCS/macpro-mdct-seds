@@ -32,7 +32,7 @@ const HomeState = () => {
       const forms = await loadForms(user.state);
       setAccordionItems(buildSortedAccordionByYearQuarter(forms, user.state));
     })();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex-col-gap-1half">
