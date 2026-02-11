@@ -198,7 +198,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "updateUser", {
-    entry: "services/app-api/handlers/users/post/updateUser.ts",
+    entry: "services/app-api/handlers/users/updateUser.ts",
     handler: "main",
     path: "/users/{userId}",
     method: "POST",
