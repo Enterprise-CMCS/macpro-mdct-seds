@@ -15,6 +15,16 @@ export default function handler(lambda: (event: any) => Promise<HttpResponse>) {
       queryStringParameters: event.queryStringParameters,
     });
 
+    // Log user identity for error correlation
+    if (event.requestContext?.identity) {
+      logger.debug("User identity: %O", {
+        cognitoIdentityId: event.requestContext.identity.cognitoIdentityId,
+        sourceIp: event.requestContext.identity.sourceIp,
+        userAgent: event.requestContext.identity.userAgent,
+        userArn: event.requestContext.identity.userArn,
+      });
+    }
+
     try {
       // Run the Lambda and return the response
       return await lambda(event);
