@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Footer from "./Footer";
 
 let realUseContext;
@@ -85,8 +85,8 @@ describe("Footer Component", () => {
   });
 
   it("renders Reporting Instructions link with correct href", () => {
-    const { getByText } = render(<Footer />);
-    const reportingInstructionLink = getByText("Reporting Instructions");
+    render(<Footer />);
+    const reportingInstructionLink = screen.getByRole("link", { name: "Reporting Instructions" });
     expect(reportingInstructionLink).toBeVisible();
     expect(reportingInstructionLink).toHaveAttribute(
       "href",
