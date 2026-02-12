@@ -329,7 +329,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getTemplate", {
-    entry: "services/app-api/handlers/templates/getTemplate",
+    entry: "services/app-api/handlers/templates/getTemplate.ts",
     handler: "main",
     path: "/templates/{year}",
     method: "GET",
