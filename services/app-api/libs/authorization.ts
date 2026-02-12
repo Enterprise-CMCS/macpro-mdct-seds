@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { APIGatewayProxyEvent, CmsUser } from "../shared/types.ts";
+import { logger } from "./debug-lib.ts";
 
 export type CmsAmplifyToken = {
   sub: string;
@@ -13,6 +14,7 @@ export type CmsAmplifyToken = {
 export function getUserDetailsFromEvent(event: APIGatewayProxyEvent): CmsUser {
   const apiKey = event?.headers?.["x-api-key"];
   const token = jwtDecode(apiKey!) as CmsAmplifyToken;
+  logger.debug(`Requesting user has sub '${token.sub}'`);
   const role = mapMembershipToRole(token["custom:ismemberof"]!);
 
   return {
