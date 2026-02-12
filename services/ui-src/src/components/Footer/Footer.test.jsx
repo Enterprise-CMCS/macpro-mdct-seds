@@ -83,4 +83,15 @@ describe("Footer Component", () => {
     const address = getByText("7500 Security Boulevard Baltimore, MD 21244");
     expect(address).toBeVisible();
   });
+
+  it("renders Reporting Instructions link with correct href", () => {
+    const { getByText } = render(<Footer />);
+    const reportingInstructionLink = getByText("Reporting Instructions");
+    expect(reportingInstructionLink).toBeVisible();
+    expect(reportingInstructionLink).toHaveAttribute(
+      "href",
+      `${window.location.origin}/SEDS_instructions_July_2021.pdf`
+    );
+    expect(reportingInstructionLink).toHaveAttribute("target", "_blank");
+  });
 });
