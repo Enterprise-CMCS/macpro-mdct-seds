@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Footer from "./Footer";
 
 let realUseContext;
@@ -82,5 +82,16 @@ describe("Footer Component", () => {
     const { getByText } = render(<Footer />);
     const address = getByText("7500 Security Boulevard Baltimore, MD 21244");
     expect(address).toBeVisible();
+  });
+
+  it("renders Reporting Instructions link with correct href", () => {
+    render(<Footer />);
+    const reportingInstructionLink = screen.getByRole("link", { name: "Reporting Instructions" });
+    expect(reportingInstructionLink).toBeVisible();
+    expect(reportingInstructionLink).toHaveAttribute(
+      "href",
+      `${window.location.origin}/SEDS_instructions_July_2021.pdf`
+    );
+    expect(reportingInstructionLink).toHaveAttribute("target", "_blank");
   });
 });
