@@ -140,7 +140,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
 
     // Build output for each accordion item
     let quartersOutput = (
-      <ul className="quarterly-items">
+      <ul>
         {uniqueQuarters.map((element) => {
           return (
             <li key={`${element.quarter}`}>
@@ -223,8 +223,6 @@ const gatherByQuestion = (answersArray) => {
  * @returns {number} - dividend or divisor
  */
 const reduceEntries = (answersByAgeRange, targetID) => {
-  /* eslint-disable no-param-reassign */
-
   // call back for a reduce method
   const findEntries = (accumulator, singleAgeRange) => {
     // singleAgeRange is one key(age range) ie: "1318"
@@ -234,10 +232,10 @@ const reduceEntries = (answersByAgeRange, targetID) => {
       [answersByAgeRange[singleAgeRange]],
       targetID
     );
+    // oxlint-disable-next-line no-param-reassign
     return (accumulator += foundEntry); // add to the accumulator
   };
   return Object.keys(answersByAgeRange).reduce(findEntries, 0); // return the accumulated value
-  /* eslint-disable no-param-reassign */
 };
 
 /**
@@ -254,10 +252,8 @@ const sortByCol1 = (a, b) => {
     return 0;
   }
   // nulls sort after anything else
-  /* eslint-disable valid-typeof */
   else if (typeof first == null) {
     return 1;
-    /* eslint-disable valid-typeof */
   } else if (typeof second == null) {
     return -1;
   }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, TextInput, Table } from "@trussworks/react-uswds";
+import { Button, TextInput } from "@cmsgov/design-system";
 import { getForm } from "../../libs/api";
 import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
@@ -61,8 +61,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
   };
 
   return (
-    <>
-      <div className="form-header upper-form-nav">
+    <div className="flex-col-gap-1half">
+      <div>
         <div className="breadcrumbs">
           <Link to="/">
             {" "}
@@ -75,15 +75,15 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <Link to={window.location.pathname}> {` Form ${form}`} </Link>
         </div>
       </div>
-      <h1 className="page-header">FORM {form}</h1>
+      <h1>FORM {form}</h1>
       <hr />
-      <div>
-        <div className="margin-y-2">
-          <h2 className="form-name">{formDescription.form_name}</h2>
-          <p className="instructions"> {formDescription.form_text}</p>
+      <div className="flex-col-gap-1half">
+        <div className="flex-col-gap-1half">
+          <h2>{formDescription.form_name}</h2>
+          <i> {formDescription.form_text}</i>
         </div>
-        <div className="unstyled">
-          <Table>
+        <div>
+          <table className="unstyled">
             <tbody>
               <tr>
                 <th>
@@ -97,17 +97,17 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 <td>{`${quarter}/${year}`}</td>
               </tr>
             </tbody>
-          </Table>
+          </table>
         </div>
 
         {showFPL ? (
-          <div data-testid="form-max-fpl">
+          <div data-testid="form-max-fpl" className="flex-col-gap-1 ">
             <p>What is the upper income eligibility limit for this program?</p>
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div className="fpl-input-container">
-              <div className="fpl-input">
+            <div className="form-input-row ">
+              <div>
                 <TextInput
                   id="max-fpl"
                   name="max-fpl"
@@ -116,21 +116,18 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   value={maxFPL}
                 />
               </div>
-              <div className="fpl-button">
-                <Button
-                  type="button"
-                  className="max-fpl-btn"
-                  onClick={updateMaxFPL}
-                  disabled={userRole !== "state"}
-                >
-                  Apply FPL Changes
-                </Button>
-              </div>
+              <Button
+                variation="solid"
+                onClick={updateMaxFPL}
+                disabled={userRole !== "state"}
+              >
+                Apply FPL Changes
+              </Button>
             </div>
           </div>
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 

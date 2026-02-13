@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
@@ -40,7 +40,7 @@ const StateSelector = () => {
   };
 
   return (
-    <div className="page-state-selector">
+    <div className="flex-col-gap-1half">
       {user?.state ? (
         <>
           <h2>
@@ -63,34 +63,32 @@ const StateSelector = () => {
       ) : (
         <>
           <h1>This account is not associated with any states</h1>
-
-          <label className="usa-label" htmlFor="state-select">
-            Please select your state:
-          </label>
-          <select
-            className="usa-select"
-            id="state-select"
-            value={selectedState}
-            onChange={(evt) => setSelectedState(evt.target.value)}
-          >
-            <option value>- Select a State -</option>
-            {stateSelectOptions.map(({ label, value }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label htmlFor="state-select">Please select your state:</label>
+            <select
+              id="state-select"
+              value={selectedState}
+              onChange={(evt) => setSelectedState(evt.target.value)}
+            >
+              <option value>- Select a State -</option>
+              {stateSelectOptions.map(({ label, value }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
           <Button
             style={{ marginTop: "0.5rem" }}
-            type="button"
-            className="form-button"
+            variation="solid"
+            className="flex-end"
             data-testid="saveUpdatedUser"
             onClick={() => {
               saveUpdatedUser();
             }}
           >
             Update User
-            <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
+            <FontAwesomeIcon icon={faUserCheck} />
           </Button>
         </>
       )}

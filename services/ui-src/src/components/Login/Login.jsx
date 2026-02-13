@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { signIn, signInWithRedirect } from "aws-amplify/auth";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
-import { useFormFields } from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
-import "./Login.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
@@ -12,7 +10,7 @@ import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
+  const [fields, setFieldChange] = useState({
     email: "",
     password: "",
   });
@@ -23,6 +21,13 @@ export default function Login() {
 
   async function signInWithOkta() {
     await signInWithRedirect({ provider: { custom: "Okta" } });
+  }
+
+  function onFieldChange(e) {
+    const { name, value } = e.target;
+    const newFields = { ...fields };
+    newFields[name] = value;
+    setFieldChange(newFields);
   }
 
   async function handleSubmitOkta(event) {
@@ -59,52 +64,47 @@ export default function Login() {
   const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
 
   return (
-    <div className="login-wrapper text-center" data-testid="Login">
-      <div className="padding-y-9" data-testid="OktaLogin">
+    <div data-testid="Login" className="login">
+      <div data-testid="OktaLogin">
         <LoaderButton
           type="button"
           onClick={handleSubmitOkta}
           isLoading={isLoadingOkta}
-          outline={true}
+          variation="outline"
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+          <FontAwesomeIcon icon={faSignInAlt} />
         </LoaderButton>
       </div>
       <form
         onSubmit={handleSubmit}
-        className="developer-login text-center"
         hidden={hideCognitoLogin}
         data-testid="loginForm"
+        className="flex-col-gap-1half center"
       >
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-            className="form-input"
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-            className="form-input"
-          />
-        </FormGroup>
-        <div className="padding-y-9">
+        <TextField
+          autoFocus
+          label="Email"
+          name="email"
+          value={fields.email}
+          onChange={onFieldChange}
+        ></TextField>
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          value={fields.password}
+          onChange={onFieldChange}
+        ></TextField>
+        <div>
           <LoaderButton
             type="submit"
             isLoading={isLoading}
             disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} className="margin-left-2" />
+            <FontAwesomeIcon icon={faSignInAlt} />
           </LoaderButton>
         </div>
       </form>

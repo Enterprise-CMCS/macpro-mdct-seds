@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Table } from "@trussworks/react-uswds";
+import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
-import "./GREGridWithTotals.scss";
 
 /*This component is specifically designed to for the Gender/Race/Ethnicity form as of 2021.
  * It is based off of the GridWithTotals component.
@@ -21,10 +20,8 @@ const GREGridWithTotals = (props) => {
       return 0;
     }
     // nulls sort after anything else
-    /* eslint-disable valid-typeof */
     else if (typeof first == null) {
       return 1;
-      /* eslint-disable valid-typeof */
     } else if (typeof second == null) {
       return -1;
     }
@@ -49,7 +46,7 @@ const GREGridWithTotals = (props) => {
 
   useEffect(() => {
     updateTotals();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateGrid = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -236,7 +233,7 @@ const GREGridWithTotals = (props) => {
                 <React.Fragment key={columnIndex}>
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
-                    <TextInput
+                    <TextField
                       className="grid-column"
                       onChange={(event) =>
                         updateGrid(rowIndex, columnIndex, event)
@@ -268,7 +265,7 @@ const GREGridWithTotals = (props) => {
             } else {
               formattedCell = (
                 <td key={columnIndex}>
-                  <TextInput
+                  <TextField
                     className="grid-column"
                     onChange={(event) =>
                       updateGrid(rowIndex, columnIndex, event)
@@ -332,8 +329,8 @@ const GREGridWithTotals = (props) => {
   });
 
   return (
-    <div className="gre-grid-with-totals" id={`"${props.questionID}"`}>
-      <Table bordered={true} fullWidth={true}>
+    <div id={`"${props.questionID}"`}>
+      <Table>
         <thead>
           <tr>{headerCols}</tr>
         </thead>
