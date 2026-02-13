@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { useHistory } from "react-router-dom";
-import { obtainAvailableForms } from "../../libs/api";
+import { listFormsForState } from "../../libs/api";
 import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter,
@@ -15,7 +15,7 @@ const HomeState = () => {
 
   const loadForms = async (stateId) => {
     try {
-      const availableForms = await obtainAvailableForms(stateId);
+      const availableForms = await listFormsForState(stateId);
       return sortFormsByYearAndQuarter(availableForms);
     } catch (error) {
       console.log(error);

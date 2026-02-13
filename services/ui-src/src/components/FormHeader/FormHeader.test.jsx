@@ -3,11 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import FormHeader from "./FormHeader";
-import { getSingleForm } from "../../libs/api";
+import { getForm } from "../../libs/api";
 import { useStore } from "../../store/store";
 
 vi.mock("../../libs/api", () => ({
-  getSingleForm: vi.fn().mockResolvedValue({
+  getForm: vi.fn().mockResolvedValue({
     answers: [
       {
         rows: [
@@ -42,7 +42,7 @@ describe("Test FormHeader.js", () => {
 
   it("should render correctly", async () => {
     renderComponent("state", "21E");
-    await waitFor(() => expect(getSingleForm).toHaveBeenCalled());
+    await waitFor(() => expect(getForm).toHaveBeenCalled());
 
     const stateAndQuarter = screen.getByRole("row", {
       name: "State: AL Quarter: 1/2021",
@@ -58,7 +58,7 @@ describe("Test FormHeader.js", () => {
 
   it("should disable FPL updates for non-state users", async () => {
     renderComponent("business", "21E");
-    await waitFor(() => expect(getSingleForm).toHaveBeenCalled());
+    await waitFor(() => expect(getForm).toHaveBeenCalled());
 
     const fplButton = screen.getByRole("button", { name: "Apply FPL Changes" });
     expect(fplButton).toBeDisabled();
@@ -67,7 +67,7 @@ describe("Test FormHeader.js", () => {
   it("should hide the FPL section when the form is GRE", async () => {
     renderComponent("state", "GRE");
 
-    expect(getSingleForm).not.toHaveBeenCalled();
+    expect(getForm).not.toHaveBeenCalled();
     const fplText = screen.queryByText(/What is the upper income .* limit/);
     expect(fplText).not.toBeInTheDocument();
   });

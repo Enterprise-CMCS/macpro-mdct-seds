@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
-import { generateQuarterlyForms } from "../../libs/api";
+import { generateQuarterForms } from "../../libs/api";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState("2019");
@@ -30,7 +30,7 @@ const GenerateForms = () => {
       loader.current.showModal();
       setAlert(undefined);
       try {
-        await generateQuarterlyForms({
+        await generateQuarterForms({
           year: Number(selectedYear),
           quarter: Number(selectedQuarter),
         });

@@ -1,60 +1,39 @@
-import { getCurrentUserInfo } from "../auth/cognito-auth.ts";
+import { AuthUser } from "../storage/users.ts";
 
-/** Throws an exception unless the current user is authenticated. */
-export const authorizeAnyUser = async (event) => {
-  const user = (await getCurrentUserInfo(event)).data;
-  if (!user.email) {
-    throw new Error("Forbidden");
+/**
+ * Admin and business users can read data from every state.
+ * State users can read data from their own state.
+ */
+export const canReadDataForState = (user: AuthUser, state: string) => {
+  if (user.role === "admin" || user.role === "business") {
+    return true;
   }
-};
-
-/** Throws an exception unless the current user is an admin. */
-export const authorizeAdmin = async (event) => {
-  const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "admin") {
-    throw new Error("Forbidden");
+  if (user.role === "state" && user.state === state) {
+    return true;
   }
-};
-
-/** Throws an exception unless the current user is an admin, or they have the given email. */
-export const authorizeAdminOrUserWithEmail = async (event, email) => {
-  const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "admin" && user.email !== email) {
-    throw new Error("Forbidden");
-  }
-};
-
-/** Throws an exception unless the current user is an admin, or they have access to the given state. */
-export const authorizeAdminOrUserForState = async (event, state) => {
-  const user = (await getCurrentUserInfo(event)).data;
-  if (
-    user.role !== "admin" &&
-    user.role !== "business" &&
-    user.state !== state
-  ) {
-    throw new Error("Forbidden");
-  }
-};
-
-/** Throws an exception unless the current user is a state user with access to the given state. */
-export const authorizeStateUser = async (event, state) => {
-  const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "state" || user.state !== state) {
-    throw new Error("Forbidden");
-  }
+  return false;
 };
 
 /**
- * Throws an exception unless the current user is a business user,
- * or a state user with access to the given state.
+ * Business users can modify form status for any state.
+ * State users can modify form status for their own state.
  */
-export const authorizeUserForState = async (event, state) => {
-  const user = (await getCurrentUserInfo(event)).data;
+export const canWriteStatusForState = (user: AuthUser, state: string) => {
   if (user.role === "business") {
-    return;
+    return true;
   }
   if (user.role === "state" && user.state === state) {
-    return;
+    return true;
   }
-  throw new Error("Forbidden");
+  return false;
+};
+
+/**
+ * Only state users can modify form answers, and only for their own state.
+ */
+export const canWriteAnswersForState = (user: AuthUser, state: string) => {
+  if (user.role === "state" && user.state === state) {
+    return true;
+  }
+  return false;
 };

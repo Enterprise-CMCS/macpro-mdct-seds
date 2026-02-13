@@ -1,6 +1,8 @@
 import { jwtDecode } from "jwt-decode";
+import { APIGatewayProxyEvent, CmsUser } from "../shared/types.ts";
+import { logger } from "./debug-lib.ts";
 
-type CmsAmplifyToken = {
+export type CmsAmplifyToken = {
   sub: string;
   email: string | undefined;
   given_name: string | undefined;
@@ -9,10 +11,11 @@ type CmsAmplifyToken = {
   identities?: { userId: string | undefined }[];
 };
 
-export async function getUserDetailsFromEvent(event) {
+export function getUserDetailsFromEvent(event: APIGatewayProxyEvent): CmsUser {
   const apiKey = event?.headers?.["x-api-key"];
-  const token = jwtDecode(apiKey) as CmsAmplifyToken;
-  const role = mapMembershipToRole(token["custom:ismemberof"]);
+  const token = jwtDecode(apiKey!) as CmsAmplifyToken;
+  logger.debug(`Requesting user has sub '${token.sub}'`);
+  const role = mapMembershipToRole(token["custom:ismemberof"]!);
 
   return {
     email: token.email,
@@ -24,7 +27,15 @@ export async function getUserDetailsFromEvent(event) {
   };
 }
 
-function mapMembershipToRole(membership) {
+/**
+ * Translate EUA job codes to a probable SEDS user role.
+ *
+ * SEDS admins can change users' roles, but that won't change their job codes.
+ * The AuthUser table in the SEDS DB stores the actual, definite role.
+ *
+ * Note: that manual process is the only way to get a user with role:"business".
+ */
+function mapMembershipToRole(membership: string) {
   if (
     membership.includes("CHIP_D_USER_GROUP_ADMIN") ||
     membership.includes("CHIP_V_USER_GROUP_ADMIN") ||

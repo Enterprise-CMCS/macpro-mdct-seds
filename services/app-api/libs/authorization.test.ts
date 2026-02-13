@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getUserDetailsFromEvent } from "./authorization.ts";
 import { jwtDecode as actualJwtDecode } from "jwt-decode";
+import { APIGatewayProxyEvent } from "../shared/types.ts";
 
 vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(),
@@ -10,11 +11,8 @@ const jwtDecode = vi.mocked(actualJwtDecode);
 const mockEvent = {
   headers: {
     "x-api-key": "mockApiKey",
-  },
-  requestContext: {
-    accountId: "123",
-  },
-};
+  } as Record<string, string | undefined>,
+} as APIGatewayProxyEvent;
 
 const mockToken = {
   email: "stateuserCO@test.com",
@@ -32,8 +30,8 @@ describe("authorization", () => {
   });
 
   describe("getUserDetailsFromEvent", () => {
-    it("should build a user object from values in the token", async () => {
-      const result = await getUserDetailsFromEvent(mockEvent);
+    it("should build a user object from values in the token", () => {
+      const result = getUserDetailsFromEvent(mockEvent);
 
       expect(result).toEqual({
         email: "stateuserCO@test.com",
@@ -47,48 +45,45 @@ describe("authorization", () => {
       expect(jwtDecode).toHaveBeenCalledWith("mockApiKey");
     });
 
-    it("should map job codes to user roles correctly", async () => {
-      const expectMembershipToHaveRole = async (membership, role) => {
+    it("should map job codes to user roles correctly", () => {
+      const expectMembershipToHaveRole = (membership: string, role: string) => {
         jwtDecode.mockReturnValueOnce({
           ...mockToken,
           "custom:ismemberof": membership,
         });
-        const result = await getUserDetailsFromEvent(mockEvent);
+        const result = getUserDetailsFromEvent(mockEvent);
         expect(result.role).toBe(role);
       };
 
-      await expectMembershipToHaveRole("CHIP_D_USER_GROUP_ADMIN", "admin");
-      await expectMembershipToHaveRole("CHIP_V_USER_GROUP_ADMIN", "admin");
-      await expectMembershipToHaveRole("CHIP_P_USER_GROUP_ADMIN", "admin");
-      await expectMembershipToHaveRole("CHIP_D_USER_GROUP", "state");
-      await expectMembershipToHaveRole("CHIP_V_USER_GROUP", "state");
-      await expectMembershipToHaveRole("CHIP_P_USER_GROUP", "state");
+      expectMembershipToHaveRole("CHIP_D_USER_GROUP_ADMIN", "admin");
+      expectMembershipToHaveRole("CHIP_V_USER_GROUP_ADMIN", "admin");
+      expectMembershipToHaveRole("CHIP_P_USER_GROUP_ADMIN", "admin");
+      expectMembershipToHaveRole("CHIP_D_USER_GROUP", "state");
+      expectMembershipToHaveRole("CHIP_V_USER_GROUP", "state");
+      expectMembershipToHaveRole("CHIP_P_USER_GROUP", "state");
 
       // The membership attribute often contains multiple job codes
-      await expectMembershipToHaveRole(
-        "foo,CHIP_P_USER_GROUP_ADMIN,bar",
-        "admin"
-      );
-      await expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP,bar", "state");
+      expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP_ADMIN,bar", "admin");
+      expectMembershipToHaveRole("foo,CHIP_P_USER_GROUP,bar", "state");
     });
 
-    it("should throw if role cannot be determined", async () => {
+    it("should throw if role cannot be determined", () => {
       jwtDecode.mockReturnValueOnce({
         ...mockToken,
         "custom:ismemberof": "invalid test value",
       });
-      await expect(getUserDetailsFromEvent(mockEvent)).rejects.toThrow(
+      expect(() => getUserDetailsFromEvent(mockEvent)).toThrow(
         "request a Job Code"
       );
     });
 
-    it("should use email as username if EUA ID cannot be found", async () => {
+    it("should use email as username if EUA ID cannot be found", () => {
       jwtDecode.mockReturnValueOnce({
         ...mockToken,
         identities: [],
       });
 
-      const result = await getUserDetailsFromEvent(mockEvent);
+      const result = getUserDetailsFromEvent(mockEvent);
 
       expect(result.username).toBe(mockToken.email);
     });

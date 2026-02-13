@@ -142,7 +142,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   };
 
   new Lambda(scope, "ForceKafkaSync", {
-    entry: "services/app-api/handlers/kafka/get/forceKafkaSync.ts",
+    entry: "services/app-api/handlers/kafka/forceKafkaSync.ts",
     handler: "main",
     timeout: Duration.minutes(15),
     memorySize: 3072,
@@ -161,7 +161,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   );
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
-    entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
+    entry: "services/app-api/handlers/kafka/postKafkaData.ts",
     handler: "handler",
     timeout: Duration.seconds(120),
     memorySize: 2048,
@@ -174,15 +174,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getUserById", {
-    entry: "services/app-api/handlers/users/get/getUserById.ts",
+    entry: "services/app-api/handlers/users/getUserById.ts",
     handler: "main",
     path: "/users/{userId}",
     method: "GET",
     ...commonProps,
   });
 
-  new Lambda(scope, "getUsers", {
-    entry: "services/app-api/handlers/users/get/listUsers.ts",
+  new Lambda(scope, "listUsers", {
+    entry: "services/app-api/handlers/users/listUsers.ts",
     handler: "main",
     path: "/users",
     method: "GET",
@@ -190,7 +190,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getCurrentUser", {
-    entry: "services/app-api/handlers/users/get/getCurrentUser.ts",
+    entry: "services/app-api/handlers/users/getCurrentUser.ts",
     handler: "main",
     path: "/getCurrentUser",
     method: "GET",
@@ -198,7 +198,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "updateUser", {
-    entry: "services/app-api/handlers/users/post/updateUser.ts",
+    entry: "services/app-api/handlers/users/updateUser.ts",
     handler: "main",
     path: "/users/{userId}",
     method: "POST",
@@ -206,23 +206,23 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "getForm", {
-    entry: "services/app-api/handlers/forms/get/get.ts",
+    entry: "services/app-api/handlers/forms/getForm.ts",
     handler: "main",
     path: "/forms/{state}/{year}/{quarter}/{form}",
     method: "GET",
     ...commonProps,
   });
 
-  new Lambda(scope, "getStateFormList", {
-    entry: "services/app-api/handlers/forms/get/obtainFormsList.ts",
+  new Lambda(scope, "listFormsForQuarter", {
+    entry: "services/app-api/handlers/forms/listFormsForQuarter.ts",
     handler: "main",
     path: "/forms/{state}/{year}/{quarter}",
     method: "GET",
     ...commonProps,
   });
 
-  new Lambda(scope, "updateStateFormList", {
-    entry: "services/app-api/handlers/state-forms/post/updateStateForms.ts",
+  new Lambda(scope, "updateTotals", {
+    entry: "services/app-api/handlers/forms/updateTotals.ts",
     handler: "main",
     path: "/forms/{state}/{year}/{quarter}/{form}/totals",
     method: "POST",
@@ -230,8 +230,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "generateEnrollmentTotals", {
-    entry:
-      "services/app-api/handlers/state-forms/post/generateEnrollmentTotals.ts",
+    entry: "services/app-api/handlers/admin/generateEnrollmentTotals.ts",
     handler: "main",
     path: "/admin/generate-totals",
     method: "POST",
@@ -239,8 +238,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "obtainAvailableForms", {
-    entry: "services/app-api/handlers/forms/get/obtainAvailableForms.ts",
+  new Lambda(scope, "listFormsForState", {
+    entry: "services/app-api/handlers/forms/listFormsForState.ts",
     handler: "main",
     path: "/forms/{state}",
     method: "GET",
@@ -248,7 +247,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "generateQuarterForms", {
-    entry: "services/app-api/handlers/forms/post/generateQuarterForms.ts",
+    entry: "services/app-api/handlers/admin/generateQuarterForms.ts",
     handler: "main",
     path: "/admin/generate-forms",
     method: "POST",
@@ -260,7 +259,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     scope,
     "generateQuarterFormsOnSchedule",
     {
-      entry: "services/app-api/handlers/forms/post/generateQuarterForms.ts",
+      entry: "services/app-api/handlers/admin/generateQuarterForms.ts",
       handler: "scheduled",
       timeout: Duration.minutes(15),
       ...commonProps,
@@ -321,34 +320,32 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   //   #         authorizer: aws_iam
   //   #
 
-  new Lambda(scope, "saveForm", {
-    entry: "services/app-api/handlers/forms/post/saveForm.ts",
+  new Lambda(scope, "updateForm", {
+    entry: "services/app-api/handlers/forms/updateForm.ts",
     handler: "main",
     path: "/forms/{state}/{year}/{quarter}/{form}",
     method: "POST",
     ...commonProps,
   });
 
-  new Lambda(scope, "getFormTemplate", {
-    entry: "services/app-api/handlers/form-templates/get/obtainFormTemplate.ts",
+  new Lambda(scope, "getTemplate", {
+    entry: "services/app-api/handlers/templates/getTemplate.ts",
     handler: "main",
     path: "/templates/{year}",
     method: "GET",
     ...commonProps,
   });
 
-  new Lambda(scope, "getFormTemplateYears", {
-    entry:
-      "services/app-api/handlers/form-templates/get/obtainFormTemplateYears.ts",
+  new Lambda(scope, "listTemplateYears", {
+    entry: "services/app-api/handlers/templates/listTemplateYears.ts",
     handler: "main",
     path: "/templates",
     method: "GET",
     ...commonProps,
   });
 
-  new Lambda(scope, "updateCreateFormTemplate", {
-    entry:
-      "services/app-api/handlers/form-templates/post/updateCreateFormTemplate.ts",
+  new Lambda(scope, "updateTemplate", {
+    entry: "services/app-api/handlers/templates/updateTemplate.ts",
     handler: "main",
     path: "/templates/{year}",
     method: "POST",

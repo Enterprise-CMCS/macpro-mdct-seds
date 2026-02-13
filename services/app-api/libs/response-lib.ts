@@ -45,6 +45,12 @@ export const notFound = (body?: Object) =>
   new HttpResponse(StatusCodes.NotFound, body);
 
 /**
+ * The response for a request that is valid syntactically, but not semantically.
+ */
+export const unprocessable = (body?: Object) =>
+  new HttpResponse(StatusCodes.Unprocessable, body);
+
+/**
  * The response for a request that assumes the server is in a different state.
  * For example, attempting to submit a report that's already submitted.
  */
@@ -71,6 +77,7 @@ export enum StatusCodes {
   Unauthenticated = 401,
   Forbidden = 403,
   NotFound = 404,
+  Unprocessable = 406,
   Conflict = 409,
   InternalServerError = 500,
 }
