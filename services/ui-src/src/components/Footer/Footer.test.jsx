@@ -86,7 +86,9 @@ describe("Footer Component", () => {
 
   it("renders Reporting Instructions link with correct href", () => {
     render(<Footer />);
-    const reportingInstructionLink = screen.getByRole("link", { name: "Reporting Instructions" });
+    const reportingInstructionLink = screen.getByRole("link", {
+      name: "Reporting Instructions",
+    });
     expect(reportingInstructionLink).toBeVisible();
     expect(reportingInstructionLink).toHaveAttribute(
       "href",
