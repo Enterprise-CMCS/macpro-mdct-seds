@@ -60,6 +60,14 @@ const Header = () => {
                 <div className="dropdown-content">
                   <ul className="dropdown-content" role="presentation">
                     <li>
+                      <a
+                        href={`${window.location.origin}/SEDS_instructions_July_2021.pdf`}
+                        target="_blank"
+                      >
+                        Reporting Instructions
+                      </a>
+                    </li>
+                    <li>
                       <a href="/profile">User Profile</a>
                     </li>
                     <li>
