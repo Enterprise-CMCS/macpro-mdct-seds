@@ -40,15 +40,18 @@ describe("State Form storage", () => {
       const result = await scanFormsByQuarter(2025, 4);
 
       expect(result).toEqual([mockFormCO21E, mockFormCOGRE, mockFormTX21E]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        FilterExpression: "#year = :year AND quarter = :quarter",
-        ExpressionAttributeNames: { "#year": "year" },
-        ExpressionAttributeValues: {
-          ":year": 2025,
-          ":quarter": 4,
-        },
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-state-forms",
+          FilterExpression: "#year = :year AND quarter = :quarter",
+          ExpressionAttributeNames: { "#year": "year" },
+          ExpressionAttributeValues: {
+            ":year": 2025,
+            ":quarter": 4,
+          },
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -62,32 +65,38 @@ describe("State Form storage", () => {
       const result = await scanFormsByQuarterAndStatus(2025, 4, 1);
 
       expect(result).toEqual([mockFormCO21E, mockFormCOGRE, mockFormTX21E]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-state-forms",
-        FilterExpression: "#year = :year AND quarter = :quarter AND status_id = :status_id",
-        ExpressionAttributeNames: { "#year": "year" },
-        ExpressionAttributeValues: {
-          ":year": 2025,
-          ":quarter": 4,
-          ":status_id": FormStatus.InProgress,
-        },
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-state-forms",
+          FilterExpression:
+            "#year = :year AND quarter = :quarter AND status_id = :status_id",
+          ExpressionAttributeNames: { "#year": "year" },
+          ExpressionAttributeValues: {
+            ":year": 2025,
+            ":quarter": 4,
+            ":status_id": FormStatus.InProgress,
+          },
+        }),
+        expect.any(Function)
+      );
     });
   });
-    
+
   describe("writeAllStateForms", () => {
     it("should write objects to dynamo", async () => {
       await writeAllStateForms([mockFormCO21E, mockFormCOGRE]);
 
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-state-forms": [
-            { PutRequest: { Item: mockFormCO21E } },
-            { PutRequest: { Item: mockFormCOGRE } },
-          ],
+      expect(mockBatchWrite).toHaveBeenCalledWith(
+        {
+          RequestItems: {
+            "local-state-forms": [
+              { PutRequest: { Item: mockFormCO21E } },
+              { PutRequest: { Item: mockFormCOGRE } },
+            ],
+          },
         },
-      },
-      expect.any(Function));
+        expect.any(Function)
+      );
     });
   });
 });

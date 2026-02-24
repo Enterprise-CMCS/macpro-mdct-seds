@@ -1,15 +1,12 @@
 import dynamoDb from "../libs/dynamodb-lib.ts";
-import {
-  DateString,
-  FormStatusValue
-} from "../shared/types.ts";
+import { DateString, FormStatusValue } from "../shared/types.ts";
 
 /** The shape of an object in the `state-forms` table */
 export type StateForm = {
   // Identifier fields
   /**
    * Format `state-year-quarter-form`.
-   * @xample "CO-2025-4-21E"
+   * @example "CO-2025-4-21E"
    */
   state_form: string;
   /**
@@ -26,7 +23,16 @@ export type StateForm = {
 
   // Data fields
   status_id: FormStatusValue;
-  state_comments: [{ type: "text_multiline", entry: string | null }];
+  state_comments: [{ type: "text_multiline"; entry: string | null }];
+  /** Present only for 21E and 64.21E forms, and only for Q4. */
+  enrollmentCounts?: {
+    /** Separate for 21E, Expansion for 64.21E */
+    type: "separate" | "expansion";
+    /** Redundant with StateForm.year */
+    year: number;
+    /** The sum of all numbers entered for Question 7. */
+    count: number;
+  };
 
   // Redundant fields
   /**
@@ -62,10 +68,15 @@ export const scanFormsByQuarter = async (year: number, quarter: number) => {
   return response.Items as StateForm[];
 };
 
-export const scanFormsByQuarterAndStatus = async (year: number, quarter: number, status_id: FormStatusValue) => {
+export const scanFormsByQuarterAndStatus = async (
+  year: number,
+  quarter: number,
+  status_id: FormStatusValue
+) => {
   const response = await dynamoDb.scan({
     TableName: process.env.StateFormsTable,
-    FilterExpression: "#year = :year AND quarter = :quarter AND status_id = :status_id",
+    FilterExpression:
+      "#year = :year AND quarter = :quarter AND status_id = :status_id",
     ExpressionAttributeNames: { "#year": "year" },
     ExpressionAttributeValues: {
       ":year": year,
@@ -80,6 +91,6 @@ export const writeAllStateForms = async (forms: StateForm[]) => {
   await dynamoDb.putMultiple(
     process.env.StateFormsTable!,
     forms,
-    form => form.state_form
+    (form) => form.state_form
   );
 };

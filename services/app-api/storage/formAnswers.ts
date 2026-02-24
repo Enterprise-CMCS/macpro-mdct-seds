@@ -14,7 +14,7 @@ export type FormAnswer = {
   state_form: StateForm["state_form"];
   question: FormQuestion["question"];
   /**
-   * Age range identifier 
+   * Age range identifier
    * @example "0105"
    */
   rangeId: string;
@@ -65,16 +65,16 @@ export type FormAnswer = {
 export const scanForAllFormIds = async (): Promise<string[]> => {
   const response = await dynamoDb.scan({
     TableName: process.env.FormAnswersTable,
-    ProjectionExpression: "state_form"
+    ProjectionExpression: "state_form",
   });
 
-  return (response.Items as FormAnswer[]).map(answer => answer.state_form);
+  return (response.Items as FormAnswer[]).map((answer) => answer.state_form);
 };
 
 export const writeAllFormAnswers = async (answers: FormAnswer[]) => {
   await dynamoDb.putMultiple(
     process.env.FormAnswersTable!,
     answers,
-    answer => answer.answer_entry
+    (answer) => answer.answer_entry
   );
 };

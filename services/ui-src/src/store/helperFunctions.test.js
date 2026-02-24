@@ -6,7 +6,7 @@ import {
   formatAnswerData,
   insertAnswer,
   insertFPL,
-  clearSingleQuestion
+  clearSingleQuestion,
 } from "./helperFunctions";
 
 import { answers, questions } from "./helperFunctionsMockData";
@@ -29,7 +29,7 @@ describe("Single Form Reducer, helper functions", () => {
       null,
       [null, null, 1, 2, 3, 4, 5],
       [null, null, 6, 7, 8, 9, 10],
-      [null, null, 3, 6, 9, 12, 15]
+      [null, null, 3, 6, 9, 12, 15],
     ];
     let formattedData = formatAnswerData(inputFromLocalState);
     expect(formattedData[0].col2).toEqual(1);
@@ -43,22 +43,22 @@ describe("Single Form Reducer, helper functions", () => {
         col3: 10,
         col4: 15,
         col5: 20,
-        col6: 25
+        col6: 25,
       },
       {
         col2: 7,
         col3: 14,
         col4: 21,
         col5: 28,
-        col6: 35
+        col6: 35,
       },
       {
         col2: 8,
         col3: 16,
         col4: 24,
         col5: 32,
-        col6: 40
-      }
+        col6: 40,
+      },
     ];
 
     const updatedAnswers = insertAnswer(

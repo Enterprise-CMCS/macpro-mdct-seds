@@ -14,16 +14,20 @@ vi.mock("../../libs/api", () => ({
 describe("Test GenerateTotals.js", () => {
   let container;
   beforeEach(() => {
-    container = render(<GenerateTotals/>).container;
+    container = render(<GenerateTotals />).container;
     vi.clearAllMocks();
   });
 
   it("should send a request to the API, and display a success message", async () => {
-    const submitButton = screen.getByText("Generate Enrollment Totals", { selector: "button" });
+    const submitButton = screen.getByText("Generate Enrollment Totals", {
+      selector: "button",
+    });
     userEvent.click(submitButton);
-    
+
     await waitFor(() => expect(generateEnrollmentTotals).toHaveBeenCalled());
 
-    expect(screen.getByText(/Enrollment Totals have been requested.*Please wait/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Enrollment Totals have been requested.*Please wait/)
+    ).toBeInTheDocument();
   });
 });

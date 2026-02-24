@@ -7,17 +7,18 @@ import { fireTealiumPageView } from "../../utility-functions/tealium";
 import { useStore } from "../../store/store";
 
 vi.mock("config/config", () => ({
-  default: { 
+  default: {
     cognito: {
       APP_CLIENT_DOMAIN: "mock-domain",
       REDIRECT_SIGNIN: "mock-redirect",
       APP_CLIENT_ID: "mock-client-id",
       REDIRECT_SIGNOUT: "elsewhere.com",
     },
-}}))
+  },
+}));
 
 vi.mock("../Routes/Routes", () => ({
-  default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>
+  default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>,
 }));
 
 vi.mock("react-router-dom", async (importOriginal) => ({
@@ -40,7 +41,7 @@ const renderComponent = () => {
   return render(
     <BrowserRouter>
       <App />
-    </BrowserRouter>    
+    </BrowserRouter>
   );
 };
 
@@ -64,14 +65,14 @@ describe("Test App.js", () => {
     });
 
     // Header is present
-    expect(screen.getByText(
-      "An official website of the United States government"
-    )).toBeInTheDocument();
+    expect(
+      screen.getByText("An official website of the United States government")
+    ).toBeInTheDocument();
 
     // Footer is present
-    expect(screen.getByText(
-      "7500 Security Boulevard Baltimore, MD 21244"
-    )).toBeInTheDocument();
+    expect(
+      screen.getByText("7500 Security Boulevard Baltimore, MD 21244")
+    ).toBeInTheDocument();
   });
 
   it("should record analytics for unauthenticated page views", async () => {
@@ -84,18 +85,18 @@ describe("Test App.js", () => {
       expect(fireTealiumPageView).toHaveBeenCalledWith(
         false, // not authenticated
         "http://localhost:3000/", // we've been redirected
-        "localhost:3000/example/path",
+        "localhost:3000/example/path"
       );
     });
 
     // Header is present
-    expect(screen.getByText(
-      "An official website of the United States government"
-    )).toBeInTheDocument();
+    expect(
+      screen.getByText("An official website of the United States government")
+    ).toBeInTheDocument();
 
     // Footer is present
-    expect(screen.getByText(
-      "7500 Security Boulevard Baltimore, MD 21244"
-    )).toBeInTheDocument();
+    expect(
+      screen.getByText("7500 Security Boulevard Baltimore, MD 21244")
+    ).toBeInTheDocument();
   });
 });

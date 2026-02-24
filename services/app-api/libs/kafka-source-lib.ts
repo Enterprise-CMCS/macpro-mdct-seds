@@ -30,7 +30,7 @@ class KafkaSourceLib {
   tables: string[];
   version: string;
   topicPrefix: string;
-  
+
   /*
   Event types:
   cmd – command; restful publish
@@ -108,7 +108,8 @@ class KafkaSourceLib {
        * through Kafka to DataConnect - unless an actual user action has bumped
        * the last_modified date.
        */
-      if ( topicName.includes(".state-forms.") ||
+      if (
+        topicName.includes(".state-forms.") ||
         topicName.includes(".form-answers.")
       ) {
         // This object might be a StateForm or a FormAnswer.
@@ -118,8 +119,7 @@ class KafkaSourceLib {
         const year = Number(obj.state_form.split("-")[1]);
         // last_modified is an ISO date string like "2025-10-21T19:49:50.105Z"
         const lastModified = new Date(obj.last_modified).getFullYear();
-        if (year === 2019 && lastModified < 2025
-        ) {
+        if (year === 2019 && lastModified < 2025) {
           continue;
         }
       }
@@ -154,7 +154,7 @@ class KafkaSourceLib {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
       const topicMessages = Object.values(outboundEvents) as TopicMessages[];
-      
+
       if (topicMessages.length > 0) {
         console.log(
           `Batch configuration: ${this.stringify(topicMessages, true)}`

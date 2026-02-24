@@ -44,10 +44,9 @@ describe("Test FormHeader.js", () => {
     renderComponent("state", "21E");
     await waitFor(() => expect(getSingleForm).toHaveBeenCalled());
 
-    const stateAndQuarter = screen.getByRole(
-      "row",
-      { name: "State: AL Quarter: 1/2021" }
-    );
+    const stateAndQuarter = screen.getByRole("row", {
+      name: "State: AL Quarter: 1/2021",
+    });
     expect(stateAndQuarter).toBeVisible();
 
     const fplText = screen.getByText(/What is the upper income .* limit/);

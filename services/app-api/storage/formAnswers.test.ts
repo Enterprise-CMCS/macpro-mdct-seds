@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { FormAnswer, scanForAllFormIds, writeAllFormAnswers } from "./formAnswers.ts";
+import {
+  FormAnswer,
+  scanForAllFormIds,
+  writeAllFormAnswers,
+} from "./formAnswers.ts";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
@@ -33,10 +37,13 @@ describe("Form Answer storage", () => {
       const result = await scanForAllFormIds();
 
       expect(result).toEqual(["CO-2025-4-21E", "CO-2025-4-GRE"]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-answers",
-        ProjectionExpression: "state_form"
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-answers",
+          ProjectionExpression: "state_form",
+        }),
+        expect.any(Function)
+      );
     });
   });
 
@@ -44,15 +51,17 @@ describe("Form Answer storage", () => {
     it("should write objects to dynamo", async () => {
       await writeAllFormAnswers([mockAnswer1, mockAnswer2]);
 
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-answers": [
-            { PutRequest: { Item: mockAnswer1 } },
-            { PutRequest: { Item: mockAnswer2 } },
-          ],
+      expect(mockBatchWrite).toHaveBeenCalledWith(
+        {
+          RequestItems: {
+            "local-form-answers": [
+              { PutRequest: { Item: mockAnswer1 } },
+              { PutRequest: { Item: mockAnswer2 } },
+            ],
+          },
         },
-      },
-      expect.any(Function));
+        expect.any(Function)
+      );
     });
   });
 });

@@ -27,7 +27,11 @@ export const authorizeAdminOrUserWithEmail = async (event, email) => {
 /** Throws an exception unless the current user is an admin, or they have access to the given state. */
 export const authorizeAdminOrUserForState = async (event, state) => {
   const user = (await getCurrentUserInfo(event)).data;
-  if (user.role !== "admin" && user.role !== "business" && user.state !== state) {
+  if (
+    user.role !== "admin" &&
+    user.role !== "business" &&
+    user.state !== state
+  ) {
     throw new Error("Forbidden");
   }
 };

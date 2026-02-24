@@ -36,10 +36,10 @@ This project uses a combination of Gitflow and Stack naming to handle branches a
 - main > bugfix-my-bugfix-name
 - main > hotfix-my-hotfix-name
 
-On each PR, a linter and prettier check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the linter and prettier against the work you have done.
+On each PR, a oxlint and oxfmt check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the oxlint and oxfmt against the work you have done.
 
-- Run Eslint using `yarn lint`
-- Run Prettier using `npx prettier --write .`
+- Run oxlint using `yarn oxlint --deny-warnings`
+- Run oxfmt using `yarn oxfmt`
 
 ## Local Dev
 
@@ -236,7 +236,6 @@ This repository uses 3 webhooks to publish to 3 different channels all in CMS Sl
 - INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `mdct-integrations-channel`
 
 - PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of Seds to production.
-
   - Webhooks are created by CMS tickets, populated into GitHub Secrets
 
 ## GitHub Actions Secret Management:

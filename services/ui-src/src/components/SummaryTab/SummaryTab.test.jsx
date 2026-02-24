@@ -7,29 +7,35 @@ import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 import { useStore } from "../../store/store";
 
 vi.mock("../Question/Question", () => ({
-  default: (props) => (<div className="question-component">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div className="question-component">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../SummaryNotes/SummaryNotes", () => ({
-  default: (props) => (<div data-testid="summary-notes">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div data-testid="summary-notes">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
-  default: (props) => (<div className="synth-grid-summary">{JSON.stringify(props)}</div>)
+  default: (props) => (
+    <div className="synth-grid-summary">{JSON.stringify(props)}</div>
+  ),
 }));
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useLocation: () => ({
-    pathname: "localhost:3000/forms/AL/2021/1/21E"
-  })
+    pathname: "localhost:3000/forms/AL/2021/1/21E",
+  }),
 }));
 
 const renderComponent = () => {
   useStore.setState(currentFormMock_21E.currentForm);
   return render(
     <BrowserRouter>
-      <SummaryTab/>
+      <SummaryTab />
     </BrowserRouter>
   );
 };
@@ -40,7 +46,9 @@ describe("Test SummaryTab.js", () => {
 
     expect(screen.getByText("Summary:")).toBeInTheDocument();
 
-    const questions = [...container.querySelectorAll(".question-component, .synth-grid-summary")];
+    const questions = [
+      ...container.querySelectorAll(".question-component, .synth-grid-summary"),
+    ];
 
     expect(questions[0].className).toBe("question-component");
     expect(JSON.parse(questions[0].textContent)).toEqual({
@@ -88,7 +96,8 @@ describe("Test SummaryTab.js", () => {
       questions: currentFormMock_21E.currentForm.questions,
       questionID: "2021-21E-05",
       gridData: currentFormMock_21E.currentForm.answers[4].rows,
-      label: "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?"
+      label:
+        "What is the average number of months of enrollment for &&&VARIABLE&&& ever enrolled during the quarter?",
     });
 
     expect(questions[5].className).toBe("question-component");

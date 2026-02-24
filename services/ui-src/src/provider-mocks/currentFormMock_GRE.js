@@ -19,7 +19,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. Female",
@@ -27,7 +27,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Male",
@@ -35,7 +35,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. Unspecified Gender",
@@ -43,13 +43,13 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
+        created_by: "seed",
       },
       {
         question: "2021-GRE-02",
@@ -67,7 +67,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. White",
@@ -75,7 +75,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Black or African American",
@@ -83,7 +83,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. American Indian or Alaska Native",
@@ -91,7 +91,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "4. Asian Indian",
@@ -99,7 +99,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "5. Chinese",
@@ -107,7 +107,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "6. Filipino",
@@ -115,7 +115,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "7. Japanese",
@@ -123,7 +123,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "8. Korean",
@@ -131,7 +131,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "9. Vietnamese",
@@ -139,7 +139,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "10. Other Asian",
@@ -147,7 +147,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "11. Asian Unknown",
@@ -155,7 +155,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "12. Native Hawaiian",
@@ -163,7 +163,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "13. Guamanian or Chamorro",
@@ -171,7 +171,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "14. Samoan",
@@ -179,7 +179,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "15. Other Pacific Islander",
@@ -187,7 +187,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "16. Native Hawaiian or Other Pacific Islander Unknown",
@@ -195,7 +195,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "17. Some other race",
@@ -203,7 +203,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "18. Two or more races (regardless of ethnicity)",
@@ -211,7 +211,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "19. Unspecified Race",
@@ -219,13 +219,13 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
+        created_by: "seed",
       },
       {
         question: "2021-GRE-03",
@@ -243,7 +243,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. Not of Hispanic, Latino/a, or Spanish origin",
@@ -251,7 +251,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Mexican, Mexican American, Chicano/a",
@@ -259,7 +259,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. Puerto Rican",
@@ -267,7 +267,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "4. Cuban",
@@ -275,7 +275,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "5. Another Hispanic, Latino, or Spanish Origin",
@@ -283,7 +283,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "6. Hispanic or Latino Unknown",
@@ -291,7 +291,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "7. Unspecified Ethnicity",
@@ -299,14 +299,14 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
-      }
+        created_by: "seed",
+      },
     ],
     answers: [
       {
@@ -322,7 +322,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. Female",
@@ -330,7 +330,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Male",
@@ -338,7 +338,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. Unspecified Gender",
@@ -346,13 +346,13 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
+        created_by: "seed",
       },
       {
         answer_entry: "AL-2021-1-GRE-0018-02",
@@ -367,7 +367,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. White",
@@ -375,7 +375,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Black or African American",
@@ -383,7 +383,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. American Indian or Alaska Native",
@@ -391,7 +391,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "4. Asian Indian",
@@ -399,7 +399,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "5. Chinese",
@@ -407,7 +407,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "6. Filipino",
@@ -415,7 +415,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "7. Japanese",
@@ -423,7 +423,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "8. Korean",
@@ -431,7 +431,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "9. Vietnamese",
@@ -439,7 +439,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "10. Other Asian",
@@ -447,7 +447,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "11. Asian Unknown",
@@ -455,7 +455,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "12. Native Hawaiian",
@@ -463,7 +463,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "13. Guamanian or Chamorro",
@@ -471,7 +471,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "14. Samoan",
@@ -479,7 +479,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "15. Other Pacific Islander",
@@ -487,7 +487,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "16. Native Hawaiian or Other Pacific Islander Unknown",
@@ -495,7 +495,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "17. Some other race",
@@ -503,7 +503,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "18. Two or more races (regardless of ethnicity)",
@@ -511,7 +511,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "19. Unspecified Race",
@@ -519,13 +519,13 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
+        created_by: "seed",
       },
       {
         answer_entry: "AL-2021-1-GRE-0018-03",
@@ -540,7 +540,7 @@ const currentFormMock_GRE = {
             col3: "64.21E Enrolled",
             col4: "Total CHIP Enrolled",
             col5: "64.EC Enrolled",
-            col6: "21PW Enrolled"
+            col6: "21PW Enrolled",
           },
           {
             col1: "1. Not of Hispanic, Latino/a, or Spanish origin",
@@ -548,7 +548,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "2. Mexican, Mexican American, Chicano/a",
@@ -556,7 +556,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "3. Puerto Rican",
@@ -564,7 +564,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "4. Cuban",
@@ -572,7 +572,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "5. Another Hispanic, Latino, or Spanish Origin",
@@ -580,7 +580,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "6. Hispanic or Latino Unknown",
@@ -588,7 +588,7 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
+            col6: null,
           },
           {
             col1: "7. Unspecified Ethnicity",
@@ -596,14 +596,14 @@ const currentFormMock_GRE = {
             col3: null,
             col4: null,
             col5: null,
-            col6: null
-          }
+            col6: null,
+          },
         ],
         last_modified: "2021-10-01T12:46:35.838Z",
         last_modified_by: "seed",
         created_date: "2021-10-01T12:46:35.838Z",
-        created_by: "seed"
-      }
+        created_by: "seed",
+      },
     ],
     statusData: {
       status_date: "01-15-2021",
@@ -611,8 +611,8 @@ const currentFormMock_GRE = {
       state_comments: [
         {
           type: "text_multiline",
-          entry: null
-        }
+          entry: null,
+        },
       ],
       form_id: "5",
       last_modified_by: "seed",
@@ -626,10 +626,10 @@ const currentFormMock_GRE = {
       form_name: "Gender, Race & Ethnicity",
       last_modified: "2021-01-15T12:46:35.838Z",
       quarter: 1,
-      ...InProgressStatusFields()
+      ...InProgressStatusFields(),
     },
-    tabs: ["0018"]
-  }
+    tabs: ["0018"],
+  },
 };
 
 export default currentFormMock_GRE;

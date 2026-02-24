@@ -10,11 +10,11 @@ import {
 vi.mock("../libs/api", () => ({
   getCurrentUser: vi.fn().mockResolvedValue({ username: "mockUsername" }),
   getSingleForm: vi.fn(),
-  getStateForms: vi.fn(),
   saveSingleForm: vi.fn(),
   updateStateForm: vi.fn(),
 }));
 
+const mockStatusData = { state_id: "CO", year: 2025, quarter: 4, form: "21E" };
 const mockQuestions = [
   { question: "2025-21E-01" },
   { question: "2025-21E-02" },
@@ -25,14 +25,10 @@ const mockAnswers = [
   { answer_entry: "CO-2025-21E-0618-01", rangeId: "0618" },
   { answer_entry: "CO-2025-21E-0618-02", rangeId: "0618" },
 ];
-const mockSingleForm = { questions: mockQuestions, answers: mockAnswers };
 
-const mock21E = { state_id: "CO", year: 2025, quarter: 4, form: "21E" };
-const mockGRE = { state_id: "CO", year: 2025, quarter: 4, form: "GRE" };
-const mock64_EC = { state_id: "CO", year: 2025, quarter: 4, form: "64.EC" };
-const mockStateForms = { Items: [ mock21E, mockGRE, mock64_EC ] };
-
-const anyDate = expect.stringMatching(/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ$/);
+const anyDate = expect.stringMatching(
+  /^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ$/
+);
 
 describe("useStore actions", () => {
   beforeEach(() => {
@@ -41,23 +37,25 @@ describe("useStore actions", () => {
 
   describe("loadForm", () => {
     it("should call both API endpoints to populate the store", async () => {
-      getSingleForm.mockResolvedValueOnce(mockSingleForm);
-      getStateForms.mockResolvedValueOnce(mockStateForms);
+      getSingleForm.mockResolvedValueOnce({
+        statusData: mockStatusData,
+        questions: mockQuestions,
+        answers: mockAnswers,
+      });
 
       const { loadForm } = useStore.getState();
       await loadForm("CO", 2025, 4, "21E");
       const state = useStore.getState();
 
       expect(state.loadError).toBe(false);
-      expect(state.answers).toBe(mockSingleForm.answers);
-      expect(state.questions).toBe(mockSingleForm.questions);
-      expect(state.statusData).toBe(mock21E);
+      expect(state.answers).toBe(mockAnswers);
+      expect(state.questions).toBe(mockQuestions);
+      expect(state.statusData).toBe(mockStatusData);
       expect(state.tabs).toEqual(["0105", "0618"]);
     });
 
     it("should flag a load error if an API call fails", async () => {
-      getSingleForm.mockResolvedValueOnce(mockSingleForm);
-      getStateForms.mockRejectedValueOnce("Mock Server Error");
+      getSingleForm.mockRejectedValueOnce("Mock Server Error");
 
       const { loadForm } = useStore.getState();
       await loadForm("CO", 2025, 4, "21E");
@@ -75,9 +73,8 @@ describe("useStore actions", () => {
           { question: "2025-21E-02" },
           { question: "2025-21E-03" },
         ],
-        answers: []
+        answers: [],
       });
-      getStateForms.mockResolvedValueOnce(mockStateForms);
 
       const { loadForm } = useStore.getState();
       await loadForm("CO", 2025, 4, "21E");
@@ -106,7 +103,7 @@ describe("useStore actions", () => {
               { col1: "row header B", col2: null, col3: null },
             ],
           },
-        ]
+        ],
       });
       const newAnswers = [
         undefined,
@@ -168,7 +165,7 @@ describe("useStore actions", () => {
                 col3: 78,
               },
             ],
-          }
+          },
         ],
       });
 
@@ -236,7 +233,7 @@ describe("useStore actions", () => {
               entry: "previous comment",
             },
           ],
-        }
+        },
       });
 
       const { updateSummaryNotes } = useStore.getState();
@@ -251,7 +248,7 @@ describe("useStore actions", () => {
             entry: "new comment",
           },
         ],
-      })
+      });
     });
   });
 
@@ -261,27 +258,28 @@ describe("useStore actions", () => {
         user: { username: "mockUsername" },
         questions: mockQuestions,
         answers: mockAnswers,
-        statusData: mock21E,
+        statusData: mockStatusData,
       });
 
       const { saveForm } = useStore.getState();
       await saveForm();
       const state = useStore.getState();
 
-      expect(state).toEqual(expect.objectContaining({
-        questions: mockQuestions,
-        answers: mockAnswers,
-        statusData: {
-          ...mock21E,
-          last_modified: anyDate,
-          last_modified_by: "mockUsername",
-          save_error: false,
-        },
-      }));
+      expect(state).toEqual(
+        expect.objectContaining({
+          questions: mockQuestions,
+          answers: mockAnswers,
+          statusData: {
+            ...mockStatusData,
+            last_modified: anyDate,
+            last_modified_by: "mockUsername",
+            save_error: false,
+          },
+        })
+      );
       expect(saveSingleForm).toHaveBeenCalledWith({
-        username: "mockUsername",
         formAnswers: mockAnswers,
-        statusData: mock21E,
+        statusData: mockStatusData,
       });
       expect(updateStateForm).toHaveBeenCalledWith({
         state: "CO",
@@ -294,7 +292,7 @@ describe("useStore actions", () => {
 
     it("should compute total enrollment from answer data", async () => {
       useStore.setState({
-        statusData: mock21E,
+        statusData: mockStatusData,
         answers: [
           {
             question: "2025-21E-07",
@@ -320,9 +318,11 @@ describe("useStore actions", () => {
       const { saveForm } = useStore.getState();
       await saveForm();
 
-      expect(updateStateForm).toHaveBeenCalledWith(expect.objectContaining({
-        totalEnrollment: 460,
-      }));
+      expect(updateStateForm).toHaveBeenCalledWith(
+        expect.objectContaining({
+          totalEnrollment: 460,
+        })
+      );
     });
 
     it("should flag a save error if an API call fails", async () => {

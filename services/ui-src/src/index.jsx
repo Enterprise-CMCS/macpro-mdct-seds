@@ -18,19 +18,19 @@ Amplify.configure({
           redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
           redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
           scopes: ["email", "openid", "profile"],
-          responseType: "token"
-        }
-      }
-    }
+          responseType: "token",
+        },
+      },
+    },
   },
   API: {
     REST: {
       "mdct-seds": {
-          endpoint: config.apiGateway.URL,
-          region: config.apiGateway.REGION
-      }
-    }
-  }
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION,
+      },
+    },
+  },
 });
 
 ReactDOM.render(

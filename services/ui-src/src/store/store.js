@@ -11,7 +11,6 @@ import {
 import {
   getCurrentUser,
   getSingleForm,
-  getStateForms,
   saveSingleForm,
   updateStateForm,
 } from "../libs/api";
@@ -29,10 +28,8 @@ export const useStore = create((set, get) => ({
   loadForm: async (state, year, quarter, formName) => {
     try {
       const form = await getSingleForm(state, year, quarter, formName);
-      const statuses = await getStateForms({ state, year, quarter });
-      const answers = form.answers;
-      const questions = form.questions.sort(sortQuestionsByNumber);
-      const statusData = statuses.Items.find(s => s.form === formName);
+      const { statusData, questions, answers } = form;
+      questions.sort(sortQuestionsByNumber);
       const tabs = extractAgeRanges(answers);
       set({ questions, answers, statusData, tabs, loadError: false });
     } catch (err) {
@@ -54,19 +51,17 @@ export const useStore = create((set, get) => ({
     set((state) => {
       const answers = insertFPL(structuredClone(state.answers), newFpl);
       return { answers };
-    })
+    });
   },
   wipeForm: () => {
     set((state) => {
       const timeStamp = new Date().toISOString();
-      const answers = structuredClone(state.answers).map(
-        answer => ({
-          ...answer,
-          rows: clearSingleQuestion(answer.rows),
-          last_modified: timeStamp,
-          last_modified_by: state.user.username,
-        })
-      );
+      const answers = structuredClone(state.answers).map((answer) => ({
+        ...answer,
+        rows: clearSingleQuestion(answer.rows),
+        last_modified: timeStamp,
+        last_modified_by: state.user.username,
+      }));
       return { answers };
     });
   },
@@ -79,7 +74,7 @@ export const useStore = create((set, get) => ({
         status_modified_by: state.user.username,
         last_modified: new Date().toISOString(),
         last_modified_by: state.user.username,
-      }
+      },
     }));
   },
   updateSummaryNotes: (notes) => {
@@ -93,23 +88,22 @@ export const useStore = create((set, get) => ({
           },
         ],
       },
-    }))
+    }));
   },
   saveForm: async () => {
     try {
       const { answers, statusData, user } = get();
 
       await saveSingleForm({
-        username: user.username,
         formAnswers: answers,
         statusData: statusData,
       });
 
       await updateStateForm({
         state: statusData.state_id,
-        form: statusData.form,
         year: statusData.year,
         quarter: statusData.quarter,
+        form: statusData.form,
         totalEnrollment: computeTotalEnrollment(statusData, answers),
       });
 
@@ -126,7 +120,7 @@ export const useStore = create((set, get) => ({
         statusData: {
           ...state.statusData,
           save_error: true,
-        }
+        },
       }));
     }
   },

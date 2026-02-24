@@ -6,7 +6,7 @@
  */
 
 /** Is this form In Progress? */
-export const isInProgress = stateForm => {
+export const isInProgress = (stateForm) => {
   return stateForm.status_id === 1;
 };
 
@@ -15,7 +15,7 @@ export const InProgressStatusFields = () => {
 };
 
 /** Has the state Certified this form? */
-export const isProvisionalCertified = stateForm => {
+export const isProvisionalCertified = (stateForm) => {
   return stateForm.status_id === 2;
 };
 
@@ -24,7 +24,7 @@ export const ProvisionalCertifiedStatusFields = () => {
 };
 
 /** Has CMS Certified this form? */
-export const isFinalCertified = stateForm => {
+export const isFinalCertified = (stateForm) => {
   return stateForm.status_id === 3;
 };
 
@@ -33,7 +33,7 @@ export const FinalCertifiedStatusFields = () => {
 };
 
 /** Has the state marked this form as Not Applicable? */
-export const isNotRequired = stateForm => {
+export const isNotRequired = (stateForm) => {
   return stateForm.status_id === 4;
 };
 
@@ -46,7 +46,7 @@ export const NotRequiredStatusFields = () => {
  * @param stateForm {{ status_id: number }}
  * @returns {string}
  */
-export const getStatusDisplay = stateForm => {
+export const getStatusDisplay = (stateForm) => {
   switch (stateForm.status_id) {
     case 1:
       return "In Progress";

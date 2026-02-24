@@ -24,13 +24,13 @@ describe("forceKafkaSync", () => {
 
   it("should read literally everything from every table, then write it back with slight modifications", async () => {
     // We will mock only the first scan
-    mockScan.mockResolvedValueOnce({ Count: 1, Items: [{ foo: "bar" }]});
+    mockScan.mockResolvedValueOnce({ Count: 1, Items: [{ foo: "bar" }] });
 
     await forceKafkaSync({});
 
     expect(mockScan).toHaveBeenCalledTimes(5);
     expect(mockBatchWrite).toHaveBeenCalled();
-    
+
     // I don't want to test the exact table name,
     // but it's a key in the params object.
     // So digging into the params object gets a bit awkward here.

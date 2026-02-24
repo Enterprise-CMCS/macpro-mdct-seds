@@ -1,5 +1,6 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
+import { ok } from "../../../libs/response-lib.ts";
 
 const tableNames = [
   process.env.FormAnswersTable,
@@ -9,10 +10,10 @@ const tableNames = [
   process.env.AuthUserTable,
 ] as string[];
 
-const mergeLastSynced = (items, syncDateTime) =>
-  items.map((item) => ({ ...item, lastSynced: syncDateTime }));
+const mergeLastSynced = (items: any[], syncDateTime: string) =>
+  items.map((item: any) => ({ ...item, lastSynced: syncDateTime }));
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const syncDateTime = new Date().toISOString();
 
   for (const tableName of tableNames) {
@@ -38,4 +39,6 @@ export const main = handler(async (event, context) => {
       throw e;
     }
   }
+
+  return ok();
 });

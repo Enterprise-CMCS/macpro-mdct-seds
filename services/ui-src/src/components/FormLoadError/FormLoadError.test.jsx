@@ -7,7 +7,9 @@ describe("Test FormLoadError.js", () => {
   test("Check that the component renders", () => {
     render(<FormLoadError />);
     expect(screen.getByText("Error Retrieving Form")).toBeInTheDocument();
-    const helpLink = screen.getByText("MDCT_Help@cms.hhs.gov", { selector: "a" });
+    const helpLink = screen.getByText("MDCT_Help@cms.hhs.gov", {
+      selector: "a",
+    });
     expect(helpLink).toBeInTheDocument();
     expect(helpLink).toHaveAttribute("href", "mailto:mdct_help@cms.hhs.gov");
   });

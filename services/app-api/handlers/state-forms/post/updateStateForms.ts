@@ -1,14 +1,16 @@
 import handler from "../../../libs/handler-lib.ts";
 import dynamoDb from "../../../libs/dynamodb-lib.ts";
 import { authorizeUserForState } from "../../../auth/authConditions.ts";
+import { APIGatewayProxyEvent } from "../../../shared/types.ts";
+import { notFound, ok } from "../../../libs/response-lib.ts";
 
-export const main = handler(async (event, context) => {
-  // Get year and quarter from request
-  let data = JSON.parse(event.body);
+export const main = handler(async (event: APIGatewayProxyEvent) => {
+  const { state, year, quarter, form } = event.pathParameters!;
+  const data = JSON.parse(event.body!);
 
-  await authorizeUserForState(event, data.state);
+  await authorizeUserForState(event, state);
 
-  const stateFormId = `${data.state}-${data.year}-${data.quarter}-${data.form}`;
+  const stateFormId = `${state}-${year}-${quarter}-${form}`;
 
   const params = {
     TableName: process.env.StateFormsTable,
@@ -21,40 +23,31 @@ export const main = handler(async (event, context) => {
   };
 
   const result = await dynamoDb.query(params);
-  if (result.Count === 0) {
-    return [];
+  if (result.Items.length === 0) {
+    return notFound();
   }
 
-  const record = result.Items![0];
+  const record = result.Items[0];
   if (record.form === "21E") {
     record.enrollmentCounts = {
       type: "separate",
-      year: data.year,
+      year,
       count: data.totalEnrollment,
     };
   }
   if (record.form === "64.21E") {
     record.enrollmentCounts = {
       type: "expansion",
-      year: data.year,
+      year,
       count: data.totalEnrollment,
     };
   }
-  const putItem = { ...record, lastSynced: new Date().toISOString() };
+  record.lastSynced = new Date().toISOString();
 
-  const paramsPut = {
+  await dynamoDb.put({
     TableName: params.TableName,
-    Item: putItem,
-  };
+    Item: record,
+  });
 
-  try {
-    await dynamoDb.put(paramsPut);
-  } catch (e) {
-    throw new Error("Table params update failed", { cause: e });
-  }
-
-  return {
-    status: 200,
-    message: "Enrollment Data successfully updated",
-  };
+  return ok();
 });

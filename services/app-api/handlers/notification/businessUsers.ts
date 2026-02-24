@@ -4,6 +4,7 @@ import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { calculateFiscalQuarterFromDate } from "../../libs/time.ts";
 import { FormStatus } from "../../shared/types.ts";
+import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -13,33 +14,38 @@ const client = new SESClient({ region: "us-east-1" });
  * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const email = await businessOwnersTemplate();
   const command = new SendEmailCommand(email);
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
-  return {
+  return ok({
     status: "success",
     message: "Quarterly Business owners email sent",
-  };
+  });
 });
 
 async function businessOwnersTemplate() {
   const { year, quarter } = calculateFiscalQuarterFromDate(new Date());
   const inProgressForms = await scanFormsByQuarterAndStatus(
-    year, quarter, FormStatus.InProgress
+    year,
+    quarter,
+    FormStatus.InProgress
   );
-  const usersToEmail = (await scanUsersByRole("business")).map(u => u.email);
+  const usersToEmail = (await scanUsersByRole("business")).map((u) => u.email);
 
-  const formsByState = Object_groupBy(inProgressForms, form => form.state_id);
+  const formsByState = Object_groupBy(inProgressForms, (form) => form.state_id);
   const formattedFormList = Object.entries(formsByState)
     .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
     .map(([stateAbbr, forms]) => {
-      const formTypes = forms!.map(f => f.form).sort().join(", ");
+      const formTypes = forms!
+        .map((f) => f.form)
+        .sort()
+        .join(", ");
       return `${stateAbbr} - ${formTypes}`;
     })
     .join("\n");

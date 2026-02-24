@@ -16,7 +16,7 @@ export const fireTealiumPageView = (isAuthenticated, url, pathname) => {
   const sectionName = isReportPage ? pathname.split("/")[1] : "main app";
   const tealiumEnvMap = {
     "mdctseds.cms.gov": "production", // Different than the url value (index.html)
-    "mdctsedsval.cms.gov": "qa"
+    "mdctsedsval.cms.gov": "qa",
   };
   const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
   const { host: siteDomain } = url ? new URL(url) : null;
@@ -28,7 +28,7 @@ export const fireTealiumPageView = (isAuthenticated, url, pathname) => {
     site_domain: siteDomain,
     site_environment: tealiumEnv,
     site_section: sectionName,
-    logged_in: isAuthenticated
+    logged_in: isAuthenticated,
   });
 };
 

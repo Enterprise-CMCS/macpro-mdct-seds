@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { buildDynamoClient } = require("../../utils/dynamodb.js");
 

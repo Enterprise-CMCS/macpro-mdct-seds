@@ -12,12 +12,12 @@ const renderComponent = () => {
       lastName: "Martin",
       role: "state",
       state: "CO",
-    }
+    },
   });
-  return render(<Profile/>);
-}
+  return render(<Profile />);
+};
 
-describe("Test SummaryTab.js", () => {
+describe("Profile", () => {
   it("should render appropriate inputs, disabled, with correct values", async () => {
     renderComponent();
 

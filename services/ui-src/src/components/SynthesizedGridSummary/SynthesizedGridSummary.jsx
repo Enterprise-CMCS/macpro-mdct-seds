@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
-import "./SynthesizedGridSummary.scss";
 import {
   sortQuestionColumns,
   gatherByQuestion,
   reduceEntries,
-  sortRowArray
+  sortRowArray,
 } from "../../utility-functions/sortingFunctions";
 
 const SynthesizedGridSummary = ({
@@ -15,13 +14,13 @@ const SynthesizedGridSummary = ({
   questionID,
   gridData,
   label,
-  questions
+  questions,
 }) => {
   const [sortedRows, setSortedRows] = useState([]);
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, allAnswers]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData, allAnswers]);
 
   const updateSynthesizedGrid = () => {
     // Make a deep copy of this single question & sort
@@ -36,16 +35,16 @@ const SynthesizedGridSummary = ({
 
     //Get just the IDs without their rows or columns
     const stripedIDs = answersToFind.map(
-      targetString => targetString.split("'")[1]
+      (targetString) => targetString.split("'")[1]
     );
 
     // Find all questions that match the striped questionIDs
     let matchingQuestions = [];
-    stripedIDs.forEach(searchID => {
+    stripedIDs.forEach((searchID) => {
       const jpexpr = `$..[?(@.question==='${searchID}')]`;
       matchingQuestions = [
         ...matchingQuestions,
-        ...jsonpath.query(allAnswers, jpexpr)
+        ...jsonpath.query(allAnswers, jpexpr),
       ];
     });
 
@@ -53,7 +52,7 @@ const SynthesizedGridSummary = ({
     const sortedAnswers = gatherByQuestion(matchingQuestions);
 
     // Map through the sorted rows and create new rows with calculated values
-    let calculatedRows = sortedGridData.map(singleRow => {
+    let calculatedRows = sortedGridData.map((singleRow) => {
       // A new object for each row
       const accumulator = {};
       // The first row remains the same
@@ -61,7 +60,7 @@ const SynthesizedGridSummary = ({
         return singleRow;
       } else {
         // Build the new rows column by column
-        Object.keys(singleRow).forEach(element => {
+        Object.keys(singleRow).forEach((element) => {
           if (element === "col1") {
             accumulator[element] = singleRow[element];
           } else {
@@ -82,7 +81,7 @@ const SynthesizedGridSummary = ({
     let returnValue = null;
 
     // map through the target array
-    const divisorAndDividend = incomingFormula.targets.map(target => {
+    const divisorAndDividend = incomingFormula.targets.map((target) => {
       const currentQuestion = target.split("'")[1].slice(-2); // question 4 or 1
       const pertinentAnswers = sortedAnswers[currentQuestion]; // all answers to one question sorted by age range
 
@@ -108,11 +107,8 @@ const SynthesizedGridSummary = ({
 
   return (
     <>
-      <div className="question-component padding-top-5 border-top-1px">
-        <b
-          className="synthesized-summary-label"
-          data-testid="synthesized-summary-label"
-        >
+      <div className="flex-col-gap-1">
+        <b data-testid="synthesized-summary-label">
           {formattedQuestionNumber}. {labelWithAgeVariable}
         </b>
         <GridWithTotals
@@ -123,8 +119,7 @@ const SynthesizedGridSummary = ({
           precision={1}
           questions={questions}
         />
-        <div className="disclaimer" data-testid="synthesized-disclaimer">
-          {" "}
+        <div data-testid="synthesized-disclaimer" className="disclaimer">
           Values will not appear until source data is provided
         </div>
       </div>
@@ -136,7 +131,7 @@ SynthesizedGridSummary.propTypes = {
   allAnswers: PropTypes.array.isRequired,
   questionID: PropTypes.string.isRequired,
   gridData: PropTypes.array.isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
 };
 
 export default SynthesizedGridSummary;

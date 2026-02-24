@@ -9,7 +9,7 @@ import { useStore } from "../../store/store";
 import "./App.scss";
 
 function App() {
-  const loadUser = useStore(state => state.loadUser);
+  const loadUser = useStore((state) => state.loadUser);
   const { pathname } = useLocation();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,19 +36,19 @@ function App() {
   }, [pathname, isAuthenticating, isAuthenticated]);
 
   return (
-    <div className="App">
+    <>
       {!isAuthenticating && (
         <>
           <Header displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-            <div className="main">
+            <div className="app">
               <Routes isAuthorized={isAuthorized} />
             </div>
           </AppContext.Provider>
           <Footer />
         </>
       )}
-    </div>
+    </>
   );
 }
 

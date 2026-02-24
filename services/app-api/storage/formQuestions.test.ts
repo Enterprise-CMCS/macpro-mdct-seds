@@ -37,28 +37,33 @@ describe("Form Question storage", () => {
       const result = await scanQuestionsByYear(2025);
 
       expect(result).toEqual([mockQuestion1, mockQuestion2]);
-      expect(mockScan).toHaveBeenCalledWith(expect.objectContaining({
-        TableName: "local-form-questions",
-        FilterExpression: "#year = :year",
-        ExpressionAttributeNames: { "#year": "year" },
-        ExpressionAttributeValues: { ":year": 2025 },
-      }), expect.any(Function));
+      expect(mockScan).toHaveBeenCalledWith(
+        expect.objectContaining({
+          TableName: "local-form-questions",
+          FilterExpression: "#year = :year",
+          ExpressionAttributeNames: { "#year": "year" },
+          ExpressionAttributeValues: { ":year": 2025 },
+        }),
+        expect.any(Function)
+      );
     });
   });
-  
+
   describe("writeAllFormQuestions", () => {
     it("should write objects to dynamo", async () => {
       await writeAllFormQuestions([mockQuestion1, mockQuestion2]);
 
-      expect(mockBatchWrite).toHaveBeenCalledWith({
-        RequestItems: {
-          "local-form-questions": [
-            { PutRequest: { Item: mockQuestion1 } },
-            { PutRequest: { Item: mockQuestion2 } },
-          ],
+      expect(mockBatchWrite).toHaveBeenCalledWith(
+        {
+          RequestItems: {
+            "local-form-questions": [
+              { PutRequest: { Item: mockQuestion1 } },
+              { PutRequest: { Item: mockQuestion2 } },
+            ],
+          },
         },
-      },
-      expect.any(Function));
+        expect.any(Function)
+      );
     });
   });
 });
