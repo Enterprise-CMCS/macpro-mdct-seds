@@ -1,5 +1,5 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi, vitest } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import Login from "./Login";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

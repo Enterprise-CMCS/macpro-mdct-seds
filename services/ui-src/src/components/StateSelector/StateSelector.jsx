@@ -52,7 +52,8 @@ const StateSelector = () => {
             <a href="mailto:mdct_help@cms.hhs.gov">MDCT_Help@cms.hhs.gov</a>
           </p>
         </>
-      ) : user?.role === "admin" || user?.role === "business" ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      user?.role === "admin" || user?.role === "business" ? (
         <>
           <h2>This account does not need to select a state</h2>
           <p>

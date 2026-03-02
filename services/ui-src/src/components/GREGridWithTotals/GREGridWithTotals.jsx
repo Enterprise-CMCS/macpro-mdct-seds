@@ -19,18 +19,12 @@ const GREGridWithTotals = (props) => {
     if (first === second) {
       return 0;
     }
-    // nulls sort after anything else
-    else if (typeof first == null) {
-      return 1;
-    } else if (typeof second == null) {
-      return -1;
-    }
 
     return first < second ? -1 : 1;
   }
 
   // Sort by label
-  const sortedGridData = props.gridData.sort(compare);
+  const sortedGridData = props.gridData.toSorted(compare);
 
   const [gridData, updateGridData] = useState(
     translateInitialData(sortedGridData)
@@ -52,7 +46,7 @@ const GREGridWithTotals = (props) => {
     let gridCopy = [...gridData];
 
     gridCopy[row][column] = parseFloat(
-      event.target.value.replace(/[^0-9]/g, "")
+      event.target.value.replaceAll(/[^0-9]/g, "")
     );
 
     updateGridData(gridCopy);
@@ -79,7 +73,7 @@ const GREGridWithTotals = (props) => {
       columnTotalsArray[index] = 0;
     });
 
-    gridData.map((row, rowIndex) => {
+    gridData.map((row, _rowIndex) => {
       if (row !== undefined) {
         row.map((column, columnIndex) => {
           let currentValue = 0;
@@ -296,7 +290,7 @@ const GREGridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = Array.from(Array(headerCols.length - 1), (_, i) => {
+  const totalsRow = Array.from({ length: headerCols.length - 1 }, (_, i) => {
     let column;
 
     if (i === 0) {

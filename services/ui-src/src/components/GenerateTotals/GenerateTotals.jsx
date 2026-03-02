@@ -7,7 +7,7 @@ const GenerateTotals = () => {
   const [alert, setAlert] = useState(false);
   const loader = useRef(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (_e) => {
     const proceed = window.confirm(
       "You are about to create new Enrollment Totals. This action cannot be undone. Do you wish to proceed?"
     );

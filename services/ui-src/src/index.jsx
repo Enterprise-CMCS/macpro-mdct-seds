@@ -37,5 +37,5 @@ ReactDOM.render(
   <Router>
     <App />
   </Router>,
-  document.getElementById("root")
+  document.querySelector("#root")
 );

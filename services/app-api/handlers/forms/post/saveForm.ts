@@ -219,8 +219,8 @@ const updateStateForm = async (
 
   try {
     await dynamoDb.update(formParams);
-  } catch (e) {
-    throw new Error("Form params update failed", { cause: e });
+  } catch (error) {
+    throw new Error("Form params update failed", { cause: error });
   }
 };
 

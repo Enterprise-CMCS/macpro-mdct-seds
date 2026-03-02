@@ -12,9 +12,8 @@ vi.mock("../../libs/api", () => ({
 }));
 
 describe("Test GenerateTotals.js", () => {
-  let container;
   beforeEach(() => {
-    container = render(<GenerateTotals />).container;
+    render(<GenerateTotals />);
     vi.clearAllMocks();
   });
 

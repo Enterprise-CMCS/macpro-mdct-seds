@@ -98,7 +98,7 @@ export const handleExport = async (
     case "csv":
       fileContents = buildCsvContents(content);
       blob = new Blob([fileContents], {
-        type: "text/csv;charset=utf-8;header=present",
+        type: "text/csv;charset=utf8;header=present",
       });
       saveAs(blob, fileName);
       break;

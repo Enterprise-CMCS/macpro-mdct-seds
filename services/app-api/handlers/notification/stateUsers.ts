@@ -13,15 +13,15 @@ const client = new SESClient({ region: "us-east-1" });
  * At the end of each Quarter, as a State User, I want to know if my state has NOT certified its data yet.
  */
 
-export const main = handler(async (event) => {
+export const main = handler(async (_event) => {
   const email = await stateUsersTemplate();
-  console.log("emailTemplate: ", email);
+  console.log("emailTemplate:", email);
   const command = new SendEmailCommand(email);
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
-  } catch (err) {
-    console.error(err, (err as Error).stack);
+  } catch (error) {
+    console.error(error, (error as Error).stack);
   }
   return ok({
     status: "success",

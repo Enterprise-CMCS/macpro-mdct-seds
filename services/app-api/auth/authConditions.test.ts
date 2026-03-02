@@ -69,7 +69,7 @@ describe("authConditions", () => {
 
   test("authorizeAnyUser should reject token decoding fails", async () => {
     getCurrentUserInfo.mockImplementationOnce(() => {
-      throw new Error();
+      throw new Error("Some error message");
     });
     await expect(authorizeAnyUser(mockEvent)).rejects.toThrow();
   });

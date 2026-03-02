@@ -35,7 +35,7 @@ describe("Export Functions", () => {
         paramStrings.map((ps) => ps.split("="))
       );
       expect(parameters).toHaveProperty("header", "present");
-      expect(parameters).toHaveProperty("charset", "utf-8");
+      expect(parameters).toHaveProperty("charset", "utf8");
 
       expect(fileName).toBe("fruit.csv");
     });

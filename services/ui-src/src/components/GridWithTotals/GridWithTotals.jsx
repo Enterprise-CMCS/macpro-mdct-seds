@@ -27,7 +27,7 @@ const GridWithTotals = (props) => {
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
-      event.target.value.replace(/[^0-9]/g, "")
+      event.target.value.replaceAll(/[^0-9]/g, "")
     );
     updateGridData(gridCopy);
     updateTotals();
@@ -57,7 +57,7 @@ const GridWithTotals = (props) => {
       checkQuestion5Summary.includes("summary-synthesized")
     ) {
       let sum5Data = translateInitialData(props.gridData);
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row, _rowIndex) => {
         if (row !== undefined && props.questions) {
           let q1c1Total =
             props.questions[0].rows[1].col2 +
@@ -126,7 +126,7 @@ const GridWithTotals = (props) => {
         return true;
       });
     } else {
-      gridData.map((row, rowIndex) => {
+      gridData.map((row, _rowIndex) => {
         if (row !== undefined) {
           row.map((column, columnIndex) => {
             let currentValue = 0;
@@ -183,7 +183,7 @@ const GridWithTotals = (props) => {
     ) {
       let sum5Data = translateInitialData(props.gridData);
 
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row, _rowIndex) => {
         if (row !== undefined && props.questions) {
           let q1r1 = props.questions[0].rows[1];
           let q4r1 = props.questions[3].rows[1];
@@ -223,12 +223,11 @@ const GridWithTotals = (props) => {
         return true;
       });
       updateGridTotalOfTotals(totalOfTotals);
-      updateGridRowTotals(gridRowTotalsCopy);
     } else {
       gridData.map((row, rowIndex) => {
         rowTotal = 0;
         if (row !== undefined) {
-          row.map((column, columnIndex) => {
+          row.map((column, _columnIndex) => {
             let currentValue = 0;
 
             if (isNaN(column) === false) {
@@ -246,9 +245,8 @@ const GridWithTotals = (props) => {
 
         return true;
       });
-
-      updateGridRowTotals(gridRowTotalsCopy);
     }
+    updateGridRowTotals(gridRowTotalsCopy);
   };
 
   let headerColArray = [];
@@ -375,7 +373,7 @@ const GridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = Array.from(Array(headerCols.length - 1), (e, i) => {
+  const totalsRow = Array.from({ length: headerCols.length - 1 }, (_, i) => {
     let column;
 
     if (i === 0) {

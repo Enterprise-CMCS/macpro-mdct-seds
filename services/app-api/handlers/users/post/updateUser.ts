@@ -62,7 +62,7 @@ function assertPayloadIsValid(data: any) {
 
   if (data.state !== undefined) {
     if (typeof data.state !== "string") {
-      throw new Error("Invalid user state - must be a string");
+      throw new TypeError("Invalid user state - must be a string");
     }
     if (!/^[A-Z]{2}$/.test(data.state)) {
       throw new Error("Invalid user state - must be 2-letter abbreviations");

@@ -32,8 +32,8 @@ export const useStore = create((set, get) => ({
       questions.sort(sortQuestionsByNumber);
       const tabs = extractAgeRanges(answers);
       set({ questions, answers, statusData, tabs, loadError: false });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       set({ loadError: true });
     }
   },

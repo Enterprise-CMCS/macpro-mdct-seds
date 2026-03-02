@@ -17,7 +17,7 @@ export const main = handler(async (event: APIGatewayProxyEvent) => {
       if (o && typeof o === "object") {
         return o;
       }
-    } catch (e) {
+    } catch {
       return false;
     }
 

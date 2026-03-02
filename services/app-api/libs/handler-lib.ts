@@ -18,11 +18,11 @@ export default function handler(lambda: (event: any) => Promise<HttpResponse>) {
     try {
       // Run the Lambda and return the response
       return await lambda(event);
-    } catch (e) {
+    } catch (error) {
       // Print debug messages
-      logger.error("Error: %O", e);
+      logger.error("Error: %O", error);
 
-      return internalServerError({ error: (e as Error).message });
+      return internalServerError({ error: (error as Error).message });
     } finally {
       logger.flush();
     }

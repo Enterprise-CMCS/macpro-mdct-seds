@@ -15,7 +15,9 @@ const Header = () => {
       try {
         const authSession = await fetchAuthSession();
         setIsAuthenticated(!!authSession?.tokens);
-      } catch (error) {}
+      } catch {
+        // ignore error
+      }
     };
 
     onLoad().then();
@@ -27,7 +29,7 @@ const Header = () => {
       wipeUser();
       window.location.href = config.cognito.REDIRECT_SIGNOUT;
     } catch (error) {
-      console.log("error signing out: ", error);
+      console.log("error signing out:", error);
     }
   };
 

@@ -26,10 +26,10 @@ const apiRequest = async (request, path, options) => {
     }
 
     return undefined;
-  } catch (e) {
+  } catch (error) {
     // Return our own error for handling in the app
-    const info = `Request Failed - ${path} - ${e.response?.body}`;
-    console.log(e);
+    const info = `Request Failed - ${path} - ${error.response?.body}`;
+    console.log(error);
     console.log(info);
     throw new Error(info);
   }

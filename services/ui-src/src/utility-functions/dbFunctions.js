@@ -3,7 +3,7 @@ import { getStateForms } from "../libs/api";
 // Recursively call getStateForms until all values are returned
 export const recursiveGetStateForms = async (data, currentData) => {
   // Get array data from previous iteration or set to empty array
-  let returnItems = currentData ?? [];
+  const returnItems = currentData ?? [];
 
   let formData = {
     state: data.state,
@@ -14,7 +14,7 @@ export const recursiveGetStateForms = async (data, currentData) => {
 
   let response = await getStateForms(formData);
 
-  returnItems = returnItems.concat(response.Items);
+  returnItems.push(...response.Items);
 
   if (response.LastEvaluatedKey) {
     data.startKey = response.LastEvaluatedKey;

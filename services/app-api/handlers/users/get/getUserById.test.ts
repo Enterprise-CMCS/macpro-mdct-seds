@@ -30,7 +30,7 @@ describe("getUserById.ts", () => {
   });
 
   it("should fetch the requested user data from dynamo", async () => {
-    mockScan.mockResolvedValueOnce({ Count: 1, Items: mockUser });
+    mockScan.mockResolvedValueOnce({ Count: 1, Items: [mockUser] });
 
     const response = await getUserById(mockEvent);
 

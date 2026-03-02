@@ -8,7 +8,7 @@ import { useStore } from "../../store/store";
 const Home = () => {
   const userRole = useStore((state) => state.user.role);
   const { isAuthenticated } = useAppContext();
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(isAuthenticated === false);

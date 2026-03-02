@@ -9,19 +9,19 @@ import { ok } from "../../libs/response-lib.ts";
 const client = new SESClient({ region: "us-east-1" });
 
 /**
- * Handler responsible for sending notification to bussiness Owners.
+ * Handler responsible for sending notification to business Owners.
  * as a CMS Business User, I want to know which states have NOT submitted
  * their data yet (in other words - all states with ‘in progress’ reports for the prior quarter)
  */
 
-export const main = handler(async (event) => {
+export const main = handler(async (_event) => {
   const email = await businessOwnersTemplate();
   const command = new SendEmailCommand(email);
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
-  } catch (err) {
-    console.error(err, (err as Error).stack);
+  } catch (error) {
+    console.error(error, (error as Error).stack);
   }
   return ok({
     status: "success",
@@ -40,11 +40,11 @@ async function businessOwnersTemplate() {
 
   const formsByState = Object_groupBy(inProgressForms, (form) => form.state_id);
   const formattedFormList = Object.entries(formsByState)
-    .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
+    .toSorted(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
     .map(([stateAbbr, forms]) => {
       const formTypes = forms!
         .map((f) => f.form)
-        .sort()
+        .toSorted()
         .join(", ");
       return `${stateAbbr} - ${formTypes}`;
     })

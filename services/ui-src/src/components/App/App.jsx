@@ -23,7 +23,7 @@ function App() {
         setIsAuthenticated(true);
         setIsAuthorized(true);
         setIsAuthenticating(false);
-      } catch (error) {
+      } catch {
         setIsAuthenticating(false);
       }
     })();

@@ -13,7 +13,7 @@ const tableNames = [
 const mergeLastSynced = (items: any[], syncDateTime: string) =>
   items.map((item: any) => ({ ...item, lastSynced: syncDateTime }));
 
-export const main = handler(async (event) => {
+export const main = handler(async (_event) => {
   const syncDateTime = new Date().toISOString();
 
   for (const tableName of tableNames) {
@@ -24,19 +24,19 @@ export const main = handler(async (event) => {
       data = await dynamoDb.scan({
         TableName: tableName,
       });
-    } catch (err) {
+    } catch (error) {
       console.error(`Database scan failed for the table ${tableName}
-                    Error: ${err}`);
-      throw err;
+                    Error: ${error}`);
+      throw error;
     }
 
     // Add lastSynced date time field
     const updatedItems = mergeLastSynced(data.Items, syncDateTime);
     try {
       await dynamoDb.putMultiple(tableName, updatedItems, JSON.stringify);
-    } catch (e) {
-      console.error(`BatchWrite failed with exception ${e}`);
-      throw e;
+    } catch (error) {
+      console.error(`BatchWrite failed with exception ${error}`);
+      throw error;
     }
   }
 

@@ -9,7 +9,6 @@ import {
 import { mockClient } from "aws-sdk-client-mock";
 import {
   scanForUserByUsername as actualScanForUser,
-  putUser as actualPutUser,
   AuthUser,
 } from "../../../storage/users.ts";
 import { StatusCodes } from "../../../libs/response-lib.ts";
@@ -24,7 +23,6 @@ vi.mock("../../../storage/users.ts", () => ({
   putUser: vi.fn(),
 }));
 const scanForUserByUsername = vi.mocked(actualScanForUser);
-const putUser = vi.mocked(actualPutUser);
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockPut = vi.fn();

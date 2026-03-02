@@ -38,10 +38,10 @@ const GenerateForms = () => {
           variation: "success",
           message: "Form creation successful.",
         });
-      } catch (err) {
+      } catch (error) {
         const message =
-          err instanceof Error
-            ? `Form creation failed: ${err.message}`
+          error instanceof Error
+            ? `Form creation failed: ${error.message}`
             : "Form creation failed.";
         setAlert({ variation: "error", message });
       } finally {

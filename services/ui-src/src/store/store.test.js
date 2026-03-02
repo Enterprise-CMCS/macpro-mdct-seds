@@ -1,11 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useStore } from "./store";
-import {
-  getSingleForm,
-  getStateForms,
-  saveSingleForm,
-  updateStateForm,
-} from "../libs/api";
+import { getSingleForm, saveSingleForm, updateStateForm } from "../libs/api";
 
 vi.mock("../libs/api", () => ({
   getCurrentUser: vi.fn().mockResolvedValue({ username: "mockUsername" }),

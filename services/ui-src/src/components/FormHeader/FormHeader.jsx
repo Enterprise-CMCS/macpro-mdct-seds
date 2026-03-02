@@ -54,7 +54,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
     value = value.length < 4 ? value : value.substring(0, 3);
 
     // Remove all non-numeric chars
-    value = value.replace(/[^\d]/g, "");
+    value = value.replaceAll(/[^\d]/g, "");
 
     // Save to state
     setMaxFPL(value);

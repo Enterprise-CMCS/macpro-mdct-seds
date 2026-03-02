@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@cmsgov/design-system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import { NavLink, useParams } from "react-router-dom";
@@ -136,9 +136,7 @@ const PrintPDF = () => {
                 Add any notes here to accompany the form submission:
               </strong>
               <div className="summary-text">
-                {!null || statusData.state_comments[0].entry.length ? (
-                  <div>{`${statusData.state_comments[0].entry}`}</div>
-                ) : null}
+                <div>{`${statusData.state_comments[0].entry}`}</div>
               </div>
             </div>
             <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

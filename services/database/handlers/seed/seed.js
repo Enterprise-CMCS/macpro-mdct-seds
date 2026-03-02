@@ -40,8 +40,8 @@ const runSeed = async (seedInstructions) => {
       for (const Item of items) {
         await dynamoClient.send(new PutCommand({ TableName, Item }));
       }
-    } catch (e) {
-      console.log(` -- ERROR UPLOADING ${TableName}\n`, e);
+    } catch (error) {
+      console.log(` -- ERROR UPLOADING ${TableName}\n`, error);
     }
   }
 };
