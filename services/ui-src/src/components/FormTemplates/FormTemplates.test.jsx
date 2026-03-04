@@ -3,16 +3,12 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FormTemplates from "./FormTemplates";
-import {
-  obtainFormTemplate,
-  obtainFormTemplateYears,
-  updateCreateFormTemplate,
-} from "../../libs/api";
+import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
 
 vi.mock("../../libs/api", () => ({
-  obtainFormTemplate: vi.fn(),
-  obtainFormTemplateYears: vi.fn(),
-  updateCreateFormTemplate: vi.fn(),
+  getTemplate: vi.fn(),
+  listTemplateYears: vi.fn(),
+  updateTemplate: vi.fn(),
 }));
 
 vi.spyOn(window, "confirm").mockImplementation(() => true);
@@ -25,10 +21,10 @@ describe("Tests for FormTemplates.js", () => {
   });
 
   test("Should render correctly when there are no years", async () => {
-    obtainFormTemplateYears.mockResolvedValue([]);
+    listTemplateYears.mockResolvedValue([]);
 
     render(<FormTemplates />);
-    await waitFor(() => expect(obtainFormTemplateYears).toHaveBeenCalled());
+    await waitFor(() => expect(listTemplateYears).toHaveBeenCalled());
 
     expect(screen.getByLabelText("Enter Year")).toBeInTheDocument();
     expect(screen.getByLabelText("Enter Year")).toHaveValue(
@@ -43,13 +39,13 @@ describe("Tests for FormTemplates.js", () => {
   });
 
   test("Should render correctly when years exist", async () => {
-    obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
-    obtainFormTemplate.mockResolvedValue({ template: mockTemplate });
+    listTemplateYears.mockResolvedValue([2021, 2022]);
+    getTemplate.mockResolvedValue({ template: mockTemplate });
 
     render(<FormTemplates />);
     await waitFor(() => {
-      expect(obtainFormTemplateYears).toHaveBeenCalled();
-      expect(obtainFormTemplate).toHaveBeenCalled();
+      expect(listTemplateYears).toHaveBeenCalled();
+      expect(getTemplate).toHaveBeenCalled();
     });
 
     const yearDropdown = screen.getByRole("combobox", { name: /Year/ });
@@ -64,8 +60,8 @@ describe("Tests for FormTemplates.js", () => {
   test("Should reset when dropdown is set to + Create New Template", async () => {
     render(<FormTemplates />);
     await waitFor(() => {
-      expect(obtainFormTemplateYears).toHaveBeenCalled();
-      expect(obtainFormTemplate).toHaveBeenCalled();
+      expect(listTemplateYears).toHaveBeenCalled();
+      expect(getTemplate).toHaveBeenCalled();
     });
 
     const templateInput = screen.getByRole("textbox", { name: /Template/ });
@@ -79,18 +75,18 @@ describe("Tests for FormTemplates.js", () => {
 
   test("Should send saved templates back to the API", async () => {
     const mockTemplate = { foo: "bar" };
-    obtainFormTemplateYears.mockResolvedValue([2021, 2022]);
-    obtainFormTemplate.mockResolvedValue({ template: mockTemplate });
+    listTemplateYears.mockResolvedValue([2021, 2022]);
+    getTemplate.mockResolvedValue({ template: mockTemplate });
 
     render(<FormTemplates />);
     await waitFor(() => {
-      expect(obtainFormTemplateYears).toHaveBeenCalled();
-      expect(obtainFormTemplate).toHaveBeenCalled();
+      expect(listTemplateYears).toHaveBeenCalled();
+      expect(getTemplate).toHaveBeenCalled();
     });
 
     userEvent.click(screen.getByText("Save", { selector: "button" }));
     await waitFor(() => {
-      expect(updateCreateFormTemplate).toHaveBeenCalledWith({
+      expect(updateTemplate).toHaveBeenCalledWith({
         year: 2022,
         template: { ...mockTemplate },
       });
@@ -98,7 +94,7 @@ describe("Tests for FormTemplates.js", () => {
   });
 
   test("should render an error message when the form has failed to save", async () => {
-    updateCreateFormTemplate.mockRejectedValue(new Error("mock error text"));
+    updateTemplate.mockRejectedValue(new Error("mock error text"));
     render(<FormTemplates />);
     userEvent.click(screen.getByText("Save", { selector: "button" }));
     await waitFor(() =>
