@@ -25,7 +25,6 @@ export const main = handler(emptyParser, async (request) => {
 const getStateFormsWithTotals = async () => {
   const params = {
     TableName: process.env.StateFormsTable,
-    Select: "ALL_ATTRIBUTES",
     FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
     ExpressionAttributeValues: {
       ":quarter": 4,
