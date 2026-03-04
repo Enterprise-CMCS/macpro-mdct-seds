@@ -8,7 +8,7 @@ import { useStore } from "../../store/store";
 const Home = () => {
   const userRole = useStore((state) => state.user.role);
   const { isAuthenticated } = useAppContext();
-  const [_isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true); // TODO, if we never read this, can't we delete it?
 
   useEffect(() => {
     setIsLoading(isAuthenticated === false);

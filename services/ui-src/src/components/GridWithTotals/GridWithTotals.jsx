@@ -57,7 +57,7 @@ const GridWithTotals = (props) => {
       checkQuestion5Summary.includes("summary-synthesized")
     ) {
       let sum5Data = translateInitialData(props.gridData);
-      sum5Data.map((row, _rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1c1Total =
             props.questions[0].rows[1].col2 +
@@ -126,7 +126,7 @@ const GridWithTotals = (props) => {
         return true;
       });
     } else {
-      gridData.map((row, _rowIndex) => {
+      gridData.map((row) => {
         if (row !== undefined) {
           row.map((column, columnIndex) => {
             let currentValue = 0;
@@ -183,7 +183,7 @@ const GridWithTotals = (props) => {
     ) {
       let sum5Data = translateInitialData(props.gridData);
 
-      sum5Data.map((row, _rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1r1 = props.questions[0].rows[1];
           let q4r1 = props.questions[3].rows[1];
@@ -227,7 +227,7 @@ const GridWithTotals = (props) => {
       gridData.map((row, rowIndex) => {
         rowTotal = 0;
         if (row !== undefined) {
-          row.map((column, _columnIndex) => {
+          row.map((column) => {
             let currentValue = 0;
 
             if (isNaN(column) === false) {
@@ -373,17 +373,15 @@ const GridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = Array.from({ length: headerCols.length - 1 }, (_, i) => {
-    let column;
-
+  const totalsRow = headerCols.map((_, i) => {
     if (i === 0) {
-      column = (
+      return (
         <th scope="row" className="total-header-cell" key={i}>
           Totals:
         </th>
       );
     } else {
-      column = (
+      return (
         <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? addCommas(
@@ -393,8 +391,6 @@ const GridWithTotals = (props) => {
         </td>
       );
     }
-
-    return column;
   });
 
   return (

@@ -39,7 +39,7 @@ describe("generateEnrollmentTotals", () => {
       ],
     });
     let queryCount = 0;
-    mockQuery.mockImplementation((_params) => {
+    mockQuery.mockImplementation(() => {
       queryCount += 1;
       return {
         Count: 2,

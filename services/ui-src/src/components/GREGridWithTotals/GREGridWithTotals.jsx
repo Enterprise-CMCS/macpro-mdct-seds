@@ -73,7 +73,7 @@ const GREGridWithTotals = (props) => {
       columnTotalsArray[index] = 0;
     });
 
-    gridData.map((row, _rowIndex) => {
+    gridData.map((row) => {
       if (row !== undefined) {
         row.map((column, columnIndex) => {
           let currentValue = 0;
