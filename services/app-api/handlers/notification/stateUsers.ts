@@ -1,19 +1,18 @@
-import handler from "./../../libs/handler-lib.ts";
 import { scanUsersByRole } from "../../storage/users.ts";
 import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { calculateFiscalQuarterFromDate } from "../../libs/time.ts";
 import { FormStatus } from "../../shared/types.ts";
-import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
 /**
- * Handler responsible for sending notification to state users At the end of each Quarter.
- * At the end of each Quarter, as a State User, I want to know if my state has NOT certified its data yet.
+ * Send an email to every state user, for every state with at least
+ * one uncertified form this quarter. This would be invoked once per quarter.
+ *
+ * Note that this was disabled in Feb 2024. See docs/uncertified_emails.md
  */
-
-export const main = handler(async (event) => {
+export const main = async () => {
   const email = await stateUsersTemplate();
   console.log("emailTemplate: ", email);
   const command = new SendEmailCommand(email);
@@ -23,11 +22,7 @@ export const main = handler(async (event) => {
   } catch (err) {
     console.error(err, (err as Error).stack);
   }
-  return ok({
-    status: "success",
-    message: "Quarterly State owners email sent",
-  });
-});
+};
 
 /**
  * List all emails of users whose state has an In Progress form this quarter.

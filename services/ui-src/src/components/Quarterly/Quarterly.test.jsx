@@ -5,7 +5,7 @@ import Quarterly from "../Quarterly/Quarterly";
 import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
 import { useStore } from "../../store/store";
-import { getStateForms } from "libs/api";
+import { listFormsForQuarter } from "libs/api";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
@@ -17,9 +17,9 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 }));
 
 vi.mock("libs/api", () => ({
-  getStateForms: vi.fn(),
+  listFormsForQuarter: vi.fn(),
 }));
-getStateForms.mockResolvedValue(quarterlyDataMock);
+listFormsForQuarter.mockResolvedValue(quarterlyDataMock);
 
 const forms = [
   {
@@ -69,7 +69,7 @@ describe("Quarterly tests", () => {
   it("should render correctly", async () => {
     const { container } = renderComponent();
     await waitFor(() => {
-      expect(getStateForms).toHaveBeenCalled();
+      expect(listFormsForQuarter).toHaveBeenCalled();
     });
 
     expect(

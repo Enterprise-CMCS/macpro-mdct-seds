@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
-import { getStateForms } from "../../libs/api";
+import { listFormsForQuarter } from "../../libs/api";
 import { getStatusDisplay } from "../../utility-functions/formStatus";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { useStore } from "../../store/store";
@@ -26,7 +26,7 @@ const Quarterly = () => {
           year: parseInt(year),
           quarter: parseInt(quarter),
         };
-        let forms = await getStateForms(params);
+        let forms = await listFormsForQuarter(params);
 
         // Filter 64.ECI out on the user side, as it is an unused form and renders improperly
         forms = forms.filter((i) => i.form !== "64.ECI");

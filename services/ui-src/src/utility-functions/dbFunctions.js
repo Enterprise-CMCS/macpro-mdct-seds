@@ -1,4 +1,4 @@
-import { getStateForms } from "../libs/api";
+import { listFormsForQuarter } from "../libs/api";
 
 // Recursively call getStateForms until all values are returned
 export const recursiveGetStateForms = async (data, currentData) => {
@@ -12,7 +12,7 @@ export const recursiveGetStateForms = async (data, currentData) => {
     startKey: data.startKey ?? false,
   };
 
-  let response = await getStateForms(formData);
+  let response = await listFormsForQuarter(formData);
 
   returnItems = returnItems.concat(response.Items);
 

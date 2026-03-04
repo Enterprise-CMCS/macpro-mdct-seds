@@ -2,12 +2,18 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   BatchWriteCommand,
   DeleteCommand,
+  DeleteCommandInput,
   DynamoDBDocumentClient,
   GetCommand,
+  GetCommandInput,
   paginateQuery,
   PutCommand,
+  PutCommandInput,
+  QueryCommandInput,
   ScanCommand,
+  ScanCommandInput,
   UpdateCommand,
+  UpdateCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 import { logger } from "./debug-lib.ts";
 
@@ -20,23 +26,30 @@ const awsConfig = {
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 export default {
-  get: async (params) => await client.send(new GetCommand(params)),
-  update: async (params) => await client.send(new UpdateCommand(params)),
-  delete: async (params) => await client.send(new DeleteCommand(params)),
-  query: async (params) => {
+  get: async (params: GetCommandInput) =>
+    await client.send(new GetCommand(params)),
+  update: async (params: UpdateCommandInput) =>
+    await client.send(new UpdateCommand(params)),
+  delete: async (params: DeleteCommandInput) =>
+    await client.send(new DeleteCommand(params)),
+  query: async (params: Omit<QueryCommandInput, "ExclusiveStartKey">) => {
     let items: Record<string, any>[] = [];
     for await (let page of paginateQuery({ client }, params)) {
       items = items.concat(page.Items ?? []);
     }
     return { Items: items, Count: items.length };
   },
-  put: async (params) => await client.send(new PutCommand(params)),
-  scan: async (params) => {
+  put: async (params: PutCommandInput) =>
+    await client.send(new PutCommand(params)),
+  scan: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
     let items: Record<string, any>[] = [];
     let ExclusiveStartKey;
 
     do {
-      const command = new ScanCommand({ ...params, ExclusiveStartKey });
+      const command: ScanCommand = new ScanCommand({
+        ...params,
+        ExclusiveStartKey,
+      });
       const result = await client.send(command);
       items = items.concat(result.Items ?? []);
       ExclusiveStartKey = result.LastEvaluatedKey;

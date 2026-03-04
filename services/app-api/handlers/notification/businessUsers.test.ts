@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import "../../libs/handler-mocking.ts";
 import { main as notifyBusinessUsers } from "./businessUsers.ts";
 import {
   AuthUser,
@@ -10,6 +11,7 @@ import {
 } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
+import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
 vi.mock("../../storage/users.ts", () => ({
   scanUsersByRole: vi.fn(),
@@ -22,7 +24,7 @@ vi.mock("../../storage/stateForms.ts", () => ({
 const scanFormsByQuarterAndStatus = vi.mocked(actualScanForms);
 
 const mockSes = mockClient(SESClient);
-const mockSendEmail = vi.fn();
+const mockSendEmail = vi.fn().mockResolvedValue({ MessageId: 123 });
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
 const mockBusinessUser1 = { email: "bizuser1@test.com" } as AuthUser;
@@ -44,7 +46,7 @@ describe("notification/businessUsers", () => {
       mockFormTX21E,
     ]);
 
-    await notifyBusinessUsers({});
+    await notifyBusinessUsers();
 
     expect(mockSendEmail).toHaveBeenCalledWith(
       {

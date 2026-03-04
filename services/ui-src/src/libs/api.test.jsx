@@ -1,18 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   generateEnrollmentTotals,
-  generateQuarterlyForms,
-  getSingleForm,
-  getStateForms,
+  generateQuarterForms,
+  getForm,
+  listFormsForQuarter,
   getCurrentUser,
   getUserById,
   listUsers,
-  obtainAvailableForms,
-  obtainFormTemplate,
-  obtainFormTemplateYears,
-  saveSingleForm,
-  updateCreateFormTemplate,
-  updateStateForm,
+  listFormsForState,
+  getTemplate,
+  listTemplateYears,
+  updateForm,
+  updateTemplate,
+  updateTotals,
   updateUser,
 } from "./api";
 
@@ -92,9 +92,9 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for getStateForms", async () => {
+  it("should make the expected API call for listFormsForQuarter", async () => {
     const mockFormPayload = { state: "CO", year: 2025, quarter: 1 };
-    const response = await getStateForms(mockFormPayload);
+    const response = await listFormsForQuarter(mockFormPayload);
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -103,14 +103,14 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for updateStateForm", async () => {
+  it("should make the expected API call for updateTotals", async () => {
     const mockSavePayload = {
       state: "CO",
       year: 2025,
       quarter: 4,
       form: "GRE",
     };
-    const response = await updateStateForm(mockSavePayload);
+    const response = await updateTotals(mockSavePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -119,8 +119,8 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for getSingleForm", async () => {
-    const response = await getSingleForm("CO", 2025, 4, "21E");
+  it("should make the expected API call for getForm", async () => {
+    const response = await getForm("CO", 2025, 4, "21E");
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -130,7 +130,7 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for obtainAvailableForms", async () => {
-    const response = await obtainAvailableForms("CO");
+    const response = await listFormsForState("CO");
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -139,11 +139,11 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for saveSingleForm", async () => {
+  it("should make the expected API call for updateForm", async () => {
     const mockSavePayload = {
       statusData: { state_id: "CO", year: 2025, quarter: 4, form: "GRE" },
     };
-    const response = await saveSingleForm(mockSavePayload);
+    const response = await updateForm(mockSavePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -152,9 +152,9 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for generateQuarterlyForms", async () => {
+  it("should make the expected API call for generateQuarterForms", async () => {
     const mockGeneratePayload = { year: 2022, quarter: 2 };
-    const response = await generateQuarterlyForms(mockGeneratePayload);
+    const response = await generateQuarterForms(mockGeneratePayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -163,8 +163,8 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for obtainFormTemplateYears", async () => {
-    const response = await obtainFormTemplateYears();
+  it("should make the expected API call for listTemplateYears", async () => {
+    const response = await listTemplateYears();
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -173,9 +173,9 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for obtainFormTemplate", async () => {
+  it("should make the expected API call for getTemplate", async () => {
     const mockYear = 2022;
-    const response = await obtainFormTemplate(mockYear);
+    const response = await getTemplate(mockYear);
     expect(response.responseAttr).toBe("mock get response");
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -184,9 +184,9 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for updateCreateFormTemplate", async () => {
+  it("should make the expected API call for updateTemplate", async () => {
     const mockFormPayload = { year: 2022, template: { foo: "bar" } };
-    const response = await updateCreateFormTemplate(mockFormPayload);
+    const response = await updateTemplate(mockFormPayload);
     expect(response.responseAttr).toBe("mock post response");
     expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
@@ -205,8 +205,7 @@ describe("libs/api", () => {
     });
   });
   /*
-    NOTE: The SEDS business owners have requested that the email flow to users be disabled, but would like to be
-    able to re-enable it at a future point (see: https://bit.ly/3w3mVmT). For now, this will be commented out and not removed.
+  Test disabled; see docs/uncertified_emails.md
   
   it("should make the expected API call for sendUncertifyEmail", async () => {
     const response = await sendUncertifyEmail(mockPayload);

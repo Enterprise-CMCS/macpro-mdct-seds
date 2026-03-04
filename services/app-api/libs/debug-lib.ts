@@ -9,7 +9,7 @@ type LogEvent = {
 const logs: LogEvent[] = [];
 
 const buildLoggerForLevel = (level: LogLevel) => {
-  return function (...content) {
+  return function (...content: any[]) {
     logs.push({
       date: new Date(),
       level: level,
