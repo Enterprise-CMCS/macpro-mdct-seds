@@ -48,10 +48,7 @@ export const main = handler(emptyParser, async (request) => {
   } catch (err) {
     console.error(err, (err as Error).stack);
   }
-  return ok({
-    status: "success",
-    message: "Uncertified Business owners email sent",
-  });
+  return ok();
 });
 
 // logic to retrieve all business users emails
