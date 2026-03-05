@@ -373,7 +373,7 @@ const GridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = headerCols.map((_, i) => {
+  const totalsRow = headerCols.slice(1).map((_, i) => {
     if (i === 0) {
       return (
         <th scope="row" className="total-header-cell" key={i}>
