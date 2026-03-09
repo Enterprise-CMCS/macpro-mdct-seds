@@ -76,7 +76,7 @@ describe("handler-lib", () => {
       body: JSON.stringify(payload),
     };
 
-    const result = await handler(parser, lambda)(eventWithBody);
+    await handler(parser, lambda)(eventWithBody);
 
     expect(lambda).toHaveBeenCalledWith(
       expect.objectContaining({ body: payload })
@@ -93,7 +93,7 @@ describe("handler-lib", () => {
       body: JSON.stringify(payload),
     };
 
-    const result = await handler(parser, lambda)(eventWithBody);
+    await handler(parser, lambda)(eventWithBody);
 
     expect(lambda).toHaveBeenCalledWith(
       expect.objectContaining({ body: { foo: "bar" } })

@@ -74,7 +74,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
-      throttlingRateLimit: 10000.0,
+      throttlingRateLimit: 10000,
       cachingEnabled: false,
       cacheTtl: Duration.seconds(300),
       cacheDataEncrypted: false,

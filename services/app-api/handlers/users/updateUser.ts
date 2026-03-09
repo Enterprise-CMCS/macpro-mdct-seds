@@ -21,16 +21,15 @@ export const main = handler(emptyParser, async (request) => {
     return notFound(`User with sub ${body.usernameSub} could not be found.`);
   }
 
-  if (requestingUser.role !== "admin") {
-    if (
-      userBeingModified.usernameSub !== requestingUser.usernameSub ||
+  if (
+    requestingUser.role !== "admin" &&
+    (userBeingModified.usernameSub !== requestingUser.usernameSub ||
       userBeingModified.role !== body.role ||
-      userBeingModified.state !== undefined
-    ) {
-      // Non-admins can only change their own AuthUser record,
-      // and even then only the state, and even then only if it was absent.
-      return forbidden();
-    }
+      userBeingModified.state !== undefined)
+  ) {
+    // Non-admins can only change their own AuthUser record,
+    // and even then only the state, and even then only if it was absent.
+    return forbidden();
   }
 
   const updatedUser = {
@@ -66,11 +65,12 @@ function isValidBody(body: unknown): body is RequestBody {
     logger.warn("body.role must be 'state', 'business', or 'admin'.");
     return false;
   }
-  if ("state" in body) {
-    if ("string" !== typeof body.state || !isStateAbbr(body.state)) {
-      logger.warn("body.state must be a 2-letter state abbreviation");
-      return false;
-    }
+  if (
+    "state" in body &&
+    ("string" !== typeof body.state || !isStateAbbr(body.state))
+  ) {
+    logger.warn("body.state must be a 2-letter state abbreviation");
+    return false;
   }
   return true;
 }

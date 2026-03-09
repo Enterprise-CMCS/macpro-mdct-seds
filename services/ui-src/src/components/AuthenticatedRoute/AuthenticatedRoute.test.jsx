@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import * as AppContext from "../../libs/contextLib";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 // Mock for useLocation
 vi.mock("react-router-dom", async (importOriginal) => ({

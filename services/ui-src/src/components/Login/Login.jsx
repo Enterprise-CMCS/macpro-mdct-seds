@@ -25,8 +25,7 @@ export default function Login() {
 
   function onFieldChange(e) {
     const { name, value } = e.target;
-    const newFields = { ...fields };
-    newFields[name] = value;
+    const newFields = { ...fields, [name]: value };
     setFieldChange(newFields);
   }
 
@@ -37,8 +36,8 @@ export default function Login() {
 
     try {
       await signInWithOkta();
-    } catch (e) {
-      onError(e);
+    } catch (error) {
+      onError(error);
       setIsLoadingOkta(false);
     }
   }
@@ -53,8 +52,8 @@ export default function Login() {
         options: { authFlowType: "USER_PASSWORD_AUTH" },
       });
       window.location.href = "/";
-    } catch (e) {
-      onError(e);
+    } catch (error) {
+      onError(error);
       setIsLoading(false);
     }
   }

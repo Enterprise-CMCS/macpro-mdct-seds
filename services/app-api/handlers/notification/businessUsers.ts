@@ -18,8 +18,8 @@ export const main = async () => {
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
-  } catch (err) {
-    console.error(err, (err as Error).stack);
+  } catch (error) {
+    console.error(error, (error as Error).stack);
   }
 };
 
@@ -34,11 +34,11 @@ async function businessOwnersTemplate() {
 
   const formsByState = Object_groupBy(inProgressForms, (form) => form.state_id);
   const formattedFormList = Object.entries(formsByState)
-    .sort(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
+    .toSorted(([stateA, _], [stateB, __]) => stateA.localeCompare(stateB))
     .map(([stateAbbr, forms]) => {
       const formTypes = forms!
         .map((f) => f.form)
-        .sort()
+        .toSorted()
         .join(", ");
       return `${stateAbbr} - ${formTypes}`;
     })

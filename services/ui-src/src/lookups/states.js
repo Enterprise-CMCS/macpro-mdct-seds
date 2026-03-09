@@ -65,4 +65,4 @@ export const getStateName = (abbr) => states[abbr];
  */
 export const stateSelectOptions = Object.entries(states)
   .map(([abbr, name]) => ({ label: name, value: abbr }))
-  .sort((a, b) => a.label.localeCompare(b.label));
+  .toSorted((a, b) => a.label.localeCompare(b.label));

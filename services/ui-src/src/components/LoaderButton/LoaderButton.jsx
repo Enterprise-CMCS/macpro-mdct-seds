@@ -3,7 +3,6 @@ import { Button } from "@cmsgov/design-system";
 
 export default function LoaderButton({
   isLoading,
-  className = "",
   disabled = false,
   variation = "solid",
   ...props

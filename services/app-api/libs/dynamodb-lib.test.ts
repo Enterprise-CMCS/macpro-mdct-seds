@@ -80,13 +80,13 @@ describe("DynamoDB library functions", () => {
           }
         );
         if (itemsToFail.length === 0) {
-          return Promise.resolve({});
+          return {};
         } else {
-          return Promise.resolve({
+          return {
             UnprocessedItems: {
               mockTableName: itemsToFail,
             },
-          });
+          };
         }
       });
       const items = Array.from({ length: 60 }).map((_, id) => ({ id }));

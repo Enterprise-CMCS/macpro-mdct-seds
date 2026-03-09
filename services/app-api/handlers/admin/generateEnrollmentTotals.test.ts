@@ -39,7 +39,7 @@ describe("generateEnrollmentTotals", () => {
       ],
     });
     let queryCount = 0;
-    mockQuery.mockImplementation((params) => {
+    mockQuery.mockImplementation(() => {
       queryCount += 1;
       return {
         Count: 2,
@@ -89,7 +89,6 @@ describe("generateEnrollmentTotals", () => {
           ":f1": "21E",
           ":f2": "64.21E",
         },
-        Select: "ALL_ATTRIBUTES",
         ConsistentRead: true,
       }),
       expect.any(Function)

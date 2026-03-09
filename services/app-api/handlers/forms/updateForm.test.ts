@@ -507,7 +507,7 @@ describe("updateForm", () => {
     },
   ])(
     "should return an error if the body is invalid ($reason)",
-    async ({ reason, body }) => {
+    async ({ body }) => {
       handler.setupStateUser("CO");
       const mockEvent = {
         body: JSON.stringify(body),

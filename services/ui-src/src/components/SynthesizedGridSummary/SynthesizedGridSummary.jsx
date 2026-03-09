@@ -29,9 +29,9 @@ const SynthesizedGridSummary = ({
     );
 
     // All cells share the same target questions, find the target question IDs
-    const answersToFind = sortedGridData[1]["col2"][0]["targets"]
-      ? sortedGridData[1]["col2"][0]["targets"]
-      : sortedGridData[2]["col2"][0]["targets"];
+    const answersToFind =
+      sortedGridData[1]["col2"][0]["targets"] ??
+      sortedGridData[2]["col2"][0]["targets"];
 
     //Get just the IDs without their rows or columns
     const stripedIDs = answersToFind.map(

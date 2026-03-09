@@ -43,7 +43,6 @@ describe("Test GenerateForms.js", () => {
   });
 
   it("should display an informative error message if the request fails", async () => {
-    const errorText = "some error message directly from the API";
     generateQuarterForms.mockRejectedValue(new Error("mock error text"));
 
     render(<GenerateForms />);

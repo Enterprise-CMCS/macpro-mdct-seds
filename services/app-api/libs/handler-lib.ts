@@ -42,9 +42,9 @@ export default function handler<TParams>(
       }
 
       return await lambda({ user, body, parameters });
-    } catch (err) {
-      logger.error("Error: %O", err);
-      return internalServerError((err as Error).message);
+    } catch (error) {
+      logger.error("Error: %O", error);
+      return internalServerError((error as Error).message);
     } finally {
       logger.flush();
     }

@@ -26,19 +26,19 @@ export const main = async () => {
       data = await dynamoDb.scan({
         TableName: tableName,
       });
-    } catch (err) {
+    } catch (error) {
       console.error(`Database scan failed for the table ${tableName}
-                    Error: ${err}`);
-      throw err;
+                    Error: ${error}`);
+      throw error;
     }
 
     // Add lastSynced date time field
     const updatedItems = mergeLastSynced(data.Items, syncDateTime);
     try {
       await dynamoDb.putMultiple(tableName, updatedItems, JSON.stringify);
-    } catch (e) {
-      console.error(`BatchWrite failed with exception ${e}`);
-      throw e;
+    } catch (error) {
+      console.error(`BatchWrite failed with exception ${error}`);
+      throw error;
     }
   }
 

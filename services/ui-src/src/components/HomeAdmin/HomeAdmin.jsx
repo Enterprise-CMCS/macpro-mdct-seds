@@ -18,7 +18,7 @@ const HomeAdmin = () => {
     let forms = [];
     try {
       forms = await listFormsForState(stateId);
-    } catch (e) {
+    } catch {
       /* no-op */
     }
 
@@ -72,7 +72,7 @@ const HomeAdmin = () => {
         </div>
 
         <div className="flex-col-gap-1">
-          {accordionItems && accordionItems.length !== 0 ? (
+          {accordionItems && accordionItems.length > 0 ? (
             <>
               <p>
                 Welcome to SEDS! Please select a Federal Fiscal Year and quarter

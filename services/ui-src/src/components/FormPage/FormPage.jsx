@@ -57,7 +57,7 @@ const FormPage = () => {
 
   useEffect(() => {
     // Get current time
-    const currentTime = new Date().getTime();
+    const currentTime = Date.now();
 
     // Get last modified and add 10 seconds (same as setTimeout)
     let lastModifiedAsDate = new Date(last_modified);
@@ -92,7 +92,8 @@ const FormPage = () => {
             </a>
           </Alert>
         </div>
-      ) : saveAlert ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      saveAlert ? (
         <div>
           <Alert variation="success" heading="Save success:" headingLevel="1">
             Form {formName} has been successfully saved.

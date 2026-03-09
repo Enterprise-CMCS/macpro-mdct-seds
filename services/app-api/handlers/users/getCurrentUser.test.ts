@@ -9,7 +9,6 @@ import {
 import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
-import { jwtDecode } from "jwt-decode";
 import { CmsAmplifyToken } from "../../libs/authorization.ts";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);

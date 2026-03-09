@@ -52,7 +52,7 @@ describe("libs/api", () => {
   });
 
   it("should make the expected API call for listUsers", async () => {
-    const response = await listUsers();
+    await listUsers();
     expect(mockGet).toHaveBeenCalledWith({
       apiName: "mdct-seds",
       path: "/users",

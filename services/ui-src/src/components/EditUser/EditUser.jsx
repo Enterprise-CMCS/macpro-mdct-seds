@@ -56,7 +56,8 @@ const EditUser = () => {
       <h1>Edit User</h1>
       {isLoading ? (
         <Preloader />
-      ) : user ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      user ? (
         <div className="flex-col-gap-1half">
           <Table>
             <tbody>

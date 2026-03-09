@@ -62,7 +62,7 @@ export const isStatusId = (
 };
 
 /** Parser for API endpoints which do not read any parameters. */
-export const emptyParser = (_evt: any) => ({});
+export const emptyParser = () => ({});
 
 export const readFormIdentifiersFromPath = (evt: APIGatewayProxyEvent) => {
   const state = evt.pathParameters?.state;

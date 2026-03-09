@@ -45,8 +45,8 @@ export const main = handler(emptyParser, async (request) => {
     const data = await client.send(command);
     console.log(data, "data: promise");
     console.log(data.MessageId, "data.MessageId");
-  } catch (err) {
-    console.error(err, (err as Error).stack);
+  } catch (error) {
+    console.error(error, (error as Error).stack);
   }
   return ok();
 });

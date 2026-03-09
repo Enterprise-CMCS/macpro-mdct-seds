@@ -14,13 +14,13 @@ const client = new SESClient({ region: "us-east-1" });
  */
 export const main = async () => {
   const email = await stateUsersTemplate();
-  console.log("emailTemplate: ", email);
+  console.log("emailTemplate:", email);
   const command = new SendEmailCommand(email);
   try {
     const data = await client.send(command);
     console.log(data.MessageId);
-  } catch (err) {
-    console.error(err, (err as Error).stack);
+  } catch (error) {
+    console.error(error, (error as Error).stack);
   }
 };
 

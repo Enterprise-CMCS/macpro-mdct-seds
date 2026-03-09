@@ -11,7 +11,6 @@ import {
 } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
-import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
 vi.mock("../../storage/users.ts", () => ({
   scanUsersByRole: vi.fn(),

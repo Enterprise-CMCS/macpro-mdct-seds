@@ -27,7 +27,7 @@ describe("getUserById", () => {
 
   it("should fetch the requested user data from dynamo", async () => {
     handler.setupAdminUser();
-    mockScan.mockResolvedValueOnce({ Count: 1, Items: mockUser });
+    mockScan.mockResolvedValueOnce({ Count: 1, Items: [mockUser] });
 
     const response = await getUserById(mockEvent);
 

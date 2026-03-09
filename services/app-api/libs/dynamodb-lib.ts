@@ -33,16 +33,16 @@ export default {
   delete: async (params: DeleteCommandInput) =>
     await client.send(new DeleteCommand(params)),
   query: async (params: Omit<QueryCommandInput, "ExclusiveStartKey">) => {
-    let items: Record<string, any>[] = [];
+    const items: Record<string, any>[] = [];
     for await (let page of paginateQuery({ client }, params)) {
-      items = items.concat(page.Items ?? []);
+      items.push(...(page.Items ?? []));
     }
     return { Items: items, Count: items.length };
   },
   put: async (params: PutCommandInput) =>
     await client.send(new PutCommand(params)),
   scan: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
-    let items: Record<string, any>[] = [];
+    const items: Record<string, any>[] = [];
     let ExclusiveStartKey;
 
     do {
@@ -51,7 +51,7 @@ export default {
         ExclusiveStartKey,
       });
       const result = await client.send(command);
-      items = items.concat(result.Items ?? []);
+      items.push(...(result.Items ?? []));
       ExclusiveStartKey = result.LastEvaluatedKey;
     } while (ExclusiveStartKey);
 
