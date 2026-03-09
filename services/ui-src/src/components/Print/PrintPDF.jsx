@@ -136,7 +136,12 @@ const PrintPDF = () => {
                 Add any notes here to accompany the form submission:
               </strong>
               <div className="summary-text">
-                <div>{`${statusData.state_comments[0].entry}`}</div>
+                {
+                  // oxlint-disable-next-line no-constant-binary-expression
+                  !null || statusData.state_comments[0].entry.length > 0 ? (
+                    <div>{`${statusData.state_comments[0].entry}`}</div>
+                  ) : null
+                }
               </div>
             </div>
             <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
