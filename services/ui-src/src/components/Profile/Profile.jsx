@@ -1,8 +1,6 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-import "./Profile.scss";
-import { Grid, GridContainer } from "@trussworks/react-uswds";
 import { useStore } from "../../store/store";
+import { TextField } from "@cmsgov/design-system";
 
 export default function Profile() {
   const user = useStore((state) => state.user);
@@ -19,36 +17,21 @@ export default function Profile() {
   const state = user.state ?? "";
 
   return (
-    <div className="Profile">
-      <h1 className="page-header">Profile</h1>
-      <GridContainer className="container">
-        <Grid row>
-          <Grid col={12}>
+    <div>
+      <h1>Profile</h1>
+      <div>
+        <div>
+          <div>
             <form>
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control value={email} disabled={true} />
-              </Form.Group>
-              <Form.Group controlId="firstName">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control value={firstName} disabled={true} />
-              </Form.Group>
-              <Form.Group controlId="lastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control value={lastName} disabled={true} />
-              </Form.Group>
-              <Form.Group controlId="role">
-                <Form.Label>Role</Form.Label>
-                <Form.Control value={role} disabled={true} />
-              </Form.Group>
-              <Form.Group controlId="state">
-                <Form.Label>State</Form.Label>
-                <Form.Control value={state} disabled={true} />
-              </Form.Group>
+              <TextField label="Email" value={email} disabled={true} />
+              <TextField label="First Name" value={firstName} disabled={true} />
+              <TextField label="Last Name" value={lastName} disabled={true} />
+              <TextField label="Role" value={role} disabled={true} />
+              <TextField label="State" value={state} disabled={true} />
             </form>
-          </Grid>
-        </Grid>
-      </GridContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

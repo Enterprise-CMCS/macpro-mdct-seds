@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./SynthesizedGrid.scss";
-import { Table } from "@trussworks/react-uswds";
+import { Table } from "@cmsgov/design-system";
 import { useStore } from "../../store/store";
 
 export const SynthesizedGrid = ({ range }) => {
@@ -93,8 +92,8 @@ export const SynthesizedGrid = ({ range }) => {
   let Q5Col5Total = getColumnTotalAverage("col6");
 
   return (
-    <div className="grid-with-totals">
-      <Table bordered={true} fullWidth={true}>
+    <div className="flex-col-gap-1">
+      <Table>
         <thead>
           <tr>
             <th></th>

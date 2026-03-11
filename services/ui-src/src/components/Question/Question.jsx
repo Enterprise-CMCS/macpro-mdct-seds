@@ -21,7 +21,7 @@ const QuestionComponent = ({
 
   // If GRE form, sort the answers by col1 (row label)
   if (answerData.question.split("-")[1] === "GRE") {
-    answerData.rows = answerData.rows.sort(sortByCol1);
+    answerData.rows = answerData.rows.toSorted(sortByCol1);
   }
   const { rows, answer_entry } = answerData || {};
 
@@ -67,7 +67,7 @@ const QuestionComponent = ({
               questionID={answer_entry}
               gridData={sortedRows}
               disabled={disabled}
-              synthesized={synthesized ? synthesized : false}
+              synthesized={synthesized ?? false}
             />
           );
           break;
@@ -88,7 +88,7 @@ const QuestionComponent = ({
     }
   }
   return (
-    <div className="question-component padding-top-5 border-top-1px">
+    <div className="question-component flex-col-gap-1">
       <b>
         {questionNumber}. {labelWithAgeVariable}
       </b>

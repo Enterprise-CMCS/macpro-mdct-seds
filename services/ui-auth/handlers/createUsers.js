@@ -3,7 +3,7 @@ const userPoolId = process.env.userPoolId;
 import users from "../libs/users.json" assert { type: "json" };
 import externalUsers from "../libs/external-test-users.json" assert { type: "json" };
 
-export async function handler(_event, _context, _callback) {
+export async function handler() {
   if (process.env.bootstrapUsersPassword) {
     await uploadUsers(users, process.env.bootstrapUsersPassword);
   }

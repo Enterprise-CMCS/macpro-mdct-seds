@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Textarea } from "@trussworks/react-uswds";
+import { TextField } from "@cmsgov/design-system";
 import { isFinalCertified } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
 
@@ -31,15 +31,15 @@ const SummaryNotes = () => {
       <label htmlFor="summaryNotesInput">
         Add any notes here to accompany the form submission
       </label>
-      <Textarea
+      <TextField
         id="summaryNotesInput"
         name="summaryNotesInput"
         value={summaryNotes ?? ""}
+        multiline={true}
         type="text"
         onChange={(e) => updateTempSummaryNotes(e)}
         onBlur={(e) => saveSummaryNotes(e.target.value)}
         disabled={disabledNotes}
-        className="width-widescreen"
       />
     </>
   );

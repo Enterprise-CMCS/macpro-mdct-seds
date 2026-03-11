@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Table } from "@trussworks/react-uswds";
+import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
-import "./GridWithTotals.scss";
 
 const GridWithTotals = (props) => {
   const setAnswer = useStore((state) => state.updateAnswer);
@@ -23,12 +22,12 @@ const GridWithTotals = (props) => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.gridData]);
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
-      event.target.value.replace(/[^0-9]/g, "")
+      event.target.value.replaceAll(/[^0-9]/g, "")
     );
     updateGridData(gridCopy);
     updateTotals();
@@ -58,7 +57,7 @@ const GridWithTotals = (props) => {
       checkQuestion5Summary.includes("summary-synthesized")
     ) {
       let sum5Data = translateInitialData(props.gridData);
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1c1Total =
             props.questions[0].rows[1].col2 +
@@ -127,7 +126,7 @@ const GridWithTotals = (props) => {
         return true;
       });
     } else {
-      gridData.map((row, rowIndex) => {
+      gridData.map((row) => {
         if (row !== undefined) {
           row.map((column, columnIndex) => {
             let currentValue = 0;
@@ -184,7 +183,7 @@ const GridWithTotals = (props) => {
     ) {
       let sum5Data = translateInitialData(props.gridData);
 
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1r1 = props.questions[0].rows[1];
           let q4r1 = props.questions[3].rows[1];
@@ -224,12 +223,11 @@ const GridWithTotals = (props) => {
         return true;
       });
       updateGridTotalOfTotals(totalOfTotals);
-      updateGridRowTotals(gridRowTotalsCopy);
     } else {
       gridData.map((row, rowIndex) => {
         rowTotal = 0;
         if (row !== undefined) {
-          row.map((column, columnIndex) => {
+          row.map((column) => {
             let currentValue = 0;
 
             if (isNaN(column) === false) {
@@ -247,9 +245,8 @@ const GridWithTotals = (props) => {
 
         return true;
       });
-
-      updateGridRowTotals(gridRowTotalsCopy);
     }
+    updateGridRowTotals(gridRowTotalsCopy);
   };
 
   let headerColArray = [];
@@ -295,7 +292,7 @@ const GridWithTotals = (props) => {
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     {!synthesized ? (
-                      <TextInput
+                      <TextField
                         style={{ width: "100%", padding: 0 }}
                         className="grid-column"
                         onChange={(event) =>
@@ -313,7 +310,7 @@ const GridWithTotals = (props) => {
                         disabled={props.disabled}
                       />
                     ) : (
-                      <span className="usa-input rid-column synthesized">
+                      <span>
                         {gridData[rowIndex][columnIndex] >= 0
                           ? addCommas(
                               parseFloat(
@@ -330,7 +327,7 @@ const GridWithTotals = (props) => {
               formattedCell = (
                 <td key={columnIndex}>
                   {!synthesized ? (
-                    <TextInput
+                    <TextField
                       style={{ width: "100%", padding: 0 }}
                       className="grid-column"
                       onChange={(event) =>
@@ -348,7 +345,7 @@ const GridWithTotals = (props) => {
                       disabled={props.disabled}
                     />
                   ) : (
-                    <span className="usa-input grid-column synthesized ">
+                    <span>
                       {column >= 0
                         ? addCommas(
                             parseFloat(column).toFixed(currentPrecision)
@@ -376,17 +373,15 @@ const GridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = Array.from(Array(headerCols.length - 1), (e, i) => {
-    let column;
-
+  const totalsRow = headerCols.slice(1).map((_, i) => {
     if (i === 0) {
-      column = (
+      return (
         <th scope="row" className="total-header-cell" key={i}>
           Totals:
         </th>
       );
     } else {
-      column = (
+      return (
         <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? addCommas(
@@ -396,13 +391,11 @@ const GridWithTotals = (props) => {
         </td>
       );
     }
-
-    return column;
   });
 
   return (
-    <div className="grid-with-totals" id={`"${props.questionID}"`}>
-      <Table bordered={true} fullWidth={true}>
+    <div id={`"${props.questionID}"`}>
+      <Table>
         <thead>
           <tr>{headerCols}</tr>
         </thead>

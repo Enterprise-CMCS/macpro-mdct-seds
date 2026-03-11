@@ -1,4 +1,4 @@
-import util from "util";
+import util from "node:util";
 
 type LogLevel = "trace" | "debug" | "info" | "warn" | "error";
 type LogEvent = {
@@ -9,7 +9,7 @@ type LogEvent = {
 const logs: LogEvent[] = [];
 
 const buildLoggerForLevel = (level: LogLevel) => {
-  return function (...content) {
+  return function (...content: any[]) {
     logs.push({
       date: new Date(),
       level: level,
@@ -40,7 +40,6 @@ export const error = buildLoggerForLevel("error");
 export function flush() {
   while (logs.length > 0) {
     const { date, level, string } = logs.shift()!;
-    // eslint-disable-next-line no-console
     console[level](date, string);
   }
 }

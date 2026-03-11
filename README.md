@@ -36,9 +36,9 @@ This project uses a combination of Gitflow and Stack naming to handle branches a
 - main > bugfix-my-bugfix-name
 - main > hotfix-my-hotfix-name
 
-On each PR, a linter and oxfmt check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the linter and oxfmt against the work you have done.
+On each PR, a oxlint and oxfmt check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the oxlint and oxfmt against the work you have done.
 
-- Run Eslint using `yarn lint`
+- Run oxlint using `yarn oxlint --deny-warnings`
 - Run oxfmt using `yarn oxfmt`
 
 ## Local Dev

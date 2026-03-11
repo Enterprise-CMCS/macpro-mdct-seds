@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { buildDynamoClient } = require("../../utils/dynamodb.js");
 
@@ -6,7 +5,7 @@ const { buildDynamoClient } = require("../../utils/dynamodb.js");
  * Custom handler for seeding deployed environments with required data.
  * Simple functionality to add required section base templates to each branch
  */
-async function myHandler(_event, _context, _callback) {
+async function myHandler() {
   if (process.env.seedData !== "true") {
     console.log("Seed data not enabled for environment, skipping.");
     return;
@@ -41,8 +40,8 @@ const runSeed = async (seedInstructions) => {
       for (const Item of items) {
         await dynamoClient.send(new PutCommand({ TableName, Item }));
       }
-    } catch (e) {
-      console.log(` -- ERROR UPLOADING ${TableName}\n`, e);
+    } catch (error) {
+      console.log(` -- ERROR UPLOADING ${TableName}\n`, error);
     }
   }
 };

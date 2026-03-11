@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, GridContainer, Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,41 +14,31 @@ const FormFooter = ({ state, year, quarter }) => {
   const quarterPath = `/forms/${state}/${year}/${quarter}`;
 
   return (
-    <div className="formfooter" data-testid="FormFooter">
-      <GridContainer>
-        <Grid row>
-          <Grid col={6} className="form-nav">
-            <Link to={quarterPath}>
-              {" "}
-              <FontAwesomeIcon icon={faArrowLeft} /> Back to{" "}
-              {`Q${quarter} ${year}`}
-            </Link>
-          </Grid>
+    <div data-testid="FormFooter" className="form-footer">
+      <div>
+        <Link to={quarterPath}>
+          <FontAwesomeIcon icon={faArrowLeft} /> Back to {`Q${quarter} ${year}`}
+        </Link>
+      </div>
 
-          <Grid col={6} className="form-actions">
-            <Grid row>
-              {lastModified ? (
-                <Grid col={9} data-testid="lastModified">
-                  {" "}
-                  Last saved: {dateFormatter(lastModified)}{" "}
-                </Grid>
-              ) : null}
-              <Grid col={3}>
-                {" "}
-                <Button
-                  primary="true"
-                  onClick={saveForm}
-                  data-testid="saveButton"
-                  disabled={userRole !== "state"}
-                >
-                  Save{" "}
-                  <FontAwesomeIcon icon={faSave} className="margin-left-2" />
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </GridContainer>
+      <div className="flex-row">
+        {lastModified ? (
+          <div data-testid="lastModified">
+            {" "}
+            Last saved: {dateFormatter(lastModified)}{" "}
+          </div>
+        ) : null}
+        <div>
+          <Button
+            variation="solid"
+            onClick={saveForm}
+            data-testid="saveButton"
+            disabled={userRole !== "state"}
+          >
+            Save <FontAwesomeIcon icon={faSave} />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

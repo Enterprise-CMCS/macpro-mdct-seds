@@ -1,11 +1,10 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import GridWithTotals from "./GridWithTotals";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
 import { useStore } from "../../store/store";
-import { questions } from "store/helperFunctionsMockData";
 
 const gridDataItems = [
   {

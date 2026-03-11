@@ -2,7 +2,7 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import Home from "./Home";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { useAppContext } from "../../libs/contextLib";
 import { useStore } from "../../store/store";
 

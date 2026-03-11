@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Nav, NavDropdown } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
-import { GovBanner, NavList } from "@trussworks/react-uswds";
+import { UsaBanner } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { useStore } from "../../store/store";
-
-import "./Header.scss";
 import config from "config/config";
 
 const Header = () => {
   const wipeUser = useStore((state) => state.wipeUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [navigation, setNavigation] = useState(false);
 
   useEffect(() => {
     const onLoad = async () => {
       try {
         const authSession = await fetchAuthSession();
         setIsAuthenticated(!!authSession?.tokens);
-        // eslint-disable-next-line no-empty
-      } catch (error) {}
+      } catch {
+        // ignore error
+      }
     };
 
     onLoad().then();
@@ -31,15 +29,13 @@ const Header = () => {
       wipeUser();
       window.location.href = config.cognito.REDIRECT_SIGNOUT;
     } catch (error) {
-      console.log("error signing out: ", error);
+      console.log("error signing out:", error);
     }
   };
 
-  const menuItems = [<Link to="/">Home</Link>];
-
   return (
     <div className="header" data-testid="Header">
-      <GovBanner className="padding-y-1px" />
+      <UsaBanner />
 
       <div className="logo">
         <Link to="/">
@@ -50,27 +46,50 @@ const Header = () => {
             height={90}
           />
         </Link>
-        <Nav className="ms-auto">
+        <nav className="navbar">
           {isAuthenticated ? (
-            <>
-              <NavDropdown id="User" title="My Profile">
-                <LinkContainer to="/profile">
-                  <NavDropdown.Item>User Profile</NavDropdown.Item>
-                </LinkContainer>
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </>
+            <div id="User" className="dropdown">
+              <button
+                className="dropbtn"
+                onClick={() => {
+                  setNavigation(!navigation);
+                }}
+              >
+                My Profile
+                <span className="caret"></span>
+              </button>
+              {navigation && (
+                <div className="dropdown-content">
+                  <ul className="dropdown-content" role="presentation">
+                    <li>
+                      <a
+                        href={`${window.location.origin}/SEDS_instructions_July_2021.pdf`}
+                        target="_blank"
+                      >
+                        Reporting Instructions
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/profile">User Profile</a>
+                    </li>
+                    <li>
+                      <a role="button" href="#" onClick={handleLogout}>
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           ) : null}
-        </Nav>
+        </nav>
       </div>
 
       <div className="navigation">
         {isAuthenticated ? (
-          <Nav>
-            <NavList items={menuItems} />
-          </Nav>
+          <nav>
+            <Link to="/">Home</Link>
+          </nav>
         ) : null}
       </div>
     </div>

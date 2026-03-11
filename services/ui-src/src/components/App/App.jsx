@@ -23,7 +23,7 @@ function App() {
         setIsAuthenticated(true);
         setIsAuthorized(true);
         setIsAuthenticating(false);
-      } catch (error) {
+      } catch {
         setIsAuthenticating(false);
       }
     })();
@@ -36,19 +36,19 @@ function App() {
   }, [pathname, isAuthenticating, isAuthenticated]);
 
   return (
-    <div className="App">
+    <>
       {!isAuthenticating && (
         <>
           <Header displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-            <div className="main">
+            <div className="app">
               <Routes isAuthorized={isAuthorized} />
             </div>
           </AppContext.Provider>
           <Footer />
         </>
       )}
-    </div>
+    </>
   );
 }
 

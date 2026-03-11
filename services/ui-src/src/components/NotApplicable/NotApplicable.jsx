@@ -1,5 +1,4 @@
 import React from "react";
-import "./NotApplicable.scss";
 import {
   InProgressStatusFields,
   isFinalCertified,
@@ -40,14 +39,11 @@ const NotApplicable = () => {
   };
 
   return (
-    <div className="applicable-wrapper">
-      <fieldset className="usa-fieldset">
-        <legend className="usa-legend usa-legend">
-          Does this form apply to your state?
-        </legend>
-        <div className="usa-radio">
+    <div className="radio-fieldset">
+      <fieldset>
+        <legend>Does this form apply to your state?</legend>
+        <div>
           <input
-            className="usa-radio__input"
             id="applicable-yes"
             type="radio"
             name="not-applicable"
@@ -56,13 +52,10 @@ const NotApplicable = () => {
             checked={!isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
-          <label className="usa-radio__label" htmlFor="applicable-yes">
-            Yes
-          </label>
+          <label htmlFor="applicable-yes">Yes</label>
         </div>
-        <div className="usa-radio">
+        <div>
           <input
-            className="usa-radio__input"
             id="applicable-no"
             type="radio"
             name="not-applicable"
@@ -71,9 +64,7 @@ const NotApplicable = () => {
             checked={isNotRequired(statusData)}
             onChange={handleApplicableChange}
           />
-          <label className="usa-radio__label" htmlFor="applicable-no">
-            No
-          </label>
+          <label htmlFor="applicable-no">No</label>
         </div>
       </fieldset>
     </div>

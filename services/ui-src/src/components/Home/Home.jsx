@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../libs/contextLib";
-import "./Home.scss";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -9,8 +8,7 @@ import { useStore } from "../../store/store";
 const Home = () => {
   const userRole = useStore((state) => state.user.role);
   const { isAuthenticated } = useAppContext();
-  /* eslint-disable no-unused-vars */
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true); // TODO, if we never read this, can't we delete it?
 
   useEffect(() => {
     setIsLoading(isAuthenticated === false);
@@ -34,11 +32,7 @@ const Home = () => {
     return content;
   };
 
-  return (
-    <div className="Home" data-testid="Home">
-      {renderLander()}
-    </div>
-  );
+  return <div data-testid="Home">{renderLander()}</div>;
 };
 
 Home.propTypes = {};

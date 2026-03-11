@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import GridWithTotals from "../GridWithTotals/GridWithTotals";
 import PropTypes from "prop-types";
 import jsonpath from "jsonpath";
-import "./SynthesizedGridSummary.scss";
 import {
   sortQuestionColumns,
   gatherByQuestion,
@@ -21,7 +20,7 @@ const SynthesizedGridSummary = ({
 
   useEffect(() => {
     updateSynthesizedGrid();
-  }, [gridData, allAnswers]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gridData, allAnswers]);
 
   const updateSynthesizedGrid = () => {
     // Make a deep copy of this single question & sort
@@ -30,9 +29,9 @@ const SynthesizedGridSummary = ({
     );
 
     // All cells share the same target questions, find the target question IDs
-    const answersToFind = sortedGridData[1]["col2"][0]["targets"]
-      ? sortedGridData[1]["col2"][0]["targets"]
-      : sortedGridData[2]["col2"][0]["targets"];
+    const answersToFind =
+      sortedGridData[1]["col2"][0]["targets"] ??
+      sortedGridData[2]["col2"][0]["targets"];
 
     //Get just the IDs without their rows or columns
     const stripedIDs = answersToFind.map(
@@ -108,11 +107,8 @@ const SynthesizedGridSummary = ({
 
   return (
     <>
-      <div className="question-component padding-top-5 border-top-1px">
-        <b
-          className="synthesized-summary-label"
-          data-testid="synthesized-summary-label"
-        >
+      <div className="flex-col-gap-1">
+        <b data-testid="synthesized-summary-label">
           {formattedQuestionNumber}. {labelWithAgeVariable}
         </b>
         <GridWithTotals
@@ -123,8 +119,7 @@ const SynthesizedGridSummary = ({
           precision={1}
           questions={questions}
         />
-        <div className="disclaimer" data-testid="synthesized-disclaimer">
-          {" "}
+        <div data-testid="synthesized-disclaimer" className="disclaimer">
           Values will not appear until source data is provided
         </div>
       </div>

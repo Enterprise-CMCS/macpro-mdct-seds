@@ -1,5 +1,5 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi, vitest } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import Login from "./Login";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -79,11 +79,10 @@ describe("Test Login.js", () => {
   });
 
   it("should login successfully", () => {
-    const { container } = render(<Login />);
+    render(<Login />);
 
-    const textboxes = container.querySelectorAll(".form-input.form-control");
-    const email = textboxes[0];
-    const password = textboxes[1];
+    const email = screen.getByRole("textbox", { name: "Email" });
+    const password = screen.getByLabelText("Password");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
     fireEvent.change(email, { target: { value: "mail@mail.com" } });

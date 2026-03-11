@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  obtainFormTemplate,
-  obtainFormTemplateYears,
-  updateCreateFormTemplate,
-} from "../../libs/api";
-import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
+import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
+import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,19 +20,23 @@ const FormTemplates = () => {
     const confirm = window.confirm(
       `Are you sure you want to update the template for ${inputYear}? This option cannot be undone.`
     );
-    let response;
     if (confirm) {
       setAlert(undefined);
       try {
-        response = await updateCreateFormTemplate({
+        await updateTemplate({
           year: Number(inputYear),
           template: JSON.parse(currentTemplate),
         });
-        setAlert({ type: "success", message: "Template saved successfully." });
-      } catch (err) {
+        setAlert({
+          variation: "success",
+          message: "Template saved successfully.",
+        });
+      } catch (error) {
         const message =
-          err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
-        setAlert({ type: "error", message });
+          error instanceof Error
+            ? `Save failed: ${error.message}`
+            : "Save failed.";
+        setAlert({ variation: "error", message });
       }
     }
   };
@@ -44,7 +44,7 @@ const FormTemplates = () => {
   const updateYear = async (year) => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
-      const template = await obtainFormTemplate(Number(year));
+      const template = await getTemplate(Number(year));
       setCurrentTemplate(JSON.stringify(template.template, null, 2));
       setShowYearInput(false);
       setInputYear(year);
@@ -56,9 +56,9 @@ const FormTemplates = () => {
   };
 
   const onLoad = async () => {
-    let yearsArray = await obtainFormTemplateYears();
+    let yearsArray = await listTemplateYears();
     yearsArray.sort((a, b) => b - a);
-    if (!yearsArray.length) {
+    if (yearsArray.length === 0) {
       setShowYearInput(true);
       setInputYear(nextYear);
     } else {
@@ -81,29 +81,21 @@ const FormTemplates = () => {
 
   useEffect(() => {
     onLoad().then();
-    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="formTemplates">
-      <h1 className="page-header">Add/Edit Form Templates</h1>
-      <div data-testid="formTemplates">
+    <div className="flex-col-gap-1half">
+      <h1>Add/Edit Form Templates</h1>
+      <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
-          <Alert
-            className="margin-bottom-3"
-            type={alert.type}
-            headingLevel="h1"
-          >
+          <Alert variation={alert.variation} headingLevel="1">
             {alert.message}
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="year-selection-container">
-            <label className="usa-label" htmlFor="year-select">
-              Select Year or Create New
-            </label>
+          <div>
+            <label htmlFor="year-select">Select Year or Create New</label>
             <select
-              className="usa-select"
               id="year-select"
               value={selectedYear}
               onChange={(evt) => updateYear(evt.target.value)}
@@ -130,23 +122,25 @@ const FormTemplates = () => {
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3 margin-bottom-4">
+        <div>
           <label htmlFor="templateInput">Enter or Modify Template</label>
-          <Textarea
+          <TextField
+            multiline={true}
             id="templateInput"
             name="templateInput"
-            value={currentTemplate ? currentTemplate : ""}
+            value={currentTemplate ?? ""}
             type="text"
             onChange={(e) => setCurrentTemplate(e.target.value)}
           />
         </div>
         <Button
           id="save-button"
-          primary="true"
+          variation="solid"
+          className="flex-end"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          Save <FontAwesomeIcon icon={faSave} />
         </Button>
       </div>
     </div>

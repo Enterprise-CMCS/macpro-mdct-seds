@@ -3,8 +3,8 @@ import { Route, Redirect } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 
 function querystring(name, url = window.location.href) {
-  /* eslint-disable no-param-reassign */
-  name = name.replace(/[[]]/g, "\\$&");
+  // oxlint-disable-next-line no-param-reassign
+  name = name.replaceAll(/[[]]/g, String.raw`\$&`);
 
   const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
   const results = regex.exec(url);
@@ -16,7 +16,7 @@ function querystring(name, url = window.location.href) {
     return "";
   }
 
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
+  return decodeURIComponent(results[2].replaceAll("+", " "));
 }
 
 export default function UnauthenticatedRoute({ children, ...rest }) {

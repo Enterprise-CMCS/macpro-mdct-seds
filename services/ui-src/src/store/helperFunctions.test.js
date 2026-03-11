@@ -13,7 +13,7 @@ import { answers, questions } from "./helperFunctionsMockData";
 
 describe("Single Form Reducer, helper functions", () => {
   test("sortQuestionsByNumber should sort an unordered array of questions", () => {
-    const sortedQuestions = questions.sort(sortQuestionsByNumber);
+    const sortedQuestions = questions.toSorted(sortQuestionsByNumber);
     expect(sortedQuestions[0].question.slice(-2)).toEqual("01");
   });
 

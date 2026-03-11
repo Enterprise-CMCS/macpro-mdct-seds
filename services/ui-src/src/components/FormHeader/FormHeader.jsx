@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, TextInput, Table } from "@trussworks/react-uswds";
-import { getSingleForm } from "../../libs/api";
+import { Button, TextInput } from "@cmsgov/design-system";
+import { getForm } from "../../libs/api";
 import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
 
@@ -30,7 +30,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {
         // Get answers for this form from DB
-        const { answers } = await getSingleForm(state, year, quarter, form);
+        const { answers } = await getForm(state, year, quarter, form);
 
         // Determine Maximum FPL
         const maxFPL = getMaxFPL(answers);
@@ -54,15 +54,15 @@ const FormHeader = ({ quarter, form, year, state }) => {
     value = value.length < 4 ? value : value.substring(0, 3);
 
     // Remove all non-numeric chars
-    value = value.replace(/[^\d]/g, "");
+    value = value.replaceAll(/[^\d]/g, "");
 
     // Save to state
     setMaxFPL(value);
   };
 
   return (
-    <>
-      <div className="form-header upper-form-nav">
+    <div className="flex-col-gap-1half">
+      <div>
         <div className="breadcrumbs">
           <Link to="/">
             {" "}
@@ -75,15 +75,15 @@ const FormHeader = ({ quarter, form, year, state }) => {
           <Link to={window.location.pathname}> {` Form ${form}`} </Link>
         </div>
       </div>
-      <h1 className="page-header">FORM {form}</h1>
+      <h1>FORM {form}</h1>
       <hr />
-      <div>
-        <div className="margin-y-2">
-          <h2 className="form-name">{formDescription.form_name}</h2>
-          <p className="instructions"> {formDescription.form_text}</p>
+      <div className="flex-col-gap-1half">
+        <div className="flex-col-gap-1half">
+          <h2>{formDescription.form_name}</h2>
+          <i> {formDescription.form_text}</i>
         </div>
-        <div className="unstyled">
-          <Table>
+        <div>
+          <table className="unstyled">
             <tbody>
               <tr>
                 <th>
@@ -97,17 +97,17 @@ const FormHeader = ({ quarter, form, year, state }) => {
                 <td>{`${quarter}/${year}`}</td>
               </tr>
             </tbody>
-          </Table>
+          </table>
         </div>
 
         {showFPL ? (
-          <div data-testid="form-max-fpl">
+          <div data-testid="form-max-fpl" className="flex-col-gap-1 ">
             <p>What is the upper income eligibility limit for this program?</p>
             <p>
               <i>If the FPL is under 300% you do not need to indicate FPL</i>
             </p>
-            <div className="fpl-input-container">
-              <div className="fpl-input">
+            <div className="form-input-row ">
+              <div>
                 <TextInput
                   id="max-fpl"
                   name="max-fpl"
@@ -116,21 +116,18 @@ const FormHeader = ({ quarter, form, year, state }) => {
                   value={maxFPL}
                 />
               </div>
-              <div className="fpl-button">
-                <Button
-                  type="button"
-                  className="max-fpl-btn"
-                  onClick={updateMaxFPL}
-                  disabled={userRole !== "state"}
-                >
-                  Apply FPL Changes
-                </Button>
-              </div>
+              <Button
+                variation="solid"
+                onClick={updateMaxFPL}
+                disabled={userRole !== "state"}
+              >
+                Apply FPL Changes
+              </Button>
             </div>
           </div>
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 

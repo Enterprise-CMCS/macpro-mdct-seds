@@ -5,8 +5,11 @@ import { selectRowColumnValueFromArray } from "./jsonPath";
 const sortQuestionColumns = (columnArray) => {
   let sortedColumns = columnArray.map((singleRow) =>
     Object.entries(singleRow)
-      .sort((a, b) => a[0].slice(-1) - b[0].slice(-1))
-      .reduce((accumulator, [k, v]) => ({ ...accumulator, [k]: v }), {})
+      .toSorted((a, b) => a[0].slice(-1) - b[0].slice(-1))
+      .reduce((accumulator, [k, v]) => {
+        accumulator[k] = v;
+        return accumulator;
+      }, {})
   );
   return sortedColumns;
 };
@@ -21,7 +24,8 @@ const sortRowArray = (arrayOfRows) => {
   let deepCopy = JSON.parse(JSON.stringify(arrayOfRows));
   const headerIdx = deepCopy.findIndex((element) => element["col1"] === "");
   let header = deepCopy.splice(headerIdx, 1)[0];
-  let sortedRows = deepCopy.sort((a, b) =>
+  let sortedRows = deepCopy.toSorted((a, b) =>
+    // oxlint-disable-next-line no-nested-ternary
     a["col1"][0] > b["col1"][0] ? 1 : b["col1"][0] > a["col1"][0] ? -1 : 0
   );
 
@@ -60,8 +64,8 @@ const dateFormatter = (dateString) => {
     const amOrPm = timeParts("dayPeriod");
     const zzz = timeParts("timeZoneName");
     return `${M}/${d}/${yyyy} at ${h}:${mm}:${ss} ${amOrPm} ${zzz}`;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return `${dateString} GMT`;
   }
 };
@@ -103,11 +107,9 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
   let accordionItems = [];
   let uniqueYears;
   if (formsArray) {
-    uniqueYears = Array.from(new Set(formsArray.map((a) => a.year))).map(
-      (year) => {
-        return formsArray.find((a) => a.year === year);
-      }
-    );
+    uniqueYears = [...new Set(formsArray.map((a) => a.year))].map((year) => {
+      return formsArray.find((a) => a.year === year);
+    });
   }
 
   // Sort by years descending
@@ -128,7 +130,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
     // Remove duplicate quarters
     let uniqueQuarters;
     if (quarters) {
-      uniqueQuarters = Array.from(new Set(quarters.map((a) => a.quarter))).map(
+      uniqueQuarters = [...new Set(quarters.map((a) => a.quarter))].map(
         (quarter) => {
           return quarters.find((a) => a.quarter === quarter);
         }
@@ -140,7 +142,7 @@ const buildSortedAccordionByYearQuarter = (formsArray, state) => {
 
     // Build output for each accordion item
     let quartersOutput = (
-      <ul className="quarterly-items">
+      <ul>
         {uniqueQuarters.map((element) => {
           return (
             <li key={`${element.quarter}`}>
@@ -223,8 +225,6 @@ const gatherByQuestion = (answersArray) => {
  * @returns {number} - dividend or divisor
  */
 const reduceEntries = (answersByAgeRange, targetID) => {
-  /* eslint-disable no-param-reassign */
-
   // call back for a reduce method
   const findEntries = (accumulator, singleAgeRange) => {
     // singleAgeRange is one key(age range) ie: "1318"
@@ -234,10 +234,10 @@ const reduceEntries = (answersByAgeRange, targetID) => {
       [answersByAgeRange[singleAgeRange]],
       targetID
     );
+    // oxlint-disable-next-line no-param-reassign
     return (accumulator += foundEntry); // add to the accumulator
   };
   return Object.keys(answersByAgeRange).reduce(findEntries, 0); // return the accumulated value
-  /* eslint-disable no-param-reassign */
 };
 
 /**
@@ -254,11 +254,9 @@ const sortByCol1 = (a, b) => {
     return 0;
   }
   // nulls sort after anything else
-  /* eslint-disable valid-typeof */
-  else if (typeof first == null) {
+  else if (first === null) {
     return 1;
-    /* eslint-disable valid-typeof */
-  } else if (typeof second == null) {
+  } else if (second === null) {
     return -1;
   }
 

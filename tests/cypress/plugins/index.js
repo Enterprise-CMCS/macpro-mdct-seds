@@ -1,6 +1,7 @@
 const webpack = require("@cypress/webpack-preprocessor");
 const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 
+// oxlint-disable-next-line no-anonymous-default-export
 module.exports = async (on, config) => {
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
 

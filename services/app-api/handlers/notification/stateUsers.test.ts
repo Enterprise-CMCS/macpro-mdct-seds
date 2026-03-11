@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import "../../libs/handler-mocking.ts";
 import { main as notifyStateUsers } from "./stateUsers.ts";
 import {
   scanUsersByRole as actualScanUsersByRole,
@@ -22,7 +23,7 @@ vi.mock("../../storage/stateForms.ts", () => ({
 const scanFormsByQuarterAndStatus = vi.mocked(actualScanForms);
 
 const mockSes = mockClient(SESClient);
-const mockSendEmail = vi.fn();
+const mockSendEmail = vi.fn().mockResolvedValue({ MessageId: 123 });
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
 const mockStateUserCO = {
@@ -55,7 +56,7 @@ describe("notification/stateUsers", () => {
       mockFormTX21E,
     ]);
 
-    await notifyStateUsers({});
+    await notifyStateUsers();
 
     expect(mockSendEmail).toHaveBeenCalledWith(
       {
