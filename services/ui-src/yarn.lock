@@ -1718,15 +1718,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/react-fontawesome@npm:^0.1.14":
-  version: 0.1.14
-  resolution: "@fortawesome/react-fontawesome@npm:0.1.14"
+"@fortawesome/react-fontawesome@npm:^0.2.2":
+  version: 0.2.6
+  resolution: "@fortawesome/react-fontawesome@npm:0.2.6"
   dependencies:
-    prop-types: "npm:^15.7.2"
+    prop-types: "npm:^15.8.1"
   peerDependencies:
-    "@fortawesome/fontawesome-svg-core": ^1.2.32
-    react: ">=16.x"
-  checksum: 10c0/62982a246cd3e70e139383466ffd24cdb051807a82f7a3dea6c4f3398674328e68dc65222ae6df65511628d0601c711eb6496fb3d940d6b2422f57ca390ee336
+    "@fortawesome/fontawesome-svg-core": ~1 || ~6 || ~7
+    react: ^16.3 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/d4b733ad211a6cf4354564124fd1119890d5497762d6eff39e4716e6ded709a3b8ec6064cc6ab423e12f0307ad159130e3341e5e46132ad1124a16b416b4a6c7
   languageName: node
   linkType: hard
 
@@ -8356,7 +8356,7 @@ __metadata:
     "@cmsgov/design-system": "npm:^13.0.0"
     "@fortawesome/fontawesome-svg-core": "npm:^1.2.32"
     "@fortawesome/free-solid-svg-icons": "npm:^5.15.1"
-    "@fortawesome/react-fontawesome": "npm:^0.1.14"
+    "@fortawesome/react-fontawesome": "npm:^0.2.2"
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/jest-dom": "npm:6.4.6"
     "@testing-library/react": "npm:^16.3.0"
