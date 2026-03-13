@@ -1,14 +1,11 @@
 import React from "react";
-import { afterEach, beforeEach, describe, expect, it, test, vi } from "vitest";
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
 import Header from "./Header";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { useStore } from "../../store/store";
-
-let realUseContext;
-let useContextMock;
 
 vi.mock("config/config", () => ({
   default: {
@@ -23,25 +20,12 @@ vi.mock("aws-amplify/auth", () => ({
   signOut: vi.fn(),
 }));
 
-// *** set up mocks
-beforeEach(() => {
-  realUseContext = React.useContext;
-  useContextMock = React.useContext = vi.fn();
-});
-
-// *** garbage clean up (mocks)
-afterEach(() => {
-  React.useContext = realUseContext;
-});
-
 describe("Test Header.js", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   test("Check if Header, exists", () => {
-    useContextMock.mockReturnValue(true);
-
     const { getByTestId } = render(
       <BrowserRouter>
         <Header />
@@ -52,7 +36,6 @@ describe("Test Header.js", () => {
   });
 
   it("should log the user out properly", async () => {
-    useContextMock.mockReturnValue(true);
     useStore.setState({ wipeUser: vi.fn() });
     signOut.mockResolvedValueOnce();
 
@@ -74,7 +57,6 @@ describe("Test Header.js", () => {
   });
 
   it("should not clear user data from the store if Amplify logout fails", async () => {
-    useContextMock.mockReturnValue(true);
     useStore.setState({ wipeUser: vi.fn() });
     signOut.mockRejectedValueOnce(new Error("Mock Amplify error"));
 
