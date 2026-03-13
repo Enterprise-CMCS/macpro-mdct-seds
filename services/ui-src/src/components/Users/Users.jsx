@@ -8,8 +8,7 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 import { Button } from "@cmsgov/design-system";
 
 // * icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCsv } from "@fortawesome/free-solid-svg-icons";
+import { FileCsvIcon } from "../Icons/Icons";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -55,7 +54,7 @@ const Users = () => {
           }
         >
           CSV
-          <FontAwesomeIcon icon={faFileCsv} />
+          <FileCsvIcon />
         </Button>
       </div>
       <div>
