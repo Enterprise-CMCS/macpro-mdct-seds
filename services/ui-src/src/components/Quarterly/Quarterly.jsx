@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FilePdfIcon } from "../Icons/Icons";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -94,7 +93,7 @@ const Quarterly = () => {
                             form
                           )}`}
                         >
-                          <FontAwesomeIcon icon={faFilePdf} />
+                          <FilePdfIcon />
                         </Link>
                       </td>
                     </tr>

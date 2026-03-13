@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Table, TextField } from "@cmsgov/design-system";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+import { UserCheckIcon } from "../Icons/Icons";
 import Preloader from "../Preloader/Preloader";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
@@ -156,7 +155,7 @@ const EditUser = () => {
             onClick={handleUpdateClick}
           >
             Update User
-            <FontAwesomeIcon icon={faUserCheck} />
+            <UserCheckIcon />
           </Button>
         </div>
       ) : (
