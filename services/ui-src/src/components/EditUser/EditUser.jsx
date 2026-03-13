@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { Button, Table, TextField } from "@cmsgov/design-system";
-import { UserCheckIcon } from "../Icons";
+import userCheckIcon from "../Icons/user-check.svg";
 import Preloader from "../Preloader/Preloader";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
@@ -156,7 +156,7 @@ const EditUser = () => {
             onClick={handleUpdateClick}
           >
             Update User
-            <UserCheckIcon />
+            <img src={userCheckIcon} alt="" aria-hidden="true" />
           </Button>
         </div>
       ) : (

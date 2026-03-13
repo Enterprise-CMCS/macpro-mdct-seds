@@ -8,7 +8,7 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 import { Button } from "@cmsgov/design-system";
 
 // * icons
-import { FileCsvIcon } from "../Icons";
+import fileCsvIcon from "../Icons/file-csv.svg";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -54,7 +54,7 @@ const Users = () => {
           }
         >
           CSV
-          <FileCsvIcon />
+          <img src={fileCsvIcon} alt="" aria-hidden="true" />
         </Button>
       </div>
       <div>
