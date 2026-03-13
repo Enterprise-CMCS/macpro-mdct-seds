@@ -3,7 +3,6 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-
 import { SignInAltIcon } from "../Icons";
 
 export default function Login() {
