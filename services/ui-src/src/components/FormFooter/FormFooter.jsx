@@ -17,7 +17,8 @@ const FormFooter = ({ state, year, quarter }) => {
     <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
-          <img src={arrowLeftIcon} alt="" aria-hidden="true" /> Back to {`Q${quarter} ${year}`}
+          <img src={arrowLeftIcon} alt="" aria-hidden="true" /> Back to{" "}
+          {`Q${quarter} ${year}`}
         </Link>
       </div>
 
