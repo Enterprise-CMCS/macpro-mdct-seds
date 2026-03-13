@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { ArrowLeftIcon, SaveIcon } from "../Icons/Icons";
+import { ArrowLeftIcon, SaveIcon } from "../Icons";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {

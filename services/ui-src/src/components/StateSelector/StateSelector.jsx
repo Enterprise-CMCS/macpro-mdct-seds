@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@cmsgov/design-system";
-import { UserCheckIcon } from "../Icons/Icons";
+import { UserCheckIcon } from "../Icons";
 import { updateUser } from "../../libs/api";
 import { useHistory } from "react-router-dom";
 import { getStateName, stateSelectOptions } from "../../lookups/states";

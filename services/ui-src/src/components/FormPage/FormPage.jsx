@@ -5,7 +5,7 @@ import { useParams, useHistory } from "react-router-dom";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
-import { FilePdfIcon } from "../Icons/Icons";
+import { FilePdfIcon } from "../Icons";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { useStore } from "../../store/store";

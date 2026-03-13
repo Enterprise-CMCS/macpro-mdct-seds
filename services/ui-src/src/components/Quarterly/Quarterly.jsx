@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FilePdfIcon } from "../Icons/Icons";
+import { FilePdfIcon } from "../Icons";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";

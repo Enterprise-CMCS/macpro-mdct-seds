@@ -1,12 +1,13 @@
 // This magic comment extends vite's TS definitions to include vitest's too.
 /// <reference types="vitest/config" />
 import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   base: "/",
-  plugins: [react(), viteTsconfigPaths()],
+  plugins: [svgr(), react(), viteTsconfigPaths()],
   server: {
     open: true,
     port: 3000,

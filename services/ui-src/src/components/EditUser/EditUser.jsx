@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Table, TextField } from "@cmsgov/design-system";
-import { UserCheckIcon } from "../Icons/Icons";
+import { UserCheckIcon } from "../Icons";
 import Preloader from "../Preloader/Preloader";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
