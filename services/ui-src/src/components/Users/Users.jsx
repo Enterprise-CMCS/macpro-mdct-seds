@@ -8,7 +8,7 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 import { Button } from "@cmsgov/design-system";
 
 // * icons
-import { FileCsvIcon } from "../Icons/Icons";
+import { FileCsvIcon } from "../Icons";
 
 import Preloader from "../Preloader/Preloader";
 
