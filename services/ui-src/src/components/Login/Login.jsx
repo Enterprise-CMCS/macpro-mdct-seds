@@ -3,7 +3,7 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-import { SignInAltIcon } from "../Icons";
+import signInAltIcon from "../Icons/sign-in-alt.svg";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +71,7 @@ export default function Login() {
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <SignInAltIcon />
+          <img src={signInAltIcon} alt="" aria-hidden="true" />
         </LoaderButton>
       </div>
       <form
@@ -101,7 +101,7 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <SignInAltIcon />
+            <img src={signInAltIcon} alt="" aria-hidden="true" />
           </LoaderButton>
         </div>
       </form>

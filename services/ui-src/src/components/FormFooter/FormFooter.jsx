@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { ArrowLeftIcon, SaveIcon } from "../Icons";
+import arrowLeftIcon from "../Icons/arrow-left.svg";
+import saveIcon from "../Icons/save.svg";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {
@@ -16,7 +17,7 @@ const FormFooter = ({ state, year, quarter }) => {
     <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
-          <ArrowLeftIcon /> Back to {`Q${quarter} ${year}`}
+          <img src={arrowLeftIcon} alt="" aria-hidden="true" /> Back to {`Q${quarter} ${year}`}
         </Link>
       </div>
 
@@ -34,7 +35,7 @@ const FormFooter = ({ state, year, quarter }) => {
             data-testid="saveButton"
             disabled={userRole !== "state"}
           >
-            Save <SaveIcon />
+            Save <img src={saveIcon} alt="" aria-hidden="true" />
           </Button>
         </div>
       </div>

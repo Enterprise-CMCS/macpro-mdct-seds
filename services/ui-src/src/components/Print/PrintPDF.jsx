@@ -1,4 +1,4 @@
-import { PrintIcon } from "../Icons";
+import printIcon from "../Icons/print.svg";
 import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useRef } from "react";
 import "react-tabs/style/react-tabs.css";
@@ -76,7 +76,7 @@ const PrintPDF = () => {
 
           <Button variation="solid" onClick={(e) => handlePrint(e)}>
             Print / PDF
-            <PrintIcon />
+            <img src={printIcon} alt="" aria-hidden="true" />
           </Button>
 
           <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

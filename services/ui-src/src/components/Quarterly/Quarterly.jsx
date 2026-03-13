@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FilePdfIcon } from "../Icons";
+import filePdfIcon from "../Icons/file-pdf.svg";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -93,7 +93,7 @@ const Quarterly = () => {
                             form
                           )}`}
                         >
-                          <FilePdfIcon />
+                          <img src={filePdfIcon} alt="" aria-hidden="true" />
                         </Link>
                       </td>
                     </tr>

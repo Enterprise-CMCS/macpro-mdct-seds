@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
 import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
-import { SaveIcon } from "../Icons";
+import saveIcon from "../Icons/save.svg";
 
 const FormTemplates = () => {
   const [formYears, setFormYears] = React.useState();
@@ -139,7 +139,7 @@ const FormTemplates = () => {
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <SaveIcon />
+          Save <img src={saveIcon} alt="" aria-hidden="true" />
         </Button>
       </div>
     </div>

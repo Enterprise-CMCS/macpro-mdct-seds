@@ -5,7 +5,7 @@ import { useParams, useHistory } from "react-router-dom";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
-import { FilePdfIcon } from "../Icons";
+import filePdfIcon from "../Icons/file-pdf.svg";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { useStore } from "../../store/store";
@@ -115,7 +115,7 @@ const FormPage = () => {
             onClick={redirectToPDF}
           >
             Print view / PDF
-            <FilePdfIcon />
+            <img src={filePdfIcon} alt="" aria-hidden="true" />
           </Button>
           <NotApplicable />
           <TabContainer quarter={quarter} />
