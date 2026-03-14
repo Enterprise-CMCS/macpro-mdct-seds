@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
 import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
+import saveIcon from "../Icons/save.svg";
 
 const FormTemplates = () => {
   const [formYears, setFormYears] = React.useState();
@@ -140,7 +139,7 @@ const FormTemplates = () => {
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} />
+          Save <img src={saveIcon} alt="" aria-hidden="true" />
         </Button>
       </div>
     </div>

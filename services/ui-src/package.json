@@ -12,9 +12,6 @@
   },
   "dependencies": {
     "@cmsgov/design-system": "^13.0.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.32",
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@fortawesome/react-fontawesome": "^0.2.2",
     "aws-amplify": "^6.15.8",
     "file-saver": "^2.0.5",
     "jsonpath": "^1.1.1",
