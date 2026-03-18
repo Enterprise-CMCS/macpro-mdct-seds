@@ -6,7 +6,7 @@ import CertificationTab from "../CertificationTab/CertificationTab";
 import {
   FinalCertifiedStatusFields,
   InProgressStatusFields,
-  ProvisionalCertifiedStatusFields
+  ProvisionalCertifiedStatusFields,
 } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
 
@@ -15,11 +15,11 @@ const mockUser = {
   email: "email@email.com",
   name: "Test User",
   state: "CA",
-  role: "state"
+  role: "state",
 };
 
 vi.mock("../../utility-functions/userFunctions", () => ({
-  getUserInfo: () => Promise.resolve(mockUser)
+  getUserInfo: () => Promise.resolve(mockUser),
 }));
 
 const updateFormStatus = vi.fn();
@@ -57,37 +57,63 @@ describe("Test CertificationTab.js", () => {
 
   it("should display status text for provisional forms", () => {
     renderWithStatus("state", ProvisionalCertifiedStatusFields());
-    const expectedText = "This report was updated to Provisional Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
+    const expectedText =
+      "This report was updated to Provisional Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
   });
 
   it("should display status text for final forms", () => {
     renderWithStatus("state", FinalCertifiedStatusFields());
-    const expectedText = "This report was updated to Final Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
+    const expectedText =
+      "This report was updated to Final Data Certified and Submitted on 11/26/2025 at 5:45:38 PM EST by George Tester";
     const statusElement = screen.getByTestId("statusText");
     expect(statusElement).toHaveTextContent(expectedText);
-  })
+  });
 
   it("should allow certify, but not uncertify for in-progress forms", () => {
     renderWithStatus("state", InProgressStatusFields());
-    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).not.toBeDisabled();
-    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).not.toBeDisabled();
-    expect(screen.queryByText("Uncertify", { selector: "button" })).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Certify & Submit Provisional Data", {
+        selector: "button",
+      })
+    ).not.toBeDisabled();
+    expect(
+      screen.getByText("Certify & Submit Final Data", { selector: "button" })
+    ).not.toBeDisabled();
+    expect(
+      screen.queryByText("Uncertify", { selector: "button" })
+    ).not.toBeInTheDocument();
   });
 
   it("should allow final certify, but not provisional certify or uncertify for provisional forms", () => {
     renderWithStatus("state", ProvisionalCertifiedStatusFields());
-    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).toBeDisabled();
-    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).not.toBeDisabled();
-    expect(screen.queryByText("Uncertify", { selector: "button" })).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Certify & Submit Provisional Data", {
+        selector: "button",
+      })
+    ).toBeDisabled();
+    expect(
+      screen.getByText("Certify & Submit Final Data", { selector: "button" })
+    ).not.toBeDisabled();
+    expect(
+      screen.queryByText("Uncertify", { selector: "button" })
+    ).not.toBeInTheDocument();
   });
 
   it("should allow uncertify, but not certify for final forms", () => {
     renderWithStatus("state", FinalCertifiedStatusFields());
-    expect(screen.getByText("Certify & Submit Provisional Data", { selector: "button" })).toBeDisabled();
-    expect(screen.getByText("Certify & Submit Final Data", { selector: "button" })).toBeDisabled();
-    expect(screen.queryByText("Uncertify", { selector: "button" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Certify & Submit Provisional Data", {
+        selector: "button",
+      })
+    ).toBeDisabled();
+    expect(
+      screen.getByText("Certify & Submit Final Data", { selector: "button" })
+    ).toBeDisabled();
+    expect(
+      screen.queryByText("Uncertify", { selector: "button" })
+    ).toBeInTheDocument();
   });
 
   it("should display correct certify text for in-progress forms", () => {
@@ -114,25 +140,27 @@ describe("Test CertificationTab.js", () => {
   it("should save the updated status for provisional certify", async () => {
     renderWithStatus("state", InProgressStatusFields());
 
-    const provCertButton = screen.getByRole(
-      "button",
-      { name: "Certify & Submit Provisional Data" }
-    );
+    const provCertButton = screen.getByRole("button", {
+      name: "Certify & Submit Provisional Data",
+    });
     userEvent.click(provCertButton);
 
-    expect(updateFormStatus).toHaveBeenCalledWith(ProvisionalCertifiedStatusFields().status_id);
+    expect(updateFormStatus).toHaveBeenCalledWith(
+      ProvisionalCertifiedStatusFields().status_id
+    );
     await waitFor(() => expect(saveForm).toHaveBeenCalled());
   });
 
   it("should save the updated status for final certify", async () => {
     renderWithStatus("state", ProvisionalCertifiedStatusFields());
-    const finalCertButton = screen.getByRole(
-      "button",
-      { name: "Certify & Submit Final Data" }
-    );
+    const finalCertButton = screen.getByRole("button", {
+      name: "Certify & Submit Final Data",
+    });
     userEvent.click(finalCertButton);
 
-    expect(updateFormStatus).toHaveBeenCalledWith(FinalCertifiedStatusFields().status_id);
+    expect(updateFormStatus).toHaveBeenCalledWith(
+      FinalCertifiedStatusFields().status_id
+    );
     await waitFor(() => expect(saveForm).toHaveBeenCalled());
   });
 
@@ -143,7 +171,9 @@ describe("Test CertificationTab.js", () => {
     const uncertifyButton = screen.getByRole("button", { name: "Uncertify" });
     userEvent.click(uncertifyButton);
 
-    expect(updateFormStatus).toHaveBeenCalledWith(InProgressStatusFields().status_id);
+    expect(updateFormStatus).toHaveBeenCalledWith(
+      InProgressStatusFields().status_id
+    );
     await waitFor(() => expect(saveForm).toHaveBeenCalled());
   });
 

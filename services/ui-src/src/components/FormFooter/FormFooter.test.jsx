@@ -7,17 +7,17 @@ import { BrowserRouter } from "react-router-dom";
 import { useStore } from "../../store/store";
 
 const renderComponent = (role) => {
-    useStore.setState({
-      user: { role },
-      statusData: { last_modified: "2025-11-26T22:45:38.115Z" },
-      saveForm: vi.fn(),
-    })
-    render(
-      <BrowserRouter>
-        <FormFooter state="AL" year="2021" quarter="1" />
-      </BrowserRouter>
-    );
-}
+  useStore.setState({
+    user: { role },
+    statusData: { last_modified: "2025-11-26T22:45:38.115Z" },
+    saveForm: vi.fn(),
+  });
+  render(
+    <BrowserRouter>
+      <FormFooter state="AL" year="2021" quarter="1" />
+    </BrowserRouter>
+  );
+};
 
 describe("Test FormFooter.js", () => {
   beforeEach(() => {
@@ -28,9 +28,9 @@ describe("Test FormFooter.js", () => {
     renderComponent("state");
 
     expect(screen.getByRole("link", { name: "Back to Q1 2021" })).toBeVisible();
-    expect(screen.getByText(
-      "Last saved: 11/26/2025 at 5:45:38 PM EST"
-    )).toBeVisible();
+    expect(
+      screen.getByText("Last saved: 11/26/2025 at 5:45:38 PM EST")
+    ).toBeVisible();
     expect(screen.getByRole("button", { name: "Save" })).toBeVisible();
   });
 
@@ -41,7 +41,7 @@ describe("Test FormFooter.js", () => {
 
   it("should save the form when a state user clicks Save", () => {
     renderComponent("state");
-    userEvent.click((screen.getByRole("button", { name: "Save" })));
+    userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(useStore.getState().saveForm).toHaveBeenCalled();
   });
 });

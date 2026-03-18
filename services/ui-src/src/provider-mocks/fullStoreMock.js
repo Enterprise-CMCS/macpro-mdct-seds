@@ -20,7 +20,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -28,7 +28,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -36,7 +36,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -44,13 +44,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-02",
@@ -69,7 +69,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -77,7 +77,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -85,7 +85,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -93,13 +93,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-03",
@@ -118,7 +118,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -126,7 +126,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -134,7 +134,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -142,13 +142,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-04",
@@ -167,7 +167,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -175,7 +175,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -183,7 +183,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -191,13 +191,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-05",
@@ -216,167 +216,167 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
@@ -384,7 +384,7 @@ const fullStoreMock = {
         comment:
           "Divide the entries in Question 4 by the entries in Question 1.",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-06",
@@ -403,7 +403,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -411,7 +411,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -419,7 +419,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -427,13 +427,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-07",
@@ -452,7 +452,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -460,7 +460,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -468,7 +468,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -476,16 +476,16 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: ["4"]
+          show_if_quarter_in: ["4"],
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-08",
@@ -504,7 +504,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -512,7 +512,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -520,7 +520,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -528,16 +528,16 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: ["4"]
+          show_if_quarter_in: ["4"],
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
+        last_modified: "2021-04-14T12:46:35.838Z",
       },
       {
         question: "2021-21E-09",
@@ -556,7 +556,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -564,7 +564,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -572,7 +572,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -580,17 +580,17 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         created_by: "seed",
         context_data: {
-          show_if_quarter_in: ["4"]
+          show_if_quarter_in: ["4"],
         },
         form: "21E",
         created_date: "2021-04-14T12:46:35.838Z",
-        last_modified: "2021-04-14T12:46:35.838Z"
-      }
+        last_modified: "2021-04-14T12:46:35.838Z",
+      },
     ],
     answers: [
       {
@@ -607,7 +607,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -615,7 +615,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -623,7 +623,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -631,12 +631,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-03"
+        answer_entry: "AL-2021-1-21E-0612-03",
       },
       {
         ageRange: "Ages 1 - 5",
@@ -652,7 +652,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -660,7 +660,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -668,7 +668,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -676,12 +676,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-08"
+        answer_entry: "AL-2021-1-21E-0105-08",
       },
       {
         age_range: "Ages 6 - 12",
@@ -697,7 +697,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -705,7 +705,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -713,7 +713,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -721,12 +721,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-09"
+        answer_entry: "AL-2021-1-21E-0612-09",
       },
       {
         age_range: "Ages 1 - 5",
@@ -742,7 +742,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -750,7 +750,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -758,7 +758,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -766,12 +766,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-02"
+        answer_entry: "AL-2021-1-21E-0105-02",
       },
       {
         age_range: "Ages 0 - 1",
@@ -787,7 +787,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -795,7 +795,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -803,7 +803,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -811,12 +811,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-03"
+        answer_entry: "AL-2021-1-21E-0001-03",
       },
       {
         age_range: "Ages 1 - 5",
@@ -832,7 +832,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -840,7 +840,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -848,7 +848,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -856,12 +856,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-03"
+        answer_entry: "AL-2021-1-21E-0105-03",
       },
       {
         age_range: "Ages 13 - 18",
@@ -877,7 +877,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -885,7 +885,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -893,7 +893,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -901,12 +901,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-01"
+        answer_entry: "AL-2021-1-21E-1318-01",
       },
       {
         age_range: "Under Age 0",
@@ -922,7 +922,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -930,7 +930,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -938,7 +938,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -946,12 +946,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-03"
+        answer_entry: "AL-2021-1-21E-0000-03",
       },
       {
         age_range: "Ages 0 - 1",
@@ -967,7 +967,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -975,7 +975,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -983,7 +983,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -991,12 +991,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-06"
+        answer_entry: "AL-2021-1-21E-0001-06",
       },
       {
         age_range: "Ages 13 - 18",
@@ -1012,7 +1012,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1020,7 +1020,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1028,7 +1028,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1036,12 +1036,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-07"
+        answer_entry: "AL-2021-1-21E-1318-07",
       },
       {
         age_range: "Under Age 0",
@@ -1057,7 +1057,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1065,7 +1065,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1073,7 +1073,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1081,12 +1081,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-01"
+        answer_entry: "AL-2021-1-21E-0000-01",
       },
       {
         age_range: "Ages 0 - 1",
@@ -1102,171 +1102,171 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-05"
+        answer_entry: "AL-2021-1-21E-0001-05",
       },
       {
         age_range: "Ages 1 - 5",
@@ -1282,7 +1282,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1290,7 +1290,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1298,7 +1298,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1306,12 +1306,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-04"
+        answer_entry: "AL-2021-1-21E-0105-04",
       },
       {
         age_range: "Ages 0 - 1",
@@ -1327,7 +1327,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1335,7 +1335,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1343,7 +1343,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1351,12 +1351,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-09"
+        answer_entry: "AL-2021-1-21E-0001-09",
       },
       {
         age_range: "Under Age 0",
@@ -1372,7 +1372,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1380,7 +1380,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1388,7 +1388,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1396,12 +1396,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-07"
+        answer_entry: "AL-2021-1-21E-0000-07",
       },
       {
         age_range: "Ages 13 - 18",
@@ -1417,7 +1417,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1425,7 +1425,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1433,7 +1433,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1441,12 +1441,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-08"
+        answer_entry: "AL-2021-1-21E-1318-08",
       },
       {
         age_range: "Ages 6 - 12",
@@ -1462,7 +1462,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1470,7 +1470,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1478,7 +1478,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1486,12 +1486,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-08"
+        answer_entry: "AL-2021-1-21E-0612-08",
       },
       {
         age_range: "Ages 13 - 18",
@@ -1507,7 +1507,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1515,7 +1515,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1523,7 +1523,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1531,12 +1531,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-06"
+        answer_entry: "AL-2021-1-21E-1318-06",
       },
       {
         age_range: "Ages 0 - 1",
@@ -1552,7 +1552,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1560,7 +1560,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1568,7 +1568,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1576,12 +1576,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-01"
+        answer_entry: "AL-2021-1-21E-0001-01",
       },
       {
         age_range: "Under Age 0",
@@ -1597,7 +1597,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1605,7 +1605,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1613,7 +1613,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1621,12 +1621,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-02"
+        answer_entry: "AL-2021-1-21E-0000-02",
       },
       {
         age_range: "Ages 6 - 12",
@@ -1642,7 +1642,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -1650,7 +1650,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -1658,7 +1658,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -1666,12 +1666,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-07"
+        answer_entry: "AL-2021-1-21E-0612-07",
       },
       {
         age_range: "Ages 13 - 18",
@@ -1687,171 +1687,171 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-05"
+        answer_entry: "AL-2021-1-21E-1318-05",
       },
       {
         age_range: "Ages 1 - 5",
@@ -1867,171 +1867,171 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-05"
+        answer_entry: "AL-2021-1-21E-0105-05",
       },
       {
         age_range: "Ages 6 - 12",
@@ -2047,7 +2047,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2055,7 +2055,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2063,7 +2063,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2071,12 +2071,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-01"
+        answer_entry: "AL-2021-1-21E-0612-01",
       },
       {
         age_range: "Ages 6 - 12",
@@ -2092,7 +2092,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2100,7 +2100,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2108,7 +2108,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2116,12 +2116,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-02"
+        answer_entry: "AL-2021-1-21E-0612-02",
       },
       {
         age_range: "Ages 0 - 1",
@@ -2137,7 +2137,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2145,7 +2145,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2153,7 +2153,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2161,12 +2161,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-07"
+        answer_entry: "AL-2021-1-21E-0001-07",
       },
       {
         age_range: "Ages 0 - 1",
@@ -2182,7 +2182,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2190,7 +2190,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2198,7 +2198,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2206,12 +2206,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-02"
+        answer_entry: "AL-2021-1-21E-0001-02",
       },
       {
         age_range: "Ages 6 - 12",
@@ -2227,7 +2227,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2235,7 +2235,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2243,7 +2243,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2251,12 +2251,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-06"
+        answer_entry: "AL-2021-1-21E-0612-06",
       },
       {
         age_range: "Ages 1 - 5",
@@ -2272,7 +2272,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2280,7 +2280,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2288,7 +2288,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2296,12 +2296,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-06"
+        answer_entry: "AL-2021-1-21E-0105-06",
       },
       {
         age_range: "Ages 1 - 5",
@@ -2317,7 +2317,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2325,7 +2325,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2333,7 +2333,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2341,12 +2341,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-09"
+        answer_entry: "AL-2021-1-21E-0105-09",
       },
       {
         age_range: "Under Age 0",
@@ -2362,7 +2362,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2370,7 +2370,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2378,7 +2378,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2386,12 +2386,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-08"
+        answer_entry: "AL-2021-1-21E-0000-08",
       },
       {
         age_range: "Ages 6 - 12",
@@ -2407,7 +2407,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2415,7 +2415,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2423,7 +2423,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2431,12 +2431,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-04"
+        answer_entry: "AL-2021-1-21E-0612-04",
       },
       {
         age_range: "Ages 6 - 12",
@@ -2452,171 +2452,171 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0612-05"
+        answer_entry: "AL-2021-1-21E-0612-05",
       },
       {
         age_range: "Ages 13 - 18",
@@ -2632,7 +2632,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2640,7 +2640,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2648,7 +2648,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2656,12 +2656,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-04"
+        answer_entry: "AL-2021-1-21E-1318-04",
       },
       {
         age_range: "Under Age 0",
@@ -2677,7 +2677,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2685,7 +2685,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2693,7 +2693,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2701,12 +2701,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-06"
+        answer_entry: "AL-2021-1-21E-0000-06",
       },
       {
         age_range: "Under Age 0",
@@ -2722,7 +2722,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2730,7 +2730,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2738,7 +2738,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2746,12 +2746,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-09"
+        answer_entry: "AL-2021-1-21E-0000-09",
       },
       {
         age_range: "Ages 0 - 1",
@@ -2767,7 +2767,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2775,7 +2775,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2783,7 +2783,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2791,12 +2791,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-08"
+        answer_entry: "AL-2021-1-21E-0001-08",
       },
       {
         age_range: "Ages 13 - 18",
@@ -2812,7 +2812,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2820,7 +2820,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2828,7 +2828,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2836,12 +2836,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-03"
+        answer_entry: "AL-2021-1-21E-1318-03",
       },
       {
         age_range: "Under Age 0",
@@ -2857,7 +2857,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2865,7 +2865,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2873,7 +2873,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2881,12 +2881,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-04"
+        answer_entry: "AL-2021-1-21E-0000-04",
       },
       {
         age_range: "Ages 1 - 5",
@@ -2902,7 +2902,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2910,7 +2910,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2918,7 +2918,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2926,12 +2926,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-01"
+        answer_entry: "AL-2021-1-21E-0105-01",
       },
       {
         age_range: "Ages 13 - 18",
@@ -2947,7 +2947,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -2955,7 +2955,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -2963,7 +2963,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -2971,12 +2971,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-09"
+        answer_entry: "AL-2021-1-21E-1318-09",
       },
       {
         age_range: "Ages 1 - 5",
@@ -2992,7 +2992,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -3000,7 +3000,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -3008,7 +3008,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -3016,12 +3016,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0105-07"
+        answer_entry: "AL-2021-1-21E-0105-07",
       },
       {
         age_range: "Ages 0 - 1",
@@ -3037,7 +3037,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -3045,7 +3045,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -3053,7 +3053,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -3061,12 +3061,12 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0001-04"
+        answer_entry: "AL-2021-1-21E-0001-04",
       },
       {
         age_range: "Under Age 0",
@@ -3082,171 +3082,171 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[1].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[1].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[1].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[2].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[2].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[2].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col6",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col6"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col6",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col4: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col4",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col4"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col4",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col5: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col5",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col5"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col5",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col2: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col2",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col2"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col2",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
             col3: [
               {
                 targets: [
                   "$..[?(@.question=='2021-21E-04')].rows[3].col3",
-                  "$..[?(@.question=='2021-21E-01')].rows[3].col3"
+                  "$..[?(@.question=='2021-21E-01')].rows[3].col3",
                 ],
                 actions: ["formula"],
-                formula: "<0> / <1>"
-              }
+                formula: "<0> / <1>",
+              },
             ],
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-0000-05"
+        answer_entry: "AL-2021-1-21E-0000-05",
       },
       {
         age_range: "Ages 13 - 18",
@@ -3262,7 +3262,7 @@ const fullStoreMock = {
             col5: "% of FPL 251-300",
             col2: "% of FPL 0-133",
             col3: "% of FPL 134-200",
-            col1: ""
+            col1: "",
           },
           {
             col6: null,
@@ -3270,7 +3270,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "A. Fee-for-Service"
+            col1: "A. Fee-for-Service",
           },
           {
             col6: null,
@@ -3278,7 +3278,7 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "B. Managed Care Arrangements"
+            col1: "B. Managed Care Arrangements",
           },
           {
             col6: null,
@@ -3286,13 +3286,13 @@ const fullStoreMock = {
             col5: null,
             col2: null,
             col3: null,
-            col1: "C. Primary Care Case Management"
-          }
+            col1: "C. Primary Care Case Management",
+          },
         ],
         last_modified: "2021-04-14T12:46:35.838Z",
         created_by: "seed",
-        answer_entry: "AL-2021-1-21E-1318-02"
-      }
+        answer_entry: "AL-2021-1-21E-1318-02",
+      },
     ],
     statusData: {
       status_modified_by: "Timothy Griesemer",
@@ -3301,8 +3301,8 @@ const fullStoreMock = {
       state_comments: [
         {
           type: "text_multiline",
-          entry: null
-        }
+          entry: null,
+        },
       ],
       form_id: "1",
       last_modified_by: "seed",
@@ -3316,10 +3316,10 @@ const fullStoreMock = {
       form_name: "Number of Children Served in Separate CHIP Program",
       last_modified: "2021-04-14T12:46:35.838Z",
       quarter: 1,
-      ...InProgressStatusFields()
+      ...InProgressStatusFields(),
     },
-    tabs: ["0000", "0001", "0105", "0612", "1318"]
-  }
+    tabs: ["0000", "0001", "0105", "0612", "1318"],
+  },
 };
 
 export default fullStoreMock;

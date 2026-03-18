@@ -3,27 +3,23 @@
  */
 
 @media print {
-  textarea {
+  textarea,
+  .breadcrumbs,
+  .header,
+  button {
     display: none !important;
   }
 
-  .usa-table td {
-    padding: 0.1rem;
-  }
-
-  input.usa-input {
-    border: none;
-    width: 100%;
-  }
-
-  .usa-banner,
+  .ds-c-usa-banner,
   .footer,
   .navigation {
     display: none;
   }
 
-  .logo {
-    text-align: center;
+  input[type="text"],
+  input[type="text"]:disabled {
+    background-color: transparent;
+    border: none;
   }
 
   .question-component {
@@ -53,10 +49,11 @@
   .print-only {
     display: block;
   }
-  .breadcrumb {
+  .print-button {
     display: none !important;
   }
-  .print-button {
+
+  .exclude-from-pdf {
     display: none !important;
   }
 }

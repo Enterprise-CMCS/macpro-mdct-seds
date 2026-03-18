@@ -8,8 +8,8 @@ import { useLocation } from "react-router-dom";
 import { useStore } from "../../store/store";
 
 const SummaryTab = () => {
-  const questions = useStore(state => state.questions);
-  const answers = useStore(state => state.answers);
+  const questions = useStore((state) => state.questions);
+  const answers = useStore((state) => state.answers);
 
   // Get current quarter from URL
   const location = useLocation();
@@ -21,8 +21,8 @@ const SummaryTab = () => {
   }
 
   return (
-    <div className="summary-tab">
-      <div className="age-range-description padding-y-2">
+    <>
+      <div className="padding-1">
         <h3>Summary:</h3>
       </div>
 
@@ -66,7 +66,7 @@ const SummaryTab = () => {
 
           // Put all rows in one array (all answers for the current question)
           // This is to decrease the complexity of later loops
-          let allTabs = allAnswers.map(a => a.rows);
+          let allTabs = allAnswers.map((a) => a.rows);
 
           // Loop through all tabs array
           for (let singleTab of allTabs) {
@@ -109,7 +109,7 @@ const SummaryTab = () => {
           // Find the first question that has the same QuestionID
           // This is for a sample question that will have its rows replaced by newRows
           const questionAnswer = questions.find(
-            element => element.question === questionID
+            (element) => element.question === questionID
           );
 
           // Set rows for the question
@@ -129,7 +129,7 @@ const SummaryTab = () => {
         }
       })}
       <SummaryNotes />
-    </div>
+    </>
   );
 };
 

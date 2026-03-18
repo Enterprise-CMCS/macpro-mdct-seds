@@ -6,11 +6,11 @@ import userEvent from "@testing-library/user-event";
 import { signInWithRedirect } from "aws-amplify/auth";
 
 vi.mock("aws-amplify/auth", () => ({
-  signInWithRedirect: vi.fn()
+  signInWithRedirect: vi.fn(),
 }));
 
 vi.mock("libs/errorLib", () => ({
-  onError: vi.fn()
+  onError: vi.fn(),
 }));
 
 const currentlyOnDevelopmentBranch = () =>
@@ -26,7 +26,7 @@ describe("Test Login.js", () => {
     delete window.location;
     window.location = {
       ...originalLocation,
-      assign: vi.fn()
+      assign: vi.fn(),
     };
   });
 
@@ -58,7 +58,7 @@ describe("Test Login.js", () => {
     render(<Login />);
 
     const loginButton = screen.getByText("Login with EUA ID", {
-      selector: "button"
+      selector: "button",
     });
     await userEvent.click(loginButton);
 
@@ -72,18 +72,17 @@ describe("Test Login.js", () => {
     render(<Login />);
 
     const loginButton = screen.getByText("Login with EUA ID", {
-      selector: "button"
+      selector: "button",
     });
     await userEvent.click(loginButton);
     expect(signInWithRedirect).toHaveBeenCalled();
   });
 
   it("should login successfully", () => {
-    const { container } = render(<Login />);
+    render(<Login />);
 
-    const textboxes = container.querySelectorAll(".form-input.form-control");
-    const email = textboxes[0];
-    const password = textboxes[1];
+    const email = screen.getByRole("textbox", { name: "Email" });
+    const password = screen.getByLabelText("Password");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
     fireEvent.change(email, { target: { value: "mail@mail.com" } });

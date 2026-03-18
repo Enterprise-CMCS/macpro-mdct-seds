@@ -2,11 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import { main as notifyStateUsers } from "./stateUsers.ts";
 import {
   scanUsersByRole as actualScanUsersByRole,
-  AuthUser
+  AuthUser,
 } from "../../storage/users.ts";
 import {
   scanFormsByQuarterAndStatus as actualScanForms,
-  StateForm
+  StateForm,
 } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { mockClient } from "aws-sdk-client-mock";
@@ -25,9 +25,18 @@ const mockSes = mockClient(SESClient);
 const mockSendEmail = vi.fn();
 mockSes.on(SendEmailCommand).callsFake(mockSendEmail);
 
-const mockStateUserCO = { email: "stateuserCO@test.com", state: "CO" } as AuthUser;
-const mockStateUserTX = { email: "stateuserTX@test.com", state: "TX" } as AuthUser;
-const mockStateUserWI = { email: "stateuserWI@test.com", state: "WI" } as AuthUser;
+const mockStateUserCO = {
+  email: "stateuserCO@test.com",
+  state: "CO",
+} as AuthUser;
+const mockStateUserTX = {
+  email: "stateuserTX@test.com",
+  state: "TX",
+} as AuthUser;
+const mockStateUserWI = {
+  email: "stateuserWI@test.com",
+  state: "WI",
+} as AuthUser;
 
 const mockFormCO21E = { state_id: "CO", form: "21E" } as StateForm;
 const mockFormCOGRE = { state_id: "CO", form: "GRE" } as StateForm;
@@ -38,7 +47,7 @@ describe("notification/stateUsers", () => {
     scanUsersByRole.mockResolvedValueOnce([
       mockStateUserCO,
       mockStateUserTX,
-      mockStateUserWI
+      mockStateUserWI,
     ]);
     scanFormsByQuarterAndStatus.mockResolvedValueOnce([
       mockFormCO21E,
@@ -48,21 +57,24 @@ describe("notification/stateUsers", () => {
 
     await notifyStateUsers({});
 
-    expect(mockSendEmail).toHaveBeenCalledWith({
-      Source: "mdct@cms.hhs.gov",
-      Destination: {
-        ToAddresses: ["stateuserCO@test.com", "stateuserTX@test.com"],
-      },
-      Message: {
-        Subject: {
-          Data: expect.stringMatching(/FFY\d{4} Q\d Enrollment Data Overdue/),
+    expect(mockSendEmail).toHaveBeenCalledWith(
+      {
+        Source: "mdct@cms.hhs.gov",
+        Destination: {
+          ToAddresses: ["stateuserCO@test.com", "stateuserTX@test.com"],
         },
-        Body: {
-          Text: {
-            Data: expect.stringContaining("your state has not yet submitted"),
-          }
-        }
-      }
-    }, expect.any(Function));
+        Message: {
+          Subject: {
+            Data: expect.stringMatching(/FFY\d{4} Q\d Enrollment Data Overdue/),
+          },
+          Body: {
+            Text: {
+              Data: expect.stringContaining("your state has not yet submitted"),
+            },
+          },
+        },
+      },
+      expect.any(Function)
+    );
   });
 });

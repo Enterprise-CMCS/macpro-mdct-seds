@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // *** 3rd party and other functional dependencies
 import { handleExport } from "../../utility-functions/exportFunctions";
 
 // *** 3rd party component dependencies
-// * trussworks
-import { Button } from "@trussworks/react-uswds";
+import { Button } from "@cmsgov/design-system";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserPlus,
-  faFileCsv,
-  faFilePdf
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileCsv, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -26,7 +21,7 @@ const Users = () => {
 
   const loadUserData = async () => {
     const userList = await listUsers();
-    userList?.sort((a, b) => a.username?.localeCompare(b.username));
+    userList.sort((a, b) => a.username?.localeCompare(b.username));
     setUsers(userList);
   };
 
@@ -38,12 +33,11 @@ const Users = () => {
   }, []);
 
   return (
-    <div className="user-profiles" data-testid="users">
-      <h1 className="page-header">Users</h1>
-      <div className="page-subheader exclude-from-pdf">
+    <div data-testid="users" className="flex-col-gap-1half">
+      <h1>Users</h1>
+      <div className="exclude-from-pdf flex-row-gap-1">
         <Button
-          className="margin-left-3 action-button"
-          primary="true"
+          variation="solid"
           onClick={() =>
             handleExport("csv", "MDCT Users Export.csv", {
               columns: [
@@ -54,35 +48,34 @@ const Users = () => {
                 { name: "Role", selector: "role" },
                 { name: "Registration Date", selector: "dateJoined" },
                 { name: "Last Login", selector: "lastLogin" },
-                { name: "State", selector: "state" }
+                { name: "State", selector: "state" },
               ],
-              data: users
+              data: users,
             })
           }
         >
           CSV
-          <FontAwesomeIcon icon={faFileCsv} className="margin-left-2" />
+          <FontAwesomeIcon icon={faFileCsv} />
         </Button>
 
         <Button
-          className="margin-left-3 action-button"
-          primary="true"
+          variation="solid"
           onClick={async () =>
             await handleExport(
               "pdf",
               "MDCT Users Export.pdf",
-              ".user-profiles",
+              "table",
               "html-selector"
             )
           }
         >
           PDF
-          <FontAwesomeIcon icon={faFilePdf} className="margin-left-2" />
+          <FontAwesomeIcon icon={faFilePdf} />
         </Button>
       </div>
       <div>
         {users?.length ? (
-          <table className="user-list">
+          <table>
             <thead>
               <tr>
                 <th scope="col">Username</th>
@@ -96,7 +89,7 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {users.map((user) => (
                 <tr key={user.userId}>
                   <td>
                     <Link to={`/users/${user.userId}/edit`}>

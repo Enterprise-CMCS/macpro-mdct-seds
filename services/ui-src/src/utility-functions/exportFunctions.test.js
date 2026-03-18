@@ -3,18 +3,18 @@ import { handleExport, buildCsvContents } from "./exportFunctions";
 import { saveAs } from "file-saver";
 
 vi.mock("file-saver", () => ({
-  saveAs: vi.fn()
+  saveAs: vi.fn(),
 }));
 
 const fruitData = {
   columns: [
     { name: "Name", selector: "name" },
-    { name: "Count", selector: "count" }
+    { name: "Count", selector: "count" },
   ],
   data: [
     { name: "apple", count: 3 },
-    { name: "orange", count: 5 }
-  ]
+    { name: "orange", count: 5 },
+  ],
 };
 
 describe("Export Functions", () => {
@@ -32,7 +32,7 @@ describe("Export Functions", () => {
       expect(subType).toBe("csv");
 
       const parameters = Object.fromEntries(
-        paramStrings.map(ps => ps.split("="))
+        paramStrings.map((ps) => ps.split("="))
       );
       expect(parameters).toHaveProperty("header", "present");
       expect(parameters).toHaveProperty("charset", "utf-8");
@@ -49,7 +49,7 @@ describe("Export Functions", () => {
     it("should handle undefined properties in the data", async () => {
       const content = {
         columns: [{ name: "Value", selector: "value" }],
-        data: [{ value: "foo" }, {}, { value: "bar" }]
+        data: [{ value: "foo" }, {}, { value: "bar" }],
       };
 
       const fileContents = buildCsvContents(content);
@@ -61,14 +61,14 @@ describe("Export Functions", () => {
       const content = {
         columns: [
           { name: "Test Case", selector: "name" },
-          { name: "Value", selector: "data" }
+          { name: "Value", selector: "data" },
         ],
         data: [
           { name: "has_comma", data: "a, b" },
           { name: "has_line_feed", data: "c\nd" },
           { name: "has_carriage_return", data: "e\rf" },
-          { name: "has_comma_and_quote", data: `g:"h,i"` }
-        ]
+          { name: "has_comma_and_quote", data: `g:"h,i"` },
+        ],
       };
 
       const fileContents = buildCsvContents(content);

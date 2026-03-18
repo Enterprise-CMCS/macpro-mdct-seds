@@ -8,7 +8,7 @@ import {
   isNotRequired,
   isProvisionalCertified,
   NotRequiredStatusFields,
-  ProvisionalCertifiedStatusFields
+  ProvisionalCertifiedStatusFields,
 } from "./formStatus";
 
 const inProgressDescription = "In Progress";

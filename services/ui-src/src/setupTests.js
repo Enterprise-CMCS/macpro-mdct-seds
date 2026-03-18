@@ -18,36 +18,35 @@ vi.mock("aws-amplify", () => ({
   Auth: {
     currentSession: vi.fn().mockReturnValue({
       getIdToken: () => ({
-        getJwtToken: () => "eyJLongToken"
+        getJwtToken: () => "eyJLongToken",
       }),
       idToken: {
         payload: {
-          email: "testEmail@email.com"
-        }
-      }
+          email: "testEmail@email.com",
+        },
+      },
     }),
     currentAuthenticatedUser: () => {},
     configure: () => {},
     signOut: async () => {},
     federatedSignIn: () => {},
-    signIn: () => {}
+    signIn: () => {},
   },
   API: {
     get: () => {},
     post: () => {},
     put: () => {},
     del: () => {},
-    configure: () => {}
+    configure: () => {},
   },
   Hub: {
-    listen: vi.fn()
-  }
+    listen: vi.fn(),
+  },
 }));
 
-vi.mock("./utility-functions/environment", () => ({
-  MODE: "production",
-  BASE_URL: "mdctcartsdev.cms.gov"
-}));
+HTMLDialogElement.prototype.show = vi.fn();
+HTMLDialogElement.prototype.showModal = vi.fn();
+HTMLDialogElement.prototype.close = vi.fn();
 
 HTMLCanvasElement.prototype.getContext = () => {
   /* Nothing; we don't unit test our jsPDF integration */

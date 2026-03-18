@@ -9,7 +9,7 @@ export const recursiveGetStateForms = async (data, currentData) => {
     state: data.state,
     year: data.year,
     quarter: data.quarter,
-    startKey: data.startKey ?? false
+    startKey: data.startKey ?? false,
   };
 
   let response = await getStateForms(formData);

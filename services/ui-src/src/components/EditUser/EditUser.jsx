@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Table, TextInput, Button } from "@trussworks/react-uswds";
+import { Button, Table, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
+import Preloader from "../Preloader/Preloader";
 import { getUserById, updateUser } from "../../libs/api";
 import { stateSelectOptions } from "../../lookups/states";
-import "./EditUser.scss";
 
 /**
  * Admin-only page for viewing & editing other users' permissions.
@@ -15,18 +15,22 @@ import "./EditUser.scss";
  */
 const EditUser = () => {
   let { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState();
   const [role, setRole] = useState();
   const [state, setState] = useState();
 
   useEffect(() => {
     (async () => {
-      const response = await getUserById({ userId: id });
-      if (response.status === "success") {
-        const user = response.data;
-        setUser(user);
-        setRole(user.role);
-        setState(user.state);
+      try {
+        const response = await getUserById(id);
+        setUser(response);
+        setRole(response.role);
+        setState(response.state);
+      } catch {
+        /* no-op */
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -47,73 +51,60 @@ const EditUser = () => {
   };
 
   return (
-    <div className="edit-user" data-testid="EditUser">
-      <Link to="/users" className="userListLink text-bold">
-        &laquo; Back to User List
-      </Link>
-      <h1 className="page-header">Edit User</h1>
-      {user ? (
-        <div className="center-content">
+    <div data-testid="EditUser" className="flex-col-gap-1half">
+      <Link to="/users">&laquo; Back to User List</Link>
+      <h1>Edit User</h1>
+      {isLoading ? (
+        <Preloader />
+      ) : user ? (
+        <div className="flex-col-gap-1half">
           <Table>
             <tbody>
-              <tr className="userName">
+              <tr>
                 <th>Username</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.username}
-                    type="text"
                     disabled={true}
                     name="username"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>First Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.firstName}
-                    type="text"
                     disabled={true}
                     name="firstName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Last Name</th>
                 <td>
-                  <TextInput
+                  <TextField
                     value={user.lastName}
-                    type="text"
                     disabled={true}
                     name="lastName"
-                    className="form-input"
                   />
                 </td>
               </tr>
               <tr>
                 <th>Email</th>
                 <td>
-                  <TextInput
-                    value={user.email}
-                    type="text"
-                    disabled={true}
-                    name="email"
-                    className="form-input"
-                  />
+                  <TextField value={user.email} disabled={true} name="email" />
                 </td>
               </tr>
               <tr>
                 <th>
-                  <label className="usa-label" htmlFor="role-select">Role</label>
+                  <label htmlFor="role-select">Role</label>
                 </th>
                 <td>
                   <select
-                    className="usa-select"
                     id="role-select"
                     value={role}
-                    onChange={evt => setRole(evt.target.value)}
+                    onChange={(evt) => setRole(evt.target.value)}
                   >
                     <option value>- Select a Role -</option>
                     <option value="admin">Admin User</option>
@@ -125,18 +116,19 @@ const EditUser = () => {
               {role === "state" ? (
                 <tr>
                   <th>
-                    <label className="usa-label" htmlFor="state-select">State</label>
+                    <label htmlFor="state-select">State</label>
                   </th>
                   <td>
                     <select
-                      className="usa-select"
                       id="state-select"
                       value={state}
-                      onChange={evt => setState(evt.target.value)}
+                      onChange={(evt) => setState(evt.target.value)}
                     >
                       <option value>- Select a State -</option>
                       {stateSelectOptions.map(({ label, value }) => (
-                        <option key={value} value={value}>{label}</option>
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
                       ))}
                     </select>
                   </td>
@@ -156,16 +148,15 @@ const EditUser = () => {
               </tr>
             </tbody>
           </Table>
-          <div className="action-buttons margin-top-4">
-            <Button
-              type="button"
-              className="form-button"
-              onClick={handleUpdateClick}
-            >
-              Update User
-              <FontAwesomeIcon icon={faUserCheck} className="margin-left-2" />
-            </Button>
-          </div>
+          <Button
+            type="button"
+            variation="solid"
+            className="flex-end"
+            onClick={handleUpdateClick}
+          >
+            Update User
+            <FontAwesomeIcon icon={faUserCheck} />
+          </Button>
         </div>
       ) : (
         `Cannot find user with id ${id}`

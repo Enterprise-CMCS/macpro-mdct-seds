@@ -1,21 +1,9 @@
-@import "../../../node_modules/uswds/dist/css/uswds";
-@import "../../additional-scss/uswds_overrides";
-
-@import "../../additional-scss/pdf_generator";
+$image-path: "~@cmsgov/design-system/dist/images";
+@use "@cmsgov/design-system/dist/css/index";
+@use "@cmsgov/design-system/dist/css/core-theme";
 
 @import "../../additional-scss/variables";
-@import "../../additional-scss/mixins";
-@import "../../additional-scss/fonts";
 @import "../../additional-scss/globals";
-@import "../../additional-scss/layout";
-@import "../../additional-scss/buttons";
-@import "../../additional-scss/tabs";
-@import "../../additional-scss/tables";
-@import "../../additional-scss/alerts";
-@import "../../additional-scss/icons";
 @import "../../additional-scss/header";
 @import "../../additional-scss/footer";
-@import "../../additional-scss/sidebar";
-@import "../../additional-scss/form";
-@import "../../additional-scss/main";
 @import "../../additional-scss/print";

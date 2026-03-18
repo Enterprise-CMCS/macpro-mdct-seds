@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { TextInput, Table } from "@trussworks/react-uswds";
+import { TextField, Table } from "@cmsgov/design-system";
 import { addCommas } from "../../utility-functions/transformFunctions";
 import { useStore } from "../../store/store";
-import "./GridWithTotals.scss";
 
-const GridWithTotals = props => {
-  const setAnswer = useStore(state => state.updateAnswer);
+const GridWithTotals = (props) => {
+  const setAnswer = useStore((state) => state.updateAnswer);
   const [gridData, updateGridData] = useState(
     translateInitialData(props.gridData)
   );
@@ -23,7 +22,7 @@ const GridWithTotals = props => {
   useEffect(() => {
     updateGridData(translateInitialData(props.gridData));
     updateTotals();
-  }, [props.gridData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.gridData]);
 
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
@@ -43,7 +42,7 @@ const GridWithTotals = props => {
     updateColumnTotals();
   };
 
-  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+  const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
   const updateColumnTotals = () => {
     let gridColumnTotalsCopy = [...gridColumnTotals];
@@ -295,10 +294,10 @@ const GridWithTotals = props => {
                   <th scope="row">{headerCellArray[rowIndex - 1]}</th>
                   <td>
                     {!synthesized ? (
-                      <TextInput
+                      <TextField
                         style={{ width: "100%", padding: 0 }}
                         className="grid-column"
-                        onChange={event =>
+                        onChange={(event) =>
                           updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
                         onBlur={updateGridOnBlur}
@@ -313,7 +312,7 @@ const GridWithTotals = props => {
                         disabled={props.disabled}
                       />
                     ) : (
-                      <span className="usa-input rid-column synthesized">
+                      <span>
                         {gridData[rowIndex][columnIndex] >= 0
                           ? addCommas(
                               parseFloat(
@@ -330,10 +329,10 @@ const GridWithTotals = props => {
               formattedCell = (
                 <td key={columnIndex}>
                   {!synthesized ? (
-                    <TextInput
+                    <TextField
                       style={{ width: "100%", padding: 0 }}
                       className="grid-column"
-                      onChange={event =>
+                      onChange={(event) =>
                         updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
                       onBlur={updateGridOnBlur}
@@ -348,7 +347,7 @@ const GridWithTotals = props => {
                       disabled={props.disabled}
                     />
                   ) : (
-                    <span className="usa-input grid-column synthesized ">
+                    <span>
                       {column >= 0
                         ? addCommas(
                             parseFloat(column).toFixed(currentPrecision)
@@ -401,8 +400,8 @@ const GridWithTotals = props => {
   });
 
   return (
-    <div className="grid-with-totals" id={`"${props.questionID}"`}>
-      <Table bordered={true} fullWidth={true}>
+    <div id={`"${props.questionID}"`}>
+      <Table>
         <thead>
           <tr>{headerCols}</tr>
         </thead>
@@ -424,12 +423,12 @@ const GridWithTotals = props => {
   );
 };
 
-const translateInitialData = gridDataObject => {
+const translateInitialData = (gridDataObject) => {
   let rowCounter = 1;
   let colCounter = 1;
   let translatedData = [];
 
-  gridDataObject.forEach(row => {
+  gridDataObject.forEach((row) => {
     // *** skip the first row (headers)
     if (rowCounter > 1) {
       colCounter = 1;
@@ -456,7 +455,7 @@ GridWithTotals.propTypes = {
   updateSynthesizedValues: PropTypes.func,
   disabled: PropTypes.bool,
   synthesized: PropTypes.bool,
-  precision: PropTypes.number
+  precision: PropTypes.number,
 };
 
 export default GridWithTotals;

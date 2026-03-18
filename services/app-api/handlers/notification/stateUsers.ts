@@ -4,6 +4,7 @@ import { scanFormsByQuarterAndStatus } from "../../storage/stateForms.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { calculateFiscalQuarterFromDate } from "../../libs/time.ts";
 import { FormStatus } from "../../shared/types.ts";
+import { ok } from "../../libs/response-lib.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -12,7 +13,7 @@ const client = new SESClient({ region: "us-east-1" });
  * At the end of each Quarter, as a State User, I want to know if my state has NOT certified its data yet.
  */
 
-export const main = handler(async (event, context) => {
+export const main = handler(async (event) => {
   const email = await stateUsersTemplate();
   console.log("emailTemplate: ", email);
   const command = new SendEmailCommand(email);
@@ -20,24 +21,29 @@ export const main = handler(async (event, context) => {
     const data = await client.send(command);
     console.log(data.MessageId);
   } catch (err) {
-    console.error(err, err.stack);
+    console.error(err, (err as Error).stack);
   }
-  return {
+  return ok({
     status: "success",
     message: "Quarterly State owners email sent",
-  };
+  });
 });
 
 /**
  * List all emails of users whose state has an In Progress form this quarter.
  */
-async function determineUsersToEmail(year: number, quarter: number): Promise<string[]> {
+async function determineUsersToEmail(
+  year: number,
+  quarter: number
+): Promise<string[]> {
   const inProgressForms = await scanFormsByQuarterAndStatus(
-    year, quarter, FormStatus.InProgress
-  ); 
-  const statesToEmail = new Set(inProgressForms.map(f => f.state_id));
+    year,
+    quarter,
+    FormStatus.InProgress
+  );
+  const statesToEmail = new Set(inProgressForms.map((f) => f.state_id));
   const users = await scanUsersByRole("state");
-  return users.filter(u => statesToEmail.has(u.state!)).map(u => u.email);
+  return users.filter((u) => statesToEmail.has(u.state!)).map((u) => u.email);
 }
 
 // creates a template for stateUsers

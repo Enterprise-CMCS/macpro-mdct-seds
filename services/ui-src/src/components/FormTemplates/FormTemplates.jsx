@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import {
   obtainFormTemplate,
   obtainFormTemplateYears,
-  updateCreateFormTemplate
+  updateCreateFormTemplate,
 } from "../../libs/api";
-import { Alert, Button, Textarea, TextInput } from "@trussworks/react-uswds";
+import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +14,7 @@ const FormTemplates = () => {
   const [inputYear, setInputYear] = React.useState();
   const [currentTemplate, setCurrentTemplate] = React.useState(false);
   const [showYearInput, setShowYearInput] = React.useState(false);
-  const [alert, setAlert] = React.useState(false);
+  const [alert, setAlert] = React.useState(undefined);
 
   let nextYear = new Date(
     new Date().setFullYear(new Date().getFullYear() + 1)
@@ -26,30 +26,29 @@ const FormTemplates = () => {
     );
     let response;
     if (confirm) {
+      setAlert(undefined);
       try {
         response = await updateCreateFormTemplate({
           year: Number(inputYear),
-          template: JSON.parse(currentTemplate)
+          template: JSON.parse(currentTemplate),
         });
-      } catch (e) {
         setAlert({
-          status: 400,
-          message:
-            "Unable to save. Please verify that the template contains valid JSON"
+          variation: "success",
+          message: "Template saved successfully.",
         });
-      }
-      if (response) {
-        console.log(response);
-        setAlert(response);
+      } catch (err) {
+        const message =
+          err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
+        setAlert({ variation: "error", message });
       }
     }
   };
 
-  const updateYear = async year => {
+  const updateYear = async (year) => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
-      const template = await obtainFormTemplate({ year: Number(year) });
-      setCurrentTemplate(JSON.stringify(template[0].template, null, 2));
+      const template = await obtainFormTemplate(Number(year));
+      setCurrentTemplate(JSON.stringify(template.template, null, 2));
       setShowYearInput(false);
       setInputYear(year);
     } else {
@@ -61,6 +60,7 @@ const FormTemplates = () => {
 
   const onLoad = async () => {
     let yearsArray = await obtainFormTemplateYears();
+    yearsArray.sort((a, b) => b - a);
     if (!yearsArray.length) {
       setShowYearInput(true);
       setInputYear(nextYear);
@@ -68,12 +68,12 @@ const FormTemplates = () => {
       let yearsObjects = [
         {
           label: "+ Create New Template",
-          value: "CREATE_NEW"
+          value: "CREATE_NEW",
         },
-        ...yearsArray.map(year => ({
+        ...yearsArray.map((year) => ({
           label: year.toString(),
-          value: year.toString()
-        }))
+          value: year.toString(),
+        })),
       ];
 
       setFormYears(yearsObjects);
@@ -84,35 +84,29 @@ const FormTemplates = () => {
 
   useEffect(() => {
     onLoad().then();
-    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="formTemplates">
-      <h1 className="page-header">Add/Edit Form Templates</h1>
-      <div data-testid="formTemplates">
+    <div className="flex-col-gap-1half">
+      <h1>Add/Edit Form Templates</h1>
+      <div data-testid="formTemplates" className="flex-col-gap-1half">
         {alert ? (
-          <Alert
-            className="margin-bottom-3"
-            type={alert.status === 200 ? "success" : "error"}
-            headingLevel="h1"
-          >
+          <Alert variation={alert.variation} headingLevel="1">
             {alert.message}
           </Alert>
         ) : null}
         {formYears && selectedYear ? (
-          <div className="year-selection-container">
-            <label className="usa-label" htmlFor="year-select">
-              Select Year or Create New
-            </label>
+          <div>
+            <label htmlFor="year-select">Select Year or Create New</label>
             <select
-              className="usa-select"
               id="year-select"
               value={selectedYear}
-              onChange={evt => updateYear(evt.target.value)}
+              onChange={(evt) => updateYear(evt.target.value)}
             >
               {formYears.map(({ label, value }) => (
-                <option key={value} value={value}>{label}</option>
+                <option key={value} value={value}>
+                  {label}
+                </option>
               ))}
             </select>
           </div>
@@ -126,28 +120,30 @@ const FormTemplates = () => {
               id="year-input"
               name="year-input"
               type="number"
-              onChange={e => setInputYear(e.target.value)}
+              onChange={(e) => setInputYear(e.target.value)}
               defaultValue={nextYear}
             />
           </>
         ) : null}
-        <div className="template-input margin-top-3 margin-bottom-4">
+        <div>
           <label htmlFor="templateInput">Enter or Modify Template</label>
-          <Textarea
+          <TextField
+            multiline={true}
             id="templateInput"
             name="templateInput"
             value={currentTemplate ? currentTemplate : ""}
             type="text"
-            onChange={e => setCurrentTemplate(e.target.value)}
+            onChange={(e) => setCurrentTemplate(e.target.value)}
           />
         </div>
         <Button
           id="save-button"
-          primary="true"
+          variation="solid"
+          className="flex-end"
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <FontAwesomeIcon icon={faSave} className="margin-left-2" />
+          Save <FontAwesomeIcon icon={faSave} />
         </Button>
       </div>
     </div>
