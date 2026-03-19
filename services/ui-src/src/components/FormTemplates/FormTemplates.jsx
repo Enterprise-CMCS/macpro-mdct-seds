@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
 import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
-import saveIcon from "../Icons/save.svg";
+import saveIcon from "../../assets/icons/save.svg";
 
 const FormTemplates = () => {
   const [formYears, setFormYears] = React.useState();
