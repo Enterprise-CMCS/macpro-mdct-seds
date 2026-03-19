@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import arrowLeftIcon from "../Icons/arrow-left.svg";
-import saveIcon from "../Icons/save.svg";
+import arrowLeftIcon from "../../assets/icons/arrow-left.svg";
+import saveIcon from "../../assets/icons/save.svg";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {

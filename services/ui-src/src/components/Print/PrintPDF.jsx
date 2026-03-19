@@ -1,4 +1,4 @@
-import printIcon from "../Icons/print.svg";
+import printIcon from "../../assets/icons/print.svg";
 import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useRef } from "react";
 import "react-tabs/style/react-tabs.css";
