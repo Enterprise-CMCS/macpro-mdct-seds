@@ -16,6 +16,17 @@
   "directories": {
     "test": "tests"
   },
+  "workspaces": [
+    "cli",
+    "deployment",
+    "nightwatch",
+    "services/app-api",
+    "services/database",
+    "services/topics",
+    "services/ui-auth",
+    "services/ui-src",
+    "tests/cypress"
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {

@@ -42,9 +42,6 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^3.0.5"
   },
-  "resolutions": {
-    "form-data": "^4.0.4"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -56,6 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

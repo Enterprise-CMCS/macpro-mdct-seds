@@ -19,10 +19,6 @@
     "cypress-xpath": "^1.6.2",
     "webpack": "^5.97.1"
   },
-  "resolutions": {
-    "form-data": "^4.0.4"
-  },
-  "packageManager": "yarn@4.12.0",
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
