@@ -1693,43 +1693,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:^0.2.32":
-  version: 0.2.34
-  resolution: "@fortawesome/fontawesome-common-types@npm:0.2.34"
-  checksum: 10c0/fb0d47a2e938abab97c6c10ee0f66b897c86b8332818d7b61f2ed8a06eb78d905ad8170d279aa5e996b28f09438c618fcc0f8775b676a504edbba81c15dcfb49
-  languageName: node
-  linkType: hard
-
-"@fortawesome/fontawesome-svg-core@npm:^1.2.32":
-  version: 1.2.32
-  resolution: "@fortawesome/fontawesome-svg-core@npm:1.2.32"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:^0.2.32"
-  checksum: 10c0/279f75b072b6742482ac6f2ecf18e1265fd97c6a4e270a5c900af25ca5fa9a1f4fa7ef17ed5807db37cd556fa9afb20d3f4ab3af696a7d2cec0978b2142302d5
-  languageName: node
-  linkType: hard
-
-"@fortawesome/free-solid-svg-icons@npm:^5.15.1":
-  version: 5.15.1
-  resolution: "@fortawesome/free-solid-svg-icons@npm:5.15.1"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:^0.2.32"
-  checksum: 10c0/0fb9987598b43b3d24f158caeaf0eb3c0932b6812706e323bfc25519ca0ab13d11434b19b4869e8fd272ced227858f1c91179fea3bba311cb0147e7d2b84bcdb
-  languageName: node
-  linkType: hard
-
-"@fortawesome/react-fontawesome@npm:^0.2.2":
-  version: 0.2.6
-  resolution: "@fortawesome/react-fontawesome@npm:0.2.6"
-  dependencies:
-    prop-types: "npm:^15.8.1"
-  peerDependencies:
-    "@fortawesome/fontawesome-svg-core": ~1 || ~6 || ~7
-    react: ^16.3 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/d4b733ad211a6cf4354564124fd1119890d5497762d6eff39e4716e6ded709a3b8ec6064cc6ab423e12f0307ad159130e3341e5e46132ad1124a16b416b4a6c7
-  languageName: node
-  linkType: hard
-
 "@inquirer/ansi@npm:^2.0.3":
   version: 2.0.3
   resolution: "@inquirer/ansi@npm:2.0.3"
@@ -8354,9 +8317,6 @@ __metadata:
   resolution: "ui-src@workspace:."
   dependencies:
     "@cmsgov/design-system": "npm:^13.0.0"
-    "@fortawesome/fontawesome-svg-core": "npm:^1.2.32"
-    "@fortawesome/free-solid-svg-icons": "npm:^5.15.1"
-    "@fortawesome/react-fontawesome": "npm:^0.2.2"
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/jest-dom": "npm:6.4.6"
     "@testing-library/react": "npm:^16.3.0"
