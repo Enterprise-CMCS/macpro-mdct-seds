@@ -114,7 +114,7 @@ const FormPage = () => {
             onClick={redirectToPDF}
           >
             Print view / PDF
-            <img src={filePdfIcon} alt="" aria-hidden="true" />
+            <img src={filePdfIcon} alt="" />
           </Button>
           <NotApplicable />
           <TabContainer quarter={quarter} />

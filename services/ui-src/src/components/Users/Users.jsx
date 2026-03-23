@@ -54,7 +54,7 @@ const Users = () => {
           }
         >
           CSV
-          <img src={fileCsvIcon} alt="" aria-hidden="true" />
+          <img src={fileCsvIcon} alt="" />
         </Button>
       </div>
       <div>

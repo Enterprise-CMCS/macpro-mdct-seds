@@ -76,7 +76,7 @@ const PrintPDF = () => {
 
           <Button variation="solid" onClick={(e) => handlePrint(e)}>
             Print / PDF
-            <img src={printIcon} alt="" aria-hidden="true" />
+            <img src={printIcon} alt="" />
           </Button>
 
           <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

@@ -71,7 +71,7 @@ export default function Login() {
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <img src={signInAltIcon} alt="" aria-hidden="true" />
+          <img src={signInAltIcon} alt="" />
         </LoaderButton>
       </div>
       <form
@@ -103,7 +103,7 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <img src={signInAltIcon} alt="" aria-hidden="true" />
+            <img src={signInAltIcon} alt="" />
           </LoaderButton>
         </div>
       </form>
