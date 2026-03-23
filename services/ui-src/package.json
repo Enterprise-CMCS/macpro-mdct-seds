@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "aws-amplify": "^6.15.8",
+    "aws-amplify": "~6.16.2",
     "file-saver": "^2.0.5",
     "jsonpath": "^1.1.1",
     "jspdf": "^3.0.2",
@@ -42,9 +42,6 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^3.0.5"
   },
-  "resolutions": {
-    "form-data": "^4.0.4"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -56,6 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }
