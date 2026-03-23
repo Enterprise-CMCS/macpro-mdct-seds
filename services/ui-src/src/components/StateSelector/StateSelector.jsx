@@ -88,7 +88,7 @@ const StateSelector = () => {
             }}
           >
             Update User
-            <img src={userCheckIcon} alt="" aria-hidden="true" />
+            <img src={userCheckIcon} alt="" />
           </Button>
         </>
       )}

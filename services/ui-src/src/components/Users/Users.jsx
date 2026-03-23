@@ -55,7 +55,7 @@ const Users = () => {
           }
         >
           CSV
-          <img src={fileCsvIcon} alt="" aria-hidden="true" />
+          <img src={fileCsvIcon} alt="" />
         </Button>
 
         <Button
@@ -70,7 +70,7 @@ const Users = () => {
           }
         >
           PDF
-          <img src={filePdfIcon} alt="" aria-hidden="true" />
+          <img src={filePdfIcon} alt="" />
         </Button>
       </div>
       <div>
