@@ -27,9 +27,9 @@ signalTraps.map((type) => {
 });
 
 class KafkaSourceLib {
-  tables: string[];
-  version: string;
-  topicPrefix: string;
+  tables: string[] | undefined;
+  version: string | undefined;
+  topicPrefix: string | undefined;
 
   /*
   Event types:
@@ -43,26 +43,26 @@ class KafkaSourceLib {
   tables = [list of tables];
   */
 
-  stringify(e, prettyPrint = false) {
+  stringify(e: object, prettyPrint = false) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }
 
-  determineTopicName(streamARN) {
-    for (const table of this.tables) {
+  determineTopicName(streamARN: string) {
+    for (const table of this.tables!) {
       if (streamARN.includes(`/${stage}-${table}/`)) return this.topic(table);
     }
   }
 
-  unmarshall(r) {
+  unmarshall(r: any) {
     return dynamoDbUnmarshall(r);
   }
 
-  createPayload(record) {
+  createPayload(record: any) {
     return this.createDynamoPayload(record);
   }
 
-  createDynamoPayload(record) {
+  createDynamoPayload(record: any) {
     const dynamodb = record.dynamodb;
     const { eventID, eventName } = record;
     const dynamoRecord = {
@@ -78,7 +78,7 @@ class KafkaSourceLib {
     };
   }
 
-  topic(t) {
+  topic(t: string) {
     if (this.version) {
       return `${this.topicPrefix}.${t}.${this.version}`;
     } else {
@@ -86,8 +86,8 @@ class KafkaSourceLib {
     }
   }
 
-  createOutboundEvents(records) {
-    let outboundEvents = {};
+  createOutboundEvents(records: any) {
+    let outboundEvents: Record<string, { topic: string; messages: any[] }> = {};
     for (const record of records) {
       const topicName = this.determineTopicName(
         String(record.eventSourceARN.toString())
@@ -139,7 +139,7 @@ class KafkaSourceLib {
     return outboundEvents;
   }
 
-  async handler(event) {
+  async handler(event: any) {
     if (process.env.brokerString === "localstack") {
       return;
     }

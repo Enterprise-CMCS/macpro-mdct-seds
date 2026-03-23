@@ -32,7 +32,7 @@ describe("Kafka Source Lib", () => {
       version = "mockVersion";
       tables = ["mock-table-alpha", "mock-table-beta", "state-forms"];
     }
-    let TestKafkaInstance;
+    let TestKafkaInstance: any;
 
     beforeEach(() => {
       vi.clearAllMocks();
