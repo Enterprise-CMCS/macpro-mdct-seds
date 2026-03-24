@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import SummaryNotes from "./SummaryNotes";
 import { render, screen } from "@testing-library/react";
 import {
@@ -8,11 +8,6 @@ import {
   InProgressStatusFields,
 } from "../../utility-functions/formStatus";
 import { useStore } from "../../store/store";
-
-vi.mock("react-router-dom", async (importOriginal) => ({
-  ...(await importOriginal()),
-  useHistory: vi.fn(),
-}));
 
 const renderComponent = (userRole, statusData, initialComment = "") => {
   const state_comments = initialComment

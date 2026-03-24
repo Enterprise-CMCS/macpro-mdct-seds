@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import Routes from "../Routes/Routes";
 import { AppContext } from "../../libs/contextLib";
 import Header from "../Header/Header";

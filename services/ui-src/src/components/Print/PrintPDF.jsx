@@ -4,7 +4,7 @@ import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useRef } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
 import { useStore } from "../../store/store";
@@ -58,20 +58,20 @@ const PrintPDF = () => {
         <>
           <div>
             <div className="breadcrumbs">
-              <NavLink to="/">
+              <Link to="/">
                 {" "}
                 Enrollment Data Home {">"}
                 {"   "}
-              </NavLink>
-              <NavLink to={`/forms/${formattedStateName}/${year}/${quarter}`}>
+              </Link>
+              <Link to={`/forms/${formattedStateName}/${year}/${quarter}`}>
                 {`${formattedStateName} Q${quarter} ${year} > `}
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to={`/forms/${formattedStateName}/${year}/${quarter}/${form}`}
               >
                 {" "}
                 {` Form ${form}`}{" "}
-              </NavLink>
+              </Link>
             </div>
           </div>
 

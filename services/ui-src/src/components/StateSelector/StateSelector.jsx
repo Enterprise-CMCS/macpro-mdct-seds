@@ -3,14 +3,14 @@ import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { getStateName, stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
 const StateSelector = () => {
   const user = useStore((state) => state.user);
   const loadUser = useStore((state) => state.loadUser);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState();
 
   const saveUpdatedUser = async () => {
@@ -27,7 +27,7 @@ const StateSelector = () => {
           await updateUser(userToPass);
           // Re-fetch from API
           await loadUser();
-          history.push("/");
+          navigate("/");
         } catch (error) {
           console.log("Error in state selector:", error);
         }

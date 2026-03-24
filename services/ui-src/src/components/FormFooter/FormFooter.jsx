@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";

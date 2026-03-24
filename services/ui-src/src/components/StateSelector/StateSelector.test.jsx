@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router";
 import StateSelector from "./StateSelector";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -11,10 +11,11 @@ vi.mock("../../libs/api", () => ({
   updateUser: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
-  useHistory: vi.fn(),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
+const mockNavigate = useNavigate();
 
 const renderComponent = (user) => {
   useStore.setState({
@@ -77,8 +78,6 @@ describe("StateSelector component", () => {
 
   it("should save the user's selected state, reload their data in the store, and redirect them to Home", async () => {
     vi.spyOn(window, "confirm").mockImplementation(() => true);
-    const mockHistory = { push: vi.fn() };
-    useHistory.mockReturnValue(mockHistory);
 
     renderComponent({ id: 42, state: undefined });
 
@@ -91,6 +90,6 @@ describe("StateSelector component", () => {
       expect(updateUser).toHaveBeenCalledWith({ id: 42, state: "CO" });
       expect(useStore.getState().loadUser).toHaveBeenCalled();
     });
-    expect(mockHistory.push).toHaveBeenCalledWith("/");
+    expect(mockNavigate).toHaveBeenCalledWith("/");
   });
 });

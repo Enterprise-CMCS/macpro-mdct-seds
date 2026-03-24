@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { UsaBanner } from "@cmsgov/design-system";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useStore } from "../../store/store";
 import config from "config/config";
 

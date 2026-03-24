@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import NotApplicable from "./NotApplicable";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import {
   FinalCertifiedStatusFields,
   InProgressStatusFields,
