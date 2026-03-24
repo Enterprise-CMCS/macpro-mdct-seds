@@ -6,6 +6,7 @@ import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
+/** Home page for users with multi-state access: "admin" or "business" role */
 const HomeAdmin = () => {
   const user = useStore((state) => state.user);
   const [selectedState, setSelectedState] = useState();

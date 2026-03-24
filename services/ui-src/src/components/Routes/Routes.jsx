@@ -1,13 +1,10 @@
-import { React, useEffect } from "react";
-import { Redirect, Switch, useHistory, useLocation } from "react-router-dom";
+import { React } from "react";
+import { Redirect, Routes as ReactRoutes, Route } from "react-router";
 import { useStore } from "../../store/store";
-import Home from "../Home/Home";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Profile from "../Profile/Profile";
 import PrintPDF from "../Print/PrintPDF";
-import AuthenticatedRoute from "../AuthenticatedRoute/AuthenticatedRoute";
-import UnauthenticatedRoute from "../UnauthenticatedRoute/UnauthenticatedRoute";
 import Users from "../Users/Users";
 import EditUser from "../EditUser/EditUser";
 import Quarterly from "../Quarterly/Quarterly";
@@ -17,81 +14,64 @@ import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
 import FormTemplates from "../FormTemplates/FormTemplates";
 import GenerateTotals from "../GenerateTotals/GenerateTotals";
+import HomeState from "../HomeState/HomeState";
+import HomeAdmin from "../HomeAdmin/HomeAdmin";
 
-export default function Routes({ isAuthorized }) {
+/** Define a Route accessible to any logged-in user */
+const AuthRoute = (props) => {
   const userRole = useStore((state) => state.user.role);
-  const history = useHistory();
-  const location = useLocation();
-  // Preserve old hash style urls and route them to adjusted urls
-  useEffect(() => {
-    if (location.hash && location.hash.startsWith("#/")) {
-      history.replace(location.hash.replace("#", ""));
-    }
-  }, [history, location.hash, location.pathname]);
+  if (!userRole) return <Redirect to="/login" />;
+  return <Route {...props} />;
+};
 
-  if (!isAuthorized) {
-    return (
-      <Switch>
-        <UnauthenticatedRoute exact path="/">
-          <Redirect to="/login" />
-        </UnauthenticatedRoute>
-        <UnauthenticatedRoute exact path="/login">
-          <Login />
-        </UnauthenticatedRoute>
-      </Switch>
-    );
-  }
+/** Define a Route accessible only to admins */
+const AdminRoute = (props) => {
+  const userRole = useStore((state) => state.user.role);
+  if (!userRole) return <Redirect to="/login" />;
+  if (userRole !== "admin") return <Unauthorized />;
+  return <Route {...props} />;
+};
+
+export default function Routes() {
+  const userRole = useStore((state) => state.user.role);
+
+  const determineRootPage = () => {
+    switch (userRole) {
+      case "state":
+        return <HomeState />;
+      case "business":
+      case "admin":
+        return <HomeAdmin />;
+      default:
+        return <Redirect to="/login" />;
+    }
+  };
+
   return (
-    <Switch>
-      {/*************** UNAUTHENTICATED ROUTES ***************/}
-      <UnauthenticatedRoute exact path="/unauthorized">
-        <Unauthorized />
-      </UnauthenticatedRoute>
-      {/*************** AUTHENTICATED ROUTES ***************/}
-      <AuthenticatedRoute exact path="/">
-        <Home />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter/:formName">
-        <FormPage />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/profile">
-        <Profile />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/forms/:state/:year/:quarter">
-        <Quarterly />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/register-state">
-        <StateSelector />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/print/:state/:year/:quarter/:formName">
-        <PrintPDF />
-      </AuthenticatedRoute>
-      {/*************** ADMIN ROUTES ***************/}
-      {userRole === "admin" ? (
-        <>
-          <AuthenticatedRoute exact path="/users">
-            <Users />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/form-templates">
-            <FormTemplates />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/users/:id/edit">
-            <EditUser />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/generate-forms">
-            <GenerateForms />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/generate-counts">
-            <GenerateTotals />
-          </AuthenticatedRoute>
-        </>
-      ) : null}
-      <AuthenticatedRoute path="*">
-        <Redirect to="/" />
-      </AuthenticatedRoute>
-      <UnauthenticatedRoute>
-        <NotFound />
-      </UnauthenticatedRoute>
-    </Switch>
+    <ReactRoutes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={determineRootPage()} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+
+      <AuthRoute path="/register-state" element={<StateSelector />} />
+      <AuthRoute path="/profile" element={<Profile />} />
+      <AuthRoute path="/forms/:state/:year/:quarter" element={<Quarterly />} />
+      <AuthRoute
+        path="/forms/:state/:year/:quarter/:formName"
+        element={<FormPage />}
+      />
+      <AuthRoute
+        path="/print/:state/:year/:quarter/:formName"
+        element={<PrintPDF />}
+      />
+
+      <AdminRoute path="/users" element={<Users />} />
+      <AdminRoute path="/users/:id/edit" element={<EditUser />} />
+      <AdminRoute path="/form-templates" element={<FormTemplates />} />
+      <AdminRoute path="/generate-forms" element={<GenerateForms />} />
+      <AdminRoute path="/generate-counts" element={<GenerateTotals />} />
+
+      <Route path="*" element={<NotFound />} />
+    </ReactRoutes>
   );
 }
