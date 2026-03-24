@@ -17,7 +17,7 @@ vi.mock("config/config", () => ({
   },
 }));
 
-vi.mock("../Routes/Routes", () => ({
+vi.mock("../AppRoutes/AppRoutes", () => ({
   default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>,
 }));
 

@@ -1,5 +1,5 @@
 import { React } from "react";
-import { Redirect, Routes as ReactRoutes, Route } from "react-router";
+import { Redirect, Routes, Route } from "react-router";
 import { useStore } from "../../store/store";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
@@ -32,7 +32,7 @@ const AdminRoute = (props) => {
   return <Route {...props} />;
 };
 
-export default function Routes() {
+export default function AppRoutes() {
   const userRole = useStore((state) => state.user.role);
 
   const determineRootPage = () => {
@@ -48,7 +48,7 @@ export default function Routes() {
   };
 
   return (
-    <ReactRoutes>
+    <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/" element={determineRootPage()} />
       <Route path="/unauthorized" element={<Unauthorized />} />
@@ -72,6 +72,6 @@ export default function Routes() {
       <AdminRoute path="/generate-counts" element={<GenerateTotals />} />
 
       <Route path="*" element={<NotFound />} />
-    </ReactRoutes>
+    </Routes>
   );
 }
