@@ -1,5 +1,5 @@
 import { React } from "react";
-import { Redirect, Routes, Route } from "react-router";
+import { Navigate, Routes, Route } from "react-router";
 import { useStore } from "../../store/store";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
@@ -20,14 +20,14 @@ import HomeAdmin from "../HomeAdmin/HomeAdmin";
 /** Define a Route accessible to any logged-in user */
 const AuthRoute = (props) => {
   const userRole = useStore((state) => state.user.role);
-  if (!userRole) return <Redirect to="/login" />;
+  if (!userRole) return <Navigate to="/login" />;
   return <Route {...props} />;
 };
 
 /** Define a Route accessible only to admins */
 const AdminRoute = (props) => {
   const userRole = useStore((state) => state.user.role);
-  if (!userRole) return <Redirect to="/login" />;
+  if (!userRole) return <Navigate to="/login" />;
   if (userRole !== "admin") return <Unauthorized />;
   return <Route {...props} />;
 };
@@ -43,7 +43,7 @@ export default function AppRoutes() {
       case "admin":
         return <HomeAdmin />;
       default:
-        return <Redirect to="/login" />;
+        return <Navigate to="/login" />;
     }
   };
 
