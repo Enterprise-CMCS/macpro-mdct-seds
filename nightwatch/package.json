@@ -8,7 +8,7 @@
     "smoke": "yarn run test --tag smoke"
   },
   "devDependencies": {
-    "chromedriver": ">=88.0.0",
+    "chromedriver": ">=146.0.6",
     "dotenv": "^8.2.0",
     "nightwatch": "^1.5.1",
     "yargs": "^16.1.1"
