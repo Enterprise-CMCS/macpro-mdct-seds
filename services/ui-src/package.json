@@ -15,7 +15,7 @@
     "aws-amplify": "^6.16.2",
     "file-saver": "^2.0.5",
     "jsonpath": "^1.1.1",
-    "jspdf": "^3.0.2",
+    "jspdf": "^4.2.1",
     "prop-types": "^15.7.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

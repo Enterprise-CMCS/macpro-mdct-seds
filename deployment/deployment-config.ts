@@ -39,7 +39,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
-  if (!isLocalStack) {
+  if (!isLocalStack && stage !== "bootstrap") {
     validateConfig(config);
   }
 
