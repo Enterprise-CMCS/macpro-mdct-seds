@@ -71,7 +71,15 @@ export default function Login() {
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <img src={signInAltIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
+          <img
+            src={signInAltIcon}
+            alt=""
+            style={{
+              height: "1em",
+              verticalAlign: "-0.125em",
+              marginLeft: "0.5em",
+            }}
+          />
         </LoaderButton>
       </div>
       <form
@@ -103,7 +111,15 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <img src={signInAltIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
+            <img
+              src={signInAltIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </LoaderButton>
         </div>
       </form>
