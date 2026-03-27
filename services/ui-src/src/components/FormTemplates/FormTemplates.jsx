@@ -139,7 +139,7 @@ const FormTemplates = () => {
           onClick={() => handleSave()}
           data-testid="saveButton"
         >
-          Save <img src={saveIcon} alt="" />
+          Save <img src={saveIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
         </Button>
       </div>
     </div>
