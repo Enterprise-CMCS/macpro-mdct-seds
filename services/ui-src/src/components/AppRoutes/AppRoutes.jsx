@@ -18,18 +18,18 @@ import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 
 /** Define a Route accessible to any logged-in user */
-const AuthRoute = (props) => {
+const AuthRoute = ({ element, ...props }) => {
   const userRole = useStore((state) => state.user.role);
-  if (!userRole) return <Navigate to="/login" />;
-  return <Route {...props} />;
+  if (!userRole) element = <Navigate to="/login" />;
+  return <Route {...props} element={element} />;
 };
 
 /** Define a Route accessible only to admins */
-const AdminRoute = (props) => {
+const AdminRoute = ({ element, ...props }) => {
   const userRole = useStore((state) => state.user.role);
-  if (!userRole) return <Navigate to="/login" />;
-  if (userRole !== "admin") return <Unauthorized />;
-  return <Route {...props} />;
+  if (!userRole) element = <Navigate to="/login" />;
+  if (userRole !== "admin") element = <Unauthorized />;
+  return <Route {...props} element={element} />;
 };
 
 export default function AppRoutes() {
