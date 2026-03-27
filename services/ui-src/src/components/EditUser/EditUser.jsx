@@ -155,7 +155,15 @@ const EditUser = () => {
             onClick={handleUpdateClick}
           >
             Update User
-            <img src={userCheckIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
+            <img
+              src={userCheckIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </Button>
         </div>
       ) : (

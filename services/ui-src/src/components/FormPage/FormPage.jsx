@@ -115,7 +115,15 @@ const FormPage = () => {
             onClick={redirectToPDF}
           >
             Print view / PDF
-            <img src={filePdfIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
+            <img
+              src={filePdfIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </Button>
           <NotApplicable />
           <TabContainer quarter={quarter} />

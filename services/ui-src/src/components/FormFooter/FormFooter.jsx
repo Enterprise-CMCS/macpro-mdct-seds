@@ -17,7 +17,16 @@ const FormFooter = ({ state, year, quarter }) => {
     <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
-          <img src={arrowLeftIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginRight: "0.5em" }} /> Back to {`Q${quarter} ${year}`}
+          <img
+            src={arrowLeftIcon}
+            alt=""
+            style={{
+              height: "1em",
+              verticalAlign: "-0.125em",
+              marginRight: "0.5em",
+            }}
+          />{" "}
+          Back to {`Q${quarter} ${year}`}
         </Link>
       </div>
 
@@ -35,7 +44,16 @@ const FormFooter = ({ state, year, quarter }) => {
             data-testid="saveButton"
             disabled={userRole !== "state"}
           >
-            Save <img src={saveIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
+            Save{" "}
+            <img
+              src={saveIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </Button>
         </div>
       </div>

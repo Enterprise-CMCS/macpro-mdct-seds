@@ -7392,7 +7392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-amplify@npm:^6.16.2":
+"aws-amplify@npm:~6.16.2":
   version: 6.16.3
   resolution: "aws-amplify@npm:6.16.3"
   dependencies:
@@ -15159,7 +15159,7 @@ __metadata:
     "@testing-library/user-event": "npm:13.5.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@vitest/coverage-v8": "npm:3.0.5"
-    aws-amplify: "npm:^6.16.2"
+    aws-amplify: "npm:~6.16.2"
     dotenv: "npm:8.2.0"
     file-saver: "npm:^2.0.5"
     history: "npm:^4.9.0"
