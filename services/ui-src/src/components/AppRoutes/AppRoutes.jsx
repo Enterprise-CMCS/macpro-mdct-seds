@@ -17,25 +17,10 @@ import GenerateTotals from "../GenerateTotals/GenerateTotals";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 
-/** Define a Route accessible to any logged-in user */
-const AuthRoute = ({ element, ...props }) => {
-  const userRole = useStore((state) => state.user.role);
-  if (!userRole) element = <Navigate to="/login" />;
-  return <Route {...props} element={element} />;
-};
-
-/** Define a Route accessible only to admins */
-const AdminRoute = ({ element, ...props }) => {
-  const userRole = useStore((state) => state.user.role);
-  if (!userRole) element = <Navigate to="/login" />;
-  if (userRole !== "admin") element = <Unauthorized />;
-  return <Route {...props} element={element} />;
-};
-
 export default function AppRoutes() {
   const userRole = useStore((state) => state.user.role);
 
-  const determineRootPage = () => {
+  const homePage = () => {
     switch (userRole) {
       case "state":
         return <HomeState />;
@@ -47,30 +32,48 @@ export default function AppRoutes() {
     }
   };
 
+  const loggedInPage = (element) => {
+    if (!userRole) return <Navigate to="/login" />;
+    return element;
+  };
+
+  const adminPage = (element) => {
+    if (!userRole) return <Navigate to="/login" />;
+    if (userRole !== "admin") return <Unauthorized />;
+    return element;
+  };
+
   return (
     <Routes>
+      {/* These pages are available to the general public */}
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={determineRootPage()} />
+      <Route path="/" element={homePage()} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
-      <AuthRoute path="/register-state" element={<StateSelector />} />
-      <AuthRoute path="/profile" element={<Profile />} />
-      <AuthRoute path="/forms/:state/:year/:quarter" element={<Quarterly />} />
-      <AuthRoute
+      {/* These pages require an active user session */}
+      <Route path="/register-state" element={loggedInPage(<StateSelector />)} />
+      <Route path="/profile" element={loggedInPage(<Profile />)} />
+      <Route
+        path="/forms/:state/:year/:quarter"
+        element={loggedInPage(<Quarterly />)}
+      />
+      <Route
         path="/forms/:state/:year/:quarter/:formName"
-        element={<FormPage />}
+        element={loggedInPage(<FormPage />)}
       />
-      <AuthRoute
+      <Route
         path="/print/:state/:year/:quarter/:formName"
-        element={<PrintPDF />}
+        element={loggedInPage(<PrintPDF />)}
       />
 
-      <AdminRoute path="/users" element={<Users />} />
-      <AdminRoute path="/users/:id/edit" element={<EditUser />} />
-      <AdminRoute path="/form-templates" element={<FormTemplates />} />
-      <AdminRoute path="/generate-forms" element={<GenerateForms />} />
-      <AdminRoute path="/generate-counts" element={<GenerateTotals />} />
+      {/* These pages are admin-only */}
+      <Route path="/users" element={adminPage(<Users />)} />
+      <Route path="/users/:id/edit" element={adminPage(<EditUser />)} />
+      <Route path="/form-templates" element={adminPage(<FormTemplates />)} />
+      <Route path="/generate-forms" element={adminPage(<GenerateForms />)} />
+      <Route path="/generate-counts" element={adminPage(<GenerateTotals />)} />
 
+      {/* The fallback page is also generally available */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
