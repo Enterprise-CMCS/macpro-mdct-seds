@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
+
 import { generateEnrollmentTotals } from "../../libs/api";
 
 const GenerateTotals = () => {

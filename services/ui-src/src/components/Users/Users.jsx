@@ -54,7 +54,7 @@ const Users = () => {
           }
         >
           CSV
-          <img src={fileCsvIcon} alt="" />
+          <img src={fileCsvIcon} alt="" style={{ height: "1em", verticalAlign: "-0.125em", marginLeft: "0.5em" }} />
         </Button>
       </div>
       <div>

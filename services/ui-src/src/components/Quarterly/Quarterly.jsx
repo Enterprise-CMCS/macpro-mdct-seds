@@ -93,7 +93,7 @@ const Quarterly = () => {
                             form
                           )}`}
                         >
-                          <img src={filePdfIcon} alt="Download PDF" />
+                          <img src={filePdfIcon} alt="Download PDF" style={{ height: "1em", verticalAlign: "-0.125em" }} />
                         </Link>
                       </td>
                     </tr>
