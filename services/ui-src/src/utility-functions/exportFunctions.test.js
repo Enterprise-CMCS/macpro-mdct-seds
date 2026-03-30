@@ -20,7 +20,7 @@ const fruitData = {
 describe("Export Functions", () => {
   describe("CSV Export", () => {
     it("should save a file with the correct name and appropriate MIME type", async () => {
-      handleExport("csv", "fruit.csv", fruitData);
+      handleExport("fruit.csv", fruitData);
 
       expect(saveAs).toHaveBeenCalled();
 
