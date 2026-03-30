@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router-dom";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
+import arrowLeftIcon from "../../assets/icons/arrow-left.svg";
+import saveIcon from "../../assets/icons/save.svg";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {
@@ -17,7 +17,16 @@ const FormFooter = ({ state, year, quarter }) => {
     <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
-          <FontAwesomeIcon icon={faArrowLeft} /> Back to {`Q${quarter} ${year}`}
+          <img
+            src={arrowLeftIcon}
+            alt=""
+            style={{
+              height: "1em",
+              verticalAlign: "-0.125em",
+              marginRight: "0.5em",
+            }}
+          />{" "}
+          Back to {`Q${quarter} ${year}`}
         </Link>
       </div>
 
@@ -35,7 +44,16 @@ const FormFooter = ({ state, year, quarter }) => {
             data-testid="saveButton"
             disabled={userRole !== "state"}
           >
-            Save <FontAwesomeIcon icon={faSave} />
+            Save{" "}
+            <img
+              src={saveIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </Button>
         </div>
       </div>

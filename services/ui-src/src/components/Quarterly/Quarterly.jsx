@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import filePdfIcon from "../../assets/icons/file-pdf.svg";
 import { Link, useParams } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -94,7 +93,11 @@ const Quarterly = () => {
                             form
                           )}`}
                         >
-                          <FontAwesomeIcon icon={faFilePdf} />
+                          <img
+                            src={filePdfIcon}
+                            alt="Download PDF"
+                            style={{ height: "1em", verticalAlign: "-0.125em" }}
+                          />
                         </Link>
                       </td>
                     </tr>

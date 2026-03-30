@@ -3,9 +3,7 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
+import signInAltIcon from "../../assets/icons/sign-in-alt.svg";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +71,15 @@ export default function Login() {
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <FontAwesomeIcon icon={faSignInAlt} />
+          <img
+            src={signInAltIcon}
+            alt=""
+            style={{
+              height: "1em",
+              verticalAlign: "-0.125em",
+              marginLeft: "0.5em",
+            }}
+          />
         </LoaderButton>
       </div>
       <form
@@ -103,7 +109,15 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} />
+            <img
+              src={signInAltIcon}
+              alt=""
+              style={{
+                height: "1em",
+                verticalAlign: "-0.125em",
+                marginLeft: "0.5em",
+              }}
+            />
           </LoaderButton>
         </div>
       </form>
