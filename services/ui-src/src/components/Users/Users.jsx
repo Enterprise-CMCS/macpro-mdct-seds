@@ -39,7 +39,7 @@ const Users = () => {
         <Button
           variation="solid"
           onClick={() =>
-            handleExport("csv", "MDCT Users Export.csv", {
+            handleExport("MDCT Users Export.csv", {
               columns: [
                 { name: "Username", selector: "username" },
                 { name: "First Name", selector: "firstName" },
