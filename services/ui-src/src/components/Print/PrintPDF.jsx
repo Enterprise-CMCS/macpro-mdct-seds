@@ -21,7 +21,7 @@ const PrintPDF = () => {
   const loader = useRef(null);
 
   const { state, year, quarter, formName } = useParams();
-  const [hasAccess, setHasAccess] = React.useState(false);
+  const [hasAccess, setHasAccess] = React.useState(undefined);
 
   // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
   const formattedStateName = state.toUpperCase();
@@ -29,7 +29,7 @@ const PrintPDF = () => {
   const form = formName.toUpperCase().replace("-", ".");
 
   useEffect(() => {
-    loader.current.showModal();
+    loader.current?.showModal();
     const fetchData = async () => {
       if (canViewStateData(user, state)) {
         await getForm(formattedStateName, year, quarterInt, form);
@@ -37,7 +37,7 @@ const PrintPDF = () => {
       } else {
         setHasAccess(false);
       }
-      loader.current.close();
+      loader.current?.close();
     };
 
     fetchData();

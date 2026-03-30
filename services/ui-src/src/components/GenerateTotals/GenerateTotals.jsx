@@ -14,10 +14,10 @@ const GenerateTotals = () => {
 
     if (proceed) {
       try {
-        loader.current.showModal();
+        loader.current?.showModal();
         await generateEnrollmentTotals(); // Async request, just returns an immediate 200 and starts processing.
       } finally {
-        loader.current.close();
+        loader.current?.close();
         setAlert(true);
       }
     }
