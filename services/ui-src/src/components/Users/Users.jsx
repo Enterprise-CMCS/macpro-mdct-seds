@@ -9,7 +9,7 @@ import { Button } from "@cmsgov/design-system";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCsv, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFileCsv } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -56,21 +56,6 @@ const Users = () => {
         >
           CSV
           <FontAwesomeIcon icon={faFileCsv} />
-        </Button>
-
-        <Button
-          variation="solid"
-          onClick={async () =>
-            await handleExport(
-              "pdf",
-              "MDCT Users Export.pdf",
-              "table",
-              "html-selector"
-            )
-          }
-        >
-          PDF
-          <FontAwesomeIcon icon={faFilePdf} />
         </Button>
       </div>
       <div>
