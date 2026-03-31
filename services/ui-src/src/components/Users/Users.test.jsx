@@ -125,7 +125,6 @@ describe("Test Users.js", () => {
     userEvent.click(csvButton);
 
     expect(handleExport).toHaveBeenCalledWith(
-      "csv",
       "MDCT Users Export.csv",
       expect.objectContaining({
         data: mockUsers,
