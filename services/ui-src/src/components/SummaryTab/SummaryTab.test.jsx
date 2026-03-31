@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, screen } from "@testing-library/react";
 import SummaryTab from "./SummaryTab";
 import currentFormMock_21E from "../../provider-mocks/currentFormMock_21E.js";
@@ -24,10 +24,10 @@ vi.mock("../SynthesizedGridSummary/SynthesizedGridSummary", () => ({
   ),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
-  useLocation: () => ({
-    pathname: "localhost:3000/forms/AL/2021/1/21E",
+  useParams: () => ({
+    quarter: "1",
   }),
 }));
 

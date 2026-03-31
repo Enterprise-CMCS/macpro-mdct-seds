@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import { listFormsForState } from "../../libs/api";
 import { useStore } from "../../store/store";
@@ -10,10 +10,11 @@ vi.mock("../../libs/api", () => ({
   listFormsForState: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
-  useHistory: vi.fn(),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
+const mockNavigate = useNavigate();
 
 const renderComponent = (state) => {
   const user = { state };
@@ -29,12 +30,9 @@ describe("Test HomeState.js", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("should redirect users with no state", async () => {
-    const history = [];
-    useHistory.mockReturnValue(history);
-
     renderComponent();
 
-    expect(history).toEqual(["/register-state"]);
+    expect(mockNavigate).toHaveBeenCalledWith("/register-state");
   });
 
   it("should display links to quarterly reports", async () => {

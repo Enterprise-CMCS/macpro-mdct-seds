@@ -4,16 +4,13 @@ import QuestionComponent from "../Question/Question";
 import SynthesizedGridSummary from "../SynthesizedGridSummary/SynthesizedGridSummary";
 import jsonpath from "jsonpath";
 import SummaryNotes from "../SummaryNotes/SummaryNotes";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router";
 import { useStore } from "../../store/store";
 
 const SummaryTab = () => {
   const questions = useStore((state) => state.questions);
   const answers = useStore((state) => state.answers);
-
-  // Get current quarter from URL
-  const location = useLocation();
-  const quarter = location.pathname.split("/")[4];
+  const { quarter } = useParams();
 
   // Checks for non-numeric chars in a string
   function containsNonNumeric(value) {

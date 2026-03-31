@@ -27,7 +27,7 @@ const GenerateForms = () => {
       )
     ) {
       // send year and quarter to lambda which will create the table rows
-      loader.current.showModal();
+      loader.current?.showModal();
       setAlert(undefined);
       try {
         await generateQuarterForms({
@@ -45,7 +45,7 @@ const GenerateForms = () => {
             : "Form creation failed.";
         setAlert({ variation: "error", message });
       } finally {
-        loader.current.close();
+        loader.current?.close();
       }
     }
   };

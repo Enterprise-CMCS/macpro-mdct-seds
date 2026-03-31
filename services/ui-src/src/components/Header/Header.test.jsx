@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, test, vi } from "vitest";
 import Header from "./Header";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { useStore } from "../../store/store";
 

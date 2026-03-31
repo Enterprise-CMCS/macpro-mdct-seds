@@ -1,13 +1,13 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import Quarterly from "../Quarterly/Quarterly";
 import { render, screen, waitFor } from "@testing-library/react";
 import quarterlyDataMock from "../../provider-mocks/quarterlyDataMock";
 import { useStore } from "../../store/store";
 import { listFormsForQuarter } from "libs/api";
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({
     state: "AL",

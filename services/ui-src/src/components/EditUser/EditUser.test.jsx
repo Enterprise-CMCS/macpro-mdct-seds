@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import EditUser from "./EditUser";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getUserById, updateUser } from "../../libs/api";
@@ -11,7 +11,7 @@ vi.mock("../../libs/api", () => ({
   getUserById: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({ id: "23" }),
 }));

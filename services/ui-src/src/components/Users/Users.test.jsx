@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Users from "./Users";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { listUsers } from "../../libs/api";
@@ -9,11 +9,6 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 
 vi.mock("../../libs/api", () => ({
   listUsers: vi.fn().mockResolvedValue([]),
-}));
-
-vi.mock("react-router-dom", async (importOriginal) => ({
-  ...(await importOriginal()),
-  useHistory: vi.fn(),
 }));
 
 vi.mock("../../utility-functions/exportFunctions", () => ({
