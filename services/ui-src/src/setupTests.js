@@ -47,7 +47,3 @@ vi.mock("aws-amplify", () => ({
 HTMLDialogElement.prototype.show = vi.fn();
 HTMLDialogElement.prototype.showModal = vi.fn();
 HTMLDialogElement.prototype.close = vi.fn();
-
-HTMLCanvasElement.prototype.getContext = () => {
-  /* Nothing; we don't unit test our jsPDF integration */
-};

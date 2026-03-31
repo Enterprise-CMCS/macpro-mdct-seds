@@ -20,7 +20,7 @@ const fruitData = {
 describe("Export Functions", () => {
   describe("CSV Export", () => {
     it("should save a file with the correct name and appropriate MIME type", async () => {
-      handleExport("csv", "fruit.csv", fruitData);
+      handleExport("fruit.csv", fruitData);
 
       expect(saveAs).toHaveBeenCalled();
 
@@ -78,12 +78,6 @@ describe("Export Functions", () => {
       expect(lines[2]).toBe(`has_line_feed,"c\nd"`);
       expect(lines[3]).toBe(`has_carriage_return,"e\rf"`);
       expect(lines[4]).toBe(`has_comma_and_quote,"g:""h,i"""`);
-    });
-
-    it("should throw error from export if the type is a pdf", async () => {
-      await expect(handleExport("pdf", "mock-name")).rejects.toThrow(
-        "PDF export failed! Error code 10f2c"
-      );
     });
   });
 });
