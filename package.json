@@ -19,7 +19,6 @@
   "workspaces": [
     "cli",
     "deployment",
-    "nightwatch",
     "services/app-api",
     "services/database",
     "services/topics",
@@ -34,8 +33,6 @@
     "watch": "tsc -w",
     "cdk": "npx --prefix deployment cdk",
     "cdklocal": "npx --prefix deployment cdklocal",
-    "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
-    "smoke": "yarn run test --tag smoke",
     "test:cypress": "cd tests/cypress && yarn test && cd -",
     "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
   },
