@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import PropTypes from "prop-types";
 import { Button, TextInput } from "@cmsgov/design-system";
-import { getSingleForm } from "../../libs/api";
+import { getForm } from "../../libs/api";
 import { formTypes } from "../../utility-functions/constants";
 import { useStore } from "../../store/store";
 
@@ -30,7 +30,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
       // Only get FPL data if correct form
       if (!formsWithOutFPL.includes(form)) {
         // Get answers for this form from DB
-        const { answers } = await getSingleForm(state, year, quarter, form);
+        const { answers } = await getForm(state, year, quarter, form);
 
         // Determine Maximum FPL
         const maxFPL = getMaxFPL(answers);
@@ -54,7 +54,7 @@ const FormHeader = ({ quarter, form, year, state }) => {
     value = value.length < 4 ? value : value.substring(0, 3);
 
     // Remove all non-numeric chars
-    value = value.replace(/[^\d]/g, "");
+    value = value.replaceAll(/[^\d]/g, "");
 
     // Save to state
     setMaxFPL(value);

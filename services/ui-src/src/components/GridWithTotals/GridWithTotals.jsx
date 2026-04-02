@@ -27,7 +27,7 @@ const GridWithTotals = (props) => {
   const updateLocalStateOnChange = (row, column, event) => {
     let gridCopy = [...gridData];
     gridCopy[row][column] = parseFloat(
-      event.target.value.replace(/[^0-9]/g, "")
+      event.target.value.replaceAll(/[^0-9]/g, "")
     );
     updateGridData(gridCopy);
     updateTotals();
@@ -57,7 +57,7 @@ const GridWithTotals = (props) => {
       checkQuestion5Summary.includes("summary-synthesized")
     ) {
       let sum5Data = translateInitialData(props.gridData);
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1c1Total =
             props.questions[0].rows[1].col2 +
@@ -126,7 +126,7 @@ const GridWithTotals = (props) => {
         return true;
       });
     } else {
-      gridData.map((row, rowIndex) => {
+      gridData.map((row) => {
         if (row !== undefined) {
           row.map((column, columnIndex) => {
             let currentValue = 0;
@@ -183,7 +183,7 @@ const GridWithTotals = (props) => {
     ) {
       let sum5Data = translateInitialData(props.gridData);
 
-      sum5Data.map((row, rowIndex) => {
+      sum5Data.map((row) => {
         if (row !== undefined && props.questions) {
           let q1r1 = props.questions[0].rows[1];
           let q4r1 = props.questions[3].rows[1];
@@ -223,12 +223,11 @@ const GridWithTotals = (props) => {
         return true;
       });
       updateGridTotalOfTotals(totalOfTotals);
-      updateGridRowTotals(gridRowTotalsCopy);
     } else {
       gridData.map((row, rowIndex) => {
         rowTotal = 0;
         if (row !== undefined) {
-          row.map((column, columnIndex) => {
+          row.map((column) => {
             let currentValue = 0;
 
             if (isNaN(column) === false) {
@@ -246,9 +245,8 @@ const GridWithTotals = (props) => {
 
         return true;
       });
-
-      updateGridRowTotals(gridRowTotalsCopy);
     }
+    updateGridRowTotals(gridRowTotalsCopy);
   };
 
   let headerColArray = [];
@@ -375,17 +373,15 @@ const GridWithTotals = (props) => {
     return true;
   });
 
-  const totalsRow = Array.from(Array(headerCols.length - 1), (e, i) => {
-    let column;
-
+  const totalsRow = headerCols.slice(1).map((_, i) => {
     if (i === 0) {
-      column = (
+      return (
         <th scope="row" className="total-header-cell" key={i}>
           Totals:
         </th>
       );
     } else {
-      column = (
+      return (
         <td key={`tc-${i}`} className="total-column">
           {gridColumnTotals[i] > 0
             ? addCommas(
@@ -395,8 +391,6 @@ const GridWithTotals = (props) => {
         </td>
       );
     }
-
-    return column;
   });
 
   return (

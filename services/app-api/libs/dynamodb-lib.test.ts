@@ -6,6 +6,7 @@ import {
   PutCommand,
   QueryCommand,
   ScanCommand,
+  ScanCommandInput,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
@@ -35,7 +36,7 @@ describe("DynamoDB library functions", () => {
         .mockResolvedValueOnce({ LastEvaluatedKey: "c" })
         .mockResolvedValueOnce({ Items: [4] });
 
-      const result = await dynamodbLib.scan({});
+      const result = await dynamodbLib.scan({} as ScanCommandInput);
 
       expect(result).toEqual({
         Count: 4,
@@ -57,7 +58,7 @@ describe("DynamoDB library functions", () => {
       mockBatchWrite.mockResolvedValue({});
       const items = Array.from({ length: 60 }).map((_, id) => ({ id }));
 
-      await dynamodbLib.putMultiple("mockTableName", items, (item) => item.id);
+      await dynamodbLib.putMultiple("mockTableName", items, (x) => `${x.id}`);
 
       expect(mockBatchWrite).toHaveBeenCalledTimes(3);
       const batchSizes = mockBatchWrite.mock.calls.map(
@@ -65,7 +66,7 @@ describe("DynamoDB library functions", () => {
       );
       expect(batchSizes).toEqual([25, 25, 10]);
       const processedItems = mockBatchWrite.mock.calls.flatMap((call) =>
-        call[0].RequestItems.mockTableName.map((req) => req.PutRequest.Item)
+        call[0].RequestItems.mockTableName.map((r: any) => r.PutRequest.Item)
       );
       expect(processedItems).toEqual(items);
     });
@@ -74,19 +75,19 @@ describe("DynamoDB library functions", () => {
       mockBatchWrite.mockImplementation(async (batchRequest) => {
         // Let's cause a handful of failures in the second batch
         const itemsToFail = batchRequest.RequestItems.mockTableName.filter(
-          (req) => {
+          (req: any) => {
             const item = req.PutRequest.Item;
             return item.id > 40 && item.id % 2 === 1;
           }
         );
         if (itemsToFail.length === 0) {
-          return Promise.resolve({});
+          return {};
         } else {
-          return Promise.resolve({
+          return {
             UnprocessedItems: {
               mockTableName: itemsToFail,
             },
-          });
+          };
         }
       });
       const items = Array.from({ length: 60 }).map((_, id) => ({ id }));
@@ -95,7 +96,7 @@ describe("DynamoDB library functions", () => {
         await dynamodbLib.putMultiple(
           "mockTableName",
           items,
-          (item) => item.id
+          (item) => `${item.id}`
         );
 
       await expect(tryPutMultiple).rejects.toThrow(

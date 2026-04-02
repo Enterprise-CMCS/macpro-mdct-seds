@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Users from "./Users";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { listUsers } from "../../libs/api";
@@ -9,11 +9,6 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 
 vi.mock("../../libs/api", () => ({
   listUsers: vi.fn().mockResolvedValue([]),
-}));
-
-vi.mock("react-router-dom", async (importOriginal) => ({
-  ...(await importOriginal()),
-  useHistory: vi.fn(),
 }));
 
 vi.mock("../../utility-functions/exportFunctions", () => ({
@@ -66,8 +61,6 @@ describe("Test Users.js", () => {
     await waitFor(() => expect(listUsers).toHaveBeenCalled());
 
     expect(screen.getByText("CSV", { selector: "button" })).toBeInTheDocument();
-
-    expect(screen.getByText("PDF", { selector: "button" })).toBeInTheDocument();
   });
 
   it("should render the correct headers", async () => {
@@ -132,21 +125,10 @@ describe("Test Users.js", () => {
     userEvent.click(csvButton);
 
     expect(handleExport).toHaveBeenCalledWith(
-      "csv",
       "MDCT Users Export.csv",
       expect.objectContaining({
         data: mockUsers,
       })
     );
-  });
-
-  it("should export to PDF somehow", async () => {
-    renderComponent();
-    await waitFor(() => expect(listUsers).toHaveBeenCalled());
-
-    const pdfButton = screen.getByText("PDF", { selector: "button" });
-    userEvent.click(pdfButton);
-
-    expect(handleExport).toHaveBeenCalled();
   });
 });

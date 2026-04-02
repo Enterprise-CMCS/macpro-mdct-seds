@@ -16,6 +16,16 @@
   "directories": {
     "test": "tests"
   },
+  "workspaces": [
+    "cli",
+    "deployment",
+    "services/app-api",
+    "services/database",
+    "services/topics",
+    "services/ui-auth",
+    "services/ui-src",
+    "tests/cypress"
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -23,19 +33,17 @@
     "watch": "tsc -w",
     "cdk": "npx --prefix deployment cdk",
     "cdklocal": "npx --prefix deployment cdklocal",
-    "test": "node nightwatch -c tests/nightwatch/nightwatch.conf.js",
-    "smoke": "yarn run test --tag smoke",
     "test:cypress": "cd tests/cypress && yarn test && cd -",
     "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.985.0",
+    "@aws-sdk/client-cloudformation": "~3.1012.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
     "@octokit/auth-action": "^6.0.1",
     "@octokit/rest": "^22.0.0",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.27.1",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.41.0",
     "tsx": "^4.20.5",

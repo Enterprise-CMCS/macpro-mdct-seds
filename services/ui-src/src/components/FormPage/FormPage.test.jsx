@@ -1,7 +1,7 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import FormPage from "./FormPage";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";
@@ -46,7 +46,7 @@ vi.mock("../../utility-functions/userFunctions", () => ({
   getUserInfo: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
   useParams: vi.fn().mockReturnValue({
     state: "CO",

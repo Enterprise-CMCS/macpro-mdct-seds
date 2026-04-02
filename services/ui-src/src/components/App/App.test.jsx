@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { render, screen, waitFor } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 import { useStore } from "../../store/store";
 
@@ -17,11 +17,11 @@ vi.mock("config/config", () => ({
   },
 }));
 
-vi.mock("../Routes/Routes", () => ({
+vi.mock("../AppRoutes/AppRoutes", () => ({
   default: (props) => <div data-testid="routes">{JSON.stringify(props)}</div>,
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
   useLocation: () => ({
     pathname: "localhost:3000/example/path",

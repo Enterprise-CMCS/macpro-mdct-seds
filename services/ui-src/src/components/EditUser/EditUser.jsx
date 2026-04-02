@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import { Button, Table, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
@@ -56,7 +56,8 @@ const EditUser = () => {
       <h1>Edit User</h1>
       {isLoading ? (
         <Preloader />
-      ) : user ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      user ? (
         <div className="flex-col-gap-1half">
           <Table>
             <tbody>

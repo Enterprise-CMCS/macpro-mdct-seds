@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeAdmin from "./HomeAdmin";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { render, waitFor, screen } from "@testing-library/react";
 import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";

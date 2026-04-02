@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { obtainAvailableForms } from "../../libs/api";
+import { Link } from "react-router";
+import { listFormsForState } from "../../libs/api";
 import { buildSortedAccordionByYearQuarter } from "../../utility-functions/sortingFunctions";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
 import { stateSelectOptions } from "../../lookups/states";
 import { useStore } from "../../store/store";
 
+/** Home page for users with multi-state access: "admin" or "business" role */
 const HomeAdmin = () => {
   const user = useStore((state) => state.user);
   const [selectedState, setSelectedState] = useState();
@@ -17,8 +18,8 @@ const HomeAdmin = () => {
     // Get list of all state forms
     let forms = [];
     try {
-      forms = await obtainAvailableForms(stateId);
-    } catch (e) {
+      forms = await listFormsForState(stateId);
+    } catch {
       /* no-op */
     }
 
@@ -72,7 +73,7 @@ const HomeAdmin = () => {
         </div>
 
         <div className="flex-col-gap-1">
-          {accordionItems && accordionItems.length !== 0 ? (
+          {accordionItems && accordionItems.length > 0 ? (
             <>
               <p>
                 Welcome to SEDS! Please select a Federal Fiscal Year and quarter

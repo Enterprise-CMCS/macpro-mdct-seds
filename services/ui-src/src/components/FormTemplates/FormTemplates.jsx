@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  obtainFormTemplate,
-  obtainFormTemplateYears,
-  updateCreateFormTemplate,
-} from "../../libs/api";
+import { getTemplate, listTemplateYears, updateTemplate } from "../../libs/api";
 import { Button, Alert, TextInput, TextField } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -24,11 +20,10 @@ const FormTemplates = () => {
     const confirm = window.confirm(
       `Are you sure you want to update the template for ${inputYear}? This option cannot be undone.`
     );
-    let response;
     if (confirm) {
       setAlert(undefined);
       try {
-        response = await updateCreateFormTemplate({
+        await updateTemplate({
           year: Number(inputYear),
           template: JSON.parse(currentTemplate),
         });
@@ -36,9 +31,11 @@ const FormTemplates = () => {
           variation: "success",
           message: "Template saved successfully.",
         });
-      } catch (err) {
+      } catch (error) {
         const message =
-          err instanceof Error ? `Save failed: ${err.message}` : "Save failed.";
+          error instanceof Error
+            ? `Save failed: ${error.message}`
+            : "Save failed.";
         setAlert({ variation: "error", message });
       }
     }
@@ -47,7 +44,7 @@ const FormTemplates = () => {
   const updateYear = async (year) => {
     setSelectedYear(year);
     if (year !== "CREATE_NEW") {
-      const template = await obtainFormTemplate(Number(year));
+      const template = await getTemplate(Number(year));
       setCurrentTemplate(JSON.stringify(template.template, null, 2));
       setShowYearInput(false);
       setInputYear(year);
@@ -59,9 +56,9 @@ const FormTemplates = () => {
   };
 
   const onLoad = async () => {
-    let yearsArray = await obtainFormTemplateYears();
+    let yearsArray = await listTemplateYears();
     yearsArray.sort((a, b) => b - a);
-    if (!yearsArray.length) {
+    if (yearsArray.length === 0) {
       setShowYearInput(true);
       setInputYear(nextYear);
     } else {
@@ -131,7 +128,7 @@ const FormTemplates = () => {
             multiline={true}
             id="templateInput"
             name="templateInput"
-            value={currentTemplate ? currentTemplate : ""}
+            value={currentTemplate ?? ""}
             type="text"
             onChange={(e) => setCurrentTemplate(e.target.value)}
           />

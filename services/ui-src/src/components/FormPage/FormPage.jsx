@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Alert, Button } from "@cmsgov/design-system";
 import TabContainer from "../TabContainer/TabContainer";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
@@ -17,8 +17,7 @@ const FormPage = () => {
   const statusData = useStore((state) => state.statusData);
   const loadError = useStore((state) => state.loadError);
   const getForm = useStore((state) => state.loadForm);
-
-  let history = useHistory();
+  const navigate = useNavigate();
 
   const [saveAlert, setSaveAlert] = React.useState(false);
   const [hasAccess, setHasAccess] = React.useState("");
@@ -38,7 +37,7 @@ const FormPage = () => {
         "You may have unsaved changes. If unsure, click cancel and save the form before proceeding"
       )
     ) {
-      history.push(`/print/${state}/${year}/${quarter}/${formName}`);
+      navigate(`/print/${state}/${year}/${quarter}/${formName}`);
     }
   };
 
@@ -57,7 +56,7 @@ const FormPage = () => {
 
   useEffect(() => {
     // Get current time
-    const currentTime = new Date().getTime();
+    const currentTime = Date.now();
 
     // Get last modified and add 10 seconds (same as setTimeout)
     let lastModifiedAsDate = new Date(last_modified);
@@ -92,7 +91,8 @@ const FormPage = () => {
             </a>
           </Alert>
         </div>
-      ) : saveAlert ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      saveAlert ? (
         <div>
           <Alert variation="success" heading="Save success:" headingLevel="1">
             Form {formName} has been successfully saved.

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import Routes from "../Routes/Routes";
+import { useLocation } from "react-router";
+import AppRoutes from "../AppRoutes/AppRoutes";
 import { AppContext } from "../../libs/contextLib";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -10,10 +10,10 @@ import "./App.scss";
 
 function App() {
   const loadUser = useStore((state) => state.loadUser);
+  const wipeUser = useStore((state) => state.wipeUser);
   const { pathname } = useLocation();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -21,9 +21,9 @@ function App() {
         await loadUser();
 
         setIsAuthenticated(true);
-        setIsAuthorized(true);
         setIsAuthenticating(false);
-      } catch (error) {
+      } catch {
+        wipeUser();
         setIsAuthenticating(false);
       }
     })();
@@ -42,7 +42,7 @@ function App() {
           <Header displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
             <div className="app">
-              <Routes isAuthorized={isAuthorized} />
+              <AppRoutes />
             </div>
           </AppContext.Provider>
           <Footer />

@@ -1,8 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./index.scss";
 import App from "./components/App/App";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { Amplify } from "aws-amplify";
 import config from "./config/config";
 
@@ -33,9 +33,9 @@ Amplify.configure({
   },
 });
 
-ReactDOM.render(
-  <Router>
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <BrowserRouter>
     <App />
-  </Router>,
-  document.getElementById("root")
+  </BrowserRouter>
 );

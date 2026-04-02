@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
-import { useHistory } from "react-router-dom";
-import { obtainAvailableForms } from "../../libs/api";
+import { useNavigate } from "react-router";
+import { listFormsForState } from "../../libs/api";
 import {
   sortFormsByYearAndQuarter,
   buildSortedAccordionByYearQuarter,
@@ -10,12 +10,12 @@ import { useStore } from "../../store/store";
 
 const HomeState = () => {
   const user = useStore((state) => state.user);
+  const navigate = useNavigate();
   const [accordionItems, setAccordionItems] = useState([]);
-  let history = useHistory();
 
   const loadForms = async (stateId) => {
     try {
-      const availableForms = await obtainAvailableForms(stateId);
+      const availableForms = await listFormsForState(stateId);
       return sortFormsByYearAndQuarter(availableForms);
     } catch (error) {
       console.log(error);
@@ -26,7 +26,7 @@ const HomeState = () => {
   useEffect(() => {
     (async () => {
       if (!user.state) {
-        history.push("/register-state");
+        navigate("/register-state");
       }
 
       const forms = await loadForms(user.state);

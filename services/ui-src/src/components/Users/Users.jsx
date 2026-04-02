@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 // *** 3rd party and other functional dependencies
 import { handleExport } from "../../utility-functions/exportFunctions";
@@ -9,7 +9,7 @@ import { Button } from "@cmsgov/design-system";
 
 // * icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCsv, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFileCsv } from "@fortawesome/free-solid-svg-icons";
 
 import Preloader from "../Preloader/Preloader";
 
@@ -39,7 +39,7 @@ const Users = () => {
         <Button
           variation="solid"
           onClick={() =>
-            handleExport("csv", "MDCT Users Export.csv", {
+            handleExport("MDCT Users Export.csv", {
               columns: [
                 { name: "Username", selector: "username" },
                 { name: "First Name", selector: "firstName" },
@@ -56,21 +56,6 @@ const Users = () => {
         >
           CSV
           <FontAwesomeIcon icon={faFileCsv} />
-        </Button>
-
-        <Button
-          variation="solid"
-          onClick={async () =>
-            await handleExport(
-              "pdf",
-              "MDCT Users Export.pdf",
-              "table",
-              "html-selector"
-            )
-          }
-        >
-          PDF
-          <FontAwesomeIcon icon={faFilePdf} />
         </Button>
       </div>
       <div>

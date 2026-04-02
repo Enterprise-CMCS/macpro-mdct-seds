@@ -14,10 +14,10 @@
     "coverage": "vitest --run --coverage"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.985.0",
-    "@aws-sdk/client-ses": "^3.985.0",
-    "@aws-sdk/lib-dynamodb": "^3.985.0",
-    "dompurify": "3.3.1",
+    "@aws-sdk/client-dynamodb": "~3.1012.0",
+    "@aws-sdk/client-ses": "~3.1012.0",
+    "@aws-sdk/lib-dynamodb": "~3.1012.0",
+    "dompurify": "3.3.3",
     "jsdom": "26.1.0",
     "jwt-decode": "^4.0.0",
     "kafkajs": "^1.16.0"
@@ -26,9 +26,8 @@
     "@types/jsdom": "27.0.0",
     "@types/node": "^24.10.1",
     "@vitest/coverage-v8": "3.0.5",
-    "aws-sdk-client-mock": "^4.1.0",
+    "aws-sdk-client-mock": "~4.1.0",
     "typescript": "^5.9.3",
     "vitest": "^3.0.5"
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

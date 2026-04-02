@@ -7,17 +7,17 @@ const GenerateTotals = () => {
   const [alert, setAlert] = useState(false);
   const loader = useRef(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     const proceed = window.confirm(
       "You are about to create new Enrollment Totals. This action cannot be undone. Do you wish to proceed?"
     );
 
     if (proceed) {
       try {
-        loader.current.showModal();
+        loader.current?.showModal();
         await generateEnrollmentTotals(); // Async request, just returns an immediate 200 and starts processing.
       } finally {
-        loader.current.close();
+        loader.current?.close();
         setAlert(true);
       }
     }

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FormFooter from "./FormFooter";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { useStore } from "../../store/store";
 
 const renderComponent = (role) => {

@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@cmsgov/design-system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import { getAgeRangeDetails } from "../../lookups/ageRanges";
 import { useStore } from "../../store/store";
@@ -21,7 +21,7 @@ const PrintPDF = () => {
   const loader = useRef(null);
 
   const { state, year, quarter, formName } = useParams();
-  const [hasAccess, setHasAccess] = React.useState(false);
+  const [hasAccess, setHasAccess] = React.useState(undefined);
 
   // format URL parameters to compensate for human error:  /forms/AL/2021/01/21E === forms/al/2021/1/21e
   const formattedStateName = state.toUpperCase();
@@ -29,7 +29,7 @@ const PrintPDF = () => {
   const form = formName.toUpperCase().replace("-", ".");
 
   useEffect(() => {
-    loader.current.showModal();
+    loader.current?.showModal();
     const fetchData = async () => {
       if (canViewStateData(user, state)) {
         await getForm(formattedStateName, year, quarterInt, form);
@@ -37,7 +37,7 @@ const PrintPDF = () => {
       } else {
         setHasAccess(false);
       }
-      loader.current.close();
+      loader.current?.close();
     };
 
     fetchData();
@@ -58,20 +58,20 @@ const PrintPDF = () => {
         <>
           <div>
             <div className="breadcrumbs">
-              <NavLink to="/">
+              <Link to="/">
                 {" "}
                 Enrollment Data Home {">"}
                 {"   "}
-              </NavLink>
-              <NavLink to={`/forms/${formattedStateName}/${year}/${quarter}`}>
+              </Link>
+              <Link to={`/forms/${formattedStateName}/${year}/${quarter}`}>
                 {`${formattedStateName} Q${quarter} ${year} > `}
-              </NavLink>
-              <NavLink
+              </Link>
+              <Link
                 to={`/forms/${formattedStateName}/${year}/${quarter}/${form}`}
               >
                 {" "}
                 {` Form ${form}`}{" "}
-              </NavLink>
+              </Link>
             </div>
           </div>
 
@@ -136,9 +136,12 @@ const PrintPDF = () => {
                 Add any notes here to accompany the form submission:
               </strong>
               <div className="summary-text">
-                {!null || statusData.state_comments[0].entry.length ? (
-                  <div>{`${statusData.state_comments[0].entry}`}</div>
-                ) : null}
+                {
+                  // oxlint-disable-next-line no-constant-binary-expression
+                  !null || statusData.state_comments[0].entry.length > 0 ? (
+                    <div>{`${statusData.state_comments[0].entry}`}</div>
+                  ) : null
+                }
               </div>
             </div>
             <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>

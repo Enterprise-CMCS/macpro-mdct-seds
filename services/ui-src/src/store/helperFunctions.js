@@ -102,7 +102,7 @@ const extractAgeRanges = (answersArray) => {
 
   // sort through the answers and return an object whose keys are the unique age ranges present
   // Extract the keys from that object and sort them
-  const foundAges = Object.keys(answersArray.reduce(findAges, {})).sort();
+  const foundAges = Object.keys(answersArray.reduce(findAges, {})).toSorted();
   return foundAges;
 };
 

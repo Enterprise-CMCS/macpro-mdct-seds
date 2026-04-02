@@ -1,19 +1,20 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomeState from "./HomeState";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
-import { obtainAvailableForms } from "../../libs/api";
+import { listFormsForState } from "../../libs/api";
 import { useStore } from "../../store/store";
 
 vi.mock("../../libs/api", () => ({
-  obtainAvailableForms: vi.fn(),
+  listFormsForState: vi.fn(),
 }));
 
-vi.mock("react-router-dom", async (importOriginal) => ({
+vi.mock("react-router", async (importOriginal) => ({
   ...(await importOriginal()),
-  useHistory: vi.fn(),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
+const mockNavigate = useNavigate();
 
 const renderComponent = (state) => {
   const user = { state };
@@ -29,16 +30,13 @@ describe("Test HomeState.js", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("should redirect users with no state", async () => {
-    const history = [];
-    useHistory.mockReturnValue(history);
-
     renderComponent();
 
-    expect(history).toEqual(["/register-state"]);
+    expect(mockNavigate).toHaveBeenCalledWith("/register-state");
   });
 
   it("should display links to quarterly reports", async () => {
-    obtainAvailableForms.mockResolvedValue([
+    listFormsForState.mockResolvedValue([
       { year: 2021, quarter: 3 },
       { year: 2021, quarter: 4 },
       { year: 2022, quarter: 1 },
@@ -46,7 +44,7 @@ describe("Test HomeState.js", () => {
 
     const { container } = renderComponent("CO");
     await waitFor(() => {
-      expect(obtainAvailableForms).toHaveBeenCalledWith("CO");
+      expect(listFormsForState).toHaveBeenCalledWith("CO");
     });
 
     const expectedUrls = [
@@ -59,11 +57,11 @@ describe("Test HomeState.js", () => {
     }
   });
 
-  it("should still render if obtainAvailableForms fails", async () => {
-    obtainAvailableForms.mockRejectedValueOnce(new Error("Mock server error"));
+  it("should still render if listFormsForState fails", async () => {
+    listFormsForState.mockRejectedValueOnce(new Error("Mock server error"));
 
     renderComponent("CO");
-    await waitFor(() => expect(obtainAvailableForms).toHaveBeenCalled());
+    await waitFor(() => expect(listFormsForState).toHaveBeenCalled());
 
     expect(screen.getByText(/Welcome to SEDS/)).toBeVisible();
   });

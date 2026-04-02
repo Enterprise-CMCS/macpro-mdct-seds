@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, Alert } from "@cmsgov/design-system";
-import { generateQuarterlyForms } from "../../libs/api";
+import { generateQuarterForms } from "../../libs/api";
 
 const GenerateForms = () => {
   const [selectedYear, setSelectedYear] = useState("2019");
@@ -27,10 +27,10 @@ const GenerateForms = () => {
       )
     ) {
       // send year and quarter to lambda which will create the table rows
-      loader.current.showModal();
+      loader.current?.showModal();
       setAlert(undefined);
       try {
-        await generateQuarterlyForms({
+        await generateQuarterForms({
           year: Number(selectedYear),
           quarter: Number(selectedQuarter),
         });
@@ -38,14 +38,14 @@ const GenerateForms = () => {
           variation: "success",
           message: "Form creation successful.",
         });
-      } catch (err) {
+      } catch (error) {
         const message =
-          err instanceof Error
-            ? `Form creation failed: ${err.message}`
+          error instanceof Error
+            ? `Form creation failed: ${error.message}`
             : "Form creation failed.";
         setAlert({ variation: "error", message });
       } finally {
-        loader.current.close();
+        loader.current?.close();
       }
     }
   };

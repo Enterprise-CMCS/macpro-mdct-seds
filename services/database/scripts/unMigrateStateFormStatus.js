@@ -167,8 +167,8 @@ async function sendBatch(batch) {
       `${logPrefix()}Found ${updatedCount} state forms in need of update.`
     );
     console.log(`${logPrefix()}All updates successful.`);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     // The updatedCount may be short by up to 24 items, depending on how much of a batch failed.
     console.log(
       `${logPrefix()}Updated at least ${updatedCount} state forms before exiting.`
