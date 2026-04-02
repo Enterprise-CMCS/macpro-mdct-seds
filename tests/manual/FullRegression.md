@@ -88,39 +88,39 @@ we can fall back on this test outline to ensure everything is working.
 
 **Test 2.8:** State users should _not_ be able to view admin-only pages.
 
-**Test 2.8:** State users should _not_ be able to view data for other states.
+**Test 2.9:** State users should _not_ be able to view data for other states.
 
-**Test 2.9:** Business users should _not_ be able to edit FPL.
+**Test 2.10:** Business users should _not_ be able to edit FPL.
 
-**Test 2.10:** Business users should _not_ be able to edit data within forms.
+**Test 2.11:** Business users should _not_ be able to edit data within forms.
 
-**Test 2.11:** Business users should _not_ be able to edit summary notes.
+**Test 2.12:** Business users should _not_ be able to edit summary notes.
 
-**Test 2.12:** Business users should be able to mark a form as Not Applicable.
+**Test 2.13:** Business users should be able to mark a form as Not Applicable.
 
-**Test 2.13:** Business users should be able to Provisionally Certify a form.
+**Test 2.14:** Business users should be able to Provisionally Certify a form.
 
-**Test 2.14:** Business users should be able to Final Certify a form.
+**Test 2.15:** Business users should be able to Final Certify a form.
 
-**Test 2.15:** Business users should be able to Uncertify a form.
+**Test 2.16:** Business users should be able to Uncertify a form.
 
-**Test 2.16:** Business users should _not_ be able to view admin-only pages.
+**Test 2.17:** Business users should _not_ be able to view admin-only pages.
 
-**Test 2.17:** Admin users should _not_ be able to edit FPL.
+**Test 2.18:** Admin users should _not_ be able to edit FPL.
 
-**Test 2.18:** Admin users should _not_ be able to edit data within forms.
+**Test 2.19:** Admin users should _not_ be able to edit data within forms.
 
-**Test 2.19:** Admin users should _not_ be able to edit summary notes.
+**Test 2.20:** Admin users should _not_ be able to edit summary notes.
 
-**Test 2.20:** Admin users should _not_ be able to mark a form as Not Applicable.
+**Test 2.21:** Admin users should _not_ be able to mark a form as Not Applicable.
 
-**Test 2.21:** Admin users should _not_ be able to Provisionally Certify a form.
+**Test 2.22:** Admin users should _not_ be able to Provisionally Certify a form.
 
-**Test 2.22:** Admin users should _not_ be able to Final Certify a form.
+**Test 2.23:** Admin users should _not_ be able to Final Certify a form.
 
-**Test 2.23:** Admin users should _not_ be able to Uncertify a form.
+**Test 2.24:** Admin users should _not_ be able to Uncertify a form.
 
-**Test 2.24:** Admin users should be able to view admin-only pages.
+**Test 2.25:** Admin users should be able to view admin-only pages.
 
 ## Admin functions
 
