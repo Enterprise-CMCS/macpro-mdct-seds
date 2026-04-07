@@ -106,6 +106,7 @@ describe("Test EditUser.js", () => {
 
   it("should call the API to save updated user details", async () => {
     getUserById.mockResolvedValueOnce(mockUser);
+    vi.stubGlobal("alert", vi.fn());
 
     render(component);
     await waitFor(() => expect(getUserById).toHaveBeenCalled());

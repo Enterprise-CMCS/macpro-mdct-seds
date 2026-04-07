@@ -94,8 +94,17 @@ describe("Tests for FormTemplates.js", () => {
   });
 
   test("should render an error message when the form has failed to save", async () => {
+    const mockTemplate = { foo: "bar" };
+    listTemplateYears.mockResolvedValue([2021, 2022]);
+    getTemplate.mockResolvedValue({ template: mockTemplate });
     updateTemplate.mockRejectedValue(new Error("mock error text"));
+
     render(<FormTemplates />);
+    await waitFor(() => {
+      expect(listTemplateYears).toHaveBeenCalled();
+      expect(getTemplate).toHaveBeenCalled();
+    });
+
     userEvent.click(screen.getByText("Save", { selector: "button" }));
     await waitFor(() =>
       expect(screen.getByText("Save failed: mock error text")).toBeVisible()

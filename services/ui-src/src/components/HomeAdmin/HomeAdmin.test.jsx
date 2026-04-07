@@ -6,6 +6,11 @@ import { render, waitFor, screen } from "@testing-library/react";
 import { useStore } from "../../store/store";
 import userEvent from "@testing-library/user-event";
 import { buildSortedAccordionByYearQuarter } from "utility-functions/sortingFunctions";
+import { listFormsForState } from "../../libs/api";
+
+vi.mock("../../libs/api", () => ({
+  listFormsForState: vi.fn(),
+}));
 
 vi.mock("../../libs/contextLib", () => ({
   useAppContext: vi.fn(),
@@ -25,7 +30,7 @@ const forms = [
     id: 2021,
     description: "Quarters for 2021",
     title: 2021,
-    content: [<></>],
+    content: [<div key="unique"></div>],
     headingLevel: "h1", // unsure
     expanded: false,
   },
@@ -57,6 +62,7 @@ describe("Tests for HomeAdmin.js", () => {
   });
 
   it("should display an appropriate message for a state with no forms", async () => {
+    listFormsForState.mockResolvedValueOnce([]);
     renderComponent();
 
     const stateDropdown = screen.getByRole("combobox", { name: /State/ });

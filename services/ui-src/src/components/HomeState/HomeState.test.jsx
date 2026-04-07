@@ -60,9 +60,17 @@ describe("Test HomeState.js", () => {
   it("should still render if listFormsForState fails", async () => {
     listFormsForState.mockRejectedValueOnce(new Error("Mock server error"));
 
+    // Swallow this error (but only this error)
+    const spy = vi.spyOn(console, "log").mockImplementation((arg) => {
+      if (!(arg instanceof Error) || arg.message !== "Mock server error") {
+        throw new Error(arg);
+      }
+    });
+
     renderComponent("CO");
     await waitFor(() => expect(listFormsForState).toHaveBeenCalled());
 
+    spy.mockRestore();
     expect(screen.getByText(/Welcome to SEDS/)).toBeVisible();
   });
 });
