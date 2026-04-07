@@ -232,9 +232,6 @@ const GREGridWithTotals = (props) => {
                       onChange={(event) =>
                         updateGrid(rowIndex, columnIndex, event)
                       }
-                      defaultValue={parseFloat(column).toFixed(
-                        currentPrecision
-                      )}
                       value={addCommas(
                         parseFloat(gridData[rowIndex][columnIndex]).toFixed(
                           currentPrecision
@@ -264,7 +261,6 @@ const GREGridWithTotals = (props) => {
                     onChange={(event) =>
                       updateGrid(rowIndex, columnIndex, event)
                     }
-                    defaultValue={parseFloat(column).toFixed(currentPrecision)}
                     value={addCommas(
                       parseFloat(gridData[rowIndex][columnIndex]).toFixed(
                         currentPrecision
