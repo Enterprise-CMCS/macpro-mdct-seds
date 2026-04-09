@@ -86,6 +86,7 @@ export default function Login() {
           autoFocus
           label="Email"
           name="email"
+          autoComplete="username"
           value={fields.email}
           onChange={onFieldChange}
         ></TextField>
@@ -93,6 +94,7 @@ export default function Login() {
           type="password"
           name="password"
           label="Password"
+          autoComplete="current-password"
           value={fields.password}
           onChange={onFieldChange}
         ></TextField>

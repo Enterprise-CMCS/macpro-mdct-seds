@@ -46,8 +46,9 @@ const EditUser = () => {
 
     await updateUser(updatedUser);
     setUser(updatedUser);
+    setRole(updatedUser.role);
+    setState(updatedUser.state);
     alert(`User with username: "${updatedUser.username}" has been updated`);
-    window.location.reload(false);
   };
 
   return (

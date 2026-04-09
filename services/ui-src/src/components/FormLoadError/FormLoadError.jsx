@@ -9,7 +9,7 @@ const FormLoadError = () => {
   return (
     <div data-testid="formLoadTest">
       <div>
-        <div row>
+        <div>
           <div>
             <h1>Error Retrieving Form</h1>
             <p>

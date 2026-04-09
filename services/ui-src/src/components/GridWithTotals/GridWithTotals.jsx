@@ -299,9 +299,6 @@ const GridWithTotals = (props) => {
                           updateLocalStateOnChange(rowIndex, columnIndex, event)
                         }
                         onBlur={updateGridOnBlur}
-                        defaultValue={parseFloat(column).toFixed(
-                          currentPrecision
-                        )}
                         value={addCommas(
                           parseFloat(gridData[rowIndex][columnIndex]).toFixed(
                             currentPrecision
@@ -334,9 +331,6 @@ const GridWithTotals = (props) => {
                         updateLocalStateOnChange(rowIndex, columnIndex, event)
                       }
                       onBlur={updateGridOnBlur}
-                      defaultValue={parseFloat(column).toFixed(
-                        currentPrecision
-                      )}
                       value={addCommas(
                         parseFloat(gridData[rowIndex][columnIndex]).toFixed(
                           currentPrecision
