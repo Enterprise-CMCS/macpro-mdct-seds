@@ -3,25 +3,26 @@ name: Destroy
 
 on:
   delete:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Name of the environment to destroy:"
-        required: true
+  pull_request:
+    types:
+      - closed
 
 concurrency:
   # Same group as deploy.yml to prevent simultaneous deploy/destroy
-  group: ${{ inputs.environment || github.event.ref }}
+  group: ${{ github.event.ref }}
 
 permissions:
   actions: read
   contents: read
   id-token: write
 
+env:
+  branchName: ${{ github.event.pull_request.head.ref || github.ref_name }}
+
 jobs:
   destroy:
     name: Destroy
-    if: (inputs.environment || github.event.ref_type == 'branch') && !contains('skipci', github.event.ref)
+    if: ((github.event.ref_type == 'branch') && !contains('skipci', github.event.ref)) || (github.event.pull_request && startsWith(github.event.pull_request.head.ref, 'dependabot'))
     environment: dev
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +39,7 @@ jobs:
 
       - name: Set branch_name
         run: |
-          BRANCH_NAME=$(./.github/setBranchName.ts ${{ inputs.environment || github.event.ref }})
+          BRANCH_NAME=$(./.github/setBranchName.ts ${{ env.branchName }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials for GitHub Actions
@@ -46,6 +47,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+
       - name: Destroy
         run: ./run destroy --stage $branch_name --verify false
         env:
