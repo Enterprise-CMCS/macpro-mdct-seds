@@ -1,4 +1,4 @@
-const { PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { BatchWriteCommand } = require("@aws-sdk/lib-dynamodb");
 const { buildDynamoClient } = require("../../utils/dynamodb.js");
 
 /**
@@ -37,8 +37,19 @@ const runSeed = async (seedInstructions) => {
     if (!items || items.length <= 0) continue;
 
     try {
-      for (const Item of items) {
-        await dynamoClient.send(new PutCommand({ TableName, Item }));
+      for (let i = 0; i < items.length; i += 25) {
+        const response = await dynamoClient.send(
+          new BatchWriteCommand({
+            RequestItems: {
+              [TableName]: items
+                .slice(i, i + 25)
+                .map((Item) => ({ PutRequest: { Item } })),
+            },
+          })
+        );
+        if (response.UnprocessedItems?.[TableName]?.length > 0) {
+          throw new Error("Failed to process some items - see logs");
+        }
       }
     } catch (error) {
       console.log(` -- ERROR UPLOADING ${TableName}\n`, error);
