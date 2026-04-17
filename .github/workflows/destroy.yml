@@ -3,9 +3,6 @@ name: Destroy
 
 on:
   delete:
-  pull_request:
-    types:
-      - closed
   workflow_dispatch:
     inputs:
       environment:
@@ -17,13 +14,10 @@ permissions:
   contents: read
   id-token: write
 
-env:
-  branchName: ${{ inputs.environment || github.event.pull_request.head.ref || github.event.ref }}
-
 jobs:
   destroy:
     name: Destroy
-    if: inputs.environment || ((github.event.ref_type == 'branch') && !contains(github.event.ref, 'skipci') && !startsWith(github.event.ref, 'dependabot/')) || (github.event.pull_request && startsWith(github.event.pull_request.head.ref, 'dependabot/'))
+    if: (inputs.environment || github.event.ref_type == 'branch') && !contains(github.event.ref, 'skipci')
     environment: dev
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +34,7 @@ jobs:
 
       - name: Set branch_name
         run: |
-          BRANCH_NAME=$(./.github/setBranchName.ts ${{ env.branchName }})
+          BRANCH_NAME=$(./.github/setBranchName.ts ${{ inputs.environment || github.event.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials for GitHub Actions
