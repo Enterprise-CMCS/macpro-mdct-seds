@@ -46,5 +46,8 @@
     "tsx": "^4.20.5",
     "typescript": "^5.9.3"
   },
+  "resolutions": {
+    "minimatch@^10.1.1": "^10.2.5"
+  },
   "packageManager": "yarn@4.12.0"
 }
