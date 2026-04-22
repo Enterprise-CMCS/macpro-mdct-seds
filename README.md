@@ -169,11 +169,6 @@ found in [src/dms](src/dms).
 2. Launch the test for ui-src tests.
    - Run `yarn test`
 
-### Running the integration test suite
-
-1. Launch cypress and select the file you want to run
-   - Run `yarn test:cypress`
-
 ### Running Schema Validation
 
 Validate json files against schema to ensure accuracy before each commit.

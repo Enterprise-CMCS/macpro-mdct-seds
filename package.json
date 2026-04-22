@@ -23,8 +23,7 @@
     "services/database",
     "services/topics",
     "services/ui-auth",
-    "services/ui-src",
-    "tests/cypress"
+    "services/ui-src"
   ],
   "type": "module",
   "main": "index.js",
@@ -32,9 +31,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "npx --prefix deployment cdk",
-    "cdklocal": "npx --prefix deployment cdklocal",
-    "test:cypress": "cd tests/cypress && yarn test && cd -",
-    "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
+    "cdklocal": "npx --prefix deployment cdklocal"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1012.0",
