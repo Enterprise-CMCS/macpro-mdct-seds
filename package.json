@@ -47,7 +47,8 @@
     "typescript": "^5.9.3"
   },
   "resolutions": {
-    "minimatch@^10.1.1": "^10.2.5"
+    "minimatch@^10.1.1": "^10.2.5",
+    "underscore@1.13.6": "^1.13.8"
   },
   "packageManager": "yarn@4.12.0"
 }
