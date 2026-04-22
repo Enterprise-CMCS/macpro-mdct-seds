@@ -34,7 +34,7 @@
     "cdklocal": "npx --prefix deployment cdklocal"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "~3.1012.0",
+    "@aws-sdk/client-cloudformation": "~3.1034.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
