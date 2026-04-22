@@ -7,7 +7,7 @@
     "@aws-sdk/client-secrets-manager": "~3.1034.0",
     "@types/node": "^22.19.2",
     "aws-cdk": "~2.1112.0",
-    "aws-cdk-lib": "~2.243.0",
+    "aws-cdk-lib": "~2.250.0",
     "aws-cdk-local": "~2.19.2",
     "constructs": "~10.5.0",
     "source-map-support": "^0.5.21",
