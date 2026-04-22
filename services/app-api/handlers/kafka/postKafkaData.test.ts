@@ -1,14 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
-import KafkaSourceLib from "../../libs/kafka-source-lib.ts";
 import { handler as PostKafkaData } from "./postKafkaData.ts";
 
-vi.mock("../../libs/kafka-source-lib.ts", () => ({
-  default: vi.fn().mockReturnValue({
-    handler: vi.fn(),
-  }),
-}));
+const { mockKafkaHandler } = vi.hoisted(() => ({ mockKafkaHandler: vi.fn() }));
 
-const mockKafkaHandler = (KafkaSourceLib as Function)().handler;
+vi.mock("../../libs/kafka-source-lib.ts", () => ({
+  default: vi.fn(
+    class {
+      handler = mockKafkaHandler;
+    }
+  ),
+}));
 
 describe("postKafkaData", () => {
   it("should forward calls to the underlying library", () => {
