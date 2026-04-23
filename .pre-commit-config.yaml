@@ -28,6 +28,8 @@ repos:
           - --exclude-files
           - ^services/ui-src/src/utils/forms
           - --exclude-files
+          - ^tests/cypress/cypress.json
+          - --exclude-files
           - ^tests/playwright/data/
           - --exclude-files
           - ^tests/seeds/fixtures/
