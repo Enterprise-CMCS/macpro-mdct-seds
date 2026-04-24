@@ -9,15 +9,13 @@ const { mockConnect, mockSendBatch, mockDisconnect } = vi.hoisted(() => ({
 }));
 
 vi.mock("kafkajs", () => ({
-  Kafka: vi.fn(
-    class {
-      producer = vi.fn().mockReturnValue({
-        disconnect: mockDisconnect,
-        connect: mockConnect,
-        sendBatch: mockSendBatch,
-      });
-    }
-  ),
+  Kafka: class {
+    producer = vi.fn().mockReturnValue({
+      disconnect: mockDisconnect,
+      connect: mockConnect,
+      sendBatch: mockSendBatch,
+    });
+  },
 }));
 
 // The file under test has some one-time behavior on load,
