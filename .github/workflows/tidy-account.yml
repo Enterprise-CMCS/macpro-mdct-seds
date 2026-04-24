@@ -99,7 +99,6 @@ jobs:
         run: |
           set -euo pipefail
           pushd .github/scanResources
-          yarn install --immutable
           ./scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
           set +e
