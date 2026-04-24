@@ -5,9 +5,6 @@ on:
     # Every Monday at 1600 UTC
     - cron: "0 16 * * 1"
   workflow_dispatch:
-  push:
-    branches:
-      - cmdct-5808
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.ref }}
@@ -45,7 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME_LOWER: ${{ vars.APP_NAME_LOWER }}
   audit:
-    name: Audit
     environment: dev
     runs-on: ubuntu-latest
     steps:
