@@ -44,9 +44,10 @@ async function run() {
   const deletableStacks = allAppStacks.filter(
     (item) => !legitStacks.includes(item)
   );
+  console.log("\n=== Deletable Stacks ===");
+  deletableStacks.forEach((stack) => console.log(`  ${stack}`));
+  console.log("=======================\n");
 
-  console.log("deletableStacks");
-  console.log(deletableStacks);
   for (const stack of deletableStacks) {
     await cfn.send(
       new DeleteStackCommand({
