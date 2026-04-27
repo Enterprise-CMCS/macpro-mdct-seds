@@ -16,7 +16,6 @@ permissions:
 
 jobs:
   audit:
-    name: Audit
     environment: dev
     runs-on: ubuntu-latest
     steps:
@@ -65,12 +64,6 @@ jobs:
 
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
-
-      - name: Install scan resources dependencies
-        run: |
-          pushd .github/scanResources
-          yarn install --immutable
-          popd
 
       - name: Run unmanaged resources scan
         run: |
