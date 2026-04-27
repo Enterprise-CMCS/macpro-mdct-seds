@@ -4,9 +4,11 @@ import { handler as PostKafkaData } from "./postKafkaData.ts";
 const { mockKafkaHandler } = vi.hoisted(() => ({ mockKafkaHandler: vi.fn() }));
 
 vi.mock("../../libs/kafka-source-lib.ts", () => ({
-  default: class {
-    handler = mockKafkaHandler;
-  },
+  default: vi.fn(
+    class {
+      handler = mockKafkaHandler;
+    }
+  ),
 }));
 
 describe("postKafkaData", () => {
