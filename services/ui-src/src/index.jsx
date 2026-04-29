@@ -6,32 +6,43 @@ import { BrowserRouter } from "react-router";
 import { Amplify } from "aws-amplify";
 import config from "./config/config";
 
-Amplify.configure({
-  Auth: {
-    Cognito: {
-      userPoolId: config.cognito.USER_POOL_ID,
-      identityPoolId: config.cognito.IDENTITY_POOL_ID,
-      userPoolClientId: config.cognito.APP_CLIENT_ID,
-      loginWith: {
-        oauth: {
-          domain: config.cognito.APP_CLIENT_DOMAIN,
-          redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
-          redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
-          scopes: ["email", "openid", "profile"],
-          responseType: "token",
+Amplify.configure(
+  {
+    Auth: {
+      Cognito: {
+        userPoolId: config.cognito.USER_POOL_ID,
+        identityPoolId: config.cognito.IDENTITY_POOL_ID,
+        userPoolClientId: config.cognito.APP_CLIENT_ID,
+        loginWith: {
+          oauth: {
+            domain: config.cognito.APP_CLIENT_DOMAIN,
+            redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
+            redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
+            scopes: ["email", "openid", "profile"],
+            responseType: "token",
+          },
+        },
+      },
+    },
+    API: {
+      REST: {
+        "mdct-seds": {
+          endpoint: config.apiGateway.URL,
+          region: config.apiGateway.REGION,
         },
       },
     },
   },
-  API: {
-    REST: {
-      "mdct-seds": {
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION,
+  {
+    API: {
+      REST: {
+        // We can re-enable retries for specific endpoints if/when appropriate.
+        // See: https://docs.amplify.aws/react/frontend/rest-api/fetch-data/
+        retryStrategy: { strategy: "no-retry" },
       },
     },
-  },
-});
+  }
+);
 
 const root = createRoot(document.getElementById("root"));
 root.render(

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AppRoutes from "./AppRoutes";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { useStore } from "../../store/store";
 import { getForm as actualGetForm } from "libs/api";
@@ -80,28 +80,16 @@ describe("App Router", () => {
       { route: "/unauthorized", text: /not authorized/ },
       { route: "/profile", text: /Profile/ },
       { route: "/forms/CO/2026/1", text: /Q1 2026 Reports/ },
-      {
-        route: "/forms/CO/2026/1/21E",
-        text: /Does this form apply/,
-        loadFunc: getForm,
-      },
-      {
-        route: "/print/CO/2026/1/21E",
-        text: "Print / PDF",
-        loadFunc: getForm,
-      },
-    ])("should have route $route", async ({ route, text, loadFunc }) => {
+      { route: "/forms/CO/2026/1/21E", text: /Does this form apply/ },
+      { route: "/print/CO/2026/1/21E", text: "Print / PDF" },
+    ])("should have route $route", async ({ route, text }) => {
       render(
         <MemoryRouter initialEntries={[route]}>
           <AppRoutes />
         </MemoryRouter>
       );
 
-      if (loadFunc) {
-        await waitFor(() => expect(loadFunc).toHaveBeenCalled());
-      }
-
-      expect(screen.getByText(text)).toBeVisible();
+      expect(await screen.findByText(text)).toBeVisible();
     });
 
     it("should show state home page when user has a state", () => {
@@ -159,28 +147,16 @@ describe("App Router", () => {
       { route: "/unauthorized", text: /not authorized/ },
       { route: "/profile", text: /Profile/ },
       { route: "/forms/CO/2026/1", text: /Q1 2026 Reports/ },
-      {
-        route: "/forms/CO/2026/1/21E",
-        text: /Does this form apply/,
-        loadFunc: getForm,
-      },
-      {
-        route: "/print/CO/2026/1/21E",
-        text: "Print / PDF",
-        loadFunc: getForm,
-      },
-    ])("should have route $route", async ({ route, text, loadFunc }) => {
+      { route: "/forms/CO/2026/1/21E", text: /Does this form apply/ },
+      { route: "/print/CO/2026/1/21E", text: "Print / PDF" },
+    ])("should have route $route", async ({ route, text }) => {
       render(
         <MemoryRouter initialEntries={[route]}>
           <AppRoutes />
         </MemoryRouter>
       );
 
-      if (loadFunc) {
-        await waitFor(() => expect(loadFunc).toHaveBeenCalled());
-      }
-
-      expect(screen.getByText(text)).toBeVisible();
+      expect(await screen.findByText(text)).toBeVisible();
     });
 
     it("should show business home page", () => {
@@ -227,33 +203,21 @@ describe("App Router", () => {
       { route: "/unauthorized", text: /not authorized/ },
       { route: "/profile", text: /Profile/ },
       { route: "/forms/CO/2026/1", text: /Q1 2026 Reports/ },
-      {
-        route: "/forms/CO/2026/1/21E",
-        text: /Does this form apply/,
-        loadFunc: getForm,
-      },
-      {
-        route: "/print/CO/2026/1/21E",
-        text: "Print / PDF",
-        loadFunc: getForm,
-      },
+      { route: "/forms/CO/2026/1/21E", text: /Does this form apply/ },
+      { route: "/print/CO/2026/1/21E", text: "Print / PDF" },
       { route: "/users", text: "Users" },
       { route: "/users/42/edit", text: "Edit User" },
       { route: "/form-templates", text: "Add/Edit Form Templates" },
       { route: "/generate-forms", text: "Generate Quarterly Forms" },
       { route: "/generate-counts", text: "Generate Enrollment Totals" },
-    ])("should have route $route", async ({ route, text, loadFunc }) => {
+    ])("should have route $route", async ({ route, text }) => {
       render(
         <MemoryRouter initialEntries={[route]}>
           <AppRoutes />
         </MemoryRouter>
       );
 
-      if (loadFunc) {
-        await waitFor(() => expect(loadFunc).toHaveBeenCalled());
-      }
-
-      expect(screen.getByText(text)).toBeVisible();
+      expect(await screen.findByText(text)).toBeVisible();
     });
 
     it("should show admin home page", () => {

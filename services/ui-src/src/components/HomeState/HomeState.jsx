@@ -27,6 +27,7 @@ const HomeState = () => {
     (async () => {
       if (!user.state) {
         navigate("/register-state");
+        return;
       }
 
       const forms = await loadForms(user.state);

@@ -50,12 +50,20 @@ describe("useStore actions", () => {
     });
 
     it("should flag a load error if an API call fails", async () => {
-      getForm.mockRejectedValueOnce("Mock Server Error");
+      getForm.mockRejectedValueOnce(new Error("Mock server error"));
+
+      // Swallow this error (but only this error)
+      const spy = vi.spyOn(console, "error").mockImplementation((arg) => {
+        if (!(arg instanceof Error) || arg.message !== "Mock server error") {
+          throw new Error(arg);
+        }
+      });
 
       const { loadForm } = useStore.getState();
       await loadForm("CO", 2025, 4, "21E");
       const state = useStore.getState();
 
+      spy.mockRestore();
       expect(state.loadError).toBe(true);
     });
 

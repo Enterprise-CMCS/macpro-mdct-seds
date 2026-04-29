@@ -36,6 +36,10 @@ describe("Test Header.js", () => {
   });
 
   it("should log the user out properly", async () => {
+    const locationSpy = vi.spyOn(window, "location", "get").mockReturnValue({
+      ...window.location,
+      href: "Any string here prevents JSDOM complaints in the test output.",
+    });
     useStore.setState({ wipeUser: vi.fn() });
     signOut.mockResolvedValueOnce();
 
@@ -54,11 +58,24 @@ describe("Test Header.js", () => {
 
     await waitFor(() => expect(signOut).toHaveBeenCalled());
     expect(useStore.getState().wipeUser).toHaveBeenCalled();
+    locationSpy.mockRestore();
   });
 
   it("should not clear user data from the store if Amplify logout fails", async () => {
     useStore.setState({ wipeUser: vi.fn() });
     signOut.mockRejectedValueOnce(new Error("Mock Amplify error"));
+
+    // Swallow this error (but only this error)
+    const spy = vi.spyOn(console, "log").mockImplementation((...args) => {
+      const [message, arg] = args;
+      if (
+        message !== "error signing out:" ||
+        !(arg instanceof Error) ||
+        arg.message !== "Mock Amplify error"
+      ) {
+        throw new Error(arg);
+      }
+    });
 
     render(
       <BrowserRouter>
@@ -74,23 +91,8 @@ describe("Test Header.js", () => {
     userEvent.click(logoutButton);
 
     await waitFor(() => expect(signOut).toHaveBeenCalled());
+    spy.mockRestore();
     expect(useStore.getState().wipeUser).not.toHaveBeenCalled();
-  });
-  test("Test logout", async () => {
-    signOut.mockResolvedValueOnce();
-    render(
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
-    );
-
-    await waitFor(() => expect(screen.getByText("My Profile")).toBeVisible());
-    const myProfileBtn = screen.getByRole("button", { name: "My Profile" });
-    userEvent.click(myProfileBtn);
-
-    const logoutBtn = screen.getByRole("button", { name: "Logout" });
-    userEvent.click(logoutBtn);
-    expect(signOut).toHaveBeenCalled();
   });
 
   test("Should opens Reporting Instruction file in a new tab", async () => {

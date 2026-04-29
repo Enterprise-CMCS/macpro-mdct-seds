@@ -7,6 +7,7 @@ import Footer from "../Footer/Footer";
 import { fireTealiumPageView } from "../../utility-functions/tealium";
 import { useStore } from "../../store/store";
 import "./App.scss";
+import Preloader from "components/Preloader/Preloader";
 
 function App() {
   const loadUser = useStore((state) => state.loadUser);
@@ -37,7 +38,9 @@ function App() {
 
   return (
     <>
-      {!isAuthenticating && (
+      {isAuthenticating ? (
+        <Preloader />
+      ) : (
         <>
           <Header displayHeader={true} />
           <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>

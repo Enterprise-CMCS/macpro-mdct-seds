@@ -43,7 +43,8 @@ const FormHeader = ({ quarter, form, year, state }) => {
 
   // Saves maximum FPL to the database
   const updateMaxFPL = async () => {
-    await updateFPL(maxFPL).then(() => saveForm());
+    updateFPL(maxFPL);
+    await saveForm();
   };
 
   // Ensure user input is valid for max FPL
