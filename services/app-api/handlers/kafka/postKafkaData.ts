@@ -2,13 +2,17 @@ import { GetDynamoTopic, kafkaHandler } from "./kafkaLib.ts";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 const getConfig = () => {
-  const { brokerString, STAGE } = process.env;
+  const { brokerString, KAFKA_CLIENT_ID, STAGE } = process.env;
 
   if (!brokerString) {
     throw new Error("Missing config! Must specify brokerString");
   } else if (brokerString === "localstack") {
     console.debug("Ignoring event: Localstack should not talk to Kafka");
     return undefined;
+  }
+
+  if (!KAFKA_CLIENT_ID) {
+    throw new Error("Missing config! Must specify KAFKA_CLIENT_ID");
   }
 
   if (!STAGE) {

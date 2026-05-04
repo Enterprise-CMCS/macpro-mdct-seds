@@ -70,6 +70,11 @@ describe("Kafka message sending", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    // Disconnect the LazyProducer, so that we call Kafka() afresh
+    process.emit("beforeExit", 0);
+  });
+
   it("should convert AWS Dynamo Stream Events to Kafka Messages", async () => {
     const event = { Records: [formAnswerRecord] };
 
@@ -215,7 +220,12 @@ describe("Kafka message sending", () => {
     let originalEnv: any;
 
     beforeEach(() => {
-      const keys = ["brokerString", "STAGE", "topicNamespace"];
+      const keys = [
+        "brokerString",
+        "STAGE",
+        "topicNamespace",
+        "KAFKA_CLIENT_ID",
+      ];
       originalEnv = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
       vi.resetModules();
       vi.clearAllMocks();
@@ -225,6 +235,8 @@ describe("Kafka message sending", () => {
       for (let [key, value] of Object.entries(originalEnv)) {
         process.env[key] = value as string;
       }
+      // Disconnect the LazyProducer, so that we call Kafka() afresh
+      process.emit("beforeExit", 0);
     });
 
     it("should ignore all events when running in localstack", async () => {
@@ -236,6 +248,25 @@ describe("Kafka message sending", () => {
 
     it("should error immediately if brokerString is missing", async () => {
       delete process.env.brokerString;
+      const event = { Records: [formAnswerRecord] };
+      await expect(() => handler(event)).rejects.toThrow("Missing config");
+      expect(mockSendBatch).not.toHaveBeenCalled();
+    });
+
+    it("should use the specified KAFKA_CLIENT_ID", async () => {
+      process.env.KAFKA_CLIENT_ID = "special-client-id";
+      const event = { Records: [formAnswerRecord] };
+      await handler(event);
+      expect(mockSendBatch).toHaveBeenCalled();
+      expect(Kafka).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clientId: "special-client-id",
+        })
+      );
+    });
+
+    it("should error immediately if KAFKA_CLIENT_ID is missing", async () => {
+      delete process.env.KAFKA_CLIENT_ID;
       const event = { Records: [formAnswerRecord] };
       await expect(() => handler(event)).rejects.toThrow("Missing config");
       expect(mockSendBatch).not.toHaveBeenCalled();
@@ -287,19 +318,19 @@ describe("Kafka message sending", () => {
 
     await handler(event);
     expect(mockSendBatch).toHaveBeenCalled();
-    expect(mockDisconnect).not.toHaveBeenCalled();
+    const disconnects = mockDisconnect.mock.calls.length;
 
     process.emit("beforeExit", 0);
-    expect(mockDisconnect).toHaveBeenCalled();
+
+    expect(mockDisconnect).toHaveBeenCalledTimes(disconnects + 1);
   });
 
-  it.skip("should connect only as needed", async () => {
+  it("should connect only as needed", async () => {
     // Delay connect to ensure the two calls will be in progress simultaneously
     const delay = () => new Promise((res) => setTimeout(res, 200));
     mockConnect.mockImplementationOnce(delay).mockImplementationOnce(delay);
     const event = { Records: [formAnswerRecord] };
 
-    vi.resetModules();
     expect(mockConnect).not.toHaveBeenCalled();
 
     // Kick off both calls at once
@@ -312,7 +343,6 @@ describe("Kafka message sending", () => {
   it("should reconnect as needed", async () => {
     const event = { Records: [formAnswerRecord] };
 
-    vi.resetModules();
     expect(mockOn).not.toHaveBeenCalled();
     expect(mockConnect).not.toHaveBeenCalled();
 
