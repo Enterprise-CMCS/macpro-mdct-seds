@@ -37,7 +37,7 @@
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",
     "jsdom": "^26.1.0",
-    "react-tabs": "^5.0.0"
+    "react-tabs": "^6"
   },
   "devDependencies": {
     "@octokit/auth-action": "^6.0.1",
