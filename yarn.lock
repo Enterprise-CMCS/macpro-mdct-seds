@@ -10270,7 +10270,6 @@ __metadata:
     jsdom: "npm:^26.1.0"
     oxfmt: "npm:^0.24.0"
     oxlint: "npm:^1.41.0"
-    react-tabs: "npm:^6"
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -10979,7 +10978,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tabs@npm:^6, react-tabs@npm:^6.1.1":
+"react-tabs@npm:^6.1.1":
   version: 6.1.1
   resolution: "react-tabs@npm:6.1.1"
   dependencies:
