@@ -22,9 +22,11 @@ export type FormQuestion = {
   rows: any[];
 };
 
+const TableName = process.env.FormQuestionsTable;
+
 export const scanQuestionsByYear = async (year: number) => {
   const response = await dynamoDb.scan({
-    TableName: process.env.FormQuestionsTable,
+    TableName,
     FilterExpression: "#year = :year",
     ExpressionAttributeNames: { "#year": "year" },
     ExpressionAttributeValues: { ":year": year },
@@ -33,9 +35,27 @@ export const scanQuestionsByYear = async (year: number) => {
   return response.Items as FormQuestion[];
 };
 
+export const scanQuestionsByYearAndForm = async (
+  year: number,
+  form: string
+) => {
+  const response = await dynamoDb.scan({
+    TableName,
+    FilterExpression: "form = :form and #year = :year",
+    ExpressionAttributeNames: {
+      "#year": "year",
+    },
+    ExpressionAttributeValues: {
+      ":year": year,
+      ":form": form,
+    },
+  });
+  return response.Items as FormQuestion[];
+};
+
 export const writeAllFormQuestions = async (questions: FormQuestion[]) => {
   await dynamoDb.putMultiple(
-    process.env.FormQuestionsTable!,
+    TableName!,
     questions,
     (question) => question.question
   );

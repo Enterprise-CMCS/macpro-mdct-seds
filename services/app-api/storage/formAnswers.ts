@@ -52,6 +52,33 @@ export type FormAnswer = {
   last_modified_by: string;
 };
 
+const TableName = process.env.FormAnswersTable;
+
+export const queryAnswersByForm = async (
+  state_form: StateForm["state_form"]
+) => {
+  const response = await dynamoDb.query({
+    TableName,
+    IndexName: "state-form-index",
+    KeyConditionExpression: "state_form = :state_form",
+    ExpressionAttributeValues: {
+      ":state_form": state_form,
+    },
+  });
+  return response.Items as FormAnswer[];
+};
+
+export const queryAnswersByEntry = async (
+  answer_entry: FormAnswer["answer_entry"]
+) => {
+  const response = await dynamoDb.query({
+    TableName,
+    ExpressionAttributeValues: { ":answerEntry": answer_entry },
+    KeyConditionExpression: "answer_entry = :answerEntry",
+  });
+  return response.Items as FormAnswer[];
+};
+
 /**
  * Scan the entire table, and return all form IDs.
  *
@@ -64,16 +91,36 @@ export type FormAnswer = {
  */
 export const scanForAllFormIds = async (): Promise<string[]> => {
   const response = await dynamoDb.scan({
-    TableName: process.env.FormAnswersTable,
+    TableName,
     ProjectionExpression: "state_form",
   });
 
   return (response.Items as FormAnswer[]).map((answer) => answer.state_form);
 };
 
+export const updateAnswer = async (
+  data: Pick<
+    FormAnswer,
+    "answer_entry" | "rows" | "last_modified" | "last_modified_by"
+  >
+) => {
+  await dynamoDb.update({
+    TableName,
+    Key: { answer_entry: data.answer_entry },
+    UpdateExpression:
+      "SET #rows = :rows, last_modified = :last_modified, last_modified_by = :last_modified_by",
+    ExpressionAttributeNames: { "#rows": "rows" },
+    ExpressionAttributeValues: {
+      ":rows": data.rows,
+      ":last_modified": data.last_modified,
+      ":last_modified_by": data.last_modified_by,
+    },
+  });
+};
+
 export const writeAllFormAnswers = async (answers: FormAnswer[]) => {
   await dynamoDb.putMultiple(
-    process.env.FormAnswersTable!,
+    TableName!,
     answers,
     (answer) => answer.answer_entry
   );

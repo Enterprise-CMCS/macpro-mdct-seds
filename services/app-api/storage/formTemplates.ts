@@ -7,18 +7,31 @@ export type FormTemplate = {
   template: FormQuestion[];
 };
 
+const TableName = process.env.FormTemplatesTable;
+
 export const getTemplate = async (year: number) => {
-  const response = await dynamoDb.get({
-    TableName: process.env.FormTemplatesTable,
-    Key: { year },
-  });
+  const response = await dynamoDb.get({ TableName, Key: { year } });
 
   return response.Item as FormTemplate | undefined;
 };
 
 export const putTemplate = async (formTemplate: FormTemplate) => {
-  await dynamoDb.put({
-    TableName: process.env.FormTemplatesTable,
-    Item: formTemplate,
+  await dynamoDb.put({ TableName, Item: formTemplate });
+};
+
+/**
+ * List all of the years in the table - and _only_ the years.
+ *
+ * We use ProjectionExpression to save bandwidth;
+ * Dynamo still reads every item but returns only the `.year` property of each.
+ */
+export const scanTemplateYears = async () => {
+  const response = await dynamoDb.scan({
+    TableName,
+    ProjectionExpression: "#year",
+    ExpressionAttributeNames: { "#year": "year" },
   });
+  const items = (response.Items ?? []) as { year: number }[];
+
+  return items.map((i) => i.year);
 };

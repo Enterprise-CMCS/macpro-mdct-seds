@@ -1,9 +1,10 @@
 import handler from "../../libs/handler-lib.ts";
-import dynamoDb from "../../libs/dynamodb-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
 import { ok, badRequest, forbidden } from "../../libs/response-lib.ts";
 import { isIntegral } from "../../libs/parsing.ts";
 import { logger } from "../../libs/debug-lib.ts";
+import { putTemplate } from "../../storage/formTemplates.ts";
+import { FormQuestion } from "../../storage/formQuestions.ts";
 
 export const main = handler(readYearFromPath, async (request) => {
   if (request.user.role !== "admin") {
@@ -16,16 +17,13 @@ export const main = handler(readYearFromPath, async (request) => {
     return badRequest();
   }
 
-  const params = {
-    TableName: process.env.FormTemplatesTable,
-    Item: {
-      year: year,
-      template: request.body.template,
-      lastSynced: new Date().toISOString(),
-    },
+  const template = {
+    year: year,
+    template: request.body.template as FormQuestion[],
+    lastSynced: new Date().toISOString(),
   };
 
-  await dynamoDb.put(params);
+  await putTemplate(template);
 
   return ok(`Template updated for ${year}!`);
 });
