@@ -31,7 +31,6 @@ export const scanTemplateYears = async () => {
     ProjectionExpression: "#year",
     ExpressionAttributeNames: { "#year": "year" },
   });
-  const items = (response.Items ?? []) as { year: number }[];
 
-  return items.map((i) => i.year);
+  return response.Items.map((item) => item.year);
 };

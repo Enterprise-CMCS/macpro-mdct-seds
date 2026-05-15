@@ -14,7 +14,7 @@ export const createUser = async (userData: any) => {
     return `User ${userData.username} already exists`;
   }
 
-  const maxExistingId = ((await scanAllUsers()) ?? [])
+  const maxExistingId = (await scanAllUsers())
     .map((user) => Number(user.userId))
     .reduce((max, id) => (max > id ? max : id), 0);
 

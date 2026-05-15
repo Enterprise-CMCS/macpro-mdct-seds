@@ -41,7 +41,7 @@ export const scanQuestionsByYearAndForm = async (
 ) => {
   const response = await dynamoDb.scan({
     TableName,
-    FilterExpression: "form = :form and #year = :year",
+    FilterExpression: "#year = :year AND form = :form",
     ExpressionAttributeNames: {
       "#year": "year",
     },

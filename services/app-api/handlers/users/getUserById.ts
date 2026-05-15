@@ -2,7 +2,7 @@ import handler from "../../libs/handler-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
 import { logger } from "../../libs/debug-lib.ts";
 import { forbidden, notFound, ok } from "../../libs/response-lib.ts";
-import { getUserById } from "../../storage/users.ts";
+import { getUser } from "../../storage/users.ts";
 import { isIntegral } from "../../libs/parsing.ts";
 
 export const main = handler(readUserIdFromPath, async (request) => {
@@ -10,7 +10,7 @@ export const main = handler(readUserIdFromPath, async (request) => {
     return forbidden();
   }
 
-  const user = await getUserById(request.parameters.userId);
+  const user = await getUser(request.parameters.userId);
 
   if (!user) {
     return notFound();

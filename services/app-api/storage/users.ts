@@ -50,9 +50,7 @@ export const putUser = async (user: AuthUser) => {
 };
 
 export const scanAllUsers = async () => {
-  const response = await dynamoDb.scan({
-    TableName,
-  });
+  const response = await dynamoDb.scan({ TableName });
   return response.Items ?? ([] as AuthUser[]);
 };
 
@@ -92,7 +90,7 @@ export const scanForUserWithSub = async (usernameSub: string) => {
   return scanResult.Items?.[0] as AuthUser | undefined;
 };
 
-export const getUserById = async (userId: string) => {
+export const getUser = async (userId: string) => {
   const result = await dynamoDb.get({
     TableName,
     Key: { userId },

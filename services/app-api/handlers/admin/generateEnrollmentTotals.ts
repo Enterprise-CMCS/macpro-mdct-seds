@@ -1,6 +1,6 @@
 import handler from "../../libs/handler-lib.ts";
 import {
-  scanStateFormsWithTotals,
+  scanFormsWithTotals,
   StateForm,
   writeAllStateForms,
 } from "../../storage/stateForms.ts";
@@ -13,7 +13,7 @@ export const main = handler(emptyParser, async (request) => {
     return forbidden();
   }
 
-  const stateForms = await scanStateFormsWithTotals();
+  const stateForms = await scanFormsWithTotals();
   if (stateForms.length === 0) {
     return notFound("No 21E or 64.21E forms exist, for quarter 4 of any year.");
   }

@@ -31,7 +31,8 @@ export const main = handler(readFormIdentifiersFromPath, async (request) => {
 
   const state_form = `${state}-${year}-${quarter}-${form}`;
 
-  if ((await getStateForm(state_form)) !== undefined) {
+  const existingForm = await getStateForm(state_form);
+  if (!existingForm) {
     return notFound();
   }
 

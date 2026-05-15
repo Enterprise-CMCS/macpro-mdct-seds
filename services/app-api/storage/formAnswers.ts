@@ -54,6 +54,17 @@ export type FormAnswer = {
 
 const TableName = process.env.FormAnswersTable;
 
+export const queryAnswersByEntry = async (
+  answer_entry: FormAnswer["answer_entry"]
+) => {
+  const response = await dynamoDb.query({
+    TableName,
+    KeyConditionExpression: "answer_entry = :answer_entry",
+    ExpressionAttributeValues: { ":answer_entry": answer_entry },
+  });
+  return response.Items as FormAnswer[];
+};
+
 export const queryAnswersByForm = async (
   state_form: StateForm["state_form"]
 ) => {
@@ -64,17 +75,6 @@ export const queryAnswersByForm = async (
     ExpressionAttributeValues: {
       ":state_form": state_form,
     },
-  });
-  return response.Items as FormAnswer[];
-};
-
-export const queryAnswersByEntry = async (
-  answer_entry: FormAnswer["answer_entry"]
-) => {
-  const response = await dynamoDb.query({
-    TableName,
-    ExpressionAttributeValues: { ":answerEntry": answer_entry },
-    KeyConditionExpression: "answer_entry = :answerEntry",
   });
   return response.Items as FormAnswer[];
 };

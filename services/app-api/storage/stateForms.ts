@@ -57,11 +57,11 @@ export type StateForm = {
 
 const TableName = process.env.StateFormsTable;
 
-export const scanFormsByState = async (state: string) => {
+export const scanFormsByState = async (state_id: string) => {
   const response = await dynamoDb.scan({
     TableName,
-    FilterExpression: "state_id = :stateId",
-    ExpressionAttributeValues: { ":stateId": state },
+    FilterExpression: "state_id = :state_id",
+    ExpressionAttributeValues: { ":state_id": state_id },
     ConsistentRead: true,
   });
 
@@ -69,17 +69,17 @@ export const scanFormsByState = async (state: string) => {
 };
 
 export const scanFormsByStateAndQuarter = async (
-  state: string,
+  state_id: string,
   year: number,
   quarter: number
 ) => {
   const response = await dynamoDb.scan({
     TableName,
     FilterExpression:
-      "state_id = :state and quarter = :quarter and #year = :year",
+      "state_id = :state_id AND #year = :year AND quarter = :quarter",
     ExpressionAttributeNames: { "#year": "year" },
     ExpressionAttributeValues: {
-      ":state": state,
+      ":state_id": state_id,
       ":year": year,
       ":quarter": quarter,
     },
@@ -125,7 +125,7 @@ export const scanFormsByQuarterAndStatus = async (
  * That means only 21E and 64.21E; other forms do not have such totals.
  * It also means only Q4 forms; the totals are only calculated at year end.
  */
-export const scanStateFormsWithTotals = async () => {
+export const scanFormsWithTotals = async () => {
   const response = await dynamoDb.scan({
     TableName,
     FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
@@ -157,11 +157,11 @@ export const updateEnrollmentCounts = async (
     TableName: process.env.StateFormsTable,
     Key: { state_form: data.state_form },
     UpdateExpression:
-      "SET last_modified = :last_modified, last_modified_by = :last_modified_by, enrollmentCounts = :enrollmentCounts",
+      "SET enrollmentCounts = :enrollmentCounts, last_modified = :last_modified, last_modified_by = :last_modified_by",
     ExpressionAttributeValues: {
+      ":enrollmentCounts": data.enrollmentCounts,
       ":last_modified": data.last_modified,
       ":last_modified_by": data.last_modified_by,
-      ":enrollmentCounts": data.enrollmentCounts,
     },
   });
 };
@@ -205,13 +205,13 @@ export const updateCommentAndStatus = async (
     TableName,
     Key: { state_form: data.state_form },
     UpdateExpression:
-      "SET state_comments = :state_comments, last_modified = :last_modified, last_modified_by = :last_modified_by, status_id = :status_id, status_date = :status_date, status_modified_by = :status_modified_by",
+      "SET state_comments = :state_comments, status_id = :status_id, last_modified = :last_modified, last_modified_by = :last_modified_by, status_date = :status_date, status_modified_by = :status_modified_by",
     ExpressionAttributeValues: {
       ":state_comments": data.state_comments,
       ":last_modified": data.last_modified,
       ":last_modified_by": data.last_modified_by,
       ":status_id": data.status_id,
-      ":status_modified": data.last_modified,
+      ":status_date": data.last_modified,
       ":status_modified_by": data.last_modified_by,
     },
   });
