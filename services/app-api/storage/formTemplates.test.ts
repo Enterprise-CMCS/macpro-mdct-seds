@@ -57,6 +57,11 @@ describe("Form Template storage", () => {
       const result = await scanTemplateYears();
 
       expect(result).toEqual([2023, 2025, 2024]);
+      expect(mockScan).toHaveBeenCalledWith({
+        TableName: "local-form-templates",
+        ProjectionExpression: "#year",
+        ExpressionAttributeNames: { "#year": "year" },
+      });
     });
   });
 });
