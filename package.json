@@ -19,12 +19,12 @@
   "workspaces": [
     "cli",
     "deployment",
+    ".github/scanResources",
     "services/app-api",
     "services/database",
     "services/topics",
     "services/ui-auth",
-    "services/ui-src",
-    "tests/cypress"
+    "services/ui-src"
   ],
   "type": "module",
   "main": "index.js",
@@ -32,12 +32,10 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "npx --prefix deployment cdk",
-    "cdklocal": "npx --prefix deployment cdklocal",
-    "test:cypress": "cd tests/cypress && yarn test && cd -",
-    "test:cypress:ci": "cd tests/cypress && yarn run test:ci"
+    "cdklocal": "npx --prefix deployment cdklocal"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "~3.1012.0",
+    "@aws-sdk/client-cloudformation": "~3.1034.0",
     "jsdom": "^26.1.0"
   },
   "devDependencies": {
@@ -46,8 +44,18 @@
     "esbuild": "^0.28.0",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.41.0",
-    "tsx": "^4.20.5",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "resolutions": {
+    "fast-xml-parser@5.5.6": "^5.7.2",
+    "fast-xml-parser@5.5.8": "^5.7.2",
+    "fast-xml-parser@^5.3.6": "^5.7.2",
+    "minimatch@^10.1.1": "^10.2.5",
+    "minimatch@^10.2.3": "^10.2.5",
+    "picomatch@^2.3.1": "^2.3.2",
+    "picomatch@^4.0.3": "^4.0.4",
+    "underscore@1.13.6": "^1.13.8"
   },
   "packageManager": "yarn@4.12.0"
 }
