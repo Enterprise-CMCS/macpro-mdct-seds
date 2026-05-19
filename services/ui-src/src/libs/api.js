@@ -66,9 +66,9 @@ export const getUserById = async (userId) => {
  * The only exceptions are actual exceptions that will result in a 500 response.
  * @returns {Promise<AuthUser>}
  */
-export const getCurrentUser = async () => {
+export const determineCurrentUser = async () => {
   const opts = await requestOptions();
-  return await apiLib.get(`/getCurrentUser`, opts);
+  return await apiLib.post(`/determineCurrentUser`, opts);
 };
 
 /**

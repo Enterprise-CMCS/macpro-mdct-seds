@@ -127,16 +127,16 @@ describe("handler-lib", () => {
     );
   });
 
-  it("should skip the AuthUser lookup for the getCurrentUser endpoint", async () => {
+  it("should skip the AuthUser lookup for the determineCurrentUser endpoint", async () => {
     mockScan.mockResolvedValueOnce({ Items: [mockDbUser] });
     const parser = vi.fn().mockReturnValue("mock parse result");
     const lambda = vi.fn().mockResolvedValue("mock lambda result");
-    const getCurrentUserEvent = {
+    const determineCurrentUserEvent = {
       ...mockEvent,
-      path: "/getCurrentUser",
+      path: "/determineCurrentUser",
     };
 
-    await handler(parser, lambda)(getCurrentUserEvent);
+    await handler(parser, lambda)(determineCurrentUserEvent);
 
     expect(mockScan).not.toHaveBeenCalled();
     expect(lambda).toHaveBeenCalledWith(

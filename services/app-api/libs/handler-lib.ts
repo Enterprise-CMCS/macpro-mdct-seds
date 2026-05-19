@@ -5,7 +5,10 @@ import {
   ParameterParser,
 } from "../shared/types.ts";
 import { AuthUser, scanForUserWithSub } from "../storage/users.ts";
-import { getUserDetailsFromEvent } from "./authorization.ts";
+import {
+  UnauthenticatedError,
+  getUserDetailsFromEvent,
+} from "./authorization.ts";
 import * as logger from "./debug-lib.ts";
 import {
   badRequest,
@@ -43,6 +46,10 @@ export default function handler<TParams>(
 
       return await lambda({ user, body, parameters });
     } catch (error) {
+      if (error instanceof UnauthenticatedError) {
+        return unauthenticated((error as Error).message);
+      }
+
       logger.error("Error: %O", error);
       return internalServerError((error as Error).message);
     } finally {
@@ -56,8 +63,8 @@ export default function handler<TParams>(
  */
 const determineUser = async (event: APIGatewayProxyEvent) => {
   const userFromToken = getUserDetailsFromEvent(event);
-  if (event.path === "/getCurrentUser") {
-    // getCurrentUser creates AuthUser records, so they needn't already exist.
+  if (event.path === "/determineCurrentUser") {
+    // determineCurrentUser creates AuthUser records, so they needn't already exist.
     return userFromToken as AuthUser;
   } else {
     return await scanForUserWithSub(userFromToken.usernameSub);

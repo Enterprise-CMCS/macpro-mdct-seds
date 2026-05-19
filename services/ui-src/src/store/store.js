@@ -8,7 +8,12 @@ import {
   insertFPL,
   sortQuestionsByNumber,
 } from "./helperFunctions";
-import { getCurrentUser, getForm, updateForm, updateTotals } from "../libs/api";
+import {
+  determineCurrentUser,
+  getForm,
+  updateForm,
+  updateTotals,
+} from "../libs/api";
 
 export const useStore = create((set, get) => ({
   // Initial state
@@ -120,7 +125,7 @@ export const useStore = create((set, get) => ({
     }
   },
   loadUser: async () => {
-    const user = (await getCurrentUser()) ?? {};
+    const user = (await determineCurrentUser()) ?? {};
     set({ user });
   },
   wipeUser: () => set({ user: {} }),

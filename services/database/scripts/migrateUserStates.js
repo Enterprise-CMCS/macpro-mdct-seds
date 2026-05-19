@@ -41,7 +41,7 @@ const {
  *     + Not when the user logged in.
  *   This made it nearly useless as an indicator of activity for a given user.
  *   It will no longer be updated when the user is modified by an admin,
- *   and it is now updated by user activity (see getCurrentUser.ts).
+ *   and it is now updated by user activity (see determineCurrentUser.ts).
  *   To make it useful for past activity, this migration does a one-time update,
  *   using timestamps from Cognito as a proxy for user activity.
  *   These are a good proxy, for the users that have it:

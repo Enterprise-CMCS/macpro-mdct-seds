@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { main as getCurrentUser } from "./getCurrentUser.ts";
+import { main as determineCurrentUser } from "./determineCurrentUser.ts";
 import { createUser } from "./createUser.ts";
 import {
   DynamoDBDocumentClient,
@@ -34,7 +34,7 @@ const cognitoTokenWithSub: CmsAmplifyToken = {
 
 const encodeJwt = (x: any) => `eyJhbGciOiJub25lIn0.${btoa(JSON.stringify(x))}.`;
 const mockEvent = {
-  path: "/getCurrentUser",
+  path: "/determineCurrentUser",
   headers: {
     "x-api-key": encodeJwt(cognitoTokenWithSub),
   } as Record<string, string | null>,
@@ -45,7 +45,7 @@ const mockUser = {
   sub: "mock-sub",
 };
 
-describe("getCurrentUser", () => {
+describe("determineCurrentUser", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -53,7 +53,7 @@ describe("getCurrentUser", () => {
   it("should fetch the requested user data from dynamo, updating lastLogin", async () => {
     mockScan.mockResolvedValueOnce({ Items: [mockUser] });
 
-    const response = await getCurrentUser(mockEvent);
+    const response = await determineCurrentUser(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
@@ -96,7 +96,7 @@ describe("getCurrentUser", () => {
   });
 
   it("should return an error if sub is missing from token", async () => {
-    const response = await getCurrentUser({
+    const response = await determineCurrentUser({
       ...mockEvent,
       headers: {
         "x-api-key": encodeJwt({ "custom:ismemberof": "CHIP_D_USER_GROUP" }),
@@ -105,7 +105,7 @@ describe("getCurrentUser", () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        statusCode: StatusCodes.InternalServerError,
+        statusCode: StatusCodes.Unauthenticated,
         body: expect.stringContaining("token must contain"),
       })
     );
@@ -116,7 +116,7 @@ describe("getCurrentUser", () => {
       .mockResolvedValueOnce({})
       .mockResolvedValueOnce({ Count: 1, Items: [mockUser] });
 
-    const response = await getCurrentUser(mockEvent);
+    const response = await determineCurrentUser(mockEvent);
 
     expect(createUser).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -141,7 +141,7 @@ describe("getCurrentUser", () => {
   it("should return an error if the user cannot be created", async () => {
     mockScan.mockResolvedValueOnce({}).mockResolvedValueOnce({});
 
-    const response = await getCurrentUser(mockEvent);
+    const response = await determineCurrentUser(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
