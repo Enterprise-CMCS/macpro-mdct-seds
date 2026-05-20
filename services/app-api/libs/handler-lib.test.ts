@@ -9,6 +9,10 @@ const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockScan = vi.fn();
 mockDynamo.on(ScanCommand).callsFake(mockScan);
 
+const consoleSpy = {
+  error: vi.spyOn(console, "error"),
+};
+
 const mockTokenUser = {
   sub: "mock-sub",
   "custom:ismemberof": "CHIP_D_USER_GROUP",
@@ -56,7 +60,37 @@ describe("handler-lib", () => {
     expect(result).toBe("mock lambda result");
   });
 
-  it("should return an error if the user cannot be found", async () => {
+  it("should return an appropriate error if the user token is missing", async () => {
+    const noTokenEvent = { headers: {} } as APIGatewayProxyEvent;
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    const result = await handler(parser, lambda)(noTokenEvent);
+
+    expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.any(Date),
+      expect.stringContaining("Invalid token")
+    );
+  });
+
+  it("should return an appropriate error if the user token is invalid", async () => {
+    const invalidTokenEvent = {
+      headers: { "x-api-key": "invalid" } as Record<string, string>,
+    } as APIGatewayProxyEvent;
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    const result = await handler(parser, lambda)(invalidTokenEvent);
+
+    expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.any(Date),
+      expect.stringContaining("Invalid token")
+    );
+  });
+
+  it("should return an appropriate error if the user cannot be found", async () => {
     mockScan.mockResolvedValueOnce({ Items: [] });
     const parser = vi.fn().mockReturnValue("mock parse result");
     const lambda = vi.fn().mockResolvedValue("mock lambda result");
@@ -64,6 +98,22 @@ describe("handler-lib", () => {
     const result = await handler(parser, lambda)(mockEvent);
 
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+  });
+
+  it("should return an appropriate error if the user scan fails", async () => {
+    mockScan.mockImplementationOnce(() => {
+      throw new Error("mock scan fail");
+    });
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    const result = await handler(parser, lambda)(mockEvent);
+
+    expect(result.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.any(Date),
+      expect.stringContaining("mock scan fail")
+    );
   });
 
   it("should parse the request body", async () => {
