@@ -4,7 +4,7 @@ import {
   generateQuarterForms,
   getForm,
   listFormsForQuarter,
-  getCurrentUser,
+  determineCurrentUser,
   getUserById,
   listUsers,
   listFormsForState,
@@ -71,13 +71,13 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for getCurrentUser", async () => {
-    const response = await getCurrentUser();
-    expect(response.responseAttr).toBe("mock get response");
-    expect(mockGet).toHaveBeenCalledWith({
+  it("should make the expected API call for determineCurrentUser", async () => {
+    const response = await determineCurrentUser();
+    expect(response.responseAttr).toBe("mock post response");
+    expect(mockPost).toHaveBeenCalledWith({
       apiName: "mdct-seds",
-      path: "/getCurrentUser",
-      options: { headers: expectedHeaders, body: undefined },
+      path: "/determineCurrentUser",
+      options: { headers: expectedHeaders },
     });
   });
 

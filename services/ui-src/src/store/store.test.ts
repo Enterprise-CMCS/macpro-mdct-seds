@@ -7,7 +7,7 @@ import {
 } from "../libs/api";
 
 vi.mock("../libs/api", () => ({
-  getCurrentUser: vi.fn().mockResolvedValue({ username: "mockUsername" }),
+  determineCurrentUser: vi.fn().mockResolvedValue({ username: "mockUsername" }),
   getForm: vi.fn(),
   updateForm: vi.fn(),
   updateTotals: vi.fn(),

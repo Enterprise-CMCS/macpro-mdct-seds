@@ -8,7 +8,12 @@ import {
   insertFPL,
   sortQuestionsByNumber,
 } from "./helperFunctions";
-import { getCurrentUser, getForm, updateForm, updateTotals } from "../libs/api";
+import {
+  determineCurrentUser,
+  getForm,
+  updateForm,
+  updateTotals,
+} from "../libs/api";
 
 type StoreShape = {
   questions: any[];
@@ -139,7 +144,7 @@ export const useStore = create<StoreShape>((set, get) => ({
     }
   },
   loadUser: async () => {
-    const user = (await getCurrentUser()) ?? {};
+    const user = (await determineCurrentUser()) ?? {};
     set({ user });
   },
   wipeUser: () => set({ user: {} }),

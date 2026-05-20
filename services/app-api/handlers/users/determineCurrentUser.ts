@@ -2,7 +2,7 @@ import handler from "../../libs/handler-lib.ts";
 import dynamoDb from "../../libs/dynamodb-lib.ts";
 import { createUser } from "./createUser.ts";
 import { AuthUser, scanForUserWithSub } from "../../storage/users.ts";
-import { ok } from "../../libs/response-lib.ts";
+import { ok, unauthenticated } from "../../libs/response-lib.ts";
 import { emptyParser } from "../../libs/parsing.ts";
 import { CmsUser } from "../../shared/types.ts";
 
@@ -15,7 +15,9 @@ export const main = handler(emptyParser, async (request) => {
 
   const usernameSub = userFromToken.usernameSub;
   if (!usernameSub) {
-    throw new Error(`User token must contain a 'sub' property!`);
+    return unauthenticated({
+      message: `User token must contain a 'sub' property!`,
+    });
   }
 
   let userFromDb = await scanForUserWithSub(usernameSub);
