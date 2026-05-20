@@ -141,7 +141,7 @@ export const scanFormsWithTotals = async () => {
 
 export const getStateForm = async (state_form: StateForm["state_form"]) => {
   const response = await dynamoDb.get({
-    TableName: process.env.StateFormsTable,
+    TableName,
     Key: { state_form },
   });
   return response.Item as StateForm | undefined;
@@ -154,7 +154,7 @@ export const updateEnrollmentCounts = async (
   >
 ) => {
   await dynamoDb.update({
-    TableName: process.env.StateFormsTable,
+    TableName,
     Key: { state_form: data.state_form },
     UpdateExpression:
       "SET enrollmentCounts = :enrollmentCounts, last_modified = :last_modified, last_modified_by = :last_modified_by",
@@ -218,9 +218,5 @@ export const updateCommentAndStatus = async (
 };
 
 export const writeAllStateForms = async (forms: StateForm[]) => {
-  await dynamoDb.putMultiple(
-    process.env.StateFormsTable!,
-    forms,
-    (form) => form.state_form
-  );
+  await dynamoDb.putMultiple(TableName!, forms, (form) => form.state_form);
 };

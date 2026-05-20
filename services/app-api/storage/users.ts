@@ -112,7 +112,7 @@ export const recordLogin = async (
   lastLogin: DateString
 ) => {
   await dynamoDb.update({
-    TableName: process.env.AuthUserTable,
+    TableName,
     Key: { userId: userData.userId },
     UpdateExpression:
       "SET firstName = :firstName, lastName = :lastName, email = :email, lastLogin = :lastLogin",
