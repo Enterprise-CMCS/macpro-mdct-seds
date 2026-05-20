@@ -55,8 +55,8 @@ export default function handler<TParams>(
  * Read the cognito token. If appropriate, search the AuthUser DB table.
  */
 const determineUser = async (event: APIGatewayProxyEvent) => {
+  const userFromToken = getUserDetailsFromEvent(event);
   try {
-    const userFromToken = getUserDetailsFromEvent(event);
     if (event.path === "/determineCurrentUser") {
       // determineCurrentUser creates AuthUser records, so they needn't already exist.
       return userFromToken as AuthUser;
@@ -65,6 +65,6 @@ const determineUser = async (event: APIGatewayProxyEvent) => {
     }
   } catch {
     // Auth parsing failed - return 401
-    return null;
+    return undefined;
   }
 };
