@@ -86,7 +86,7 @@ export interface AuthenticatedRequest<TParams = void> {
    * For most endpoints, this will be the record found in the AuthUser table,
    * which is the source of truth for user role and user state.
    *
-   * For `getCurrentUser`, this will be data derived from the Cognito token.
+   * For `determineCurrentUser`, this will be data derived from the Cognito token.
    * For _that endpoint only_, this type is inaccurate; it should be `CmsUser`.
    */
   user: AuthUser;

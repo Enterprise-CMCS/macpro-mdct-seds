@@ -189,11 +189,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "getCurrentUser", {
-    entry: "services/app-api/handlers/users/getCurrentUser.ts",
+  new Lambda(scope, "determineCurrentUser", {
+    entry: "services/app-api/handlers/users/determineCurrentUser.ts",
     handler: "main",
-    path: "/getCurrentUser",
-    method: "GET",
+    path: "/determineCurrentUser",
+    method: "POST",
     ...commonProps,
   });
 
