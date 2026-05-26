@@ -1,10 +1,10 @@
 import handler from "../../libs/handler-lib.ts";
-import dynamoDb from "../../libs/dynamodb-lib.ts";
 import { canReadDataForState } from "../../auth/authConditions.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
 import { forbidden, ok } from "../../libs/response-lib.ts";
 import { isIntegral, isStateAbbr } from "../../libs/parsing.ts";
 import { logger } from "../../libs/debug-lib.ts";
+import { scanFormsByStateAndQuarter } from "../../storage/stateForms.ts";
 
 export const main = handler(readStateAndQuarterFromPath, async (request) => {
   const { state, year, quarter } = request.parameters;
@@ -13,20 +13,7 @@ export const main = handler(readStateAndQuarterFromPath, async (request) => {
     return forbidden();
   }
 
-  const params = {
-    TableName: process.env.StateFormsTable,
-    FilterExpression:
-      "state_id = :state and quarter = :quarter and #year = :year",
-    ExpressionAttributeNames: { "#year": "year" },
-    ExpressionAttributeValues: {
-      ":state": state,
-      ":year": year,
-      ":quarter": quarter,
-    },
-  };
-
-  const result = await dynamoDb.scan(params);
-  return ok(result.Items);
+  return ok(await scanFormsByStateAndQuarter(state, year, quarter));
 });
 
 function readStateAndQuarterFromPath(evt: APIGatewayProxyEvent) {
