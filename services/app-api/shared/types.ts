@@ -35,9 +35,9 @@ export type DateString = string;
  * For the state and a definitive role, refer to the AuthUser dynamo table.
  */
 export type CmsUser = {
-  email: string | undefined;
-  firstName: string | undefined;
-  lastName: string | undefined;
+  email: string;
+  firstName: string;
+  lastName: string;
   role: string;
   username: string | undefined;
   usernameSub: string;

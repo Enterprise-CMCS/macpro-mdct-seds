@@ -1,14 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as handler from "../../libs/handler-mocking.ts";
 import { main as listFormsForQuarter } from "./listFormsForQuarter.ts";
-import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+import {
+  scanFormsByStateAndQuarter as actualScanFormsByStateAndQuarter,
+  StateForm,
+} from "../../storage/stateForms.ts";
 import { StatusCodes } from "../../libs/response-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
-const mockScan = vi.fn();
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-mockDynamo.on(ScanCommand).callsFake(mockScan);
+vi.mock("../../storage/stateForms.ts", () => ({
+  scanFormsByStateAndQuarter: vi.fn(),
+}));
+const scanFormsByStateAndQuarter = vi.mocked(actualScanFormsByStateAndQuarter);
 
 const mockEvent = {
   pathParameters: {
@@ -17,10 +20,7 @@ const mockEvent = {
     quarter: "1",
   } as Record<string, string>,
 } as APIGatewayProxyEvent;
-const mockScanResponse = {
-  Items: [{ mockForm: 1 }, { mockForm: 2 }],
-  Count: 2,
-};
+const mockForms = [{ mockForm: 1 }, { mockForm: 2 }] as unknown as StateForm[];
 
 describe("listFormsForQuarter", () => {
   beforeEach(() => {
@@ -29,31 +29,17 @@ describe("listFormsForQuarter", () => {
 
   it("should query dynamo for state forms", async () => {
     handler.setupStateUser("CO");
-    mockScan.mockResolvedValueOnce(mockScanResponse);
+    scanFormsByStateAndQuarter.mockResolvedValueOnce(mockForms);
 
     const response = await listFormsForQuarter(mockEvent);
 
     expect(response).toEqual(
       expect.objectContaining({
         statusCode: StatusCodes.Ok,
-        body: JSON.stringify([{ mockForm: 1 }, { mockForm: 2 }]),
+        body: JSON.stringify(mockForms),
       })
     );
-
-    expect(mockScan).toHaveBeenCalledWith(
-      expect.objectContaining({
-        TableName: "local-state-forms",
-        FilterExpression:
-          "state_id = :state and quarter = :quarter and #year = :year",
-        ExpressionAttributeNames: { "#year": "year" },
-        ExpressionAttributeValues: {
-          ":state": "CO",
-          ":year": 2025,
-          ":quarter": 1,
-        },
-      }),
-      expect.any(Function)
-    );
+    expect(scanFormsByStateAndQuarter).toHaveBeenCalledWith("CO", 2025, 1);
   });
 
   it.each([

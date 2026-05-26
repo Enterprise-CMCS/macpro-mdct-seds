@@ -1,5 +1,8 @@
-import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { putUser, scanForUserByUsername } from "../../storage/users.ts";
+import {
+  putUser,
+  scanAllUsers,
+  scanForUserByUsername,
+} from "../../storage/users.ts";
 
 export const createUser = async (userData: any) => {
   if (!userData.username) {
@@ -11,8 +14,7 @@ export const createUser = async (userData: any) => {
     return `User ${userData.username} already exists`;
   }
 
-  const params = { TableName: process.env.AuthUserTable };
-  const maxExistingId = ((await dynamoDb.scan(params)).Items ?? [])
+  const maxExistingId = (await scanAllUsers())
     .map((user) => Number(user.userId))
     .reduce((max, id) => (max > id ? max : id), 0);
 
