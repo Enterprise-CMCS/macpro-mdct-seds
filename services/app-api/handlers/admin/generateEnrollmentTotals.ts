@@ -1,16 +1,19 @@
 import handler from "../../libs/handler-lib.ts";
-import dynamoDb from "../../libs/dynamodb-lib.ts";
-import { StateForm, writeAllStateForms } from "../../storage/stateForms.ts";
+import {
+  scanFormsWithTotals,
+  StateForm,
+  writeAllStateForms,
+} from "../../storage/stateForms.ts";
 import { ok, notFound, forbidden } from "../../libs/response-lib.ts";
 import { emptyParser } from "../../libs/parsing.ts";
-import { FormAnswer } from "../../storage/formAnswers.ts";
+import { FormAnswer, queryAnswersByEntry } from "../../storage/formAnswers.ts";
 
 export const main = handler(emptyParser, async (request) => {
   if (request.user.role !== "admin") {
     return forbidden();
   }
 
-  const stateForms = await getStateFormsWithTotals();
+  const stateForms = await scanFormsWithTotals();
   if (stateForms.length === 0) {
     return notFound("No 21E or 64.21E forms exist, for quarter 4 of any year.");
   }
@@ -22,22 +25,6 @@ export const main = handler(emptyParser, async (request) => {
   return ok();
 });
 
-const getStateFormsWithTotals = async () => {
-  const params = {
-    TableName: process.env.StateFormsTable,
-    FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
-    ExpressionAttributeValues: {
-      ":quarter": 4,
-      ":f1": "21E",
-      ":f2": "64.21E",
-    },
-    ConsistentRead: true,
-  };
-
-  const response = await dynamoDb.scan(params);
-  return response.Items as StateForm[];
-};
-
 const recalculateTotals = async (stateForms: StateForm[]) => {
   const ageRanges = ["0000", "0001", "0105", "0612", "1318"];
   for (const stateForm of stateForms) {
@@ -45,13 +32,7 @@ const recalculateTotals = async (stateForms: StateForm[]) => {
     let questionTotal = 0;
     for (const ageRange of ageRanges) {
       const answerEntry = `${stateForm.state_form}-${ageRange}-07`;
-      const existingItems = (
-        await dynamoDb.query({
-          TableName: process.env.FormAnswersTable,
-          ExpressionAttributeValues: { ":answerEntry": answerEntry },
-          KeyConditionExpression: "answer_entry = :answerEntry",
-        })
-      ).Items as FormAnswer[];
+      const existingItems = await queryAnswersByEntry(answerEntry);
 
       // Add just the rows, no other details are needed
       let questionResultLength = existingItems.length;

@@ -2,24 +2,31 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as handler from "../../libs/handler-mocking.ts";
 import { main as updateForm } from "./updateForm.ts";
 import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  QueryCommand,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+  StateForm,
+  getStateForm as actualGetStateForm,
+  updateComment as actualUpdateComment,
+  updateCommentAndStatus as actualUpdateCommentAndStatus,
+} from "../../storage/stateForms.ts";
+import {
+  FormAnswer,
+  updateAnswer as actualUpdateAnswer,
+} from "../../storage/formAnswers.ts";
 import { APIGatewayProxyEvent, FormStatus } from "../../shared/types.ts";
-import { StateForm } from "../../storage/stateForms.ts";
-import { FormAnswer } from "../../storage/formAnswers.ts";
 import { StatusCodes } from "../../libs/response-lib.ts";
 
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockGet = vi.fn();
-mockDynamo.on(GetCommand).callsFake(mockGet);
-const mockQuery = vi.fn();
-mockDynamo.on(QueryCommand).callsFake(mockQuery);
-const mockUpdate = vi.fn();
-mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
+vi.mock("../../storage/stateForms.ts", () => ({
+  getStateForm: vi.fn(),
+  updateComment: vi.fn(),
+  updateCommentAndStatus: vi.fn(),
+}));
+const getStateForm = vi.mocked(actualGetStateForm);
+const updateComment = vi.mocked(actualUpdateComment);
+const updateCommentAndStatus = vi.mocked(actualUpdateCommentAndStatus);
+
+vi.mock("../../storage/formAnswers.ts", () => ({
+  updateAnswer: vi.fn(),
+}));
+const updateAnswer = vi.mocked(actualUpdateAnswer);
 
 const mockFormAnswer1 = {
   state_form: "CO-2025-1-GRE",
@@ -82,65 +89,37 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
     expect(response.statusCode).toBe(StatusCodes.Ok);
 
-    expect(mockUpdate).toHaveBeenCalledTimes(3);
-    expect(mockUpdate).toHaveBeenCalledWith(
-      {
-        TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-1-GRE-0001-Q1" },
-        UpdateExpression:
-          "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
-        ExpressionAttributeValues: {
-          // Note that null values have been replaced with zeroes
-          ":rows": [{ col1: 12, col2: 0, col3: 0, col4: 0, col5: 0, col6: 0 }],
-          ":last_modified_by": "TEST",
-          ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
+    expect(updateAnswer).toHaveBeenCalledWith({
+      answer_entry: "CO-2025-1-GRE-0001-Q1",
+      // Note that null values have been replaced with zeroes
+      rows: [{ col1: 12, col2: 0, col3: 0, col4: 0, col5: 0, col6: 0 }],
+      last_modified_by: "TEST",
+      last_modified: expect.stringMatching(ISO_DATE_REGEX),
+    });
+    expect(updateAnswer).toHaveBeenCalledWith({
+      answer_entry: "CO-2025-1-GRE-0105-Q1",
+      // Note that null values have been replaced with zeroes
+      rows: [{ col1: 23, col2: 0, col3: 0, col4: 0, col5: 0, col6: 0 }],
+      last_modified_by: "TEST",
+      last_modified: expect.stringMatching(ISO_DATE_REGEX),
+    });
+    expect(updateComment).toHaveBeenCalledWith({
+      state_form: "CO-2025-1-GRE",
+      last_modified_by: "TEST",
+      last_modified: expect.stringMatching(ISO_DATE_REGEX),
+      state_comments: [
+        {
+          type: "text_multiline",
+          entry: "mock state comment",
         },
-        ExpressionAttributeNames: { "#r": "rows" },
-        ReturnValues: "ALL_NEW",
-      },
-      expect.any(Function)
-    );
-    expect(mockUpdate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-1-GRE-0105-Q1" },
-        ExpressionAttributeValues: expect.objectContaining({
-          // Note that null values have been replaced with zeroes
-          ":rows": [{ col1: 23, col2: 0, col3: 0, col4: 0, col5: 0, col6: 0 }],
-        }),
-      }),
-      expect.any(Function)
-    );
-
-    expect(mockUpdate).toHaveBeenCalledWith(
-      {
-        TableName: "local-state-forms",
-        Key: { state_form: "CO-2025-1-GRE" },
-        UpdateExpression:
-          "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
-        ExpressionAttributeValues: {
-          ":last_modified_by": "TEST",
-          ":last_modified": expect.stringMatching(ISO_DATE_REGEX),
-          ":status_modified_by": "PREV",
-          ":status_date": "2025-02-02T19:41:00.770Z",
-          ":status_id": FormStatus.InProgress,
-          ":state_comments": [
-            {
-              type: "text_multiline",
-              entry: "mock state comment",
-            },
-          ],
-        },
-        ReturnValues: "ALL_NEW",
-      },
-      expect.any(Function)
-    );
+      ],
+    });
   });
 
   it("should sort answers by answer_entry", async () => {
@@ -152,14 +131,14 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
     expect(response.statusCode).toBe(StatusCodes.Ok);
-    const savedAnswerEntries = mockUpdate.mock.calls
-      .filter((call) => call[0].TableName === "local-form-answers")
-      .map((call) => call[0].Key.answer_entry);
+    const savedAnswerEntries = updateAnswer.mock.calls.map(
+      (call) => call[0].answer_entry
+    );
     const expectedAnswerEntries = [
       "CO-2025-1-GRE-0001-Q1",
       "CO-2025-1-GRE-0105-Q1",
@@ -177,7 +156,7 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({});
+    getStateForm.mockResolvedValueOnce(undefined);
 
     await expect(updateForm(mockEvent)).rejects.toThrow("State Form Not Found");
 
@@ -199,22 +178,24 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
     expect(response.statusCode).toBe(StatusCodes.Ok);
 
-    expect(mockUpdate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        ExpressionAttributeValues: expect.objectContaining({
-          ":status_id": FormStatus.FinalCert,
-          ":status_modified_by": "TEST",
-          ":status_date": expect.stringMatching(ISO_DATE_REGEX),
-        }),
-      }),
-      expect.any(Function)
-    );
+    expect(updateCommentAndStatus).toHaveBeenCalledWith({
+      state_form: "CO-2025-1-GRE",
+      last_modified_by: "TEST",
+      last_modified: expect.stringMatching(ISO_DATE_REGEX),
+      status_id: FormStatus.FinalCert,
+      state_comments: [
+        {
+          type: "text_multiline",
+          entry: "mock state comment",
+        },
+      ],
+    });
   });
 
   it("should perform special calculations for question 05", async () => {
@@ -284,47 +265,42 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
     expect(response.statusCode).toBe(StatusCodes.Ok);
 
-    expect(mockUpdate).toHaveBeenCalledWith(
+    expect(updateAnswer).toHaveBeenCalledWith(
       expect.objectContaining({
-        TableName: "local-form-answers",
-        Key: { answer_entry: "CO-2025-1-GRE-0001-05" },
-        ExpressionAttributeValues: expect.objectContaining({
-          ":rows": [
-            { col1: "", col2: "", col3: "", col4: "", col5: "", col6: "" },
-            {
-              col1: "",
-              col2: [{ answer: "21.0" }],
-              col3: [{ answer: "11.0" }],
-              col4: [{ answer: "7.7" }],
-              col5: [{ answer: "6.0" }],
-              col6: [{ answer: "5.0" }],
-            },
-            {
-              col1: "",
-              col2: [{ answer: "4.3" }],
-              col3: [{ answer: "3.9" }],
-              col4: [{ answer: "3.5" }],
-              col5: [{ answer: "3.2" }],
-              col6: [{ answer: "3.0" }],
-            },
-            {
-              col1: "",
-              col2: [{ answer: "2.8" }],
-              col3: [{ answer: "2.7" }],
-              col4: [{ answer: "2.5" }],
-              col5: [{ answer: "2.4" }],
-              col6: [{ answer: "2.3" }],
-            },
-          ],
-        }),
-      }),
-      expect.any(Function)
+        rows: [
+          { col1: "", col2: "", col3: "", col4: "", col5: "", col6: "" },
+          {
+            col1: "",
+            col2: [{ answer: "21.0" }],
+            col3: [{ answer: "11.0" }],
+            col4: [{ answer: "7.7" }],
+            col5: [{ answer: "6.0" }],
+            col6: [{ answer: "5.0" }],
+          },
+          {
+            col1: "",
+            col2: [{ answer: "4.3" }],
+            col3: [{ answer: "3.9" }],
+            col4: [{ answer: "3.5" }],
+            col5: [{ answer: "3.2" }],
+            col6: [{ answer: "3.0" }],
+          },
+          {
+            col1: "",
+            col2: [{ answer: "2.8" }],
+            col3: [{ answer: "2.7" }],
+            col4: [{ answer: "2.5" }],
+            col5: [{ answer: "2.4" }],
+            col6: [{ answer: "2.3" }],
+          },
+        ],
+      })
     );
   });
 
@@ -337,22 +313,17 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
     expect(response.statusCode).toBe(StatusCodes.Ok);
 
-    expect(mockUpdate).toHaveBeenCalledTimes(1);
-
-    expect(mockUpdate).toHaveBeenCalledWith(
+    expect(updateAnswer).not.toHaveBeenCalled();
+    expect(updateComment).toHaveBeenCalledWith(
       expect.objectContaining({
-        TableName: "local-state-forms",
-        ExpressionAttributeValues: expect.objectContaining({
-          ":last_modified_by": "TEST",
-        }),
-      }),
-      expect.any(Function)
+        last_modified_by: "TEST",
+      })
     );
   });
 
@@ -365,7 +336,7 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
@@ -384,7 +355,7 @@ describe("updateForm", () => {
       }),
       pathParameters: mockPathParams,
     } as APIGatewayProxyEvent;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
 
     const response = await updateForm(mockEvent);
 
@@ -513,7 +484,7 @@ describe("updateForm", () => {
         body: JSON.stringify(body),
         pathParameters: mockPathParams,
       } as APIGatewayProxyEvent;
-      mockGet.mockResolvedValueOnce({ Item: mockStateForm });
+      getStateForm.mockResolvedValueOnce(mockStateForm);
 
       const response = await updateForm(mockEvent);
 
