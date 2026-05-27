@@ -7,10 +7,6 @@ import { handleExport } from "../../utility-functions/exportFunctions";
 // *** 3rd party component dependencies
 import { Button } from "@cmsgov/design-system";
 
-// * icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCsv } from "@fortawesome/free-solid-svg-icons";
-
 import Preloader from "../Preloader/Preloader";
 
 // *** API / data / etc
@@ -55,7 +51,18 @@ const Users = () => {
           }
         >
           CSV
-          <FontAwesomeIcon icon={faFileCsv} />
+          <span className="sr-only">Export user data as CSV</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 384 512"
+            width={16}
+            height={16}
+            aria-label="File CSV Icon"
+            aria-hidden="true"
+            className="icon file-csv-icon"
+          >
+            <use xlinkHref="/public/img/fa-icons/file-csv.svg" />
+          </svg>
         </Button>
       </div>
       <div>
