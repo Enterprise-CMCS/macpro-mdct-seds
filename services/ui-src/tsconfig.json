@@ -4,6 +4,7 @@
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": [
+      "node",
       "vite/client",
       // This allows us to expect(...).toBeVisible() (etc) without TS complaints
       "@testing-library/jest-dom"
