@@ -5,14 +5,14 @@ import { updateEnvFiles } from "./update-env.ts";
 export const reset = {
   command: "reset",
   describe:
-    "Reset the local development environment by cleaning up CDK resources and preparing LocalStack for a fresh start",
+    "Reset the local development environment by cleaning up CDK resources and preparing LocalEmu for a fresh start",
   handler: async () => {
     await updateEnvFiles();
 
     try {
-      await runCommand("Stop localstack", ["localstack", "stop"], ".");
+      await runCommand("Stop localemu", ["localemu", "stop"], ".");
     } catch {
-      // if localstack is already stopped, don't throw
+      // if localemu is already stopped, don't throw
     }
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");

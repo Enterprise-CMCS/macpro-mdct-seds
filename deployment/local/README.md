@@ -1,70 +1,96 @@
 <!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 
-# Running Locally with LocalStack
+# Running Locally with LocalEmu
 
-The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).
+The `./run local` command allows you to run our application completely offline on your laptop using [LocalEmu](https://github.com/localemu/localemu), a free and open-source AWS cloud emulator.
 
 ## Prerequisites
 
-Before running the application locally, ensure the following dependencies are installed and running:
+Before running the application locally, ensure the following dependencies are installed:
 
 ### Required Installations
 
-1. **Colima/Docker** - LocalStack runs inside a Colima container that uses docker as it's runtime.
+1. **Python 3.9+** - LocalEmu is a Python package
 
-_The install is handled by the run script._
+_The run script will verify Python is installed._
 
-Links for the curious:
+2. **LocalEmu** - Provides local AWS emulation with 132 services.
 
-- Docker - https://www.docker.com/get-started
-- Colima - https://github.com/abiosoft/colima
+Install with:
 
-2. **LocalStack** - Provides a local AWS emulating environment.
+```bash
+pip install localemu[runtime]
+```
 
-_The install is handled by the run script._
+3. **AWS CLI Local** - LocalEmu ships `awsemu` CLI for interacting with local AWS services.
 
-3. **AWS CLI Local** - Required for interacting with LocalStack.
-
-_The install is handled by the run script._
+Included with LocalEmu installation - no separate setup needed.
 
 ## Deploying and Running Locally
 
 ```sh
-# in a new terminal window
+# Start LocalEmu in detached mode
+localemu start -d
+
+# Deploy and run the application
 ./run local
 ```
 
-The script will verify that both Docker, Colima, and LocalStack are running before proceeding. If any service is unavailable, the script will exit with a helpful error.
+The script will verify that LocalEmu is running before proceeding. If LocalEmu is unavailable, the script will exit with a helpful error.
 
-## Monitoring LocalStack
+## Monitoring LocalEmu
 
-You can monitor your LocalStack instance via:
+LocalEmu includes a built-in web dashboard for monitoring your local AWS environment:
 
-First off, sign up for a free account: [LocalStack Cloud](https://app.localstack.cloud/sign-up) _without_ checking the "14 day free trial" checkbox
+Open: http://localhost:4566/\_localemu/dashboard
 
-Then open this: [LocalStack Cloud Dashboard](https://app.localstack.cloud/inst/default/status)
+The dashboard provides:
 
-## Accessing Lambda Environment Variables (not included in the dashboard)
+- Service overview with resource counts
+- Resource drill-down (S3 buckets, DynamoDB tables, Lambda functions, etc.)
+- S3 object browser
+- DynamoDB item viewer
+- CloudTrail event history
+- Live API call activity feed
+
+## IAM Policy Enforcement
+
+LocalEmu supports full AWS IAM policy enforcement for testing permissions locally:
+
+```bash
+# Start with IAM enforcement enabled
+IAM_ENFORCEMENT=1 localemu start -d
+```
+
+This enables testing of:
+
+- Identity policies
+- Resource policies
+- Permission boundaries
+- Condition operators
+- Policy variables
+
+Catch IAM permission errors locally before they surface in production!
+
+## Accessing Lambda Environment Variables
 
 Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
 
-But if you want to query to see what environment variables a lambda is being given, you can always run queries directly at your local aws like this:
+To query Lambda environment variables:
 
-### Getting setup
+```bash
+# Using awsemu (included with LocalEmu)
+awsemu lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
 
-```sh
-# this may or may not work for you
-# you've got to have some way to pip install or pip3 install or pipx install
-brew install pipx
-# then you need this package
-pipx install awscli-local
-# doublecheck you got it
-awslocal --version
+# Example function name: app-api-localemu-getUserById
 ```
 
-### Using the tool
+## Persistence
 
+To keep your local resources across restarts:
+
+```bash
+PERSISTENCE=1 localemu start -d
 ```
-# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
-awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
-```
+
+State is automatically saved on shutdown and restored on startup.

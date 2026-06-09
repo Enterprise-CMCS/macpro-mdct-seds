@@ -17,9 +17,9 @@ const isColimaRunning = () => {
   }
 };
 
-const isLocalStackRunning = () => {
+const isLocalEmuRunning = () => {
   try {
-    return execSync("localstack status", {
+    return execSync("localemu status", {
       encoding: "utf8",
       stdio: "pipe",
     }).includes("running");
@@ -31,22 +31,21 @@ const isLocalStackRunning = () => {
 export const local = {
   command: "local",
   describe:
-    "run our app via cdk deployment to localstack locally and react locally together",
+    "run our app via cdk deployment to localemu locally and react locally together",
   handler: async () => {
     if (!isColimaRunning()) {
       throw "Colima needs to be running.";
     }
 
-    if (!isLocalStackRunning()) {
-      throw "LocalStack needs to be running.";
+    if (!isLocalEmuRunning()) {
+      throw "LocalEmu needs to be running.";
     }
 
     process.env.AWS_DEFAULT_REGION = region;
-    process.env.AWS_ACCESS_KEY_ID = "localstack";
-    process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
-    process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
-    process.env.AWS_ENDPOINT_URL_S3 =
-      "http://s3.localhost.localstack.cloud:4566";
+    process.env.AWS_ACCESS_KEY_ID = "test";
+    process.env.AWS_SECRET_ACCESS_KEY = "test"; // pragma: allowlist secret
+    process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
+    process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost:4566";
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
@@ -55,7 +54,7 @@ export const local = {
         "yarn",
         "cdklocal",
         "bootstrap",
-        `aws://000000000000/${region}`, // LocalStack uses the default dummy account ID 000000000000
+        `aws://000000000000/${region}`, // LocalEmu uses the default dummy account ID 000000000000
         "--context",
         "stage=bootstrap",
       ],
@@ -87,7 +86,7 @@ export const local = {
         "cdklocal",
         "deploy",
         "--context",
-        "stage=localstack",
+        "stage=localemu",
         "--all",
         "--no-rollback",
       ],
@@ -104,12 +103,12 @@ export const local = {
           "cdklocal",
           "watch",
           "--context",
-          "stage=localstack",
+          "stage=localemu",
           "--no-rollback",
         ],
         "."
       ),
-      runFrontendLocally("localstack"),
+      runFrontendLocally("localemu"),
     ]);
   },
 };

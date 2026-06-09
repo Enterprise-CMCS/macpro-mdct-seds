@@ -14,7 +14,7 @@ import { createUiAuthComponents } from "./ui-auth.ts";
 import { createUiComponents } from "./ui.ts";
 import { createApiComponents } from "./api.ts";
 import { deployFrontend } from "./deployFrontend.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalEmu } from "../local/util.ts";
 import { createTopicsComponents } from "./topics.ts";
 import { getSubnets } from "../utils/vpc.ts";
 
@@ -62,38 +62,73 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnets,
     });
 
-    if (isLocalStack) {
+    if (isLocalEmu) {
       /*
-       * For local dev, the LocalStack container will host the database and API.
-       * The UI will self-host, so we don't need to tell CDK anything about it.
-       * Also, we skip authorization locally. So we don't set up Cognito,
-       * or configure the API to interact with it. Therefore, we're done.
+       * For local dev, skip CloudFront but create UI and Cognito components
+       * to enable fully offline development with local authentication
        */
-      return;
-    }
+      const {
+        userPoolDomainName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+      } = createUiAuthComponents({
+        ...commonProps,
+        applicationEndpointUrl: "http://localhost:3000",
+        restApiId,
+      });
 
-    const { applicationEndpointUrl, distribution, uiBucket } =
-      createUiComponents({ ...commonProps, loggingBucket });
+      new CfnOutput(this, "CognitoUserPoolId", {
+        value: userPoolId,
+        exportName: `${id}-CognitoUserPoolId`,
+      });
 
-    const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
-      createUiAuthComponents({
+      new CfnOutput(this, "CognitoUserPoolClientId", {
+        value: userPoolClientId,
+        exportName: `${id}-CognitoUserPoolClientId`,
+      });
+
+      new CfnOutput(this, "CognitoIdentityPoolId", {
+        value: identityPoolId,
+        exportName: `${id}-CognitoIdentityPoolId`,
+      });
+
+      new CfnOutput(this, "CognitoUserPoolClientDomain", {
+        value: userPoolDomainName,
+        exportName: `${id}-CognitoUserPoolClientDomain`,
+      });
+    } else {
+      const { applicationEndpointUrl, distribution, uiBucket } =
+        createUiComponents({ ...commonProps, loggingBucket });
+
+      const {
+        userPoolDomainName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+      } = createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl,
         restApiId,
       });
 
-    deployFrontend({
-      ...commonProps,
-      uiBucket,
-      distribution,
-      apiGatewayRestApiUrl,
-      applicationEndpointUrl:
-        secureCloudfrontDomainName ?? applicationEndpointUrl,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-    });
+      deployFrontend({
+        ...commonProps,
+        uiBucket,
+        distribution,
+        apiGatewayRestApiUrl,
+        applicationEndpointUrl:
+          secureCloudfrontDomainName ?? applicationEndpointUrl,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+        userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+      });
+
+      new CfnOutput(this, "CloudFrontUrl", {
+        value: applicationEndpointUrl,
+      });
+    }
 
     createTopicsComponents({
       ...commonProps,
@@ -104,10 +139,6 @@ export class ParentStack extends Stack {
     if (isDev) {
       applyDenyCreateLogGroupPolicy(this);
     }
-
-    new CfnOutput(this, "CloudFrontUrl", {
-      value: applicationEndpointUrl,
-    });
   }
 }
 

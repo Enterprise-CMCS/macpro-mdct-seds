@@ -14,7 +14,7 @@ import {
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.ts";
 import { loadDefaultSecret } from "./deployment-config.ts";
-import { isLocalStack } from "./local/util.ts";
+import { isLocalEmu } from "./local/util.ts";
 import { tryImport } from "./utils/misc.ts";
 
 interface PrerequisiteConfigProps {
@@ -49,7 +49,7 @@ export class PrerequisiteStack extends Stack {
 
     const { project, vpcName } = props;
 
-    if (!isLocalStack) {
+    if (!isLocalEmu) {
       const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
 
       vpc.addGatewayEndpoint("S3Endpoint", {

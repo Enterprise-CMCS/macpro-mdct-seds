@@ -53,18 +53,18 @@ if [ "$UPDATE_ENV" = true ]; then
 fi
 
 if [ "$LOCAL" = true ]; then
-    require_cmd docker "On macOS, install with 'brew install docker'"
-    require_cmd colima "On macOS, install with 'brew install colima'"
-    require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
-
-    if ! colima status 2>&1 | grep -q "colima is running" ; then
-        echo "colima installed but not running. We'll start it up for you now."
-        colima start --cpu 4 --memory 10
+    require_cmd python3 "On macOS, install with 'brew install python3'"
+    require_cmd pip3 "Python pip is required: 'python3 -m ensurepip --upgrade'"
+    
+    # Check if localemu is installed
+    if ! python3 -c "import localemu" 2>/dev/null; then
+        echo "LocalEmu not found. Installing..."
+        pip3 install "localemu[runtime]"
     fi
 
-    if ! localstack status | grep -q "running" ; then
-        echo "localstack is installed but not running. We'll start it up for you now."
-        localstack start > /dev/null 2>&1 &
+    if ! localemu status 2>&1 | grep -q "running" ; then
+        echo "LocalEmu is installed but not running. We'll start it up for you now."
+        localemu start -d > /dev/null 2>&1
     fi
 fi
 

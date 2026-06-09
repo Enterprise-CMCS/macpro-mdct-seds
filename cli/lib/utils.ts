@@ -29,17 +29,16 @@ const buildUiEnvObject = (
   stage: string,
   cfnOutputs: Record<string, string | undefined>
 ): Record<string, string> => {
-  if (stage === "localstack") {
+  if (stage === "localemu") {
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
       API_URL: cfnOutputs.ApiUrl!.replace("https", "http"),
       COGNITO_REGION: region,
-      COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
-      COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
-      COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID!,
-      COGNITO_USER_POOL_CLIENT_DOMAIN:
-        process.env.COGNITO_USER_POOL_CLIENT_DOMAIN!,
+      COGNITO_IDENTITY_POOL_ID: cfnOutputs.CognitoIdentityPoolId!,
+      COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
+      COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
+      COGNITO_USER_POOL_CLIENT_DOMAIN: cfnOutputs.CognitoUserPoolClientDomain!,
       COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
       COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
     };

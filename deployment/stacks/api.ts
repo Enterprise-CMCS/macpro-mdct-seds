@@ -14,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalEmu } from "../local/util.ts";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
@@ -352,7 +352,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalStack) {
+  if (!isLocalEmu) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

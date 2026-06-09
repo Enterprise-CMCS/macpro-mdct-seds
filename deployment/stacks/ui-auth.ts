@@ -10,7 +10,7 @@ import {
   triggers,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalEmu } from "../local/util.ts";
 import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateUiAuthComponentsProps {
@@ -227,7 +227,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }).lambda;
   }
 
-  if (!isLocalStack) {
+  if (!isLocalEmu) {
     const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",
@@ -269,5 +269,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     identityPoolId: identityPool.ref,
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
+    userPool,
+    userPoolClient,
+    identityPool,
+    userPoolDomain,
   };
 }
