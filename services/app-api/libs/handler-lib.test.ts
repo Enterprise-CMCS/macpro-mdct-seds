@@ -66,6 +66,21 @@ describe("handler-lib", () => {
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
   });
 
+  it("should return an error when the api key is missing", async () => {
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    const result = await handler(
+      parser,
+      lambda
+    )({
+      headers: {},
+    } as APIGatewayProxyEvent);
+
+    expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+    expect(mockScan).not.toHaveBeenCalled();
+  });
+
   it("should parse the request body", async () => {
     mockScan.mockResolvedValueOnce({ Items: [mockDbUser] });
     const parser = vi.fn().mockReturnValue("mock parse result");

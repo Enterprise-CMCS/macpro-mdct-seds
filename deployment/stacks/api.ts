@@ -14,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
@@ -93,21 +93,23 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
-  api.addGatewayResponse("Default4XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_4XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+  if (!isMiniStack) {
+    api.addGatewayResponse("Default4XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
 
-  api.addGatewayResponse("Default5XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_5XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+    api.addGatewayResponse("Default5XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
+  }
 
   const environment = {
     brokerString,
@@ -352,7 +354,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalStack) {
+  if (!isMiniStack) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

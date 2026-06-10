@@ -11,6 +11,7 @@ import {
 } from "aws-cdk-lib";
 import { createHash } from "node:crypto";
 import { DynamoDBTable } from "./dynamodb-table.ts";
+import { isMiniStack } from "../local/util.ts";
 
 interface LambdaDynamoEventProps extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
@@ -34,6 +35,7 @@ export class LambdaDynamoEventSource extends Construct {
       stackName,
       timeout = Duration.seconds(6),
       isDev,
+      retryAttempts,
       ...restProps
     } = props;
 
@@ -57,6 +59,7 @@ export class LambdaDynamoEventSource extends Construct {
         nodeModules: ["kafkajs"],
       },
       logGroup,
+      ...(isMiniStack ? {} : { retryAttempts }),
       ...restProps,
     });
 

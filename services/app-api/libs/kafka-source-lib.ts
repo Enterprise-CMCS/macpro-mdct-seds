@@ -140,7 +140,7 @@ class KafkaSourceLib {
   }
 
   async handler(event: any) {
-    if (process.env.brokerString === "localstack") {
+    if (process.env.brokerString === "ministack") {
       return;
     }
 

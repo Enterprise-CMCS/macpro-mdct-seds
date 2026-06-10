@@ -9,7 +9,7 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
@@ -41,6 +41,7 @@ export class Lambda extends Construct {
       buckets = [],
       stackName,
       isDev,
+      retryAttempts,
       ...restProps
     } = props;
 
@@ -61,9 +62,14 @@ export class Lambda extends Construct {
           .digest("hex"),
         minify: true,
         sourceMap: true,
-        nodeModules: ["jsdom"],
+        nodeModules: [
+          "jsdom",
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/lib-dynamodb",
+        ],
       },
       logGroup,
+      ...(isMiniStack ? {} : { retryAttempts }),
       ...restProps,
     });
 
@@ -77,7 +83,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isLocalStack
+          authorizationType: isMiniStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

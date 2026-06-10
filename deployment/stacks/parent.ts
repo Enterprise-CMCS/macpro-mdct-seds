@@ -14,7 +14,7 @@ import { createUiAuthComponents } from "./ui-auth.ts";
 import { createUiComponents } from "./ui.ts";
 import { createApiComponents } from "./api.ts";
 import { deployFrontend } from "./deployFrontend.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { createTopicsComponents } from "./topics.ts";
 import { getSubnets } from "../utils/vpc.ts";
 
@@ -28,6 +28,7 @@ export class ParentStack extends Stack {
       isDev,
       secureCloudfrontDomainName,
       vpcName,
+      vpcId,
       kafkaAuthorizedSubnetIds,
     } = props;
 
@@ -42,7 +43,12 @@ export class ParentStack extends Stack {
       isDev,
     };
 
-    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+    const vpc = isMiniStack
+      ? ec2.Vpc.fromVpcAttributes(this, "Vpc", {
+          vpcId: vpcId!,
+          availabilityZones: ["us-east-1a"],
+        })
+      : ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
     const loggingBucket = s3.Bucket.fromBucketName(
@@ -62,9 +68,9 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnets,
     });
 
-    if (isLocalStack) {
+    if (isMiniStack) {
       /*
-       * For local dev, the LocalStack container will host the database and API.
+       * For local dev, the MiniStack container will host the database and API.
        * The UI will self-host, so we don't need to tell CDK anything about it.
        * Also, we skip authorization locally. So we don't set up Cognito,
        * or configure the API to interact with it. Therefore, we're done.

@@ -55,16 +55,10 @@ fi
 if [ "$LOCAL" = true ]; then
     require_cmd docker "On macOS, install with 'brew install docker'"
     require_cmd colima "On macOS, install with 'brew install colima'"
-    require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
 
     if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
-    fi
-
-    if ! localstack status | grep -q "running" ; then
-        echo "localstack is installed but not running. We'll start it up for you now."
-        localstack start > /dev/null 2>&1 &
     fi
 fi
 

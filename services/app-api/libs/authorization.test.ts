@@ -45,6 +45,20 @@ describe("authorization", () => {
       expect(jwtDecode).toHaveBeenCalledWith("mockApiKey");
     });
 
+    it("should return undefined when the api key is missing", () => {
+      expect(
+        getUserDetailsFromEvent({ headers: {} } as APIGatewayProxyEvent)
+      ).toBe(undefined);
+    });
+
+    it("should return undefined when the api key cannot be decoded", () => {
+      jwtDecode.mockImplementationOnce(() => {
+        throw new Error("bad token");
+      });
+
+      expect(getUserDetailsFromEvent(mockEvent)).toBe(undefined);
+    });
+
     it("should map job codes to user roles correctly", () => {
       const expectMembershipToHaveRole = (membership: string, role: string) => {
         jwtDecode.mockReturnValueOnce({
@@ -52,7 +66,8 @@ describe("authorization", () => {
           "custom:ismemberof": membership,
         });
         const result = getUserDetailsFromEvent(mockEvent);
-        expect(result.role).toBe(role);
+        expect(result).toBeDefined();
+        expect(result!.role).toBe(role);
       };
 
       expectMembershipToHaveRole("CHIP_D_USER_GROUP_ADMIN", "admin");
@@ -85,7 +100,8 @@ describe("authorization", () => {
 
       const result = getUserDetailsFromEvent(mockEvent);
 
-      expect(result.username).toBe(mockToken.email);
+      expect(result).toBeDefined();
+      expect(result!.username).toBe(mockToken.email);
     });
   });
 });

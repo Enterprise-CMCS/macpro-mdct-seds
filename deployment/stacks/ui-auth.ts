@@ -10,7 +10,7 @@ import {
   triggers,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateUiAuthComponentsProps {
@@ -227,7 +227,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }).lambda;
   }
 
-  if (!isLocalStack) {
+  if (!isMiniStack) {
     const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",

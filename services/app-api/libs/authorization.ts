@@ -11,9 +11,21 @@ export type CmsAmplifyToken = {
   identities?: { userId: string | undefined }[];
 };
 
-export function getUserDetailsFromEvent(event: APIGatewayProxyEvent): CmsUser {
-  const apiKey = event?.headers?.["x-api-key"];
-  const token = jwtDecode(apiKey!) as CmsAmplifyToken;
+export function getUserDetailsFromEvent(
+  event: APIGatewayProxyEvent
+): CmsUser | undefined {
+  const tokenHeader = event?.headers?.["x-api-key"];
+  if (typeof tokenHeader !== "string" || !tokenHeader) {
+    return undefined;
+  }
+
+  let token: CmsAmplifyToken;
+  try {
+    token = jwtDecode(tokenHeader) as CmsAmplifyToken;
+  } catch {
+    return undefined;
+  }
+
   logger.debug(`Requesting user has sub '${token.sub}'`);
   const role = mapMembershipToRole(token["custom:ismemberof"]!);
 

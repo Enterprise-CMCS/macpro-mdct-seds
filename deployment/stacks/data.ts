@@ -75,6 +75,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
     isDev,
     bundling: {
+      nodeModules: ["@aws-sdk/client-dynamodb", "@aws-sdk/lib-dynamodb"],
       commandHooks: {
         beforeBundling(inputDir: string, outputDir: string): string[] {
           return [
@@ -96,10 +97,18 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     ddbTable.table.grantReadWriteData(seedDataFunction);
   }
 
-  new triggers.Trigger(scope, "InvokeSeedDataFunction", {
-    handler: seedDataFunction,
-    invocationType: triggers.InvocationType.EVENT,
-  });
+  const invokeSeedDataFunction = new triggers.Trigger(
+    scope,
+    "InvokeSeedDataFunction",
+    {
+      handler: seedDataFunction,
+      invocationType: triggers.InvocationType.EVENT,
+    }
+  );
+
+  for (const ddbTable of tables) {
+    invokeSeedDataFunction.node.addDependency(ddbTable.table);
+  }
 
   new CfnOutput(scope, "SeedDataFunctionName", {
     value: seedDataFunction.functionName,
