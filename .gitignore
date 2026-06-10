@@ -11,6 +11,7 @@ tsconfig.tsbuildinfo
 tests_output
 *.log
 /.cdk
+.floci-data
 cdk.context.json
 **/.yarn/*
 services/ui-src/public/env-config.ts

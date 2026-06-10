@@ -9,7 +9,7 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isLocalStack } from "../local/util.ts";
+import { isFloci } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
@@ -62,6 +62,17 @@ export class Lambda extends Construct {
         minify: true,
         sourceMap: true,
         nodeModules: ["jsdom"],
+        commandHooks: {
+          beforeInstall() {
+            return [];
+          },
+          beforeBundling() {
+            return [];
+          },
+          afterBundling(_inputDir: string, outputDir: string) {
+            return [`rm -f ${outputDir}/node_modules/nwsapi/dist/lint.log`];
+          },
+        },
       },
       logGroup,
       ...restProps,
@@ -77,7 +88,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isLocalStack
+          authorizationType: isFloci
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

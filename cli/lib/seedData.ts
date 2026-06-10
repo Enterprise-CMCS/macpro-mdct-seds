@@ -5,7 +5,7 @@ import { project, region } from "./consts.ts";
 
 export const seedData = async () => {
   const SeedDataFunctionName = (
-    await getCloudFormationStackOutputValues(`${project}-localstack`)
+    await getCloudFormationStackOutputValues(`${project}-floci`)
   )["SeedDataFunctionName"];
 
   if (SeedDataFunctionName) {

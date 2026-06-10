@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true,
-    port: 3000,
+    port: Number(process.env.LOCAL_UI_PORT ?? process.env.PORT ?? 3000),
   },
   define: {
     global: "globalThis",

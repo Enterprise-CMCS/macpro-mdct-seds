@@ -56,6 +56,10 @@ export default function handler<TParams>(
  */
 const determineUser = async (event: APIGatewayProxyEvent) => {
   const userFromToken = getUserDetailsFromEvent(event);
+  if (!userFromToken) {
+    return undefined;
+  }
+
   if (event.path === "/getCurrentUser") {
     // getCurrentUser creates AuthUser records, so they needn't already exist.
     return userFromToken as AuthUser;

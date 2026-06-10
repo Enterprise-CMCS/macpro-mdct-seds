@@ -1,8 +1,8 @@
 <!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 
-# Running Locally with LocalStack
+# Running Locally with Floci
 
-The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).
+The `./run local` command allows you to run our application locally on your laptop using [Floci](https://floci.io/), simulating the AWS cloud environment except for Cognito authentication, which still uses real AWS values from your local `.env` files.
 
 ## Prerequisites
 
@@ -10,61 +10,44 @@ Before running the application locally, ensure the following dependencies are in
 
 ### Required Installations
 
-1. **Colima/Docker** - LocalStack runs inside a Colima container that uses docker as it's runtime.
+1. **Colima/Docker** - Floci runs inside a Docker container managed through Colima on macOS.
+2. **AWS CLI** - Required for direct inspection of the local AWS emulator.
 
-_The install is handled by the run script._
-
-Links for the curious:
-
-- Docker - https://www.docker.com/get-started
-- Colima - https://github.com/abiosoft/colima
-
-2. **LocalStack** - Provides a local AWS emulating environment.
-
-_The install is handled by the run script._
-
-3. **AWS CLI Local** - Required for interacting with LocalStack.
-
-_The install is handled by the run script._
+The `./run local` command will verify Docker and Colima before it starts Floci.
 
 ## Deploying and Running Locally
 
 ```sh
-# in a new terminal window
 ./run local
 ```
 
-The script will verify that both Docker, Colima, and LocalStack are running before proceeding. If any service is unavailable, the script will exit with a helpful error.
+The script will start or reuse the `floci-local` container automatically.
 
-## Monitoring LocalStack
+## Monitoring Floci
 
-You can monitor your LocalStack instance via:
+```sh
+docker logs -f floci-local
+```
 
-First off, sign up for a free account: [LocalStack Cloud](https://app.localstack.cloud/sign-up) _without_ checking the "14 day free trial" checkbox
+Health is exposed on the Floci init endpoint:
 
-Then open this: [LocalStack Cloud Dashboard](https://app.localstack.cloud/inst/default/status)
+```sh
+curl http://localhost:4566/_floci/init
+```
 
-## Accessing Lambda Environment Variables (not included in the dashboard)
+## Accessing Lambda Environment Variables
 
 Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
 
-But if you want to query to see what environment variables a lambda is being given, you can always run queries directly at your local aws like this:
-
-### Getting setup
+If you want to query the environment variables a lambda is receiving, you can inspect them directly with the AWS CLI:
 
 ```sh
-# this may or may not work for you
-# you've got to have some way to pip install or pip3 install or pipx install
-brew install pipx
-# then you need this package
-pipx install awscli-local
-# doublecheck you got it
-awslocal --version
-```
-
-### Using the tool
-
-```
-# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
-awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
+# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-floci-getUserById
+AWS_ACCESS_KEY_ID=test \
+AWS_SECRET_ACCESS_KEY=test \
+AWS_DEFAULT_REGION=us-east-1 \
+aws --endpoint-url http://localhost:4566 \
+  lambda get-function-configuration \
+  --function-name YOUR_FUNCTION_NAME \
+  --query "Environment.Variables"
 ```

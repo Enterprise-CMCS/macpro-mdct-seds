@@ -25,23 +25,31 @@ export const getCloudFormationStackOutputValues = async (
   );
 };
 
+const getLocalUiPort = () => process.env.LOCAL_UI_PORT ?? "3000";
+
+const getFlociApiUrl = (apiUrl: string, stage: string) => {
+  const restApiId = new URL(apiUrl).hostname.split(".")[0];
+  return `http://localhost:4566/restapis/${restApiId}/${stage}/_user_request_`;
+};
+
 const buildUiEnvObject = (
   stage: string,
   cfnOutputs: Record<string, string | undefined>
 ): Record<string, string> => {
-  if (stage === "localstack") {
+  if (stage === "floci") {
+    const uiPort = getLocalUiPort();
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: cfnOutputs.ApiUrl!.replace("https", "http"),
+      API_URL: getFlociApiUrl(cfnOutputs.ApiUrl!, stage),
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
       COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
       COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         process.env.COGNITO_USER_POOL_CLIENT_DOMAIN!,
-      COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
-      COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
+      COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
+      COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
   }
 
