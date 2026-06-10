@@ -1,8 +1,8 @@
-# LocalStack Replacement: Implementation Details
+# Local Emulator Replacement: Implementation Details
 
 ## Branches Created
 
-Three complete implementations replacing LocalStack:
+Three complete implementations for replacing the legacy local emulator:
 
 1. **cmdct-6054floci** - Floci implementation
 2. **cmdct-6054ministack** - Ministack implementation
@@ -14,7 +14,7 @@ Three complete implementations replacing LocalStack:
 
 **Core Configuration:**
 
-- `deployment/local/util.ts` - Changed `isLocalStack` to `isFloci`/`isMinistack`/`isLocalEmu`
+- `deployment/local/util.ts` - Changed local-environment detection to `isFloci` / `isMiniStack` / `isLocalEmu`
 - `deployment/deployment-config.ts` - Updated stage detection
 - `deployment/prerequisites.ts` - Updated VPC lookups
 
@@ -41,7 +41,7 @@ Three complete implementations replacing LocalStack:
 
 **Documentation & Scripts:**
 
-- `README.md` - Updated LocalStack references
+- `README.md` - Updated local-emulator references
 - `deployment/local/README.md` - Completely rewritten
 - `run` - Updated prerequisite checks and installation
 
@@ -51,7 +51,8 @@ Three complete implementations replacing LocalStack:
 
 ```typescript
 // Before
-export const isLocalStack = process.env.CDK_DEFAULT_ACCOUNT === "000000000000";
+export const isLegacyLocalEnv =
+  process.env.CDK_DEFAULT_ACCOUNT === "000000000000";
 
 // After (LocalEmu example)
 export const isLocalEmu = process.env.CDK_DEFAULT_ACCOUNT === "000000000000";
@@ -61,8 +62,8 @@ export const isLocalEmu = process.env.CDK_DEFAULT_ACCOUNT === "000000000000";
 
 ```typescript
 // Before
-process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
-process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost.localstack.cloud:4566";
+process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
+process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost:4566";
 
 // After
 process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
@@ -73,8 +74,8 @@ process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost:4566";
 
 ```typescript
 // Before
-process.env.AWS_ACCESS_KEY_ID = "localstack";
-process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
+process.env.AWS_ACCESS_KEY_ID = "legacy";
+process.env.AWS_SECRET_ACCESS_KEY = "legacy"; // pragma: allowlist secret
 
 // After
 process.env.AWS_ACCESS_KEY_ID = "test";
@@ -85,7 +86,7 @@ process.env.AWS_SECRET_ACCESS_KEY = "test"; // pragma: allowlist secret
 
 ```typescript
 // Before
-const stage = "localstack";
+const stage = "legacy";
 
 // After (LocalEmu example)
 const stage = "localemu";
@@ -95,7 +96,7 @@ const stage = "localemu";
 
 ```typescript
 // Before
-const vpcName = "localstack-dev";
+const vpcName = "legacy-dev";
 
 // After (LocalEmu example)
 const vpcName = "localemu-dev";
@@ -105,11 +106,11 @@ const vpcName = "localemu-dev";
 
 All three branches now support **completely offline Cognito authentication**.
 
-### Before (LocalStack)
+### Before
 
 ```typescript
 // parent.ts - Early return skipped Cognito setup
-if (isLocalStack) {
+if (isLegacyLocalEnv) {
   return; // No Cognito for local dev
 }
 ```
@@ -139,7 +140,7 @@ if (isLocalEmu) {
 
 ```typescript
 // cli/lib/utils.ts - Before
-if (stage === "localstack") {
+if (stage === "legacy") {
   return {
     COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
     COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
@@ -229,7 +230,7 @@ The `run` script automatically:
 
 ## Verification Checklist
 
-✅ Zero "localstack" references in code (excluding git-ignored files)
+✅ Zero legacy-emulator references remain in code (excluding git-ignored files)
 ✅ All TypeScript checks pass
 ✅ Git pre-commit hooks pass (oxlint, oxfmt, secrets detection)
 ✅ Cognito works offline
@@ -241,7 +242,7 @@ The `run` script automatically:
 
 - Branch: `cmdct-6054localemu`
 - Commit: `875f19b1c26fc99e428dcd4625c65bebe8be83b2`
-- Message: "Replace LocalStack with LocalEmu for fully offline AWS emulation"
+- Message: "Replace the legacy local emulator with LocalEmu for fully offline AWS emulation"
 
 **Ministack Branch:**
 

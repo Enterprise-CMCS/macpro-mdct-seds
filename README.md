@@ -76,7 +76,7 @@ From the root directory run:
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
-Local dev is configured using Localstack. The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+Local dev is configured using LocalEmu. The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
 Local dev is built around [LocalEmu](https://github.com/localemu/localemu). For more information check out [docs on local dev](./deployment/local/README.md)
 
