@@ -9,9 +9,11 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
+
+const miniStackEndpointFromLambda = `http://host.docker.internal:${process.env.MINISTACK_PORT ?? "4566"}`;
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
@@ -41,6 +43,9 @@ export class Lambda extends Construct {
       buckets = [],
       stackName,
       isDev,
+      retryAttempts,
+      environment,
+      bundling,
       ...restProps
     } = props;
 
@@ -50,20 +55,57 @@ export class Lambda extends Construct {
       retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
+    const defaultBundling = {
+      assetHash: createHash("sha256")
+        .update(`${Date.now()}-${id}`)
+        .digest("hex"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: [
+        "jsdom",
+        "@aws-sdk/client-dynamodb",
+        "@aws-sdk/lib-dynamodb",
+      ],
+    };
+    const miniStackDefaultBundling = {
+      ...defaultBundling,
+      commandHooks: {
+        beforeBundling() {
+          return [];
+        },
+        beforeInstall() {
+          return [];
+        },
+        afterBundling(inputDir: string, outputDir: string): string[] {
+          return [
+            `cp ${inputDir}/node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js ${outputDir}/xhr-sync-worker.js`,
+          ];
+        },
+      },
+    };
+    const resolvedBundling = isMiniStack
+      ? {
+          ...(bundling ?? miniStackDefaultBundling),
+          bundleAwsSDK: true,
+          externalModules: [],
+          nodeModules: undefined,
+        }
+      : (bundling ?? defaultBundling);
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["jsdom"],
-      },
+      bundling: resolvedBundling,
       logGroup,
+      ...(isMiniStack ? {} : { retryAttempts }),
+      environment: {
+        ...(isMiniStack
+          ? { AWS_ENDPOINT_URL: miniStackEndpointFromLambda }
+          : {}),
+        ...environment,
+      },
       ...restProps,
     });
 
@@ -77,11 +119,18 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isLocalStack
+          authorizationType: isMiniStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }
       );
+      if (isMiniStack && !resource.node.tryFindChild("OPTIONS")) {
+        resource.addMethod(
+          "OPTIONS",
+          new apigateway.LambdaIntegration(this.lambda),
+          { authorizationType: undefined }
+        );
+      }
     }
 
     for (const ddbTable of tables) {

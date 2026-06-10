@@ -3,18 +3,38 @@ import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { getCloudFormationStackOutputValues } from "./utils.ts";
 import { project, region } from "./consts.ts";
 
+const invokeLambda = async (
+  functionName: string,
+  invocationType: "Event" | "RequestResponse"
+) => {
+  const expectedStatusCode = invocationType === "Event" ? 202 : 200;
+  const lambdaClient = new LambdaClient({
+    region,
+    endpoint: process.env.AWS_ENDPOINT_URL,
+  });
+  const response = await lambdaClient.send(
+    new InvokeCommand({
+      FunctionName: functionName,
+      InvocationType: invocationType,
+      Payload: Buffer.from(JSON.stringify({})),
+    })
+  );
+
+  if (response.FunctionError || response.StatusCode !== expectedStatusCode) {
+    throw new Error(`Lambda invoke failed for ${functionName}`);
+  }
+};
+
+export const bootstrapLocalCognitoUsers = async () => {
+  await invokeLambda("ui-auth-ministack-bootstrapUsers", "RequestResponse");
+};
+
 export const seedData = async () => {
   const SeedDataFunctionName = (
-    await getCloudFormationStackOutputValues(`${project}-localstack`)
+    await getCloudFormationStackOutputValues(`${project}-ministack`)
   )["SeedDataFunctionName"];
 
   if (SeedDataFunctionName) {
-    const lambdaClient = new LambdaClient({ region });
-    const lambdaCommand = new InvokeCommand({
-      FunctionName: SeedDataFunctionName,
-      InvocationType: "Event",
-      Payload: Buffer.from(JSON.stringify({})),
-    });
-    await lambdaClient.send(lambdaCommand);
+    await invokeLambda(SeedDataFunctionName, "Event");
   }
 };

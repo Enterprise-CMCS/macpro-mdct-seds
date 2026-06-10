@@ -76,17 +76,15 @@ From the root directory run:
 
 See the Requirements section if the command asks for any prerequisites you don't have installed.
 
-Local dev is configured using Localstack. The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+Local dev is configured using MiniStack. The entrypoint is [cli/run.ts](cli/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
-Local dev is built around the [Localstack](https://www.localstack.cloud/). For more information check out [docs on local dev](./deployment/local/README.md)
+Local dev is built around MiniStack. For more information check out [docs on local dev](./deployment/local/README.md).
 
 ### Logging in
 
 (Make sure you've finished setting up the project locally above before moving on to this step!)
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
-
-For a password to that user, please ask a fellow developer.
+Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in. The local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ### Adding or modifying user roles
 

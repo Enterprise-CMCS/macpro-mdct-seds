@@ -12,6 +12,15 @@ vi.mock("../../libs/api", () => ({
   listTemplateYears: vi.fn().mockResolvedValue([]),
   listUsers: vi.fn().mockResolvedValue([]),
 }));
+
+vi.mock("config/config", () => ({
+  default: {
+    cognito: {
+      OAUTH_ENABLED: true,
+    },
+  },
+}));
+
 const getForm = vi.mocked(actualGetForm);
 getForm.mockResolvedValue({
   answers: [{ rows: [{ col6: "" }] }],

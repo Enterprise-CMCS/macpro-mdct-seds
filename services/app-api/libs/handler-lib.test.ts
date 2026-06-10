@@ -66,6 +66,83 @@ describe("handler-lib", () => {
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
   });
 
+  it("should return an error when the api key is missing", async () => {
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    const result = await handler(
+      parser,
+      lambda
+    )({
+      headers: {},
+    } as APIGatewayProxyEvent);
+
+    expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+    expect(mockScan).not.toHaveBeenCalled();
+  });
+
+  it("should answer OPTIONS preflight with CORS headers in MiniStack", async () => {
+    const originalEndpoint = process.env.AWS_ENDPOINT_URL;
+    process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    try {
+      const result = await handler(
+        parser,
+        lambda
+      )({
+        ...mockEvent,
+        httpMethod: "OPTIONS",
+        headers: {},
+      });
+
+      expect(result.statusCode).toBe(StatusCodes.Ok);
+      expect(result.headers["Access-Control-Allow-Headers"]).toContain(
+        "x-api-key"
+      );
+      expect(mockScan).not.toHaveBeenCalled();
+      expect(parser).not.toHaveBeenCalled();
+      expect(lambda).not.toHaveBeenCalled();
+    } finally {
+      if (originalEndpoint === undefined) {
+        delete process.env.AWS_ENDPOINT_URL;
+      } else {
+        process.env.AWS_ENDPOINT_URL = originalEndpoint;
+      }
+    }
+  });
+
+  it("should defer OPTIONS preflight to API Gateway in production", async () => {
+    const originalEndpoint = process.env.AWS_ENDPOINT_URL;
+    delete process.env.AWS_ENDPOINT_URL;
+    const parser = vi.fn().mockReturnValue("mock parse result");
+    const lambda = vi.fn().mockResolvedValue("mock lambda result");
+
+    try {
+      const result = await handler(
+        parser,
+        lambda
+      )({
+        ...mockEvent,
+        httpMethod: "OPTIONS",
+        headers: {},
+      });
+
+      expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
+      expect(result.headers["Access-Control-Allow-Headers"]).toBeUndefined();
+      expect(result.headers["Access-Control-Allow-Methods"]).toBeUndefined();
+      expect(parser).not.toHaveBeenCalled();
+      expect(lambda).not.toHaveBeenCalled();
+    } finally {
+      if (originalEndpoint === undefined) {
+        delete process.env.AWS_ENDPOINT_URL;
+      } else {
+        process.env.AWS_ENDPOINT_URL = originalEndpoint;
+      }
+    }
+  });
+
   it("should parse the request body", async () => {
     mockScan.mockResolvedValueOnce({ Items: [mockDbUser] });
     const parser = vi.fn().mockReturnValue("mock parse result");

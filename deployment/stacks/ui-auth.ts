@@ -10,7 +10,7 @@ import {
   triggers,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isMiniStack } from "../local/util.ts";
 import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateUiAuthComponentsProps {
@@ -76,32 +76,34 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const providerName = "Okta";
 
-  const oktaIdp = new cognito.CfnUserPoolIdentityProvider(
-    scope,
-    "CognitoUserPoolIdentityProvider",
-    {
-      providerName,
-      providerType: "SAML",
-      userPoolId: userPool.userPoolId,
-      providerDetails: {
-        MetadataURL: oktaMetadataUrl,
-      },
-      attributeMapping: {
-        email:
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
-        family_name:
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
-        given_name:
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-        "custom:ismemberof": "ismemberof",
-      },
-      idpIdentifiers: ["IdpIdentifier"],
-    }
-  );
+  const oktaIdp = isMiniStack
+    ? undefined
+    : new cognito.CfnUserPoolIdentityProvider(
+        scope,
+        "CognitoUserPoolIdentityProvider",
+        {
+          providerName,
+          providerType: "SAML",
+          userPoolId: userPool.userPoolId,
+          providerDetails: {
+            MetadataURL: oktaMetadataUrl,
+          },
+          attributeMapping: {
+            email:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            family_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+            given_name:
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+            "custom:ismemberof": "ismemberof",
+          },
+          idpIdentifiers: ["IdpIdentifier"],
+        }
+      );
 
-  const supportedIdentityProviders = [
-    cognito.UserPoolClientIdentityProvider.custom(providerName),
-  ];
+  const supportedIdentityProviders = isMiniStack
+    ? [cognito.UserPoolClientIdentityProvider.COGNITO]
+    : [cognito.UserPoolClientIdentityProvider.custom(providerName)];
 
   const appUrl =
     secureCloudfrontDomainName ??
@@ -134,7 +136,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     refreshTokenValidity: Duration.hours(24),
   });
 
-  userPoolClient.node.addDependency(oktaIdp);
+  if (oktaIdp) {
+    userPoolClient.node.addDependency(oktaIdp);
+  }
 
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
@@ -144,62 +148,66 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     },
   });
 
-  const identityPool = new cognito.CfnIdentityPool(
-    scope,
-    "CognitoIdentityPool",
-    {
-      identityPoolName: `${stage}-IdentityPool`,
-      allowUnauthenticatedIdentities: false,
-      cognitoIdentityProviders: [
-        {
-          clientId: userPoolClient.userPoolClientId,
-          providerName: userPool.userPoolProviderName,
-        },
-      ],
-    }
-  );
-
-  const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
-    assumedBy: new iam.FederatedPrincipal(
-      "cognito-identity.amazonaws.com",
-      {
-        StringEquals: {
-          "cognito-identity.amazonaws.com:aud": identityPool.ref,
-        },
-        "ForAnyValue:StringLike": {
-          "cognito-identity.amazonaws.com:amr": "authenticated",
-        },
-      },
-      "sts:AssumeRoleWithWebIdentity"
-    ),
-    inlinePolicies: {
-      CognitoAuthorizedPolicy: new iam.PolicyDocument({
-        statements: [
-          new iam.PolicyStatement({
-            actions: [
-              "mobileanalytics:PutEvents",
-              "cognito-sync:*",
-              "cognito-identity:*",
-            ],
-            resources: ["*"],
-            effect: iam.Effect.ALLOW,
-          }),
-          new iam.PolicyStatement({
-            actions: ["execute-api:Invoke"],
-            resources: [
-              `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
-            ],
-            effect: iam.Effect.ALLOW,
-          }),
+  const identityPool = isMiniStack
+    ? undefined
+    : new cognito.CfnIdentityPool(scope, "CognitoIdentityPool", {
+        identityPoolName: `${stage}-IdentityPool`,
+        allowUnauthenticatedIdentities: false,
+        cognitoIdentityProviders: [
+          {
+            clientId: userPoolClient.userPoolClientId,
+            providerName: userPool.userPoolProviderName,
+          },
         ],
-      }),
-    },
-  });
+      });
 
-  new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
-    identityPoolId: identityPool.ref,
-    roles: { authenticated: cognitoAuthRole.roleArn },
-  });
+  if (identityPool) {
+    const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
+      assumedBy: new iam.FederatedPrincipal(
+        "cognito-identity.amazonaws.com",
+        {
+          StringEquals: {
+            "cognito-identity.amazonaws.com:aud": identityPool.ref,
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated",
+          },
+        },
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+      inlinePolicies: {
+        CognitoAuthorizedPolicy: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: [
+                "mobileanalytics:PutEvents",
+                "cognito-sync:*",
+                "cognito-identity:*",
+              ],
+              resources: ["*"],
+              effect: iam.Effect.ALLOW,
+            }),
+            new iam.PolicyStatement({
+              actions: ["execute-api:Invoke"],
+              resources: [
+                `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
+              ],
+              effect: iam.Effect.ALLOW,
+            }),
+          ],
+        }),
+      },
+    });
+
+    new cognito.CfnIdentityPoolRoleAttachment(
+      scope,
+      "CognitoIdentityPoolRoles",
+      {
+        identityPoolId: identityPool.ref,
+        roles: { authenticated: cognitoAuthRole.roleArn },
+      }
+    );
+  }
 
   let bootstrapUsersFunction;
 
@@ -214,20 +222,22 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       additionalPolicies: [
         new iam.PolicyStatement({
           actions: ["*"],
-          resources: [userPool.userPoolArn],
+          resources: isMiniStack ? ["*"] : [userPool.userPoolArn],
           effect: iam.Effect.ALLOW,
         }),
       ],
       environment: {
         userPoolId: userPool.userPoolId,
-        bootstrapUsersPassword: bootstrapUsersPassword!,
-        bootstrapExternalUsersPassword: bootstrapExternalUsersPassword!,
+        ...(bootstrapUsersPassword ? { bootstrapUsersPassword } : {}),
+        ...(bootstrapExternalUsersPassword
+          ? { bootstrapExternalUsersPassword }
+          : {}),
       },
       isDev,
     }).lambda;
   }
 
-  if (!isLocalStack) {
+  if (!isMiniStack) {
     const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",
@@ -241,16 +251,18 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     });
   }
 
-  if (bootstrapUsersFunction) {
+  if (bootstrapUsersFunction && !isMiniStack) {
     new triggers.Trigger(scope, "InvokeBootstrapUsersFunction", {
       handler: bootstrapUsersFunction,
       invocationType: triggers.InvocationType.EVENT,
     });
   }
 
-  new CfnOutput(scope, "CognitoIdentityPoolId", {
-    value: identityPool.ref,
-  });
+  if (identityPool) {
+    new CfnOutput(scope, "CognitoIdentityPoolId", {
+      value: identityPool.ref,
+    });
+  }
 
   new CfnOutput(scope, "CognitoUserPoolId", {
     value: userPool.userPoolId,
@@ -266,7 +278,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   return {
     userPoolDomainName: userPoolDomain.domainName,
-    identityPoolId: identityPool.ref,
+    identityPoolId: identityPool?.ref ?? "",
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
   };

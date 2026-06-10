@@ -1,5 +1,8 @@
+const fs = require("node:fs");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { BatchWriteCommand } = require("@aws-sdk/lib-dynamodb");
-const { buildDynamoClient } = require("../../utils/dynamodb.js");
+const { DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
+const path = require("node:path");
 
 /**
  * Custom handler for seeding deployed environments with required data.
@@ -29,11 +32,15 @@ async function myHandler() {
  */
 const runSeed = async (seedInstructions) => {
   const { filenames, tableNameSuffix } = seedInstructions;
-  const dynamoClient = buildDynamoClient();
+  const dynamoClient = DynamoDBDocumentClient.from(
+    new DynamoDBClient({ region: "us-east-1" })
+  );
   for (const filename of filenames) {
     const TableName = `${process.env.dynamoPrefix}-${tableNameSuffix}`;
     if (!filenames || filenames <= 0) continue;
-    const items = require(filename);
+    const items = JSON.parse(
+      fs.readFileSync(path.join(__dirname, filename), "utf8")
+    );
     if (!items || items.length <= 0) continue;
 
     try {

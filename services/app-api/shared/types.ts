@@ -54,6 +54,7 @@ export type CmsUser = {
 export interface APIGatewayProxyEvent {
   body: string | null;
   path: string;
+  httpMethod?: string;
   headers: Record<string, string | undefined>;
   pathParameters: Record<string, string | undefined> | null;
   queryStringParameters: Record<string, string | undefined> | null;
