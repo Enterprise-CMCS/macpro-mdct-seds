@@ -2,6 +2,8 @@
 
 This is the current short-form status for the `CMDCT-6054` AWS emulator evaluation work.
 
+Fresh bakeoff details now live in `docs/aws-emulator-bakeoff.md`. On this machine's latest clean run, **MiniStack** produced the strongest end-to-end result, **Floci** also completed successfully but logged post-deploy seeding errors, and **LocalEmu** failed during CDK bootstrap.
+
 ## Eliminated or Partial-Fit Tools
 
 | Tool           | Status           | Reason                                                                                                           |
