@@ -15,14 +15,14 @@ Some branch-specific notes were written during the evaluation, but some of those
 
 ## Comparison
 
-| Branch | Verdict | Working shape | Better than LocalStack | Worse than LocalStack |
-| --- | --- | --- | --- | --- |
-| `cmdct-6054cloudmock` | Partial fit | Hybrid: CloudMock-backed services + local app-api + local UI | No LocalStack CLI, lighter hybrid runtime, basic AWS control-plane calls worked | Full CDK deploy did not work; CloudFormation/API Gateway depth too weak |
-| `cmdct-6054fakecloud` | Partial fit | Hybrid: FakeCloud DynamoDB + local app-api + local UI | Simpler runtime, fast startup, no LocalStack account/token flow | No viable EC2/CloudFormation/CDK path for the full stack |
-| `cmdct-6054floci` | Viable | Full local CDK deploy with Floci + local UI | Closest drop-in replacement, preserved the CDK-shaped architecture, no LocalStack CLI | Needed repo-specific fixes, root container, host wiring, and non-persistent state |
-| `cmdct-6054ministack` | Viable | Full local CDK deploy with MiniStack + local UI | Preserved the CDK-shaped architecture, no LocalStack CLI/account/dashboard | Needed several repo-specific CDK/runtime fixes and a fresh container each run |
-| `cmdct-6054microcloud` | Rejected | None | Real private-cloud strengths, real storage/networking/VM model | Not an AWS emulator at all; wrong platform and wrong abstraction level |
-| `cmdct-6054localcloud` | Rejected | None | None observed for SEDS | Name collision, unavailable emulator repo, and no Lambda/API Gateway/CloudFormation fit |
+| Branch                 | Verdict     | Working shape                                                | Better than LocalStack                                                                | Worse than LocalStack                                                                   |
+| ---------------------- | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `cmdct-6054cloudmock`  | Partial fit | Hybrid: CloudMock-backed services + local app-api + local UI | No LocalStack CLI, lighter hybrid runtime, basic AWS control-plane calls worked       | Full CDK deploy did not work; CloudFormation/API Gateway depth too weak                 |
+| `cmdct-6054fakecloud`  | Partial fit | Hybrid: FakeCloud DynamoDB + local app-api + local UI        | Simpler runtime, fast startup, no LocalStack account/token flow                       | No viable EC2/CloudFormation/CDK path for the full stack                                |
+| `cmdct-6054floci`      | Viable      | Full local CDK deploy with Floci + local UI                  | Closest drop-in replacement, preserved the CDK-shaped architecture, no LocalStack CLI | Needed repo-specific fixes, root container, host wiring, and non-persistent state       |
+| `cmdct-6054ministack`  | Viable      | Full local CDK deploy with MiniStack + local UI              | Preserved the CDK-shaped architecture, no LocalStack CLI/account/dashboard            | Needed several repo-specific CDK/runtime fixes and a fresh container each run           |
+| `cmdct-6054microcloud` | Rejected    | None                                                         | Real private-cloud strengths, real storage/networking/VM model                        | Not an AWS emulator at all; wrong platform and wrong abstraction level                  |
+| `cmdct-6054localcloud` | Rejected    | None                                                         | None observed for SEDS                                                                | Name collision, unavailable emulator repo, and no Lambda/API Gateway/CloudFormation fit |
 
 ## Recommendation
 
