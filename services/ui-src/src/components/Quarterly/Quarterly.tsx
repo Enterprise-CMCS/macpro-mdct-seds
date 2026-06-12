@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router";
 import Preloader from "../Preloader/Preloader";
 import Unauthorized from "../Unauthorized/Unauthorized";
@@ -94,7 +92,18 @@ const Quarterly = () => {
                             form
                           )}`}
                         >
-                          <FontAwesomeIcon icon={faFilePdf} />
+                          <span className="sr-only">{`View ${form.form} form`}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 384 512"
+                            width={16}
+                            height={16}
+                            aria-label="File PDF Icon"
+                            aria-hidden="false"
+                            className="icon file-pdf-icon"
+                          >
+                            <use xlinkHref="/img/fa-icons/file-pdf.svg" />
+                          </svg>
                         </Link>
                       </td>
                     </tr>

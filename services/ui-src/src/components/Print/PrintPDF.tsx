@@ -1,7 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@cmsgov/design-system";
 import React, { useEffect, useRef } from "react";
+import { Button } from "@cmsgov/design-system";
 import "react-tabs/style/react-tabs.css";
 import QuestionComponent from "../Question/Question";
 import { Link, useParams } from "react-router";
@@ -77,7 +75,17 @@ const PrintPDF = () => {
 
           <Button variation="solid" onClick={(e) => handlePrint(e)}>
             Print / PDF
-            <FontAwesomeIcon icon={faPrint} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              width={16}
+              height={16}
+              aria-label="Print Icon"
+              aria-hidden="true"
+              className="icon print-icon"
+            >
+              <use xlinkHref="/img/fa-icons/print.svg" />
+            </svg>
           </Button>
 
           <h2>{`Form ${form} | ${formattedStateName} | ${year} | Quarter ${quarter}`}</h2>
