@@ -70,6 +70,9 @@ we can fall back on this test outline to ensure everything is working.
 
 **Test 2.2:** State users should be able to edit data within forms.
 
+- Forms 64.EC, 21E, and 64.21E display data in age-group tabs.
+  Data entered on one tab should save independently and not affect other tabs.
+
 **Test 2.3:** State users should be able to edit summary notes.
 
 - This field only appears on the Summary tab of a form, at the very bottom.
