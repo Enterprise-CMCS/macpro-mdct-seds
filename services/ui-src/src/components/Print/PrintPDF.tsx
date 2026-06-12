@@ -84,7 +84,7 @@ const PrintPDF = () => {
               aria-hidden="true"
               className="icon print-icon"
             >
-              <use xlinkHref="/public/img/fa-icons/print.svg" />
+              <use xlinkHref="/img/fa-icons/print.svg" />
             </svg>
           </Button>
 

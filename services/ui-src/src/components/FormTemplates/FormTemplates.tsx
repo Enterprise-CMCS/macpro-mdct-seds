@@ -149,7 +149,7 @@ const FormTemplates = () => {
             aria-hidden="true"
             className="icon save-icon"
           >
-            <use xlinkHref="/public/img/fa-icons/save.svg" />
+            <use xlinkHref="/img/fa-icons/save.svg" />
           </svg>
         </Button>
       </div>

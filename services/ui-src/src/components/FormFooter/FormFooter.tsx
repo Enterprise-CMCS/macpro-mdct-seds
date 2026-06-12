@@ -24,7 +24,7 @@ const FormFooter = ({ state, year, quarter }) => {
             aria-hidden="true"
             className="icon arrow-left-icon"
           >
-            <use xlinkHref="/public/img/fa-icons/arrow-left.svg" />
+            <use xlinkHref="/img/fa-icons/arrow-left.svg" />
           </svg>
           Back to {`Q${quarter} ${year}`}
         </Link>
@@ -54,7 +54,7 @@ const FormFooter = ({ state, year, quarter }) => {
               aria-hidden="true"
               className="icon save-icon"
             >
-              <use xlinkHref="/public/img/fa-icons/save.svg" />
+              <use xlinkHref="/img/fa-icons/save.svg" />
             </svg>
           </Button>
         </div>

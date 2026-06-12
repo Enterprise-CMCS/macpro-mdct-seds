@@ -61,7 +61,7 @@ const Users = () => {
             aria-hidden="true"
             className="icon file-csv-icon"
           >
-            <use xlinkHref="/public/img/fa-icons/file-csv.svg" />
+            <use xlinkHref="/img/fa-icons/file-csv.svg" />
           </svg>
         </Button>
       </div>

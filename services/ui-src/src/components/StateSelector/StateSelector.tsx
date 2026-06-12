@@ -96,7 +96,7 @@ const StateSelector = () => {
               aria-hidden="true"
               className="icon user-check-icon"
             >
-              <use xlinkHref="/public/img/fa-icons/user-check.svg" />
+              <use xlinkHref="/img/fa-icons/user-check.svg" />
             </svg>
           </Button>
         </>

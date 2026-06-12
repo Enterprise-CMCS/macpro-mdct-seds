@@ -102,7 +102,7 @@ const Quarterly = () => {
                             aria-hidden="false"
                             className="icon file-pdf-icon"
                           >
-                            <use xlinkHref="/public/img/fa-icons/file-pdf.svg" />
+                            <use xlinkHref="/img/fa-icons/file-pdf.svg" />
                           </svg>
                         </Link>
                       </td>

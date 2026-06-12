@@ -79,7 +79,7 @@ export default function Login() {
             aria-hidden="true"
             className="icon sign-in-alt-icon"
           >
-            <use xlinkHref="/public/img/fa-icons/sign-in-alt.svg" />
+            <use xlinkHref="/img/fa-icons/sign-in-alt.svg" />
           </svg>
         </LoaderButton>
       </div>
@@ -121,7 +121,7 @@ export default function Login() {
               aria-hidden="true"
               className="icon sign-in-alt-icon"
             >
-              <use xlinkHref="/public/img/fa-icons/sign-in-alt.svg" />
+              <use xlinkHref="/img/fa-icons/sign-in-alt.svg" />
             </svg>
           </LoaderButton>
         </div>
