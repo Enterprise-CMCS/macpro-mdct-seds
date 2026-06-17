@@ -160,7 +160,7 @@ and they should all be seeded with equivalent data.
 ### View Local Resources
 
 Although the app is running in a container on your machine,
-you must open (https://app.localstack.cloud/)[https://app.localstack.cloud/]
+you must open [https://app.localstack.cloud/](https://app.localstack.cloud/)
 in your browser to inspect the resources.
 
 You may be asked to pick a plan.
