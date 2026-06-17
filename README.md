@@ -179,6 +179,7 @@ and you will have access to the full AWS web UI.
 
 We have unit tests for the API (services/app-api) and UI (services/ui-src).
 To run those tests, `cd` into the appropriate directory and `yarn test`.
+Alternatively, from the root directory you may `yarn workspace <dir> test`
 
 By default, tests run in watch mode.
 To run once and exit, add the `--run` option.
