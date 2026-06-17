@@ -2,17 +2,15 @@
 
 SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
+Code quality metrics:
+
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
 [![Maintainability](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 [![Code Coverage](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 
-### Integration Environment Deploy Status:
+Deployment status for main, val, and production:
 
-| Branch     | Build Status                                                                                                            |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
-| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)                   |
-| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)        |
-| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production) |
+![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg) ![val deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val) ![production deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production)
 
 ## Architecture
 
