@@ -56,128 +56,128 @@ const EditUser = () => {
       {isLoading ? (
         <Preloader />
       ) : // oxlint-disable-next-line no-nested-ternary
-        user ? (
-          <div className="flex-col-gap-1half">
-            <Table>
-              <tbody>
-                <tr>
-                  <th>Username</th>
-                  <td>
-                    <TextField
-                      label={undefined}
-                      value={user.username}
-                      disabled={true}
-                      name="username"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>First Name</th>
-                  <td>
-                    <TextField
-                      label={undefined}
-                      value={user.firstName}
-                      disabled={true}
-                      name="firstName"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>Last Name</th>
-                  <td>
-                    <TextField
-                      label={undefined}
-                      value={user.lastName}
-                      disabled={true}
-                      name="lastName"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>Email</th>
-                  <td>
-                    <TextField
-                      label={undefined}
-                      value={user.email}
-                      disabled={true}
-                      name="email"
-                    />
-                  </td>
-                </tr>
+      user ? (
+        <div className="flex-col-gap-1half">
+          <Table>
+            <tbody>
+              <tr>
+                <th>Username</th>
+                <td>
+                  <TextField
+                    label={undefined}
+                    value={user.username}
+                    disabled={true}
+                    name="username"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>First Name</th>
+                <td>
+                  <TextField
+                    label={undefined}
+                    value={user.firstName}
+                    disabled={true}
+                    name="firstName"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Last Name</th>
+                <td>
+                  <TextField
+                    label={undefined}
+                    value={user.lastName}
+                    disabled={true}
+                    name="lastName"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td>
+                  <TextField
+                    label={undefined}
+                    value={user.email}
+                    disabled={true}
+                    name="email"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <label htmlFor="role-select">Role</label>
+                </th>
+                <td>
+                  <select
+                    id="role-select"
+                    value={role}
+                    onChange={(evt) => setRole(evt.target.value)}
+                  >
+                    <option value={undefined}>- Select a Role -</option>
+                    <option value="admin">Admin User</option>
+                    <option value="business">Business User</option>
+                    <option value="state">State User</option>
+                  </select>
+                </td>
+              </tr>
+              {role === "state" ? (
                 <tr>
                   <th>
-                    <label htmlFor="role-select">Role</label>
+                    <label htmlFor="state-select">State</label>
                   </th>
                   <td>
                     <select
-                      id="role-select"
-                      value={role}
-                      onChange={(evt) => setRole(evt.target.value)}
+                      id="state-select"
+                      value={state}
+                      onChange={(evt) => setState(evt.target.value)}
                     >
-                      <option value={undefined}>- Select a Role -</option>
-                      <option value="admin">Admin User</option>
-                      <option value="business">Business User</option>
-                      <option value="state">State User</option>
+                      <option value={undefined}>- Select a State -</option>
+                      {stateSelectOptions.map(({ label, value }) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
                     </select>
                   </td>
                 </tr>
-                {role === "state" ? (
-                  <tr>
-                    <th>
-                      <label htmlFor="state-select">State</label>
-                    </th>
-                    <td>
-                      <select
-                        id="state-select"
-                        value={state}
-                        onChange={(evt) => setState(evt.target.value)}
-                      >
-                        <option value={undefined}>- Select a State -</option>
-                        {stateSelectOptions.map(({ label, value }) => (
-                          <option key={value} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                ) : null}
-                <tr>
-                  <th>Registration Date</th>
-                  <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
-                </tr>
-                <tr>
-                  <th>Last Login</th>
-                  <td>
-                    {user.lastLogin
-                      ? new Date(user.lastLogin).toLocaleDateString("en-US")
-                      : "No login yet"}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-            <Button
-              type="button"
-              variation="solid"
-              className="flex-end"
-              onClick={handleUpdateClick}
+              ) : null}
+              <tr>
+                <th>Registration Date</th>
+                <td>{new Date(user.dateJoined).toLocaleDateString("en-US")}</td>
+              </tr>
+              <tr>
+                <th>Last Login</th>
+                <td>
+                  {user.lastLogin
+                    ? new Date(user.lastLogin).toLocaleDateString("en-US")
+                    : "No login yet"}
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <Button
+            type="button"
+            variation="solid"
+            className="flex-end"
+            onClick={handleUpdateClick}
+          >
+            Update User
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 512"
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="icon user-check-icon"
             >
-              Update User
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 640 512"
-                width={16}
-                height={16}
-                aria-hidden="true"
-                className="icon user-check-icon"
-              >
-                <use href="/img/fa-icons/user-check.svg#user-check" />
-              </svg>
-            </Button>
-          </div>
-        ) : (
-          `Cannot find user with id ${id}`
-        )}
+              <use href="/img/fa-icons/user-check.svg#user-check" />
+            </svg>
+          </Button>
+        </div>
+      ) : (
+        `Cannot find user with id ${id}`
+      )}
     </div>
   );
 };
