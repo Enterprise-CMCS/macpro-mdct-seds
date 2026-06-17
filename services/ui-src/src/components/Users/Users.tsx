@@ -57,11 +57,10 @@ const Users = () => {
             viewBox="0 0 384 512"
             width={16}
             height={16}
-            aria-label="File CSV Icon"
             aria-hidden="true"
             className="icon file-csv-icon"
           >
-            <use xlinkHref="/img/fa-icons/file-csv.svg" />
+            <use href="/img/fa-icons/file-csv.svg#file-csv" />
           </svg>
         </Button>
       </div>

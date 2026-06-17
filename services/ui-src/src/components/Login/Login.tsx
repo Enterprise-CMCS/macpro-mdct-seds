@@ -75,11 +75,10 @@ export default function Login() {
             viewBox="0 0 512 512"
             width={16}
             height={16}
-            aria-label="Sign In Alt Icon"
             aria-hidden="true"
             className="icon sign-in-alt-icon"
           >
-            <use xlinkHref="/img/fa-icons/sign-in-alt.svg" />
+            <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
           </svg>
         </LoaderButton>
       </div>
@@ -117,11 +116,10 @@ export default function Login() {
               viewBox="0 0 512 512"
               width={16}
               height={16}
-              aria-label="Sign In Alt Icon"
               aria-hidden="true"
               className="icon sign-in-alt-icon"
             >
-              <use xlinkHref="/img/fa-icons/sign-in-alt.svg" />
+              <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
             </svg>
           </LoaderButton>
         </div>

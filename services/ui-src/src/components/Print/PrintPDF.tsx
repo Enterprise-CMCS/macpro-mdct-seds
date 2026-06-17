@@ -80,11 +80,10 @@ const PrintPDF = () => {
               viewBox="0 0 512 512"
               width={16}
               height={16}
-              aria-label="Print Icon"
               aria-hidden="true"
               className="icon print-icon"
             >
-              <use xlinkHref="/img/fa-icons/print.svg" />
+              <use href="/img/fa-icons/print.svg#print" />
             </svg>
           </Button>
 

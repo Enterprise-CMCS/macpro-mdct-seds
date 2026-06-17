@@ -168,11 +168,10 @@ const EditUser = () => {
               viewBox="0 0 640 512"
               width={16}
               height={16}
-              aria-label="User Check Icon"
               aria-hidden="true"
               className="icon user-check-icon"
             >
-              <use xlinkHref="/img/fa-icons/user-check.svg" />
+              <use href="/img/fa-icons/user-check.svg#user-check" />
             </svg>
           </Button>
         </div>

@@ -145,11 +145,10 @@ const FormTemplates = () => {
             viewBox="0 0 448 512"
             width={16}
             height={16}
-            aria-label="Save Icon"
             aria-hidden="true"
             className="icon save-icon"
           >
-            <use xlinkHref="/img/fa-icons/save.svg" />
+            <use href="/img/fa-icons/save.svg#save" />
           </svg>
         </Button>
       </div>

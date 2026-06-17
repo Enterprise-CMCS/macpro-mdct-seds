@@ -98,11 +98,10 @@ const Quarterly = () => {
                             viewBox="0 0 384 512"
                             width={16}
                             height={16}
-                            aria-label="File PDF Icon"
-                            aria-hidden="false"
+                            aria-hidden="true"
                             className="icon file-pdf-icon"
                           >
-                            <use xlinkHref="/img/fa-icons/file-pdf.svg" />
+                            <use href="/img/fa-icons/file-pdf.svg#file-pdf" />
                           </svg>
                         </Link>
                       </td>
