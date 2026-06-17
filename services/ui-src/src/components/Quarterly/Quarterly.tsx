@@ -99,8 +99,7 @@ const Quarterly = () => {
                             width={16}
                             height={16}
                             aria-hidden="true"
-                            className="icon file-pdf-icon"
-                          >
+                            className="icon file-pdf-icon">
                             <use href="/img/fa-icons/file-pdf.svg#file-pdf" />
                           </svg>
                         </Link>
