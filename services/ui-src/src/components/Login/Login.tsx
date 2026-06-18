@@ -4,9 +4,6 @@ import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
-
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOkta, setIsLoadingOkta] = useState(false);
@@ -73,7 +70,16 @@ export default function Login() {
           data-testid="handleSubmitOktaButton"
         >
           Login with EUA ID
-          <FontAwesomeIcon icon={faSignInAlt} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            width={16}
+            height={16}
+            aria-hidden="true"
+            className="icon sign-in-alt-icon"
+          >
+            <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
+          </svg>
         </LoaderButton>
       </div>
       <form
@@ -105,7 +111,16 @@ export default function Login() {
             disabled={!validateForm()}
           >
             Login
-            <FontAwesomeIcon icon={faSignInAlt} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="icon sign-in-alt-icon"
+            >
+              <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
+            </svg>
           </LoaderButton>
         </div>
       </form>

@@ -5,8 +5,6 @@ import { useParams, useNavigate } from "react-router";
 import FormHeader from "../FormHeader/FormHeader";
 import FormFooter from "../FormFooter/FormFooter";
 import NotApplicable from "../NotApplicable/NotApplicable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import Unauthorized from "../Unauthorized/Unauthorized";
 import FormLoadError from "../FormLoadError/FormLoadError";
 import { useStore } from "../../store/store";
@@ -115,7 +113,16 @@ const FormPage = () => {
             onClick={redirectToPDF}
           >
             Print view / PDF
-            <FontAwesomeIcon icon={faFilePdf} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="icon file-pdf-icon"
+            >
+              <use href="/img/fa-icons/file-pdf.svg#file-pdf" />
+            </svg>
           </Button>
           <NotApplicable />
           <TabContainer quarter={quarter} />

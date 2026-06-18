@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Button } from "@cmsgov/design-system";
 import { Link } from "react-router";
 import { dateFormatter } from "../../utility-functions/sortingFunctions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useStore } from "../../store/store";
 
 const FormFooter = ({ state, year, quarter }) => {
@@ -17,7 +15,17 @@ const FormFooter = ({ state, year, quarter }) => {
     <div data-testid="FormFooter" className="form-footer">
       <div>
         <Link to={quarterPath}>
-          <FontAwesomeIcon icon={faArrowLeft} /> Back to {`Q${quarter} ${year}`}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            width={16}
+            height={16}
+            aria-hidden="true"
+            className="icon arrow-left-icon"
+          >
+            <use href="/img/fa-icons/arrow-left.svg#arrow-left" />
+          </svg>
+          Back to {`Q${quarter} ${year}`}
         </Link>
       </div>
 
@@ -35,7 +43,17 @@ const FormFooter = ({ state, year, quarter }) => {
             data-testid="saveButton"
             disabled={userRole !== "state"}
           >
-            Save <FontAwesomeIcon icon={faSave} />
+            Save
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="icon save-icon"
+            >
+              <use href="/img/fa-icons/save.svg#save" />
+            </svg>
           </Button>
         </div>
       </div>
