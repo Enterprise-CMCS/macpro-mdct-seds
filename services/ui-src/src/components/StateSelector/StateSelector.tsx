@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@cmsgov/design-system";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons/faUserCheck";
 import { updateUser } from "../../libs/api";
 import { useNavigate } from "react-router";
 import { getStateName, stateSelectOptions } from "../../lookups/states";
@@ -89,7 +87,16 @@ const StateSelector = () => {
             }}
           >
             Update User
-            <FontAwesomeIcon icon={faUserCheck} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 512"
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="icon user-check-icon"
+            >
+              <use href="/img/fa-icons/user-check.svg#user-check" />
+            </svg>
           </Button>
         </>
       )}
