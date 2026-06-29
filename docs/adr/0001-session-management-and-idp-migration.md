@@ -1,6 +1,6 @@
 # Session Management and IdP Migration
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-06-29
 - Ticket: [CMDCT-6066](https://jiraent.cms.gov/browse/CMDCT-6066)
 
