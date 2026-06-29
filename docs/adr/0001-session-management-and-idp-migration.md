@@ -59,7 +59,7 @@ and prioritization.
 ### Consequences
 
 - **Good:** Resolves the immediate user experience and accessibility problem
-- **Good:** No external dependencies;  works with existing EUA Okta
+- **Good:** No external dependencies; works with existing EUA Okta
   configuration
 - **Bad:** SEDS remains on EUA while all other MDCT apps use IDM; full
   platform alignment is deferred until Option 3 is separately prioritized
@@ -79,7 +79,7 @@ The core mechanism was validated locally on 2026-06-29.
 
 ## Pros and Cons of the Options
 
-### Option 1:  Authorization code flow with idle timeout warning modal
+### Option 1: Authorization code flow with idle timeout warning modal
 
 Switching from implicit flow (`responseType: "token"`) to authorization code
 flow (`responseType: "code"`) allows Amplify to receive and manage refresh
@@ -94,9 +94,10 @@ tokens. This enables two complementary behaviors:
 
 #### Reference implementation
 
-`macpro-mdct-hcbs`:  specifically
-`services/ui-src/src/components/layout/Timeout.tsx` and
-`services/ui-src/src/utils/auth/authLifecycle.tsx`.
+`macpro-mdct-hcbs` - specifically
+[`services/ui-src/src/components/layout/Timeout.tsx`](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/blob/06d48b1673b1cc024a4c0dc17edbd99042ebb4d5/services/ui-src/src/components/layout/Timeout.tsx)
+and
+[`services/ui-src/src/utils/auth/authLifecycle.tsx`](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/blob/06d48b1673b1cc024a4c0dc17edbd99042ebb4d5/services/ui-src/src/utils/auth/authLifecycle.tsx).
 
 #### Scope of changes
 
@@ -132,8 +133,9 @@ entirely. (Notably, RHTP allows authentication with both IDM and EUA.)
 #### Authorization impact
 
 SEDS currently maps EUA job codes (`CHIP_D_USER_GROUP`, etc.) to application
-roles in `services/app-api/libs/authorization.ts`. IDM sends `cmsRoles`
-instead; this mapping will need to be updated as part of the migration.
+roles in [`services/app-api/libs/authorization.ts`](https://github.com/Enterprise-CMCS/macpro-mdct-seds/blob/3fbc99f9286c23d3f4cc280c9b285f51a834f098/services/app-api/libs/authorization.ts).
+IDM sends `cmsRoles` instead; this mapping will need to be updated as part
+of the migration.
 
 #### Relevant documentation
 
@@ -146,9 +148,10 @@ instead; this mapping will need to be updated as part of the migration.
 
 #### Code reference
 
-`macpro-mdct-rhtp` `deployment/stacks/ui-auth.ts` - shows the CDK changes
-needed to add IDM as a Cognito SAML identity provider, including attribute
-mapping (`cmsRoles`, `state`) and `authorizationCodeGrant` configuration.
+[`macpro-mdct-rhtp` `deployment/stacks/ui-auth.ts`](https://github.com/Enterprise-CMCS/macpro-mdct-rhtp/blob/db89929c1017f16a066f3fab25778768618a9e63/deployment/stacks/ui-auth.ts) -
+shows the CDK changes needed to add IDM as a Cognito SAML identity
+provider, including attribute mapping (`cmsRoles`, `state`) and
+`authorizationCodeGrant` configuration.
 
 #### High-level steps
 
