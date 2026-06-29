@@ -4,26 +4,20 @@
 - Date: 2026-06-29
 - Ticket: [CMDCT-6066](https://jiraent.cms.gov/browse/CMDCT-6066)
 
-## Context and Problem Statement
+## Context
 
 SEDS does not refresh user sessions or warn users before session expiry.
 After 30 minutes, API calls silently fail with no feedback to the user.
 This is an unfriendly experience and raises an accessibility concern under
 [WCAG 2.2 - Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable).
+The goal is to improve user experience and achieve WCAG 2.2 compliance with
+minimal scope, while establishing a clear long-term path toward platform
+alignment.
 
 All other MDCT apps handle this via silent token refresh, which SEDS cannot
 do today due to its authentication configuration.
 
-## Decision Drivers
-
-- Improve user experience when sessions expire
-- Achieve WCAG 2.2 compliance for timing adjustable content
-- Align SEDS auth with the rest of the MDCT platform long-term
-- Minimize scope for immediate work while establishing a clear long-term path
-
-## Testing Limitations
-
-Testing the session timeout behavior is constrained by the environment setup:
+Testing this behavior is constrained by the environment setup:
 
 - **Ephemeral environments** each get an isolated Cognito User Pool. The EUA
   Okta SAML app only has ACS URLs registered for named environments, so SAML
@@ -32,52 +26,7 @@ Testing the session timeout behavior is constrained by the environment setup:
   Cognito User Pool and WAF before auth will work locally. DevSecOps
   involvement may be required.
 
-## Considered Options
-
-1. Switch to authorization code flow for enhanced session management
-2. Session expiry warning modal with save-and-redirect pattern
-3. Migrate from EUA to IDM as the identity provider
-
-## Decision Outcome
-
-Chosen approach: Option 1. Option 3 is recommended as a separate follow-on
-effort.
-
-Option 1 was validated locally on 2026-06-29. Code flow works with the
-existing EUA Okta SAML configuration. Silent token refresh was confirmed
-working: a token was observed being issued 44 minutes after the original
-login (well past the 30-minute expiry) with no redirect or user interaction
-required.
-
-The implementation should closely follow the pattern used by the other MDCT
-apps. See `macpro-mdct-hcbs` as the reference implementation.
-
-Option 3 is the right long-term direction, but involves cross-team
-coordination and business onboarding work that warrants its own planning
-and prioritization.
-
-### Consequences
-
-- **Good:** Resolves the immediate user experience and accessibility problem
-- **Good:** No external dependencies; works with existing EUA Okta
-  configuration
-- **Bad:** SEDS remains on EUA while all other MDCT apps use IDM; full
-  platform alignment is deferred until Option 3 is separately prioritized
-
-### Confirmation
-
-The implementation is confirmed when:
-
-- A user session persists beyond the 30-minute token expiry without a full
-  redirect or sign-in prompt during active use
-- The idle timeout warning modal appears before expiry and "Stay logged in"
-  silently renews the session with no redirect or loss of in-progress work
-
-The core mechanism was validated locally on 2026-06-29.
-
----
-
-## Pros and Cons of the Options
+## Options
 
 ### Option 1: Authorization code flow with idle timeout warning modal
 
@@ -106,15 +55,6 @@ and
 - Update the Cognito UserPoolClient to permit authorization code grant
 - Add idle timeout tracking and warning modal, modeled on the HCBS
   implementation
-
-#### Outcomes
-
-- **Good:** Seamless for active users; silent refresh on network activity
-- **Good:** Warning modal with silent "Stay logged in"; no redirect, no
-  lost work
-- **Good:** Code grant aligns with all other MDCT apps and OAuth best
-  practices
-- **Good:** Confirmed working with EUA
 
 ### Option 2 - Session expiry warning modal with redirect
 
@@ -171,3 +111,31 @@ provider, including attribute mapping (`cmsRoles`, `state`) and
    application roles prior to cutover.
 6. **Post go-live:** Ensure support channels are in place for users
    experiencing access issues after cutover.
+
+---
+
+## Decision
+
+Chosen approach: Option 1. Option 3 is recommended as a separate follow-on
+effort.
+
+Option 1 was validated locally on 2026-06-29. Code flow works with the
+existing EUA Okta SAML configuration. Silent token refresh was confirmed
+working: a token was observed being issued 44 minutes after the original
+login (well past the 30-minute expiry) with no redirect or user interaction
+required.
+
+The implementation should closely follow the pattern used by the other MDCT
+apps. See `macpro-mdct-hcbs` as the reference implementation.
+
+Option 3 is the right long-term direction, but involves cross-team
+coordination and business onboarding work that warrants its own planning
+and prioritization.
+
+## Consequences
+
+- **Good:** Resolves the immediate user experience and accessibility problem
+- **Good:** No external dependencies; works with existing EUA Okta
+  configuration
+- **Bad:** SEDS remains on EUA while all other MDCT apps use IDM; full
+  platform alignment is deferred until Option 3 is separately prioritized
