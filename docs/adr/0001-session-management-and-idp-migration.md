@@ -103,7 +103,7 @@ provider, including attribute mapping (`cmsRoles`, `state`) and
    grant Okta access to an MDCT lead developer.
 3. **MDCT team:** Create Okta application groups and rules to associate IDM
    CMS roles; update Cognito CDK to register IDM as a SAML identity provider;
-   update role mapping logic (`custom:ismemberof` → `custom:cms_roles`).
+   update role mapping logic (`custom:ismemberof` → `custom:cmsRoles`).
 4. **Testing:** End-to-end testing in TEST and IMPL with test user accounts
    before each environment promotion; architecture review before go-live.
 5. **Business/onboarding:** Work with the IDM team to plan migration for
