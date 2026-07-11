@@ -15,15 +15,6 @@ export const reset = {
       // if floci is already stopped, don't throw
     }
 
-    try {
-      await runCommand(
-        "Stop legacy floci",
-        ["docker", "stop", "floci-main"],
-        "."
-      );
-    } catch {
-      // if floci is already stopped, don't throw
-    }
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");
   },
