@@ -8,7 +8,6 @@ import { AuthUser, scanForUserWithSub } from "../storage/users.ts";
 import { getUserDetailsFromEvent } from "./authorization.ts";
 import * as logger from "./debug-lib.ts";
 import {
-  ok,
   badRequest,
   internalServerError,
   unauthenticated,
@@ -26,13 +25,6 @@ export default function handler<TParams>(
         pathParameters: event.pathParameters,
         queryStringParameters: event.queryStringParameters,
       });
-
-      // MiniStack has no API Gateway MOCK preflight, so answer OPTIONS here. In
-      // AWS, preflight never reaches the Lambda (see deployment/stacks/api.ts),
-      // and AWS_ENDPOINT_URL is unset, so production auth flow is unchanged.
-      if (event.httpMethod === "OPTIONS" && process.env.AWS_ENDPOINT_URL) {
-        return ok();
-      }
 
       const user = await determineUser(event);
       if (!user) {
@@ -68,10 +60,6 @@ const determineUser = async (event: APIGatewayProxyEvent) => {
     userFromToken = getUserDetailsFromEvent(event);
   } catch (error) {
     logger.error("Failed to read auth token from request: %O", error);
-    return undefined;
-  }
-
-  if (!userFromToken) {
     return undefined;
   }
 

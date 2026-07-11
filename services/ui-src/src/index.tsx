@@ -3,20 +3,16 @@ import { createRoot } from "react-dom/client";
 import "./index.scss";
 import App from "./components/App/App";
 import { BrowserRouter } from "react-router";
-import { Amplify, type ResourcesConfig } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import config from "./config/config";
 
-type AuthConfig = NonNullable<ResourcesConfig["Auth"]>;
-type CognitoConfig = AuthConfig["Cognito"];
-
-const userPoolConfig = {
-  userPoolId: config.cognito.USER_POOL_ID,
-  userPoolClientId: config.cognito.APP_CLIENT_ID,
-  ...(config.cognito.USER_POOL_ENDPOINT
-    ? { userPoolEndpoint: config.cognito.USER_POOL_ENDPOINT }
-    : {}),
-  ...(config.cognito.OAUTH_ENABLED
-    ? {
+Amplify.configure(
+  {
+    Auth: {
+      Cognito: {
+        userPoolId: config.cognito.USER_POOL_ID,
+        identityPoolId: config.cognito.IDENTITY_POOL_ID,
+        userPoolClientId: config.cognito.APP_CLIENT_ID,
         loginWith: {
           oauth: {
             domain: config.cognito.APP_CLIENT_DOMAIN,
@@ -26,27 +22,8 @@ const userPoolConfig = {
             responseType: "token",
           },
         },
-      }
-    : {}),
-} satisfies CognitoConfig;
-
-const authConfig = (
-  config.cognito.IDENTITY_POOL_ID
-    ? {
-        Cognito: {
-          ...userPoolConfig,
-          identityPoolId: config.cognito.IDENTITY_POOL_ID,
-          ...(config.cognito.IDENTITY_POOL_ENDPOINT
-            ? { identityPoolEndpoint: config.cognito.IDENTITY_POOL_ENDPOINT }
-            : {}),
-        },
-      }
-    : { Cognito: userPoolConfig }
-) satisfies AuthConfig;
-
-Amplify.configure(
-  {
-    Auth: authConfig,
+      },
+    },
     API: {
       REST: {
         "mdct-seds": {

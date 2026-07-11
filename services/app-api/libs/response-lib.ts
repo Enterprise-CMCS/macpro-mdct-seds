@@ -89,19 +89,8 @@ export enum StatusCodes {
 export class HttpResponse {
   readonly statusCode: number;
   readonly body: string | undefined;
-  // Preflight headers are only needed locally: MiniStack has no API Gateway
-  // MOCK preflight, so the Lambda answers CORS itself. In AWS, API Gateway owns
-  // preflight, so these stay off production responses. AWS_ENDPOINT_URL is set
-  // only for MiniStack lambdas (see deployment/constructs/lambda.ts).
   readonly headers = {
     "Access-Control-Allow-Origin": "*",
-    ...(process.env.AWS_ENDPOINT_URL
-      ? {
-          "Access-Control-Allow-Headers":
-            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,x-api-key",
-          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-        }
-      : {}),
     "Access-Control-Allow-Credentials": true,
   };
   constructor(statusCode: number, body?: Object | undefined) {
