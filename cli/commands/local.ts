@@ -27,10 +27,14 @@ const isColimaRunning = () => {
 const getFlociContainer = () => {
   try {
     return JSON.parse(
-      execFileSync("docker", ["inspect", flociContainerName], {
-        encoding: "utf8",
-        stdio: "pipe",
-      })
+      execFileSync(
+        "docker",
+        ["--context", "colima", "inspect", flociContainerName],
+        {
+          encoding: "utf8",
+          stdio: "pipe",
+        }
+      )
     )[0];
   } catch {
     return null;
@@ -123,7 +127,7 @@ export const assertFlociContainerMatchesConfig = (
     throw new Error(
       `The existing "${flociContainerName}" container does not match the requested ` +
         `configuration: ${mismatches.join(", ")}. Remove it with ` +
-        `"docker rm -f ${flociContainerName}" and re-run to recreate it with the ` +
+        `"docker --context colima rm -f ${flociContainerName}" and re-run to recreate it with the ` +
         `requested configuration.`
     );
   }
@@ -151,7 +155,7 @@ const startFloci = async (
   if (existingContainer) {
     await runCommand(
       "Start floci",
-      ["docker", "start", flociContainerName],
+      ["docker", "--context", "colima", "start", flociContainerName],
       "."
     );
   } else {
@@ -159,6 +163,8 @@ const startFloci = async (
       "Start floci",
       [
         "docker",
+        "--context",
+        "colima",
         "run",
         "-d",
         "--rm",

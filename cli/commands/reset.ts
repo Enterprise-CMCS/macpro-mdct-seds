@@ -10,7 +10,11 @@ export const reset = {
     await updateEnvFiles();
 
     try {
-      await runCommand("Stop floci", ["docker", "stop", "floci-local"], ".");
+      await runCommand(
+        "Stop floci",
+        ["docker", "--context", "colima", "stop", "floci-local"],
+        "."
+      );
     } catch {
       // if floci is already stopped, don't throw
     }
