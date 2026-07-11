@@ -1,12 +1,14 @@
 import handler from "../../libs/handler-lib.ts";
-import dynamoDb from "../../libs/dynamodb-lib.ts";
 import {
   canWriteAnswersForState,
   canWriteStatusForState,
 } from "../../auth/authConditions.ts";
-import { UpdateCommandOutput } from "@aws-sdk/lib-dynamodb";
 import { AuthUser } from "../../storage/users.ts";
-import { StateForm } from "../../storage/stateForms.ts";
+import {
+  getStateForm,
+  updateComment,
+  updateCommentAndStatus,
+} from "../../storage/stateForms.ts";
 import { badRequest, forbidden, ok } from "../../libs/response-lib.ts";
 import {
   isFormId,
@@ -15,6 +17,7 @@ import {
 } from "../../libs/parsing.ts";
 import { logger } from "../../libs/debug-lib.ts";
 import { FormStatusValue } from "../../shared/types.ts";
+import { updateAnswer } from "../../storage/formAnswers.ts";
 
 export const main = handler(readFormIdentifiersFromPath, async (request) => {
   const { state, year, quarter, form } = request.parameters;
@@ -52,7 +55,6 @@ const updateAnswers = async (
   answers: RequestBody["formAnswers"],
   user: AuthUser
 ) => {
-  let questionResult: UpdateCommandOutput[] = [];
   answers.sort(function (a: any, b: any) {
     return a.answer_entry > b.answer_entry ? 1 : -1;
   });
@@ -157,28 +159,12 @@ const updateAnswers = async (
 
     const rowsWithZeroWhereBlank = replaceNullsWithZeros(answers[answer].rows);
 
-    // Params for updating questions
-    const questionParams = {
-      TableName: process.env.FormAnswersTable,
-      Key: {
-        answer_entry: answerEntry,
-      },
-      UpdateExpression:
-        "SET #r = :rows, last_modified_by = :last_modified_by, last_modified = :last_modified",
-      ExpressionAttributeValues: {
-        ":rows": rowsWithZeroWhereBlank,
-        ":last_modified_by": user.username,
-        ":last_modified": new Date().toISOString(),
-      },
-      ExpressionAttributeNames: {
-        "#r": "rows",
-      },
-
-      ReturnValues: "ALL_NEW" as const,
-    };
-
-    const dbResult = await dynamoDb.update(questionParams);
-    questionResult.push(dbResult);
+    await updateAnswer({
+      answer_entry: answerEntry,
+      rows: rowsWithZeroWhereBlank,
+      last_modified: new Date().toISOString(),
+      last_modified_by: user.username,
+    });
   }
 };
 
@@ -188,44 +174,28 @@ const updateStateForm = async (
   user: any
 ) => {
   // Get existing form to compare changes
-  const params = {
-    TableName: process.env.StateFormsTable,
-    Key: { state_form },
-  };
-  const result = await dynamoDb.get(params);
-  if (!result.Item) {
+  const currentForm = await getStateForm(state_form);
+  if (currentForm === undefined) {
     throw new Error("State Form Not Found");
   }
-  const currentForm = result.Item as StateForm;
 
-  const currentTimestamp = new Date().toISOString();
-
-  const statusFlags = {
-    ":status_modified_by": currentForm.status_modified_by,
-    ":status_date": currentForm.status_date,
-  };
-  if (currentForm.status_id !== statusData.status_id) {
-    statusFlags[":status_modified_by"] = user.username;
-    statusFlags[":status_date"] = currentTimestamp;
+  if (currentForm.status_id === statusData.status_id) {
+    await updateComment({
+      state_form,
+      state_comments: statusData.state_comments,
+      last_modified: new Date().toISOString(),
+      last_modified_by: user.username,
+    });
+  } else {
+    // If status has changed, we also update status_modified/_by
+    await updateCommentAndStatus({
+      state_form,
+      state_comments: statusData.state_comments,
+      status_id: statusData.status_id,
+      last_modified: new Date().toISOString(),
+      last_modified_by: user.username,
+    });
   }
-
-  // Params for updating for statusData;
-  const formParams = {
-    TableName: params.TableName,
-    Key: { state_form },
-    UpdateExpression:
-      "SET last_modified_by = :last_modified_by, last_modified = :last_modified, status_modified_by = :status_modified_by, status_date = :status_date, status_id = :status_id, state_comments = :state_comments",
-    ExpressionAttributeValues: {
-      ":last_modified_by": user.username,
-      ":last_modified": currentTimestamp,
-      ":status_id": statusData.status_id,
-      ":state_comments": statusData.state_comments,
-      ...statusFlags,
-    },
-    ReturnValues: "ALL_NEW" as const,
-  };
-
-  await dynamoDb.update(formParams);
 };
 
 /**

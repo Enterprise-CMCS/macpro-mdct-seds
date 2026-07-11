@@ -11,6 +11,8 @@ export default defineConfig({
       exclude: [
         "vitest.config.ts", // The test config file you are currently reading
         "handlers/notification/*", // These files are dead code we cannot delete (yet)
+        "libs/dynamo-mocking.ts", // Test helpers; not production code
+        "libs/handler-mocking.ts", // Test helpers; not production code
       ],
       reporter: [
         [

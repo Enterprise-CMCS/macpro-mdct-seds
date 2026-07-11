@@ -1,94 +1,246 @@
 # MDCT SEDS (CHIP Statistical Enrollment Data System)
 
+SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
+
+Code quality metrics:
+
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/codeql-analysis.yml)
 [![Maintainability](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 [![Code Coverage](https://qlty.sh/badges/60b58f10-b174-450a-8a61-579cb24dd6d5/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-seds)
 
-### Integration Environment Deploy Status:
+Deployment status for main, val, and production:
 
-| Branch     | Build Status                                                                                                            |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
-| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg)                   |
-| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val)        |
-| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production) |
-
-SEDS is the CMCS MDCT application for collecting state data related to Medicaid and CHIP quarterly enrollment data on a quarterly basis. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
+![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg) ![val deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=val) ![production deploy](https://github.com/Enterprise-CMCS/macpro-mdct-seds/actions/workflows/deploy.yml/badge.svg?branch=production)
 
 ## Architecture
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
 
-## Git Policies, Activities and Notes
+## Git Policies
 
-Stack Name Requirements: A service name should only contain alphanumeric characters (case sensitive) and hyphens. The should start with an alphanumeric character and shouldn't exceed 128 characters.
+### Branch Naming
 
-Please push your code to a new branch with a name that meets the Stack Name Requirements above. Any other variations and the GitHub Actions will fail.
+Branch name requirements:
+Every origin branch has an automatically-created AWS stack.
+The stack's resources (s3 buckets, lambdas, dynamo tables, and so on)
+will include the branch name (to distinguish them from other stacks' resources).
+Therefore, the branch name must be very short: 32 characters or fewer.
+It may contain only lowercase letters, numbers, or hyphens.
 
-After creating a branch, if you need to rename it because it does not follow the rules above, use
+Branch name recommendations:
+The best branch names are meaningful.
+The purpose of branch `upgrade-amplify` is clearer than branch `cmdct-3748`.
+There is no automatic processing based on branch name,
+so story numbers or tags like `hotfix-` are not required.
 
-`git branch -m <new-branch-name>` to rename your local branch then
+If your branch name does not meet requirements,
+you may "rename" it by creating a new branch at the same commit
+(deleting the old branch as necessary).
 
-`git push origin -u <new-branch-name>` to rename your remote branch in GitHub.
+```sh
+git checkout Invalid/BranchName
+git checkout -b good-branch-name
+git push
+```
 
-This project uses a combination of Gitflow and Stack naming to handle branches and merging. Branches should be prefixed with the type followed by a descriptive name for the branch. For example:
+Note: We highly recommend `git config --global push.autosetupremote true`,
+so that `git push` will automatically create and track an origin branch.
 
-- main > feature-my-feature-name
-- main > bugfix-my-bugfix-name
-- main > hotfix-my-hotfix-name
+### Linting and Formatting
 
-On each PR, a oxlint and oxfmt check runs. These checks must pass for a PR to be merged. Prior to submitting your PR, run the oxlint and oxfmt against the work you have done.
+Before a PR can be merged, it must pass `oxlint` and `oxfmt` checks.
 
-- Run oxlint using `yarn oxlint --deny-warnings`
-- Run oxfmt using `yarn oxfmt`
+- These will be executed by Github Actions on PR creation
+- They should also run locally, automatically on each commit,
+  if your pre-commit hooks have been set up correctly.
+- You may also wish to set them up to run automatically on each file save.
+- You can also invoke them manually.
+  The `--deny-warnings` flag ensures warnings cause a non-zero exit code.
+  ```sh
+  yarn oxlint --deny-warnings
+  yarn oxfmt
+  ```
+
+### Approvals
+
+Every PR should pass automated checks and be approved by two team members.
+
+Feature branches are squash-merged into `main`.
+
+The team lead will merge (**not squash!**) `main` -> `val` -> `production`
+on a regular basis.
 
 ## Local Dev
 
 ### Running MDCT Workspace Setup
 
-Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can continue in this README for instructions on running the application locally.
+Team members are encouraged to setup all MDCT Products using
+the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools).
+Please refer to the README for instructions running the MDCT Workspace Setup.
 
-#### For developers that have run workspace setup running the applicaiton locally please run the following
+Alternatively, you may install the various requirements yourself.
+The best way to do this is by following the workspace setup script,
+skipping the commands you can't or don't need to run.
+The critical dependencies are `colima`, `localstack`, `nvm`, and `corepack`.
+We use `nvm` to manage the version of `node`
+and `corepack` to manage the version of `yarn`
+(referring to the repo's `.nvmrc` and `package.json` files respectively).
 
-1. cd ~/Projects/macpro-mdct-seds/
-2. `./run update-env` or `./run local`
+Please consider the setup script to be authoritative.
+With that said, these commands _should_ set up those dependencies
+(if you are on a Mac).
 
-   note: the `./run update-env` command will reach out to 1Password to bring in secret values and populate .env files that are git ignored. If you use the `./run local` command you will need to have either previously run with the `--update-env flag` or provide your own .env files.
+```sh
+brew install colima
+brew install localstack/tap/localstack-cli
+brew install nvm
+nvm install
+npm install --global corepack
+```
 
-#### For developers that cannot run the workspace setup script or wish to only run SEDS see steps below.
+Note that this should be the _only_ time you invoke `npm` within this repo.
+For all other scripts and JS dependency management, please use `yarn`.
 
-If you do not set don't have yarn, nvm, or java installed, see [Requirements](#requirements)
+### Set up Environment file
 
-Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files.
+You may generate a `.env` file with this command:
 
-From the root directory run:
+```sh
+./run update-env
+```
 
-`nvm use`
+This uses the template file `.env.tpl`,
+which contains a mix of literal values and 1Password keys.
+Those keys will be used to fetch secrets from the teams's 1Password vault.
 
-`yarn install`
+If you do not yet have 1Password set up,
+ask a team member to send you their .env file to use in the meantime.
 
-`cd services/ui-src`
+### Run the App
 
-`yarn install`
+Now you should be able to start the app with
 
-`cd ../../`
+```sh
+./run local
+```
 
-`./run update-env` or `./run local` if you do not have a 1password account and have a .env file populated by hand.
+This will:
 
-See the Requirements section if the command asks for any prerequisites you don't have installed.
+1. Start up Colima, a fully open-source Docker alternative.
+2. Start up Localstack, an Amazon Web Services (AWS) cloud emulator, in Colima.
+3. Deploy SEDS to the Localstack container.
+   - Doing so by running the code in this repo's deployment folder.
+   - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
+4. Open a tab in your browser, pointed to the SEDS server inside the container.
 
-Local dev is configured using Localstack. The entrypoint is [src/run.ts](src/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+### Log in
 
-Local dev is built around the [Localstack](https://www.localstack.cloud/). For more information check out [docs on local dev](./deployment/local/README.md)
+Although production users access SEDS through the CMS SSO system,
+for testing and local development we generally use username & password.
 
-### Logging in
+The username may be any of the emails in services/ui-auth/libs/users.json.
+The password may be found in the AWS Secrets Manager,
+or in the team 1Password vault,
+or by asking one of your teammates.
 
-(Make sure you've finished setting up the project locally above before moving on to this step!)
+SEDS is unique among MDCT apps, in that the SSO token we receive from CMS
+does not indicate which U.S. state the user is associated with,
+and does not contain enough information for us to be certain of the user's role.
+Therefore, the first time a user logs in,
+we record them in our DB with our best guess as to their role,
+which may be modified after the fact by an admin user.
+If we infer the user to be a state user,
+we will redirect them (on their first login only)
+to a page where they must select a state.
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
+During local testing, it does not matter which state you pick for your user.
+There is no special behavior for different states,
+and they should all be seeded with equivalent data.
 
-For a password to that user, please ask a fellow developer.
+### View Local Resources
 
-### Adding or modifying user roles
+Although the app is running in a container on your machine,
+you must open [https://app.localstack.cloud/](https://app.localstack.cloud/)
+in your browser to inspect the resources.
+
+You may be asked to pick a plan.
+Because SEDS is open-source, it qualifies as a "Hobby" project.
+You may also need to `localstack auth set-token <your token>`.
+Find your token on [Localstack's Getting Started page](https://app.localstack.cloud/getting-started).
+
+When this is set up, you will be able to see Cloudwatch logs and DynamoDB data.
+However, there are many services Localstack does not support at the Hobby tier,
+or does support but doesn't provide visibility into.
+For these, you may need to push your branch.
+It will automatically deploy to an AWS stack in our dev environment,
+and you will have access to the full AWS web UI.
+
+### Running tests
+
+We have unit tests for the API (services/app-api) and UI (services/ui-src).
+To run those tests, `cd` into the appropriate directory and `yarn test`.
+Alternatively, from the root directory you may `yarn workspace <dir> test`
+
+By default, tests run in watch mode.
+To run once and exit, add the `--run` option.
+To analyze test coverage, add the `--coverage` option.
+We focus on line coverage (not statement, branch, or function coverage).
+
+Before a PR can be merged, it must:
+
+1. Have 90% or better unit test coverage across all changed lines.
+2. Not decrease the overall test coverage of the app.
+
+Unfortunately there is no direct way to check these two rules locally.
+If you believe you have sufficient coverage on a given branch,
+push the branch and create a PR.
+The coverage will be confirmed as a PR check.
+
+<!-- TODO: Update with Playwright E2E integration test instructions -->
+
+## Cloud organization and access
+
+SEDS has three AWS environments: development, validation, and production.
+These correspond to the three permanent branches.
+The val and production branches are the only stacks in their environments.
+The dev environment has the `main` stack,
+but also contains temporary stacks for any in-progress features.
+
+Pushing a new branch to the origin repo will automatically deploy it to dev.
+
+To view the AWS resources for a stack, go to [https://cloudtamer.cms.gov/](https://cloudtamer.cms.gov/).
+The three SEDS environments are named "MDCT Dev", "MDCT Val" and "MDCT Prod"
+(whereas other MDCT apps' environment names include the app name).
+From here, you can select a role (readonly or admin)
+and an access method (the web UI or temporary keys).
+
+## Major Dependencies
+
+- Amazon Web Services
+  - The app is deployed by CloudFormation, using CDK
+  - The frontend is served by Cloudfront
+  - The fontend connects to the backend through Amplify
+  - The backend code runs on Lambdas, invoked by API Gateway
+  - The data is stored in DynamoDB
+  - The logs are stored in Cloudwatch
+  - Authentication goes through Cognito
+  - And so on
+- NodeJS / Typescript
+  - The backend code runs on Node
+  - Deployment and testing (frontend and backend) run on Node
+  - Prefer Typescript for all new code (including "devops"-type scripts wherever reasonable)
+- React is the frontend framework, with React Router structuring the SPA
+- Yarn is the package manager and script runner
+- Vite builds and bundles the frontend
+- Vitest is the unit test runner
+- Testing Library and jsdom interact with the DOM in frontend unit tests
+- Kafka is the data egress system
+- `@cmsgov/design-system` (CMSDS) is used for some components and the site theme
+- FontAwesome is used for some icons
+- Zustand is the frontend data store
+- Oxlint and Oxfmt are the linter and formatter
+
+## Adding or modifying user roles
 
 The external SAML IDP passes roles to cognito on login.
 
@@ -99,128 +251,62 @@ An issue occured with the following configuration:
 
 To avoid this issue, the IDP now filters the roles passed through by the prefix "CHIP\_". To add new roles outside of that prefix, a SR will need to be made to modify that rule.
 
-### Adding New Endpoints
+## Adding New Endpoints
 
-1. In `deployment/stacks/api.ts`, add a new entry for a lambda connected to the api. Make sure your http method is set correctly. For example:
+1. In `deployment/stacks/api.ts`, declare the new lambda.
+   This will define code file path & entry point, HTTP path & method, and so on.
+2. Create a handler in [services/app-api/handlers](services/app-api/handlers),
+   following the conventions you see in other handlers.
+3. Add a wrapper function in [services/ui-src/src/libs/api.ts](services/ui-src/src/libs/api.ts)
 
-```
-  new Lambda(scope, "getUserById", {
-    entry: "services/app-api/handlers/users/get/getUserById.ts",
-    handler: "main",
-    path: "/users/{id}",
-    method: "GET",
-    ...commonProps,
-  });
-```
+## Form Generation and Table Structure
 
-2. Create a handler in [services/app-api/handlers](services/app-api/handlers)
-   1. Conventions:
-      1. Each file in the handler directory should contain a single function called 'main'
-      2. The handlers are organized by API, each with their own folder. Within those folders should be separate files per HTTP verb.
-         For instance: There is a `users` folder in handlers, ([services/app-api/handlers/users/](services/app-api/handlers/users/)). That folder would have individual files corresponding to an HTTP verb (e.g. `get.ts` `create.ts` `update.ts` `delete.ts`, etc.).
-         The intention of this structure is that each request verb within a folder interacts with the table sharing the folder's name.
-3. Add a wrapper function in [/services/ui-src/src/libs/api.ts](/services/ui-src/src/libs/api.ts)
-   example:
+SEDS collects data on a quarterly basis.
+To support this, we generate empty forms 4 times a year;
+see the `generateQuarterFormsOnSchedule` lambda in deployment/stacks/api.ts.
 
-```
-export function listUsers() {
-  const opts = requestOptions();
-  return API.get("amendments", `/users`, opts);
-}
-```
+This process involves four tables:
 
-### Adding New Forms (quarterly)
+1. `form-templates`, which has one entry per year, containing all question data.
+   If there is no entry for this year,
+   the previous year's entry is copied & automatically modified.
+2. `form-questions`, which also holds all the form question data each year.
+   If this year has no questions, they will be copied from `form-templates`.
+3. `state-forms`, which holds status (etc) for each state & quarter & form type.
+   Therefore we generate about 1200 new entries per year,
+   and update them as users update the forms.
+4. `form-answers`, which holds the user-entered data.
+   There is one entry for each state form & question & age range.
+   Therefore we generate about 30,000 new entries per year,
+   filling them in as users fill in the answers.
 
-1. If necessary, create a new form template for the year in [services/database/data/initial_data_load/](services/database/data/initial_data_load/)
-   1. Example: `form_questions_2022.json`
-2. Add the new form to seed > form-questions > sources in [services/database/handlers/seed](./services/database/handlers/seed/)
+Note that updating the question data in `form-templates`
+may take up to a year before any user sees the changes,
+because of the indirectness of the above process.
 
-   Example:
-
-   ```form-questions:
-    table: ${self:custom.stage}-form-questions
-    sources:
-    [
-    data/initial_data_load/form_questions_2022.json,
-    data/initial_data_load/form_questions_2021.json,
-    data/initial_data_load/form_questions_2020.json,
-    data/initial_data_load/form_questions_2019.json,
-    ]
-   ```
-
-3. Log in to the site as an Administrator
-4. Select `Generate Quarterly Forms`
-5. Select the Year and Quarter for which you wish to generate forms
-6. Click the `Generate Forms` button
-
-### SEDS & CARTS
-
-SEDS feeds updates about its submissions to BigMac, and [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts) ingests those for calculations. See [services/app-api/handlers/kafka](services/app-api/handlers/kafka) for the implentation.
-
-### Legacy SEDS import SQL Files
-
-SEDS has imported data from previous years, from the legacy SEDS project. The SQL Queries used can be
-found in [src/dms](src/dms).
-
-### Running the frontend unit test suite
-
-1. Navigate to the frontend
-   - `cd services/ui-src`
-2. Launch the test for ui-src tests.
-   - Run `yarn test`
-
-### Running Schema Validation
-
-Validate json files against schema to ensure accuracy before each commit.
-
-- Schema Location: [src/database/schema/](src/database/schema/)
-- Initial Data Location: [services/database/data/initial_data_load](services/database/data/initial_data_load)
-
-1. Install AJV globally in your environment
-   1. `npm install -g ajv-cli`
-2. Run validate command
-   1. `ajv -s /path/to/schema.json -d /path/to/json.json`
-
-## Requirements
-
-Node - seds enforces using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-**The remaining steps in this section are not needed if you have the MDCT Workspace Setup Script**
-
-Yarn - in order to install dependencies, you need to [install yarn](https://classic.yarnpkg.com/en/docs/install/).
-
-You'll also need to have java installed to run the database locally. M1 Mac users can download [from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`
-
-If you are on a Mac, you should be able to install all the dependencies like so:
-
-```
-
-# install nvm
-
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-
-# select the version specified in .nvmrc
-
-nvm install
-nvm use
-
-# install yarn
-
-brew install yarn
-
-# run dev
-
-./run local
-
-```
-
-## Dependencies
+## Annual Recurring Development Tasks
 
 None.
 
-## Examples
+Beyond, of course, ensuring the app is free of security vulnerabilities.
 
-None.
+## SEDS & CARTS
+
+SEDS sends all of its data through BigMac's Kafka instance.
+There are two systems listening for this data:
+
+1. Our integration partner DataConnect, which digests the data for CMS
+2. [MDCT CARTS](https://github.com/Enterprise-CMCS/macpro-mdct-carts),
+   which uses the enrollment data in its own system.
+
+This is implemented via [AWS Event Source Mapping](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html),
+which listens for changes in our DynamoDB tables
+and invokes our postKafkaData lambda when updates occur.
+
+## Legacy SEDS import SQL Files
+
+SEDS has imported data from previous years, from the legacy SEDS project.
+The SQL Queries used can be found in [this commit](https://github.com/Enterprise-CMCS/macpro-mdct-seds/commit/1786f8ae5cb476eb7e507824b036498732acd503).
 
 ## Slack Webhooks:
 
@@ -237,6 +323,7 @@ This repository uses 3 webhooks to publish to 3 different channels all in CMS Sl
 
 - Secrets are added to GitHub secrets by GitHub Admins
 - Development secrets are maintained in a 1Password vault
+- Secrets used during deployment may be found in AWS Secret Manager
 
 ## Deployment
 

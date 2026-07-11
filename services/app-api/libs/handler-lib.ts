@@ -55,9 +55,16 @@ export default function handler<TParams>(
  * Read the cognito token. If appropriate, search the AuthUser DB table.
  */
 const determineUser = async (event: APIGatewayProxyEvent) => {
-  const userFromToken = getUserDetailsFromEvent(event);
-  if (event.path === "/getCurrentUser") {
-    // getCurrentUser creates AuthUser records, so they needn't already exist.
+  let userFromToken;
+  try {
+    userFromToken = getUserDetailsFromEvent(event);
+  } catch (error) {
+    logger.error("Failed to read auth token from request: %O", error);
+    return undefined;
+  }
+
+  if (event.path === "/determineCurrentUser") {
+    // determineCurrentUser creates AuthUser records, so they needn't already exist.
     return userFromToken as AuthUser;
   } else {
     return await scanForUserWithSub(userFromToken.usernameSub);

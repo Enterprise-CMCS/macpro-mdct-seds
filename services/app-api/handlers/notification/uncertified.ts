@@ -1,5 +1,4 @@
 import handler from "./../../libs/handler-lib.ts";
-import dynamoDb from "./../../libs/dynamodb-lib.ts";
 import { canWriteStatusForState } from "../../auth/authConditions.ts";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import {
@@ -15,6 +14,7 @@ import {
   isStateAbbr,
 } from "../../libs/parsing.ts";
 import { logger } from "../../libs/debug-lib.ts";
+import { scanUsersByRole } from "../../storage/users.ts";
 
 const client = new SESClient({ region: "us-east-1" });
 
@@ -51,28 +51,8 @@ export const main = handler(emptyParser, async (request) => {
   return ok();
 });
 
-// logic to retrieve all business users emails
-async function getBusinessUsersEmail() {
-  const businessOwnersEmails: string[] = [];
-  const params = {
-    TableName: process.env.AuthUserTable,
-    FilterExpression: "#role = :role",
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": "business" },
-  };
-  const result = await dynamoDb.scan(params);
-
-  const payload = result.Items ?? [];
-  payload.map((userInfo) => {
-    if (userInfo.email) {
-      businessOwnersEmails.push(userInfo.email);
-    }
-  });
-  return businessOwnersEmails;
-}
-
 async function unCetifiedTemplate(payload: RequestBody) {
-  const sendToEmail = await getBusinessUsersEmail();
+  const sendToEmail = (await scanUsersByRole("business")).map((u) => u.email);
   const todayDate = new Date().toISOString().split("T")[0];
 
   if (sendToEmail.length === 0) {

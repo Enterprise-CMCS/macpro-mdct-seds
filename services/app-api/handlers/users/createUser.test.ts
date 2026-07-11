@@ -1,23 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createUser } from "./createUser.ts";
-import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
 import {
-  scanForUserByUsername as actualScanForUser,
-  putUser as actualPutUser,
   AuthUser,
+  putUser as actualPutUser,
+  scanAllUsers as actualScanAllUsers,
+  scanForUserByUsername as actualScanForUser,
 } from "../../storage/users.ts";
 
 vi.mock("../../storage/users.ts", () => ({
-  scanForUserByUsername: vi.fn(),
   putUser: vi.fn(),
+  scanAllUsers: vi.fn(),
+  scanForUserByUsername: vi.fn(),
 }));
-const scanForUserByUsername = vi.mocked(actualScanForUser);
 const putUser = vi.mocked(actualPutUser);
-
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockScan = vi.fn();
-mockDynamo.on(ScanCommand).callsFake(mockScan);
+const scanAllUsers = vi.mocked(actualScanAllUsers);
+const scanForUserByUsername = vi.mocked(actualScanForUser);
 
 const mockUser = {
   userId: "42",
@@ -37,7 +34,7 @@ describe("createUser", () => {
   });
 
   it("should read user data from the event headers and store it in dynamo", async () => {
-    mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
+    scanAllUsers.mockResolvedValueOnce([]);
 
     const response = await createUser(mockUser);
 
@@ -53,10 +50,11 @@ describe("createUser", () => {
   });
 
   it("should assign the new user the next sequential ID", async () => {
-    mockScan.mockResolvedValueOnce({
-      Count: 3,
-      Items: [{ userId: "10" }, { userId: "30" }, { userId: "20" }],
-    });
+    scanAllUsers.mockResolvedValueOnce([
+      { userId: "10" },
+      { userId: "30" },
+      { userId: "20" },
+    ]);
 
     const response = await createUser(mockUser);
 
@@ -79,7 +77,6 @@ describe("createUser", () => {
 
   it("should do nothing if the user already exists", async () => {
     scanForUserByUsername.mockResolvedValueOnce(mockUser as AuthUser);
-    mockScan.mockResolvedValueOnce({ Count: 0, Items: [] });
 
     const response = await createUser(mockUser);
 
