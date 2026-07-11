@@ -42,8 +42,8 @@ The local runner names the container `seds-ministack-local` by default.
 Useful commands:
 
 ```sh
-docker ps
-docker logs seds-ministack-local
+docker --context colima ps
+docker --context colima logs seds-ministack-local
 curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
 ```
 

@@ -166,20 +166,18 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ].includes(table.node.id)
   );
 
-  if (!isMiniStack) {
-    new LambdaDynamoEventSource(scope, "postKafkaData", {
-      entry: "services/app-api/handlers/kafka/postKafkaData.ts",
-      handler: "handler",
-      timeout: Duration.seconds(120),
-      memorySize: 2048,
-      retryAttempts: 2,
-      vpc,
-      vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-      securityGroups: [kafkaSecurityGroup],
-      ...commonProps,
-      tables: dataConnectTables,
-    });
-  }
+  new LambdaDynamoEventSource(scope, "postKafkaData", {
+    entry: "services/app-api/handlers/kafka/postKafkaData.ts",
+    handler: "handler",
+    timeout: Duration.seconds(120),
+    memorySize: 2048,
+    retryAttempts: 2,
+    vpc,
+    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
+    securityGroups: [kafkaSecurityGroup],
+    ...commonProps,
+    tables: dataConnectTables,
+  });
 
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/getUserById.ts",
