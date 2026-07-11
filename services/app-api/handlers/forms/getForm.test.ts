@@ -2,38 +2,47 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as handler from "../../libs/handler-mocking.ts";
 import { main as getForm } from "./getForm.ts";
 import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  QueryCommand,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+  getStateForm as actualGetStateForm,
+  StateForm,
+} from "../../storage/stateForms.ts";
+import {
+  queryAnswersByForm as actualQueryAnswersByForm,
+  FormAnswer,
+} from "../../storage/formAnswers.ts";
+import {
+  scanQuestionsByYearAndForm as actualScanQuestionsByYearAndForm,
+  FormQuestion,
+} from "../../storage/formQuestions.ts";
 import { APIGatewayProxyEvent, FormStatus } from "../../shared/types.ts";
 import { StatusCodes } from "../../libs/response-lib.ts";
 
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockGet = vi.fn();
-mockDynamo.on(GetCommand).callsFake(mockGet);
-const mockQuery = vi.fn();
-mockDynamo.on(QueryCommand).callsFake(mockQuery);
-const mockScan = vi.fn();
-mockDynamo.on(ScanCommand).callsFake(mockScan);
+vi.mock("../../storage/stateForms.ts", () => ({
+  getStateForm: vi.fn(),
+}));
+const getStateForm = vi.mocked(actualGetStateForm);
+vi.mock("../../storage/formAnswers.ts", () => ({
+  queryAnswersByForm: vi.fn(),
+}));
+const queryAnswersByForm = vi.mocked(actualQueryAnswersByForm);
+vi.mock("../../storage/formQuestions.ts", () => ({
+  scanQuestionsByYearAndForm: vi.fn(),
+}));
+const scanQuestionsByYearAndForm = vi.mocked(actualScanQuestionsByYearAndForm);
 
 const mockStateForm = {
   state_form: "CO-2025-21E-A",
   status_id: FormStatus.InProgress,
-};
+} as StateForm;
 const mockFormAnswer = {
   state_form: "CO-2025-21E-A",
   question: "mock-Question-Q1",
   rangeId: "0001",
   answer_entry: "CO-2025-21E-A-0001-Q1",
-  rows: [{ rowNumber: 1 }],
-};
+  rows: [{ col1: "mock" }],
+} as FormAnswer;
 const mockFormQuestion = {
-  year: 2025,
-  form: "21E",
-};
+  question: "2025-21E-05",
+} as FormQuestion;
 const mockEvent = {
   pathParameters: {
     state: "CO",
@@ -50,9 +59,9 @@ describe("getForm", () => {
 
   it("should query Dynamo for form status, answers and questions", async () => {
     handler.setupStateUser("CO");
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
-    mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer], Count: 1 });
-    mockScan.mockResolvedValueOnce({ Items: [mockFormQuestion], Count: 1 });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
+    queryAnswersByForm.mockResolvedValueOnce([mockFormAnswer]);
+    scanQuestionsByYearAndForm.mockResolvedValueOnce([mockFormQuestion]);
 
     const response = await getForm(mockEvent);
 
@@ -67,37 +76,16 @@ describe("getForm", () => {
       })
     );
 
-    expect(mockQuery).toHaveBeenCalledWith(
-      {
-        TableName: "local-form-answers",
-        IndexName: "state-form-index",
-        ExpressionAttributeValues: {
-          ":state_form": "CO-2025-1-21E",
-        },
-        KeyConditionExpression: "state_form = :state_form",
-      },
-      expect.any(Function)
-    );
-
-    expect(mockScan).toHaveBeenCalledWith(
-      {
-        TableName: "local-form-questions",
-        ExpressionAttributeNames: { "#year": "year" },
-        ExpressionAttributeValues: {
-          ":year": 2025,
-          ":form": "21E",
-        },
-        FilterExpression: "form = :form and #year = :year",
-      },
-      expect.any(Function)
-    );
+    expect(getStateForm).toHaveBeenCalledWith("CO-2025-1-21E");
+    expect(queryAnswersByForm).toHaveBeenCalledWith("CO-2025-1-21E");
+    expect(scanQuestionsByYearAndForm).toHaveBeenCalledWith(2025, "21E");
   });
 
   it("should continue even if no answers can be found", async () => {
     handler.setupBusinessUser();
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
-    mockQuery.mockResolvedValueOnce({ Items: [], Count: 0 });
-    mockScan.mockResolvedValueOnce({ Items: [mockFormQuestion], Count: 1 });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
+    queryAnswersByForm.mockResolvedValueOnce([]);
+    scanQuestionsByYearAndForm.mockResolvedValueOnce([mockFormQuestion]);
 
     const response = await getForm(mockEvent);
 
@@ -115,9 +103,9 @@ describe("getForm", () => {
 
   it("should continue even if no questions can be found", async () => {
     handler.setupAdminUser;
-    mockGet.mockResolvedValueOnce({ Item: mockStateForm });
-    mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer] });
-    mockScan.mockResolvedValueOnce({ Items: [] });
+    getStateForm.mockResolvedValueOnce(mockStateForm);
+    queryAnswersByForm.mockResolvedValueOnce([mockFormAnswer]);
+    scanQuestionsByYearAndForm.mockResolvedValueOnce([]);
 
     const response = await getForm(mockEvent);
 
@@ -135,9 +123,9 @@ describe("getForm", () => {
 
   it("should return an error if the form does not exist", async () => {
     handler.setupStateUser("CO");
-    mockGet.mockResolvedValueOnce({});
-    mockQuery.mockResolvedValueOnce({ Items: [mockFormAnswer], Count: 1 });
-    mockScan.mockResolvedValueOnce({ Items: [mockFormQuestion], Count: 1 });
+    getStateForm.mockResolvedValueOnce(undefined);
+    queryAnswersByForm.mockResolvedValueOnce([mockFormAnswer]);
+    scanQuestionsByYearAndForm.mockResolvedValueOnce([mockFormQuestion]);
 
     const response = await getForm(mockEvent);
 

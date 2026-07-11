@@ -1,14 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as handler from "../../libs/handler-mocking.ts";
 import { main as listFormsForState } from "./listFormsForState.ts";
-import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
+import {
+  scanFormsByState as actualScanFormsByState,
+  StateForm,
+} from "../../storage/stateForms.ts";
 import { StatusCodes } from "../../libs/response-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
 
-const mockScan = vi.fn();
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-mockDynamo.on(ScanCommand).callsFake(mockScan);
+vi.mock("../../storage/stateForms.ts", () => ({
+  scanFormsByState: vi.fn(),
+}));
+const scanFormsByState = vi.mocked(actualScanFormsByState);
 
 const mockEvent = {
   pathParameters: {
@@ -17,7 +20,7 @@ const mockEvent = {
 } as APIGatewayProxyEvent;
 const mockForm1 = { mockForm: 1 };
 const mockForm2 = { mockForm: 2 };
-const mockForms = [mockForm1, mockForm2];
+const mockForms = [mockForm1, mockForm2] as unknown as StateForm[];
 
 describe("listFormsForState", () => {
   beforeEach(() => {
@@ -26,10 +29,7 @@ describe("listFormsForState", () => {
 
   it("should query dynamo for state forms", async () => {
     handler.setupBusinessUser();
-    mockScan.mockResolvedValueOnce({
-      Count: 2,
-      Items: mockForms,
-    });
+    scanFormsByState.mockResolvedValueOnce(mockForms);
 
     const response = await listFormsForState(mockEvent);
 
@@ -40,22 +40,12 @@ describe("listFormsForState", () => {
       })
     );
 
-    expect(mockScan).toHaveBeenCalledWith(
-      expect.objectContaining({
-        TableName: "local-state-forms",
-        FilterExpression: "state_id = :stateId",
-        ExpressionAttributeValues: { ":stateId": "CO" },
-        ConsistentRead: true,
-      }),
-      expect.any(Function)
-    );
+    expect(scanFormsByState).toHaveBeenCalledWith("CO");
   });
 
   it("should throw an error if there are no state forms", async () => {
     handler.setupStateUser("CO");
-    mockScan.mockResolvedValueOnce({
-      Count: 0,
-    });
+    scanFormsByState.mockResolvedValueOnce([]);
 
     await expect(listFormsForState(mockEvent)).rejects.toThrow(/No state form/);
   });
