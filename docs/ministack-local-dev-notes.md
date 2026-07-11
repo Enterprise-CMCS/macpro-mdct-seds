@@ -17,13 +17,9 @@ On this branch, `./run local` now uses MiniStack throughout. After repo-specific
 - The full `seds-ministack` app stack deployed.
 - `cdklocal watch` stayed running after deploy.
 - The UI served successfully.
-- An unauthenticated `/users` request returned `401`.
 - A headless browser screenshot was captured from the running UI.
 
-Validation artifacts for the successful run are in:
-
-- `.validation/run-local-20260519T164900/run-local.log`
-- `.validation/run-local-20260519T164900/ui-home.png`
+The validation artifacts from the successful run were not committed to this branch.
 
 ## What Changed In This Branch
 
@@ -37,7 +33,7 @@ Validation artifacts for the successful run are in:
 - Real-AWS-only resources were skipped in the MiniStack local path where MiniStack CloudFormation support was not good enough.
 - Lambda event invoke config resources were skipped in the MiniStack local path.
 - Lambda bundling was adjusted so the deployed functions include the DynamoDB SDK modules they actually need at runtime.
-- The app-api auth path now returns `401` for missing or malformed `x-api-key` values instead of throwing a `500`.
+- Application and service source changes were intentionally left out of this branch; the PR diff keeps `services/app-api`, `services/database`, `services/ui-auth`, and `services/ui-src` unchanged from `origin/main`.
 
 ## What Worked
 
@@ -53,7 +49,6 @@ Validation artifacts for the successful run are in:
 - `./run local` completed the deploy path and started both `cdklocal watch` and the Vite UI server.
 - The UI served `200` on `http://127.0.0.1:3002/` in validation.
 - The generated UI env pointed at `http://localhost:4570/restapis/668eba20/ministack/_user_request_`.
-- The live `/users` probe returned `401` after the auth fix redeployed through `cdklocal watch`.
 
 ## Pain Points And Limitations
 
@@ -102,10 +97,5 @@ Compared with CloudMock and FakeCloud, MiniStack is materially stronger for this
 - MiniStack validation performed in this repo on May 19, 2026:
   - `./run local` with `MINISTACK_PORT=4570` and `LOCAL_UI_PORT=3002`
   - `corepack yarn tsc -p cli/tsconfig.json`
-  - `corepack yarn tsc -p services/app-api/tsconfig.json`
-  - `corepack yarn workspace app-api test --run libs/authorization.test.ts libs/handler-lib.test.ts`
   - live API probe against `http://127.0.0.1:4570/restapis/668eba20/ministack/_user_request_/users`
   - Playwright screenshot capture from `http://127.0.0.1:3002/`
-- Successful validation artifacts:
-  - `.validation/run-local-20260519T164900/run-local.log`
-  - `.validation/run-local-20260519T164900/ui-home.png`
