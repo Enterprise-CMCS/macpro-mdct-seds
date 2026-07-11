@@ -3,26 +3,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const flociEndpoint = `http://localhost:${process.env.FLOCI_PORT ?? "4566"}`;
-
 export default defineConfig({
   base: "/",
   plugins: [react()],
   server: {
     open: true,
-    port: Number(process.env.LOCAL_UI_PORT ?? process.env.PORT ?? 3000),
-    proxy: {
-      "/_floci-api": {
-        target: flociEndpoint,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/_floci-api/, "") || "/",
-      },
-      "/_floci-cognito": {
-        target: flociEndpoint,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/_floci-cognito/, "") || "/",
-      },
-    },
+    port: 3000,
   },
   define: {
     global: "globalThis",

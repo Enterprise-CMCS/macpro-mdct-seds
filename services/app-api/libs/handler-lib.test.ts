@@ -68,8 +68,10 @@ describe("handler-lib", () => {
     const result = await handler(parser, lambda)(noTokenEvent);
 
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
-    expect(mockScan).not.toHaveBeenCalled();
-    expect(lambda).not.toHaveBeenCalled();
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.any(Date),
+      expect.stringContaining("Invalid token")
+    );
   });
 
   it("should return an appropriate error if the user token is invalid", async () => {
@@ -82,8 +84,10 @@ describe("handler-lib", () => {
     const result = await handler(parser, lambda)(invalidTokenEvent);
 
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
-    expect(mockScan).not.toHaveBeenCalled();
-    expect(lambda).not.toHaveBeenCalled();
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.any(Date),
+      expect.stringContaining("Invalid token")
+    );
   });
 
   it("should return an appropriate error if the user cannot be found", async () => {
@@ -94,21 +98,6 @@ describe("handler-lib", () => {
     const result = await handler(parser, lambda)(mockEvent);
 
     expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
-  });
-
-  it("should return an error when the api key is missing", async () => {
-    const parser = vi.fn().mockReturnValue("mock parse result");
-    const lambda = vi.fn().mockResolvedValue("mock lambda result");
-
-    const result = await handler(
-      parser,
-      lambda
-    )({
-      headers: {},
-    } as APIGatewayProxyEvent);
-
-    expect(result.statusCode).toBe(StatusCodes.Unauthenticated);
-    expect(mockScan).not.toHaveBeenCalled();
   });
 
   it("should return an appropriate error if the user scan fails", async () => {

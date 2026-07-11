@@ -4,7 +4,8 @@
   Branch:
     dynamoPrefix="YOUR BRANCH NAME" node services/database/scripts/sync-kafka-2024.js
 
-  For local setup details, see deployment/local/README.md.
+  THE LOCAL OPTION IS NOW MORE COMPLICATED IT YOU NEED TO RUN THIS SCRIPT IN A LOCAL CONTEXT HERE'S A SPOT TO LOOK FOR SUGGESTIONS:
+  https://stackoverflow.com/questions/73294767/how-do-i-execute-a-shell-script-against-my-localstack-docker-container-after-it
 */
 
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");

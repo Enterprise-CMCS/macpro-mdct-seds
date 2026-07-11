@@ -3,7 +3,6 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-import config from "config/config";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,29 +61,27 @@ export default function Login() {
 
   return (
     <div data-testid="Login" className="login">
-      {config.cognito.OAUTH_ENABLED && (
-        <div data-testid="OktaLogin">
-          <LoaderButton
-            type="button"
-            onClick={handleSubmitOkta}
-            isLoading={isLoadingOkta}
-            variation="outline"
-            data-testid="handleSubmitOktaButton"
+      <div data-testid="OktaLogin">
+        <LoaderButton
+          type="button"
+          onClick={handleSubmitOkta}
+          isLoading={isLoadingOkta}
+          variation="outline"
+          data-testid="handleSubmitOktaButton"
+        >
+          Login with EUA ID
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            width={16}
+            height={16}
+            aria-hidden="true"
+            className="icon sign-in-alt-icon"
           >
-            Login with EUA ID
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              width={16}
-              height={16}
-              aria-hidden="true"
-              className="icon sign-in-alt-icon"
-            >
-              <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
-            </svg>
-          </LoaderButton>
-        </div>
-      )}
+            <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
+          </svg>
+        </LoaderButton>
+      </div>
       <form
         onSubmit={handleSubmit}
         hidden={hideCognitoLogin}

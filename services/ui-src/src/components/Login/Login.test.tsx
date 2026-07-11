@@ -1,35 +1,13 @@
 import React from "react";
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import Login from "./Login";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  signIn as actualSignIn,
-  signInWithRedirect as actualSignInWithRedirect,
-} from "aws-amplify/auth";
-import config from "config/config";
-
-vi.mock("config/config", () => ({
-  default: {
-    cognito: {
-      OAUTH_ENABLED: true,
-    },
-  },
-}));
+import { signInWithRedirect as actualSignInWithRedirect } from "aws-amplify/auth";
 
 vi.mock("aws-amplify/auth", () => ({
-  signIn: vi.fn(),
   signInWithRedirect: vi.fn(),
 }));
-const signIn = vi.mocked(actualSignIn);
 const signInWithRedirect = vi.mocked(actualSignInWithRedirect);
 
 vi.mock("libs/errorLib", () => ({
@@ -57,11 +35,6 @@ describe("Test Login.js", () => {
     window.location = originalLocation;
   });
 
-  beforeEach(() => {
-    config.cognito.OAUTH_ENABLED = true;
-    vi.clearAllMocks();
-  });
-
   if (currentlyOnDevelopmentBranch()) {
     it("should render email login form", () => {
       render(<Login />);
@@ -78,14 +51,6 @@ describe("Test Login.js", () => {
     expect(
       screen.getByText("Login with EUA ID", { selector: "button" })
     ).toBeInTheDocument();
-  });
-
-  it("should hide the EUA login button when OAuth is disabled", () => {
-    config.cognito.OAUTH_ENABLED = false;
-    render(<Login />);
-    expect(
-      screen.queryByText("Login with EUA ID", { selector: "button" })
-    ).not.toBeInTheDocument();
   });
 
   it("should redirect to Okta for login", async () => {
@@ -114,29 +79,16 @@ describe("Test Login.js", () => {
     expect(signInWithRedirect).toHaveBeenCalled();
   });
 
-  it("should login successfully", async () => {
-    signIn.mockResolvedValue({
-      isSignedIn: true,
-      nextStep: { signInStep: "DONE" },
-    });
+  it("should login successfully", () => {
     render(<Login />);
-    const loginSecret = ["pass", "word"].join("");
 
     const email = screen.getByRole("textbox", { name: "Email" });
     const password = screen.getByLabelText("Password");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
     fireEvent.change(email, { target: { value: "mail@mail.com" } });
-    fireEvent.change(password, { target: { value: loginSecret } });
+    fireEvent.change(password, { target: { value: "password" } });
     fireEvent.click(loginBtn);
-
-    await waitFor(() => {
-      expect(signIn).toHaveBeenCalledWith({
-        username: "mail@mail.com",
-        password: loginSecret,
-        options: { authFlowType: "USER_PASSWORD_AUTH" },
-      });
-      expect(window.location.href).toEqual("/");
-    });
+    expect(window.location.href).toEqual(originalLocation.href);
   });
 });

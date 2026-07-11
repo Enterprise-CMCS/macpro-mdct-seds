@@ -62,9 +62,6 @@ const determineUser = async (event: APIGatewayProxyEvent) => {
     logger.error("Failed to read auth token from request: %O", error);
     return undefined;
   }
-  if (!userFromToken) {
-    return undefined;
-  }
 
   if (event.path === "/determineCurrentUser") {
     // determineCurrentUser creates AuthUser records, so they needn't already exist.
