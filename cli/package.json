@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build:cli": "tsc",
-    "test": "vitest"
+    "test": "node --experimental-test-module-mocks --test commands/*.test.ts lib/*.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",
@@ -17,8 +17,6 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@types/yargs": "^17.0.35",
-    "aws-sdk-client-mock": "~4.1.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.5"
+    "typescript": "^5.9.3"
   }
 }

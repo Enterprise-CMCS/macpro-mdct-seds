@@ -1,52 +1,72 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { execFileSync } from "node:child_process";
-import { runCommand } from "../lib/runner.ts";
-import { bootstrapLocalCognitoUsers } from "../lib/seedData.ts";
-import { runFrontendLocally } from "../lib/utils.ts";
-import { local } from "./local.ts";
+import assert from "node:assert/strict";
+import { beforeEach, describe, it, mock } from "node:test";
 
-const mocks = vi.hoisted(() => ({
-  execFileSync: vi.fn(),
-  execSync: vi.fn(() => "colima is running"),
-  runCommand: vi.fn(),
-  bootstrapLocalCognitoUsers: vi.fn(),
-  runFrontendLocally: vi.fn(),
-}));
+type RunCommand = typeof import("../lib/runner.ts").runCommand;
+type BootstrapLocalCognitoUsers =
+  typeof import("../lib/seedData.ts").bootstrapLocalCognitoUsers;
+type RunFrontendLocally = typeof import("../lib/utils.ts").runFrontendLocally;
 
-vi.mock("node:child_process", () => ({
-  execFileSync: mocks.execFileSync,
-  execSync: mocks.execSync,
-}));
+const events: string[] = [];
+const execFileSyncMock = mock.fn(
+  (_file: string, _args?: readonly string[], _options?: { stdio?: string }) =>
+    undefined
+);
+const execSyncMock = mock.fn(
+  (_command: string, _options?: { encoding?: string; stdio?: string }) =>
+    "colima is running"
+);
+const runCommandMock = mock.fn<RunCommand>(async (name) => {
+  events.push(name);
+});
+const bootstrapLocalCognitoUsersMock = mock.fn<BootstrapLocalCognitoUsers>(
+  async () => {
+    events.push("bootstrap");
+  }
+);
+const runFrontendLocallyMock = mock.fn<RunFrontendLocally>(async (stage) => {
+  events.push(`frontend:${stage}`);
+});
 
-vi.mock("../lib/runner.ts", () => ({
-  runCommand: mocks.runCommand,
-}));
+mock.module("node:child_process", {
+  namedExports: {
+    execFileSync: execFileSyncMock,
+    execSync: execSyncMock,
+  },
+});
 
-vi.mock("../lib/seedData.ts", () => ({
-  bootstrapLocalCognitoUsers: mocks.bootstrapLocalCognitoUsers,
-}));
+mock.module("../lib/runner.ts", {
+  namedExports: {
+    runCommand: runCommandMock,
+  },
+});
 
-vi.mock("../lib/utils.ts", () => ({
-  runFrontendLocally: mocks.runFrontendLocally,
-}));
+mock.module("../lib/seedData.ts", {
+  namedExports: {
+    bootstrapLocalCognitoUsers: bootstrapLocalCognitoUsersMock,
+  },
+});
+
+mock.module("../lib/utils.ts", {
+  namedExports: {
+    runFrontendLocally: runFrontendLocallyMock,
+  },
+});
+
+const { local } = await import("./local.ts");
 
 describe("local command", () => {
-  const runCommandMock = vi.mocked(runCommand);
-  const bootstrapLocalCognitoUsersMock = vi.mocked(bootstrapLocalCognitoUsers);
-  const runFrontendLocallyMock = vi.mocked(runFrontendLocally);
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => ({
+    events.length = 0;
+    execFileSyncMock.mock.resetCalls();
+    execSyncMock.mock.resetCalls();
+    runCommandMock.mock.resetCalls();
+    bootstrapLocalCognitoUsersMock.mock.resetCalls();
+    runFrontendLocallyMock.mock.resetCalls();
+    globalThis.fetch = async () =>
+      ({
         ok: true,
         json: async () => ({ ready_scripts: { status: "completed" } }),
-      }))
-    );
-    runCommandMock.mockResolvedValue(undefined);
-    bootstrapLocalCognitoUsersMock.mockResolvedValue(undefined);
-    runFrontendLocallyMock.mockResolvedValue(undefined);
+      }) as Response;
   });
 
   it("deploys MiniStack and bootstraps local Cognito users before watch starts", async () => {
@@ -55,28 +75,37 @@ describe("local command", () => {
 
     await local.handler();
 
-    expect(execFileSync).toHaveBeenCalledWith(
+    assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
       "docker",
       ["rm", "-f", expectedContainerName],
-      { stdio: "ignore" }
+      { stdio: "ignore" },
+    ]);
+    assert.deepEqual(
+      runCommandMock.mock.calls.map((call) => call.arguments[0]),
+      [
+        "Start MiniStack",
+        "Clean .cdk",
+        "CDK MiniStack bootstrap",
+        "CDK MiniStack local-prerequisite deploy",
+        "CDK MiniStack prerequisite deploy",
+        "CDK MiniStack deploy",
+        "CDK MiniStack watch",
+      ]
     );
-    expect(runCommandMock.mock.calls.map(([name]) => name)).toEqual([
+    assert.equal(bootstrapLocalCognitoUsersMock.mock.calls.length, 1);
+    assert.deepEqual(runFrontendLocallyMock.mock.calls[0]?.arguments, [
+      "ministack",
+    ]);
+    assert.deepEqual(events, [
       "Start MiniStack",
       "Clean .cdk",
       "CDK MiniStack bootstrap",
       "CDK MiniStack local-prerequisite deploy",
       "CDK MiniStack prerequisite deploy",
       "CDK MiniStack deploy",
+      "bootstrap",
       "CDK MiniStack watch",
+      "frontend:ministack",
     ]);
-    expect(bootstrapLocalCognitoUsersMock).toHaveBeenCalledTimes(1);
-    expect(runFrontendLocallyMock).toHaveBeenCalledWith("ministack");
-
-    const deployOrder = runCommandMock.mock.invocationCallOrder[5];
-    const watchOrder = runCommandMock.mock.invocationCallOrder[6];
-    const bootstrapOrder =
-      bootstrapLocalCognitoUsersMock.mock.invocationCallOrder[0];
-    expect(bootstrapOrder).toBeGreaterThan(deployOrder);
-    expect(bootstrapOrder).toBeLessThan(watchOrder);
   });
 });

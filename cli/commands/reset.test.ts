@@ -1,35 +1,41 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { execFileSync } from "node:child_process";
-import { runCommand } from "../lib/runner.ts";
-import { reset } from "./reset.ts";
-import { updateEnvFiles } from "./update-env.ts";
+import assert from "node:assert/strict";
+import { beforeEach, describe, it, mock } from "node:test";
 
-const mocks = vi.hoisted(() => ({
-  execFileSync: vi.fn(),
-  runCommand: vi.fn(),
-  updateEnvFiles: vi.fn(),
-}));
+type RunCommand = typeof import("../lib/runner.ts").runCommand;
+type UpdateEnvFiles = typeof import("./update-env.ts").updateEnvFiles;
 
-vi.mock("node:child_process", () => ({
-  execFileSync: mocks.execFileSync,
-}));
+const execFileSyncMock = mock.fn(
+  (_file: string, _args?: readonly string[], _options?: { stdio?: string }) =>
+    undefined
+);
+const runCommandMock = mock.fn<RunCommand>(async () => undefined);
+const updateEnvFilesMock = mock.fn<UpdateEnvFiles>(async () => undefined);
 
-vi.mock("../lib/runner.ts", () => ({
-  runCommand: mocks.runCommand,
-}));
+mock.module("node:child_process", {
+  namedExports: {
+    execFileSync: execFileSyncMock,
+  },
+});
 
-vi.mock("./update-env.ts", () => ({
-  updateEnvFiles: mocks.updateEnvFiles,
-}));
+mock.module("../lib/runner.ts", {
+  namedExports: {
+    runCommand: runCommandMock,
+  },
+});
+
+mock.module("./update-env.ts", {
+  namedExports: {
+    updateEnvFiles: updateEnvFilesMock,
+  },
+});
+
+const { reset } = await import("./reset.ts");
 
 describe("reset command", () => {
-  const runCommandMock = vi.mocked(runCommand);
-  const updateEnvFilesMock = vi.mocked(updateEnvFiles);
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    runCommandMock.mockResolvedValue(undefined);
-    updateEnvFilesMock.mockResolvedValue(undefined);
+    execFileSyncMock.mock.resetCalls();
+    runCommandMock.mock.resetCalls();
+    updateEnvFilesMock.mock.resetCalls();
   });
 
   it("removes the MiniStack container and tears down Colima", async () => {
@@ -38,15 +44,18 @@ describe("reset command", () => {
 
     await reset.handler();
 
-    expect(updateEnvFilesMock).toHaveBeenCalledTimes(1);
-    expect(execFileSync).toHaveBeenCalledWith(
+    assert.equal(updateEnvFilesMock.mock.calls.length, 1);
+    assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
       "docker",
       ["rm", "-f", expectedContainerName],
-      { stdio: "ignore" }
-    );
-    expect(runCommandMock.mock.calls).toEqual([
-      ["Stop colima", ["colima", "stop"], "."],
-      ["Delete colima", ["colima", "delete", "--force"], "."],
+      { stdio: "ignore" },
     ]);
+    assert.deepEqual(
+      runCommandMock.mock.calls.map((call) => call.arguments),
+      [
+        ["Stop colima", ["colima", "stop"], "."],
+        ["Delete colima", ["colima", "delete", "--force"], "."],
+      ]
+    );
   });
 });

@@ -8837,10 +8837,8 @@ __metadata:
     "@aws-sdk/client-sts": "npm:~3.1034.0"
     "@types/node": "npm:^24.10.1"
     "@types/yargs": "npm:^17.0.35"
-    aws-sdk-client-mock: "npm:~4.1.0"
     dotenv: "npm:^17.2.3"
     typescript: "npm:^5.9.3"
-    vitest: "npm:^4.1.5"
     yargs: "npm:^18.0.0"
   languageName: unknown
   linkType: soft
