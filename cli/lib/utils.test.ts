@@ -125,9 +125,6 @@ describe("runFrontendLocally", () => {
       COGNITO_USER_POOL_ID: "local-user-pool",
       COGNITO_USER_POOL_CLIENT_ID: "local-client",
       COGNITO_USER_POOL_CLIENT_DOMAIN: "local-domain",
-      COGNITO_USER_POOL_ENDPOINT: "http://localhost:4567",
-      COGNITO_IDENTITY_POOL_ENDPOINT: "",
-      COGNITO_OAUTH_ENABLED: "false",
       COGNITO_REDIRECT_SIGNIN: "http://localhost:3333/",
       COGNITO_REDIRECT_SIGNOUT: "http://localhost:3333/",
     });

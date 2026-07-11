@@ -54,4 +54,3 @@ curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
   `http://localhost:${MINISTACK_PORT:-4566}/restapis/<apiId>/ministack/_user_request_`
 - Use `./run reset` to stop the MiniStack container and tear down Colima.
 - Local login uses users from `services/ui-auth/libs/users.json`. The seeded password can be overridden with `LOCAL_COGNITO_PASSWORD`.
-- The detailed evaluation for `CMDCT-6054` is in [docs/ministack-local-dev-notes.md](../../docs/ministack-local-dev-notes.md).

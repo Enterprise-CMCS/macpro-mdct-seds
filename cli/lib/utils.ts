@@ -34,8 +34,6 @@ const buildUiEnvObject = (
   if (stage === "ministack") {
     const apiId = new URL(cfnOutputs.ApiUrl!).hostname.split(".")[0];
     const miniStackPort = process.env.MINISTACK_PORT ?? "4566";
-    const miniStackEndpoint = `http://localhost:${miniStackPort}`;
-
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
@@ -45,9 +43,6 @@ const buildUiEnvObject = (
       COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN: cfnOutputs.CognitoUserPoolClientDomain!,
-      COGNITO_USER_POOL_ENDPOINT: miniStackEndpoint,
-      COGNITO_IDENTITY_POOL_ENDPOINT: "",
-      COGNITO_OAUTH_ENABLED: "false",
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
@@ -62,9 +57,6 @@ const buildUiEnvObject = (
     COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
     COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
     COGNITO_USER_POOL_CLIENT_DOMAIN: `${cfnOutputs.CognitoUserPoolClientDomain}.auth.${region}.amazoncognito.com`,
-    COGNITO_USER_POOL_ENDPOINT: "",
-    COGNITO_IDENTITY_POOL_ENDPOINT: "",
-    COGNITO_OAUTH_ENABLED: "true",
     COGNITO_REDIRECT_SIGNIN: cfnOutputs.CloudFrontUrl!,
     COGNITO_REDIRECT_SIGNOUT: cfnOutputs.CloudFrontUrl!,
   };

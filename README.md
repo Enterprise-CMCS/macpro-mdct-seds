@@ -132,10 +132,6 @@ This will:
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
 4. Open a tab in your browser, pointed to the SEDS server inside the container.
 
-Local dev is configured using MiniStack. The entrypoint is [cli/run.ts](cli/run.ts), and [run](run) checks the local prerequisites before handing off to it.
-
-Local dev is built around MiniStack. For more information check out [docs on local dev](./deployment/local/README.md) and the repo-specific [MiniStack findings](./docs/ministack-local-dev-notes.md).
-
 ### Log in
 
 Although production users access SEDS through the CMS SSO system,
@@ -160,7 +156,7 @@ During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in. The local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+Once you've run `./run local` you'll find yourself on a login page at localhost:3000. Local users are loaded from `services/ui-auth/libs/users.json`, and the local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ### View Local Resources
 
