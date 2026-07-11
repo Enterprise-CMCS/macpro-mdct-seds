@@ -134,7 +134,7 @@ This will:
 
 Local dev is configured using MiniStack. The entrypoint is [cli/run.ts](cli/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
 
-Local dev is built around MiniStack. For more information check out [docs on local dev](./deployment/local/README.md).
+Local dev is built around MiniStack. For more information check out [docs on local dev](./deployment/local/README.md) and the repo-specific [MiniStack findings](./docs/ministack-local-dev-notes.md).
 
 ### Log in
 

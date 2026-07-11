@@ -53,5 +53,7 @@ curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
 - Internally, the local CDK stage is named `ministack`. That is why stack names and raw API Gateway paths include `ministack`.
 - The generated UI env points at MiniStack's API proxy shape:
   `http://localhost:${MINISTACK_PORT:-4566}/restapis/<apiId>/ministack/_user_request_`
-- Local login uses users from `services/ui-auth/libs/users.json`. The seeded password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 - Use `./run reset` to stop the MiniStack container and tear down Colima.
+- Local login uses users from `services/ui-auth/libs/users.json`. The seeded password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+- Use `./run reset` to stop the MiniStack container and tear down Colima.
+- The detailed evaluation for `CMDCT-6054` is in [docs/ministack-local-dev-notes.md](../../docs/ministack-local-dev-notes.md).
