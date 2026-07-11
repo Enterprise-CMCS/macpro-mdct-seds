@@ -23,7 +23,7 @@ The validation artifacts from the successful run were not committed to this bran
 
 ## What Changed In This Branch
 
-- `./run local` now starts a MiniStack Docker container when needed instead of relying on a separate emulator CLI.
+- `./run local` now starts a MiniStack container under Colima when needed instead of relying on a separate emulator CLI.
 - The local runner now supports `MINISTACK_PORT` and `LOCAL_UI_PORT`.
 - The generated UI env now points at MiniStack's raw API Gateway proxy route instead of just replacing `https` with `http`.
 - The local runner starts Vite headlessly with an explicit host and port.

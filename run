@@ -53,7 +53,7 @@ if [ "$UPDATE_ENV" = true ]; then
 fi
 
 if [ "$LOCAL" = true ]; then
-    require_cmd docker "On macOS, install with 'brew install docker'"
+    require_cmd docker "Run the workspace setup; Colima needs its container CLI"
     require_cmd colima "On macOS, install with 'brew install colima'"
 
     if ! colima status 2>&1 | grep -q "colima is running" ; then
@@ -62,7 +62,7 @@ if [ "$LOCAL" = true ]; then
     fi
 
     if ! docker info >/dev/null 2>&1 ; then
-        echo "Docker is installed but not running. Start Docker and retry." >&2
+        echo "Colima's container runtime is unavailable. Start Colima and retry." >&2
         exit 1
     fi
 

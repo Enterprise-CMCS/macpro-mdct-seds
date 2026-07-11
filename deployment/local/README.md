@@ -2,7 +2,7 @@
 
 # Running Locally with MiniStack
 
-The `./run local` command runs SEDS locally by deploying the stack into MiniStack in Docker. Cognito user pools, app clients, and seeded users are local MiniStack resources.
+The `./run local` command runs SEDS locally by deploying the stack into MiniStack under Colima. Cognito user pools, app clients, and seeded users are local MiniStack resources.
 
 ## Prerequisites
 
@@ -10,13 +10,12 @@ Before running the application locally, ensure the following dependencies are in
 
 ### Required Installations
 
-1. **Colima/Docker** - MiniStack runs inside a Colima container that uses Docker as its runtime.
+1. **Colima** - MiniStack runs inside a Colima-managed container.
 
 _The install is handled by the run script._
 
 Links for the curious:
 
-- Docker - https://www.docker.com/get-started
 - Colima - https://github.com/abiosoft/colima
 
 2. **A populated `.env` file** - Use `./run update-env`, or reuse an existing `.env` if you already have one outside this worktree.
@@ -34,7 +33,7 @@ If `4566` or `3000` are already in use on your machine, you can override the emu
 MINISTACK_PORT=4570 LOCAL_UI_PORT=3002 ./run local
 ```
 
-The script verifies Docker, Colima, and MiniStack, starts MiniStack when needed, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
+The script verifies Colima and MiniStack, starts MiniStack when needed, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
 
 ## Monitoring MiniStack
 
