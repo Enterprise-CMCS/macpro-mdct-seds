@@ -30,9 +30,9 @@ export function getUserDetailsFromEvent(
   const role = mapMembershipToRole(token["custom:ismemberof"]!);
 
   return {
-    email: token.email,
-    firstName: token.given_name,
-    lastName: token.family_name,
+    email: token.email ?? "[email not in token]",
+    firstName: token.given_name ?? "",
+    lastName: token.family_name ?? "",
     role,
     username: token.identities?.[0]?.userId || token.email,
     usernameSub: token.sub,

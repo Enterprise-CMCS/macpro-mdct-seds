@@ -40,16 +40,23 @@ export type AuthUser = {
   lastLogin: DateString;
 };
 
+const TableName = process.env.AuthUserTable;
+
 export const putUser = async (user: AuthUser) => {
   await dynamoDb.put({
-    TableName: process.env.AuthUserTable,
+    TableName,
     Item: user,
   });
 };
 
+export const scanAllUsers = async () => {
+  const response = await dynamoDb.scan({ TableName });
+  return response.Items ?? ([] as AuthUser[]);
+};
+
 export const scanUsersByRole = async (role: string) => {
   const response = await dynamoDb.scan({
-    TableName: process.env.AuthUserTable,
+    TableName,
     FilterExpression: "#role = :role",
     ExpressionAttributeNames: { "#role": "role" },
     ExpressionAttributeValues: { ":role": role },
@@ -59,7 +66,7 @@ export const scanUsersByRole = async (role: string) => {
 
 export const scanForUserByUsername = async (username: string) => {
   const response = await dynamoDb.scan({
-    TableName: process.env.AuthUserTable,
+    TableName,
     FilterExpression: "username = :username",
     ExpressionAttributeValues: { ":username": username },
   });
@@ -75,10 +82,45 @@ export const scanForUserByUsername = async (username: string) => {
  */
 export const scanForUserWithSub = async (usernameSub: string) => {
   const scanResult = await dynamoDb.scan({
-    TableName: process.env.AuthUserTable,
+    TableName,
     FilterExpression: "usernameSub = :usernameSub",
     ExpressionAttributeValues: { ":usernameSub": usernameSub },
   });
 
   return scanResult.Items?.[0] as AuthUser | undefined;
+};
+
+export const getUser = async (userId: string) => {
+  const result = await dynamoDb.get({
+    TableName,
+    Key: { userId },
+  });
+  return result.Item as AuthUser | undefined;
+};
+
+/**
+ * Record the fact that this user has logged in.
+ * Also, ensure the AuthUser record stays up-to-date with Cognito.
+ *
+ * This endpoint will probably be called multiple times per user session,
+ * so we're not recording "the moment of login" so much as "user activity".
+ * The date usually matters more than the exact time,
+ * so this is still valuable information.
+ */
+export const recordLogin = async (
+  userData: Pick<AuthUser, "userId" | "firstName" | "lastName" | "email">,
+  lastLogin: DateString
+) => {
+  await dynamoDb.update({
+    TableName,
+    Key: { userId: userData.userId },
+    UpdateExpression:
+      "SET firstName = :firstName, lastName = :lastName, email = :email, lastLogin = :lastLogin",
+    ExpressionAttributeValues: {
+      ":firstName": userData.firstName,
+      ":lastName": userData.lastName,
+      ":email": userData.email,
+      ":lastLogin": lastLogin,
+    },
+  });
 };

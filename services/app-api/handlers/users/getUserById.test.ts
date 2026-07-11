@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as handler from "../../libs/handler-mocking.ts";
 import { main as getUserById } from "./getUserById.ts";
-import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { mockClient } from "aws-sdk-client-mock";
 import { StatusCodes } from "../../libs/response-lib.ts";
 import { APIGatewayProxyEvent } from "../../shared/types.ts";
+import { getUser as actualGetUser, AuthUser } from "../../storage/users.ts";
 
-const mockDynamo = mockClient(DynamoDBDocumentClient);
-const mockScan = vi.fn();
-mockDynamo.on(ScanCommand).callsFake(mockScan);
+vi.mock("../../storage/users.ts", () => ({
+  getUser: vi.fn(),
+}));
+const getUser = vi.mocked(actualGetUser);
 
 const mockEvent = {
   pathParameters: {
@@ -16,9 +16,9 @@ const mockEvent = {
   } as Record<string, string>,
 } as APIGatewayProxyEvent;
 const mockUser = {
-  id: 42,
+  userId: "42",
   email: "user@test.com",
-};
+} as AuthUser;
 
 describe("getUserById", () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe("getUserById", () => {
 
   it("should fetch the requested user data from dynamo", async () => {
     handler.setupAdminUser();
-    mockScan.mockResolvedValueOnce({ Count: 1, Items: [mockUser] });
+    getUser.mockResolvedValueOnce(mockUser);
 
     const response = await getUserById(mockEvent);
 
@@ -52,7 +52,7 @@ describe("getUserById", () => {
 
   it("should return an error if the user cannot be found", async () => {
     handler.setupAdminUser();
-    mockScan.mockResolvedValueOnce({ Count: 0 });
+    getUser.mockResolvedValueOnce(undefined);
 
     const response = await getUserById(mockEvent);
 
