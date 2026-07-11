@@ -81,7 +81,7 @@ Please refer to the README for instructions running the MDCT Workspace Setup.
 Alternatively, you may install the various requirements yourself.
 The best way to do this is by following the workspace setup script,
 skipping the commands you can't or don't need to run.
-The critical dependencies are `colima`, Docker, AWS CLI, `nvm`, and `corepack`.
+The critical dependencies are `colima`, AWS CLI, `nvm`, and `corepack`.
 We use `nvm` to manage the version of `node`
 and `corepack` to manage the version of `yarn`
 (referring to the repo's `.nvmrc` and `package.json` files respectively).
@@ -125,7 +125,7 @@ Now you should be able to start the app with
 
 This will:
 
-1. Start up Colima, a fully open-source Docker alternative.
+1. Start up Colima, the local container runtime.
 2. Start up Floci, an Amazon Web Services (AWS) cloud emulator, in Colima.
 3. Deploy SEDS to the Floci container.
    - Doing so by running the code in this repo's deployment folder.

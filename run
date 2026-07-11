@@ -53,7 +53,7 @@ if [ "$UPDATE_ENV" = true ]; then
 fi
 
 if [ "$LOCAL" = true ]; then
-    require_cmd docker "On macOS, install with 'brew install docker'"
+    require_cmd docker "Run the workspace setup; Colima needs its container CLI"
     require_cmd colima "On macOS, install with 'brew install colima'"
     require_cmd aws "Install AWS CLI v2"
 

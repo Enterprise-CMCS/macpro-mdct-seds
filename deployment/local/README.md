@@ -10,10 +10,10 @@ Before running the application locally, ensure the following dependencies are in
 
 ### Required Installations
 
-1. **Colima/Docker** - Floci runs inside a Docker container managed through Colima on macOS.
+1. **Colima** - Floci runs inside a Colima-managed container on macOS.
 2. **AWS CLI** - Required for direct inspection of the local AWS emulator.
 
-The `./run local` command will verify Docker and Colima before it starts Floci.
+The `./run local` command will verify Colima before it starts Floci.
 
 ## Deploying and Running Locally
 
