@@ -1,12 +1,11 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { runCommand } from "../lib/runner.ts";
 import { execFileSync, execSync } from "node:child_process";
-import { project, region } from "../lib/consts.ts";
+import { region } from "../lib/consts.ts";
 import { runFrontendLocally } from "../lib/utils.ts";
-import { seedData } from "../lib/seedData.ts";
+import { bootstrapLocalCognitoUsers, seedData } from "../lib/seedData.ts";
 
 const flociContainerName = "floci-local";
-const flociReadyUrl = "http://localhost:4566/_floci/init";
 const flociDefaultSecret = JSON.stringify({
   vpcName: "floci-dev",
   brokerString: "floci",
@@ -28,7 +27,7 @@ const isColimaRunning = () => {
 const getFlociContainer = () => {
   try {
     return JSON.parse(
-      execSync(`docker inspect ${flociContainerName}`, {
+      execFileSync("docker", ["inspect", flociContainerName], {
         encoding: "utf8",
         stdio: "pipe",
       })
@@ -46,7 +45,9 @@ const isFlociRunning = () => {
   );
 };
 
-const waitForFloci = async () => {
+const waitForFloci = async (flociPort: string) => {
+  const flociReadyUrl = `http://localhost:${flociPort}/_floci/init`;
+
   for (let i = 0; i < 60; i++) {
     try {
       const response = await fetch(flociReadyUrl);
@@ -70,12 +71,84 @@ const waitForFloci = async () => {
   throw new Error("Floci did not become healthy within 60 seconds.");
 };
 
-const startFloci = async () => {
+const getContainerPublishedPort = (container: any): string | undefined =>
+  container?.HostConfig?.PortBindings?.["4566/tcp"]?.[0]?.HostPort;
+
+const getContainerEnvValue = (
+  container: any,
+  key: string
+): string | undefined => {
+  const prefix = `${key}=`;
+  return (container?.Config?.Env ?? [])
+    .find((entry: string) => entry.startsWith(prefix))
+    ?.slice(prefix.length);
+};
+
+export const assertFlociContainerMatchesConfig = (
+  container: any,
+  flociPort: string,
+  ecrRegistryBasePort: string,
+  ecrRegistryMaxPort: string
+) => {
+  const mismatches: string[] = [];
+
+  const actualPort = getContainerPublishedPort(container);
+  if (actualPort !== flociPort) {
+    mismatches.push(
+      `published port ${actualPort ?? "unknown"} (requested ${flociPort})`
+    );
+  }
+
+  const actualBasePort = getContainerEnvValue(
+    container,
+    "FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT"
+  );
+  if (actualBasePort !== ecrRegistryBasePort) {
+    mismatches.push(
+      `ECR base port ${actualBasePort ?? "unknown"} (requested ${ecrRegistryBasePort})`
+    );
+  }
+
+  const actualMaxPort = getContainerEnvValue(
+    container,
+    "FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT"
+  );
+  if (actualMaxPort !== ecrRegistryMaxPort) {
+    mismatches.push(
+      `ECR max port ${actualMaxPort ?? "unknown"} (requested ${ecrRegistryMaxPort})`
+    );
+  }
+
+  if (mismatches.length > 0) {
+    throw new Error(
+      `The existing "${flociContainerName}" container does not match the requested ` +
+        `configuration: ${mismatches.join(", ")}. Remove it with ` +
+        `"docker rm -f ${flociContainerName}" and re-run to recreate it with the ` +
+        `requested configuration.`
+    );
+  }
+};
+
+const startFloci = async (
+  flociPort: string,
+  ecrRegistryBasePort: string,
+  ecrRegistryMaxPort: string
+) => {
+  const existingContainer = getFlociContainer();
+  if (existingContainer) {
+    assertFlociContainerMatchesConfig(
+      existingContainer,
+      flociPort,
+      ecrRegistryBasePort,
+      ecrRegistryMaxPort
+    );
+  }
+
   if (isFlociRunning()) {
     return;
   }
 
-  if (getFlociContainer()) {
+  if (existingContainer) {
     await runCommand(
       "Start floci",
       ["docker", "start", flociContainerName],
@@ -94,9 +167,13 @@ const startFloci = async () => {
         "-u",
         "root",
         "-p",
-        "4566:4566",
+        `${flociPort}:4566`,
         "-e",
         "FLOCI_HOSTNAME=host.docker.internal",
+        "-e",
+        `FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT=${ecrRegistryBasePort}`,
+        "-e",
+        `FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT=${ecrRegistryMaxPort}`,
         "-v",
         "/var/run/docker.sock:/var/run/docker.sock",
         "floci/floci:latest-compat",
@@ -105,10 +182,11 @@ const startFloci = async () => {
     );
   }
 
-  await waitForFloci();
+  await waitForFloci(flociPort);
 };
 
 const upsertFlociDefaultSecret = () => {
+  const project = process.env.PROJECT;
   if (!project || !process.env.AWS_ENDPOINT_URL) {
     throw new Error("PROJECT and AWS endpoint configuration are required.");
   }
@@ -173,13 +251,20 @@ export const local = {
       throw "Colima needs to be running.";
     }
 
-    await startFloci();
+    const flociPort = process.env.FLOCI_PORT ?? "4566";
+    const ecrRegistryBasePort =
+      process.env.FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT ?? "5200";
+    const ecrRegistryMaxPort =
+      process.env.FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT ?? "5299";
+
+    await startFloci(flociPort, ecrRegistryBasePort, ecrRegistryMaxPort);
 
     process.env.AWS_DEFAULT_REGION = region;
     process.env.AWS_ACCESS_KEY_ID = "test";
     process.env.AWS_SECRET_ACCESS_KEY = "test"; // pragma: allowlist secret
-    process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
-    process.env.AWS_ENDPOINT_URL_S3 = "http://s3.localhost.floci.io:4566";
+    process.env.AWS_ENDPOINT_URL = `http://localhost:${flociPort}`;
+    process.env.AWS_ENDPOINT_URL_S3 = `http://s3.localhost.floci.io:${flociPort}`;
+    process.env.FLOCI_PORT = flociPort;
     upsertFlociDefaultSecret();
     await runCommand(
       "CDK local bootstrap",
@@ -227,6 +312,7 @@ export const local = {
     );
 
     await seedData();
+    await bootstrapLocalCognitoUsers();
 
     await Promise.all([
       runCommand(

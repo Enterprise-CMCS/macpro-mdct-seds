@@ -7,6 +7,7 @@ import {
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 import { Lambda } from "../constructs/lambda.ts";
+import { isFloci } from "../local/util.ts";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -96,10 +97,12 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     ddbTable.table.grantReadWriteData(seedDataFunction);
   }
 
-  new triggers.Trigger(scope, "InvokeSeedDataFunction", {
-    handler: seedDataFunction,
-    invocationType: triggers.InvocationType.EVENT,
-  });
+  if (!isFloci) {
+    new triggers.Trigger(scope, "InvokeSeedDataFunction", {
+      handler: seedDataFunction,
+      invocationType: triggers.InvocationType.EVENT,
+    });
+  }
 
   new CfnOutput(scope, "SeedDataFunctionName", {
     value: seedDataFunction.functionName,

@@ -68,12 +68,14 @@ export class ParentStack extends Stack {
     });
 
     if (isFloci) {
-      /*
-       * For local dev, the Floci container will host the database and API.
-       * The UI will self-host, so we don't need to tell CDK anything about it.
-       * Also, we skip authorization locally. So we don't set up Cognito,
-       * or configure the API to interact with it. Therefore, we're done.
-       */
+      createUiAuthComponents({
+        ...commonProps,
+        applicationEndpointUrl: `http://localhost:${process.env.LOCAL_UI_PORT ?? "3000"}/`,
+        restApiId,
+        bootstrapUsersPassword:
+          process.env.LOCAL_COGNITO_PASSWORD ?? "Password123!",
+      });
+
       return;
     }
 

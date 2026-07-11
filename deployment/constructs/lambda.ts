@@ -13,6 +13,8 @@ import { isFloci } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
+const flociEndpointFromLambda = `http://host.docker.internal:${process.env.FLOCI_PORT ?? "4566"}`;
+
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
   method?: string;
@@ -41,6 +43,7 @@ export class Lambda extends Construct {
       buckets = [],
       stackName,
       isDev,
+      environment,
       ...restProps
     } = props;
 
@@ -75,6 +78,10 @@ export class Lambda extends Construct {
         },
       },
       logGroup,
+      environment: {
+        ...(isFloci ? { AWS_ENDPOINT_URL: flociEndpointFromLambda } : {}),
+        ...environment,
+      },
       ...restProps,
     });
 

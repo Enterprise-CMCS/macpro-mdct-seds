@@ -84,9 +84,7 @@ Local dev is built around [Floci](https://floci.io/). For more information check
 
 (Make sure you've finished setting up the project locally above before moving on to this step!)
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
-
-For a password to that user, please ask a fellow developer.
+Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in. The local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ### Adding or modifying user roles
 

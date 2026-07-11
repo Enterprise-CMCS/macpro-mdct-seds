@@ -3,6 +3,7 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
+import config from "config/config";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons/faSignInAlt";
@@ -64,18 +65,20 @@ export default function Login() {
 
   return (
     <div data-testid="Login" className="login">
-      <div data-testid="OktaLogin">
-        <LoaderButton
-          type="button"
-          onClick={handleSubmitOkta}
-          isLoading={isLoadingOkta}
-          variation="outline"
-          data-testid="handleSubmitOktaButton"
-        >
-          Login with EUA ID
-          <FontAwesomeIcon icon={faSignInAlt} />
-        </LoaderButton>
-      </div>
+      {config.cognito.OAUTH_ENABLED && (
+        <div data-testid="OktaLogin">
+          <LoaderButton
+            type="button"
+            onClick={handleSubmitOkta}
+            isLoading={isLoadingOkta}
+            variation="outline"
+            data-testid="handleSubmitOktaButton"
+          >
+            Login with EUA ID
+            <FontAwesomeIcon icon={faSignInAlt} />
+          </LoaderButton>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         hidden={hideCognitoLogin}

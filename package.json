@@ -32,7 +32,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "npx --prefix deployment cdk",
-    "cdklocal": "npx --prefix deployment cdklocal"
+    "cdklocal": "npx --prefix deployment cdklocal",
+    "test:cli": "node --test cli/lib/utils.test.ts cli/commands/local.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",

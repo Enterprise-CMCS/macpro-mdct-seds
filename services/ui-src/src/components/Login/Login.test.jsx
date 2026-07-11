@@ -1,11 +1,21 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import Login from "./Login";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { signInWithRedirect } from "aws-amplify/auth";
+import { signIn, signInWithRedirect } from "aws-amplify/auth";
+import config from "config/config";
+
+vi.mock("config/config", () => ({
+  default: {
+    cognito: {
+      OAUTH_ENABLED: true,
+    },
+  },
+}));
 
 vi.mock("aws-amplify/auth", () => ({
+  signIn: vi.fn(),
   signInWithRedirect: vi.fn(),
 }));
 
@@ -34,6 +44,10 @@ describe("Test Login.js", () => {
     window.location = originalLocation;
   });
 
+  beforeEach(() => {
+    config.cognito.OAUTH_ENABLED = true;
+  });
+
   if (currentlyOnDevelopmentBranch()) {
     it("should render email login form", () => {
       render(<Login />);
@@ -50,6 +64,14 @@ describe("Test Login.js", () => {
     expect(
       screen.getByText("Login with EUA ID", { selector: "button" })
     ).toBeInTheDocument();
+  });
+
+  it("should hide the EUA login button when OAuth is disabled", () => {
+    config.cognito.OAUTH_ENABLED = false;
+    render(<Login />);
+    expect(
+      screen.queryByText("Login with EUA ID", { selector: "button" })
+    ).not.toBeInTheDocument();
   });
 
   it("should redirect to Okta for login", async () => {
@@ -78,7 +100,8 @@ describe("Test Login.js", () => {
     expect(signInWithRedirect).toHaveBeenCalled();
   });
 
-  it("should login successfully", () => {
+  it("should login successfully", async () => {
+    signIn.mockResolvedValue({ isSignedIn: true });
     render(<Login />);
 
     const email = screen.getByRole("textbox", { name: "Email" });
@@ -88,6 +111,14 @@ describe("Test Login.js", () => {
     fireEvent.change(email, { target: { value: "mail@mail.com" } });
     fireEvent.change(password, { target: { value: "password" } });
     fireEvent.click(loginBtn);
-    expect(window.location.href).toEqual(originalLocation.href);
+
+    await waitFor(() => {
+      expect(signIn).toHaveBeenCalledWith({
+        username: "mail@mail.com",
+        password: "password",
+        options: { authFlowType: "USER_PASSWORD_AUTH" },
+      });
+      expect(window.location.href).toEqual("/");
+    });
   });
 });

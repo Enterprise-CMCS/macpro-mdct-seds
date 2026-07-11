@@ -6,23 +6,36 @@ import { BrowserRouter } from "react-router";
 import { Amplify } from "aws-amplify";
 import config from "./config/config";
 
+const cognitoConfig = {
+  userPoolId: config.cognito.USER_POOL_ID,
+  userPoolClientId: config.cognito.APP_CLIENT_ID,
+  ...(config.cognito.IDENTITY_POOL_ID
+    ? { identityPoolId: config.cognito.IDENTITY_POOL_ID }
+    : {}),
+  ...(config.cognito.USER_POOL_ENDPOINT
+    ? { userPoolEndpoint: config.cognito.USER_POOL_ENDPOINT }
+    : {}),
+  ...(config.cognito.IDENTITY_POOL_ENDPOINT
+    ? { identityPoolEndpoint: config.cognito.IDENTITY_POOL_ENDPOINT }
+    : {}),
+};
+
+if (config.cognito.OAUTH_ENABLED) {
+  cognitoConfig.loginWith = {
+    oauth: {
+      domain: config.cognito.APP_CLIENT_DOMAIN,
+      redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
+      redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
+      scopes: ["email", "openid", "profile"],
+      responseType: "token",
+    },
+  };
+}
+
 Amplify.configure(
   {
     Auth: {
-      Cognito: {
-        userPoolId: config.cognito.USER_POOL_ID,
-        identityPoolId: config.cognito.IDENTITY_POOL_ID,
-        userPoolClientId: config.cognito.APP_CLIENT_ID,
-        loginWith: {
-          oauth: {
-            domain: config.cognito.APP_CLIENT_DOMAIN,
-            redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
-            redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
-            scopes: ["email", "openid", "profile"],
-            responseType: "token",
-          },
-        },
-      },
+      Cognito: cognitoConfig,
     },
     API: {
       REST: {
