@@ -132,10 +132,6 @@ This will:
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
 4. Open a tab in your browser, pointed to the SEDS server inside the container.
 
-Local dev is configured using Floci. The entrypoint is [run](./run), and it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
-
-Local dev is built around [Floci](https://floci.io/). For more information check out [docs on local dev](./deployment/local/README.md)
-
 ### Log in
 
 Although production users access SEDS through the CMS SSO system,
@@ -156,7 +152,7 @@ If we infer the user to be a state user,
 we will redirect them (on their first login only)
 to a page where they must select a state.
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in. The local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
+Once you've run `./run local` you'll find yourself on a login page at localhost:3000. Local users are loaded from `services/ui-auth/libs/users.json`; the local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,

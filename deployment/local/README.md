@@ -25,17 +25,6 @@ The script will start or reuse the `floci-local` container automatically.
 
 Local login uses users from `services/ui-auth/libs/users.json`. The seeded password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
-## Local UI server
-
-`./run local` starts the Vite dev server with a fixed invocation so the browser origin always matches the Cognito user-pool endpoint and redirect URLs baked into `env-config.js` (`http://localhost:<LOCAL_UI_PORT>/_floci-cognito` and the sign-in/out redirects):
-
-- Binds the port from `LOCAL_UI_PORT` (default `3000`). `PORT` is not honored on this path; set `LOCAL_UI_PORT` to change it.
-- Serves on the `127.0.0.1` loopback host.
-- Passes Vite `--strictPort`, so startup fails fast when that port is occupied instead of drifting to another port and silently breaking login.
-- Does not auto-open a browser (`--no-open`).
-
-This replaces the earlier bare `yarn start`, which honored `PORT`, could fall back to a different port when one was busy, and auto-opened a browser tab.
-
 ## Monitoring Floci
 
 ```sh

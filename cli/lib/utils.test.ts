@@ -38,17 +38,12 @@ test("getFlociApiUrl returns a same-origin path for the Vite /_floci-api proxy",
   );
 });
 
-test("floci UI env disables OAuth and routes API + Cognito through same-origin proxies", () => {
+test("floci UI env routes API through the same-origin proxy", () => {
   const env = buildUiEnvObject("floci", flociOutputs);
 
-  assert.equal(env.COGNITO_OAUTH_ENABLED, "false");
   assert.ok(
     env.API_URL.startsWith("/_floci-api/"),
     `expected relative API_URL, got ${env.API_URL}`
-  );
-  assert.ok(
-    env.COGNITO_USER_POOL_ENDPOINT.endsWith("/_floci-cognito"),
-    `expected cognito proxy endpoint, got ${env.COGNITO_USER_POOL_ENDPOINT}`
   );
   assert.equal(env.COGNITO_IDENTITY_POOL_ID, "");
   assert.equal(env.COGNITO_USER_POOL_ID, flociOutputs.CognitoUserPoolId);
@@ -58,7 +53,7 @@ test("floci UI env disables OAuth and routes API + Cognito through same-origin p
   );
 });
 
-test("deployed UI env keeps an absolute API_URL and enables OAuth", () => {
+test("deployed UI env keeps an absolute API_URL", () => {
   const env = buildUiEnvObject("dev", {
     ApiUrl: "https://abc123.execute-api.us-east-1.amazonaws.com/dev",
     CognitoIdentityPoolId: "us-east-1:pool-id",
@@ -68,12 +63,10 @@ test("deployed UI env keeps an absolute API_URL and enables OAuth", () => {
     CloudFrontUrl: "https://d123.cloudfront.net",
   });
 
-  assert.equal(env.COGNITO_OAUTH_ENABLED, "true");
   assert.equal(
     env.API_URL,
     "https://abc123.execute-api.us-east-1.amazonaws.com/dev"
   );
-  assert.equal(env.COGNITO_USER_POOL_ENDPOINT, "");
 });
 
 test("buildUiStartCommand spawns vite on the loopback host and default LOCAL_UI_PORT", () => {
@@ -110,16 +103,12 @@ test("buildUiStartCommand binds LOCAL_UI_PORT when it is set", () => {
   });
 });
 
-test("floci UI serves on the same port baked into the Cognito endpoint and redirects (no port drift)", () => {
+test("floci UI serves on the same port baked into the Cognito redirects", () => {
   withEnv("LOCAL_UI_PORT", "3456", () => {
     const { cmd } = buildUiStartCommand();
     const uiPort = cmd[cmd.indexOf("--port") + 1];
     const env = buildUiEnvObject("floci", flociOutputs);
 
-    assert.equal(
-      env.COGNITO_USER_POOL_ENDPOINT,
-      `http://localhost:${uiPort}/_floci-cognito`
-    );
     assert.equal(env.COGNITO_REDIRECT_SIGNIN, `http://localhost:${uiPort}/`);
     assert.equal(env.COGNITO_REDIRECT_SIGNOUT, `http://localhost:${uiPort}/`);
   });

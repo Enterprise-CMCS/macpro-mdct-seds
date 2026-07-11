@@ -53,9 +53,6 @@ export const buildUiEnvObject = (
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         cfnOutputs.CognitoUserPoolClientDomain ?? "",
-      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${uiPort}/_floci-cognito`,
-      COGNITO_IDENTITY_POOL_ENDPOINT: "",
-      COGNITO_OAUTH_ENABLED: "false",
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
@@ -70,21 +67,11 @@ export const buildUiEnvObject = (
     COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
     COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
     COGNITO_USER_POOL_CLIENT_DOMAIN: `${cfnOutputs.CognitoUserPoolClientDomain}.auth.${region}.amazoncognito.com`,
-    COGNITO_USER_POOL_ENDPOINT: "",
-    COGNITO_IDENTITY_POOL_ENDPOINT: "",
-    COGNITO_OAUTH_ENABLED: "true",
     COGNITO_REDIRECT_SIGNIN: cfnOutputs.CloudFrontUrl!,
     COGNITO_REDIRECT_SIGNOUT: cfnOutputs.CloudFrontUrl!,
   };
 };
 
-// The floci UI must serve on exactly the port baked into env-config.js:
-// COGNITO_USER_POOL_ENDPOINT and the sign-in/out redirects all point at
-// http://localhost:<LOCAL_UI_PORT>. These flags keep the dev server on that
-// origin — bind LOCAL_UI_PORT (Vite's own PORT is not honored here) on the
-// loopback host, fail fast with --strictPort instead of drifting to a free
-// port when it is occupied, and skip the browser auto-open. A bare
-// `yarn start` would let the port drift and silently break local Cognito login.
 export const buildUiStartCommand = (): {
   prefix: string;
   cmd: string[];
