@@ -3,7 +3,7 @@ import { runCommand } from "../lib/runner.ts";
 import { execFileSync, execSync } from "node:child_process";
 import { region } from "../lib/consts.ts";
 import { runFrontendLocally } from "../lib/utils.ts";
-import { bootstrapLocalCognitoUsers } from "../lib/seedData.ts";
+import { bootstrapLocalCognitoUsers, seedData } from "../lib/seedData.ts";
 
 const isColimaRunning = () => {
   try {
@@ -20,6 +20,21 @@ const isColimaRunning = () => {
 const miniStackContainerName =
   process.env.MINISTACK_CONTAINER_NAME ??
   `${process.env.PROJECT ?? "seds"}-ministack-local`;
+
+const isMiniStackRunning = () => {
+  try {
+    return (
+      JSON.parse(
+        execFileSync("docker", ["inspect", miniStackContainerName], {
+          encoding: "utf8",
+          stdio: "pipe",
+        })
+      )[0]?.State?.Running === true
+    );
+  } catch {
+    return false;
+  }
+};
 
 const waitForMiniStack = async (port: string) => {
   for (let i = 0; i < 60; i++) {
@@ -57,37 +72,10 @@ export const local = {
     const miniStackPort = process.env.MINISTACK_PORT ?? "4566";
     const miniStackEndpoint = `http://127.0.0.1:${miniStackPort}`;
 
-    try {
-      execFileSync("docker", ["rm", "-f", miniStackContainerName], {
-        stdio: "ignore",
-      });
-    } catch {
-      // The container will not exist on a clean local run.
+    if (!isMiniStackRunning()) {
+      throw "MiniStack needs to be running.";
     }
 
-    await runCommand(
-      "Start MiniStack",
-      [
-        "docker",
-        "run",
-        "--rm",
-        "-d",
-        "--name",
-        miniStackContainerName,
-        "-p",
-        `${miniStackPort}:4566`,
-        "-e",
-        "LAMBDA_EXECUTOR=local",
-        "-e",
-        "MINISTACK_HOST=localhost",
-        "-e",
-        "S3_PERSIST=0",
-        "-e",
-        "RDS_PERSIST=0",
-        "ministackorg/ministack:latest",
-      ],
-      "."
-    );
     await waitForMiniStack(miniStackPort);
 
     process.env.AWS_DEFAULT_REGION = region;
@@ -168,6 +156,7 @@ export const local = {
     );
 
     await bootstrapLocalCognitoUsers();
+    await seedData();
 
     await Promise.all([
       runCommand(

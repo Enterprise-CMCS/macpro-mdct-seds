@@ -81,7 +81,7 @@ Please refer to the README for instructions running the MDCT Workspace Setup.
 Alternatively, you may install the various requirements yourself.
 The best way to do this is by following the workspace setup script,
 skipping the commands you can't or don't need to run.
-The critical dependencies are `colima`, `nvm`, and `corepack`.
+The critical dependencies are `docker`, `colima`, `nvm`, and `corepack`.
 We use `nvm` to manage the version of `node`
 and `corepack` to manage the version of `yarn`
 (referring to the repo's `.nvmrc` and `package.json` files respectively).
@@ -92,6 +92,7 @@ With that said, these commands _should_ set up those dependencies
 
 ```sh
 brew install colima
+brew install docker
 brew install nvm
 nvm install
 npm install --global corepack
@@ -132,7 +133,7 @@ This will:
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
 4. Open a tab in your browser, pointed to the SEDS server inside the container.
 
-Local dev is configured using MiniStack. The entrypoint is [cli/run.ts](cli/run.ts), it manages running the moving pieces locally: the API, the database, the file storage, and the frontend.
+Local dev is configured using MiniStack. The entrypoint is [cli/run.ts](cli/run.ts), and [run](run) checks the local prerequisites before handing off to it.
 
 Local dev is built around MiniStack. For more information check out [docs on local dev](./deployment/local/README.md) and the repo-specific [MiniStack findings](./docs/ministack-local-dev-notes.md).
 

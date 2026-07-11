@@ -34,7 +34,7 @@ If `4566` or `3000` are already in use on your machine, you can override the emu
 MINISTACK_PORT=4570 LOCAL_UI_PORT=3002 ./run local
 ```
 
-The script verifies Docker and Colima, starts a fresh MiniStack container, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
+The script verifies Docker, Colima, and MiniStack, starts MiniStack when needed, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
 
 ## Monitoring MiniStack
 

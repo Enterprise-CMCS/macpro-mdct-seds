@@ -23,7 +23,7 @@ The validation artifacts from the successful run were not committed to this bran
 
 ## What Changed In This Branch
 
-- `./run local` now starts a fresh MiniStack Docker container instead of relying on a separate emulator CLI.
+- `./run local` now starts a MiniStack Docker container when needed instead of relying on a separate emulator CLI.
 - The local runner now supports `MINISTACK_PORT` and `LOCAL_UI_PORT`.
 - The generated UI env now points at MiniStack's raw API Gateway proxy route instead of just replacing `https` with `http`.
 - The local runner starts Vite headlessly with an explicit host and port.
@@ -63,7 +63,7 @@ The validation artifacts from the successful run were not committed to this bran
 - The seed-data Lambda initially failed because it loaded JSON by raw relative path instead of from the deployed bundle directory.
 - The seed-data trigger initially produced a noisy `Header overflow` failure path until the seed code stopped using the chatty shared Dynamo client.
 - Some deployed Lambdas initially failed at runtime because the MiniStack bundle path did not include `@aws-sdk/client-dynamodb` and `@aws-sdk/lib-dynamodb`.
-- Reusing a dirty MiniStack container made updates unreliable. In validation, the cleanest path was to start a fresh MiniStack container for each `./run local` session.
+- Reusing a dirty MiniStack container made updates unreliable in validation; `./run reset` removes the MiniStack container when a clean local session is needed.
 - Internally, the repo now uses the `ministack` stage name for the MiniStack path. That keeps stack names and API Gateway proxy URLs consistent with the branch.
 
 ## Advantages
@@ -86,7 +86,7 @@ MiniStack is a workable option for SEDS if the goal is to keep the current CDK-b
 
 I would treat it as viable, but not transparent. The branch is in a good state for local development now, but the operating model should be:
 
-- start a fresh MiniStack container for each local session
+- use `./run reset` before a clean MiniStack local session
 - expect the local stage name to remain `ministack`
 - prefer the branch's `./run local` flow over ad hoc partial emulator reuse
 

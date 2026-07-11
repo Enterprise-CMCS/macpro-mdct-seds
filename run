@@ -60,6 +60,29 @@ if [ "$LOCAL" = true ]; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
+
+    if ! docker info >/dev/null 2>&1 ; then
+        echo "Docker is installed but not running. Start Docker and retry." >&2
+        exit 1
+    fi
+
+    MINISTACK_CONTAINER_NAME_VALUE="${MINISTACK_CONTAINER_NAME:-${PROJECT:-seds}-ministack-local}"
+    MINISTACK_PORT_VALUE="${MINISTACK_PORT:-4566}"
+
+    if ! docker inspect "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
+        echo "MiniStack is not running. We'll start it up for you now."
+        docker run --rm -d \
+            --name "$MINISTACK_CONTAINER_NAME_VALUE" \
+            -p "${MINISTACK_PORT_VALUE}:4566" \
+            -e LAMBDA_EXECUTOR=local \
+            -e MINISTACK_HOST=localhost \
+            -e S3_PERSIST=0 \
+            -e RDS_PERSIST=0 \
+            ministackorg/ministack:latest >/dev/null
+    elif ! docker inspect -f '{{.State.Running}}' "$MINISTACK_CONTAINER_NAME_VALUE" | grep -q true ; then
+        echo "MiniStack is installed but not running. We'll start it up for you now."
+        docker start "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null
+    fi
 fi
 
 IMMUTABLE_FLAG=""

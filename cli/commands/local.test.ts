@@ -4,12 +4,16 @@ import { beforeEach, describe, it, mock } from "node:test";
 type RunCommand = typeof import("../lib/runner.ts").runCommand;
 type BootstrapLocalCognitoUsers =
   typeof import("../lib/seedData.ts").bootstrapLocalCognitoUsers;
+type SeedData = typeof import("../lib/seedData.ts").seedData;
 type RunFrontendLocally = typeof import("../lib/utils.ts").runFrontendLocally;
 
 const events: string[] = [];
 const execFileSyncMock = mock.fn(
-  (_file: string, _args?: readonly string[], _options?: { stdio?: string }) =>
-    undefined
+  (
+    _file: string,
+    _args?: readonly string[],
+    _options?: { encoding?: string; stdio?: string }
+  ) => JSON.stringify([{ State: { Running: true } }])
 );
 const execSyncMock = mock.fn(
   (_command: string, _options?: { encoding?: string; stdio?: string }) =>
@@ -23,6 +27,9 @@ const bootstrapLocalCognitoUsersMock = mock.fn<BootstrapLocalCognitoUsers>(
     events.push("bootstrap");
   }
 );
+const seedDataMock = mock.fn<SeedData>(async () => {
+  events.push("seedData");
+});
 const runFrontendLocallyMock = mock.fn<RunFrontendLocally>(async (stage) => {
   events.push(`frontend:${stage}`);
 });
@@ -43,6 +50,7 @@ mock.module("../lib/runner.ts", {
 mock.module("../lib/seedData.ts", {
   namedExports: {
     bootstrapLocalCognitoUsers: bootstrapLocalCognitoUsersMock,
+    seedData: seedDataMock,
   },
 });
 
@@ -61,6 +69,7 @@ describe("local command", () => {
     execSyncMock.mock.resetCalls();
     runCommandMock.mock.resetCalls();
     bootstrapLocalCognitoUsersMock.mock.resetCalls();
+    seedDataMock.mock.resetCalls();
     runFrontendLocallyMock.mock.resetCalls();
     globalThis.fetch = async () =>
       ({
@@ -77,13 +86,12 @@ describe("local command", () => {
 
     assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
       "docker",
-      ["rm", "-f", expectedContainerName],
-      { stdio: "ignore" },
+      ["inspect", expectedContainerName],
+      { encoding: "utf8", stdio: "pipe" },
     ]);
     assert.deepEqual(
       runCommandMock.mock.calls.map((call) => call.arguments[0]),
       [
-        "Start MiniStack",
         "Clean .cdk",
         "CDK MiniStack bootstrap",
         "CDK MiniStack local-prerequisite deploy",
@@ -93,17 +101,18 @@ describe("local command", () => {
       ]
     );
     assert.equal(bootstrapLocalCognitoUsersMock.mock.calls.length, 1);
+    assert.equal(seedDataMock.mock.calls.length, 1);
     assert.deepEqual(runFrontendLocallyMock.mock.calls[0]?.arguments, [
       "ministack",
     ]);
     assert.deepEqual(events, [
-      "Start MiniStack",
       "Clean .cdk",
       "CDK MiniStack bootstrap",
       "CDK MiniStack local-prerequisite deploy",
       "CDK MiniStack prerequisite deploy",
       "CDK MiniStack deploy",
       "bootstrap",
+      "seedData",
       "CDK MiniStack watch",
       "frontend:ministack",
     ]);
