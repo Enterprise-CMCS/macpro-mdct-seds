@@ -47,7 +47,7 @@ describe("reset command", () => {
     assert.equal(updateEnvFilesMock.mock.calls.length, 1);
     assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
       "docker",
-      ["rm", "-f", expectedContainerName],
+      ["--context", "colima", "rm", "-f", expectedContainerName],
       { stdio: "ignore" },
     ]);
     assert.deepEqual(

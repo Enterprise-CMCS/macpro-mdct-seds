@@ -25,10 +25,14 @@ const isMiniStackRunning = () => {
   try {
     return (
       JSON.parse(
-        execFileSync("docker", ["inspect", miniStackContainerName], {
-          encoding: "utf8",
-          stdio: "pipe",
-        })
+        execFileSync(
+          "docker",
+          ["--context", "colima", "inspect", miniStackContainerName],
+          {
+            encoding: "utf8",
+            stdio: "pipe",
+          }
+        )
       )[0]?.State?.Running === true
     );
   } catch {

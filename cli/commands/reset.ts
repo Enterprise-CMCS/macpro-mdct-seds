@@ -15,9 +15,13 @@ export const reset = {
     await updateEnvFiles();
 
     try {
-      execFileSync("docker", ["rm", "-f", miniStackContainerName], {
-        stdio: "ignore",
-      });
+      execFileSync(
+        "docker",
+        ["--context", "colima", "rm", "-f", miniStackContainerName],
+        {
+          stdio: "ignore",
+        }
+      );
     } catch {
       // The container may already be absent after a previous reset.
     }

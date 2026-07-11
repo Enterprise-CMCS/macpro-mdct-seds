@@ -86,7 +86,7 @@ describe("local command", () => {
 
     assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
       "docker",
-      ["inspect", expectedContainerName],
+      ["--context", "colima", "inspect", expectedContainerName],
       { encoding: "utf8", stdio: "pipe" },
     ]);
     assert.deepEqual(

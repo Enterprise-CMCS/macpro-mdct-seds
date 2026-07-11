@@ -61,11 +61,7 @@ export class Lambda extends Construct {
         .digest("hex"),
       minify: true,
       sourceMap: true,
-      nodeModules: [
-        "jsdom",
-        "@aws-sdk/client-dynamodb",
-        "@aws-sdk/lib-dynamodb",
-      ],
+      nodeModules: ["jsdom"],
     };
     const miniStackDefaultBundling = {
       ...defaultBundling,
@@ -127,8 +123,37 @@ export class Lambda extends Construct {
       if (isMiniStack && !resource.node.tryFindChild("OPTIONS")) {
         resource.addMethod(
           "OPTIONS",
-          new apigateway.LambdaIntegration(this.lambda),
-          { authorizationType: undefined }
+          new apigateway.MockIntegration({
+            integrationResponses: [
+              {
+                statusCode: "200",
+                responseParameters: {
+                  "method.response.header.Access-Control-Allow-Headers":
+                    "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                  "method.response.header.Access-Control-Allow-Methods":
+                    "'OPTIONS,GET,POST,PUT,PATCH,DELETE'",
+                  "method.response.header.Access-Control-Allow-Origin": "'*'",
+                },
+              },
+            ],
+            passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
+            requestTemplates: {
+              "application/json": '{"statusCode": 200}',
+            },
+          }),
+          {
+            authorizationType: undefined,
+            methodResponses: [
+              {
+                statusCode: "200",
+                responseParameters: {
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true,
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                },
+              },
+            ],
+          }
         );
       }
     }

@@ -61,7 +61,7 @@ if [ "$LOCAL" = true ]; then
         colima start --cpu 4 --memory 10
     fi
 
-    if ! docker info >/dev/null 2>&1 ; then
+    if ! docker --context colima info >/dev/null 2>&1 ; then
         echo "Colima's container runtime is unavailable. Start Colima and retry." >&2
         exit 1
     fi
@@ -69,9 +69,9 @@ if [ "$LOCAL" = true ]; then
     MINISTACK_CONTAINER_NAME_VALUE="${MINISTACK_CONTAINER_NAME:-${PROJECT:-seds}-ministack-local}"
     MINISTACK_PORT_VALUE="${MINISTACK_PORT:-4566}"
 
-    if ! docker inspect "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
+    if ! docker --context colima inspect "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
         echo "MiniStack is not running. We'll start it up for you now."
-        docker run --rm -d \
+        docker --context colima run --rm -d \
             --name "$MINISTACK_CONTAINER_NAME_VALUE" \
             -p "${MINISTACK_PORT_VALUE}:4566" \
             -e LAMBDA_EXECUTOR=local \
@@ -79,9 +79,9 @@ if [ "$LOCAL" = true ]; then
             -e S3_PERSIST=0 \
             -e RDS_PERSIST=0 \
             ministackorg/ministack:latest >/dev/null
-    elif ! docker inspect -f '{{.State.Running}}' "$MINISTACK_CONTAINER_NAME_VALUE" | grep -q true ; then
+    elif ! docker --context colima inspect -f '{{.State.Running}}' "$MINISTACK_CONTAINER_NAME_VALUE" | grep -q true ; then
         echo "MiniStack is installed but not running. We'll start it up for you now."
-        docker start "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null
+        docker --context colima start "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null
     fi
 fi
 

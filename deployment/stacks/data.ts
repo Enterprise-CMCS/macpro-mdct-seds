@@ -7,6 +7,7 @@ import {
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 import { Lambda } from "../constructs/lambda.ts";
+import { isMiniStack } from "../local/util.ts";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -75,7 +76,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     },
     isDev,
     bundling: {
-      nodeModules: ["@aws-sdk/client-dynamodb", "@aws-sdk/lib-dynamodb"],
       commandHooks: {
         beforeBundling(inputDir: string, outputDir: string): string[] {
           return [
@@ -106,8 +106,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     }
   );
 
-  for (const ddbTable of tables) {
-    invokeSeedDataFunction.node.addDependency(ddbTable.table);
+  if (isMiniStack) {
+    for (const ddbTable of tables) {
+      invokeSeedDataFunction.node.addDependency(ddbTable.table);
+    }
   }
 
   new CfnOutput(scope, "SeedDataFunctionName", {
