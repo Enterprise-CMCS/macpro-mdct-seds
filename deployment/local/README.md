@@ -28,7 +28,7 @@ Local login uses users from `services/ui-auth/libs/users.json`. The seeded passw
 ## Monitoring Floci
 
 ```sh
-docker logs -f floci-local
+docker --context colima logs -f floci-local
 ```
 
 Health is exposed on the Floci init endpoint:
