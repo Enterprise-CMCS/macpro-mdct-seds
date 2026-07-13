@@ -81,7 +81,8 @@ Please refer to the README for instructions running the MDCT Workspace Setup.
 Alternatively, you may install the various requirements yourself.
 The best way to do this is by following the workspace setup script,
 skipping the commands you can't or don't need to run.
-The critical dependencies are `colima`, `nvm`, and `corepack`.
+The critical dependencies are `colima`, MiniStack (`ministackorg/ministack`),
+`nvm`, and `corepack`.
 We use `nvm` to manage the version of `node`
 and `corepack` to manage the version of `yarn`
 (referring to the repo's `.nvmrc` and `package.json` files respectively).
@@ -96,6 +97,8 @@ brew install nvm
 nvm install
 npm install --global corepack
 ```
+
+`./run local` pulls and runs the MiniStack Docker image in Colima.
 
 Note that this should be the _only_ time you invoke `npm` within this repo.
 For all other scripts and JS dependency management, please use `yarn`.
@@ -130,7 +133,7 @@ This will:
 3. Deploy SEDS to the MiniStack container.
    - Doing so by running the code in this repo's deployment folder.
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
-4. Open a tab in your browser, pointed to the SEDS server inside the container.
+4. Start the local UI at http://localhost:3000.
 
 ### Log in
 
@@ -156,7 +159,8 @@ During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
-Once you've run `./run local` you'll find yourself on a login page at localhost:3000. Local users are loaded from `services/ui-auth/libs/users.json`, and the local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+Once `./run local` is running, open http://localhost:3000 to log in.
+Local users are loaded from `services/ui-auth/libs/users.json`, and the local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ### View Local Resources
 

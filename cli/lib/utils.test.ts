@@ -119,12 +119,13 @@ describe("runFrontendLocally", () => {
     assert.deepEqual(writeLocalUiEnvFileMock.mock.calls[0]?.arguments[0], {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: "us-east-1",
-      API_URL: "http://localhost:4567/restapis/api123/ministack/_user_request_",
+      API_URL: "/restapis/api123/ministack/_user_request_",
       COGNITO_REGION: "us-east-1",
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: "local-user-pool",
       COGNITO_USER_POOL_CLIENT_ID: "local-client",
       COGNITO_USER_POOL_CLIENT_DOMAIN: "local-domain",
+      COGNITO_USER_POOL_ENDPOINT: "http://localhost:4567",
       COGNITO_REDIRECT_SIGNIN: "http://localhost:3333/",
       COGNITO_REDIRECT_SIGNOUT: "http://localhost:3333/",
     });
@@ -138,8 +139,6 @@ describe("runFrontendLocally", () => {
         "--strictPort",
         "--port",
         "3333",
-        "--open",
-        "false",
       ],
       "services/ui-src",
     ]);

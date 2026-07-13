@@ -120,42 +120,6 @@ export class Lambda extends Construct {
             : apigateway.AuthorizationType.IAM,
         }
       );
-      if (isMiniStack && !resource.node.tryFindChild("OPTIONS")) {
-        resource.addMethod(
-          "OPTIONS",
-          new apigateway.MockIntegration({
-            integrationResponses: [
-              {
-                statusCode: "200",
-                responseParameters: {
-                  "method.response.header.Access-Control-Allow-Headers":
-                    "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-                  "method.response.header.Access-Control-Allow-Methods":
-                    "'OPTIONS,GET,POST,PUT,PATCH,DELETE'",
-                  "method.response.header.Access-Control-Allow-Origin": "'*'",
-                },
-              },
-            ],
-            passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
-            requestTemplates: {
-              "application/json": '{"statusCode": 200}',
-            },
-          }),
-          {
-            authorizationType: undefined,
-            methodResponses: [
-              {
-                statusCode: "200",
-                responseParameters: {
-                  "method.response.header.Access-Control-Allow-Headers": true,
-                  "method.response.header.Access-Control-Allow-Methods": true,
-                  "method.response.header.Access-Control-Allow-Origin": true,
-                },
-              },
-            ],
-          }
-        );
-      }
     }
 
     for (const ddbTable of tables) {

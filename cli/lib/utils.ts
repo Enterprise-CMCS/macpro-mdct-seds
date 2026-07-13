@@ -37,12 +37,13 @@ const buildUiEnvObject = (
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: `http://localhost:${miniStackPort}/restapis/${apiId}/${stage}/_user_request_`,
+      API_URL: `/restapis/${apiId}/${stage}/_user_request_`,
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN: cfnOutputs.CognitoUserPoolClientDomain!,
+      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${miniStackPort}`,
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
@@ -72,17 +73,7 @@ export const runFrontendLocally = async (stage: string) => {
   const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
   runCommand(
     "ui",
-    [
-      "yarn",
-      "start",
-      "--host",
-      "127.0.0.1",
-      "--strictPort",
-      "--port",
-      uiPort,
-      "--open",
-      "false",
-    ],
+    ["yarn", "start", "--host", "127.0.0.1", "--strictPort", "--port", uiPort],
     "services/ui-src"
   );
 };

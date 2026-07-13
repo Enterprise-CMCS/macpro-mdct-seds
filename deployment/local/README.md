@@ -6,13 +6,13 @@ The `./run local` command runs SEDS locally by deploying the stack into MiniStac
 
 ## Prerequisites
 
-Before running the application locally, ensure the following dependencies are installed and running:
+Before running the application locally, ensure the following dependencies are installed:
 
 ### Required Installations
 
 1. **Colima** - MiniStack runs inside a Colima-managed container.
 
-_The install is handled by the run script._
+The run script starts Colima when needed and pulls the MiniStack container image.
 
 Links for the curious:
 
@@ -50,7 +50,7 @@ curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
 ## Notes
 
 - Internally, the local CDK stage is named `ministack`. That is why stack names and raw API Gateway paths include `ministack`.
-- The generated UI env points at MiniStack's API proxy shape:
-  `http://localhost:${MINISTACK_PORT:-4566}/restapis/<apiId>/ministack/_user_request_`
+- The generated UI env points at Vite's local MiniStack API proxy:
+  `/restapis/<apiId>/ministack/_user_request_`
 - Use `./run reset` to stop the MiniStack container and tear down Colima.
 - Local login uses users from `services/ui-auth/libs/users.json`. The seeded password can be overridden with `LOCAL_COGNITO_PASSWORD`.

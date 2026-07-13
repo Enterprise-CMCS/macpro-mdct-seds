@@ -100,6 +100,43 @@ describe("local command", () => {
         "CDK MiniStack watch",
       ]
     );
+    assert.deepEqual(runCommandMock.mock.calls[2]?.arguments[1], [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--app",
+      "./deployment/local/prerequisites.ts",
+      "--method",
+      "direct",
+      "--require-approval",
+      "never",
+    ]);
+    assert.deepEqual(runCommandMock.mock.calls[3]?.arguments[1], [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--app",
+      "./deployment/prerequisites.ts",
+      "--method",
+      "direct",
+      "--context",
+      "stage=ministack",
+      "--require-approval",
+      "never",
+    ]);
+    assert.deepEqual(runCommandMock.mock.calls[4]?.arguments[1], [
+      "yarn",
+      "cdklocal",
+      "deploy",
+      "--method",
+      "direct",
+      "--context",
+      "stage=ministack",
+      "--all",
+      "--no-rollback",
+      "--require-approval",
+      "never",
+    ]);
     assert.equal(bootstrapLocalCognitoUsersMock.mock.calls.length, 1);
     assert.equal(seedDataMock.mock.calls.length, 1);
     assert.deepEqual(runFrontendLocallyMock.mock.calls[0]?.arguments, [
