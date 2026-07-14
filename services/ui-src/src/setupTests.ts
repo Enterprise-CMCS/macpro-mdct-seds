@@ -9,19 +9,6 @@ import { cleanup } from "@testing-library/react";
 // Since vitest is so jest-like, there is no separate TL package for it.
 expect.extend(matchers);
 
-(window as any)._env_ = {
-  API_REGION: "us-east-1",
-  API_URL: "",
-  COGNITO_REGION: "us-east-1",
-  COGNITO_IDENTITY_POOL_ID: "",
-  COGNITO_USER_POOL_ID: "",
-  COGNITO_USER_POOL_CLIENT_ID: "",
-  COGNITO_USER_POOL_CLIENT_DOMAIN: "",
-  COGNITO_USER_POOL_ENDPOINT: "",
-  COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
-  COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
-};
-
 // Explicitly instruct TL to tear down the DOM between each test
 afterEach(() => {
   cleanup();

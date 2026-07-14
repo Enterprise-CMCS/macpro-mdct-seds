@@ -3,7 +3,6 @@ import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { TextField } from "@cmsgov/design-system";
 import LoaderButton from "../LoaderButton/LoaderButton";
 import { onError } from "../../libs/errorLib";
-import config from "../../config/config";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,11 +58,10 @@ export default function Login() {
   //This variable will be used to set the hidden property of the developer-login form
   //If the environment is not PROD, the developer login will be shown
   const hideCognitoLogin = window.location.hostname === "mdctseds.cms.gov";
-  const hideOktaLogin = Boolean(config.cognito.USER_POOL_ENDPOINT);
 
   return (
     <div data-testid="Login" className="login">
-      <div data-testid="OktaLogin" hidden={hideOktaLogin}>
+      <div data-testid="OktaLogin">
         <LoaderButton
           type="button"
           onClick={handleSubmitOkta}
