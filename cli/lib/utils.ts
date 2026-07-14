@@ -42,7 +42,6 @@ export const buildUiEnvObject = (
 ): Record<string, string> => {
   if (stage === "floci") {
     const uiPort = getLocalUiPort();
-    const flociPort = process.env.FLOCI_PORT ?? "4566";
 
     return {
       SKIP_PREFLIGHT_CHECK: "true",
@@ -54,7 +53,7 @@ export const buildUiEnvObject = (
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         cfnOutputs.CognitoUserPoolClientDomain ?? "",
-      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${flociPort}`,
+      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${uiPort}/_floci-cognito`,
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
