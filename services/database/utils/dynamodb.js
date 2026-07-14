@@ -6,11 +6,12 @@ const {
 } = require("@aws-sdk/lib-dynamodb");
 
 const buildDynamoClient = () => {
+  const isLocalEndpoint = Boolean(process.env.AWS_ENDPOINT_URL);
   const dynamoConfig = {
     logger: {
-      debug: console.debug,
+      debug: isLocalEndpoint ? () => {} : console.debug,
       error: console.error,
-      info: console.info,
+      info: isLocalEndpoint ? () => {} : console.info,
       warn: console.warn,
     },
     region: "us-east-1",

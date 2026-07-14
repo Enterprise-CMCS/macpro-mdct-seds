@@ -1,14 +1,37 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import Login from "./Login";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { signInWithRedirect as actualSignInWithRedirect } from "aws-amplify/auth";
+import {
+  signIn as actualSignIn,
+  signInWithRedirect as actualSignInWithRedirect,
+} from "aws-amplify/auth";
 
 vi.mock("aws-amplify/auth", () => ({
+  signIn: vi.fn().mockResolvedValue({ isSignedIn: true }),
   signInWithRedirect: vi.fn(),
 }));
+const signIn = vi.mocked(actualSignIn);
 const signInWithRedirect = vi.mocked(actualSignInWithRedirect);
+
+const mockConfig = vi.hoisted(() => ({
+  cognito: {
+    USER_POOL_ENDPOINT: undefined as string | undefined,
+  },
+}));
+
+vi.mock("../../config/config", () => ({
+  default: mockConfig,
+}));
 
 vi.mock("libs/errorLib", () => ({
   onError: vi.fn(),
@@ -35,6 +58,12 @@ describe("Test Login.js", () => {
     window.location = originalLocation;
   });
 
+  beforeEach(() => {
+    mockConfig.cognito.USER_POOL_ENDPOINT = undefined;
+    signIn.mockClear();
+    signInWithRedirect.mockReset();
+  });
+
   if (currentlyOnDevelopmentBranch()) {
     it("should render email login form", () => {
       render(<Login />);
@@ -51,6 +80,13 @@ describe("Test Login.js", () => {
     expect(
       screen.getByText("Login with EUA ID", { selector: "button" })
     ).toBeInTheDocument();
+  });
+
+  it("should hide EUA login button in Floci", () => {
+    mockConfig.cognito.USER_POOL_ENDPOINT = "http://localhost:4570";
+    render(<Login />);
+
+    expect(screen.getByTestId("OktaLogin")).not.toBeVisible();
   });
 
   it("should redirect to Okta for login", async () => {

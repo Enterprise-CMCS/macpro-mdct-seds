@@ -7,8 +7,15 @@ export default defineConfig({
   base: "/",
   plugins: [react()],
   server: {
-    open: true,
+    open: false,
     port: 3000,
+    proxy: {
+      "/_floci-api": {
+        target: `http://127.0.0.1:${process.env.FLOCI_PORT ?? "4566"}`,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/_floci-api/, ""),
+      },
+    },
   },
   define: {
     global: "globalThis",

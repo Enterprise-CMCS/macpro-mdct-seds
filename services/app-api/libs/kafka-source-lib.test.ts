@@ -41,6 +41,7 @@ describe("Kafka Source Lib", () => {
 
     beforeEach(() => {
       vi.clearAllMocks();
+      process.env.brokerString = "broker1,broker2";
       TestKafkaInstance = new TestKafkaExtension();
     });
 
@@ -148,6 +149,26 @@ describe("Kafka Source Lib", () => {
       };
 
       await TestKafkaInstance.handler(mockEvent);
+
+      expect(mockSendBatch).not.toHaveBeenCalled();
+    });
+
+    it("should skip kafka publishing in Floci", async () => {
+      process.env.brokerString = "floci";
+
+      await TestKafkaInstance.handler({
+        Records: [
+          {
+            eventSourceARN: "foo/local-mock-table-alpha/bar",
+            eventID: "mockEventId",
+            eventName: "mockEventName",
+            dynamodb: {
+              NewImage: { id: { S: "1" } },
+              Keys: { id: { S: "1" } },
+            },
+          },
+        ],
+      });
 
       expect(mockSendBatch).not.toHaveBeenCalled();
     });

@@ -317,8 +317,8 @@ export const local = {
       "."
     );
 
-    await seedData();
     await bootstrapLocalCognitoUsers();
+    await seedData();
 
     await Promise.all([
       runCommand(

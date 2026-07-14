@@ -6,14 +6,14 @@ The `./run local` command allows you to run our application locally on your lapt
 
 ## Prerequisites
 
-Before running the application locally, ensure the following dependencies are installed and running:
+Before running the application locally, ensure the following dependencies are installed:
 
 ### Required Installations
 
 1. **Colima** - Floci runs inside a Colima-managed container on macOS.
 2. **AWS CLI** - Required for direct inspection of the local AWS emulator.
 
-The `./run local` command will verify Colima before it starts Floci.
+The run script starts Colima when needed and pulls the Floci container image.
 
 ## Deploying and Running Locally
 
@@ -34,7 +34,7 @@ docker --context colima logs -f floci-local
 Health is exposed on the Floci init endpoint:
 
 ```sh
-curl http://localhost:4566/_floci/init
+curl http://127.0.0.1:${FLOCI_PORT:-4566}/_floci/init
 ```
 
 ## Accessing Lambda Environment Variables
