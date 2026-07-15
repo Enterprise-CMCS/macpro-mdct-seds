@@ -8833,6 +8833,7 @@ __metadata:
   resolution: "cli@workspace:cli"
   dependencies:
     "@aws-sdk/client-cloudformation": "npm:~3.1034.0"
+    "@aws-sdk/client-cognito-identity-provider": "npm:~3.1034.0"
     "@aws-sdk/client-lambda": "npm:~3.1034.0"
     "@aws-sdk/client-sts": "npm:~3.1034.0"
     "@types/node": "npm:^24.10.1"

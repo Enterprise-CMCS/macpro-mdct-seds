@@ -9,18 +9,6 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000,
-    proxy: {
-      "/_floci-api": {
-        target: `http://localhost:${process.env.FLOCI_PORT ?? "4566"}`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/_floci-api/, ""),
-      },
-      "/_floci-cognito": {
-        target: `http://localhost:${process.env.FLOCI_PORT ?? "4566"}`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/_floci-cognito/, ""),
-      },
-    },
   },
   define: {
     global: "globalThis",

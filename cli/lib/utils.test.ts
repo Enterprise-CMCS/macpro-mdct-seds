@@ -1,10 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import {
-  buildUiEnvObject,
-  buildUiStartCommand,
-  getFlociApiUrl,
-} from "./utils.ts";
+import { buildUiEnvObject, getFlociApiUrl } from "./utils.ts";
 
 const withEnv = (key: string, value: string | undefined, fn: () => void) => {
   const original = process.env[key];
@@ -55,10 +51,10 @@ const flociOutputs = {
   CognitoUserPoolClientDomain: "",
 };
 
-test("getFlociApiUrl returns a same-origin path for the Vite /_floci-api proxy", () => {
+test("getFlociApiUrl returns a same-origin path for the local API proxy", () => {
   assert.equal(
     getFlociApiUrl(flociOutputs.ApiUrl, "floci"),
-    "/_floci-api/restapis/abc123/floci/_user_request_"
+    "/_local-api/restapis/abc123/floci/_user_request_"
   );
 });
 
@@ -67,7 +63,7 @@ test("floci UI env routes API through the same-origin proxy", () => {
     const env = buildUiEnvObject("floci", flociOutputs);
 
     assert.ok(
-      env.API_URL.startsWith("/_floci-api/"),
+      env.API_URL.startsWith("/_local-api/"),
       `expected relative API_URL, got ${env.API_URL}`
     );
     assert.equal(env.COGNITO_IDENTITY_POOL_ID, "");
@@ -76,10 +72,7 @@ test("floci UI env routes API through the same-origin proxy", () => {
       env.COGNITO_USER_POOL_CLIENT_ID,
       flociOutputs.CognitoUserPoolClientId
     );
-    assert.equal(
-      env.COGNITO_USER_POOL_ENDPOINT,
-      "http://localhost:3000/_floci-cognito"
-    );
+    assert.equal(env.COGNITO_USER_POOL_ENDPOINT, "/_local-cognito");
   });
 });
 
@@ -99,51 +92,12 @@ test("deployed UI env keeps an absolute API_URL", () => {
   );
 });
 
-test("buildUiStartCommand spawns vite on the loopback host and default LOCAL_UI_PORT", () => {
-  withEnv("LOCAL_UI_PORT", undefined, () => {
-    const { prefix, cmd, cwd } = buildUiStartCommand();
-
-    assert.equal(prefix, "ui");
-    assert.equal(cwd, "services/ui-src");
-    assert.deepEqual(cmd, [
-      "yarn",
-      "start",
-      "--host",
-      "127.0.0.1",
-      "--strictPort",
-      "--port",
-      "3000",
-      "--no-open",
-    ]);
-  });
-});
-
-test("buildUiStartCommand binds LOCAL_UI_PORT when it is set", () => {
-  withEnv("LOCAL_UI_PORT", "3456", () => {
-    assert.deepEqual(buildUiStartCommand().cmd, [
-      "yarn",
-      "start",
-      "--host",
-      "127.0.0.1",
-      "--strictPort",
-      "--port",
-      "3456",
-      "--no-open",
-    ]);
-  });
-});
-
 test("floci UI serves on the same port baked into the Cognito redirects", () => {
   withEnv("LOCAL_UI_PORT", "3456", () => {
-    const { cmd } = buildUiStartCommand();
-    const uiPort = cmd[cmd.indexOf("--port") + 1];
     const env = buildUiEnvObject("floci", flociOutputs);
 
-    assert.equal(env.COGNITO_REDIRECT_SIGNIN, `http://localhost:${uiPort}/`);
-    assert.equal(env.COGNITO_REDIRECT_SIGNOUT, `http://localhost:${uiPort}/`);
-    assert.equal(
-      env.COGNITO_USER_POOL_ENDPOINT,
-      `http://localhost:${uiPort}/_floci-cognito`
-    );
+    assert.equal(env.COGNITO_REDIRECT_SIGNIN, "http://localhost:3456/");
+    assert.equal(env.COGNITO_REDIRECT_SIGNOUT, "http://localhost:3456/");
+    assert.equal(env.COGNITO_USER_POOL_ENDPOINT, "/_local-cognito");
   });
 });

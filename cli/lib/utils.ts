@@ -11,6 +11,7 @@ export const getCloudFormationStackOutputValues = async (
 ): Promise<Record<string, string>> => {
   const cloudFormationClient = new CloudFormationClient({
     region,
+    endpoint: process.env.AWS_ENDPOINT_URL,
   });
   const command = new DescribeStacksCommand({ StackName: stackName });
   const response = await cloudFormationClient.send(command);
@@ -27,13 +28,9 @@ export const getCloudFormationStackOutputValues = async (
 
 const getLocalUiPort = () => process.env.LOCAL_UI_PORT ?? "3000";
 
-// Path-relative REST endpoint. Amplify's resolveApiUrl resolves a relative
-// endpoint against location.origin, so requests flow through the same-origin
-// Vite `/_floci-api` proxy to the Floci container instead of hitting its port
-// cross-origin.
 export const getFlociApiUrl = (apiUrl: string, stage: string) => {
   const restApiId = new URL(apiUrl).hostname.split(".")[0];
-  return `/_floci-api/restapis/${restApiId}/${stage}/_user_request_`;
+  return `/_local-api/restapis/${restApiId}/${stage}/_user_request_`;
 };
 
 export const buildUiEnvObject = (
@@ -53,7 +50,7 @@ export const buildUiEnvObject = (
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         cfnOutputs.CognitoUserPoolClientDomain ?? "",
-      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${uiPort}/_floci-cognito`,
+      COGNITO_USER_POOL_ENDPOINT: "/_local-cognito",
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
@@ -73,25 +70,6 @@ export const buildUiEnvObject = (
   };
 };
 
-export const buildUiStartCommand = (): {
-  prefix: string;
-  cmd: string[];
-  cwd: string;
-} => ({
-  prefix: "ui",
-  cmd: [
-    "yarn",
-    "start",
-    "--host",
-    "127.0.0.1",
-    "--strictPort",
-    "--port",
-    getLocalUiPort(),
-    "--no-open",
-  ],
-  cwd: "services/ui-src",
-});
-
 export const runFrontendLocally = async (stage: string) => {
   const outputs = await getCloudFormationStackOutputValues(
     `${process.env.PROJECT}-${stage}`
@@ -99,6 +77,5 @@ export const runFrontendLocally = async (stage: string) => {
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
 
-  const { prefix, cmd, cwd } = buildUiStartCommand();
-  return runCommand(prefix, cmd, cwd);
+  return runCommand("ui", ["node", "./cli/lib/localFrontendProxy.ts"], ".");
 };

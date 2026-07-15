@@ -13,7 +13,6 @@ Amplify.configure(
         userPoolId: config.cognito.USER_POOL_ID,
         identityPoolId: config.cognito.IDENTITY_POOL_ID,
         userPoolClientId: config.cognito.APP_CLIENT_ID,
-        userPoolEndpoint: config.cognito.USER_POOL_ENDPOINT,
         loginWith: {
           oauth: {
             domain: config.cognito.APP_CLIENT_DOMAIN,
