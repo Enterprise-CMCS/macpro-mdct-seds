@@ -11,6 +11,7 @@ export const getCloudFormationStackOutputValues = async (
 ): Promise<Record<string, string>> => {
   const cloudFormationClient = new CloudFormationClient({
     region,
+    endpoint: process.env.AWS_ENDPOINT_URL,
   });
   const command = new DescribeStacksCommand({ StackName: stackName });
   const response = await cloudFormationClient.send(command);
@@ -33,17 +34,16 @@ const buildUiEnvObject = (
 
   if (stage === "ministack") {
     const apiId = new URL(cfnOutputs.ApiUrl!).hostname.split(".")[0];
-    const miniStackPort = process.env.MINISTACK_PORT ?? "4566";
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: `/restapis/${apiId}/${stage}/_user_request_`,
+      API_URL: `/_local-api/restapis/${apiId}/${stage}/_user_request_`,
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN: cfnOutputs.CognitoUserPoolClientDomain!,
-      COGNITO_USER_POOL_ENDPOINT: `http://localhost:${miniStackPort}`,
+      COGNITO_USER_POOL_ENDPOINT: "/_local-cognito",
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
@@ -70,10 +70,5 @@ export const runFrontendLocally = async (stage: string) => {
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
 
-  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
-  runCommand(
-    "ui",
-    ["yarn", "start", "--host", "127.0.0.1", "--strictPort", "--port", uiPort],
-    "services/ui-src"
-  );
+  return runCommand("ui", ["node", "./cli/lib/localFrontendProxy.ts"], ".");
 };

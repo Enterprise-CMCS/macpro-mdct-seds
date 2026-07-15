@@ -19,7 +19,7 @@ class DescribeStacksCommand {
 }
 
 class CloudFormationClient {
-  constructor(_config: { region: string }) {}
+  constructor(_config: { endpoint?: string; region: string }) {}
 
   async send(command: DescribeStacksCommand): Promise<DescribeStacksResponse> {
     describeStacksCalls.push(command);
@@ -119,28 +119,20 @@ describe("runFrontendLocally", () => {
     assert.deepEqual(writeLocalUiEnvFileMock.mock.calls[0]?.arguments[0], {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: "us-east-1",
-      API_URL: "/restapis/api123/ministack/_user_request_",
+      API_URL: "/_local-api/restapis/api123/ministack/_user_request_",
       COGNITO_REGION: "us-east-1",
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: "local-user-pool",
       COGNITO_USER_POOL_CLIENT_ID: "local-client",
       COGNITO_USER_POOL_CLIENT_DOMAIN: "local-domain",
-      COGNITO_USER_POOL_ENDPOINT: "http://localhost:4567",
+      COGNITO_USER_POOL_ENDPOINT: "/_local-cognito",
       COGNITO_REDIRECT_SIGNIN: "http://localhost:3333/",
       COGNITO_REDIRECT_SIGNOUT: "http://localhost:3333/",
     });
     assert.deepEqual(runCommandMock.mock.calls[0]?.arguments, [
       "ui",
-      [
-        "yarn",
-        "start",
-        "--host",
-        "127.0.0.1",
-        "--strictPort",
-        "--port",
-        "3333",
-      ],
-      "services/ui-src",
+      ["node", "./cli/lib/localFrontendProxy.ts"],
+      ".",
     ]);
   });
 });
