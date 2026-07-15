@@ -50,7 +50,6 @@ export const buildUiEnvObject = (
       COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         cfnOutputs.CognitoUserPoolClientDomain ?? "",
-      COGNITO_USER_POOL_ENDPOINT: "/_local-cognito",
       COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
       COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };

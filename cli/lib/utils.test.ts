@@ -72,7 +72,6 @@ test("floci UI env routes API through the same-origin proxy", () => {
       env.COGNITO_USER_POOL_CLIENT_ID,
       flociOutputs.CognitoUserPoolClientId
     );
-    assert.equal(env.COGNITO_USER_POOL_ENDPOINT, "/_local-cognito");
   });
 });
 
@@ -98,6 +97,5 @@ test("floci UI serves on the same port baked into the Cognito redirects", () => 
 
     assert.equal(env.COGNITO_REDIRECT_SIGNIN, "http://localhost:3456/");
     assert.equal(env.COGNITO_REDIRECT_SIGNOUT, "http://localhost:3456/");
-    assert.equal(env.COGNITO_USER_POOL_ENDPOINT, "/_local-cognito");
   });
 });
