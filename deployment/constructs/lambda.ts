@@ -9,7 +9,7 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isFloci } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
@@ -79,7 +79,7 @@ export class Lambda extends Construct {
       },
       logGroup,
       environment: {
-        ...(isFloci ? { AWS_ENDPOINT_URL: flociEndpointFromLambda } : {}),
+        ...(isLocalAwsEmulator ? { AWS_ENDPOINT_URL: flociEndpointFromLambda } : {}),
         ...environment,
       },
       ...restProps,
@@ -95,7 +95,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isFloci
+          authorizationType: isLocalAwsEmulator
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

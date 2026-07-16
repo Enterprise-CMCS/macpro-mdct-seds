@@ -10,7 +10,7 @@ import {
   triggers,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isFloci } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateUiAuthComponentsProps {
@@ -76,7 +76,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const providerName = "Okta";
 
-  const oktaIdp = isFloci
+  const oktaIdp = isLocalAwsEmulator
     ? undefined
     : new cognito.CfnUserPoolIdentityProvider(
         scope,
@@ -101,7 +101,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         }
       );
 
-  const supportedIdentityProviders = isFloci
+  const supportedIdentityProviders = isLocalAwsEmulator
     ? [cognito.UserPoolClientIdentityProvider.COGNITO]
     : [cognito.UserPoolClientIdentityProvider.custom(providerName)];
 
@@ -116,7 +116,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     authFlows: {
       userPassword: true,
     },
-    ...(isFloci
+    ...(isLocalAwsEmulator
       ? {}
       : {
           oAuth: {
@@ -144,7 +144,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     userPoolClient.node.addDependency(oktaIdp);
   }
 
-  const userPoolDomain = isFloci
+  const userPoolDomain = isLocalAwsEmulator
     ? undefined
     : new cognito.UserPoolDomain(scope, "UserPoolDomain", {
         userPool,
@@ -155,7 +155,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         },
       });
 
-  const identityPool = isFloci
+  const identityPool = isLocalAwsEmulator
     ? undefined
     : new cognito.CfnIdentityPool(scope, "CognitoIdentityPool", {
         identityPoolName: `${stage}-IdentityPool`,
@@ -229,7 +229,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       additionalPolicies: [
         new iam.PolicyStatement({
           actions: ["*"],
-          resources: isFloci ? ["*"] : [userPool.userPoolArn],
+          resources: isLocalAwsEmulator ? ["*"] : [userPool.userPoolArn],
           effect: iam.Effect.ALLOW,
         }),
       ],
@@ -244,7 +244,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }).lambda;
   }
 
-  if (!isFloci) {
+  if (!isLocalAwsEmulator) {
     const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",
@@ -258,7 +258,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     });
   }
 
-  if (bootstrapUsersFunction && !isFloci) {
+  if (bootstrapUsersFunction && !isLocalAwsEmulator) {
     new triggers.Trigger(scope, "InvokeBootstrapUsersFunction", {
       handler: bootstrapUsersFunction,
       invocationType: triggers.InvocationType.EVENT,

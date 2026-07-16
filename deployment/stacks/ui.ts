@@ -11,7 +11,7 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isFloci } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 
 interface CreateUiComponentsProps {
   scope: Construct;
@@ -169,7 +169,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   );
 
-  if (!isFloci) {
+  if (!isLocalAwsEmulator) {
     const waf = setupWaf(
       scope,
       stage,
