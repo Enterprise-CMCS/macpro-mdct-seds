@@ -34,22 +34,17 @@ The practical recommendation is to move forward with MiniStack unless a new bloc
 
 Found directly in the reviewed implementation branches:
 
-- `cmdct-6054ministack`, `cmdct-6054floci`, and `cmdct-6054localemu` all modify the same core local-development surface: `run`, `cli/commands/local.ts`, `cli/commands/reset.ts`, `cli/lib/seedData.ts`, `cli/lib/utils.ts`, `cli/lib/localFrontendProxy.ts`, local docs, deployment config/util/prerequisite files, the API/auth/UI/data deployment stacks, package metadata, and tests for local/reset/seed/utils behavior.
+- `cmdct-6054ministack`, `cmdct-6054floci`, and `cmdct-6054localemu` all modify the same 27 files against `origin/main`.
 - All three branches keep `services/` unchanged against `origin/main`.
 - All three branches use the same `cli/lib/localFrontendProxy.ts` pattern so the frontend can keep its normal Cognito/API code while local requests are routed through same-origin proxy paths.
+- All three branches include `cli/commands/run-wrapper.test.ts`, `cli/lib/localCognito.ts`, and `deployment/constructs/lambda-dynamo-event.ts` so branch-specific behavior is carried in the same reviewed file set.
 - All three branches include seed-data test coverage and reset test coverage.
 - All three branches package seed-data JSON outside `services/` so the existing seed handler can resolve the data in local Lambda bundles.
-- The remaining branch-only files are intentional implementation differences, not stale service wiring.
+- `deployment/constructs/lambda-dynamo-event.ts` is identical across the three branches after normalizing the local-emulator flag name.
 
 Remaining branch-only files:
 
-| File                                           | Branch                   | Why it exists                                                                                                                                                                                                                | Ranking impact                                                                                                                             |
-| ---------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `cli/commands/run-wrapper.test.ts`             | MiniStack only           | MiniStack's `run` wrapper owns Docker container create/reuse/start and port reconciliation before the CLI starts.                                                                                                            | Slight complexity cost, but it is contained and tested.                                                                                    |
-| `deployment/constructs/lambda-dynamo-event.ts` | MiniStack only           | MiniStack needs Dynamo event Lambda bundling adjusted so AWS SDK modules are bundled and retry attempts are not passed in the unsupported local path.                                                                        | Real emulator-specific CDK complexity; not enough by itself to drop MiniStack below Floci.                                                 |
-| `cli/lib/localCognito.ts`                      | LocalEmu only            | LocalEmu does not get the same Cognito resources cleanly through the CDK path, so the branch creates/updates the local user pool and client directly through Cognito API calls.                                              | Meaningful complexity cost; this is one reason LocalEmu ranks below MiniStack and Floci.                                                   |
-
-Floci currently has no one-branch-only files against `origin/main`; its branch-specific behavior lives inside the shared local command/config/deployment files.
+None. The current implementation branches intentionally keep emulator-specific behavior inside the same changed-file set.
 
 Inferred from the reviewed files:
 
