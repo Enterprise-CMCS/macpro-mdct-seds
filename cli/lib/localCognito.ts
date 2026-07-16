@@ -1,7 +1,6 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { getCloudFormationStackOutputValues } from "./utils.ts";
-import { project, region } from "./consts.ts";
+import { region } from "./consts.ts";
 
 const invokeLambda = async (
   functionName: string,
@@ -25,12 +24,6 @@ const invokeLambda = async (
   }
 };
 
-export const seedData = async () => {
-  const SeedDataFunctionName = (
-    await getCloudFormationStackOutputValues(`${project}-ministack`)
-  )["SeedDataFunctionName"];
-
-  if (SeedDataFunctionName) {
-    await invokeLambda(SeedDataFunctionName, "Event");
-  }
+export const bootstrapLocalCognitoUsers = async () => {
+  await invokeLambda("ui-auth-ministack-bootstrapUsers", "RequestResponse");
 };

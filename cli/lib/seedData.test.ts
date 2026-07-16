@@ -52,7 +52,8 @@ mock.module("./utils.ts", {
 
 const originalProject = process.env.PROJECT;
 process.env.PROJECT = "seds";
-const { bootstrapLocalCognitoUsers, seedData } = await import("./seedData.ts");
+const { bootstrapLocalCognitoUsers } = await import("./localCognito.ts");
+const { seedData } = await import("./seedData.ts");
 if (originalProject === undefined) {
   delete process.env.PROJECT;
 } else {

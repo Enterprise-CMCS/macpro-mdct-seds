@@ -3,7 +3,7 @@ import { beforeEach, describe, it, mock } from "node:test";
 
 type RunCommand = typeof import("../lib/runner.ts").runCommand;
 type BootstrapLocalCognitoUsers =
-  typeof import("../lib/seedData.ts").bootstrapLocalCognitoUsers;
+  typeof import("../lib/localCognito.ts").bootstrapLocalCognitoUsers;
 type SeedData = typeof import("../lib/seedData.ts").seedData;
 type RunFrontendLocally = typeof import("../lib/utils.ts").runFrontendLocally;
 
@@ -49,8 +49,13 @@ mock.module("../lib/runner.ts", {
 
 mock.module("../lib/seedData.ts", {
   namedExports: {
-    bootstrapLocalCognitoUsers: bootstrapLocalCognitoUsersMock,
     seedData: seedDataMock,
+  },
+});
+
+mock.module("../lib/localCognito.ts", {
+  namedExports: {
+    bootstrapLocalCognitoUsers: bootstrapLocalCognitoUsersMock,
   },
 });
 

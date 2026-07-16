@@ -3,7 +3,8 @@ import { runCommand } from "../lib/runner.ts";
 import { execFileSync, execSync } from "node:child_process";
 import { region } from "../lib/consts.ts";
 import { runFrontendLocally } from "../lib/utils.ts";
-import { bootstrapLocalCognitoUsers, seedData } from "../lib/seedData.ts";
+import { bootstrapLocalCognitoUsers } from "../lib/localCognito.ts";
+import { seedData } from "../lib/seedData.ts";
 
 const isColimaRunning = () => {
   try {
