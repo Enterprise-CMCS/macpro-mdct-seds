@@ -8,7 +8,7 @@ import { bootstrapLocalCognitoUsers, seedData } from "../lib/seedData.ts";
 const flociContainerName = "floci-local";
 const flociDefaultSecret = JSON.stringify({
   vpcName: "floci-dev",
-  brokerString: "floci",
+  brokerString: "localstack",
   kafkaAuthorizedSubnetIds: "subnet-default-a",
 });
 
