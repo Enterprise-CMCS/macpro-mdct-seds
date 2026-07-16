@@ -56,7 +56,8 @@ if [ "$LOCAL" = true ]; then
     require_cmd docker "Run the workspace setup; Colima needs its container CLI"
     require_cmd colima "On macOS, install with 'brew install colima'"
 
-    if ! colima status 2>&1 | grep -q "colima is running" ; then
+    COLIMA_STATUS="$(colima status 2>&1 || true)"
+    if [[ "$COLIMA_STATUS" != *"colima is running"* ]] ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
@@ -72,7 +73,7 @@ if [ "$LOCAL" = true ]; then
     MINISTACK_PORT_VALUE="${MINISTACK_PORT:-4566}"
 
     if [ -z "${MINISTACK_PORT:-}" ] && docker --context colima inspect "$MINISTACK_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
-        MINISTACK_PUBLISHED_PORT="$(docker --context colima inspect -f '{{with (index .NetworkSettings.Ports "4566/tcp")}}{{(index . 0).HostPort}}{{end}}' "$MINISTACK_CONTAINER_NAME_VALUE")"
+        MINISTACK_PUBLISHED_PORT="$(docker --context colima inspect -f '{{with (index .HostConfig.PortBindings "4566/tcp")}}{{(index . 0).HostPort}}{{end}}' "$MINISTACK_CONTAINER_NAME_VALUE")"
         if [ -z "$MINISTACK_PUBLISHED_PORT" ]; then
             echo "MiniStack container exists but does not publish port 4566/tcp. Set MINISTACK_PORT and retry." >&2
             exit 1

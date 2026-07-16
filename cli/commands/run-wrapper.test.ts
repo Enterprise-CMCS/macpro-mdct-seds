@@ -92,7 +92,7 @@ describe("./run local wrapper", () => {
     assert.equal(result.dockerStart, "");
     assert.match(
       result.log,
-      /^docker inspect -f \{\{with \(index \.NetworkSettings\.Ports "4566\/tcp"\)\}\}\{\{\(index \. 0\)\.HostPort\}\}\{\{end\}\} demo-ministack-local$/m
+      /^docker inspect -f \{\{with \(index \.HostConfig\.PortBindings "4566\/tcp"\)\}\}\{\{\(index \. 0\)\.HostPort\}\}\{\{end\}\} demo-ministack-local$/m
     );
     assert.match(result.log, /^cli PROJECT:demo$/m);
     assert.match(result.log, /^cli MINISTACK_PORT:4570$/m);
@@ -288,7 +288,7 @@ const setupFixture = async () => {
       '      format="$2"',
       '      if [ "${FAKE_CONTAINER_EXISTS:-false}" != "true" ]; then exit 1; fi',
       '      case "$format" in',
-      '        *NetworkSettings.Ports*) printf "%s\\n" "${FAKE_PUBLISHED_PORT:-}"; exit 0 ;;',
+      '        *HostConfig.PortBindings*) printf "%s\\n" "${FAKE_PUBLISHED_PORT:-}"; exit 0 ;;',
       '        *State.Running*) printf "%s\\n" "${FAKE_CONTAINER_RUNNING:-true}"; exit 0 ;;',
       "      esac",
       "      exit 1",
