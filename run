@@ -57,7 +57,8 @@ if [ "$LOCAL" = true ]; then
     require_cmd colima "On macOS, install with 'brew install colima'"
     require_cmd aws "Install AWS CLI v2"
 
-    if ! colima status 2>&1 | grep -q "colima is running" ; then
+    COLIMA_STATUS="$(colima status 2>&1 || true)"
+    if [[ "$COLIMA_STATUS" != *"colima is running"* ]] ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
