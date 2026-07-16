@@ -46,7 +46,7 @@ const waitForMiniStack = async (port: string) => {
     try {
       const response = await fetch(`http://127.0.0.1:${port}/health`);
       if (!response.ok) {
-        throw new Error(`MiniStack health returned ${response.status}`);
+        throw new Error(`Unexpected status: ${response.status}`);
       }
 
       const health = (await response.json()) as {
@@ -56,13 +56,13 @@ const waitForMiniStack = async (port: string) => {
         return;
       }
     } catch {
-      // MiniStack can reject health requests while it is still starting.
+      // Keep polling until MiniStack is ready.
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  throw "MiniStack needs to be running.";
+  throw new Error("MiniStack did not become healthy within 60 seconds.");
 };
 
 export const local = {
@@ -92,12 +92,12 @@ export const local = {
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
-      "CDK MiniStack bootstrap",
+      "CDK local bootstrap",
       [
         "yarn",
         "cdklocal",
         "bootstrap",
-        `aws://000000000000/${region}`,
+        `aws://000000000000/${region}`, // MiniStack uses the default dummy account ID 000000000000
         "--context",
         "stage=bootstrap",
         "--require-approval",
@@ -107,7 +107,7 @@ export const local = {
     );
 
     await runCommand(
-      "CDK MiniStack local-prerequisite deploy",
+      "CDK local local-prerequisite deploy",
       [
         "yarn",
         "cdklocal",
@@ -123,7 +123,7 @@ export const local = {
     );
 
     await runCommand(
-      "CDK MiniStack prerequisite deploy",
+      "CDK local prerequisite deploy",
       [
         "yarn",
         "cdklocal",
@@ -132,8 +132,6 @@ export const local = {
         "./deployment/prerequisites.ts",
         "--method",
         "direct",
-        "--context",
-        "stage=ministack",
         "--require-approval",
         "never",
       ],
@@ -141,7 +139,7 @@ export const local = {
     );
 
     await runCommand(
-      "CDK MiniStack deploy",
+      "CDK local deploy",
       [
         "yarn",
         "cdklocal",
@@ -163,7 +161,7 @@ export const local = {
 
     await Promise.all([
       runCommand(
-        "CDK MiniStack watch",
+        "CDK local watch",
         [
           "yarn",
           "cdklocal",

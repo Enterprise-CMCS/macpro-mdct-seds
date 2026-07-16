@@ -4,6 +4,7 @@ import { beforeEach, describe, it, mock } from "node:test";
 
 type LambdaResponse = {
   FunctionError?: string;
+  Payload?: Uint8Array;
   StatusCode?: number;
 };
 
@@ -82,11 +83,15 @@ describe("bootstrapLocalCognitoUsers", () => {
   });
 
   it("fails when the synchronous bootstrap invoke reports an error", async () => {
-    lambdaResponse = { FunctionError: "Unhandled", StatusCode: 200 };
+    lambdaResponse = {
+      FunctionError: "Unhandled",
+      Payload: new TextEncoder().encode("boom"),
+      StatusCode: 200,
+    };
 
     await assert.rejects(
       bootstrapLocalCognitoUsers(),
-      /Lambda invoke failed for ui-auth-ministack-bootstrapUsers/
+      /Lambda invoke failed for ui-auth-ministack-bootstrapUsers: boom/
     );
   });
 });
@@ -105,6 +110,9 @@ describe("seedData", () => {
     await seedData();
 
     assert.deepEqual(stackOutputCalls, ["seds-ministack"]);
+    assert.deepEqual(lambdaClients, [
+      { endpoint: "http://127.0.0.1:4566", region: "us-east-1" },
+    ]);
     assert.deepEqual(lambdaCalls[0]?.input, {
       FunctionName: "data-ministack-seedData",
       InvocationType: "Event",
@@ -112,12 +120,16 @@ describe("seedData", () => {
     });
   });
 
-  it("fails when the asynchronous seed-data invoke reports an error", async () => {
-    lambdaResponse = { FunctionError: "Unhandled", StatusCode: 202 };
+  it("fails when the asynchronously seed-data invoke reports an error", async () => {
+    lambdaResponse = {
+      FunctionError: "Unhandled",
+      Payload: new TextEncoder().encode("boom"),
+      StatusCode: 202,
+    };
 
     await assert.rejects(
       seedData(),
-      /Lambda invoke failed for data-ministack-seedData/
+      /Lambda invoke failed for data-ministack-seedData: boom/
     );
   });
 });

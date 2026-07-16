@@ -1,6 +1,5 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { runCommand } from "../lib/runner.ts";
-import { execFileSync } from "node:child_process";
 import { updateEnvFiles } from "./update-env.ts";
 
 const miniStackContainerName =
@@ -15,15 +14,13 @@ export const reset = {
     await updateEnvFiles();
 
     try {
-      execFileSync(
-        "docker",
-        ["--context", "colima", "rm", "-f", miniStackContainerName],
-        {
-          stdio: "ignore",
-        }
+      await runCommand(
+        "Stop MiniStack",
+        ["docker", "--context", "colima", "rm", "-f", miniStackContainerName],
+        "."
       );
     } catch {
-      // The container may already be absent after a previous reset.
+      // if MiniStack is already stopped, don't throw
     }
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");

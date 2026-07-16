@@ -2,7 +2,7 @@
 
 # Running Locally with MiniStack
 
-The `./run local` command runs SEDS locally by deploying the stack into MiniStack under Colima. Cognito user pools, app clients, and seeded users are local MiniStack resources.
+The `./run local` command allows you to run our application locally on your laptop using MiniStack, simulating the AWS cloud environment including Cognito user pools, app clients, and seeded users.
 
 ## Prerequisites
 
@@ -10,22 +10,16 @@ Before running the application locally, ensure the following dependencies are in
 
 ### Required Installations
 
-1. **Colima** - MiniStack runs inside a Colima-managed container.
-
-The run script starts Colima when needed and pulls the MiniStack container image.
-
-Links for the curious:
-
-- Colima - https://github.com/abiosoft/colima
-
-2. **A populated `.env` file** - Use `./run update-env`, or reuse an existing `.env` if you already have one outside this worktree.
+1. **Colima** - MiniStack runs inside a Colima-managed container on macOS.
+   The run script starts Colima when needed and pulls the MiniStack container image.
 
 ## Deploying and Running Locally
 
 ```sh
-# in a new terminal window
 ./run local
 ```
+
+The script will start or reuse the `seds-ministack-local` container automatically.
 
 If `4566` or `3000` are already in use on your machine, you can override the emulator and UI ports:
 
@@ -33,24 +27,40 @@ If `4566` or `3000` are already in use on your machine, you can override the emu
 MINISTACK_PORT=4570 LOCAL_UI_PORT=3002 ./run local
 ```
 
-The script verifies Colima and MiniStack, starts MiniStack when needed, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
+Local login uses users from `services/ui-auth/libs/users.json`. The seeded password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ## Monitoring MiniStack
 
-The local runner names the container `seds-ministack-local` by default.
+```sh
+docker --context colima logs -f seds-ministack-local
+```
 
-Useful commands:
+Health is exposed on the MiniStack health endpoint:
 
 ```sh
-docker --context colima ps
-docker --context colima logs seds-ministack-local
 curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
 ```
 
 ## Notes
 
 - Internally, the local CDK stage is named `ministack`. That is why stack names and raw API Gateway paths include `ministack`.
-- The generated UI env points at Vite's local MiniStack API proxy:
-  `/restapis/<apiId>/ministack/_user_request_`
-- Use `./run reset` to stop the MiniStack container and tear down Colima.
-- Local login uses users from `services/ui-auth/libs/users.json`. The seeded password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+- The generated UI env points at the same-origin local API proxy path:
+  `/_local-api/restapis/<apiId>/ministack/_user_request_`
+- Use `./run reset` to remove the MiniStack container and tear down Colima.
+
+## Accessing Lambda Environment Variables
+
+Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
+
+If you want to query the environment variables a lambda is receiving, you can inspect them directly:
+
+```sh
+# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-ministack-getUserById
+AWS_ACCESS_KEY_ID=test \
+AWS_SECRET_ACCESS_KEY=test \
+AWS_DEFAULT_REGION=us-east-1 \
+aws --endpoint-url http://localhost:4566 \
+  lambda get-function-configuration \
+  --function-name YOUR_FUNCTION_NAME \
+  --query "Environment.Variables"
+```

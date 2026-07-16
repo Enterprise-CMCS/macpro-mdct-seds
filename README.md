@@ -160,13 +160,12 @@ There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
 Once `./run local` is running, open http://localhost:3000 to log in.
-Local users are loaded from `services/ui-auth/libs/users.json`, and the local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+Local users are loaded from `services/ui-auth/libs/users.json`; the local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
 ### View Local Resources
 
-The local runner names the container `seds-ministack-local` by default.
-MiniStack logs and health checks are available from the local container.
-Useful commands are documented in [the local dev guide](./deployment/local/README.md).
+See [deployment/local/README.md](./deployment/local/README.md) for MiniStack health checks,
+logs, and examples for inspecting local resources.
 
 ### Running tests
 

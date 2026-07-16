@@ -56,8 +56,7 @@ if [ "$LOCAL" = true ]; then
     require_cmd docker "Run the workspace setup; Colima needs its container CLI"
     require_cmd colima "On macOS, install with 'brew install colima'"
 
-    COLIMA_STATUS="$(colima status 2>&1 || true)"
-    if [[ "$COLIMA_STATUS" != *"colima is running"* ]] ; then
+    if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi

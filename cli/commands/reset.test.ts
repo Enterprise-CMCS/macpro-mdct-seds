@@ -4,18 +4,8 @@ import { beforeEach, describe, it, mock } from "node:test";
 type RunCommand = typeof import("../lib/runner.ts").runCommand;
 type UpdateEnvFiles = typeof import("./update-env.ts").updateEnvFiles;
 
-const execFileSyncMock = mock.fn(
-  (_file: string, _args?: readonly string[], _options?: { stdio?: string }) =>
-    undefined
-);
 const runCommandMock = mock.fn<RunCommand>(async () => undefined);
 const updateEnvFilesMock = mock.fn<UpdateEnvFiles>(async () => undefined);
-
-mock.module("node:child_process", {
-  namedExports: {
-    execFileSync: execFileSyncMock,
-  },
-});
 
 mock.module("../lib/runner.ts", {
   namedExports: {
@@ -29,33 +19,50 @@ mock.module("./update-env.ts", {
   },
 });
 
+const originalProject = process.env.PROJECT;
+process.env.PROJECT = "seds";
+delete process.env.MINISTACK_CONTAINER_NAME;
 const { reset } = await import("./reset.ts");
+if (originalProject === undefined) {
+  delete process.env.PROJECT;
+} else {
+  process.env.PROJECT = originalProject;
+}
 
 describe("reset command", () => {
   beforeEach(() => {
-    execFileSyncMock.mock.resetCalls();
     runCommandMock.mock.resetCalls();
     updateEnvFilesMock.mock.resetCalls();
   });
 
   it("removes the MiniStack container and tears down Colima", async () => {
-    const expectedContainerName =
-      process.env.MINISTACK_CONTAINER_NAME ?? "seds-ministack-local";
-
     await reset.handler();
 
     assert.equal(updateEnvFilesMock.mock.calls.length, 1);
-    assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
-      "docker",
-      ["--context", "colima", "rm", "-f", expectedContainerName],
-      { stdio: "ignore" },
-    ]);
     assert.deepEqual(
       runCommandMock.mock.calls.map((call) => call.arguments),
       [
+        [
+          "Stop MiniStack",
+          ["docker", "--context", "colima", "rm", "-f", "seds-ministack-local"],
+          ".",
+        ],
         ["Stop colima", ["colima", "stop"], "."],
         ["Delete colima", ["colima", "delete", "--force"], "."],
       ]
+    );
+  });
+
+  it("ignores a failed MiniStack stop and still tears down Colima", async () => {
+    runCommandMock.mock.mockImplementationOnce(async () => {
+      throw new Error("stop failed");
+    });
+
+    await reset.handler();
+
+    assert.deepEqual(
+      runCommandMock.mock.calls.map((call) => call.arguments[0]),
+      ["Stop MiniStack", "Stop colima", "Delete colima"]
     );
   });
 });

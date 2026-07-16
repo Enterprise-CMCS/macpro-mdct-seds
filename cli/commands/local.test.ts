@@ -8,6 +8,7 @@ type SeedData = typeof import("../lib/seedData.ts").seedData;
 type RunFrontendLocally = typeof import("../lib/utils.ts").runFrontendLocally;
 
 const events: string[] = [];
+const commandCalls: { name: string; cmd: string[]; cwd: string }[] = [];
 const execFileSyncMock = mock.fn(
   (
     _file: string,
@@ -19,19 +20,20 @@ const execSyncMock = mock.fn(
   (_command: string, _options?: { encoding?: string; stdio?: string }) =>
     "colima is running"
 );
-const runCommandMock = mock.fn<RunCommand>(async (name) => {
+const runCommandMock = mock.fn<RunCommand>(async (name, cmd, cwd) => {
+  commandCalls.push({ name, cmd: cmd as string[], cwd: cwd as string });
   events.push(name);
 });
 const bootstrapLocalCognitoUsersMock = mock.fn<BootstrapLocalCognitoUsers>(
   async () => {
-    events.push("bootstrap");
+    events.push("bootstrapLocalCognitoUsers");
   }
 );
 const seedDataMock = mock.fn<SeedData>(async () => {
   events.push("seedData");
 });
 const runFrontendLocallyMock = mock.fn<RunFrontendLocally>(async (stage) => {
-  events.push(`frontend:${stage}`);
+  events.push(`runFrontendLocally:${stage}`);
 });
 
 mock.module("node:child_process", {
@@ -65,17 +67,28 @@ mock.module("../lib/utils.ts", {
   },
 });
 
+const originalProject = process.env.PROJECT;
+process.env.PROJECT = "seds";
+delete process.env.MINISTACK_CONTAINER_NAME;
 const { local } = await import("./local.ts");
+if (originalProject === undefined) {
+  delete process.env.PROJECT;
+} else {
+  process.env.PROJECT = originalProject;
+}
 
 describe("local command", () => {
   beforeEach(() => {
     events.length = 0;
+    commandCalls.length = 0;
     execFileSyncMock.mock.resetCalls();
     execSyncMock.mock.resetCalls();
     runCommandMock.mock.resetCalls();
     bootstrapLocalCognitoUsersMock.mock.resetCalls();
     seedDataMock.mock.resetCalls();
     runFrontendLocallyMock.mock.resetCalls();
+    process.env.PROJECT = "seds";
+    delete process.env.MINISTACK_PORT;
     globalThis.fetch = async () =>
       ({
         ok: true,
@@ -84,64 +97,96 @@ describe("local command", () => {
   });
 
   it("deploys MiniStack and bootstraps local Cognito users before watch starts", async () => {
-    const expectedContainerName =
-      process.env.MINISTACK_CONTAINER_NAME ?? "seds-ministack-local";
-
     await local.handler();
 
-    assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments, [
+    assert.equal(process.env.AWS_DEFAULT_REGION, "us-east-1");
+    assert.equal(process.env.AWS_ACCESS_KEY_ID, "test");
+    assert.equal(process.env.AWS_SECRET_ACCESS_KEY, "test");
+    assert.equal(process.env.AWS_ENDPOINT_URL, "http://127.0.0.1:4566");
+    assert.equal(process.env.AWS_ENDPOINT_URL_S3, "http://127.0.0.1:4566");
+
+    assert.deepEqual(execFileSyncMock.mock.calls[0]?.arguments.slice(0, 2), [
       "docker",
-      ["--context", "colima", "inspect", expectedContainerName],
-      { encoding: "utf8", stdio: "pipe" },
+      ["--context", "colima", "inspect", "seds-ministack-local"],
     ]);
-    assert.deepEqual(
-      runCommandMock.mock.calls.map((call) => call.arguments[0]),
-      [
-        "Clean .cdk",
-        "CDK MiniStack bootstrap",
-        "CDK MiniStack local-prerequisite deploy",
-        "CDK MiniStack prerequisite deploy",
-        "CDK MiniStack deploy",
-        "CDK MiniStack watch",
-      ]
-    );
-    assert.deepEqual(runCommandMock.mock.calls[2]?.arguments[1], [
-      "yarn",
-      "cdklocal",
-      "deploy",
-      "--app",
-      "./deployment/local/prerequisites.ts",
-      "--method",
-      "direct",
-      "--require-approval",
-      "never",
+
+    assert.deepEqual(commandCalls, [
+      { name: "Clean .cdk", cmd: ["rm", "-rf", ".cdk"], cwd: "." },
+      {
+        name: "CDK local bootstrap",
+        cmd: [
+          "yarn",
+          "cdklocal",
+          "bootstrap",
+          "aws://000000000000/us-east-1",
+          "--context",
+          "stage=bootstrap",
+          "--require-approval",
+          "never",
+        ],
+        cwd: ".",
+      },
+      {
+        name: "CDK local local-prerequisite deploy",
+        cmd: [
+          "yarn",
+          "cdklocal",
+          "deploy",
+          "--app",
+          "./deployment/local/prerequisites.ts",
+          "--method",
+          "direct",
+          "--require-approval",
+          "never",
+        ],
+        cwd: ".",
+      },
+      {
+        name: "CDK local prerequisite deploy",
+        cmd: [
+          "yarn",
+          "cdklocal",
+          "deploy",
+          "--app",
+          "./deployment/prerequisites.ts",
+          "--method",
+          "direct",
+          "--require-approval",
+          "never",
+        ],
+        cwd: ".",
+      },
+      {
+        name: "CDK local deploy",
+        cmd: [
+          "yarn",
+          "cdklocal",
+          "deploy",
+          "--method",
+          "direct",
+          "--context",
+          "stage=ministack",
+          "--all",
+          "--no-rollback",
+          "--require-approval",
+          "never",
+        ],
+        cwd: ".",
+      },
+      {
+        name: "CDK local watch",
+        cmd: [
+          "yarn",
+          "cdklocal",
+          "watch",
+          "--context",
+          "stage=ministack",
+          "--no-rollback",
+        ],
+        cwd: ".",
+      },
     ]);
-    assert.deepEqual(runCommandMock.mock.calls[3]?.arguments[1], [
-      "yarn",
-      "cdklocal",
-      "deploy",
-      "--app",
-      "./deployment/prerequisites.ts",
-      "--method",
-      "direct",
-      "--context",
-      "stage=ministack",
-      "--require-approval",
-      "never",
-    ]);
-    assert.deepEqual(runCommandMock.mock.calls[4]?.arguments[1], [
-      "yarn",
-      "cdklocal",
-      "deploy",
-      "--method",
-      "direct",
-      "--context",
-      "stage=ministack",
-      "--all",
-      "--no-rollback",
-      "--require-approval",
-      "never",
-    ]);
+
     assert.equal(bootstrapLocalCognitoUsersMock.mock.calls.length, 1);
     assert.equal(seedDataMock.mock.calls.length, 1);
     assert.deepEqual(runFrontendLocallyMock.mock.calls[0]?.arguments, [
@@ -149,14 +194,14 @@ describe("local command", () => {
     ]);
     assert.deepEqual(events, [
       "Clean .cdk",
-      "CDK MiniStack bootstrap",
-      "CDK MiniStack local-prerequisite deploy",
-      "CDK MiniStack prerequisite deploy",
-      "CDK MiniStack deploy",
-      "bootstrap",
+      "CDK local bootstrap",
+      "CDK local local-prerequisite deploy",
+      "CDK local prerequisite deploy",
+      "CDK local deploy",
+      "bootstrapLocalCognitoUsers",
       "seedData",
-      "CDK MiniStack watch",
-      "frontend:ministack",
+      "CDK local watch",
+      "runFrontendLocally:ministack",
     ]);
   });
 });

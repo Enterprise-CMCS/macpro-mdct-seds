@@ -19,7 +19,9 @@ class DescribeStacksCommand {
 }
 
 class CloudFormationClient {
-  constructor(_config: { endpoint?: string; region: string }) {}
+  constructor(config: { region: string; endpoint?: string }) {
+    cloudFormationClients.push(config);
+  }
 
   async send(command: DescribeStacksCommand): Promise<DescribeStacksResponse> {
     describeStacksCalls.push(command);
@@ -27,6 +29,7 @@ class CloudFormationClient {
   }
 }
 
+const cloudFormationClients: { region: string; endpoint?: string }[] = [];
 const describeStacksCalls: DescribeStacksCommand[] = [];
 let describeStacksResponse: DescribeStacksResponse = {};
 const runCommandMock = mock.fn<RunCommand>(async () => undefined);
@@ -54,16 +57,23 @@ mock.module("./write-ui-env-file.ts", {
 });
 
 const { runFrontendLocally } = await import("./utils.ts");
-const envKeys = ["PROJECT", "MINISTACK_PORT", "LOCAL_UI_PORT"] as const;
+const envKeys = [
+  "AWS_ENDPOINT_URL",
+  "PROJECT",
+  "MINISTACK_PORT",
+  "LOCAL_UI_PORT",
+] as const;
 const originalEnv = Object.fromEntries(
   envKeys.map((key) => [key, process.env[key]])
 ) as Record<(typeof envKeys)[number], string | undefined>;
 
 describe("runFrontendLocally", () => {
   beforeEach(() => {
+    cloudFormationClients.length = 0;
     describeStacksCalls.length = 0;
     runCommandMock.mock.resetCalls();
     writeLocalUiEnvFileMock.mock.resetCalls();
+    process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
     process.env.PROJECT = "seds";
     process.env.MINISTACK_PORT = "4567";
     process.env.LOCAL_UI_PORT = "3333";
@@ -116,6 +126,9 @@ describe("runFrontendLocally", () => {
       describeStacksCalls.map((command) => command.input),
       [{ StackName: "seds-ministack" }]
     );
+    assert.deepEqual(cloudFormationClients, [
+      { region: "us-east-1", endpoint: "http://localhost:4566" },
+    ]);
     assert.deepEqual(writeLocalUiEnvFileMock.mock.calls[0]?.arguments[0], {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: "us-east-1",
