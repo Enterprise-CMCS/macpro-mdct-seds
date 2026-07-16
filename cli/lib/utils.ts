@@ -26,24 +26,18 @@ export const getCloudFormationStackOutputValues = async (
   );
 };
 
-const getLocalUiPort = () => process.env.LOCAL_UI_PORT ?? "3000";
-
-export const getFlociApiUrl = (apiUrl: string, stage: string) => {
-  const restApiId = new URL(apiUrl).hostname.split(".")[0];
-  return `/_local-api/restapis/${restApiId}/${stage}/_user_request_`;
-};
-
-export const buildUiEnvObject = (
+const buildUiEnvObject = (
   stage: string,
   cfnOutputs: Record<string, string | undefined>
 ): Record<string, string> => {
-  if (stage === "floci") {
-    const uiPort = getLocalUiPort();
+  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
 
+  if (stage === "floci") {
+    const apiId = new URL(cfnOutputs.ApiUrl!).hostname.split(".")[0];
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: getFlociApiUrl(cfnOutputs.ApiUrl!, stage),
+      API_URL: `/_local-api/restapis/${apiId}/${stage}/_user_request_`,
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,

@@ -1,7 +1,7 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { getCloudFormationStackOutputValues } from "./utils.ts";
-import { region } from "./consts.ts";
+import { project, region } from "./consts.ts";
 
 const invokeLambda = async (
   functionName: string,
@@ -21,16 +21,14 @@ const invokeLambda = async (
   );
 
   if (response.FunctionError || response.StatusCode !== expectedStatusCode) {
-    throw new Error(`Lambda invoke failed for ${functionName}`);
+    const payload = response.Payload
+      ? new TextDecoder().decode(response.Payload)
+      : "";
+    throw new Error(`Lambda invoke failed for ${functionName}: ${payload}`);
   }
 };
 
 export const seedData = async () => {
-  const project = process.env.PROJECT;
-  if (!project) {
-    throw new Error("PROJECT environment variable is required.");
-  }
-
   const SeedDataFunctionName = (
     await getCloudFormationStackOutputValues(`${project}-floci`)
   )["SeedDataFunctionName"];

@@ -43,7 +43,9 @@ export class Lambda extends Construct {
       buckets = [],
       stackName,
       isDev,
+      retryAttempts,
       environment,
+      bundling,
       ...restProps
     } = props;
 
@@ -53,33 +55,51 @@ export class Lambda extends Construct {
       retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
+    const defaultBundling = {
+      assetHash: createHash("sha256")
+        .update(`${Date.now()}-${id}`)
+        .digest("hex"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: ["jsdom"],
+    };
+    const flociDefaultBundling = {
+      ...defaultBundling,
+      commandHooks: {
+        beforeBundling() {
+          return [];
+        },
+        beforeInstall() {
+          return [];
+        },
+        afterBundling(inputDir: string, outputDir: string): string[] {
+          return [
+            `cp ${inputDir}/node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js ${outputDir}/xhr-sync-worker.js`,
+          ];
+        },
+      },
+    };
+    const resolvedBundling = isLocalAwsEmulator
+      ? {
+          ...(bundling ?? flociDefaultBundling),
+          bundleAwsSDK: true,
+          externalModules: [],
+          nodeModules: undefined,
+        }
+      : (bundling ?? defaultBundling);
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["jsdom"],
-        commandHooks: {
-          beforeInstall() {
-            return [];
-          },
-          beforeBundling() {
-            return [];
-          },
-          afterBundling(_inputDir: string, outputDir: string) {
-            return [`rm -f ${outputDir}/node_modules/nwsapi/dist/lint.log`];
-          },
-        },
-      },
+      bundling: resolvedBundling,
       logGroup,
+      ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       environment: {
-        ...(isLocalAwsEmulator ? { AWS_ENDPOINT_URL: flociEndpointFromLambda } : {}),
+        ...(isLocalAwsEmulator
+          ? { AWS_ENDPOINT_URL: flociEndpointFromLambda }
+          : {}),
         ...environment,
       },
       ...restProps,

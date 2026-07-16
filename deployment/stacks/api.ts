@@ -87,27 +87,33 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "protocol: $context.protocol, responseLength: $context.responseLength"
       ),
     },
-    defaultCorsPreflightOptions: {
-      allowOrigins: apigateway.Cors.ALL_ORIGINS,
-      allowMethods: apigateway.Cors.ALL_METHODS,
-    },
+    ...(isLocalAwsEmulator
+      ? {}
+      : {
+          defaultCorsPreflightOptions: {
+            allowOrigins: apigateway.Cors.ALL_ORIGINS,
+            allowMethods: apigateway.Cors.ALL_METHODS,
+          },
+        }),
   });
 
-  api.addGatewayResponse("Default4XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_4XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+  if (!isLocalAwsEmulator) {
+    api.addGatewayResponse("Default4XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
 
-  api.addGatewayResponse("Default5XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_5XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+    api.addGatewayResponse("Default5XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
+  }
 
   const environment = {
     brokerString,

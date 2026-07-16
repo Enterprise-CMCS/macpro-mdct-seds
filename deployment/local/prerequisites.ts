@@ -36,7 +36,7 @@ async function main() {
 
   new LocalPrerequisiteStack(
     app,
-    `${process.env.PROJECT!}-floci-prerequisites`
+    `${process.env.PROJECT!}-local-prerequisites`
   );
 }
 

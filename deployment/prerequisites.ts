@@ -60,7 +60,9 @@ export class PrerequisiteStack extends Stack {
       this.addAdditionalPrerequisitesAsync(vpc);
     }
 
-    new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
+    if (!isLocalAwsEmulator) {
+      new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
+    }
 
     const cloudWatchRole = new iam.Role(
       this,
@@ -79,46 +81,48 @@ export class PrerequisiteStack extends Stack {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     });
 
-    const githubProvider = new iam.OidcProviderNative(
-      this,
-      "GitHubIdentityProvider",
-      {
-        url: "https://token.actions.githubusercontent.com",
-        thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
-        clientIds: ["sts.amazonaws.com"],
-      }
-    );
-
-    new iam.Role(this, "GitHubActionsServiceRole", {
-      description: "Service Role for use in GitHub Actions",
-      assumedBy: new iam.FederatedPrincipal(
-        githubProvider.oidcProviderArn,
+    if (!isLocalAwsEmulator) {
+      const githubProvider = new iam.OidcProviderNative(
+        this,
+        "GitHubIdentityProvider",
         {
-          StringEquals: {
-            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          url: "https://token.actions.githubusercontent.com",
+          thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
+          clientIds: ["sts.amazonaws.com"],
+        }
+      );
+
+      new iam.Role(this, "GitHubActionsServiceRole", {
+        description: "Service Role for use in GitHub Actions",
+        assumedBy: new iam.FederatedPrincipal(
+          githubProvider.oidcProviderArn,
+          {
+            StringEquals: {
+              "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+            },
+            StringLike: {
+              "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
+                vpcName
+              )}`,
+            },
           },
-          StringLike: {
-            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
-              vpcName
-            )}`,
-          },
-        },
-        "sts:AssumeRoleWithWebIdentity"
-      ),
-      managedPolicies: [
-        iam.ManagedPolicy.fromManagedPolicyName(
-          this,
-          "ADORestrictionPolicy",
-          "ADO-Restriction-Policy"
+          "sts:AssumeRoleWithWebIdentity"
         ),
-        iam.ManagedPolicy.fromManagedPolicyName(
-          this,
-          "CMSApprovedServicesPolicy",
-          "CMSApprovedAWSServices"
-        ),
-        iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
-      ],
-    });
+        managedPolicies: [
+          iam.ManagedPolicy.fromManagedPolicyName(
+            this,
+            "ADORestrictionPolicy",
+            "ADO-Restriction-Policy"
+          ),
+          iam.ManagedPolicy.fromManagedPolicyName(
+            this,
+            "CMSApprovedServicesPolicy",
+            "CMSApprovedAWSServices"
+          ),
+          iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
+        ],
+      });
+    }
   }
 
   async addAdditionalPrerequisitesAsync(vpc: ec2.IVpc) {

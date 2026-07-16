@@ -1,49 +1,68 @@
 import assert from "node:assert/strict";
-import { afterEach, mock, test } from "node:test";
+import { beforeEach, describe, it, mock } from "node:test";
 
-afterEach(() => {
-  mock.reset();
+type RunCommand = typeof import("../lib/runner.ts").runCommand;
+type UpdateEnvFiles = typeof import("./update-env.ts").updateEnvFiles;
+
+const runCommandMock = mock.fn<RunCommand>(async () => undefined);
+const updateEnvFilesMock = mock.fn<UpdateEnvFiles>(async () => undefined);
+
+mock.module("../lib/runner.ts", {
+  namedExports: {
+    runCommand: runCommandMock,
+  },
 });
 
-test("reset ignores stopped Floci and tears down Colima", async () => {
-  const calls: { prefix: string; cmd: string[]; cwd: string | null }[] = [];
-  const events: string[] = [];
+mock.module("./update-env.ts", {
+  namedExports: {
+    updateEnvFiles: updateEnvFilesMock,
+  },
+});
 
-  mock.module(new URL("../lib/runner.ts", import.meta.url).href, {
-    namedExports: {
-      runCommand: async (prefix: string, cmd: string[], cwd: string | null) => {
-        calls.push({ prefix, cmd, cwd });
-        if (prefix === "Stop floci") {
-          throw new Error(`${prefix} failed`);
-        }
-      },
-    },
+const originalProject = process.env.PROJECT;
+process.env.PROJECT = "seds";
+delete process.env.FLOCI_CONTAINER_NAME;
+const { reset } = await import("./reset.ts");
+if (originalProject === undefined) {
+  delete process.env.PROJECT;
+} else {
+  process.env.PROJECT = originalProject;
+}
+
+describe("reset command", () => {
+  beforeEach(() => {
+    runCommandMock.mock.resetCalls();
+    updateEnvFilesMock.mock.resetCalls();
   });
 
-  mock.module(new URL("./update-env.ts", import.meta.url).href, {
-    namedExports: {
-      updateEnvFiles: () => {
-        events.push("updateEnvFiles");
-      },
-    },
+  it("removes the Floci container and tears down Colima", async () => {
+    await reset.handler();
+
+    assert.equal(updateEnvFilesMock.mock.calls.length, 1);
+    assert.deepEqual(
+      runCommandMock.mock.calls.map((call) => call.arguments),
+      [
+        [
+          "Stop Floci",
+          ["docker", "--context", "colima", "rm", "-f", "seds-floci-local"],
+          ".",
+        ],
+        ["Stop colima", ["colima", "stop"], "."],
+        ["Delete colima", ["colima", "delete", "--force"], "."],
+      ]
+    );
   });
 
-  const { reset } = await import(`./reset.ts?reset-test=${Date.now()}`);
+  it("ignores a failed Floci stop and still tears down Colima", async () => {
+    runCommandMock.mock.mockImplementationOnce(async () => {
+      throw new Error("stop failed");
+    });
 
-  await reset.handler();
+    await reset.handler();
 
-  assert.deepEqual(events, ["updateEnvFiles"]);
-  assert.deepEqual(calls, [
-    {
-      prefix: "Stop floci",
-      cmd: ["docker", "--context", "colima", "stop", "floci-local"],
-      cwd: ".",
-    },
-    { prefix: "Stop colima", cmd: ["colima", "stop"], cwd: "." },
-    {
-      prefix: "Delete colima",
-      cmd: ["colima", "delete", "--force"],
-      cwd: ".",
-    },
-  ]);
+    assert.deepEqual(
+      runCommandMock.mock.calls.map((call) => call.arguments[0]),
+      ["Stop Floci", "Stop colima", "Delete colima"]
+    );
+  });
 });

@@ -155,17 +155,17 @@ If we infer the user to be a state user,
 we will redirect them (on their first login only)
 to a page where they must select a state.
 
-Once `./run local` is running, open http://localhost:3000 to log in.
-Local users are loaded from `services/ui-auth/libs/users.json`; the local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
-
 During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
+Once `./run local` is running, open http://localhost:3000 to log in.
+Local users are loaded from `services/ui-auth/libs/users.json`; the local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
+
 ### View Local Resources
 
 See [deployment/local/README.md](./deployment/local/README.md) for Floci health checks,
-container logs, and AWS CLI examples for inspecting local resources.
+logs, and examples for inspecting local resources.
 
 ### Running tests
 

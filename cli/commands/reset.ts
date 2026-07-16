@@ -2,6 +2,10 @@
 import { runCommand } from "../lib/runner.ts";
 import { updateEnvFiles } from "./update-env.ts";
 
+const flociContainerName =
+  process.env.FLOCI_CONTAINER_NAME ??
+  `${process.env.PROJECT ?? "seds"}-floci-local`;
+
 export const reset = {
   command: "reset",
   describe:
@@ -11,14 +15,13 @@ export const reset = {
 
     try {
       await runCommand(
-        "Stop floci",
-        ["docker", "--context", "colima", "stop", "floci-local"],
+        "Stop Floci",
+        ["docker", "--context", "colima", "rm", "-f", flociContainerName],
         "."
       );
     } catch {
-      // if floci is already stopped, don't throw
+      // if Floci is already stopped, don't throw
     }
-
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");
   },

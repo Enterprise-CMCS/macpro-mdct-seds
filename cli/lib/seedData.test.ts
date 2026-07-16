@@ -1,21 +1,23 @@
+import type { InvokeCommandInput } from "@aws-sdk/client-lambda";
 import assert from "node:assert/strict";
 import { beforeEach, describe, it, mock } from "node:test";
 
 type LambdaResponse = {
   FunctionError?: string;
+  Payload?: Uint8Array;
   StatusCode?: number;
 };
 
 class InvokeCommand {
-  readonly input: unknown;
+  readonly input: InvokeCommandInput;
 
-  constructor(input: unknown) {
+  constructor(input: InvokeCommandInput) {
     this.input = input;
   }
 }
 
 class LambdaClient {
-  constructor(config: unknown) {
+  constructor(config: { endpoint?: string; region: string }) {
     lambdaClients.push(config);
   }
 
@@ -25,7 +27,7 @@ class LambdaClient {
   }
 }
 
-const lambdaClients: unknown[] = [];
+const lambdaClients: { endpoint?: string; region: string }[] = [];
 const lambdaCalls: InvokeCommand[] = [];
 const stackOutputCalls: string[] = [];
 let lambdaResponse: LambdaResponse = { StatusCode: 200 };
@@ -49,8 +51,15 @@ mock.module("./utils.ts", {
   },
 });
 
+const originalProject = process.env.PROJECT;
+process.env.PROJECT = "seds";
 const { bootstrapLocalCognitoUsers } = await import("./localCognito.ts");
 const { seedData } = await import("./seedData.ts");
+if (originalProject === undefined) {
+  delete process.env.PROJECT;
+} else {
+  process.env.PROJECT = originalProject;
+}
 
 describe("bootstrapLocalCognitoUsers", () => {
   beforeEach(() => {
@@ -74,11 +83,15 @@ describe("bootstrapLocalCognitoUsers", () => {
   });
 
   it("fails when the synchronous bootstrap invoke reports an error", async () => {
-    lambdaResponse = { FunctionError: "Unhandled", StatusCode: 200 };
+    lambdaResponse = {
+      FunctionError: "Unhandled",
+      Payload: new TextEncoder().encode("boom"),
+      StatusCode: 200,
+    };
 
     await assert.rejects(
       bootstrapLocalCognitoUsers(),
-      /Lambda invoke failed for ui-auth-floci-bootstrapUsers/
+      /Lambda invoke failed for ui-auth-floci-bootstrapUsers: boom/
     );
   });
 });
@@ -91,13 +104,15 @@ describe("seedData", () => {
     lambdaResponse = { StatusCode: 202 };
     stackOutputs = { SeedDataFunctionName: "data-floci-seedData" };
     process.env.AWS_ENDPOINT_URL = "http://127.0.0.1:4566";
-    process.env.PROJECT = "seds";
   });
 
   it("invokes the Floci seed-data Lambda asynchronously", async () => {
     await seedData();
 
     assert.deepEqual(stackOutputCalls, ["seds-floci"]);
+    assert.deepEqual(lambdaClients, [
+      { endpoint: "http://127.0.0.1:4566", region: "us-east-1" },
+    ]);
     assert.deepEqual(lambdaCalls[0]?.input, {
       FunctionName: "data-floci-seedData",
       InvocationType: "Event",
@@ -105,12 +120,16 @@ describe("seedData", () => {
     });
   });
 
-  it("fails when the asynchronous seed-data invoke reports an error", async () => {
-    lambdaResponse = { FunctionError: "Unhandled", StatusCode: 202 };
+  it("fails when the asynchronously seed-data invoke reports an error", async () => {
+    lambdaResponse = {
+      FunctionError: "Unhandled",
+      Payload: new TextEncoder().encode("boom"),
+      StatusCode: 202,
+    };
 
     await assert.rejects(
       seedData(),
-      /Lambda invoke failed for data-floci-seedData/
+      /Lambda invoke failed for data-floci-seedData: boom/
     );
   });
 });

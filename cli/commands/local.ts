@@ -6,13 +6,6 @@ import { runFrontendLocally } from "../lib/utils.ts";
 import { bootstrapLocalCognitoUsers } from "../lib/localCognito.ts";
 import { seedData } from "../lib/seedData.ts";
 
-const flociContainerName = "floci-local";
-const flociDefaultSecret = JSON.stringify({
-  vpcName: "floci-dev",
-  brokerString: "localstack",
-  kafkaAuthorizedSubnetIds: "subnet-default-a",
-});
-
 const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
@@ -24,6 +17,15 @@ const isColimaRunning = () => {
     return false;
   }
 };
+
+const flociContainerName =
+  process.env.FLOCI_CONTAINER_NAME ??
+  `${process.env.PROJECT ?? "seds"}-floci-local`;
+const flociDefaultSecret = JSON.stringify({
+  vpcName: "floci-dev",
+  brokerString: "localstack",
+  kafkaAuthorizedSubnetIds: "subnet-default-a",
+});
 
 const getFlociContainer = () => {
   try {
@@ -50,12 +52,10 @@ const isFlociRunning = () => {
   );
 };
 
-const waitForFloci = async (flociPort: string) => {
-  const flociReadyUrl = `http://localhost:${flociPort}/_floci/init`;
-
+const waitForFloci = async (port: string) => {
   for (let i = 0; i < 60; i++) {
     try {
-      const response = await fetch(flociReadyUrl);
+      const response = await fetch(`http://localhost:${port}/_floci/init`);
       if (!response.ok) {
         throw new Error(`Unexpected status: ${response.status}`);
       }
@@ -273,6 +273,7 @@ export const local = {
     process.env.AWS_ENDPOINT_URL_S3 = `http://s3.localhost.floci.io:${flociPort}`;
     process.env.FLOCI_PORT = flociPort;
     upsertFlociDefaultSecret();
+    await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
       "CDK local bootstrap",
       [
@@ -282,6 +283,8 @@ export const local = {
         `aws://000000000000/${region}`, // Floci uses the default dummy account ID 000000000000
         "--context",
         "stage=bootstrap",
+        "--require-approval",
+        "never",
       ],
       "."
     );
@@ -294,13 +297,23 @@ export const local = {
         "deploy",
         "--app",
         "./deployment/local/prerequisites.ts",
+        "--require-approval",
+        "never",
       ],
       "."
     );
 
     await runCommand(
       "CDK local prerequisite deploy",
-      ["yarn", "cdklocal", "deploy", "--app", "./deployment/prerequisites.ts"],
+      [
+        "yarn",
+        "cdklocal",
+        "deploy",
+        "--app",
+        "./deployment/prerequisites.ts",
+        "--require-approval",
+        "never",
+      ],
       "."
     );
 
@@ -314,6 +327,8 @@ export const local = {
         "stage=floci",
         "--all",
         "--no-rollback",
+        "--require-approval",
+        "never",
       ],
       "."
     );

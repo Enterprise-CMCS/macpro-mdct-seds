@@ -20,7 +20,10 @@ const invokeLambda = async (
   );
 
   if (response.FunctionError || response.StatusCode !== expectedStatusCode) {
-    throw new Error(`Lambda invoke failed for ${functionName}`);
+    const payload = response.Payload
+      ? new TextDecoder().decode(response.Payload)
+      : "";
+    throw new Error(`Lambda invoke failed for ${functionName}: ${payload}`);
   }
 };
 

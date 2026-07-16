@@ -1,101 +1,146 @@
-import { test } from "node:test";
+import { type Stack } from "@aws-sdk/client-cloudformation";
 import assert from "node:assert/strict";
-import { buildUiEnvObject, getFlociApiUrl } from "./utils.ts";
+import { afterEach, beforeEach, describe, it, mock } from "node:test";
 
-const withEnv = (key: string, value: string | undefined, fn: () => void) => {
-  const original = process.env[key];
-  if (value === undefined) {
-    delete process.env[key];
-  } else {
-    process.env[key] = value;
-  }
-  try {
-    fn();
-  } finally {
-    if (original === undefined) {
-      delete process.env[key];
-    } else {
-      process.env[key] = original;
-    }
-  }
+type RunCommand = typeof import("./runner.ts").runCommand;
+type WriteLocalUiEnvFile =
+  typeof import("./write-ui-env-file.ts").writeLocalUiEnvFile;
+
+type DescribeStacksResponse = {
+  Stacks?: Stack[];
 };
 
-const withEnvs = (env: Record<string, string | undefined>, fn: () => void) => {
-  const originals = Object.fromEntries(
-    Object.keys(env).map((key) => [key, process.env[key]])
-  );
-  try {
-    for (const [key, value] of Object.entries(env)) {
-      if (value === undefined) {
-        delete process.env[key];
-      } else {
-        process.env[key] = value;
-      }
-    }
-    fn();
-  } finally {
-    for (const [key, value] of Object.entries(originals)) {
-      if (value === undefined) {
-        delete process.env[key];
-      } else {
-        process.env[key] = value;
-      }
-    }
+class DescribeStacksCommand {
+  readonly input: { StackName: string };
+
+  constructor(input: { StackName: string }) {
+    this.input = input;
   }
-};
+}
 
-const flociOutputs = {
-  ApiUrl: "https://abc123.execute-api.us-east-1.amazonaws.com/floci",
-  CognitoUserPoolId: "us-east-1_local000",
-  CognitoUserPoolClientId: "localclientid",
-  CognitoUserPoolClientDomain: "",
-};
+class CloudFormationClient {
+  constructor(config: { region: string; endpoint?: string }) {
+    cloudFormationClients.push(config);
+  }
 
-test("getFlociApiUrl returns a same-origin path for the local API proxy", () => {
-  assert.equal(
-    getFlociApiUrl(flociOutputs.ApiUrl, "floci"),
-    "/_local-api/restapis/abc123/floci/_user_request_"
-  );
+  async send(command: DescribeStacksCommand): Promise<DescribeStacksResponse> {
+    describeStacksCalls.push(command);
+    return describeStacksResponse;
+  }
+}
+
+const cloudFormationClients: { region: string; endpoint?: string }[] = [];
+const describeStacksCalls: DescribeStacksCommand[] = [];
+let describeStacksResponse: DescribeStacksResponse = {};
+const runCommandMock = mock.fn<RunCommand>(async () => undefined);
+const writeLocalUiEnvFileMock = mock.fn<WriteLocalUiEnvFile>(
+  async () => undefined
+);
+
+mock.module("@aws-sdk/client-cloudformation", {
+  namedExports: {
+    CloudFormationClient,
+    DescribeStacksCommand,
+  },
 });
 
-test("floci UI env routes API through the same-origin proxy", () => {
-  withEnvs({ FLOCI_PORT: "4570" }, () => {
-    const env = buildUiEnvObject("floci", flociOutputs);
-
-    assert.ok(
-      env.API_URL.startsWith("/_local-api/"),
-      `expected relative API_URL, got ${env.API_URL}`
-    );
-    assert.equal(env.COGNITO_IDENTITY_POOL_ID, "");
-    assert.equal(env.COGNITO_USER_POOL_ID, flociOutputs.CognitoUserPoolId);
-    assert.equal(
-      env.COGNITO_USER_POOL_CLIENT_ID,
-      flociOutputs.CognitoUserPoolClientId
-    );
-  });
+mock.module("./runner.ts", {
+  namedExports: {
+    runCommand: runCommandMock,
+  },
 });
 
-test("deployed UI env keeps an absolute API_URL", () => {
-  const env = buildUiEnvObject("dev", {
-    ApiUrl: "https://abc123.execute-api.us-east-1.amazonaws.com/dev",
-    CognitoIdentityPoolId: "us-east-1:pool-id",
-    CognitoUserPoolId: "us-east-1_dev000",
-    CognitoUserPoolClientId: "devclientid",
-    CognitoUserPoolClientDomain: "dev-domain",
-    CloudFrontUrl: "https://d123.cloudfront.net",
+mock.module("./write-ui-env-file.ts", {
+  namedExports: {
+    writeLocalUiEnvFile: writeLocalUiEnvFileMock,
+  },
+});
+
+const { runFrontendLocally } = await import("./utils.ts");
+const envKeys = [
+  "AWS_ENDPOINT_URL",
+  "PROJECT",
+  "FLOCI_PORT",
+  "LOCAL_UI_PORT",
+] as const;
+const originalEnv = Object.fromEntries(
+  envKeys.map((key) => [key, process.env[key]])
+) as Record<(typeof envKeys)[number], string | undefined>;
+
+describe("runFrontendLocally", () => {
+  beforeEach(() => {
+    cloudFormationClients.length = 0;
+    describeStacksCalls.length = 0;
+    runCommandMock.mock.resetCalls();
+    writeLocalUiEnvFileMock.mock.resetCalls();
+    process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
+    process.env.PROJECT = "seds";
+    process.env.FLOCI_PORT = "4567";
+    process.env.LOCAL_UI_PORT = "3333";
   });
 
-  assert.equal(
-    env.API_URL,
-    "https://abc123.execute-api.us-east-1.amazonaws.com/dev"
-  );
-});
+  afterEach(() => {
+    for (const key of envKeys) {
+      const originalValue = originalEnv[key];
+      if (originalValue === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = originalValue;
+      }
+    }
+  });
 
-test("floci UI serves on the same port baked into the Cognito redirects", () => {
-  withEnv("LOCAL_UI_PORT", "3456", () => {
-    const env = buildUiEnvObject("floci", flociOutputs);
+  it("writes the Floci Cognito UI env from stack outputs", async () => {
+    describeStacksResponse = {
+      Stacks: [
+        {
+          StackName: "seds-floci",
+          CreationTime: new Date(0),
+          StackStatus: "CREATE_COMPLETE",
+          Outputs: [
+            {
+              OutputKey: "ApiUrl",
+              OutputValue:
+                "https://api123.execute-api.us-east-1.amazonaws.com/floci",
+            },
+            {
+              OutputKey: "CognitoUserPoolId",
+              OutputValue: "local-user-pool",
+            },
+            {
+              OutputKey: "CognitoUserPoolClientId",
+              OutputValue: "local-client",
+            },
+          ],
+        },
+      ],
+    };
 
-    assert.equal(env.COGNITO_REDIRECT_SIGNIN, "http://localhost:3456/");
-    assert.equal(env.COGNITO_REDIRECT_SIGNOUT, "http://localhost:3456/");
+    await runFrontendLocally("floci");
+
+    assert.deepEqual(
+      describeStacksCalls.map((command) => command.input),
+      [{ StackName: "seds-floci" }]
+    );
+    assert.deepEqual(cloudFormationClients, [
+      { region: "us-east-1", endpoint: "http://localhost:4566" },
+    ]);
+    assert.deepEqual(writeLocalUiEnvFileMock.mock.calls[0]?.arguments[0], {
+      SKIP_PREFLIGHT_CHECK: "true",
+      API_REGION: "us-east-1",
+      API_URL: "/_local-api/restapis/api123/floci/_user_request_",
+      COGNITO_REGION: "us-east-1",
+      COGNITO_IDENTITY_POOL_ID: "",
+      COGNITO_USER_POOL_ID: "local-user-pool",
+      COGNITO_USER_POOL_CLIENT_ID: "local-client",
+      COGNITO_USER_POOL_CLIENT_DOMAIN: "",
+      COGNITO_REDIRECT_SIGNIN: "http://localhost:3333/",
+      COGNITO_REDIRECT_SIGNOUT: "http://localhost:3333/",
+    });
+    assert.deepEqual(runCommandMock.mock.calls[0]?.arguments, [
+      "ui",
+      ["node", "./cli/lib/localFrontendProxy.ts"],
+      ".",
+    ]);
   });
 });
