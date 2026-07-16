@@ -77,14 +77,15 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     isDev,
     bundling: {
       commandHooks: {
-        beforeBundling(inputDir: string, outputDir: string): string[] {
+        beforeBundling() {
+          return [];
+        },
+        afterBundling(inputDir: string, outputDir: string): string[] {
           return [
-            `mkdir -p ${outputDir}/node_modules/data/initial_data_load/`,
+            `mkdir -p ${outputDir}/data/initial_data_load/ ${outputDir}/node_modules/data/initial_data_load/`,
+            `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/data/initial_data_load/`,
             `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/node_modules/data/initial_data_load/`,
           ];
-        },
-        afterBundling() {
-          return [];
         },
         beforeInstall() {
           return [];

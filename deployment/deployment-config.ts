@@ -36,6 +36,9 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
+  if (isMiniStack) {
+    config.brokerString = "localstack";
+  }
   if (config.cloudfrontDomainName) {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
