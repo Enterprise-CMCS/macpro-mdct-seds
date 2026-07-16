@@ -13,7 +13,7 @@ import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
-const flociEndpointFromLambda = `http://host.docker.internal:${process.env.FLOCI_PORT ?? "4566"}`;
+const localEndpointFromLambda = `http://host.docker.internal:${process.env.FLOCI_PORT ?? "4566"}`;
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
@@ -63,7 +63,7 @@ export class Lambda extends Construct {
       sourceMap: true,
       nodeModules: ["jsdom"],
     };
-    const flociDefaultBundling = {
+    const localDefaultBundling = {
       ...defaultBundling,
       commandHooks: {
         beforeBundling() {
@@ -81,7 +81,7 @@ export class Lambda extends Construct {
     };
     const resolvedBundling = isLocalAwsEmulator
       ? {
-          ...(bundling ?? flociDefaultBundling),
+          ...(bundling ?? localDefaultBundling),
           bundleAwsSDK: true,
           externalModules: [],
           nodeModules: undefined,
@@ -98,7 +98,7 @@ export class Lambda extends Construct {
       ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       environment: {
         ...(isLocalAwsEmulator
-          ? { AWS_ENDPOINT_URL: flociEndpointFromLambda }
+          ? { AWS_ENDPOINT_URL: localEndpointFromLambda }
           : {}),
         ...environment,
       },
