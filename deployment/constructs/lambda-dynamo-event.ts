@@ -11,7 +11,7 @@ import {
 } from "aws-cdk-lib";
 import { createHash } from "node:crypto";
 import { DynamoDBTable } from "./dynamodb-table.ts";
-import { isFloci } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 
 interface LambdaDynamoEventProps extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
@@ -54,7 +54,7 @@ export class LambdaDynamoEventSource extends Construct {
       sourceMap: true,
       nodeModules: ["kafkajs"],
     };
-    const resolvedBundling = isFloci
+    const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? defaultBundling),
           bundleAwsSDK: true,
@@ -70,7 +70,7 @@ export class LambdaDynamoEventSource extends Construct {
       memorySize,
       bundling: resolvedBundling,
       logGroup,
-      ...(isFloci ? {} : { retryAttempts }),
+      ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       ...restProps,
     });
 
