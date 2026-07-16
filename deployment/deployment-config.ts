@@ -1,4 +1,4 @@
-import { isMiniStack } from "./local/util.ts";
+import { isLocalAwsEmulator } from "./local/util.ts";
 import { getSecret } from "./utils/secrets-manager.ts";
 
 export interface DeploymentConfigProperties {
@@ -24,7 +24,7 @@ export interface DeploymentConfigProperties {
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev = isMiniStack || !["main", "val", "production"].includes(stage);
+  const isDev = isLocalAwsEmulator || !["main", "val", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -36,14 +36,14 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  if (isMiniStack) {
+  if (isLocalAwsEmulator) {
     config.brokerString = "localstack";
   }
   if (config.cloudfrontDomainName) {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
-  if (!isMiniStack && stage !== "bootstrap") {
+  if (!isLocalAwsEmulator && stage !== "bootstrap") {
     validateConfig(config);
   }
 

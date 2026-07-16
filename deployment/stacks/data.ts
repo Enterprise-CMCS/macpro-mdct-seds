@@ -7,7 +7,7 @@ import {
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 import { Lambda } from "../constructs/lambda.ts";
-import { isMiniStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -98,7 +98,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     ddbTable.table.grantReadWriteData(seedDataFunction);
   }
 
-  if (!isMiniStack) {
+  if (!isLocalAwsEmulator) {
     new triggers.Trigger(scope, "InvokeSeedDataFunction", {
       handler: seedDataFunction,
       invocationType: triggers.InvocationType.EVENT,

@@ -9,7 +9,7 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isMiniStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
 
@@ -79,7 +79,7 @@ export class Lambda extends Construct {
         },
       },
     };
-    const resolvedBundling = isMiniStack
+    const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? miniStackDefaultBundling),
           bundleAwsSDK: true,
@@ -95,9 +95,9 @@ export class Lambda extends Construct {
       memorySize,
       bundling: resolvedBundling,
       logGroup,
-      ...(isMiniStack ? {} : { retryAttempts }),
+      ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       environment: {
-        ...(isMiniStack
+        ...(isLocalAwsEmulator
           ? { AWS_ENDPOINT_URL: miniStackEndpointFromLambda }
           : {}),
         ...environment,
@@ -115,7 +115,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isMiniStack
+          authorizationType: isLocalAwsEmulator
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

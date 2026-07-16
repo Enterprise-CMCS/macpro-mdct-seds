@@ -14,7 +14,7 @@ import {
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.ts";
 import { loadDefaultSecret } from "./deployment-config.ts";
-import { isMiniStack } from "./local/util.ts";
+import { isLocalAwsEmulator } from "./local/util.ts";
 import { tryImport } from "./utils/misc.ts";
 
 interface PrerequisiteConfigProps {
@@ -49,7 +49,7 @@ export class PrerequisiteStack extends Stack {
 
     const { project, vpcName } = props;
 
-    if (!isMiniStack) {
+    if (!isLocalAwsEmulator) {
       const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
 
       vpc.addGatewayEndpoint("S3Endpoint", {
@@ -60,7 +60,7 @@ export class PrerequisiteStack extends Stack {
       this.addAdditionalPrerequisitesAsync(vpc);
     }
 
-    if (!isMiniStack) {
+    if (!isLocalAwsEmulator) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
     }
 
@@ -81,7 +81,7 @@ export class PrerequisiteStack extends Stack {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     });
 
-    if (!isMiniStack) {
+    if (!isLocalAwsEmulator) {
       const githubProvider = new iam.OidcProviderNative(
         this,
         "GitHubIdentityProvider",

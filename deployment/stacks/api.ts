@@ -14,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
-import { isMiniStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
@@ -87,7 +87,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "protocol: $context.protocol, responseLength: $context.responseLength"
       ),
     },
-    ...(isMiniStack
+    ...(isLocalAwsEmulator
       ? {}
       : {
           defaultCorsPreflightOptions: {
@@ -97,7 +97,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         }),
   });
 
-  if (!isMiniStack) {
+  if (!isLocalAwsEmulator) {
     api.addGatewayResponse("Default4XXResponse", {
       type: apigateway.ResponseType.DEFAULT_4XX,
       responseHeaders: {
@@ -358,7 +358,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isMiniStack) {
+  if (!isLocalAwsEmulator) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

@@ -10,7 +10,7 @@ import {
   triggers,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isMiniStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateUiAuthComponentsProps {
@@ -76,7 +76,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   const providerName = "Okta";
 
-  const oktaIdp = isMiniStack
+  const oktaIdp = isLocalAwsEmulator
     ? undefined
     : new cognito.CfnUserPoolIdentityProvider(
         scope,
@@ -101,7 +101,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         }
       );
 
-  const supportedIdentityProviders = isMiniStack
+  const supportedIdentityProviders = isLocalAwsEmulator
     ? [cognito.UserPoolClientIdentityProvider.COGNITO]
     : [cognito.UserPoolClientIdentityProvider.custom(providerName)];
 
@@ -148,7 +148,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     },
   });
 
-  const identityPool = isMiniStack
+  const identityPool = isLocalAwsEmulator
     ? undefined
     : new cognito.CfnIdentityPool(scope, "CognitoIdentityPool", {
         identityPoolName: `${stage}-IdentityPool`,
@@ -222,7 +222,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       additionalPolicies: [
         new iam.PolicyStatement({
           actions: ["*"],
-          resources: isMiniStack ? ["*"] : [userPool.userPoolArn],
+          resources: isLocalAwsEmulator ? ["*"] : [userPool.userPoolArn],
           effect: iam.Effect.ALLOW,
         }),
       ],
@@ -237,7 +237,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }).lambda;
   }
 
-  if (!isMiniStack) {
+  if (!isLocalAwsEmulator) {
     const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",
@@ -251,7 +251,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     });
   }
 
-  if (bootstrapUsersFunction && !isMiniStack) {
+  if (bootstrapUsersFunction && !isLocalAwsEmulator) {
     new triggers.Trigger(scope, "InvokeBootstrapUsersFunction", {
       handler: bootstrapUsersFunction,
       invocationType: triggers.InvocationType.EVENT,

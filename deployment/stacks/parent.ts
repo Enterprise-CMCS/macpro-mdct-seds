@@ -14,7 +14,7 @@ import { createUiAuthComponents } from "./ui-auth.ts";
 import { createUiComponents } from "./ui.ts";
 import { createApiComponents } from "./api.ts";
 import { deployFrontend } from "./deployFrontend.ts";
-import { isMiniStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { createTopicsComponents } from "./topics.ts";
 import { getSubnets } from "../utils/vpc.ts";
 
@@ -43,7 +43,7 @@ export class ParentStack extends Stack {
       isDev,
     };
 
-    const vpc = isMiniStack
+    const vpc = isLocalAwsEmulator
       ? ec2.Vpc.fromVpcAttributes(this, "Vpc", {
           vpcId: vpcId!,
           availabilityZones: ["us-east-1a"],
@@ -68,7 +68,7 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnets,
     });
 
-    if (isMiniStack) {
+    if (isLocalAwsEmulator) {
       createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl: `http://localhost:${process.env.LOCAL_UI_PORT ?? "3000"}/`,
