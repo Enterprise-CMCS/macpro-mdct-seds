@@ -1,6 +1,6 @@
 # CMDCT-6054 AWS Emulator Evaluation
 
-Date: 2026-07-15
+Date: 2026-07-15 (updated 2026-07-16: LocalEmu ranking locked, LocalEmu implementation work removed)
 
 This is the consolidated decision record for replacing LocalStack in SEDS local development.
 
@@ -12,23 +12,23 @@ The implementation branches should not modify files under `services/`. Local aut
 
 MiniStack is the current leading candidate.
 
-Floci and LocalEmu are also viable enough to keep as working POC branches, but they are not equal recommendations:
+Floci remains a working POC branch. LocalEmu's evaluation is concluded:
 
 1. `cmdct-6054ministack` is the preferred path.
 2. `cmdct-6054floci` is a credible second path.
-3. `cmdct-6054localemu` works now, but is the least preferred of the three active candidates.
+3. `cmdct-6054localemu` is locked in at number 3. This ranking is final. It reached a verified working state (browser login confirmed 2026-07-16) before the evaluation was closed, and its local branch and worktree have been deleted.
 
 None of the tools evaluated was a zero-change LocalStack replacement. Every viable option needed repo-specific local-development changes. The current active branches have been pushed toward an apples-to-apples shape: shared same-origin local API/Cognito frontend proxying, shared seed-data test coverage, shared reset coverage, and no `services/` diffs against `origin/main`.
 
 ## Current Active Candidates
 
-| Branch                | Current status                        | Why keep it                                                                                                                                                                        | Main concern                                                                                                                                                                            |
-| --------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cmdct-6054ministack` | Preferred working candidate           | Produces the cleanest current local-dev shape, preserves the CDK-based architecture, avoids the LocalStack account and dashboard path, and had the strongest clean bakeoff result. | Still requires emulator-specific CDK/runtime adjustments and a more involved `./run local` wrapper to manage the MiniStack Docker container.                                            |
-| `cmdct-6054floci`     | Working backup candidate              | Also preserves the CDK-shaped architecture and was one of the strongest original candidates. It remains a real option if MiniStack becomes blocked.                                | Needs Floci-specific host, container, ECR-port, secret-bootstrap, and seed-trigger handling.                                                                                            |
-| `cmdct-6054localemu`  | Working but least preferred candidate | It reached the same broad class as the other active branches: a local AWS-emulator-backed SEDS workflow instead of a reduced hybrid setup.                                         | Most bespoke branch: Python/pipx host install, direct local Cognito provisioning, manual API Gateway stage repair, synchronous seed invoke, and apparent maintainer-concentration risk. |
+| Branch                | Current status                                                             | Why keep it                                                                                                                                                                        | Main concern                                                                                                                                                                            |
+| --------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cmdct-6054ministack` | Preferred working candidate                                                | Produces the cleanest current local-dev shape, preserves the CDK-based architecture, avoids the LocalStack account and dashboard path, and had the strongest clean bakeoff result. | Still requires emulator-specific CDK/runtime adjustments and a more involved `./run local` wrapper to manage the MiniStack Docker container.                                            |
+| `cmdct-6054floci`     | Working backup candidate                                                   | Also preserves the CDK-shaped architecture and was one of the strongest original candidates. It remains a real option if MiniStack becomes blocked.                                | Needs Floci-specific host, container, ECR-port, secret-bootstrap, and seed-trigger handling.                                                                                            |
+| `cmdct-6054localemu`  | Concluded: ranking locked at #3 (final); local branch and worktree deleted | It reached the same broad class as the other active branches: a local AWS-emulator-backed SEDS workflow instead of a reduced hybrid setup.                                         | Most bespoke branch: Python/pipx host install, direct local Cognito provisioning, manual API Gateway stage repair, synchronous seed invoke, and apparent maintainer-concentration risk. |
 
-The practical recommendation is to move forward with MiniStack unless a new blocker appears. Floci should remain the fallback. LocalEmu should be kept as history and as a proof that the tool was considered seriously, but it should not be the default recommendation.
+The practical recommendation is to move forward with MiniStack unless a new blocker appears. Floci should remain the fallback. LocalEmu is kept as history and as proof that the tool was considered seriously: its ranking is locked at #3, its local branch and worktree have been deleted, and `origin/cmdct-6054localemu` remains as the pushed historical record (it predates the final fixes, which existed only locally).
 
 ## Current Branch Parity
 
@@ -110,4 +110,4 @@ MiniStack, Floci, and LocalEmu are the only evaluated branches that reached a wo
 
 Use MiniStack as the recommended CMDCT-6054 replacement path.
 
-Keep Floci as the backup implementation and LocalEmu as the least-preferred working implementation. Keep the partial and rejected tools in this document so the evaluation history is not lost, but do not keep separate stale decision docs for them.
+Keep Floci as the backup implementation. LocalEmu's ranking is locked at #3 and is final; its local branch and worktree were deleted on 2026-07-16, with `origin/cmdct-6054localemu` left as the historical record. Keep the partial and rejected tools in this document so the evaluation history is not lost, but do not keep separate stale decision docs for them.
