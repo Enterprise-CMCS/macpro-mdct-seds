@@ -1,6 +1,5 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { getCloudFormationStackOutputValues } from "./utils.ts";
 import { region } from "./consts.ts";
 
 const invokeLambda = async (
@@ -25,17 +24,6 @@ const invokeLambda = async (
   }
 };
 
-export const seedData = async () => {
-  const project = process.env.PROJECT;
-  if (!project) {
-    throw new Error("PROJECT environment variable is required.");
-  }
-
-  const SeedDataFunctionName = (
-    await getCloudFormationStackOutputValues(`${project}-floci`)
-  )["SeedDataFunctionName"];
-
-  if (SeedDataFunctionName) {
-    await invokeLambda(SeedDataFunctionName, "Event");
-  }
+export const bootstrapLocalCognitoUsers = async () => {
+  await invokeLambda("ui-auth-floci-bootstrapUsers", "RequestResponse");
 };

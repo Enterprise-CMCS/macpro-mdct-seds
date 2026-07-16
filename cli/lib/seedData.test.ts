@@ -49,7 +49,8 @@ mock.module("./utils.ts", {
   },
 });
 
-const { bootstrapLocalCognitoUsers, seedData } = await import("./seedData.ts");
+const { bootstrapLocalCognitoUsers } = await import("./localCognito.ts");
+const { seedData } = await import("./seedData.ts");
 
 describe("bootstrapLocalCognitoUsers", () => {
   beforeEach(() => {
