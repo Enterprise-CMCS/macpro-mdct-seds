@@ -8,6 +8,8 @@ import {
   type IncomingMessage,
   type ServerResponse,
 } from "node:http";
+import { connect } from "node:net";
+import type { Duplex } from "node:stream";
 import path from "node:path";
 import { region } from "./consts.ts";
 
@@ -59,9 +61,30 @@ const server = createServer((req, res) => {
 vite.on("close", (code) => {
   if (!shuttingDown) {
     server.close();
-    process.exitCode = code ?? 1;
+    process.exitCode = code || 1;
   }
 });
+
+server.on("upgrade", (req, socket, head) => {
+  const target = connect(vitePort, "127.0.0.1", () => {
+    const lines = [`${req.method} ${req.url} HTTP/${req.httpVersion}`];
+    for (let i = 0; i < req.rawHeaders.length; i += 2) {
+      lines.push(`${req.rawHeaders[i]}: ${req.rawHeaders[i + 1]}`);
+    }
+    target.write(`${lines.join("\r\n")}\r\n\r\n`);
+    target.write(head);
+    socket.pipe(target);
+    target.pipe(socket);
+  });
+  closeTogether(socket, target);
+});
+
+function closeTogether(a: Duplex, b: Duplex) {
+  a.on("error", () => b.destroy());
+  b.on("error", () => a.destroy());
+  a.on("close", () => b.destroy());
+  b.on("close", () => a.destroy());
+}
 
 server.on("error", (error) => {
   shuttingDown = true;
