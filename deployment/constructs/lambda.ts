@@ -82,6 +82,7 @@ export class Lambda extends Construct {
     const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? localDefaultBundling),
+          sourceMap: false,
           bundleAwsSDK: true,
           externalModules: [],
           nodeModules: undefined,

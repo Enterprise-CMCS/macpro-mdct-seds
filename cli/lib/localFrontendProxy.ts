@@ -44,6 +44,8 @@ const vite = spawn(
     "--port",
     String(vitePort),
     "--no-open",
+    "--logLevel",
+    "warn",
   ],
   { cwd: path.resolve("services/ui-src") }
 );

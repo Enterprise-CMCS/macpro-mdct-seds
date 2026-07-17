@@ -2,7 +2,7 @@
 import { runCommand } from "../lib/runner.ts";
 import { updateEnvFiles } from "./update-env.ts";
 
-const miniStackContainerName =
+const ministackContainerName =
   process.env.MINISTACK_CONTAINER_NAME ??
   `${process.env.PROJECT ?? "seds"}-ministack-local`;
 
@@ -16,7 +16,7 @@ export const reset = {
     try {
       await runCommand(
         "Stop MiniStack",
-        ["docker", "--context", "colima", "rm", "-f", miniStackContainerName],
+        ["docker", "--context", "colima", "rm", "-f", ministackContainerName],
         "."
       );
     } catch {

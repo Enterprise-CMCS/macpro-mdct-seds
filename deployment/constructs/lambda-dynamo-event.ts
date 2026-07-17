@@ -57,6 +57,7 @@ export class LambdaDynamoEventSource extends Construct {
     const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? defaultBundling),
+          sourceMap: false,
           bundleAwsSDK: true,
           externalModules: [],
           nodeModules: undefined,

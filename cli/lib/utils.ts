@@ -64,11 +64,16 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
+  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
+  const vitePort = process.env.LOCAL_VITE_PORT ?? String(Number(uiPort) + 1);
   const outputs = await getCloudFormationStackOutputValues(
     `${process.env.PROJECT}-${stage}`
   );
   const envVars = buildUiEnvObject(stage, outputs);
-  await writeLocalUiEnvFile(envVars);
+  await writeLocalUiEnvFile(envVars, {
+    devServerPort: vitePort,
+    proxyPort: uiPort,
+  });
 
   return runCommand("ui", ["node", "./cli/lib/localFrontendProxy.ts"], ".");
 };

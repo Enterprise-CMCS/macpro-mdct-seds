@@ -18,23 +18,25 @@ const isColimaRunning = () => {
   }
 };
 
-const miniStackContainerName =
+const ministackContainerName =
   process.env.MINISTACK_CONTAINER_NAME ??
   `${process.env.PROJECT ?? "seds"}-ministack-local`;
 
 const isMiniStackRunning = () => {
   try {
     return (
-      JSON.parse(
-        execFileSync(
-          "docker",
-          ["--context", "colima", "inspect", miniStackContainerName],
-          {
-            encoding: "utf8",
-            stdio: "pipe",
-          }
-        )
-      )[0]?.State?.Running === true
+      execFileSync(
+        "docker",
+        [
+          "--context",
+          "colima",
+          "inspect",
+          "-f",
+          "{{.State.Running}}",
+          ministackContainerName,
+        ],
+        { encoding: "utf8", stdio: "pipe" }
+      ).trim() === "true"
     );
   } catch {
     return false;
@@ -74,21 +76,21 @@ export const local = {
       throw "Colima needs to be running.";
     }
 
-    const miniStackPort = process.env.MINISTACK_PORT ?? "4566";
-    const miniStackEndpoint = `http://127.0.0.1:${miniStackPort}`;
+    const ministackPort = process.env.MINISTACK_PORT ?? "4566";
+    const ministackEndpoint = `http://127.0.0.1:${ministackPort}`;
 
     if (!isMiniStackRunning()) {
       throw "MiniStack needs to be running.";
     }
 
-    await waitForMiniStack(miniStackPort);
+    await waitForMiniStack(ministackPort);
 
     process.env.AWS_DEFAULT_REGION = region;
     process.env.AWS_ACCESS_KEY_ID = "test";
     process.env.AWS_SECRET_ACCESS_KEY = "test"; // pragma: allowlist secret
-    process.env.AWS_ENDPOINT_URL = miniStackEndpoint;
-    process.env.AWS_ENDPOINT_URL_S3 = miniStackEndpoint;
-    process.env.MINISTACK_PORT = miniStackPort;
+    process.env.AWS_ENDPOINT_URL = ministackEndpoint;
+    process.env.AWS_ENDPOINT_URL_S3 = ministackEndpoint;
+    process.env.MINISTACK_PORT = ministackPort;
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(

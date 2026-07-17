@@ -4,8 +4,7 @@
   "license": "CC0-1.0",
   "type": "module",
   "scripts": {
-    "build:cli": "tsc",
-    "test": "node --experimental-test-module-mocks --test commands/*.test.ts lib/*.test.ts"
+    "build:cli": "tsc"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",

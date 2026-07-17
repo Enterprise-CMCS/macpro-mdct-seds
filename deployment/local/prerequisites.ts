@@ -34,7 +34,7 @@ export class LocalPrerequisiteStack extends Stack {
       secretObjectValue: {
         vpcName: SecretValue.unsafePlainText("ministack-dev"),
         vpcId: SecretValue.unsafePlainText(localVpc.vpcId),
-        brokerString: SecretValue.unsafePlainText("localstack"),
+        brokerString: SecretValue.unsafePlainText("ministack"),
         kafkaAuthorizedSubnetIds: SecretValue.unsafePlainText(subnet1.subnetId),
       },
     });
