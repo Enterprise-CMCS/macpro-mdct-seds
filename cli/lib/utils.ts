@@ -33,11 +33,10 @@ const buildUiEnvObject = (
   const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
 
   if (stage === "floci") {
-    const apiId = new URL(cfnOutputs.ApiUrl!).hostname.split(".")[0];
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: `/_local-api/restapis/${apiId}/${stage}/_user_request_`,
+      API_URL: "/_local-api",
       COGNITO_REGION: region,
       COGNITO_IDENTITY_POOL_ID: "",
       COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
@@ -64,11 +63,16 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
+  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
+  const vitePort = process.env.LOCAL_VITE_PORT ?? String(Number(uiPort) + 1);
   const outputs = await getCloudFormationStackOutputValues(
     `${process.env.PROJECT}-${stage}`
   );
   const envVars = buildUiEnvObject(stage, outputs);
-  await writeLocalUiEnvFile(envVars);
+  await writeLocalUiEnvFile(envVars, {
+    devServerPort: vitePort,
+    proxyPort: uiPort,
+  });
 
   return runCommand("ui", ["node", "./cli/lib/localFrontendProxy.ts"], ".");
 };

@@ -4,6 +4,7 @@ import "source-map-support/register.js";
 import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
 import { ParentStack } from "./stacks/parent.ts";
 import { determineDeploymentConfig } from "./deployment-config.ts";
+import { isLocalAwsEmulator } from "./local/util.ts";
 
 async function main() {
   const app = new App({
@@ -25,8 +26,10 @@ async function main() {
   const stage = app.node.getContext("stage");
   const config = await determineDeploymentConfig(stage);
 
-  Tags.of(app).add("STAGE", stage);
-  Tags.of(app).add("PROJECT", config.project);
+  if (!isLocalAwsEmulator) {
+    Tags.of(app).add("STAGE", stage);
+    Tags.of(app).add("PROJECT", config.project);
+  }
 
   if (stage == "bootstrap") {
     new Stack(app, `${config.project}-${stage}`, {});

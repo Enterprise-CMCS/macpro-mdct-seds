@@ -2,6 +2,7 @@ import {
   AdminGetUserCommand,
   CognitoIdentityProviderClient,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { spawn } from "node:child_process";
 import {
   createServer,
@@ -28,6 +29,10 @@ const cognitoClient = new CognitoIdentityProviderClient({
   region,
   endpoint: localEmuOrigin.href,
 });
+const lambdaClient = new LambdaClient({
+  region,
+  endpoint: localEmuOrigin.href,
+});
 let shuttingDown = false;
 
 if (vitePort === uiPort) {
@@ -44,6 +49,8 @@ const vite = spawn(
     "--port",
     String(vitePort),
     "--no-open",
+    "--logLevel",
+    "warn",
   ],
   { cwd: path.resolve("services/ui-src") }
 );
@@ -119,15 +126,7 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse) {
   }
 
   if (isProxyPath(requestUrl.pathname, apiProxyPath)) {
-    await proxy(
-      req,
-      res,
-      localEmuOrigin,
-      stripPrefix(requestUrl, apiProxyPath),
-      {
-        dropBrowserOriginHeaders: true,
-      }
-    );
+    await invokeLocalApiLambda(req, res, stripPrefix(requestUrl, apiProxyPath));
     return;
   }
 
@@ -217,6 +216,172 @@ async function addLocalCognitoClaims(
   });
 
   return jsonResponse(response, responseBody);
+}
+
+async function invokeLocalApiLambda(
+  req: IncomingMessage,
+  res: ServerResponse,
+  requestUrl: URL
+) {
+  const route = localApiRoute(req.method ?? "GET", requestUrl.pathname);
+  if (!route) {
+    res.statusCode = 404;
+    res.end(`No local API route for ${req.method} ${requestUrl.pathname}`);
+    return;
+  }
+
+  const body = hasBody(req) ? await readBody(req) : undefined;
+  const response = await lambdaClient.send(
+    new InvokeCommand({
+      FunctionName: `app-api-floci-${route.functionName}`,
+      InvocationType: "RequestResponse",
+      Payload: Buffer.from(
+        JSON.stringify({
+          body: body?.toString("utf8") ?? null,
+          path: requestUrl.pathname,
+          headers: incomingHeaders(req),
+          pathParameters: route.pathParameters,
+          queryStringParameters: queryStringParameters(requestUrl),
+        })
+      ),
+    })
+  );
+  const payload = response.Payload
+    ? new TextDecoder().decode(response.Payload)
+    : "";
+  if (response.FunctionError) {
+    throw new Error(`Local API Lambda failed: ${payload}`);
+  }
+
+  const lambdaResponse = JSON.parse(payload) as {
+    statusCode?: number;
+    headers?: Record<string, string>;
+    body?: string;
+    isBase64Encoded?: boolean;
+  };
+  res.writeHead(lambdaResponse.statusCode ?? 200, lambdaResponse.headers ?? {});
+  res.end(
+    lambdaResponse.isBase64Encoded && lambdaResponse.body
+      ? Buffer.from(lambdaResponse.body, "base64")
+      : (lambdaResponse.body ?? "")
+  );
+}
+
+function localApiRoute(method: string, pathname: string) {
+  const segments = pathname
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => decodeURIComponent(segment));
+
+  if (method === "GET" && segments.length === 1 && segments[0] === "users") {
+    return { functionName: "listUsers", pathParameters: null };
+  }
+
+  if (segments.length === 2 && segments[0] === "users") {
+    const pathParameters = { userId: segments[1] };
+    if (method === "GET") {
+      return { functionName: "getUserById", pathParameters };
+    }
+    if (method === "POST") {
+      return { functionName: "updateUser", pathParameters };
+    }
+  }
+
+  if (
+    method === "POST" &&
+    segments.length === 1 &&
+    segments[0] === "determineCurrentUser"
+  ) {
+    return { functionName: "determineCurrentUser", pathParameters: null };
+  }
+
+  if (segments[0] === "forms") {
+    if (method === "GET" && segments.length === 2) {
+      return {
+        functionName: "listFormsForState",
+        pathParameters: { state: segments[1] },
+      };
+    }
+    if (method === "GET" && segments.length === 4) {
+      return {
+        functionName: "listFormsForQuarter",
+        pathParameters: {
+          state: segments[1],
+          year: segments[2],
+          quarter: segments[3],
+        },
+      };
+    }
+    if (segments.length === 5) {
+      const pathParameters = {
+        state: segments[1],
+        year: segments[2],
+        quarter: segments[3],
+        form: segments[4],
+      };
+      if (method === "GET") {
+        return { functionName: "getForm", pathParameters };
+      }
+      if (method === "POST") {
+        return { functionName: "updateForm", pathParameters };
+      }
+    }
+    if (
+      method === "POST" &&
+      segments.length === 6 &&
+      segments[5] === "totals"
+    ) {
+      return {
+        functionName: "updateTotals",
+        pathParameters: {
+          state: segments[1],
+          year: segments[2],
+          quarter: segments[3],
+          form: segments[4],
+        },
+      };
+    }
+  }
+
+  if (method === "POST" && segments.length === 2 && segments[0] === "admin") {
+    if (segments[1] === "generate-totals") {
+      return { functionName: "generateEnrollmentTotals", pathParameters: null };
+    }
+    if (segments[1] === "generate-forms") {
+      return { functionName: "generateQuarterForms", pathParameters: null };
+    }
+  }
+
+  if (segments[0] === "templates") {
+    if (method === "GET" && segments.length === 1) {
+      return { functionName: "listTemplateYears", pathParameters: null };
+    }
+    if (segments.length === 2) {
+      const pathParameters = { year: segments[1] };
+      if (method === "GET") {
+        return { functionName: "getTemplate", pathParameters };
+      }
+      if (method === "POST") {
+        return { functionName: "updateTemplate", pathParameters };
+      }
+    }
+  }
+
+  return undefined;
+}
+
+function incomingHeaders(req: IncomingMessage) {
+  return Object.fromEntries(
+    Object.entries(req.headers).map(([name, value]) => [
+      name,
+      Array.isArray(value) ? value.join(",") : value,
+    ])
+  );
+}
+
+function queryStringParameters(requestUrl: URL) {
+  const entries = [...requestUrl.searchParams.entries()];
+  return entries.length === 0 ? null : Object.fromEntries(entries);
 }
 
 function jsonResponse(response: Response, body: unknown) {

@@ -49,11 +49,13 @@ export class Lambda extends Construct {
       ...restProps
     } = props;
 
-    const logGroup = new LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${stackName}-${id}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
-    });
+    const logGroup = isLocalAwsEmulator
+      ? undefined
+      : new LogGroup(this, `${id}LogGroup`, {
+          logGroupName: `/aws/lambda/${stackName}-${id}`,
+          removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+          retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+        });
 
     const defaultBundling = {
       assetHash: createHash("sha256")
@@ -82,6 +84,7 @@ export class Lambda extends Construct {
     const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? localDefaultBundling),
+          sourceMap: false,
           bundleAwsSDK: true,
           externalModules: [],
           nodeModules: undefined,
@@ -94,7 +97,7 @@ export class Lambda extends Construct {
       timeout,
       memorySize,
       bundling: resolvedBundling,
-      logGroup,
+      ...(logGroup ? { logGroup } : {}),
       ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       environment: {
         ...(isLocalAwsEmulator

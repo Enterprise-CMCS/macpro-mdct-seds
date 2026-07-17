@@ -40,11 +40,13 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps
     } = props;
 
-    const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${stackName}-${id}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
-    });
+    const logGroup = isLocalAwsEmulator
+      ? undefined
+      : new logs.LogGroup(this, `${id}LogGroup`, {
+          logGroupName: `/aws/lambda/${stackName}-${id}`,
+          removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+          retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+        });
 
     const defaultBundling = {
       assetHash: createHash("sha256")
@@ -57,6 +59,7 @@ export class LambdaDynamoEventSource extends Construct {
     const resolvedBundling = isLocalAwsEmulator
       ? {
           ...(bundling ?? defaultBundling),
+          sourceMap: false,
           bundleAwsSDK: true,
           externalModules: [],
           nodeModules: undefined,
@@ -69,7 +72,7 @@ export class LambdaDynamoEventSource extends Construct {
       timeout,
       memorySize,
       bundling: resolvedBundling,
-      logGroup,
+      ...(logGroup ? { logGroup } : {}),
       ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       ...restProps,
     });

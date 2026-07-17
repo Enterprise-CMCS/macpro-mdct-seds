@@ -21,232 +21,248 @@ const isColimaRunning = () => {
 const flociContainerName =
   process.env.FLOCI_CONTAINER_NAME ??
   `${process.env.PROJECT ?? "seds"}-floci-local`;
-const flociDefaultSecret = JSON.stringify({
-  vpcName: "floci-dev",
-  brokerString: "localstack",
-  kafkaAuthorizedSubnetIds: "subnet-default-a",
-});
-
-const getFlociContainer = () => {
-  try {
-    return JSON.parse(
-      execFileSync(
-        "docker",
-        ["--context", "colima", "inspect", flociContainerName],
-        {
-          encoding: "utf8",
-          stdio: "pipe",
-        }
-      )
-    )[0];
-  } catch {
-    return null;
-  }
-};
 
 const isFlociRunning = () => {
-  const container = getFlociContainer();
-  return (
-    container?.State?.Running === true &&
-    container?.State?.Health?.Status === "healthy"
+  try {
+    return (
+      execFileSync(
+        "docker",
+        [
+          "--context",
+          "colima",
+          "inspect",
+          "-f",
+          "{{.State.Running}}",
+          flociContainerName,
+        ],
+        { encoding: "utf8", stdio: "pipe" }
+      ).trim() === "true"
+    );
+  } catch {
+    return false;
+  }
+};
+
+const sleep = (milliseconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+const startFloci = async (flociPort: string) => {
+  await runCommand(
+    "Start Floci",
+    [
+      "docker",
+      "--context",
+      "colima",
+      "run",
+      "--rm",
+      "-d",
+      "--name",
+      flociContainerName,
+      "-u",
+      "root",
+      "-p",
+      `${flociPort}:4566`,
+      "-e",
+      "FLOCI_HOSTNAME=host.docker.internal",
+      "-e",
+      `FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT=${
+        process.env.FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT ?? "5200"
+      }`,
+      "-e",
+      `FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT=${
+        process.env.FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT ?? "5299"
+      }`,
+      "-v",
+      "/var/run/docker.sock:/var/run/docker.sock",
+      "floci/floci:latest-compat",
+    ],
+    "."
   );
 };
 
-const waitForFloci = async (port: string) => {
-  for (let i = 0; i < 60; i++) {
-    try {
-      const response = await fetch(`http://localhost:${port}/_floci/init`);
-      if (!response.ok) {
-        throw new Error(`Unexpected status: ${response.status}`);
+const getFlociStackStatus = () => {
+  try {
+    return execFileSync(
+      "aws",
+      [
+        "cloudformation",
+        "describe-stacks",
+        "--stack-name",
+        `${process.env.PROJECT}-floci`,
+        "--query",
+        "Stacks[0].StackStatus",
+        "--output",
+        "text",
+      ],
+      {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
       }
-
-      const body = (await response.json()) as {
-        completed?: { ready?: boolean };
-      };
-      if (body.completed?.ready) {
-        return;
+    ).trim();
+  } catch (error) {
+    if (error && typeof error === "object" && "stderr" in error) {
+      const stderr = (error as { stderr?: Buffer | string }).stderr?.toString();
+      if (stderr?.includes("does not exist")) {
+        return null;
       }
-    } catch {
-      // Keep polling until Floci is ready.
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-  }
-
-  throw new Error("Floci did not become healthy within 60 seconds.");
-};
-
-const getContainerPublishedPort = (container: any): string | undefined =>
-  container?.HostConfig?.PortBindings?.["4566/tcp"]?.[0]?.HostPort;
-
-const getContainerEnvValue = (
-  container: any,
-  key: string
-): string | undefined => {
-  const prefix = `${key}=`;
-  return (container?.Config?.Env ?? [])
-    .find((entry: string) => entry.startsWith(prefix))
-    ?.slice(prefix.length);
-};
-
-export const assertFlociContainerMatchesConfig = (
-  container: any,
-  flociPort: string,
-  ecrRegistryBasePort: string,
-  ecrRegistryMaxPort: string
-) => {
-  const mismatches: string[] = [];
-
-  const actualPort = getContainerPublishedPort(container);
-  if (actualPort !== flociPort) {
-    mismatches.push(
-      `published port ${actualPort ?? "unknown"} (requested ${flociPort})`
-    );
-  }
-
-  const actualBasePort = getContainerEnvValue(
-    container,
-    "FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT"
-  );
-  if (actualBasePort !== ecrRegistryBasePort) {
-    mismatches.push(
-      `ECR base port ${actualBasePort ?? "unknown"} (requested ${ecrRegistryBasePort})`
-    );
-  }
-
-  const actualMaxPort = getContainerEnvValue(
-    container,
-    "FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT"
-  );
-  if (actualMaxPort !== ecrRegistryMaxPort) {
-    mismatches.push(
-      `ECR max port ${actualMaxPort ?? "unknown"} (requested ${ecrRegistryMaxPort})`
-    );
-  }
-
-  if (mismatches.length > 0) {
-    throw new Error(
-      `The existing "${flociContainerName}" container does not match the requested ` +
-        `configuration: ${mismatches.join(", ")}. Remove it with ` +
-        `"docker --context colima rm -f ${flociContainerName}" and re-run to recreate it with the ` +
-        `requested configuration.`
-    );
+    throw error;
   }
 };
 
-const startFloci = async (
-  flociPort: string,
-  ecrRegistryBasePort: string,
-  ecrRegistryMaxPort: string
-) => {
-  const existingContainer = getFlociContainer();
-  if (existingContainer) {
-    assertFlociContainerMatchesConfig(
-      existingContainer,
-      flociPort,
-      ecrRegistryBasePort,
-      ecrRegistryMaxPort
-    );
-  }
+const hasFlociStackOutputs = () => {
+  try {
+    const outputs = JSON.parse(
+      execFileSync(
+        "aws",
+        [
+          "cloudformation",
+          "describe-stacks",
+          "--stack-name",
+          `${process.env.PROJECT}-floci`,
+          "--query",
+          "Stacks[0].Outputs[].OutputKey",
+          "--output",
+          "json",
+        ],
+        {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "pipe"],
+        }
+      )
+    ) as string[] | null;
 
-  if (isFlociRunning()) {
+    return outputs?.includes("CognitoUserPoolId") === true;
+  } catch (error) {
+    if (error && typeof error === "object" && "stderr" in error) {
+      const stderr = (error as { stderr?: Buffer | string }).stderr?.toString();
+      if (stderr?.includes("does not exist")) {
+        return true;
+      }
+    }
+
+    throw error;
+  }
+};
+
+const hasCdkToolkitStackOutputs = () => {
+  try {
+    const outputs = JSON.parse(
+      execFileSync(
+        "aws",
+        [
+          "cloudformation",
+          "describe-stacks",
+          "--stack-name",
+          "CDKToolkit",
+          "--query",
+          "Stacks[0].Outputs[].OutputKey",
+          "--output",
+          "json",
+        ],
+        {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "pipe"],
+        }
+      )
+    ) as string[] | null;
+
+    return (
+      outputs?.includes("BucketName") === true &&
+      outputs.includes("ImageRepositoryName")
+    );
+  } catch (error) {
+    if (error && typeof error === "object" && "stderr" in error) {
+      const stderr = (error as { stderr?: Buffer | string }).stderr?.toString();
+      if (stderr?.includes("does not exist")) {
+        return false;
+      }
+    }
+
+    throw error;
+  }
+};
+
+const hasLocalDefaultSecret = () => {
+  try {
+    execFileSync(
+      "aws",
+      [
+        "secretsmanager",
+        "describe-secret",
+        "--secret-id",
+        `${process.env.PROJECT}-default`,
+      ],
+      {
+        stdio: ["ignore", "ignore", "pipe"],
+      }
+    );
+    return true;
+  } catch (error) {
+    if (error && typeof error === "object" && "stderr" in error) {
+      const stderr = (error as { stderr?: Buffer | string }).stderr?.toString();
+      if (stderr?.includes("can't find") || stderr?.includes("not found")) {
+        return false;
+      }
+    }
+
+    throw error;
+  }
+};
+
+const resetFailedFlociStack = async (flociPort: string) => {
+  const status = getFlociStackStatus();
+  if (
+    ![
+      "CREATE_FAILED",
+      "ROLLBACK_COMPLETE",
+      "UPDATE_ROLLBACK_COMPLETE",
+    ].includes(status ?? "") &&
+    hasFlociStackOutputs()
+  ) {
     return;
   }
 
-  if (existingContainer) {
-    await runCommand(
-      "Start floci",
-      ["docker", "--context", "colima", "start", flociContainerName],
-      "."
-    );
-  } else {
-    await runCommand(
-      "Start floci",
-      [
-        "docker",
-        "--context",
-        "colima",
-        "run",
-        "-d",
-        "--rm",
-        "--name",
-        flociContainerName,
-        "-u",
-        "root",
-        "-p",
-        `${flociPort}:4566`,
-        "-e",
-        "FLOCI_HOSTNAME=host.docker.internal",
-        "-e",
-        `FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT=${ecrRegistryBasePort}`,
-        "-e",
-        `FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT=${ecrRegistryMaxPort}`,
-        "-v",
-        "/var/run/docker.sock:/var/run/docker.sock",
-        "floci/floci:latest-compat",
-      ],
-      "."
-    );
-  }
-
-  await waitForFloci(flociPort);
+  await runCommand(
+    "Remove failed Floci local container",
+    ["docker", "--context", "colima", "rm", "-f", "-v", flociContainerName],
+    "."
+  );
+  await startFloci(flociPort);
+  await waitForFloci();
 };
 
-const upsertFlociDefaultSecret = () => {
-  const project = process.env.PROJECT;
-  if (!project || !process.env.AWS_ENDPOINT_URL) {
-    throw new Error("PROJECT and AWS endpoint configuration are required.");
+const waitForFloci = async () => {
+  let stableChecks = 0;
+
+  for (let i = 0; i < 60; i++) {
+    try {
+      execFileSync(
+        "aws",
+        ["cloudformation", "list-stacks", "--max-items", "1"],
+        {
+          stdio: ["ignore", "ignore", "pipe"],
+        }
+      );
+      execFileSync("aws", ["s3api", "list-buckets"], {
+        stdio: ["ignore", "ignore", "pipe"],
+      });
+      execFileSync("aws", ["iam", "list-roles", "--max-items", "1"], {
+        stdio: ["ignore", "ignore", "pipe"],
+      });
+      stableChecks++;
+      if (stableChecks >= 10) {
+        return;
+      }
+    } catch {
+      stableChecks = 0;
+    }
+
+    await sleep(1000);
   }
 
-  const secretId = `${project}-default`;
-  const commonArgs = [
-    "--endpoint-url",
-    process.env.AWS_ENDPOINT_URL,
-    "secretsmanager",
-  ];
-
-  try {
-    execFileSync(
-      "aws",
-      [...commonArgs, "describe-secret", "--secret-id", secretId],
-      {
-        encoding: "utf8",
-        stdio: "pipe",
-      }
-    );
-
-    execFileSync(
-      "aws",
-      [
-        ...commonArgs,
-        "update-secret",
-        "--secret-id",
-        secretId,
-        "--secret-string",
-        flociDefaultSecret,
-      ],
-      {
-        encoding: "utf8",
-        stdio: "pipe",
-      }
-    );
-  } catch {
-    execFileSync(
-      "aws",
-      [
-        ...commonArgs,
-        "create-secret",
-        "--name",
-        secretId,
-        "--secret-string",
-        flociDefaultSecret,
-      ],
-      {
-        encoding: "utf8",
-        stdio: "pipe",
-      }
-    );
-  }
+  throw new Error("Floci did not become healthy within 60 seconds.");
 };
 
 export const local = {
@@ -259,49 +275,56 @@ export const local = {
     }
 
     const flociPort = process.env.FLOCI_PORT ?? "4566";
-    const ecrRegistryBasePort =
-      process.env.FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT ?? "5200";
-    const ecrRegistryMaxPort =
-      process.env.FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT ?? "5299";
 
-    await startFloci(flociPort, ecrRegistryBasePort, ecrRegistryMaxPort);
+    if (!isFlociRunning()) {
+      throw "Floci needs to be running.";
+    }
 
     process.env.AWS_DEFAULT_REGION = region;
     process.env.AWS_ACCESS_KEY_ID = "test";
     process.env.AWS_SECRET_ACCESS_KEY = "test"; // pragma: allowlist secret
+    process.env.AWS_PAGER = "";
+    process.env.AWS_RETRY_MODE = "standard";
+    process.env.AWS_MAX_ATTEMPTS = "10";
     process.env.AWS_ENDPOINT_URL = `http://localhost:${flociPort}`;
     process.env.AWS_ENDPOINT_URL_S3 = `http://s3.localhost.floci.io:${flociPort}`;
     process.env.FLOCI_PORT = flociPort;
-    upsertFlociDefaultSecret();
-    await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
-    await runCommand(
-      "CDK local bootstrap",
-      [
-        "yarn",
-        "cdklocal",
-        "bootstrap",
-        `aws://000000000000/${region}`, // Floci uses the default dummy account ID 000000000000
-        "--context",
-        "stage=bootstrap",
-        "--require-approval",
-        "never",
-      ],
-      "."
-    );
 
-    await runCommand(
-      "CDK local local-prerequisite deploy",
-      [
-        "yarn",
-        "cdklocal",
-        "deploy",
-        "--app",
-        "./deployment/local/prerequisites.ts",
-        "--require-approval",
-        "never",
-      ],
-      "."
-    );
+    await waitForFloci();
+    await resetFailedFlociStack(flociPort);
+    await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
+    if (!hasCdkToolkitStackOutputs()) {
+      await runCommand(
+        "CDK local bootstrap",
+        [
+          "yarn",
+          "cdklocal",
+          "bootstrap",
+          `aws://000000000000/${region}`, // Floci uses the default dummy account ID 000000000000
+          "--context",
+          "stage=bootstrap",
+          "--require-approval",
+          "never",
+        ],
+        "."
+      );
+    }
+
+    if (!hasLocalDefaultSecret()) {
+      await runCommand(
+        "CDK local local-prerequisite deploy",
+        [
+          "yarn",
+          "cdklocal",
+          "deploy",
+          "--app",
+          "./deployment/local/prerequisites.ts",
+          "--require-approval",
+          "never",
+        ],
+        "."
+      );
+    }
 
     await runCommand(
       "CDK local prerequisite deploy",
@@ -318,15 +341,42 @@ export const local = {
     );
 
     await runCommand(
+      "CDK local synth",
+      [
+        "yarn",
+        "cdklocal",
+        "synth",
+        "--context",
+        "stage=floci",
+        "--all",
+        "--quiet",
+      ],
+      "."
+    );
+
+    await runCommand(
+      "Sync Floci local CDK assets",
+      [
+        "node",
+        "./deployment/local/sync-floci-cdk-assets.ts",
+        ".cdk/cdk.out/seds-floci.assets.json",
+      ],
+      "."
+    );
+
+    await runCommand(
       "CDK local deploy",
       [
         "yarn",
         "cdklocal",
         "deploy",
-        "--context",
-        "stage=floci",
-        "--all",
+        "--app",
+        ".cdk/cdk.out",
+        `${process.env.PROJECT}-floci`,
         "--no-rollback",
+        "--no-asset-parallelism",
+        "--method",
+        "direct",
         "--require-approval",
         "never",
       ],

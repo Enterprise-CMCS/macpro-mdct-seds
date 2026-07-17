@@ -36,9 +36,6 @@ export const determineDeploymentConfig = async (stage: string) => {
     isDev,
     ...secretConfigOptions,
   };
-  if (isLocalAwsEmulator) {
-    config.brokerString = "localstack";
-  }
   if (config.cloudfrontDomainName) {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
@@ -53,12 +50,22 @@ export const determineDeploymentConfig = async (stage: string) => {
 export const loadDefaultSecret = async (project: string, stage?: string) => {
   if (stage === "bootstrap") {
     return {};
+  } else if (isLocalAwsEmulator) {
+    return {
+      vpcName: "floci-dev",
+      brokerString: "floci",
+      kafkaAuthorizedSubnetIds: "subnet-default-a",
+    };
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
   }
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
+  if (isLocalAwsEmulator) {
+    return {};
+  }
+
   const secretName = `${project}-${stage}`;
   try {
     return JSON.parse((await getSecret(secretName))!);

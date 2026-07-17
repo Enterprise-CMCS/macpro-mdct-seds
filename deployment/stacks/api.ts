@@ -56,48 +56,54 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
-    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-    retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
-  });
+  const logGroup = isLocalAwsEmulator
+    ? undefined
+    : new logs.LogGroup(scope, "ApiAccessLogs", {
+        removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+        retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+      });
 
-  const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
-    restApiName: `${stage}-app-api`,
-    deploy: true,
-    cloudWatchRole: false,
-    deployOptions: {
-      stageName: stage,
-      tracingEnabled: true,
-      loggingLevel: isDev
-        ? apigateway.MethodLoggingLevel.OFF
-        : apigateway.MethodLoggingLevel.INFO,
-      dataTraceEnabled: true,
-      metricsEnabled: false,
-      throttlingBurstLimit: 5000,
-      throttlingRateLimit: 10000,
-      cachingEnabled: false,
-      cacheTtl: Duration.seconds(300),
-      cacheDataEncrypted: false,
-      accessLogDestination: new apigateway.LogGroupLogDestination(logGroup),
-      accessLogFormat: apigateway.AccessLogFormat.custom(
-        "requestId: $context.requestId, ip: $context.identity.sourceIp, " +
-          "caller: $context.identity.caller, user: $context.identity.user, " +
-          "requestTime: $context.requestTime, httpMethod: $context.httpMethod, " +
-          "resourcePath: $context.resourcePath, status: $context.status, " +
-          "protocol: $context.protocol, responseLength: $context.responseLength"
-      ),
-    },
-    ...(isLocalAwsEmulator
-      ? {}
-      : {
-          defaultCorsPreflightOptions: {
-            allowOrigins: apigateway.Cors.ALL_ORIGINS,
-            allowMethods: apigateway.Cors.ALL_METHODS,
-          },
-        }),
-  });
+  const api = isLocalAwsEmulator
+    ? undefined
+    : new apigateway.RestApi(scope, "ApiGatewayRestApi", {
+        restApiName: `${stage}-app-api`,
+        deploy: true,
+        cloudWatchRole: false,
+        deployOptions: {
+          stageName: stage,
+          tracingEnabled: true,
+          loggingLevel: isDev
+            ? apigateway.MethodLoggingLevel.OFF
+            : apigateway.MethodLoggingLevel.INFO,
+          dataTraceEnabled: true,
+          metricsEnabled: false,
+          throttlingBurstLimit: 5000,
+          throttlingRateLimit: 10000,
+          cachingEnabled: false,
+          cacheTtl: Duration.seconds(300),
+          cacheDataEncrypted: false,
+          ...(logGroup
+            ? {
+                accessLogDestination: new apigateway.LogGroupLogDestination(
+                  logGroup
+                ),
+                accessLogFormat: apigateway.AccessLogFormat.custom(
+                  "requestId: $context.requestId, ip: $context.identity.sourceIp, " +
+                    "caller: $context.identity.caller, user: $context.identity.user, " +
+                    "requestTime: $context.requestTime, httpMethod: $context.httpMethod, " +
+                    "resourcePath: $context.resourcePath, status: $context.status, " +
+                    "protocol: $context.protocol, responseLength: $context.responseLength"
+                ),
+              }
+            : {}),
+        },
+        defaultCorsPreflightOptions: {
+          allowOrigins: apigateway.Cors.ALL_ORIGINS,
+          allowMethods: apigateway.Cors.ALL_METHODS,
+        },
+      });
 
-  if (!isLocalAwsEmulator) {
+  if (api) {
     api.addGatewayResponse("Default4XXResponse", {
       type: apigateway.ResponseType.DEFAULT_4XX,
       responseHeaders: {
@@ -358,7 +364,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalAwsEmulator) {
+  if (api) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",
@@ -375,14 +381,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     });
   }
 
-  const apiGatewayRestApiUrl = api.url.slice(0, -1);
+  const apiGatewayRestApiUrl = api ? api.url.slice(0, -1) : "/_local-api";
 
   new CfnOutput(scope, "ApiUrl", {
     value: apiGatewayRestApiUrl,
   });
 
   return {
-    restApiId: api.restApiId,
+    restApiId: api?.restApiId ?? "",
     apiGatewayRestApiUrl,
   };
 }

@@ -36,10 +36,10 @@ Local login uses users from `services/ui-auth/libs/users.json`. The seeded passw
 docker --context colima logs -f seds-floci-local
 ```
 
-Health is exposed on the Floci init endpoint:
+Health is exposed through Docker health status:
 
 ```sh
-curl http://127.0.0.1:${FLOCI_PORT:-4566}/_floci/init
+docker --context colima inspect -f '{{.State.Health.Status}}' seds-floci-local
 ```
 
 ## Notes

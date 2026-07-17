@@ -10,8 +10,14 @@ const publicDirPath = path.resolve(
 );
 const configFilePath = path.resolve(path.join(publicDirPath, "env-config.js"));
 
+type LocalUiEnvFileOptions = {
+  devServerPort?: string;
+  proxyPort?: string;
+};
+
 export const writeLocalUiEnvFile = async (
-  envVariables: Record<string, string>
+  envVariables: Record<string, string>,
+  options: LocalUiEnvFileOptions = {}
 ) => {
   await fs.rm(configFilePath, { force: true });
 
@@ -21,7 +27,29 @@ export const writeLocalUiEnvFile = async (
       ([key, value]) => `  ${key}: "${value}",`
     ),
     "};",
+    ...localDevServerRedirect(options),
   ].join("\n");
 
   await fs.writeFile(configFilePath, envConfigContent);
+};
+
+const localDevServerRedirect = ({
+  devServerPort,
+  proxyPort,
+}: LocalUiEnvFileOptions) => {
+  if (!devServerPort || !proxyPort) {
+    return [];
+  }
+
+  return [
+    "",
+    "if (",
+    '  ["localhost", "127.0.0.1"].includes(window.location.hostname) &&',
+    `  window.location.port === ${JSON.stringify(devServerPort)}`,
+    ") {",
+    "  const redirectUrl = new URL(window.location.href);",
+    `  redirectUrl.port = ${JSON.stringify(proxyPort)};`,
+    "  window.location.replace(redirectUrl.href);",
+    "}",
+  ];
 };
