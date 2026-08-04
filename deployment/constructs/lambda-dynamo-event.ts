@@ -11,6 +11,7 @@ import {
 } from "aws-cdk-lib";
 import { createHash } from "node:crypto";
 import { DynamoDBTable } from "./dynamodb-table.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 
 interface LambdaDynamoEventProps extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
@@ -34,6 +35,8 @@ export class LambdaDynamoEventSource extends Construct {
       stackName,
       timeout = Duration.seconds(6),
       isDev,
+      retryAttempts,
+      bundling,
       ...restProps
     } = props;
 
@@ -43,20 +46,32 @@ export class LambdaDynamoEventSource extends Construct {
       retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
+    const defaultBundling = {
+      assetHash: createHash("sha256")
+        .update(`${Date.now()}-${id}`)
+        .digest("hex"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: ["kafkajs"],
+    };
+    const resolvedBundling = isLocalAwsEmulator
+      ? {
+          ...(bundling ?? defaultBundling),
+          sourceMap: false,
+          bundleAwsSDK: true,
+          externalModules: [],
+          nodeModules: undefined,
+        }
+      : (bundling ?? defaultBundling);
+
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: lambda.Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["kafkajs"],
-      },
+      bundling: resolvedBundling,
       logGroup,
+      ...(isLocalAwsEmulator ? {} : { retryAttempts }),
       ...restProps,
     });
 

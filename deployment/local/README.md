@@ -1,70 +1,66 @@
 <!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 
-# Running Locally with LocalStack
+# Running Locally with MiniStack
 
-The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).
+The `./run local` command allows you to run our application locally on your laptop using MiniStack, simulating the AWS cloud environment including Cognito user pools, app clients, and seeded users.
 
 ## Prerequisites
 
-Before running the application locally, ensure the following dependencies are installed and running:
+Before running the application locally, ensure the following dependencies are installed:
 
 ### Required Installations
 
-1. **Colima/Docker** - LocalStack runs inside a Colima container that uses docker as it's runtime.
-
-_The install is handled by the run script._
-
-Links for the curious:
-
-- Docker - https://www.docker.com/get-started
-- Colima - https://github.com/abiosoft/colima
-
-2. **LocalStack** - Provides a local AWS emulating environment.
-
-_The install is handled by the run script._
-
-3. **AWS CLI Local** - Required for interacting with LocalStack.
-
-_The install is handled by the run script._
+1. **Colima** - MiniStack runs inside a Colima-managed container on macOS.
+   The run script starts Colima when needed and pulls the MiniStack container image.
 
 ## Deploying and Running Locally
 
 ```sh
-# in a new terminal window
 ./run local
 ```
 
-The script will verify that both Docker, Colima, and LocalStack are running before proceeding. If any service is unavailable, the script will exit with a helpful error.
+The script will start or reuse the `seds-ministack-local` container automatically.
 
-## Monitoring LocalStack
+If `4566` or `3000` are already in use on your machine, you can override the emulator and UI ports:
 
-You can monitor your LocalStack instance via:
+```sh
+MINISTACK_PORT=4570 LOCAL_UI_PORT=3002 ./run local
+```
 
-First off, sign up for a free account: [LocalStack Cloud](https://app.localstack.cloud/sign-up) _without_ checking the "14 day free trial" checkbox
+Local login uses users from `services/ui-auth/libs/users.json`. The seeded password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
 
-Then open this: [LocalStack Cloud Dashboard](https://app.localstack.cloud/inst/default/status)
+## Monitoring MiniStack
 
-## Accessing Lambda Environment Variables (not included in the dashboard)
+```sh
+docker --context colima logs -f seds-ministack-local
+```
+
+Health is exposed on the MiniStack health endpoint:
+
+```sh
+curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
+```
+
+## Notes
+
+- Internally, the local CDK stage is named `ministack`. That is why stack names and raw API Gateway paths include `ministack`.
+- The generated UI env points at the same-origin local API proxy path:
+  `/_local-api/restapis/<apiId>/ministack/_user_request_`
+- Use `./run reset` to remove the MiniStack container and tear down Colima.
+
+## Accessing Lambda Environment Variables
 
 Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
 
-But if you want to query to see what environment variables a lambda is being given, you can always run queries directly at your local aws like this:
-
-### Getting setup
+If you want to query the environment variables a lambda is receiving, you can inspect them directly:
 
 ```sh
-# this may or may not work for you
-# you've got to have some way to pip install or pip3 install or pipx install
-brew install pipx
-# then you need this package
-pipx install awscli-local
-# doublecheck you got it
-awslocal --version
-```
-
-### Using the tool
-
-```
-# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
-awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
+# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-ministack-getUserById
+AWS_ACCESS_KEY_ID=test \
+AWS_SECRET_ACCESS_KEY=test \
+AWS_DEFAULT_REGION=us-east-1 \
+aws --endpoint-url http://localhost:4566 \
+  lambda get-function-configuration \
+  --function-name YOUR_FUNCTION_NAME \
+  --query "Environment.Variables"
 ```

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",
+    "@aws-sdk/client-cognito-identity-provider": "~3.1034.0",
     "@aws-sdk/client-lambda": "~3.1034.0",
     "@aws-sdk/client-sts": "~3.1034.0",
     "dotenv": "^17.2.3",

@@ -14,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
@@ -87,27 +87,33 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "protocol: $context.protocol, responseLength: $context.responseLength"
       ),
     },
-    defaultCorsPreflightOptions: {
-      allowOrigins: apigateway.Cors.ALL_ORIGINS,
-      allowMethods: apigateway.Cors.ALL_METHODS,
-    },
+    ...(isLocalAwsEmulator
+      ? {}
+      : {
+          defaultCorsPreflightOptions: {
+            allowOrigins: apigateway.Cors.ALL_ORIGINS,
+            allowMethods: apigateway.Cors.ALL_METHODS,
+          },
+        }),
   });
 
-  api.addGatewayResponse("Default4XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_4XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+  if (!isLocalAwsEmulator) {
+    api.addGatewayResponse("Default4XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
 
-  api.addGatewayResponse("Default5XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_5XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+    api.addGatewayResponse("Default5XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
+  }
 
   const environment = {
     brokerString,
@@ -352,7 +358,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalStack) {
+  if (!isLocalAwsEmulator) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

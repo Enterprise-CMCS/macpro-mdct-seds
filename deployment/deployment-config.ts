@@ -1,4 +1,4 @@
-import { isLocalStack } from "./local/util.ts";
+import { isLocalAwsEmulator } from "./local/util.ts";
 import { getSecret } from "./utils/secrets-manager.ts";
 
 export interface DeploymentConfigProperties {
@@ -6,6 +6,7 @@ export interface DeploymentConfigProperties {
   stage: string;
   isDev: boolean;
   vpcName: string;
+  vpcId?: string;
   oktaMetadataUrl: string;
   brokerString: string;
   kafkaAuthorizedSubnetIds: string;
@@ -23,7 +24,8 @@ export interface DeploymentConfigProperties {
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev = isLocalStack || !["main", "val", "production"].includes(stage);
+  const isDev =
+    isLocalAwsEmulator || !["main", "val", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -39,7 +41,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
-  if (!isLocalStack && stage !== "bootstrap") {
+  if (!isLocalAwsEmulator && stage !== "bootstrap") {
     validateConfig(config);
   }
 

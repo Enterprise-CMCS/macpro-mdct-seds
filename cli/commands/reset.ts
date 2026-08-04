@@ -2,17 +2,25 @@
 import { runCommand } from "../lib/runner.ts";
 import { updateEnvFiles } from "./update-env.ts";
 
+const ministackContainerName =
+  process.env.MINISTACK_CONTAINER_NAME ??
+  `${process.env.PROJECT ?? "seds"}-ministack-local`;
+
 export const reset = {
   command: "reset",
   describe:
-    "Reset the local development environment by cleaning up CDK resources and preparing LocalStack for a fresh start",
+    "Reset the local development environment by cleaning up CDK resources and preparing MiniStack for a fresh start",
   handler: async () => {
     await updateEnvFiles();
 
     try {
-      await runCommand("Stop localstack", ["localstack", "stop"], ".");
+      await runCommand(
+        "Stop MiniStack",
+        ["docker", "--context", "colima", "rm", "-f", ministackContainerName],
+        "."
+      );
     } catch {
-      // if localstack is already stopped, don't throw
+      // if MiniStack is already stopped, don't throw
     }
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");

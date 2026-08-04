@@ -15,16 +15,16 @@ export class LocalPrerequisiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const localstackVpc = new ec2.Vpc(this, "localstackVpc", {
+    const localVpc = new ec2.Vpc(this, "localVpc", {
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       enableDnsSupport: true,
       enableDnsHostnames: false,
       subnetConfiguration: [],
-      vpcName: "localstack-dev",
+      vpcName: "ministack-dev",
     });
 
     const subnet1 = new ec2.Subnet(this, "Subnet1", {
-      vpcId: localstackVpc.vpcId,
+      vpcId: localVpc.vpcId,
       availabilityZone: "us-east-1a",
       cidrBlock: "10.0.1.0/24",
     });
@@ -32,8 +32,9 @@ export class LocalPrerequisiteStack extends Stack {
     new secretsmanager.Secret(this, "DefaultSecret", {
       secretName: `${process.env.PROJECT!}-default`, // pragma: allowlist-secret
       secretObjectValue: {
-        vpcName: SecretValue.unsafePlainText("localstack-dev"),
-        brokerString: SecretValue.unsafePlainText("localstack"),
+        vpcName: SecretValue.unsafePlainText("ministack-dev"),
+        vpcId: SecretValue.unsafePlainText(localVpc.vpcId),
+        brokerString: SecretValue.unsafePlainText("ministack"),
         kafkaAuthorizedSubnetIds: SecretValue.unsafePlainText(subnet1.subnetId),
       },
     });
