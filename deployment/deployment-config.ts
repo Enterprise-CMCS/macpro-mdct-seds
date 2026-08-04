@@ -1,4 +1,4 @@
-import { isLocalStack } from "./local/util.ts";
+import { isLocalAwsEmulator } from "./local/util.ts";
 import { getSecret } from "./utils/secrets-manager.ts";
 
 export interface DeploymentConfigProperties {
@@ -23,7 +23,8 @@ export interface DeploymentConfigProperties {
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
-  const isDev = isLocalStack || !["main", "val", "production"].includes(stage);
+  const isDev =
+    isLocalAwsEmulator || !["main", "val", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -39,7 +40,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
-  if (!isLocalStack && stage !== "bootstrap") {
+  if (!isLocalAwsEmulator && stage !== "bootstrap") {
     validateConfig(config);
   }
 
@@ -49,12 +50,22 @@ export const determineDeploymentConfig = async (stage: string) => {
 export const loadDefaultSecret = async (project: string, stage?: string) => {
   if (stage === "bootstrap") {
     return {};
+  } else if (isLocalAwsEmulator) {
+    return {
+      vpcName: "floci-dev",
+      brokerString: "floci",
+      kafkaAuthorizedSubnetIds: "subnet-default-a",
+    };
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
   }
 };
 
 const loadStageSecret = async (project: string, stage: string) => {
+  if (isLocalAwsEmulator) {
+    return {};
+  }
+
   const secretName = `${project}-${stage}`;
   try {
     return JSON.parse((await getSecret(secretName))!);

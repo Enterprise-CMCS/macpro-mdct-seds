@@ -9,9 +9,11 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalAwsEmulator } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
+
+const localEndpointFromLambda = `http://host.docker.internal:${process.env.FLOCI_PORT ?? "4566"}`;
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
@@ -41,29 +43,68 @@ export class Lambda extends Construct {
       buckets = [],
       stackName,
       isDev,
+      retryAttempts,
+      environment,
+      bundling,
       ...restProps
     } = props;
 
-    const logGroup = new LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${stackName}-${id}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
-    });
+    const logGroup = isLocalAwsEmulator
+      ? undefined
+      : new LogGroup(this, `${id}LogGroup`, {
+          logGroupName: `/aws/lambda/${stackName}-${id}`,
+          removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+          retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+        });
+
+    const defaultBundling = {
+      assetHash: createHash("sha256")
+        .update(`${Date.now()}-${id}`)
+        .digest("hex"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: ["jsdom"],
+    };
+    const localDefaultBundling = {
+      ...defaultBundling,
+      commandHooks: {
+        beforeBundling() {
+          return [];
+        },
+        beforeInstall() {
+          return [];
+        },
+        afterBundling(inputDir: string, outputDir: string): string[] {
+          return [
+            `cp ${inputDir}/node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js ${outputDir}/xhr-sync-worker.js`,
+          ];
+        },
+      },
+    };
+    const resolvedBundling = isLocalAwsEmulator
+      ? {
+          ...(bundling ?? localDefaultBundling),
+          sourceMap: false,
+          bundleAwsSDK: true,
+          externalModules: [],
+          nodeModules: undefined,
+        }
+      : (bundling ?? defaultBundling);
 
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["jsdom"],
+      bundling: resolvedBundling,
+      ...(logGroup ? { logGroup } : {}),
+      ...(isLocalAwsEmulator ? {} : { retryAttempts }),
+      environment: {
+        ...(isLocalAwsEmulator
+          ? { AWS_ENDPOINT_URL: localEndpointFromLambda }
+          : {}),
+        ...environment,
       },
-      logGroup,
       ...restProps,
     });
 
@@ -77,7 +118,7 @@ export class Lambda extends Construct {
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isLocalStack
+          authorizationType: isLocalAwsEmulator
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

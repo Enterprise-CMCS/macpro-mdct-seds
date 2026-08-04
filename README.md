@@ -81,7 +81,8 @@ Please refer to the README for instructions running the MDCT Workspace Setup.
 Alternatively, you may install the various requirements yourself.
 The best way to do this is by following the workspace setup script,
 skipping the commands you can't or don't need to run.
-The critical dependencies are `colima`, `localstack`, `nvm`, and `corepack`.
+The critical dependencies are `colima`, AWS CLI, Floci (`floci/floci:latest-compat`),
+`nvm`, and `corepack`.
 We use `nvm` to manage the version of `node`
 and `corepack` to manage the version of `yarn`
 (referring to the repo's `.nvmrc` and `package.json` files respectively).
@@ -92,11 +93,12 @@ With that said, these commands _should_ set up those dependencies
 
 ```sh
 brew install colima
-brew install localstack/tap/localstack-cli
 brew install nvm
 nvm install
 npm install --global corepack
 ```
+
+`./run local` pulls and runs the Floci Docker image in Colima.
 
 Note that this should be the _only_ time you invoke `npm` within this repo.
 For all other scripts and JS dependency management, please use `yarn`.
@@ -126,12 +128,12 @@ Now you should be able to start the app with
 
 This will:
 
-1. Start up Colima, a fully open-source Docker alternative.
-2. Start up Localstack, an Amazon Web Services (AWS) cloud emulator, in Colima.
-3. Deploy SEDS to the Localstack container.
+1. Start up Colima, the local container runtime.
+2. Start up Floci, an Amazon Web Services (AWS) cloud emulator, in Colima.
+3. Deploy SEDS to the Floci container.
    - Doing so by running the code in this repo's deployment folder.
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
-4. Open a tab in your browser, pointed to the SEDS server inside the container.
+4. Start the local UI at http://localhost:3000.
 
 ### Log in
 
@@ -157,23 +159,13 @@ During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
+Once `./run local` is running, open http://localhost:3000 to log in.
+Local users are loaded from `services/ui-auth/libs/users.json`; the local password defaults to `Password123!` and can be overridden with `LOCAL_COGNITO_PASSWORD`.
+
 ### View Local Resources
 
-Although the app is running in a container on your machine,
-you must open [https://app.localstack.cloud/](https://app.localstack.cloud/)
-in your browser to inspect the resources.
-
-You may be asked to pick a plan.
-Because SEDS is open-source, it qualifies as a "Hobby" project.
-You may also need to `localstack auth set-token <your token>`.
-Find your token on [Localstack's Getting Started page](https://app.localstack.cloud/getting-started).
-
-When this is set up, you will be able to see Cloudwatch logs and DynamoDB data.
-However, there are many services Localstack does not support at the Hobby tier,
-or does support but doesn't provide visibility into.
-For these, you may need to push your branch.
-It will automatically deploy to an AWS stack in our dev environment,
-and you will have access to the full AWS web UI.
+See [deployment/local/README.md](./deployment/local/README.md) for Floci health checks,
+logs, and examples for inspecting local resources.
 
 ### Running tests
 

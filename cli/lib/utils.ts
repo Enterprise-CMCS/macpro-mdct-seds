@@ -11,6 +11,7 @@ export const getCloudFormationStackOutputValues = async (
 ): Promise<Record<string, string>> => {
   const cloudFormationClient = new CloudFormationClient({
     region,
+    endpoint: process.env.AWS_ENDPOINT_URL,
   });
   const command = new DescribeStacksCommand({ StackName: stackName });
   const response = await cloudFormationClient.send(command);
@@ -29,19 +30,21 @@ const buildUiEnvObject = (
   stage: string,
   cfnOutputs: Record<string, string | undefined>
 ): Record<string, string> => {
-  if (stage === "localstack") {
+  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
+
+  if (stage === "floci") {
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
-      API_URL: cfnOutputs.ApiUrl!.replace("https", "http"),
+      API_URL: "/_local-api",
       COGNITO_REGION: region,
-      COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
-      COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
-      COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID!,
+      COGNITO_IDENTITY_POOL_ID: "",
+      COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId!,
+      COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId!,
       COGNITO_USER_POOL_CLIENT_DOMAIN:
-        process.env.COGNITO_USER_POOL_CLIENT_DOMAIN!,
-      COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
-      COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
+        cfnOutputs.CognitoUserPoolClientDomain ?? "",
+      COGNITO_REDIRECT_SIGNIN: `http://localhost:${uiPort}/`,
+      COGNITO_REDIRECT_SIGNOUT: `http://localhost:${uiPort}/`,
     };
   }
 
@@ -60,11 +63,16 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
+  const uiPort = process.env.LOCAL_UI_PORT ?? "3000";
+  const vitePort = process.env.LOCAL_VITE_PORT ?? String(Number(uiPort) + 1);
   const outputs = await getCloudFormationStackOutputValues(
     `${process.env.PROJECT}-${stage}`
   );
   const envVars = buildUiEnvObject(stage, outputs);
-  await writeLocalUiEnvFile(envVars);
+  await writeLocalUiEnvFile(envVars, {
+    devServerPort: vitePort,
+    proxyPort: uiPort,
+  });
 
-  runCommand("ui", ["yarn", "start"], "services/ui-src");
+  return runCommand("ui", ["node", "./cli/lib/localFrontendProxy.ts"], ".");
 };

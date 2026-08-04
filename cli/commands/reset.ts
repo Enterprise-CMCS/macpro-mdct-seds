@@ -2,17 +2,25 @@
 import { runCommand } from "../lib/runner.ts";
 import { updateEnvFiles } from "./update-env.ts";
 
+const flociContainerName =
+  process.env.FLOCI_CONTAINER_NAME ??
+  `${process.env.PROJECT ?? "seds"}-floci-local`;
+
 export const reset = {
   command: "reset",
   describe:
-    "Reset the local development environment by cleaning up CDK resources and preparing LocalStack for a fresh start",
+    "Reset the local development environment by cleaning up CDK resources and preparing Floci for a fresh start",
   handler: async () => {
     await updateEnvFiles();
 
     try {
-      await runCommand("Stop localstack", ["localstack", "stop"], ".");
+      await runCommand(
+        "Stop Floci",
+        ["docker", "--context", "colima", "rm", "-f", flociContainerName],
+        "."
+      );
     } catch {
-      // if localstack is already stopped, don't throw
+      // if Floci is already stopped, don't throw
     }
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");

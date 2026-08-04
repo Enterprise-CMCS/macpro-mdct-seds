@@ -53,19 +53,68 @@ if [ "$UPDATE_ENV" = true ]; then
 fi
 
 if [ "$LOCAL" = true ]; then
-    require_cmd docker "On macOS, install with 'brew install docker'"
-    require_cmd colima "On macOS, install with 'brew install colima'"
-    require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
+    export PROJECT="${PROJECT:-seds}"
 
-    if ! colima status 2>&1 | grep -q "colima is running" ; then
+    require_cmd docker "Run the workspace setup; Colima needs its container CLI"
+    require_cmd colima "On macOS, install with 'brew install colima'"
+    require_cmd aws "Install AWS CLI v2"
+
+    COLIMA_STATUS="$(colima status 2>&1 || true)"
+    if [[ "$COLIMA_STATUS" != *"colima is running"* ]] ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
 
-    if ! localstack status | grep -q "running" ; then
-        echo "localstack is installed but not running. We'll start it up for you now."
-        localstack start > /dev/null 2>&1 &
+    FLOCI_CONTAINER_NAME_VALUE="${FLOCI_CONTAINER_NAME:-${PROJECT:-seds}-floci-local}"
+    FLOCI_PORT_VALUE="${FLOCI_PORT:-4566}"
+    FLOCI_ECR_REGISTRY_BASE_PORT_VALUE="${FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT:-5200}"
+    FLOCI_ECR_REGISTRY_MAX_PORT_VALUE="${FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT:-5299}"
+
+    if docker --context colima inspect "$FLOCI_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
+        FLOCI_PUBLISHED_PORT="$(docker --context colima inspect -f '{{with (index .HostConfig.PortBindings "4566/tcp")}}{{(index . 0).HostPort}}{{end}}' "$FLOCI_CONTAINER_NAME_VALUE")"
+        if [ -z "$FLOCI_PUBLISHED_PORT" ]; then
+            echo "Floci container exists but does not publish port 4566/tcp. Remove it and retry." >&2
+            exit 1
+        fi
+        if [ -z "${FLOCI_PORT:-}" ]; then
+            FLOCI_PORT_VALUE="$FLOCI_PUBLISHED_PORT"
+        elif [ "$FLOCI_PUBLISHED_PORT" != "$FLOCI_PORT_VALUE" ]; then
+            echo "Floci container publishes port $FLOCI_PUBLISHED_PORT but FLOCI_PORT requested $FLOCI_PORT_VALUE. Remove it and retry." >&2
+            exit 1
+        fi
+
+        FLOCI_CONTAINER_ENV="$(docker --context colima inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$FLOCI_CONTAINER_NAME_VALUE")"
+        FLOCI_EXISTING_ECR_BASE_PORT="$(printf "%s\n" "$FLOCI_CONTAINER_ENV" | sed -n 's/^FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT=//p' | head -n 1)"
+        FLOCI_EXISTING_ECR_MAX_PORT="$(printf "%s\n" "$FLOCI_CONTAINER_ENV" | sed -n 's/^FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT=//p' | head -n 1)"
+        if [ "$FLOCI_EXISTING_ECR_BASE_PORT" != "$FLOCI_ECR_REGISTRY_BASE_PORT_VALUE" ]; then
+            echo "Floci container ECR base port is ${FLOCI_EXISTING_ECR_BASE_PORT:-unknown} but requested $FLOCI_ECR_REGISTRY_BASE_PORT_VALUE. Remove it and retry." >&2
+            exit 1
+        fi
+        if [ "$FLOCI_EXISTING_ECR_MAX_PORT" != "$FLOCI_ECR_REGISTRY_MAX_PORT_VALUE" ]; then
+            echo "Floci container ECR max port is ${FLOCI_EXISTING_ECR_MAX_PORT:-unknown} but requested $FLOCI_ECR_REGISTRY_MAX_PORT_VALUE. Remove it and retry." >&2
+            exit 1
+        fi
     fi
+
+    if ! docker --context colima inspect "$FLOCI_CONTAINER_NAME_VALUE" >/dev/null 2>&1 ; then
+        echo "Floci is not running. We'll start it up for you now."
+        docker --context colima run --rm -d \
+            --name "$FLOCI_CONTAINER_NAME_VALUE" \
+            -u root \
+            -p "${FLOCI_PORT_VALUE}:4566" \
+            -e FLOCI_HOSTNAME=host.docker.internal \
+            -e "FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT=${FLOCI_ECR_REGISTRY_BASE_PORT_VALUE}" \
+            -e "FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT=${FLOCI_ECR_REGISTRY_MAX_PORT_VALUE}" \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            floci/floci:latest-compat >/dev/null
+    elif ! docker --context colima inspect -f '{{.State.Running}}' "$FLOCI_CONTAINER_NAME_VALUE" | grep -q true ; then
+        echo "Floci is installed but not running. We'll start it up for you now."
+        docker --context colima start "$FLOCI_CONTAINER_NAME_VALUE" >/dev/null
+    fi
+
+    export FLOCI_PORT="$FLOCI_PORT_VALUE"
+    export FLOCI_SERVICES_ECR_REGISTRY_BASE_PORT="$FLOCI_ECR_REGISTRY_BASE_PORT_VALUE"
+    export FLOCI_SERVICES_ECR_REGISTRY_MAX_PORT="$FLOCI_ECR_REGISTRY_MAX_PORT_VALUE"
 fi
 
 IMMUTABLE_FLAG=""

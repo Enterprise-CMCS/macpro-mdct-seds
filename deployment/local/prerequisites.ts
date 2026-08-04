@@ -4,7 +4,6 @@ import {
   App,
   SecretValue,
   Stack,
-  aws_ec2 as ec2,
   aws_iam as iam,
   aws_secretsmanager as secretsmanager,
   type StackProps,
@@ -15,26 +14,13 @@ export class LocalPrerequisiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const localstackVpc = new ec2.Vpc(this, "localstackVpc", {
-      ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
-      enableDnsSupport: true,
-      enableDnsHostnames: false,
-      subnetConfiguration: [],
-      vpcName: "localstack-dev",
-    });
-
-    const subnet1 = new ec2.Subnet(this, "Subnet1", {
-      vpcId: localstackVpc.vpcId,
-      availabilityZone: "us-east-1a",
-      cidrBlock: "10.0.1.0/24",
-    });
-
     new secretsmanager.Secret(this, "DefaultSecret", {
       secretName: `${process.env.PROJECT!}-default`, // pragma: allowlist-secret
       secretObjectValue: {
-        vpcName: SecretValue.unsafePlainText("localstack-dev"),
-        brokerString: SecretValue.unsafePlainText("localstack"),
-        kafkaAuthorizedSubnetIds: SecretValue.unsafePlainText(subnet1.subnetId),
+        vpcName: SecretValue.unsafePlainText("floci-dev"),
+        brokerString: SecretValue.unsafePlainText("floci"),
+        kafkaAuthorizedSubnetIds:
+          SecretValue.unsafePlainText("subnet-default-a"),
       },
     });
 
