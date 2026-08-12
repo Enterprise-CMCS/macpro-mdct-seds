@@ -8,6 +8,9 @@ import {
 const COGNITO_CLIENT = new CognitoIdentityProviderClient({
   apiVersion: "2016-04-19",
   region: "us-east-1",
+  ...(process.env.AWS_ENDPOINT_URL
+    ? { endpoint: process.env.AWS_ENDPOINT_URL }
+    : {}),
   logger: {
     debug: console.debug,
     info: console.info,
