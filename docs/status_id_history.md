@@ -209,7 +209,8 @@ so it doesn't pose a problem for our `status_id` rework.
 Therefore, the only change we needed to make was to quarantine our 2019 data.
 Not just exclude it from this ETL,
 but ensure that it would be excluded from any future ETL.
-We did so directly within [our Kafka message sending code][2019-filter].
+We did so directly within [our Kafka message sending code][2019-filter],
+logic which eventually moved to postKafkaData.ts.
 
 Whenever we're about to send a Kafka message about a 2019 state form,
 or answers within a 2019 state form,
