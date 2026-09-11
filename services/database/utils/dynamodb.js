@@ -14,6 +14,9 @@ const buildDynamoClient = () => {
       warn: console.warn,
     },
     region: "us-east-1",
+    ...(process.env.AWS_ENDPOINT_URL
+      ? { endpoint: process.env.AWS_ENDPOINT_URL }
+      : {}),
   };
 
   const bareBonesClient = new DynamoDBClient(dynamoConfig);

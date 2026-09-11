@@ -1,31 +1,24 @@
 <!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 
-# Running Locally with LocalStack
+# Running Locally with MiniStack
 
-The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).
+The `./run local` command runs SEDS locally by deploying the stack into MiniStack under Colima. Cognito user pools, app clients, and seeded users are local MiniStack resources.
 
 ## Prerequisites
 
-Before running the application locally, ensure the following dependencies are installed and running:
+Before running the application locally, ensure the following dependencies are installed:
 
 ### Required Installations
 
-1. **Colima/Docker** - LocalStack runs inside a Colima container that uses docker as it's runtime.
+1. **Colima** - MiniStack runs inside a Colima-managed container.
 
-_The install is handled by the run script._
+The run script starts Colima when needed and pulls the MiniStack container image.
 
 Links for the curious:
 
-- Docker - https://www.docker.com/get-started
 - Colima - https://github.com/abiosoft/colima
 
-2. **LocalStack** - Provides a local AWS emulating environment.
-
-_The install is handled by the run script._
-
-3. **AWS CLI Local** - Required for interacting with LocalStack.
-
-_The install is handled by the run script._
+2. **A populated `.env` file** - Use `./run update-env`, or reuse an existing `.env` if you already have one outside this worktree.
 
 ## Deploying and Running Locally
 
@@ -34,37 +27,46 @@ _The install is handled by the run script._
 ./run local
 ```
 
-The script will verify that both Docker, Colima, and LocalStack are running before proceeding. If any service is unavailable, the script will exit with a helpful error.
-
-## Monitoring LocalStack
-
-You can monitor your LocalStack instance via:
-
-First off, sign up for a free account: [LocalStack Cloud](https://app.localstack.cloud/sign-up) _without_ checking the "14 day free trial" checkbox
-
-Then open this: [LocalStack Cloud Dashboard](https://app.localstack.cloud/inst/default/status)
-
-## Accessing Lambda Environment Variables (not included in the dashboard)
-
-Per usual env variables are available inside the lambda via `process.env.NAME_OF_VARIABLE`.
-
-But if you want to query to see what environment variables a lambda is being given, you can always run queries directly at your local aws like this:
-
-### Getting setup
+If `4566` or `3000` are already in use on your machine, you can override the emulator and UI ports:
 
 ```sh
-# this may or may not work for you
-# you've got to have some way to pip install or pip3 install or pipx install
-brew install pipx
-# then you need this package
-pipx install awscli-local
-# doublecheck you got it
-awslocal --version
+MINISTACK_PORT=4570 LOCAL_UI_PORT=3002 ./run local
 ```
 
-### Using the tool
+The script verifies Colima and MiniStack, starts MiniStack when needed, bootstraps CDK, deploys the local prerequisite stack, deploys the main stack, starts `cdklocal watch`, and starts the UI.
 
+## Monitoring MiniStack
+
+The local runner names the container `seds-ministack-local` by default.
+
+Useful commands:
+
+```sh
+docker --context colima ps
+docker --context colima logs seds-ministack-local
+curl http://127.0.0.1:${MINISTACK_PORT:-4566}/health
 ```
-# example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
-awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
+
+### StackPort (optional UI)
+
+[StackPort](https://github.com/DaviReisVieira/stackport) is soft-forked under `~/Projects/macpro-mdct-tools/apps/stackport` for browsing Lambda, DynamoDB, S3, and CloudWatch Logs against MiniStack. That fork is local-only (no upstream PRs).
+
+Requires [uv](https://github.com/astral-sh/uv) (`brew install uv`, or re-run `mdct-setup.sh`).
+
+```sh
+# Standalone (MiniStack must already be up)
+./run stackport
+
+# Or start it with local
+MDCT_STACKPORT=1 ./run local
 ```
+
+Open http://127.0.0.1:8080 (override with `STACKPORT_PORT`). Point StackPort at MiniStack via `MINISTACK_PORT` / `AWS_ENDPOINT_URL` as needed.
+
+## Notes
+
+- Internally, the local CDK stage is named `ministack`. That is why stack names and raw API Gateway paths include `ministack`.
+- The generated UI env points at Vite's local MiniStack API proxy:
+  `/restapis/<apiId>/ministack/_user_request_`
+- Use `./run reset` to stop the MiniStack container and tear down Colima.
+- Local login uses users from `services/ui-auth/libs/users.json`. The seeded password can be overridden with `LOCAL_COGNITO_PASSWORD`.

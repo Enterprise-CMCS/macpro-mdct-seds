@@ -42,7 +42,8 @@
     "SCSS",
     "HTML",
     "Shell",
-    "Smarty"
+    "Smarty",
+    "Gherkin"
   ],
   "maintenance": "contract",
   "contractNumber": [

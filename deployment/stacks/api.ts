@@ -14,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalAws } from "../local/util.ts";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
@@ -93,21 +93,24 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
-  api.addGatewayResponse("Default4XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_4XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+  // MiniStack does not support these gateway response types.
+  if (!isLocalAws) {
+    api.addGatewayResponse("Default4XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
 
-  api.addGatewayResponse("Default5XXResponse", {
-    type: apigateway.ResponseType.DEFAULT_5XX,
-    responseHeaders: {
-      "Access-Control-Allow-Origin": "'*'",
-      "Access-Control-Allow-Headers": "'*'",
-    },
-  });
+    api.addGatewayResponse("Default5XXResponse", {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        "Access-Control-Allow-Origin": "'*'",
+        "Access-Control-Allow-Headers": "'*'",
+      },
+    });
+  }
 
   const environment = {
     brokerString,
@@ -160,18 +163,21 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ].includes(table.node.id)
   );
 
-  new LambdaDynamoEventSource(scope, "postKafkaData", {
-    entry: "services/app-api/handlers/kafka/postKafkaData.ts",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    tables: dataConnectTables,
-  });
+  // Dynamo stream → Kafka is a no-op locally but still floods MiniStack watch logs.
+  if (!isLocalAws) {
+    new LambdaDynamoEventSource(scope, "postKafkaData", {
+      entry: "services/app-api/handlers/kafka/postKafkaData.ts",
+      handler: "handler",
+      timeout: Duration.seconds(120),
+      memorySize: 2048,
+      retryAttempts: 2,
+      vpc,
+      vpcSubnets: { subnets: kafkaAuthorizedSubnets },
+      securityGroups: [kafkaSecurityGroup],
+      ...commonProps,
+      tables: dataConnectTables,
+    });
+  }
 
   new Lambda(scope, "getUserById", {
     entry: "services/app-api/handlers/users/getUserById.ts",
@@ -352,7 +358,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (!isLocalStack) {
+  if (!isLocalAws) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",

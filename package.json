@@ -48,15 +48,21 @@
     "typescript": "^5.9.3"
   },
   "resolutions": {
-    "fast-xml-parser@5.5.6": "^5.7.2",
-    "fast-xml-parser@5.5.8": "^5.7.2",
-    "fast-xml-parser@^5.3.6": "^5.7.2",
+    "brace-expansion@^5.0.5": "^5.0.9",
+    "fast-xml-parser@5.5.6": "^5.11.0",
+    "fast-xml-parser@5.5.8": "^5.11.0",
+    "fast-xml-parser@^5.3.6": "^5.11.0",
+    "fast-xml-parser@^5.5.7": "^5.11.0",
     "minimatch@^10.1.1": "^10.2.5",
     "minimatch@^10.2.3": "^10.2.5",
+    "nanoid@^3.3.12": "^3.3.18",
     "picomatch@^2.3.1": "^2.3.2",
     "picomatch@^4.0.3": "^4.0.4",
+    "postcss@^8.5.16": "^8.5.26",
     "react-day-picker@8.10.1": "8.10.2",
-    "underscore@1.13.6": "^1.13.8"
+    "tar@^7.5.4": "^7.5.22",
+    "underscore@1.13.6": "^1.13.8",
+    "undici@^8.4.1": "^8.10.0"
   },
   "packageManager": "yarn@4.12.0"
 }
