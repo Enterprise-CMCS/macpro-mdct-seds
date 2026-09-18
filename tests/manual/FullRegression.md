@@ -137,30 +137,7 @@ we can fall back on this test outline to ensure everything is working.
 - Log back in as the state user.
 - You should see the new state's forms.
 
-**Test 3.3:** Admins should be able to edit form templates.
-
-- From the admin home page, go to the "Add/Edit Form Templates" link.
-- Wait for a moment for the year dropdown to populate.
-- The text area will also populate with a large JSON array.
-- Change something about this JSON.
-  - For example, the `label` of the first `age_ranges` object.
-- Save the change, confirming in the modal that pops up.
-- You should see a message: "Template saved successfully".
-- If you refresh the page, you should see the JSON with your change.
-
-**Test 3.4:** Admins should be able to create form templates.
-
-- On the form templates page, select "+ Create New" in the year dropdown.
-- Select a year - probably the year after the most recent dropdown option.
-- Enter some JSON.
-  - You might copy the JSON from the previous year.
-  - Or you might just throw in `[{ "foo": "bar" }]`.
-  - It must be valid JSON, and it must be an array.
-- Save the template, confirming in the modal.
-- You should see a success message.
-- If you refresh the page, you should see your data.
-
-**Test 3.5:** Admins should be able to generate forms.
+**Test 3.3:** Admins should be able to generate forms.
 
 - From the admin home page, go to the "Generate Quarterly Forms" link.
 - Select a year.
@@ -177,30 +154,6 @@ we can fall back on this test outline to ensure everything is working.
   - If the quarter already had forms, you should see a message saying so.
   - If it did not, you should see a message saying they've been created.
   - In either case, you should be able to view the new forms, in any state.
-
-**Test 3.6:** Admins should be able to re-generate enrollment counts.
-
-- Prepare the data:
-  - Ensure that at least one state, in at least one year, has Q4 forms.
-    - Enrollment Counts are annual; they do not exist in Q1, Q2, or Q3.
-  - Log in to SEDS as a state user, and open a form 21E or 64.21E, in Q4.
-  - Add some data to Question 7, in any age group.
-- Deliberately corrupt that data:
-  - Log in to the AWS web UI, with admin access.
-  - Find the form you just modified, in the `state-forms` DynamoDB table.
-  - Note that it has an `enrollmentCounts` property, reflecting your new data.
-  - Edit that object. Change the count to some other, wrong number.
-    - This count is auto-calculated whenever form data is saved from the UI,
-      but that's not what we're trying to test,
-      so we have to change it from here.
-- Fix the data:
-  - Log in to SEDS as an admin user.
-  - Go to the "Generate Total Enrollment Counts" link.
-  - Click the Button, and confirm.
-  - Eventually (this takes a while), you should see a success message.
-- Verify the fix:
-  - Back in the AWS Web UI, find that `state-forms` record again.
-  - It should be reset back to the correct number.
 
 ## Data Behavior
 
