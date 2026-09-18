@@ -44,11 +44,6 @@ const HomeAdmin = () => {
               <li>
                 <Link to="/generate-forms">Generate Quarterly Forms</Link>
               </li>
-              <li>
-                <Link to="/generate-counts">
-                  Generate Total Enrollment Counts
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

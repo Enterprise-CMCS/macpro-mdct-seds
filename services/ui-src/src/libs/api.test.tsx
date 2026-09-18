@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  generateEnrollmentTotals,
   generateQuarterForms,
   getForm,
   listFormsForQuarter,
@@ -195,15 +194,6 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for generateEnrollmentTotals", async () => {
-    const response = await generateEnrollmentTotals();
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: "/admin/generate-totals",
-      options: { headers: expectedHeaders },
-    });
-  });
   /*
   Test disabled; see docs/uncertified_emails.md
   

@@ -198,13 +198,6 @@ export const updateTemplate = async (data) => {
   return await apiLib.post(`/templates/${data.year}`, opts);
 };
 
-/** @returns {Promise<void>} */
-export const generateEnrollmentTotals = async () => {
-  const opts = await requestOptions();
-
-  return await apiLib.post("/admin/generate-totals", opts);
-};
-
 /*
   Endpoint disabled; see docs/uncertified_emails.md
   

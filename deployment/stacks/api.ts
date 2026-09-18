@@ -235,15 +235,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "generateEnrollmentTotals", {
-    entry: "services/app-api/handlers/admin/generateEnrollmentTotals.ts",
-    handler: "main",
-    path: "/admin/generate-totals",
-    method: "POST",
-    timeout: Duration.minutes(15),
-    ...commonProps,
-  });
-
   new Lambda(scope, "listFormsForState", {
     entry: "services/app-api/handlers/forms/listFormsForState.ts",
     handler: "main",

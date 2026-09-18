@@ -13,7 +13,6 @@ import FormPage from "../FormPage/FormPage";
 import StateSelector from "../StateSelector/StateSelector";
 import GenerateForms from "../GenerateForms/GenerateForms";
 import FormTemplates from "../FormTemplates/FormTemplates";
-import GenerateTotals from "../GenerateTotals/GenerateTotals";
 import HomeState from "../HomeState/HomeState";
 import HomeAdmin from "../HomeAdmin/HomeAdmin";
 
@@ -71,7 +70,6 @@ export default function AppRoutes() {
       <Route path="/users/:id/edit" element={adminPage(<EditUser />)} />
       <Route path="/form-templates" element={adminPage(<FormTemplates />)} />
       <Route path="/generate-forms" element={adminPage(<GenerateForms />)} />
-      <Route path="/generate-counts" element={adminPage(<GenerateTotals />)} />
 
       {/* The fallback page is also generally available */}
       <Route path="*" element={<NotFound />} />

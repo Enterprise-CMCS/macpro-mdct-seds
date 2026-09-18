@@ -7,7 +7,6 @@ import {
 } from "../libs/dynamo-mocking.ts";
 import {
   FormAnswer,
-  queryAnswersByEntry,
   queryAnswersByForm,
   scanForAllFormIds,
   updateAnswer,
@@ -26,21 +25,6 @@ const mockAnswer2 = {
 describe("Form Answer storage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  describe("queryAnswersByEntry", () => {
-    it("should query answers from dynamo", async () => {
-      mockQuery.mockResolvedValueOnce({ Items: [mockAnswer1] });
-
-      const result = await queryAnswersByEntry("CO-2025-4-21E-0518-03");
-
-      expect(result).toEqual([mockAnswer1]);
-      expect(mockQuery).toHaveBeenCalledWith({
-        TableName: "local-form-answers",
-        KeyConditionExpression: "answer_entry = :answer_entry",
-        ExpressionAttributeValues: { ":answer_entry": "CO-2025-4-21E-0518-03" },
-      });
-    });
   });
 
   describe("queryAnswersByForm", () => {
