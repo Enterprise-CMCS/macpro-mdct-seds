@@ -57,9 +57,7 @@ describe("App Router", () => {
       "/print/CO/2026/1/21E",
       "/users",
       "/users/42/edit",
-      "/form-templates",
       "/generate-forms",
-      "/generate-counts",
     ])("should redirect from route %s to Login", (route) => {
       render(
         <MemoryRouter initialEntries={[route]}>
@@ -121,20 +119,17 @@ describe("App Router", () => {
       expect(screen.getByText(/select your state/)).toBeVisible();
     });
 
-    it.each([
-      "/users",
-      "/users/42/edit",
-      "/form-templates",
-      "/generate-forms",
-      "/generate-counts",
-    ])("should redirect from route %s to Unauthorized", (route) => {
-      render(
-        <MemoryRouter initialEntries={[route]}>
-          <AppRoutes />
-        </MemoryRouter>
-      );
-      expect(screen.getByText(/not authorized/)).toBeVisible();
-    });
+    it.each(["/users", "/users/42/edit", "/generate-forms"])(
+      "should redirect from route %s to Unauthorized",
+      (route) => {
+        render(
+          <MemoryRouter initialEntries={[route]}>
+            <AppRoutes />
+          </MemoryRouter>
+        );
+        expect(screen.getByText(/not authorized/)).toBeVisible();
+      }
+    );
 
     it("should redirect other routes to Not Found", () => {
       render(
@@ -177,20 +172,17 @@ describe("App Router", () => {
       expect(screen.getByText(/Home Business User Page/)).toBeVisible();
     });
 
-    it.each([
-      "/users",
-      "/users/42/edit",
-      "/form-templates",
-      "/generate-forms",
-      "/generate-counts",
-    ])("should redirect from route %s to Unauthorized", (route) => {
-      render(
-        <MemoryRouter initialEntries={[route]}>
-          <AppRoutes />
-        </MemoryRouter>
-      );
-      expect(screen.getByText(/not authorized/)).toBeVisible();
-    });
+    it.each(["/users", "/users/42/edit", "/generate-forms"])(
+      "should redirect from route %s to Unauthorized",
+      (route) => {
+        render(
+          <MemoryRouter initialEntries={[route]}>
+            <AppRoutes />
+          </MemoryRouter>
+        );
+        expect(screen.getByText(/not authorized/)).toBeVisible();
+      }
+    );
 
     it("should redirect other routes to Not Found", () => {
       render(
@@ -216,9 +208,7 @@ describe("App Router", () => {
       { route: "/print/CO/2026/1/21E", text: "Print / PDF" },
       { route: "/users", text: "Users" },
       { route: "/users/42/edit", text: "Edit User" },
-      { route: "/form-templates", text: "Add/Edit Form Templates" },
       { route: "/generate-forms", text: "Generate Quarterly Forms" },
-      { route: "/generate-counts", text: "Generate Enrollment Totals" },
     ])("should have route $route", async ({ route, text }) => {
       render(
         <MemoryRouter initialEntries={[route]}>
