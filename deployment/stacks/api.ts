@@ -325,30 +325,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "getTemplate", {
-    entry: "services/app-api/handlers/templates/getTemplate.ts",
-    handler: "main",
-    path: "/templates/{year}",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "listTemplateYears", {
-    entry: "services/app-api/handlers/templates/listTemplateYears.ts",
-    handler: "main",
-    path: "/templates",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateTemplate", {
-    entry: "services/app-api/handlers/templates/updateTemplate.ts",
-    handler: "main",
-    path: "/templates/{year}",
-    method: "POST",
-    ...commonProps,
-  });
-
   if (!isLocalAws) {
     const waf = new WafConstruct(
       scope,

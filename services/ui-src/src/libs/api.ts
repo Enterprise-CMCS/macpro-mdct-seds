@@ -168,36 +168,6 @@ export const generateQuarterForms = async (data) => {
   );
 };
 
-/**
- * @returns {Promise<number[]>}
- */
-export const listTemplateYears = async () => {
-  const opts = await requestOptions();
-
-  return await apiLib.get("/templates", opts);
-};
-
-/**
- * @param {number} year
- * @returns {Promise<FormTemplate>}
- */
-export const getTemplate = async (year) => {
-  const opts = await requestOptions();
-
-  return await apiLib.get(`/templates/${year}`, opts);
-};
-
-/**
- * @param {FormTemplate}
- * @returns {Promise<void>}
- */
-export const updateTemplate = async (data) => {
-  const opts = await requestOptions();
-  opts.body = data;
-
-  return await apiLib.post(`/templates/${data.year}`, opts);
-};
-
 /*
   Endpoint disabled; see docs/uncertified_emails.md
   
@@ -225,12 +195,6 @@ export const updateTemplate = async (data) => {
  * @property {string | undefined} state
  * @property {string} dateJoined
  * @property {string} lastLogin
- */
-
-/**
- * @typedef {Object} FormTemplate
- * @property {number} year
- * @property {FormQuestion[]} template
  */
 
 /**
