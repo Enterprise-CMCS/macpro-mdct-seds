@@ -179,13 +179,12 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       // vpnIpv6SetArn
     );
     distribution.attachWebAclId(waf.webAcl.attrArn);
-      new SupportCaseCustomResource(scope, "support-case", {
+    new SupportCaseCustomResource(scope, "support-case", {
       cloudfrontId: distribution.distributionId,
       cloudfrontUrl: `https://${distribution.distributionDomainName}`,
       stackName: `${project}-${stage}`,
       isDev,
     });
-
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
