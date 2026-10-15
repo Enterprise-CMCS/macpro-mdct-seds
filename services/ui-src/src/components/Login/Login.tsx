@@ -82,48 +82,49 @@ export default function Login() {
           </svg>
         </LoaderButton>
       </div>
-      <form
-        onSubmit={handleSubmit}
-        hidden={hideCognitoLogin}
-        data-testid="loginForm"
-        className="flex-col-gap-1half center"
-      >
-        <TextField
-          autoFocus
-          label="Email"
-          name="email"
-          autoComplete="username"
-          value={fields.email}
-          onChange={onFieldChange}
-        ></TextField>
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          autoComplete="current-password"
-          value={fields.password}
-          onChange={onFieldChange}
-        ></TextField>
-        <div>
-          <LoaderButton
-            type="submit"
-            isLoading={isLoading}
-            disabled={!validateForm()}
-          >
-            Login
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              width={16}
-              height={16}
-              aria-hidden="true"
-              className="icon sign-in-alt-icon"
+      {hideCognitoLogin ? null : (
+        <form
+          onSubmit={handleSubmit}
+          data-testid="loginForm"
+          className="flex-col-gap-1half center"
+        >
+          <TextField
+            autoFocus
+            label="Email"
+            name="email"
+            autoComplete="username"
+            value={fields.email}
+            onChange={onFieldChange}
+          ></TextField>
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            autoComplete="current-password"
+            value={fields.password}
+            onChange={onFieldChange}
+          ></TextField>
+          <div>
+            <LoaderButton
+              type="submit"
+              isLoading={isLoading}
+              disabled={!validateForm()}
             >
-              <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
-            </svg>
-          </LoaderButton>
-        </div>
-      </form>
+              Login
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                width={16}
+                height={16}
+                aria-hidden="true"
+                className="icon sign-in-alt-icon"
+              >
+                <use href="/img/fa-icons/sign-in-alt.svg#sign-in-alt" />
+              </svg>
+            </LoaderButton>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
