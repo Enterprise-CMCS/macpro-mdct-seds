@@ -1,3 +1,5 @@
+const fs = require("node:fs");
+const path = require("node:path");
 const { BatchWriteCommand } = require("@aws-sdk/lib-dynamodb");
 const { buildDynamoClient } = require("../../utils/dynamodb.js");
 
@@ -33,7 +35,10 @@ const runSeed = async (seedInstructions) => {
   for (const filename of filenames) {
     const TableName = `${process.env.dynamoPrefix}-${tableNameSuffix}`;
     if (!filenames || filenames <= 0) continue;
-    const items = require(filename);
+    // Resolve against the bundled lambda dir; bare require("data/...") looks in node_modules.
+    const items = JSON.parse(
+      fs.readFileSync(path.join(__dirname, filename), "utf8")
+    );
     if (!items || items.length <= 0) continue;
 
     try {

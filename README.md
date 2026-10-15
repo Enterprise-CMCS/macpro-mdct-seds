@@ -81,7 +81,8 @@ Please refer to the README for instructions running the MDCT Workspace Setup.
 Alternatively, you may install the various requirements yourself.
 The best way to do this is by following the workspace setup script,
 skipping the commands you can't or don't need to run.
-The critical dependencies are `colima`, `localstack`, `nvm`, and `corepack`.
+The critical dependencies are `colima`, MiniStack (`ministackorg/ministack`),
+`nvm`, and `corepack`.
 We use `nvm` to manage the version of `node`
 and `corepack` to manage the version of `yarn`
 (referring to the repo's `.nvmrc` and `package.json` files respectively).
@@ -92,11 +93,12 @@ With that said, these commands _should_ set up those dependencies
 
 ```sh
 brew install colima
-brew install localstack/tap/localstack-cli
 brew install nvm
 nvm install
 npm install --global corepack
 ```
+
+`./run local` pulls and runs the MiniStack Docker image in Colima.
 
 Note that this should be the _only_ time you invoke `npm` within this repo.
 For all other scripts and JS dependency management, please use `yarn`.
@@ -126,12 +128,12 @@ Now you should be able to start the app with
 
 This will:
 
-1. Start up Colima, a fully open-source Docker alternative.
-2. Start up Localstack, an Amazon Web Services (AWS) cloud emulator, in Colima.
-3. Deploy SEDS to the Localstack container.
+1. Start up Colima, the local container runtime.
+2. Start up MiniStack, an Amazon Web Services (AWS) cloud emulator, in Colima.
+3. Deploy SEDS to the MiniStack container.
    - Doing so by running the code in this repo's deployment folder.
    - Which makes a CloudFormation file with the AWS Cloud Development Kit (CDK).
-4. Open a tab in your browser, pointed to the SEDS server inside the container.
+4. Start the local UI at http://localhost:3000.
 
 ### Log in
 
@@ -139,9 +141,8 @@ Although production users access SEDS through the CMS SSO system,
 for testing and local development we generally use username & password.
 
 The username may be any of the emails in services/ui-auth/libs/users.json.
-The password may be found in the AWS Secrets Manager,
-or in the team 1Password vault,
-or by asking one of your teammates.
+The password is set via LOCAL_COGNITO_PASSWORD in env.tpl via `./run update-env`
+or by setting it manually in your .env file.
 
 SEDS is unique among MDCT apps, in that the SSO token we receive from CMS
 does not indicate which U.S. state the user is associated with,
@@ -157,23 +158,14 @@ During local testing, it does not matter which state you pick for your user.
 There is no special behavior for different states,
 and they should all be seeded with equivalent data.
 
+Once `./run local` is running, open http://localhost:3000 to log in.
+Local users are loaded from `services/ui-auth/libs/users.json`, and the local password can be overridden with `LOCAL_COGNITO_PASSWORD`.
+
 ### View Local Resources
 
-Although the app is running in a container on your machine,
-you must open [https://app.localstack.cloud/](https://app.localstack.cloud/)
-in your browser to inspect the resources.
-
-You may be asked to pick a plan.
-Because SEDS is open-source, it qualifies as a "Hobby" project.
-You may also need to `localstack auth set-token <your token>`.
-Find your token on [Localstack's Getting Started page](https://app.localstack.cloud/getting-started).
-
-When this is set up, you will be able to see Cloudwatch logs and DynamoDB data.
-However, there are many services Localstack does not support at the Hobby tier,
-or does support but doesn't provide visibility into.
-For these, you may need to push your branch.
-It will automatically deploy to an AWS stack in our dev environment,
-and you will have access to the full AWS web UI.
+The local runner names the container `seds-ministack-local` by default.
+MiniStack logs and health checks are available from the local container.
+Useful commands are documented in [the local dev guide](./deployment/local/README.md).
 
 ### Running tests
 

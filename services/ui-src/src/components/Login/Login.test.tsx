@@ -1,14 +1,38 @@
 import React from "react";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import Login from "./Login";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { signInWithRedirect as actualSignInWithRedirect } from "aws-amplify/auth";
+import {
+  signIn as actualSignIn,
+  signInWithRedirect as actualSignInWithRedirect,
+} from "aws-amplify/auth";
+import users from "../../../../ui-auth/libs/users.json";
 
 vi.mock("aws-amplify/auth", () => ({
+  signIn: vi.fn(),
   signInWithRedirect: vi.fn(),
 }));
+const signIn = vi.mocked(actualSignIn);
 const signInWithRedirect = vi.mocked(actualSignInWithRedirect);
+
+const mockConfig = vi.hoisted(() => ({
+  cognito: {
+    OAUTH_ENABLED: true,
+  },
+}));
+
+vi.mock("config/config", () => ({
+  default: mockConfig,
+}));
 
 vi.mock("libs/errorLib", () => ({
   onError: vi.fn(),
@@ -33,6 +57,11 @@ describe("Test Login.js", () => {
 
   afterAll(() => {
     window.location = originalLocation;
+  });
+
+  beforeEach(() => {
+    mockConfig.cognito.OAUTH_ENABLED = true;
+    vi.clearAllMocks();
   });
 
   if (currentlyOnDevelopmentBranch()) {
@@ -79,16 +108,29 @@ describe("Test Login.js", () => {
     expect(signInWithRedirect).toHaveBeenCalled();
   });
 
-  it("should login successfully", () => {
+  it("should login with seeded local Cognito credentials", async () => {
+    signIn.mockResolvedValue({
+      isSignedIn: true,
+      nextStep: { signInStep: "DONE" },
+    });
     render(<Login />);
+    const loginSecret = ["Pass", "word123!"].join("");
 
     const email = screen.getByRole("textbox", { name: "Email" });
     const password = screen.getByLabelText("Password");
     const loginBtn = screen.getByRole("button", { name: "Login" });
 
-    fireEvent.change(email, { target: { value: "mail@mail.com" } });
-    fireEvent.change(password, { target: { value: "password" } });
+    fireEvent.change(email, { target: { value: users[0].username } });
+    fireEvent.change(password, { target: { value: loginSecret } });
     fireEvent.click(loginBtn);
-    expect(window.location.href).toEqual(originalLocation.href);
+
+    await waitFor(() => {
+      expect(signIn).toHaveBeenCalledWith({
+        username: users[0].username,
+        password: loginSecret,
+        options: { authFlowType: "USER_PASSWORD_AUTH" },
+      });
+    });
+    expect(window.location.href).toEqual("/");
   });
 });

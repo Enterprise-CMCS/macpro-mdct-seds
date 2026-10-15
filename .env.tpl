@@ -5,8 +5,6 @@ FormQuestionsTable=local-form-questions
 FormTemplatesTable=local-form-templates
 StateFormsTable=local-state-forms
 AuthUserTable=local-auth-user
-
-COGNITO_IDENTITY_POOL_ID=op://mdct_devs/seds_secrets/COGNITO_IDENTITY_POOL_ID
-COGNITO_USER_POOL_ID=op://mdct_devs/seds_secrets/COGNITO_USER_POOL_ID
-COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/seds_secrets/COGNITO_USER_POOL_CLIENT_ID
-COGNITO_USER_POOL_CLIENT_DOMAIN=placeholder
+# Note if you are running locally without access to the op vault, just create your own local password via the .env
+LOCAL_COGNITO_PASSWORD=op://mdct_devs/seds_secrets/TEST_STATE_USER_PASSWORD # pragma: allowlist secret
+MDCT_STACKPORT=1

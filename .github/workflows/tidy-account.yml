@@ -3,7 +3,9 @@ name: Tidy Account
 
 on:
   schedule:
+    - cron: "0 4-5 * * *"
     - cron: "0 6 * * *"
+    - cron: "0 7-11 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -55,8 +57,10 @@ jobs:
           MSG_MINIMAL: true
           SLACK_MESSAGE: ${{ steps.remove-branchless-stacks.outputs.delete_failed_stack_message }}
           SLACK_TITLE: ":github: :warning: CloudFormation stack cleanup unsuccessful in ${{ github.repository }}"
+          SLACK_MSG_AUTHOR: ${{ github.event_name == 'schedule' && 'mdct-app[bot]' || github.actor }}
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
   audit:
+    if: ${{ github.event_name != 'schedule' || github.event.schedule == '0 6 * * *' }}
     environment: dev
     runs-on: ubuntu-latest
     steps:

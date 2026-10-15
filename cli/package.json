@@ -4,17 +4,19 @@
   "license": "CC0-1.0",
   "type": "module",
   "scripts": {
-    "build:cli": "tsc"
+    "build:cli": "tsc",
+    "test": "node --experimental-test-module-mocks --test commands/*.test.ts lib/*.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "~3.1034.0",
+    "@aws-sdk/client-cognito-identity-provider": "~3.1034.0",
     "@aws-sdk/client-lambda": "~3.1034.0",
     "@aws-sdk/client-sts": "~3.1034.0",
     "dotenv": "^17.2.3",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.13.3",
     "@types/yargs": "^17.0.35",
     "typescript": "^5.9.3"
   }
