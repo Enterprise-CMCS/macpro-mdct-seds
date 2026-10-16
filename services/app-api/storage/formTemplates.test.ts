@@ -1,11 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { mockScan, mockGet, mockPut } from "../libs/dynamo-mocking.ts";
-import {
-  FormTemplate,
-  getTemplate,
-  putTemplate,
-  scanTemplateYears,
-} from "./formTemplates.ts";
+import { mockGet, mockPut } from "../libs/dynamo-mocking.ts";
+import { FormTemplate, getTemplate, putTemplate } from "./formTemplates.ts";
 
 const mockTemplate = {
   year: 2025,
@@ -45,23 +40,6 @@ describe("Form Template storage", () => {
           Item: mockTemplate,
         })
       );
-    });
-  });
-
-  describe("scanTemplateYears", () => {
-    it("should fetch template years from Dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Items: [{ year: 2023 }, { year: 2025 }, { year: 2024 }],
-      });
-
-      const result = await scanTemplateYears();
-
-      expect(result).toEqual([2023, 2025, 2024]);
-      expect(mockScan).toHaveBeenCalledWith({
-        TableName: "local-form-templates",
-        ProjectionExpression: "#year",
-        ExpressionAttributeNames: { "#year": "year" },
-      });
     });
   });
 });

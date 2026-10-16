@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  generateEnrollmentTotals,
   generateQuarterForms,
   getForm,
   listFormsForQuarter,
@@ -8,10 +7,7 @@ import {
   getUserById,
   listUsers,
   listFormsForState,
-  getTemplate,
-  listTemplateYears,
   updateForm,
-  updateTemplate,
   updateTotals,
   updateUser,
 } from "./api";
@@ -163,47 +159,6 @@ describe("libs/api", () => {
     });
   });
 
-  it("should make the expected API call for listTemplateYears", async () => {
-    const response = await listTemplateYears();
-    expect(response.responseAttr).toBe("mock get response");
-    expect(mockGet).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: "/templates",
-      options: { headers: expectedHeaders },
-    });
-  });
-
-  it("should make the expected API call for getTemplate", async () => {
-    const mockYear = 2022;
-    const response = await getTemplate(mockYear);
-    expect(response.responseAttr).toBe("mock get response");
-    expect(mockGet).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: `/templates/${mockYear}`,
-      options: { headers: expectedHeaders },
-    });
-  });
-
-  it("should make the expected API call for updateTemplate", async () => {
-    const mockFormPayload = { year: 2022, template: { foo: "bar" } };
-    const response = await updateTemplate(mockFormPayload);
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: `/templates/${mockFormPayload.year}`,
-      options: { headers: expectedHeaders, body: mockFormPayload },
-    });
-  });
-
-  it("should make the expected API call for generateEnrollmentTotals", async () => {
-    const response = await generateEnrollmentTotals();
-    expect(response.responseAttr).toBe("mock post response");
-    expect(mockPost).toHaveBeenCalledWith({
-      apiName: "mdct-seds",
-      path: "/admin/generate-totals",
-      options: { headers: expectedHeaders },
-    });
-  });
   /*
   Test disabled; see docs/uncertified_emails.md
   

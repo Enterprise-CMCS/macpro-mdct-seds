@@ -11,7 +11,6 @@ import {
   scanFormsByQuarterAndStatus,
   scanFormsByState,
   scanFormsByStateAndQuarter,
-  scanFormsWithTotals,
   StateForm,
   updateComment,
   updateCommentAndStatus,
@@ -125,28 +124,6 @@ describe("State Form storage", () => {
           },
         })
       );
-    });
-  });
-
-  describe("scanFormsWithTotals", () => {
-    it("should fetch forms from Dynamo", async () => {
-      mockScan.mockResolvedValueOnce({
-        Items: [mockFormCO21E, mockFormTX21E],
-      });
-
-      const result = await scanFormsWithTotals();
-
-      expect(result).toEqual([mockFormCO21E, mockFormTX21E]);
-      expect(mockScan).toHaveBeenCalledWith({
-        TableName: "local-state-forms",
-        FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
-        ExpressionAttributeValues: {
-          ":quarter": 4,
-          ":f1": "21E",
-          ":f2": "64.21E",
-        },
-        ConsistentRead: true,
-      });
     });
   });
 

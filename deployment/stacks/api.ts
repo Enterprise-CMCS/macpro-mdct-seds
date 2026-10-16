@@ -235,15 +235,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "generateEnrollmentTotals", {
-    entry: "services/app-api/handlers/admin/generateEnrollmentTotals.ts",
-    handler: "main",
-    path: "/admin/generate-totals",
-    method: "POST",
-    timeout: Duration.minutes(15),
-    ...commonProps,
-  });
-
   new Lambda(scope, "listFormsForState", {
     entry: "services/app-api/handlers/forms/listFormsForState.ts",
     handler: "main",
@@ -330,30 +321,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry: "services/app-api/handlers/forms/updateForm.ts",
     handler: "main",
     path: "/forms/{state}/{year}/{quarter}/{form}",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "getTemplate", {
-    entry: "services/app-api/handlers/templates/getTemplate.ts",
-    handler: "main",
-    path: "/templates/{year}",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "listTemplateYears", {
-    entry: "services/app-api/handlers/templates/listTemplateYears.ts",
-    handler: "main",
-    path: "/templates",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateTemplate", {
-    entry: "services/app-api/handlers/templates/updateTemplate.ts",
-    handler: "main",
-    path: "/templates/{year}",
     method: "POST",
     ...commonProps,
   });

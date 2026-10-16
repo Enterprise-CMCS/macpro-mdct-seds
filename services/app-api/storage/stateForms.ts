@@ -119,26 +119,6 @@ export const scanFormsByQuarterAndStatus = async (
   return response.Items as StateForm[];
 };
 
-/**
- * Scan for ALL state forms (any year) which contain annual enrollment totals.
- *
- * That means only 21E and 64.21E; other forms do not have such totals.
- * It also means only Q4 forms; the totals are only calculated at year end.
- */
-export const scanFormsWithTotals = async () => {
-  const response = await dynamoDb.scan({
-    TableName,
-    FilterExpression: "quarter = :quarter AND form IN (:f1, :f2)",
-    ExpressionAttributeValues: {
-      ":quarter": 4,
-      ":f1": "21E",
-      ":f2": "64.21E",
-    },
-    ConsistentRead: true,
-  });
-  return response.Items as StateForm[];
-};
-
 export const getStateForm = async (state_form: StateForm["state_form"]) => {
   const response = await dynamoDb.get({
     TableName,
