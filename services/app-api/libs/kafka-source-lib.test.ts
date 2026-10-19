@@ -2,18 +2,23 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import KafkaSourceLib from "./kafka-source-lib.ts";
 import { Kafka } from "kafkajs";
 
-vi.mock("kafkajs", () => ({
-  Kafka: vi.fn().mockReturnValue({
-    producer: vi.fn().mockReturnValue({
-      disconnect: vi.fn().mockResolvedValue(undefined),
-      connect: vi.fn().mockResolvedValue(undefined),
-      sendBatch: vi.fn().mockResolvedValue(undefined),
-    }),
-  }),
+const { mockConnect, mockSendBatch, mockDisconnect } = vi.hoisted(() => ({
+  mockConnect: vi.fn(),
+  mockSendBatch: vi.fn(),
+  mockDisconnect: vi.fn(),
 }));
-const mockConnect = (Kafka as Function)().producer().connect;
-const mockSendBatch = (Kafka as Function)().producer().sendBatch;
-const mockDisconnect = (Kafka as Function)().producer().disconnect;
+
+vi.mock("kafkajs", () => ({
+  Kafka: vi.fn(
+    class {
+      producer = vi.fn().mockReturnValue({
+        disconnect: mockDisconnect,
+        connect: mockConnect,
+        sendBatch: mockSendBatch,
+      });
+    }
+  ),
+}));
 
 // The file under test has some one-time behavior on load,
 // which we test one time here.
@@ -32,7 +37,7 @@ describe("Kafka Source Lib", () => {
       version = "mockVersion";
       tables = ["mock-table-alpha", "mock-table-beta", "state-forms"];
     }
-    let TestKafkaInstance;
+    let TestKafkaInstance: any;
 
     beforeEach(() => {
       vi.clearAllMocks();

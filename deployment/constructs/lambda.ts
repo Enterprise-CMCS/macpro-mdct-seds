@@ -2,6 +2,7 @@
 import { Construct } from "constructs";
 import {
   NodejsFunction,
+  type BundlingOptions,
   type NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Duration, RemovalPolicy, aws_s3 as s3 } from "aws-cdk-lib";
@@ -9,9 +10,12 @@ import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalAws } from "../local/util.ts";
 import { DynamoDBTable } from "./dynamodb-table.ts";
 import { createHash } from "node:crypto";
+import path from "node:path";
+
+const localEndpointFromLambda = "http://127.0.0.1:4566";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
@@ -34,13 +38,16 @@ export class Lambda extends Construct {
       timeout = Duration.seconds(6),
       memorySize = 1024,
       api,
-      path,
+      path: apiPath,
       method,
       additionalPolicies = [],
       tables = [],
       buckets = [],
       stackName,
       isDev,
+      retryAttempts,
+      environment,
+      bundling,
       ...restProps
     } = props;
 
@@ -50,20 +57,67 @@ export class Lambda extends Construct {
       retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
+    const defaultBundling = {
+      depsLockFilePath: path.join(process.cwd(), "yarn.lock"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: ["jsdom"],
+    };
+    const miniStackDefaultBundling = {
+      ...defaultBundling,
+      commandHooks: {
+        beforeBundling() {
+          return [];
+        },
+        beforeInstall() {
+          return [];
+        },
+        afterBundling(inputDir: string, outputDir: string): string[] {
+          return [
+            `cp ${inputDir}/node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js ${outputDir}/xhr-sync-worker.js`,
+          ];
+        },
+      },
+    };
+    let resolvedBundling: BundlingOptions = defaultBundling;
+    if (isLocalAws) {
+      // Omit Date.now() assetHash — avoids asset churn on MiniStack watch.
+      resolvedBundling = {
+        ...miniStackDefaultBundling,
+        ...bundling,
+        commandHooks: {
+          ...miniStackDefaultBundling.commandHooks,
+          ...bundling?.commandHooks,
+        },
+        bundleAwsSDK: true,
+        externalModules: [],
+        nodeModules: undefined,
+      };
+    } else {
+      resolvedBundling = {
+        ...defaultBundling,
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
+        ...bundling,
+        ...(bundling?.commandHooks
+          ? { commandHooks: bundling.commandHooks }
+          : {}),
+      };
+    }
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["jsdom"],
-      },
+      bundling: resolvedBundling,
       logGroup,
+      ...(isLocalAws ? {} : { retryAttempts }),
+      environment: {
+        ...(isLocalAws ? { AWS_ENDPOINT_URL: localEndpointFromLambda } : {}),
+        ...environment,
+      },
       ...restProps,
     });
 
@@ -71,13 +125,13 @@ export class Lambda extends Construct {
       this.lambda.addToRolePolicy(stmt);
     }
 
-    if (api && path && method) {
-      const resource = api.root.resourceForPath(path);
+    if (api && apiPath && method) {
+      const resource = api.root.resourceForPath(apiPath);
       resource.addMethod(
         method,
         new apigateway.LambdaIntegration(this.lambda),
         {
-          authorizationType: isLocalStack
+          authorizationType: isLocalAws
             ? undefined
             : apigateway.AuthorizationType.IAM,
         }

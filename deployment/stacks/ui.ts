@@ -11,7 +11,8 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf.ts";
-import { isLocalStack } from "../local/util.ts";
+import { isLocalAws } from "../local/util.ts";
+import { SupportCaseCustomResource } from "../constructs/support-case-cr.ts";
 
 interface CreateUiComponentsProps {
   scope: Construct;
@@ -108,8 +109,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
             "default-src 'self'",
             "img-src 'self' data: https://www.google-analytics.com",
             "script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://tealium-tags.cms.gov tealium-tags.cms.gov https://dap.digitalgov.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'",
-            "style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'",
-            "font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com",
+            "style-src 'self' fonts.googleapis.com 'unsafe-inline'",
+            "font-src 'self' fonts.gstatic.com",
             "connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net https://dap.digitalgov.gov",
             "frame-ancestors 'none'",
             "object-src 'none'",
@@ -121,8 +122,13 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
-    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    minTtl: Duration.seconds(0),
+    defaultTtl: Duration.days(1),
+    maxTtl: Duration.days(365),
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.none(),
     cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+    enableAcceptEncodingBrotli: true,
+    enableAcceptEncodingGzip: true,
   });
 
   const distribution = new cloudfront.Distribution(
@@ -164,7 +170,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   );
 
-  if (!isLocalStack) {
+  if (!isLocalAws) {
     const waf = setupWaf(
       scope,
       stage,
@@ -173,6 +179,12 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       // vpnIpv6SetArn
     );
     distribution.attachWebAclId(waf.webAcl.attrArn);
+    new SupportCaseCustomResource(scope, "support-case", {
+      cloudfrontId: distribution.distributionId,
+      cloudfrontUrl: `https://${distribution.distributionDomainName}`,
+      stackName: `${project}-${stage}`,
+      isDev,
+    });
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;

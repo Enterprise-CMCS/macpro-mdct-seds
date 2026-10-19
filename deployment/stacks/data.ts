@@ -7,6 +7,7 @@ import {
 } from "aws-cdk-lib";
 import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 import { Lambda } from "../constructs/lambda.ts";
+import { isLocalAws } from "../local/util.ts";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -82,11 +83,17 @@ export function createDataComponents(props: CreateDataComponentsProps) {
             `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/data/initial_data_load/`,
           ];
         },
-        afterBundling() {
-          return [];
+        afterBundling(inputDir: string, outputDir: string): string[] {
+          return [
+            `mkdir -p ${outputDir}/data/initial_data_load/`,
+            `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/data/initial_data_load/`,
+          ];
         },
-        beforeInstall() {
-          return [];
+        beforeInstall(inputDir: string, outputDir: string): string[] {
+          return [
+            `mkdir -p ${outputDir}/data/initial_data_load/`,
+            `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/data/initial_data_load/`,
+          ];
         },
       },
     },
@@ -96,10 +103,14 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     ddbTable.table.grantReadWriteData(seedDataFunction);
   }
 
-  new triggers.Trigger(scope, "InvokeSeedDataFunction", {
-    handler: seedDataFunction,
-    invocationType: triggers.InvocationType.EVENT,
-  });
+  // MiniStack's trigger custom resource hits Node "Header overflow" on Lambda
+  // responses. Seed from the CLI instead (async Event invoke after deploy).
+  if (!isLocalAws) {
+    new triggers.Trigger(scope, "InvokeSeedDataFunction", {
+      handler: seedDataFunction,
+      invocationType: triggers.InvocationType.EVENT,
+    });
+  }
 
   new CfnOutput(scope, "SeedDataFunctionName", {
     value: seedDataFunction.functionName,

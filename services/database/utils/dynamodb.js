@@ -14,6 +14,9 @@ const buildDynamoClient = () => {
       warn: console.warn,
     },
     region: "us-east-1",
+    ...(process.env.AWS_ENDPOINT_URL
+      ? { endpoint: process.env.AWS_ENDPOINT_URL }
+      : {}),
   };
 
   const bareBonesClient = new DynamoDBClient(dynamoConfig);
@@ -24,12 +27,12 @@ let dynamoClient = buildDynamoClient();
 
 const scan = async (scanParams) => {
   let ExclusiveStartKey;
-  let items = [];
+  const items = [];
 
   do {
     const command = new ScanCommand({ ...scanParams, ExclusiveStartKey });
     const result = await dynamoClient.send(command);
-    items = items.concat(result.Items ?? []);
+    items.push(...(result.Items ?? []));
     ExclusiveStartKey = result.LastEvaluatedKey;
   } while (ExclusiveStartKey);
 
@@ -50,8 +53,8 @@ const update = async (tableName, items) => {
       await dynamoClient.send(command);
     }
     console.log(`Touched ${items.length} in table ${tableName}`);
-  } catch (e) {
-    console.log(` -- ERROR UPLOADING ${tableName}\n`, e);
+  } catch (error) {
+    console.log(` -- ERROR UPLOADING ${tableName}\n`, error);
   }
 };
 

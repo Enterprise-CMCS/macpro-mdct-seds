@@ -47,6 +47,30 @@
 }
 
 //-----------------------
+//  Icons
+//-----------------------
+
+.icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
+button > .icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+//-----------------------
 //  Headers
 //-----------------------
 
@@ -212,7 +236,7 @@ a:focus {
   padding-bottom: 0.5rem;
 }
 
-.react-tabs__tab-panel {
+.react-tabs__tab-panel--selected {
   display: flex;
   flex-flow: column;
   gap: 1rem;
@@ -330,6 +354,10 @@ a:focus {
   }
   button {
     margin-left: 2rem;
+  }
+  a > .icon {
+    display: inline-flex;
+    margin: 0 0.25em 0 0;
   }
 }
 

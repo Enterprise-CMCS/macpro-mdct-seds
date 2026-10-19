@@ -10,7 +10,9 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { createHash } from "node:crypto";
+import path from "node:path";
 import { DynamoDBTable } from "./dynamodb-table.ts";
+import { isLocalAws } from "../local/util.ts";
 
 interface LambdaDynamoEventProps extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
@@ -34,6 +36,8 @@ export class LambdaDynamoEventSource extends Construct {
       stackName,
       timeout = Duration.seconds(6),
       isDev,
+      retryAttempts,
+      bundling,
       ...restProps
     } = props;
 
@@ -43,20 +47,46 @@ export class LambdaDynamoEventSource extends Construct {
       retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
+    const defaultBundling = {
+      depsLockFilePath: path.join(process.cwd(), "yarn.lock"),
+      minify: true,
+      sourceMap: true,
+      nodeModules: ["kafkajs"],
+    };
+    let resolvedBundling: lambda_nodejs.BundlingOptions = defaultBundling;
+    if (isLocalAws) {
+      // Omit Date.now() assetHash — avoids asset churn on MiniStack watch.
+      resolvedBundling = {
+        ...defaultBundling,
+        ...bundling,
+        ...(bundling?.commandHooks
+          ? { commandHooks: bundling.commandHooks }
+          : {}),
+        bundleAwsSDK: true,
+        externalModules: [],
+        nodeModules: undefined,
+      };
+    } else {
+      resolvedBundling = {
+        ...defaultBundling,
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
+        ...bundling,
+        ...(bundling?.commandHooks
+          ? { commandHooks: bundling.commandHooks }
+          : {}),
+      };
+    }
+
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: lambda.Runtime.NODEJS_22_X,
       timeout,
       memorySize,
-      bundling: {
-        assetHash: createHash("sha256")
-          .update(`${Date.now()}-${id}`)
-          .digest("hex"),
-        minify: true,
-        sourceMap: true,
-        nodeModules: ["kafkajs"],
-      },
+      bundling: resolvedBundling,
       logGroup,
+      ...(isLocalAws ? {} : { retryAttempts }),
       ...restProps,
     });
 

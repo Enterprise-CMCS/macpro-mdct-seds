@@ -10,9 +10,6 @@ tsconfig.tsbuildinfo
 /.env
 tests_output
 *.log
-tests/cypress/videos
-tests/cypress/screenshots
-tests/cypress/downloads
 /.cdk
 cdk.context.json
 **/.yarn/*

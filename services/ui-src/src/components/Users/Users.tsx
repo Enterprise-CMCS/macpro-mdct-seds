@@ -1,0 +1,117 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router";
+
+// *** 3rd party and other functional dependencies
+import { handleExport } from "../../utility-functions/exportFunctions";
+
+// *** 3rd party component dependencies
+import { Button } from "@cmsgov/design-system";
+
+import Preloader from "../Preloader/Preloader";
+
+// *** API / data / etc
+import { listUsers } from "../../libs/api";
+
+const Users = () => {
+  const [users, setUsers] = useState<any>();
+
+  const loadUserData = async () => {
+    const userList = await listUsers();
+    userList.sort((a, b) => a.username?.localeCompare(b.username));
+    setUsers(userList);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await loadUserData();
+    }
+    fetchData().then();
+  }, []);
+
+  return (
+    <div data-testid="users" className="flex-col-gap-1half">
+      <h1>Users</h1>
+      <div className="exclude-from-pdf flex-row-gap-1">
+        <Button
+          variation="solid"
+          onClick={() =>
+            handleExport("MDCT Users Export.csv", {
+              columns: [
+                { name: "Username", selector: "username" },
+                { name: "First Name", selector: "firstName" },
+                { name: "Last Name", selector: "lastName" },
+                { name: "Email", selector: "email" },
+                { name: "Role", selector: "role" },
+                { name: "Registration Date", selector: "dateJoined" },
+                { name: "Last Login", selector: "lastLogin" },
+                { name: "State", selector: "state" },
+              ],
+              data: users,
+            })
+          }
+        >
+          CSV
+          <span className="sr-only">Export user data as CSV</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 384 512"
+            width={16}
+            height={16}
+            aria-hidden="true"
+            className="icon file-csv-icon"
+          >
+            <use href="/img/fa-icons/file-csv.svg#file-csv" />
+          </svg>
+        </Button>
+      </div>
+      <div>
+        {users?.length ? (
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Username</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Registration Date</th>
+                <th scope="col">Last Login</th>
+                <th scope="col">State</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.userId}>
+                  <td>
+                    <Link to={`/users/${user.userId}/edit`}>
+                      {user.username}
+                    </Link>
+                  </td>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>
+                    <a href={`mailto:${user.email}`}>{user.email}</a>
+                  </td>
+                  <td>{user.role}</td>
+                  <td>
+                    {user.dateJoined &&
+                      new Date(user.dateJoined).toLocaleDateString("en-US")}
+                  </td>
+                  <td>
+                    {user.lastLogin &&
+                      new Date(user.lastLogin).toLocaleDateString("en-US")}
+                  </td>
+                  <td>{user.state ?? ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <Preloader />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Users;
