@@ -20,9 +20,9 @@
     "@aws-sdk/client-sts": "~3.1012.0",
     "@aws-sdk/client-wafv2": "~3.1012.0",
     "@octokit/rest": "^22.0.1",
-    "@types/adm-zip": "^0.5.7",
+    "@types/adm-zip": "^0.6.0",
     "@types/node": "^24.0.12",
-    "adm-zip": "^0.5.16",
+    "adm-zip": "^0.6.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
     "typescript": "^5.9.3"
