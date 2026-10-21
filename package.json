@@ -63,7 +63,7 @@
     "react-day-picker@8.10.1": "8.10.2",
     "tar@^7.5.4": "^7.5.22",
     "underscore@1.13.6": "^1.13.8",
-    "undici@^8.4.1": "^8.10.0"
+    "undici@^8.4.1": "^8.10.2"
   },
   "packageManager": "yarn@4.12.0"
 }
