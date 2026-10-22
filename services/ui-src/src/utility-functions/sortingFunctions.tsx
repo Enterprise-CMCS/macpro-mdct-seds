@@ -242,6 +242,8 @@ const reduceEntries = (answersByAgeRange, targetID) => {
 
 /**
  * To be used in sort() to sort by col1 (the question row label)
+ *
+ * A row with an empty col 1 (that is, the header row) will go to the top.
  * @param a
  * @param b
  * @returns {number|number}
@@ -252,12 +254,6 @@ const sortByCol1 = (a, b) => {
 
   if (first === second) {
     return 0;
-  }
-  // nulls sort after anything else
-  else if (first === null) {
-    return 1;
-  } else if (second === null) {
-    return -1;
   }
 
   return first < second ? -1 : 1;
