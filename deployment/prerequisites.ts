@@ -14,7 +14,7 @@ import {
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.ts";
 import { loadDefaultSecret } from "./deployment-config.ts";
-import { isLocalAws } from "./local/util.ts";
+import { isLocalStack } from "./local/util.ts";
 import { tryImport } from "./utils/misc.ts";
 
 interface PrerequisiteConfigProps {
@@ -49,7 +49,7 @@ export class PrerequisiteStack extends Stack {
 
     const { project, vpcName } = props;
 
-    if (!isLocalAws) {
+    if (!isLocalStack) {
       const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
 
       vpc.addGatewayEndpoint("S3Endpoint", {
@@ -60,9 +60,7 @@ export class PrerequisiteStack extends Stack {
       this.addAdditionalPrerequisitesAsync(vpc);
     }
 
-    if (!isLocalAws) {
-      new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
-    }
+    new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
     const cloudWatchRole = new iam.Role(
       this,
@@ -81,48 +79,46 @@ export class PrerequisiteStack extends Stack {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     });
 
-    if (!isLocalAws) {
-      const githubProvider = new iam.OidcProviderNative(
-        this,
-        "GitHubIdentityProvider",
-        {
-          url: "https://token.actions.githubusercontent.com",
-          thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
-          clientIds: ["sts.amazonaws.com"],
-        }
-      );
+    const githubProvider = new iam.OidcProviderNative(
+      this,
+      "GitHubIdentityProvider",
+      {
+        url: "https://token.actions.githubusercontent.com",
+        thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
+        clientIds: ["sts.amazonaws.com"],
+      }
+    );
 
-      new iam.Role(this, "GitHubActionsServiceRole", {
-        description: "Service Role for use in GitHub Actions",
-        assumedBy: new iam.FederatedPrincipal(
-          githubProvider.oidcProviderArn,
-          {
-            StringEquals: {
-              "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-            },
-            StringLike: {
-              "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
-                vpcName
-              )}`,
-            },
+    new iam.Role(this, "GitHubActionsServiceRole", {
+      description: "Service Role for use in GitHub Actions",
+      assumedBy: new iam.FederatedPrincipal(
+        githubProvider.oidcProviderArn,
+        {
+          StringEquals: {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
-          "sts:AssumeRoleWithWebIdentity"
+          StringLike: {
+            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
+              vpcName
+            )}`,
+          },
+        },
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+      managedPolicies: [
+        iam.ManagedPolicy.fromManagedPolicyName(
+          this,
+          "ADORestrictionPolicy",
+          "ADO-Restriction-Policy"
         ),
-        managedPolicies: [
-          iam.ManagedPolicy.fromManagedPolicyName(
-            this,
-            "ADORestrictionPolicy",
-            "ADO-Restriction-Policy"
-          ),
-          iam.ManagedPolicy.fromManagedPolicyName(
-            this,
-            "CMSApprovedServicesPolicy",
-            "CMSApprovedAWSServices"
-          ),
-          iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
-        ],
-      });
-    }
+        iam.ManagedPolicy.fromManagedPolicyName(
+          this,
+          "CMSApprovedServicesPolicy",
+          "CMSApprovedAWSServices"
+        ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
+      ],
+    });
   }
 
   async addAdditionalPrerequisitesAsync(vpc: ec2.IVpc) {
