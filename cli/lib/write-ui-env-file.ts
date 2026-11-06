@@ -9,6 +9,21 @@ const publicDirPath = path.resolve(
   path.join(__dirname, "../../services/ui-src/public/")
 );
 const configFilePath = path.resolve(path.join(publicDirPath, "env-config.js"));
+const uiSrcDirPath = path.resolve(
+  path.join(__dirname, "../../services/ui-src")
+);
+const proxyConfigFilePath = path.resolve(
+  path.join(uiSrcDirPath, "local-api-proxy.json")
+);
+
+export interface LocalApiProxyConfig {
+  gatewayEndpoint: string;
+  apiBasePath: string;
+}
+
+export const writeLocalApiProxyConfig = async (config: LocalApiProxyConfig) => {
+  await fs.writeFile(proxyConfigFilePath, JSON.stringify(config, null, 2));
+};
 
 export const writeLocalUiEnvFile = async (
   envVariables: Record<string, string>
