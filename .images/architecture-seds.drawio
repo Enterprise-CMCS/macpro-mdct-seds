@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="FcpD_ZQTF1CWN_QaWHfa">
-    <mxGraphModel dx="1746" dy="2231" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#ffffff, #121212)" math="0" shadow="0">
+    <mxGraphModel dx="1674" dy="2226" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#ffffff, #121212)" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -122,6 +122,9 @@
         </mxCell>
         <mxCell id="qzq5eA6xc7-ko63zMoYZ-58" parent="qzq5eA6xc7-ko63zMoYZ-75" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;*Infrastructure outside Authorization Boundary is not provisioned by the MDCT Team&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="378" x="41" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="HQ9ECKN2oO2JB6CcWhnP-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;strokeColor=light-dark(#f20202, #ededed);strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="811" width="1210" x="197" y="60.5" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
