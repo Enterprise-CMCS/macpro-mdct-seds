@@ -22,8 +22,10 @@ import {
  * - Anything needed for AWS auth
  *
  * Example invocation:
- * StateFormsTable=production-state-forms DRY_RUN=true \
- *   node migrateStringEnrollmentYears.ts
+    cd services/database
+    export StateFormsTable=production-state-forms
+    export DRY_RUN=true
+    npx tsx ./scripts/migrateStringEnrollmentYears.ts
  */
 
 /** Abbreviated version of the real type defined in the app. */
@@ -124,6 +126,18 @@ const formsWithOverwrittenEnrollmentCounts = [
   "VA-2025-4-64.21E",
   "VA-2025-4-21E",
   "WA-2025-4-21E",
+  "AK-2025-4-64.21E",
+  "IA-2025-4-64.21E",
+  "IA-2025-4-21E",
+  "IN-2025-4-64.21E",
+  "IN-2025-4-21E",
+  "MI-2025-4-21E",
+  "MN-2025-4-64.21E",
+  "MN-2025-4-21E",
+  "OK-2025-4-64.21E",
+  "OK-2025-4-21E",
+  "WI-2025-4-64.21E",
+  "WI-2025-4-21E",
 ];
 const getOverwrittenStateForms = async function* () {
   const lastSynced = new Date().toISOString();
