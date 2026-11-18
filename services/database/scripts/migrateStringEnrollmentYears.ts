@@ -55,14 +55,20 @@ const main = async () => {
     );
 
     logger.info("These forms will have their year corrected:");
+    let count = 0;
     for await (const form of badFormIterator) {
+      count += 1;
       logger.debug(keySelector(form));
     }
+    logger.info(`${count} forms would be affected.`);
 
     logger.info("These forms will be synced through Kafka:");
+    count = 0;
     for await (const form of overwrittenFormIterator) {
+      count += 1;
       logger.debug(keySelector(form));
     }
+    logger.info(`${count} forms would be affected.`);
   } else {
     logger.warn("This is a LIVE RUN. Changes WILL be saved to the database.");
     await batchWriteItems({
