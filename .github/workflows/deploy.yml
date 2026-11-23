@@ -56,5 +56,31 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-      - id: pretend-run
-        run: echo "Pretending to run e2e tests against ${{ needs.deploy.outputs.application_endpoint }}"
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: Enable corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install
+        working-directory: tests
+      - name: Run Playwright tests
+        run: |
+          yarn playwright install --with-deps chromium
+          yarn playwright test --grep-invert "@flaky|@regression|@a11y" --reporter=github,html
+        working-directory: tests
+        env:
+          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
+          LOCAL_COGNITO_PASSWORD: ${{ secrets.LOCAL_COGNITO_PASSWORD }}
+      - name: Upload playwright results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: ${{ failure() }}
+        with:
+          name: playwright-html-report-${{ github.run_number }}
+          path: tests/playwright-report
+          retention-days: 30
